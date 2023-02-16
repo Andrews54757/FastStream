@@ -48,10 +48,7 @@ export class Utils {
 
             if (options.headers) {
                 for (var name in options.headers) {
-                    //    if (true || name == "Referer" || name == "Origin") {
-                    xmlHttp.setRequestHeader("x-faststream-setheader-" + name, options.headers[name]);
-                    //    } else
-                    //         xmlHttp.setRequestHeader(name, headers[name]);
+                    xmlHttp.setRequestHeader(name, options.headers[name]);
                 }
             }
 
