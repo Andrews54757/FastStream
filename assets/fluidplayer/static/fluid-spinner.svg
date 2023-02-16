@@ -1,0 +1,7 @@
+<svg class="lds-eclipse" width="200" height="200" style="background:0 0" preserveAspectRatio="xMidYMid"
+     viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M68.095 59.578A20 20 0 0031.14 44.27a22 20-67.5 0136.955 15.308" fill="#fff">
+        <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8s" keyTimes="0;1"
+                          repeatCount="indefinite" type="rotate" values="0 50 51;360 50 51"/>
+    </path>
+</svg>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FastStream</title>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="image/png" href="./icon128.png" />
+    <style>
+        body {
+            background-color: black;
+            font-size: 15px;
+        }
+
+        #container {
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 75%;
+            position: relative;
+            font-family: Arial;
+            padding-top: 15px;
+        }
+
+        #welcome {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            display: inline-block;
+            font-size: 40px;
+
+        }
+
+        .box {
+            background-color: rgb(27, 27, 27);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="container">
+
+        <div id="welcome" class="box">Welcome to FastStream</div>
+
+        <div class="box" style="margin-top: 20px">
+
+            <h2 id="faststream" class="center">FastStream</h2>
+            <p>FastStream is a fancy video player. Its primary purpose is to get rid of ads and buffering when
+                streaming video.
+            </p>
+
+
+            <h2 id="usage">Usage</h2>
+
+            <p>There are two ways to use FastStream</p>
+
+            <ol>
+                <li>You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play
+                    the
+                    stream and
+                    the client will be auto-replaced with faststream</li>
+
+                <li>You can go to a new tab, and press the extension icon to go to the player.</li>
+            </ol>
+
+            <p>Once you got the video player open, hover over the left side of the video to open the sidebar
+                (search/playlist).</p>
+
+            <h3 id="keyboardcontrols">Keyboard Controls</h3>
+            <ul>
+                <li>Left/Right arrow keys - 1 second seek forward/back</li>
+
+                <li><code>&lt;&gt;</code> keys - 10 second seek forward/back</li>
+
+                <li>Up/Down arrow keys - 10% volume up/down</li>
+
+                <li><code>f</code> - Full screen</li>
+
+                <li><code>+-</code> - Add/decrease concurrent requests.</li>
+
+                <li><code>~</code> - Force retry key - use this to re-attempt failed downloads</li>
+
+                <li><code>s</code> - Skip intro/outro if applicable</li>
+
+                <li><code>Alt</code> - Hide player</li>
+            </ul>
+
+        </div>
+        <div class="center" style="font-size: 8px;color: rgba(255, 255, 255, 0.4)">Copyright © 2017-2023 Andrew S
+            (Andrews54757@gmail.com)</div>
+    </div>
+    <script src="welcome.js"></script>
+</body>
+
+</html>

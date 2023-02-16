@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FastStream</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="shortcut icon" type="image/png" href="./icon128.png" />
+    <link rel="stylesheet" href="./assets/fluidplayer/css/fluidplayer.css">
+    <style>
+        body {
+            position: absolute;
+            inset: 0px;
+            margin: 0px;
+        }
+
+        .mainplayer {
+            background-color: black;
+        }
+
+        .video-container {
+            position: absolute;
+            inset: 0px;
+        }
+
+        .video-container>video {
+            position: absolute;
+            inset: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .fluid_video_wrapper {
+            user-select: none;
+        }
+
+        .fluid_video_sources_list {
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .source_active {
+            font-weight: bold;
+        }
+
+        .fluid_controls_progress_container .seek_preview {
+            position: absolute;
+            background-color: rgba(20, 20, 20, 0.7);
+            font-family: Arial;
+            font-size: 14px;
+            text-align: center;
+            padding: 1px 10px;
+            border-radius: 2px;
+            color: rgba(255, 255, 255, 0.9);
+            transform: translate(-50%, 0%);
+            bottom: 13px;
+        }
+
+        .fluid_controls_progress_container .seek_preview_tip {
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .fluid_controls_progress_container .seek_preview_tip>div {
+            border-width: 5px;
+            border-style: solid;
+            border-color: rgba(20, 20, 20, 0.7) transparent transparent;
+            width: 0px;
+            left: calc(50% - 5px);
+            position: absolute;
+            bottom: 3px;
+        }
+
+        .fluid_controls_progress_container .seek_preview_tip.detached>div {
+            border-color: rgba(255, 255, 255, 0.9) transparent transparent;
+        }
+
+        .fluid_controls_progress_container .seek_preview .seek_preview_video {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            border: 1px solid rgba(200, 200, 200, 0.2);
+        }
+
+        .fluid_controls_progress_container .seek_preview .seek_preview_video video {
+            height: 70px;
+        }
+
+        .progress_loaded_container {
+            position: absolute;
+            inset: 0px;
+            z-index: -1;
+        }
+
+        .progress_loaded_container>div {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+        }
+
+        .progress_loaded_container>div.download-initiated {
+            background-color: rgba(100, 255, 100, 0.3);
+        }
+
+        .progress_loaded_container>div.download-complete {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .progress_loaded_container>div.download-failed {
+            background-color: rgba(255, 100, 100, 1);
+        }
+
+        .subtitles_menu {
+
+            border-top-right-radius: 3px;
+            overflow-y: scroll;
+            border: 1px solid rgba(255, 255, 255, .4);
+            border-top-left-radius: 3px;
+            position: absolute;
+            bottom: 25px;
+            background-color: rgba(70, 70, 70, .8);
+            width: 200px;
+            max-height: 300px;
+            left: 50%;
+            transform: translate(-50%, 0);
+            z-index: 1000;
+        }
+
+        .subtitle-track {
+            display: block !important;
+        }
+
+        .downloadstatus {
+            display: inline-block;
+            height: 24px;
+            line-height: 21px;
+            margin-left: 5px;
+            vertical-align: top;
+            font-size: 13px;
+            font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
+        }
+
+        .intro_outro_container {
+            position: absolute;
+            inset: 0px;
+            z-index: 1;
+        }
+
+        .intro_outro_container>div {
+            border-radius: 1px;
+            position: absolute;
+            top: 3px;
+            bottom: 0px;
+            background-color: rgb(222, 187, 0);
+        }
+
+        .skip_button {
+            color: white;
+            position: absolute;
+            bottom: 50px;
+            right: 12px;
+            background-color: rgba(20, 20, 20, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4px 10px;
+            font-family: Arial;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .skip_button:hover {
+            background-color: rgba(20, 20, 20, 1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .marker_container {
+            position: absolute;
+            inset: 0px;
+            z-index: 1;
+        }
+
+        .marker_container>div {
+            border-radius: 1px;
+            position: absolute;
+            transform: translate(-50%, 0);
+            top: 0px;
+            bottom: 3px;
+            width: 3px;
+        }
+
+        .seek_marker {
+            background-color: rgba(92, 255, 255, .9);
+        }
+
+        .rate_menu {
+            background-color: rgba(70, 70, 70, 0.8);
+            overflow: hidden;
+            position: absolute;
+            bottom: 30px;
+            width: 60px;
+            transform: translate(-50%, 0%);
+            left: 50%;
+            border-top-right-radius: 3px;
+            border-top-left-radius: 3px;
+            height: 105px;
+        }
+
+        .volume_block {
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mainplayer fluid_video_wrapper fluid_player_layout_default" style="width: 100%; height: 100%;">
+
+        <div class="video-container">
+
+        </div>
+
+        <div class="fluid_subtitles_container">
+
+        </div>
+
+        <div class="fluid_controls_container fade_in">
+            <div class="skip_button" style="display: none;">Skip Intro</div>
+
+            <div class="fluid_controls_left">
+                <div class="fluid_button fluid_button_play fluid_control_playpause"></div>
+                <div class="volume_block">
+                    <div class="fluid_button fluid_button_volume fluid_control_mute"></div>
+                    <div class="fluid_control_volume_container fluid_slider">
+                        <div class="fluid_control_volume">
+                            <div class="fluid_control_currentvolume" style="width: 100%">
+                                <div class="fluid_control_volume_currentpos"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00</div>
+
+                <div class="downloadstatus"></div>
+            </div>
+            <div class="fluid_controls_progress_container fluid_slider">
+                <div class="fluid_controls_progress">
+                    <div class="fluid_controls_currentprogress" style="background-color: red; width: 0%;">
+                        <div class="fluid_controls_currentpos"></div>
+                    </div>
+                    <div class="progress_loaded_container">
+
+                    </div>
+
+                    <div class="intro_outro_container">
+                    </div>
+
+                    <div class="marker_container">
+                    </div>
+                </div>
+
+
+                <div class="seek_preview" style="display: none;">
+
+                    <div class="seek_preview_text">00:00</div>
+
+                    <div class="seek_preview_video" style="display: none;">
+                    </div>
+                </div>
+                <div class="seek_preview_tip" style="display: none;">
+                    <div></div>
+                </div>
+            </div>
+            <div class="fluid_controls_right">
+                <div class="fluid_button fluid_control_fullscreen fluid_button_fullscreen"></div>
+
+                <div class="fluid_button fluid_control_video_source fluid_button_video_source">
+                    <div class="fluid_video_sources_list" style="display: none;">
+                        <div class="fluid_video_source_list_item"><span
+                                class="source_button_icon source_selected"></span>1080p</div>
+                        <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>720p</div>
+                        <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>480p</div>
+                    </div>
+                </div>
+                <div class="fluid_button fluid_button_download" style="display: inline-block;"></div>
+                <div class="fluid_button fluid_button_playback_rate" style="display: inline-block;">
+                    <div class="rate_menu" style="display:none">
+                        <div
+                            style="overflow-y: scroll; padding-right: 17px; box-sizing: content-box; width: 100%; height: 100%;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fluid_button fluid_control_subtitles fluid_button_subtitles" style="display: inline-block;">
+                    <div class="subtitles_menu" style="display: none;">
+                        <div class="subtitles_list">
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="fluid_html_on_pause">
+            <div class="fluid_control_playpause_big_circle fluid_initial_play"
+                style="background-color: rgb(51, 51, 51);">
+                <div class="fluid_control_playpause_big fluid_initial_play_button"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./main.mjs" type="module"></script>
+</body>
+
+</html>

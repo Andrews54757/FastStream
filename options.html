@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>FastStream Options</title>
+    <style>
+        body {
+            padding: 15px;
+            font-family: sans-serif;
+        }
+
+        h1 {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        h1:first-child {
+            margin-top: 0;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        #submitter {
+            background-color: #222;
+            float: right;
+            width: 100px;
+            margin: 15px 0 15px 0;
+            border-radius: 6px;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        #submitter:hover {
+            background-color: #aaa;
+        }
+
+        h2 {
+            clear: both;
+            font-size: 1em;
+            font-weight: bold;
+        }
+
+        #format {
+            margin-right: 10px;
+            margin-bottom: 8px;
+            width: 500px;
+        }
+
+        p.hint {
+            opacity: .7;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Activation Status</h1>
+    <h2 id="userid">UserID: </h2>
+    <div id="active">N/A</div>
+    <div id="retry"
+        style='padding: 5px 10px; display: inline-block; cursor: pointer; background-color: rgba(0,0,0,0.3);border-radius: 5px;'>
+        Retry
+    </div>
+    <h1>General Options</h1>
+    <h1>Help</h1>
+    <a href="#" id="welcome">Welcome Page</a>
+</body>
+<script src='options.js'></script>
+
+</html>
