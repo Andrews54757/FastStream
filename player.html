@@ -208,6 +208,84 @@
         .volume_block {
             display: inline-block;
         }
+
+        .subtitles_options {
+            padding-bottom: 5px;
+        }
+
+        .subtitles_options_back {
+            position: absolute;
+            border-radius: 5px;
+            color: black;
+            cursor: pointer;
+            padding: 0px 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            left: 5px;
+            top: 5px;
+        }
+
+        .subtitles_title {
+            text-align: right;
+            font-size: 14px;
+            padding: 5px 19px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .subtitles_options_back:hover {
+            text-decoration: underline;
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .subtitles_options .option {
+            position: relative;
+            font-size: 14px;
+            width: 100%;
+            height: 25px;
+            margin-bottom: 5px;
+        }
+
+        .subtitles_options .option div {
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            left: 10px;
+            right: 50%;
+        }
+
+        .subtitles_options .option input {
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            color: white;
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            right: 10px;
+            left: 50%;
+
+        }
+
+        .subtitles_options .option input:focus {
+            outline: none;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+
+        }
+
+        .subtitles_test_button {
+            display: inline-block;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 0px 10px;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 100px;
+            text-align: center;
+            margin-left: 40px;
+        }
+
+        .subtitles_test_button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
     </style>
 </head>
 
@@ -291,11 +369,22 @@
 
                 <div class="fluid_button fluid_control_subtitles fluid_button_subtitles" style="display: inline-block;">
                     <div class="subtitles_menu" style="display: none;">
-                        <div class="subtitles_list">
+                        <div class="subtitles_view">
+                            <div class="subtitles_list">
+
+                            </div>
 
                         </div>
+                        <div class="subtitles_options" style="display: none;">
+                            <div class="subtitles_options_back">Back</div>
+                            <div class="subtitles_title">Subtitle Settings</div>
+                            <div class="subtitles_options_list">
 
+                            </div>
+                            <div class="subtitles_test_button">Test Subtitles</div>
+                        </div>
                     </div>
+
                 </div>
 
 

@@ -30,8 +30,14 @@ export const DOMElements = {
     progressLoadedContainer: document.querySelector('.mainplayer .progress_loaded_container'),
 
     subtitlesMenu: document.querySelector('.mainplayer .subtitles_menu'),
+    subtitlesView: document.querySelector('.mainplayer .subtitles_view'),
+    subtitlesOptions: document.querySelector('.mainplayer .subtitles_options'),
     subtitlesList: document.querySelector('.mainplayer .subtitles_list'),
     subtitlesContainer: document.querySelector('.mainplayer .fluid_subtitles_container'),
+
+    subtitlesOptionsBackButton: document.querySelector('.mainplayer .subtitles_options_back'),
+    subtitlesOptionsList: document.querySelector('.mainplayer .subtitles_options_list'),
+    subtitlesOptionsTestButton: document.querySelector('.mainplayer .subtitles_test_button'),
 
     downloadStatus: document.querySelector('.mainplayer .downloadstatus'),
     introOutroContainer: document.querySelector('.mainplayer .intro_outro_container'),

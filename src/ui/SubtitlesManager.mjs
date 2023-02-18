@@ -13,9 +13,12 @@ export class SubtitlesManager {
         this.activeTracks = [];
 
         this.settings = {
-            fontSize: "40px",
-            color: "#ffffff"
+            "font-size": "40px",
+            color: "rgba(255,255,255,1)",
+            background: "rgba(0,0,0,0.5)"
         }
+
+        this.isTesting = false;
         this.setupUI();
     }
 
@@ -54,11 +57,72 @@ export class SubtitlesManager {
 
         this.updateTrackList();
     }
+
+    updateSettings() {
+        try {
+            chrome.storage.sync.set({
+                subtitlesSettings: JSON.stringify(this.settings)
+            });
+        } catch (e) {
+            console.error(e);
+        }
+        this.renderSubtitles();
+    }
+    updateSettingsUI() {
+        DOMElements.subtitlesOptionsList.innerHTML = "";
+        for (let key in this.settings) {
+            let option = document.createElement("div");
+            option.classList.add("option");
+
+            let label = document.createElement("div");
+            label.textContent = key.charAt(0).toUpperCase() + key.substring(1);
+
+            let input = document.createElement("input");
+            input.type = "text";
+            input.value = this.settings[key];
+            let timeout = null;
+            input.addEventListener("keyup", () => {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => {
+                    this.settings[key] = input.value;
+                    this.updateSettings();
+                }, 200);
+            });
+            input.addEventListener("change", () => {
+                this.settings[key] = input.value;
+                this.updateSettings();
+            });
+            option.appendChild(label);
+            option.appendChild(input);
+            DOMElements.subtitlesOptionsList.appendChild(option);
+        }
+    }
+
+    loadSettings() {
+        try {
+            chrome.storage.sync.get("subtitlesSettings", (data) => {
+                if (data.subtitlesSettings) {
+                    this.settings = { ...this.settings, ...JSON.parse(data.subtitlesSettings) };
+                    this.renderSubtitles();
+                    this.updateSettingsUI();
+                } else {
+                    this.updateSettingsUI();
+                }
+            });
+        } catch (e) {
+            console.error(e);
+            this.updateSettingsUI();
+        }
+    }
     setupUI() {
+        this.loadSettings();
+
         DOMElements.subtitlesMenu.addEventListener("wheel", (e) => {
             e.stopPropagation();
         });
-
+        DOMElements.subtitlesOptionsList.addEventListener("keydown", (e) => {
+            e.stopPropagation();
+        });
 
         DOMElements.subtitles.addEventListener("click", (e) => {
 
@@ -67,8 +131,23 @@ export class SubtitlesManager {
             } else {
                 DOMElements.subtitlesMenu.style.display = "none"
             }
+            e.stopPropagation();
         })
 
+        DOMElements.playerContainer.addEventListener("click", (e) => {
+            DOMElements.subtitlesMenu.style.display = "none";
+        });
+
+        DOMElements.subtitlesOptionsTestButton.addEventListener("click", (e) => {
+            this.isTesting = !this.isTesting;
+            if (this.isTesting) {
+                DOMElements.subtitlesOptionsTestButton.textContent = "Stop Testing";
+            } else {
+                DOMElements.subtitlesOptionsTestButton.textContent = "Test Subtitles";
+            }
+
+            this.renderSubtitles();
+        });
         var filechooser = document.createElement("input");
         filechooser.type = "file";
         filechooser.style = "display: none";
@@ -101,18 +180,14 @@ export class SubtitlesManager {
 
         filebutton.addEventListener("click", (e) => {
             filechooser.click();
-            e.stopPropagation();
-            e.preventDefault();
         })
-        DOMElements.subtitlesMenu.appendChild(filebutton)
+        DOMElements.subtitlesView.appendChild(filebutton)
 
         var urlbutton = document.createElement('div');
         urlbutton.textContent = "From URL"
         urlbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         urlbutton.addEventListener("click", (e) => {
-            e.stopPropagation();
-            e.preventDefault();
             var url = prompt("Enter URL")
 
             var ext = url.split(".").pop();
@@ -132,32 +207,42 @@ export class SubtitlesManager {
         })
 
 
-        DOMElements.subtitlesMenu.appendChild(urlbutton)
+        DOMElements.subtitlesView.appendChild(urlbutton)
 
         var internetbutton = document.createElement('div');
         internetbutton.textContent = "Search OpenSubtitles"
         internetbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         internetbutton.addEventListener("click", (e) => {
-            e.stopPropagation();
-            e.preventDefault();
             this.subui.container.style.display = "";
             this.subui.search.focus()
         })
-        DOMElements.subtitlesMenu.appendChild(internetbutton)
+        DOMElements.subtitlesView.appendChild(internetbutton)
 
-        var clearbutton = document.createElement('div');
-        clearbutton.textContent = "Clear Subtitles"
-        clearbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
-        clearbutton.addEventListener("click", (e) => {
-            this.clearTracks();
+        var optionsbutton = document.createElement('div');
+        optionsbutton.textContent = "Subtitle Settings"
+        optionsbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
+
+        optionsbutton.addEventListener("click", (e) => {
+            DOMElements.subtitlesOptions.style.display = "";
+            DOMElements.subtitlesView.style.display = "none";
+        });
+
+        DOMElements.subtitlesOptionsBackButton.addEventListener("click", (e) => {
+            DOMElements.subtitlesOptions.style.display = "none";
+            DOMElements.subtitlesView.style.display = "";
+        });
+
+        DOMElements.subtitlesView.appendChild(optionsbutton)
+
+        DOMElements.subtitlesMenu.addEventListener("click", (e) => {
             e.stopPropagation();
             e.preventDefault();
         })
-        DOMElements.subtitlesMenu.appendChild(clearbutton)
-
         this.subtitleQueryUI();
+
+
 
     }
 
@@ -437,7 +522,17 @@ export class SubtitlesManager {
     renderSubtitles() {
         DOMElements.subtitlesContainer.innerHTML = "";
         DOMElements.subtitlesContainer.style.color = this.settings.color;
-        DOMElements.subtitlesContainer.style.fontSize = this.settings.fontSize;
+        DOMElements.subtitlesContainer.style.fontSize = this.settings["font-size"];
+        DOMElements.subtitlesContainer.style.backgroundColor = this.settings.background;
+
+        if (this.isTesting) {
+            let trackContainer = document.createElement("div");
+            trackContainer.className = "subtitle-track";
+            DOMElements.subtitlesContainer.appendChild(trackContainer);
+            let cue = document.createElement("div");
+            cue.textContent = "This is a test subtitle";
+            trackContainer.appendChild(cue);
+        }
         let tracks = this.activeTracks;
         let currentTime = this.client.persistent.currentTime;
         tracks.forEach((track) => {
