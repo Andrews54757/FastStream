@@ -52,17 +52,34 @@ chrome.runtime.onMessage.addListener(
                 subs.forEach((sub) => {
                     if (!sub.data && sub.source) {
                         todo++;
-                        Utils.simpleRequest(sub.source, (err, req, body) => {
-                            if (!err && body) {
-                                sub.data = body;
+                        let headers = sub.headers || [];
+                        let customHeaderCommands = headers.map(header => {
+                            return {
+                                operation: "set",
+                                header: header.name,
+                                value: header.value
                             }
-                            if (err) {
-                                console.warn(err);
-                            }
+                        });
 
-                            done++;
-                            if (todo === done) loadondone();
-                        })
+                            chrome.runtime.sendMessage({
+                                type: "header_commands",
+                                url: sub.source,
+                                commands: customHeaderCommands
+                            }).then(()=>{
+                                Utils.simpleRequest(sub.source, (err, req, body) => {
+                                    if (!err && body) {
+                                        sub.data = body;
+                                    }
+                                    if (err) {
+                                        console.warn(err);
+                                    }
+        
+                                    done++;
+                                    if (todo === done) loadondone();
+                                });
+                            })
+                        
+                     
                     }
                 });
                 todo = todo - 1;

@@ -1,3 +1,5 @@
+import { head } from "min-document";
+
 const options = {};
 
 const PlayerModes = {
@@ -265,9 +267,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     var frame = tabs[sender.tab.id].frames[sender.frameId];
 
     if (msg.type === 'header_commands') {
-        ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
+        if (msg.commands.length) {
+            ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
+                sendResponse();
+            });
+        } else {
             sendResponse();
-        });
+        }
     } else if (msg.type === 'fullscreen') {
         chrome.tabs.sendMessage(frame.tab.tab, {
             type: "fullscreen",
@@ -338,7 +344,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 function get_url_extension(url) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
 }
-function handleSubtitles(url, frame) {
+function handleSubtitles(url, frame, headers) {
     if (frame.subtitles.find((a) => {
         return a.source === url
     })) return;
@@ -348,6 +354,7 @@ function handleSubtitles(url, frame) {
 
     frame.subtitles.push({
         source: url,
+        headers: headers,
         label: u.split('.')[0],
     })
 }
@@ -523,7 +530,7 @@ chrome.webRequest.onHeadersReceived.addListener(
         if (frameHasPlayer(frame)) return;
 
         if (isSubtitles(ext)) {
-            return handleSubtitles(url, frame);
+            return handleSubtitles(url, frame, frame.requests[details.requestId]);
         }
         var mode = PlayerModes.DIRECT;
 
