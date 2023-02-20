@@ -1,5 +1,3 @@
-import { head } from "min-document";
-
 const options = {};
 
 const PlayerModes = {
