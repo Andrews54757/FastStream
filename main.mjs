@@ -26,7 +26,7 @@ chrome.runtime.onMessage.addListener(
         } if (request.type == "analyzerData") {
             window.fastStream.loadAnalyzerData(request.data)
         } else if (request.type == "sources" && window.fastStream) {
-            // console.log("Recieved sources", request.sources, request.subtitles)
+            console.log("Recieved sources", request.sources, request.subtitles)
             var subs = request.subtitles;
             const sources = request.sources;
 
@@ -53,7 +53,9 @@ chrome.runtime.onMessage.addListener(
                     if (!sub.data && sub.source) {
                         todo++;
                         let headers = sub.headers || [];
-                        let customHeaderCommands = headers.map(header => {
+                        let customHeaderCommands = headers.filter((header)=>{
+                            return header.name === "Origin" || header.name === "Referer";
+                        }).map(header => {
                             return {
                                 operation: "set",
                                 header: header.name,
