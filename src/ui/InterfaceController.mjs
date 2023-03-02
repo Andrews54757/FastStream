@@ -201,6 +201,7 @@ export class InterfaceController {
                 src = file;
             } else if (ext == ".mp4" || ext == ".mkv" || ext == ".mov") {
                 src = file
+             //  mode = PlayerModes.ACCELERATED_MP4;
             } else if (ext == ".vtt" || ext == ".srt") {
                 captions.push(window.URL.createObjectURL(file));
             }
@@ -494,7 +495,7 @@ export class InterfaceController {
 
 
     onProgressbarMouseDown(event) {
-        if (this.client.playing) {
+        if (this.persistent.playing) {
             this.client.player.pause();
         }
 

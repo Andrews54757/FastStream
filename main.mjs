@@ -177,3 +177,4 @@ window.addEventListener("beforeunload", () => {
     }
 })
 
+//window.fastStream.setSource(new VideoSource("http://localhost/test.mp4", {}, PlayerModes.ACCELERATED_MP4));

@@ -11,7 +11,6 @@ const FRAGMENT_SIZE = 1000000;
 
 export class MP4Player extends EventEmitter {
     constructor(client, config) {
-        console.log("MP4Player constructor")
         super();
         this.client = client;
 
@@ -85,6 +84,7 @@ export class MP4Player extends EventEmitter {
     }
 
     freeSamples(id) {
+       // return;
         let trak = this.mp4box.getTrackById(id);
 
         trak.samples_stored.forEach((sample) => {
@@ -105,7 +105,7 @@ export class MP4Player extends EventEmitter {
 
         this.mp4box.onSegment = (id, user, buffer, sampleNumber, last) => {
 
-            //console.log(sampleNumber)
+           // console.log(id, sampleNumber)
             if (videoTrack.id === id) {
                 this.videoSourceBuffer.appendBuffer(buffer);
 
@@ -352,7 +352,7 @@ export class MP4Player extends EventEmitter {
         let time = this.video.currentTime;
         for (let i = 0; i < this.currentFragments.length; i++) {
             let frag = this.currentFragments[i];
-            if (frag.sn === currentFragment.sn) continue;
+            if (frag.sn >= currentFragment.sn) continue;
 
             if (frag.end < time - this.options.backBufferLength) {
                 this.currentFragments.splice(i, 1);
@@ -361,7 +361,7 @@ export class MP4Player extends EventEmitter {
             }
         }
 
-        this.removeFromBuffers(0, time - this.options.backBufferLength - 1);
+        this.removeFromBuffers(0, Math.min(time - this.options.backBufferLength - 1, currentFragment.start));
 
         let len = frags.length;
         for (let i = currentFragment.sn; i < Math.min(currentFragment.sn + this.options.maxFragmentsBuffered, len); i++) {
@@ -656,14 +656,14 @@ export class MP4Player extends EventEmitter {
         }
 
         return {
-            canSave: this.readyState >= 3,
+            canSave: true,
             isComplete: !incomplete
         }
     }
 
     async getSaveBlob(options) {
         let frags = this.client.getFragments(this.currentVideoTrack);
-        let emptyTemplate = BlobManager.createBlob(new ArrayBuffer(FRAGMENT_SIZE), "application/octet-stream");
+        let emptyTemplate = BlobManager.createBlob([new ArrayBuffer(FRAGMENT_SIZE)], "application/octet-stream");
 
         let files = [];
         let lastFrag = 0;
