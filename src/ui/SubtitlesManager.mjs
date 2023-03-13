@@ -15,7 +15,7 @@ export class SubtitlesManager {
         this.settings = {
             "font-size": "40px",
             color: "rgba(255,255,255,1)",
-            background: "rgba(0,0,0,0.5)"
+            background: "rgba(0,0,0,0)"
         }
 
         this.isTesting = false;
