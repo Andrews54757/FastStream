@@ -20,7 +20,7 @@ var tabs = {};
 chrome.runtime.onInstalled.addListener(function (object) {
     chrome.storage.local.get("welcome", function (result) {
         if (!result || !result.welcome) {
-            console.log(result)
+            if (logging) console.log(result)
             chrome.tabs.create({
                 url: chrome.runtime.getURL("welcome.html")
             }, function (tab) {
@@ -154,7 +154,7 @@ class RuleManager {
                 requestHeaders: requestHeaderCommands
             },
             condition: {
-                urlFilter: url,
+                urlFilter: "||" + url.replace("https://", "").replace("http://", ""),
                 tabIds: [tabId],
             },
         }
@@ -181,7 +181,7 @@ class RuleManager {
 
     async dumpRules() {
         let rules = await chrome.declarativeNetRequest.getSessionRules()
-        console.log("Dumping " + rules.length + " rules")
+        if (logging) console.log("Dumping " + rules.length + " rules")
         return chrome.declarativeNetRequest.updateSessionRules({
             removeRuleIds: rules.map((rule) => rule.id)
         });
@@ -265,8 +265,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type === 'header_commands') {
         if (msg.commands.length) {
             ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
+                if (logging) console.log("Added rule", msg, rule);
                 sendResponse();
             });
+            return true;
         } else {
             sendResponse();
         }
@@ -310,7 +312,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         tab.analyzerData = msg.data;
     } else if (msg.type === "iframe_controls") {
         frame.frame_referer = msg.mode == PlayerModes.IFRAME ? msg.referer : null;
-        console.log("Iframe-controls", frame.frame_referer)
+        if (logging) console.log("Iframe-controls", frame.frame_referer)
     } else if (msg.type === "iframe") {
         frame.url = msg.url;
         if (frame.url.substring(0, playerURL.length) !== playerURL) {

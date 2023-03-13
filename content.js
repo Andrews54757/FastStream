@@ -109,11 +109,13 @@ chrome.runtime.onMessage.addListener(
                                 label: track.label,
                                 language: track.srclang
                             });
-                        if (done == tracks.length) sendResponse(tracks)
+                        if (done == tracks.length) sendResponse(tracks);
                     })
                 }
             }
-            if (done == tracks.length) sendResponse(tracks)
+            if (done == tracks.length) sendResponse(tracks);
+
+            return true;
         } else if (request.type == "player") {
             getVideo().then(video => {
                 if (!video || video.highest && video.highest.tagName === "BODY") {
@@ -151,11 +153,12 @@ chrome.runtime.onMessage.addListener(
 
                 }
             });
-
+            return true;
         } else if (request.type === "get_video_size") {
             getVideo().then(video => {
                 sendResponse(video ? video.size : 0);
             });
+            return true;
         }
     });
 

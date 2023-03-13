@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "FastStream",
     "description": "Stream without ever buffering",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "author": "Andrew S",
     "options_ui": {
         "page": "options.html",
@@ -37,7 +37,8 @@
         "storage",
         "tabs",
         "webRequest",
-        "declarativeNetRequest"
+        "declarativeNetRequest",
+        "declarativeNetRequestFeedback"
     ],
     "host_permissions": [
         "<all_urls>"
