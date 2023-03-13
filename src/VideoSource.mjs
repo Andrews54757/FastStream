@@ -17,7 +17,7 @@ export class VideoSource {
             this.fromFile(source);
         } else {
             this.url = source;
-            this.identifier = this.url.split(/[?#]/)[0];;
+            this.identifier = this.url.split(/[?#]/)[0];
         }
         this.mode = mode || PlayerModes.DIRECT;
 

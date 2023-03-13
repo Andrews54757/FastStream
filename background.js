@@ -240,8 +240,6 @@ chrome.action.onClicked.addListener(function (tab) {
 
 });
 
-
-
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (msg.type == "welcome") {
         chrome.tabs.create({

@@ -96,7 +96,7 @@ export class XHRLoader {
 
                 let customHeaderCommands = [];
                 for (const header in headers) {
-                    let name = header.toLowerCase();
+                    let name = header;
                     if (name.substring(0, 13) === 'x-faststream-') {
                         let command = name.substring(13);
                         let ind = command.indexOf('-');
