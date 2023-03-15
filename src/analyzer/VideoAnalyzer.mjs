@@ -171,7 +171,7 @@ export class VideoAnalyzer extends EventEmitter {
             });
 
             if (!start) return false;
-            return true;
+            return start.status === DownloadStatus.DOWNLOAD_COMPLETE || !this.client.options.downloadAll;
         } else if (this.source.mode === PlayerModes.DIRECT) {
             return true;
         }
