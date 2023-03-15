@@ -246,7 +246,7 @@ export class VideoAligner extends EventEmitter {
                     identifier,
                     startTime: sequence[memoryEntry.matchStart].time + offsetStart,
                     endTime: sequence[memoryEntry.matchEnd].time + offsetEnd,
-                    count: aligned.count,
+                    count: memoryEntry.matchEnd - memoryEntry.matchStart,
                 });
             };
         });

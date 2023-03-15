@@ -33,6 +33,13 @@ chrome.runtime.onInstalled.addListener(function (object) {
 
 });
 
+chrome.tabs.query({ url: '*://*/*' }).then((ctabs) => {
+    ctabs.forEach((tab) => {
+        if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
+        updateTabIcon(tab.id);
+    });
+});
+
 class FrameHolder {
 
     constructor(frameId, parent, tab) {
@@ -190,39 +197,52 @@ class RuleManager {
 
 
 const ruleManager = new RuleManager();
+
+let tabIconTimeout = null;
+function updateTabIcon(tab, skipNotify) {
+    clearTimeout(tabIconTimeout);
+    if (tab.isOn) {
+        chrome.action.setBadgeText({
+            text: "On",
+            tabId: tab.tab
+        });
+        chrome.action.setIcon({
+            path: "icon2_128.png",
+            tabId: tab.tab
+        });
+    } else {
+        chrome.action.setIcon({
+            path: "icon128.png",
+            tabId: tab.tab
+        });
+        if (skipNotify) {
+            chrome.action.setBadgeText({
+                text: "",
+                tabId: tab.tab
+            });
+        } else {
+            chrome.action.setBadgeText({
+                text: "Off",
+                tabId: tab.tab
+            });
+            tabIconTimeout = setTimeout(function () {
+                chrome.action.setBadgeText({
+                    text: "",
+                    tabId: tab.tab
+                });
+            }, 1000);
+        }
+    }
+}
 function onClicked(tab) {
     if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
 
     if (tab.url && tab.url !== "about:newtab" && tab.url !== "chrome://newtab/") {
         tabs[tab.id].isOn = !tabs[tab.id].isOn;
 
-
+        updateTabIcon(tabs[tab.id]);
         if (tabs[tab.id].isOn) {
-            chrome.action.setBadgeText({
-                text: "On",
-                tabId: tab.id
-            });
-            chrome.action.setIcon({
-                path: "icon2_128.png",
-                tabId: tab.id
-            });
-
             openPlayersWithSources(tab.id);
-        } else {
-            chrome.action.setBadgeText({
-                text: "Off",
-                tabId: tab.id
-            });
-            chrome.action.setIcon({
-                path: "icon128.png",
-                tabId: tab.id
-            });
-            setTimeout(function () {
-                chrome.action.setBadgeText({
-                    text: "",
-                    tabId: tab.id
-                });
-            }, 1000)
         }
     } else {
         if (!tabs[tab.id].frames[0]) tabs[tab.id].addFrame(0, -1)
@@ -241,6 +261,11 @@ chrome.action.onClicked.addListener(function (tab) {
 });
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    if (msg.type == "ping") {
+        sendResponse("pong");
+        return;
+    }
+
     if (msg.type == "welcome") {
         chrome.tabs.create({
             url: chrome.runtime.getURL("welcome.html")
@@ -335,8 +360,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
 })
-
-
 
 
 function get_url_extension(url) {
@@ -578,17 +601,8 @@ chrome.tabs.onUpdated.addListener(function (tabid, changeInfo, tab) {
             }
             tabs[tabid].hostname = url.hostname
         }
-        if (tabs[tabid].isOn) {
 
-            chrome.action.setBadgeText({
-                "text": "On",
-                "tabId": tabid
-            });
-            chrome.action.setIcon({
-                path: "icon2_128.png",
-                tabId: tabid
-            });
-        }
+        updateTabIcon(tabs[tabid], true);
     }
 });
 

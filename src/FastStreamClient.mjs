@@ -246,9 +246,13 @@ export class FastStreamClient {
         if (this.destroyed) return;
         setTimeout(this.mainloop.bind(this), 1000);
 
-        if (this.player) {
-            this.predownloadFragments();
+        if (this.player && this.fragments && this.currentLevel !== -1) {
+            let hasDownloaded = this.predownloadFragments();
+            if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
+                this.predownloadReservedFragments();
+            }
             this.freeFragments();
+            this.interfaceController.updateFragmentsLoaded();
         }
 
         this.videoAnalyzer.update();
@@ -258,16 +262,9 @@ export class FastStreamClient {
 
 
     predownloadFragments() {
-        if (!this.player) {
-            return;
-        }
-        if (!this.fragments || this.currentLevel == -1) {
-            return null;
-        }
-
-
         let currentFragment = this.currentFragment;
         let nextDownload = this.getNextToDownload(currentFragment);
+        let hasDownloaded = false;
         while (nextDownload) {
 
             if (nextDownload.canFree() && !this.options.downloadAll) {
@@ -284,25 +281,28 @@ export class FastStreamClient {
                 break;
             }
 
+            hasDownloaded = true;
             this.player.downloadFragment(nextDownload);
             nextDownload = this.getNextToDownload(currentFragment);
         }
 
+        return hasDownloaded;
+    }
+
+    predownloadReservedFragments() {
+        let fragments = this.fragments;
+        for (let i = 0; i < fragments.length; i++) {
+            let fragment = fragments[i];
+            if (fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree()) {
+                if (!this.downloadManager.canGetFile(fragment.getContext())) {
+                    break;
+                }
+                this.player.downloadFragment(fragment);
+            }
+        }
     }
 
     freeFragments() {
-        if (!this.options.freeFragments || this.options.downloadAll) {
-            return;
-        }
-
-        if (!this.player) {
-            return;
-        }
-
-        if (!this.fragments || this.currentLevel == -1) {
-            return null;
-        }
-
         let fragments = this.fragments;
         for (let i = 0; i < fragments.length; i++) {
             let fragment = fragments[i];
@@ -311,9 +311,7 @@ export class FastStreamClient {
                     this.freeFragment(fragment);
                 }
             }
-        }
-
-        this.interfaceController.updateFragmentsLoaded();
+        }  
     }
 
     freeFragment(fragment) {

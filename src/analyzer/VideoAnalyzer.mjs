@@ -152,6 +152,10 @@ export class VideoAnalyzer extends EventEmitter {
         }
     }
 
+    isRunning() {
+        return this.introStatus === AnalyzerStatus.RUNNING || this.outroStatus === AnalyzerStatus.RUNNING;
+    }
+    
     destroy() {
         this.destroyPlayers();
     }
@@ -167,7 +171,7 @@ export class VideoAnalyzer extends EventEmitter {
             });
 
             if (!start) return false;
-            return start.status === DownloadStatus.DOWNLOAD_COMPLETE;
+            return true;
         } else if (this.source.mode === PlayerModes.DIRECT) {
             return true;
         }
