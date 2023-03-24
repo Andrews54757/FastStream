@@ -251,7 +251,8 @@ export class FastStreamClient {
             if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
                 this.predownloadReservedFragments();
             }
-            this.freeFragments();
+            if (!this.options.downloadAll)
+                this.freeFragments();
             this.interfaceController.updateFragmentsLoaded();
         }
 

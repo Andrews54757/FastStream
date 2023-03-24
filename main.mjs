@@ -151,18 +151,19 @@ if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('frame_id');
 
-chrome.runtime.sendMessage({
-    type: "faststream",
-    isExt: true,
-    frameId: parseInt(myParam)
-})
-
 if (!chrome.extension.inIncognitoContext) {
     window.fastStream.downloadAll();
     //console.log("Download all")
 }
+
 chrome.runtime.sendMessage({
-    type: "ready"
+    type: "faststream",
+    isExt: true,
+    frameId: parseInt(myParam)
+}).then((data) => {
+    chrome.runtime.sendMessage({
+        type: "ready"
+    });
 });
 
 

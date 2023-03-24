@@ -36,7 +36,7 @@ chrome.runtime.onInstalled.addListener(function (object) {
 chrome.tabs.query({ url: '*://*/*' }).then((ctabs) => {
     ctabs.forEach((tab) => {
         if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
-        updateTabIcon(tab.id);
+        updateTabIcon(tab.id, true);
     });
 });
 
@@ -307,6 +307,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     } else if (msg.type === "faststream") {
         if (logging) console.log("Found FastStream window", frame)
         frame.isFastStream = true;
+        frame.playerOpening = false;
 
         if (frame.parent === -2 && frame.frame != msg.frameId) {
             frame.parent = msg.frameId;
@@ -341,7 +342,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     } else if (msg.type === "iframe") {
         frame.url = msg.url;
         if (frame.url.substring(0, playerURL.length) !== playerURL) {
+            console.log("reset frame sources")
             frame.subtitles.length = 0;
+            frame.sources.length = 0;
+            frame.isFastStream = false;
+            frame.playerOpening = false;
         }
 
         chrome.tabs.sendMessage(frame.tab.tab, {
@@ -464,6 +469,12 @@ async function getVideoSize(frame) {
 }
 
 async function openPlayer(frame) {
+    if (frame.playerOpening || frameHasPlayer(frame)) {
+        return;
+    }
+
+    frame.playerOpening = true;
+    
     return chrome.tabs.sendMessage(frame.tab.tab, {
         type: 'player',
         url: playerURL + "?frame_id=" + frame.frame
@@ -494,8 +505,10 @@ async function onSourceRecieved(details, frame, mode) {
     if (frame.tab.isOn) {
         clearTimeout(currentTimeout);
         currentTimeout = setTimeout(() => {
-            if (frame.tab.isOn)
+            if (frame.tab.isOn) {
+               // console.log("Opening player from source recieved", frame)
                 openPlayer(frame);
+            }
 
         }, 2000);
     }
@@ -527,6 +540,7 @@ async function openPlayersWithSources(tabid) {
             return b.videoSize - a.videoSize;
         });
 
+       // console.log("Opening player from source recieved2", framesWithSources)
         for (let i = 0; i < framesWithSources.length; i++) {
             openPlayer(framesWithSources[i].frame);
         }
