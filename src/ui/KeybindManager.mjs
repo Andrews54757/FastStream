@@ -45,6 +45,8 @@ export class KeybindManager {
                 this.hidden = true;
                 this.client.pause();
             }
+        } else if (e.key === "0") {
+            this.client.currentTime = 0;
         } else if (e.key === "ArrowUp") {
             var volume = this.client.volume;
             this.client.volume = Math.min(volume + 0.10, 1);
