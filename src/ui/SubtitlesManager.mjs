@@ -425,14 +425,25 @@ export class SubtitlesManager {
                 })
 
                 var downloadTrack = document.createElement("div");
-                downloadTrack.style = "display: none; position: absolute; left: 5px; top: 50%; width: 10px; height: 10px; transform: translate(0%,-50%); color: rgba(100,100,100,.5); background-color: rgba(10,10,10,.5); border-radius: 50%;"
+                // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
+                downloadTrack.style = "display: none; position: absolute; left: 5px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"
+                downloadTrack.title = "Download subtitle file"
+                downloadTrack.className = "fluid_button fluid_button_download"
                 trackElement.appendChild(downloadTrack)
 
                 downloadTrack.addEventListener("click", (e) => {
                     e.stopPropagation();
                 }, true)
+                
+                downloadTrack.addEventListener("click", (e) => {
 
-                downloadTrack.addEventListener("dblclick", (e) => {
+
+                    let dlname = prompt("Enter a name for the subtitle download file", name + ".srt");
+
+                    if (!dlname) {
+                        return;
+                    }
+
 
                     let srt = SubtitleUtils.cuesToSrt(track.cues);
                     let blob = new Blob([srt], {
@@ -443,7 +454,7 @@ export class SubtitlesManager {
                     const a = document.createElement('a');
                     a.style.display = 'none';
                     a.href = url;
-                    a.download = name + '.srt';
+                    a.download = dlname;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
@@ -453,6 +464,7 @@ export class SubtitlesManager {
 
                 var removeTrack = document.createElement("div");
                 removeTrack.style = "display: none; position: absolute; right: 5px; top: 50%; width: 10px; height: 10px; transform: translate(0%,-50%); color: rgba(100,100,100,.5); background-color: rgba(255,0,0,.5); border-radius: 50%;"
+                removeTrack.title = "Remove subtitle track"
                 trackElement.appendChild(removeTrack)
 
                 removeTrack.addEventListener("click", (e) => {
@@ -463,6 +475,7 @@ export class SubtitlesManager {
 
                 var shiftLTrack = document.createElement("div");
                 shiftLTrack.style = "display: none; position: absolute; right: 50px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftLTrack.title = "Shift subtitles -0.2s"
                 trackElement.appendChild(shiftLTrack)
 
                 shiftLTrack.addEventListener("click", (e) => {
@@ -473,6 +486,7 @@ export class SubtitlesManager {
 
                 var shiftLLTrack = document.createElement("div");
                 shiftLLTrack.style = "display: none; position: absolute; right: 65px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftLLTrack.title = "Shift subtitles -2s"
                 trackElement.appendChild(shiftLLTrack)
 
                 shiftLLTrack.addEventListener("click", (e) => {
@@ -483,6 +497,7 @@ export class SubtitlesManager {
 
                 var shiftRTrack = document.createElement("div");
                 shiftRTrack.style = "display: none; position: absolute; right: 35px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftRTrack.title = "Shift subtitles +0.2s"
                 trackElement.appendChild(shiftRTrack)
 
                 shiftRTrack.addEventListener("click", (e) => {
@@ -494,6 +509,7 @@ export class SubtitlesManager {
 
                 var shiftRRTrack = document.createElement("div");
                 shiftRRTrack.style = "display: none; position: absolute; right: 20px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftRRTrack.title = "Shift subtitles +2s"
                 trackElement.appendChild(shiftRRTrack)
 
                 shiftRRTrack.addEventListener("click", (e) => {

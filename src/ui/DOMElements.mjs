@@ -13,7 +13,7 @@ export const DOMElements = {
     videoSource: document.querySelector('.mainplayer .fluid_control_video_source'),
     videoSourceList: document.querySelector('.mainplayer .fluid_video_sources_list'),
     playbackRate: document.querySelector('.mainplayer .fluid_button_playback_rate'),
-    download: document.querySelector('.mainplayer .fluid_button_download'),
+    download: document.querySelector('.mainplayer .fluid_button_download.main_download'),
     duration: document.querySelector('.mainplayer .fluid_control_duration'),
     muteBtn: document.querySelector('.mainplayer .fluid_control_mute'),
     volumeControlBar: document.querySelector('.mainplayer .fluid_control_volume'),
