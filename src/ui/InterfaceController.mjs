@@ -32,11 +32,19 @@ export class InterfaceController {
         this.downloadURL = null;
     }
 
+    dressVideo(video) {
+
+        video.setAttribute('playsinline', 'playsinline');
+        video.disableRemotePlayback = true;
+    }
+
     addVideo(video) {
+        this.dressVideo(video)
         DOMElements.videoContainer.appendChild(video);
     }
 
     addPreviewVideo(video) {
+        this.dressVideo(video)
         DOMElements.seekPreviewVideo.style.display = "";
         DOMElements.seekPreviewVideo.appendChild(video);
     }
@@ -113,7 +121,8 @@ export class InterfaceController {
             if (percentDone < 100) {
                 DOMElements.downloadStatus.textContent = `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`;
             } else {
-                DOMElements.downloadStatus.textContent = `100% Downloaded`;
+                if (DOMElements.downloadStatus.textContent != "Save complete")
+                    DOMElements.downloadStatus.textContent = `100% Downloaded`;
             }
         }
     }
@@ -317,16 +326,15 @@ export class InterfaceController {
             setTimeout(() => {
                 if (this.downloadURL !== url) return;
 
-                if (DOMElements.downloadStatus.textContent === `Save complete`) {
-                    DOMElements.downloadStatus.textContent = `100% Downloaded`;
-                }
-
                 if (this.downloadURL) {
                     URL.revokeObjectURL(this.downloadURL);
                     this.downloadURL = null;
                     this.reuseDownloadURL = false;
                 }
 
+                DOMElements.downloadStatus.textContent = "";
+
+                this.updateFragmentsLoaded();
             }, 20000);
         }
 
