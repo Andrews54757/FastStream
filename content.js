@@ -56,7 +56,7 @@ window.addEventListener("message", (e) => {
     switch (dt.type) {
         case "frame":
             console.log("Frame info", dt)
-            var iframes = getAllElementsByTagNameIncludingShadows("iframe")
+            var iframes = querySelectorAllIncludingShadows("iframe")
             for (var i = 0; i < iframes.length; i++) {
                 if (iframes[i].contentWindow == src) {
 
@@ -93,7 +93,7 @@ chrome.runtime.onMessage.addListener(
             }
 
         } else if (request.type == "scrape_captions") {
-            var tracks = getAllElementsByTagNameIncludingShadows("track");
+            var tracks = querySelectorAllIncludingShadows("track");
             var done = 0;
             var tracks = [];
             for (var i = 0; i < tracks.length; i++) {
@@ -165,14 +165,14 @@ chrome.runtime.onMessage.addListener(
     });
 
 
-function getAllElementsByTagNameIncludingShadows(tagName, currentElement = document.body, results = []) {
+function querySelectorAllIncludingShadows(tagName, currentElement = document.body, results = []) {
 
-    Array.from(currentElement.getElementsByTagName(tagName)).forEach(el => results.push(el));
+    Array.from(currentElement.querySelectorAll(tagName)).forEach(el => results.push(el));
 
     const allElements = currentElement.querySelectorAll('*');
     Array.from(allElements).forEach(el => {
         if (el.shadowRoot) {
-            getAllElementsByTagNameIncludingShadows(tagName, el.shadowRoot, results);
+            querySelectorAllIncludingShadows(tagName, el.shadowRoot, results);
         }
     });
 
@@ -215,7 +215,7 @@ function getParentElementsWithSameBounds(element) {
 
 
 async function getVideo() {
-    var videos = Array.from(getAllElementsByTagNameIncludingShadows("video"));
+    var videos = Array.from(querySelectorAllIncludingShadows("video"));
 
     let visibleVideos = [];
     for (let i = 0; i < videos.length; i++) {
