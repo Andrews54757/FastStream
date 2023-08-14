@@ -59,8 +59,9 @@ export class FastStreamClient {
 
     }
 
-    downloadAll() {
-        this.options.downloadAll = true;
+    cantDownloadAll() {
+        this.options.downloadAll = false;
+        this.options.cantDownloadAll = true;
     }
     setSeekSave(value) {
         this.saveSeek = value;
@@ -85,7 +86,9 @@ export class FastStreamClient {
     }
 
     setOptions(options) {
-
+        this.options.analyzeVideos = options.analyzeVideos;
+        if (!this.options.cantDownloadAll)
+            this.options.downloadAll = options.downloadAll;
     }
 
     loadAnalyzerData(data) {

@@ -1,3 +1,10 @@
+const default_options = {
+    playMP4URLs: false,
+    playStreamURLs: true,
+    analyzeVideos: true,
+    downloadAll: true,
+}
+
 const options = {};
 
 const PlayerModes = {
@@ -174,7 +181,7 @@ class RuleManager {
     }
 
     getNextID() {
-        let nextRuleID = 1;
+        let nextRuleID = 10;
         for (let i = 0; i < this.rules.length; i++) {
             let rule = this.rules[i];
             if (rule.id === nextRuleID) {
@@ -261,17 +268,22 @@ chrome.action.onClicked.addListener(function (tab) {
 });
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-    if (msg.type == "ping") {
+    if (msg.type === "ping") {
         sendResponse("pong");
         return;
     }
 
-    if (msg.type == "welcome") {
+    if (msg.type === "welcome") {
         chrome.tabs.create({
             url: chrome.runtime.getURL("welcome.html")
         }, function (tab) {
 
         });
+        return;
+    }
+
+    if (msg.type === "options") {
+        loadOptions();
         return;
     }
 
@@ -366,10 +378,84 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 })
 
+function loadOptions() {
+    chrome.storage.local.get({
+        options: '{}'
+    }, (results) => {
+        let newOptions = JSON.parse(results.options) || {};
+       
+        for (var prop in newOptions) {
+            options[prop] = newOptions[prop];
+        }
 
+        let defaultsSet = false;
+        for (var prop in default_options) {
+            if (Object.hasOwn(options, prop)) continue;
+            options[prop] = default_options[prop];
+            defaultsSet = true;
+        }
+
+        if (defaultsSet) {
+            chrome.storage.local.set({
+                options: JSON.stringify(options)
+            });
+        }
+
+        chrome.tabs.query({}, function (tabs) {
+            var message = {
+                type: "settings",
+                options: options
+            };
+            for (var i = 0; i < tabs.length; ++i) {
+                chrome.tabs.sendMessage(tabs[i].id, message);
+            }
+        });
+        
+
+        if (options.playMP4URLs) {
+            setupRedirectRule(1, ["mp4"])
+        } else {
+            removeRule(1);
+        }
+
+        if (options.playStreamURLs) {
+            setupRedirectRule(2, ["m3u8", "mpd"]);
+        } else {
+            removeRule(2);
+        }
+    })
+}
+
+async function setupRedirectRule(ruleID, filetypes) {
+    const rule = {
+        id: ruleID,
+        action: {
+            type: 'redirect',
+            redirect: { regexSubstitution: playerURL + '#\\0' },
+        },
+        condition: {
+            // exclude self
+            excludedRequestDomains: [(new URL(playerURL)).hostname],
+            // only match m3u8 or mpds
+            regexFilter: '^.+\\.(' + filetypes.join("|") + ')$',
+            resourceTypes: ['main_frame'],
+        },
+    }
+    return chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [rule.id],
+        addRules: [rule],
+    });
+}
+
+async function removeRule(ruleID) {
+    return chrome.declarativeNetRequest.updateDynamicRules({
+        removeRuleIds: [ruleID],
+    });
+}
 function get_url_extension(url) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
 }
+
 function handleSubtitles(url, frame, headers) {
     if (frame.subtitles.find((a) => {
         return a.source === url
@@ -474,7 +560,7 @@ async function openPlayer(frame) {
     }
 
     frame.playerOpening = true;
-    
+
     return chrome.tabs.sendMessage(frame.tab.tab, {
         type: 'player',
         url: playerURL + "?frame_id=" + frame.frame
@@ -506,7 +592,7 @@ async function onSourceRecieved(details, frame, mode) {
         clearTimeout(currentTimeout);
         currentTimeout = setTimeout(() => {
             if (frame.tab.isOn) {
-               // console.log("Opening player from source recieved", frame)
+                // console.log("Opening player from source recieved", frame)
                 openPlayer(frame);
             }
 
@@ -540,7 +626,7 @@ async function openPlayersWithSources(tabid) {
             return b.videoSize - a.videoSize;
         });
 
-       // console.log("Opening player from source recieved2", framesWithSources)
+        // console.log("Opening player from source recieved2", framesWithSources)
         for (let i = 0; i < framesWithSources.length; i++) {
             openPlayer(framesWithSources[i].frame);
         }
@@ -619,5 +705,7 @@ chrome.tabs.onUpdated.addListener(function (tabid, changeInfo, tab) {
         updateTabIcon(tabs[tabid], true);
     }
 });
+
+loadOptions();
 
 console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;')

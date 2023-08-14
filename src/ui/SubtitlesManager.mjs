@@ -434,7 +434,7 @@ export class SubtitlesManager {
                 downloadTrack.addEventListener("click", (e) => {
                     e.stopPropagation();
                 }, true)
-                
+
                 downloadTrack.addEventListener("click", (e) => {
 
 

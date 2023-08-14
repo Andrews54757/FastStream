@@ -151,8 +151,8 @@ if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('frame_id');
 
-if (!chrome.extension.inIncognitoContext) {
-    window.fastStream.downloadAll();
+if (chrome.extension.inIncognitoContext) {
+    window.fastStream.cantDownloadAll();
     //console.log("Download all")
 }
 
@@ -185,3 +185,25 @@ setInterval(() => {
         type: "ping"
     });
 }, 10000)
+
+function get_url_extension(url) {
+    return url.split(/[#?]/)[0].split('.').pop().trim();
+}
+
+
+if (window.location.hash) {
+    const url = window.location.hash.substring(1);
+    const ext = get_url_extension(url);
+    let mode = PlayerModes.DIRECT;
+    if (ext === "mp4") {
+        mode = PlayerModes.ACCELERATED_MP4;
+    } else if (ext === "m3u8") {
+        mode = PlayerModes.ACCELERATED_HLS;
+    } else if (ext === "mpd") {
+        mode = PlayerModes.DASH;
+    }
+
+    window.fastStream.setSource(new VideoSource(url, {}, mode)).then(() => {
+        window.fastStream.play();
+    });
+}
