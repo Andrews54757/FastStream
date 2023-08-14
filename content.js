@@ -56,7 +56,7 @@ window.addEventListener("message", (e) => {
     switch (dt.type) {
         case "frame":
             console.log("Frame info", dt)
-            var iframes = querySelectorAllShadows("iframe")
+            var iframes = getAllElementsByTagNameIncludingShadows("iframe")
             for (var i = 0; i < iframes.length; i++) {
                 if (iframes[i].contentWindow == src) {
 
@@ -93,7 +93,7 @@ chrome.runtime.onMessage.addListener(
             }
 
         } else if (request.type == "scrape_captions") {
-            var tracks = querySelectorAllShadows("track");
+            var tracks = getAllElementsByTagNameIncludingShadows("track");
             var done = 0;
             var tracks = [];
             for (var i = 0; i < tracks.length; i++) {
@@ -144,7 +144,7 @@ chrome.runtime.onMessage.addListener(
                     iframe.style.boxShadow = styles.boxShadow;
                     // iframe.style.margin = styles.margin;
                     // iframe.style.padding = styles.padding;
-               
+
                     iframe.allowFullscreen = true;
                     // replace element
 
@@ -163,6 +163,22 @@ chrome.runtime.onMessage.addListener(
             return true;
         }
     });
+
+
+function getAllElementsByTagNameIncludingShadows(tagName, currentElement = document.body, results = []) {
+
+    currentElement.getElementsByTagName(tagName).forEach(el => results.push(el));
+
+    const allElements = currentElement.querySelectorAll('*');
+    allElements.forEach(el => {
+        if (el.shadowRoot) {
+            getAllElementsByTagNameIncludingShadows(tagName, el.shadowRoot, results);
+        }
+    });
+
+    return results;
+}
+
 
 function isVisible(domElement) {
     return new Promise(resolve => {
@@ -197,22 +213,9 @@ function getParentElementsWithSameBounds(element) {
     return elements;
 }
 
-function querySelectorAllShadows(selector, el = document.body) {
-    // recurse on childShadows
-    const childShadows = Array.from(el.querySelectorAll('*')).
-      map(el => el.shadowRoot).filter(Boolean);
-  
-    // console.log('[querySelectorAllShadows]', selector, el, `(${childShadows.length} shadowRoots)`);
-  
-    const childResults = childShadows.map(child => querySelectorAllShadows(selector, child));
-    
-    // fuse all results into singular, flat array
-    const result = Array.from(el.querySelectorAll(selector));
-    return result.concat(childResults).flat();
-  }
 
 async function getVideo() {
-    var videos = Array.from(querySelectorAllShadows("video"));
+    var videos = Array.from(getAllElementsByTagNameIncludingShadows("video"));
 
     let visibleVideos = [];
     for (let i = 0; i < videos.length; i++) {
