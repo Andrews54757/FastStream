@@ -56,7 +56,7 @@ window.addEventListener("message", (e) => {
     switch (dt.type) {
         case "frame":
             console.log("Frame info", dt)
-            var iframes = document.getElementsByTagName("iframe")
+            var iframes = querySelectorAllShadows("iframe")
             for (var i = 0; i < iframes.length; i++) {
                 if (iframes[i].contentWindow == src) {
 
@@ -93,7 +93,7 @@ chrome.runtime.onMessage.addListener(
             }
 
         } else if (request.type == "scrape_captions") {
-            var tracks = document.getElementsByTagName("track");
+            var tracks = querySelectorAllShadows("track");
             var done = 0;
             var tracks = [];
             for (var i = 0; i < tracks.length; i++) {
@@ -130,19 +130,21 @@ chrome.runtime.onMessage.addListener(
 
                     let iframe = document.createElement("iframe");
                     iframe.src = request.url;
+                    iframe.setAttribute("style", video.highest.getAttribute("style"));
+                    iframe.classList = video.highest.classList;
                     iframe.style.width = rect.width + "px";
                     iframe.style.height = rect.height + "px";
+
                     iframe.style.position = styles.position;
-                    iframe.style.top = styles.top;
-                    iframe.style.left = styles.left;
+                    // iframe.style.top = styles.top;
+                    // iframe.style.left = styles.left;
                     iframe.style.zIndex = styles.zIndex;
                     iframe.style.border = styles.border;
                     iframe.style.borderRadius = styles.borderRadius;
                     iframe.style.boxShadow = styles.boxShadow;
-                    iframe.style.margin = styles.margin;
-                    iframe.style.padding = styles.padding;
-                    iframe.style.transform = styles.transform;
-
+                    // iframe.style.margin = styles.margin;
+                    // iframe.style.padding = styles.padding;
+               
                     iframe.allowFullscreen = true;
                     // replace element
 
@@ -195,8 +197,22 @@ function getParentElementsWithSameBounds(element) {
     return elements;
 }
 
+function querySelectorAllShadows(selector, el = document.body) {
+    // recurse on childShadows
+    const childShadows = Array.from(el.querySelectorAll('*')).
+      map(el => el.shadowRoot).filter(Boolean);
+  
+    // console.log('[querySelectorAllShadows]', selector, el, `(${childShadows.length} shadowRoots)`);
+  
+    const childResults = childShadows.map(child => querySelectorAllShadows(selector, child));
+    
+    // fuse all results into singular, flat array
+    const result = Array.from(el.querySelectorAll(selector));
+    return result.concat(childResults).flat();
+  }
+
 async function getVideo() {
-    var videos = Array.from(document.getElementsByTagName("video"));
+    var videos = Array.from(querySelectorAllShadows("video"));
 
     let visibleVideos = [];
     for (let i = 0; i < videos.length; i++) {
