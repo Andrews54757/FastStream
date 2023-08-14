@@ -167,10 +167,10 @@ chrome.runtime.onMessage.addListener(
 
 function getAllElementsByTagNameIncludingShadows(tagName, currentElement = document.body, results = []) {
 
-    currentElement.getElementsByTagName(tagName).forEach(el => results.push(el));
+    Array.from(currentElement.getElementsByTagName(tagName)).forEach(el => results.push(el));
 
     const allElements = currentElement.querySelectorAll('*');
-    allElements.forEach(el => {
+    Array.from(allElements).forEach(el => {
         if (el.shadowRoot) {
             getAllElementsByTagNameIncludingShadows(tagName, el.shadowRoot, results);
         }
