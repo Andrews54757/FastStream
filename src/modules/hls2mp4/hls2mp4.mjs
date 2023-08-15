@@ -145,7 +145,7 @@ export class HLS2MP4 extends EventEmitter {
 
         for (let i = 0; i < tracks.length; i++) {
             if (tracks[i].chunks.length !== len) {
-                throw new Error("chunk length is not equal");
+                console.log("WARNING: chunk length is not equal", tracks[i].chunks.length, len);
             }
 
             if (tracks[i].chunks[0].startPTS < minPts) {
