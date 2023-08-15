@@ -197,6 +197,12 @@ if (window.location.hash) {
     let mode = PlayerModes.DIRECT;
     if (ext === "mp4") {
         mode = PlayerModes.ACCELERATED_MP4;
+
+        // check if file url;
+
+        if (url.startsWith("file://")) {
+            mode = PlayerModes.DIRECT;
+        }
     } else if (ext === "m3u8") {
         mode = PlayerModes.ACCELERATED_HLS;
     } else if (ext === "mpd") {
