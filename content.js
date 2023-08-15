@@ -183,7 +183,7 @@ function querySelectorAllIncludingShadows(tagName, currentElement = document.bod
 function isVisible(domElement) {
     return new Promise(resolve => {
         const o = new IntersectionObserver(([entry]) => {
-            resolve(entry.intersectionRatio === 1);
+            resolve(entry.intersectionRatio);
             o.disconnect();
         });
         o.observe(domElement);
@@ -217,38 +217,31 @@ function getParentElementsWithSameBounds(element) {
 async function getVideo() {
     var videos = Array.from(querySelectorAllIncludingShadows("video"));
 
-    let visibleVideos = [];
-    for (let i = 0; i < videos.length; i++) {
-        //   if (await isVisible(videos[i])) {
-        let rect = videos[i].getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0)
-            visibleVideos.push(videos[i]);
-        //  }
-    }
+    let visibleVideos = await Promise.all(videos.map(async (video) => {
+       let visibleRatio = await isVisible(video);
+       let rect = video.getBoundingClientRect();
+       return {
+            video: video,
+            visibleArea: rect.width * rect.height * visibleRatio
+       }
+    }));
 
-    // get largest video
-    let largestVideo = null;
-    let largestVideoArea = 0;
-    for (let i = 0; i < visibleVideos.length; i++) {
-        let video = visibleVideos[i];
-        let rect = video.getBoundingClientRect();
-        let area = rect.width * rect.height;
-        if (area > largestVideoArea) {
-            largestVideo = video;
-            largestVideoArea = area;
-        }
-    }
+    visibleVideos = visibleVideos.filter(v => v.visibleArea > 0);
+
+    const largestVideo = visibleVideos.reduce((prev, current) => {
+        return (prev && prev.visibleArea > current.visibleArea) ? prev : current
+    }, null);
 
     if (!largestVideo) {
         return null;
     }
 
-    let parentElementsWithSameBounds = getParentElementsWithSameBounds(largestVideo);
+    let parentElementsWithSameBounds = getParentElementsWithSameBounds(largestVideo.video);
     return {
-        video: largestVideo,
-        size: largestVideoArea,
+        video: largestVideo.video,
+        size: largestVideo.visibleArea,
         parents: parentElementsWithSameBounds,
-        highest: parentElementsWithSameBounds.length > 0 ? parentElementsWithSameBounds[parentElementsWithSameBounds.length - 1] : largestVideo
+        highest: parentElementsWithSameBounds.length > 0 ? parentElementsWithSameBounds[parentElementsWithSameBounds.length - 1] : largestVideo.video
     }
 }
 
