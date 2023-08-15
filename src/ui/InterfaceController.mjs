@@ -83,7 +83,7 @@ export class InterfaceController {
             }
 
             let element = document.createElement("div");
-            element.style.left = (start / this.persistent.duration * 100) + "%";
+            element.style.left = Math.min(start / this.persistent.duration * 100,100) + "%";
 
             if (frag.status === DownloadStatus.DOWNLOAD_INITIATED) {
                 element.classList.add("download-initiated");
@@ -107,7 +107,7 @@ export class InterfaceController {
                 }
             }
 
-            element.style.width = ((end - start) / this.persistent.duration * 100) + "%";
+            element.style.width = Math.min((end - start) / this.persistent.duration * 100, 100) + "%";
 
             DOMElements.progressLoadedContainer.appendChild(element);
         }
