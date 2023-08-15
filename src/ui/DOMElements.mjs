@@ -45,4 +45,6 @@ export const DOMElements = {
     skipButton: document.querySelector('.mainplayer .skip_button'),
 
     markerContainer: document.querySelector('.mainplayer .marker_container'),
+
+    rateMenu: document.querySelector('.mainplayer .rate_menu'),
 }

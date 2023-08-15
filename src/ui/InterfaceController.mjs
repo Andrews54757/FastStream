@@ -10,14 +10,15 @@ export class InterfaceController {
         this.persistent = client.persistent;
         this.isSeeking = false;
         this.isMouseOverProgressbar = false;
-        this.setupDOM();
 
         this.lastSpeed = 0;
         this.mouseOverControls = false;
         this.mouseActivityCooldown = 0;
-
+        this.playbackRate = 10;
 
         this.hasShownSkip = false;
+
+        this.setupDOM();
     }
     reset() {
         DOMElements.videoContainer.innerHTML = "";
@@ -155,12 +156,16 @@ export class InterfaceController {
 
         DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
         document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
-        DOMElements.videoSource.addEventListener('click', () => {
+        DOMElements.videoSource.addEventListener('click', (e) => {
             if (DOMElements.videoSourceList.style.display === "none") {
                 DOMElements.videoSourceList.style.display = "block";
             } else {
                 DOMElements.videoSourceList.style.display = "none";
             }
+            e.stopPropagation();
+        });
+        DOMElements.playerContainer.addEventListener("click", (e) => {
+            DOMElements.videoSourceList.style.display = "none";
         });
 
         DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
@@ -183,6 +188,53 @@ export class InterfaceController {
             e.stopPropagation();
             e.preventDefault();
         }, false);
+
+        this.setupRateChanger();
+    }
+
+    setupRateChanger() {
+        const els = [];
+        const speedList = document.createElement('div');
+        speedList.style = 'overflow-y: scroll; padding-right: 17px; box-sizing: content-box; width: 100%; height: 100%'
+        speedList.addEventListener("wheel", (e) => {
+            e.stopPropagation();
+        })
+
+        DOMElements.rateMenu.appendChild(speedList);
+
+        DOMElements.playbackRate.addEventListener("click",(e)=>{
+            if(DOMElements.rateMenu.style.display == "none"){
+                DOMElements.rateMenu.style.display = "";
+                speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+            } else{
+                DOMElements.rateMenu.style.display = "none";
+            }
+            e.stopPropagation();
+        });
+       
+        for (var i = 1; i <= 30; i += 1) {
+            ((i) => {
+                var el = document.createElement("div");
+                els.push(el)
+                el.style = 'font-family: Arial; font-size: 15px; width: 100%; text-align: center; padding: 3px 0px; line-height: 1em'
+                el.textContent = ((i + 0.1) / 10).toString().substring(0, 3);
+
+                el.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.client.playbackRate = i / 10;
+                }, true)
+                speedList.appendChild(el);
+
+
+            })(i)
+        }
+        els[this.playbackRate - 1].style.backgroundColor = "rgba(0,0,0,0.3)"
+
+        this.playbackElements = els;
+
+        DOMElements.playerContainer.addEventListener("click", (e) => {
+            DOMElements.rateMenu.style.display = "none";
+        });
     }
 
     async onFileDrop(e) {
@@ -613,7 +665,12 @@ export class InterfaceController {
     }
 
     updatePlaybackRate() {
+        this.playbackRate = Math.round(this.persistent.playbackRate * 10);
+        this.playbackElements.forEach((el) => {
+            el.style.backgroundColor = "";
+        });
 
+        this.playbackElements[this.playbackRate - 1].style.backgroundColor = "rgba(0,0,0,0.3)";
     }
 
     updateIntroOutroBar() {
