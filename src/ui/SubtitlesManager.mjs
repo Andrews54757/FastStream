@@ -136,6 +136,7 @@ export class SubtitlesManager {
 
         DOMElements.playerContainer.addEventListener("click", (e) => {
             DOMElements.subtitlesMenu.style.display = "none";
+            this.subui.container.style.display = "none";
         });
 
         DOMElements.subtitlesOptionsTestButton.addEventListener("click", (e) => {
@@ -249,7 +250,7 @@ export class SubtitlesManager {
     subtitleQueryUI() {
         this.subui = {};
         this.subui.container = document.createElement("div");
-        this.subui.container.style = "display: none; padding: 5px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 50%; height: 80%; background-color: rgba(50,50,50,.8); "
+        this.subui.container.style = "display: none; padding: 5px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 70%; height: 80%; background-color: rgba(50,50,50,.8); "
         DOMElements.playerContainer.appendChild(this.subui.container)
 
         this.subui.container.addEventListener('wheel', (e) => {
