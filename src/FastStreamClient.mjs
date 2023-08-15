@@ -194,6 +194,7 @@ export class FastStreamClient {
         });
 
 
+        this.currentTime = 0;
 
         if (this.previewPlayer) {
             await this.previewPlayer.setSource(source);

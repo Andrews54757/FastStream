@@ -204,6 +204,7 @@ if (window.location.hash) {
     }
 
     window.fastStream.setSource(new VideoSource(url, {}, mode)).then(() => {
+        console.log("play")
         window.fastStream.play();
     });
 }

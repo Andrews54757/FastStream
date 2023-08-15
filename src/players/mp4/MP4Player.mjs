@@ -147,7 +147,6 @@ export class MP4Player extends EventEmitter {
             this.audioSourceBuffer.appendBuffer(initSegs[ind++].buffer);
         }
 
-
         this.mp4box.seek(this.currentTime)
         this.mp4box.start();
     }
@@ -273,6 +272,17 @@ export class MP4Player extends EventEmitter {
             return;
         }
 
+        if (this.readyState === 1) {
+            let buffered = this.buffered;
+            if (buffered.length > 0) {
+                let start = buffered.start(0);
+                if (this.currentTime < start) {
+                    this.currentTime = start;
+                }
+            } else {
+                this.currentTime = this.currentTime;
+            }
+        }
 
         this.runLoad();
         this.loopTimeout = setTimeout(this.mainLoop.bind(this), 1);
