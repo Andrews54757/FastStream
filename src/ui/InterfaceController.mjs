@@ -264,7 +264,10 @@ export class InterfaceController {
                 src = file
              //  mode = PlayerModes.ACCELERATED_MP4;
             } else if (ext == ".vtt" || ext == ".srt") {
-                captions.push(window.URL.createObjectURL(file));
+                captions.push({
+                    url: window.URL.createObjectURL(file),
+                    name: file.name.substring(0, file.name.length - 4)
+                });
             }
         }
 
@@ -273,9 +276,9 @@ export class InterfaceController {
             await this.client.setSource(source);
         }
 
-        (await Promise.all(captions.map(async (url) => {
-            let track = new SubtitleTrack();
-            await track.loadURL(url);
+        (await Promise.all(captions.map(async (file) => {
+            let track = new SubtitleTrack(file.name);
+            await track.loadURL(file.url);
             return track;
         }))).forEach((track) => {
             this.client.loadSubtitleTrack(track);

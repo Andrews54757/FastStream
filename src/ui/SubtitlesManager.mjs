@@ -15,7 +15,7 @@ export class SubtitlesManager {
         this.settings = {
             "font-size": "40px",
             color: "rgba(255,255,255,1)",
-            background: "rgba(0,0,0,0)"
+            background: "rgba(10,10,10,0.3)"
         }
 
         this.isTesting = false;
@@ -102,7 +102,12 @@ export class SubtitlesManager {
         try {
             chrome.storage.sync.get("subtitlesSettings", (data) => {
                 if (data.subtitlesSettings) {
-                    this.settings = { ...this.settings, ...JSON.parse(data.subtitlesSettings) };
+                    let settings = JSON.parse(data.subtitlesSettings);
+                    for (let key in this.settings) {
+                        if (settings[key]) {
+                            this.settings[key] = settings[key];
+                        }
+                    }
                     this.renderSubtitles();
                     this.updateSettingsUI();
                 } else {
@@ -143,8 +148,11 @@ export class SubtitlesManager {
             this.isTesting = !this.isTesting;
             if (this.isTesting) {
                 DOMElements.subtitlesOptionsTestButton.textContent = "Stop Testing";
+                DOMElements.playerContainer.style.backgroundImage = "linear-gradient(to right, black, white)";
             } else {
                 DOMElements.subtitlesOptionsTestButton.textContent = "Test Subtitles";
+                DOMElements.playerContainer.style.backgroundImage = "";
+
             }
 
             this.renderSubtitles();
@@ -435,7 +443,7 @@ export class SubtitlesManager {
 
                 var downloadTrack = document.createElement("div");
                 // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
-                downloadTrack.style = "display: none; position: absolute; left: 5px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"
+                downloadTrack.style = "display: none; position: absolute; right: 10px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"
                 downloadTrack.title = "Download subtitle file"
                 downloadTrack.className = "fluid_button fluid_button_download"
                 trackElement.appendChild(downloadTrack)
@@ -483,7 +491,7 @@ export class SubtitlesManager {
 
 
                 var shiftLTrack = document.createElement("div");
-                shiftLTrack.style = "display: none; position: absolute; right: 50px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftLTrack.style = "display: none; position: absolute; right: 70px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftLTrack.title = "Shift subtitles -0.2s"
                 trackElement.appendChild(shiftLTrack)
 
@@ -494,7 +502,7 @@ export class SubtitlesManager {
                 }, true)
 
                 var shiftLLTrack = document.createElement("div");
-                shiftLLTrack.style = "display: none; position: absolute; right: 65px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftLLTrack.style = "display: none; position: absolute; right: 85px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftLLTrack.title = "Shift subtitles -2s"
                 trackElement.appendChild(shiftLLTrack)
 
@@ -505,7 +513,7 @@ export class SubtitlesManager {
                 }, true)
 
                 var shiftRTrack = document.createElement("div");
-                shiftRTrack.style = "display: none; position: absolute; right: 35px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftRTrack.style = "display: none; position: absolute; right: 55px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftRTrack.title = "Shift subtitles +0.2s"
                 trackElement.appendChild(shiftRTrack)
 
@@ -517,7 +525,7 @@ export class SubtitlesManager {
 
 
                 var shiftRRTrack = document.createElement("div");
-                shiftRRTrack.style = "display: none; position: absolute; right: 20px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftRRTrack.style = "display: none; position: absolute; right: 40px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftRRTrack.title = "Shift subtitles +2s"
                 trackElement.appendChild(shiftRRTrack)
 
@@ -543,17 +551,18 @@ export class SubtitlesManager {
 
     }
 
-
+    applyStyles(trackContainer) {
+        trackContainer.style.color = this.settings.color;
+        trackContainer.style.fontSize = this.settings["font-size"];
+        trackContainer.style.backgroundColor = this.settings.background;
+    }
     renderSubtitles() {
         DOMElements.subtitlesContainer.innerHTML = "";
 
         if (this.isTesting) {
             let trackContainer = document.createElement("div");
             trackContainer.className = "subtitle-track";
-            trackContainer.style.color = this.settings.color;
-            trackContainer.style.fontSize = this.settings["font-size"];
-            trackContainer.style.backgroundColor = this.settings.background;
-
+            this.applyStyles(trackContainer);
 
             let cue = document.createElement("div");
             cue.textContent = "This is a test subtitle";
@@ -569,6 +578,7 @@ export class SubtitlesManager {
         tracks.forEach((track) => {
             let trackContainer = document.createElement("div");
             trackContainer.className = "subtitle-track";
+            this.applyStyles(trackContainer);
             let cues = track.cues;
             let hasCues = false;
 
@@ -598,10 +608,6 @@ export class SubtitlesManager {
                 }
 
             }
-
-            trackContainer.style.color = this.settings.color;
-            trackContainer.style.fontSize = this.settings["font-size"];
-            trackContainer.style.backgroundColor = this.settings.background;
 
             const wrapper = document.createElement("div");
             wrapper.className = "subtitle-track-wrapper";
