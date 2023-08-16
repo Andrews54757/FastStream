@@ -220,6 +220,14 @@ export class SubtitlesManager {
         })
         DOMElements.subtitlesView.appendChild(internetbutton)
 
+        var clearbutton = document.createElement('div');
+        clearbutton.textContent = "Clear Subtitles"
+        clearbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
+
+        clearbutton.addEventListener("click", (e) => {
+            this.clearTracks();
+        })
+        DOMElements.subtitlesView.appendChild(clearbutton)
 
         var optionsbutton = document.createElement('div');
         optionsbutton.textContent = "Subtitle Settings"
@@ -355,7 +363,7 @@ export class SubtitlesManager {
             container.addEventListener("mouseleave", (e) => {
                 container.style.color = "rgba(255,255,255,.8)"
             })
-            container.addEventListener("dblclick", async (e) => {
+            container.addEventListener("click", async (e) => {
                 console.log(item.attributes.files[0].file_id)
 
                 let data = (await Utils.request({
@@ -538,17 +546,23 @@ export class SubtitlesManager {
 
     renderSubtitles() {
         DOMElements.subtitlesContainer.innerHTML = "";
-        DOMElements.subtitlesContainer.style.color = this.settings.color;
-        DOMElements.subtitlesContainer.style.fontSize = this.settings["font-size"];
-        DOMElements.subtitlesContainer.style.backgroundColor = this.settings.background;
 
         if (this.isTesting) {
             let trackContainer = document.createElement("div");
             trackContainer.className = "subtitle-track";
-            DOMElements.subtitlesContainer.appendChild(trackContainer);
+            trackContainer.style.color = this.settings.color;
+            trackContainer.style.fontSize = this.settings["font-size"];
+            trackContainer.style.backgroundColor = this.settings.background;
+
+
             let cue = document.createElement("div");
             cue.textContent = "This is a test subtitle";
             trackContainer.appendChild(cue);
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "subtitle-track-wrapper";
+            wrapper.appendChild(trackContainer);
+            DOMElements.subtitlesContainer.appendChild(wrapper);
         }
         let tracks = this.activeTracks;
         let currentTime = this.client.persistent.currentTime;
@@ -567,27 +581,40 @@ export class SubtitlesManager {
                 return 0;
             })
 
-            if (cueIndex <= -1) {
-                return;
-            }
+            if (cueIndex > -1) {
 
-
-            while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
-                cueIndex--;
-            }
-
-            while (cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
-                let cue = cues[cueIndex];
-                if (!cue.dom) {
-                    cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
+                while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
+                    cueIndex--;
                 }
-                hasCues = true;
-                trackContainer.appendChild(cue.dom);
-                cueIndex++;
+
+                while (cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
+                    let cue = cues[cueIndex];
+                    if (!cue.dom) {
+                        cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
+                    }
+                    hasCues = true;
+                    trackContainer.appendChild(cue.dom);
+                    cueIndex++;
+                }
+
             }
 
-            if (hasCues) {
-                DOMElements.subtitlesContainer.appendChild(trackContainer);
+            trackContainer.style.color = this.settings.color;
+            trackContainer.style.fontSize = this.settings["font-size"];
+            trackContainer.style.backgroundColor = this.settings.background;
+
+            const wrapper = document.createElement("div");
+            wrapper.className = "subtitle-track-wrapper";
+            wrapper.appendChild(trackContainer);
+            DOMElements.subtitlesContainer.appendChild(wrapper);
+
+            if (!hasCues) {
+                wrapper.style.opacity = 0;
+                const fillerCue = document.createElement("div");
+                trackContainer.appendChild(fillerCue);
+
+                fillerCue.textContent = "|";
+
             }
         })
     }

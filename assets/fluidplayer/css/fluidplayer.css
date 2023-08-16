@@ -586,13 +586,13 @@
     max-width: 80%;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_subtitles_container div {
-    display: flex;
+.fluid_video_wrapper.fluid_player_layout_default .fluid_subtitles_container .subtitle-track {
     color: white;
     font-size: 1em;
     font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
     padding: 0.25em;
     border-radius: 4px;
+    display: inline-block;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fade_out {
