@@ -555,8 +555,8 @@ export class SubtitlesManager {
         tracks.forEach((track) => {
             let trackContainer = document.createElement("div");
             trackContainer.className = "subtitle-track";
-            DOMElements.subtitlesContainer.appendChild(trackContainer);
             let cues = track.cues;
+            let hasCues = false;
 
             let cueIndex = Utils.binarySearch(cues, currentTime, (time, cue) => {
                 if (cue.startTime > time) {
@@ -581,8 +581,13 @@ export class SubtitlesManager {
                 if (!cue.dom) {
                     cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
                 }
+                hasCues = true;
                 trackContainer.appendChild(cue.dom);
                 cueIndex++;
+            }
+
+            if (hasCues) {
+                DOMElements.subtitlesContainer.appendChild(trackContainer);
             }
         })
     }
