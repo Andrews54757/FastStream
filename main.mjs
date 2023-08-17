@@ -2,6 +2,7 @@
 import { PlayerModes } from "./src/enums/PlayerModes.mjs";
 import { FastStreamClient } from "./src/FastStreamClient.mjs";
 import { SubtitleTrack } from "./src/SubtitleTrack.mjs";
+import { DOMElements } from "./src/ui/DOMElements.mjs";
 import { Utils } from "./src/utils/Utils.mjs";
 import { VideoSource } from "./src/VideoSource.mjs";
 
@@ -40,9 +41,17 @@ chrome.runtime.onMessage.addListener(
                 source = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
             }
 
-            window.fastStream.setSource(new VideoSource(source.url, source.headers, source.mode)).then(() => {
+            sources.forEach((s) => {
+                if (s !== source) {
+                    window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
+                }
+            })
+
+            window.fastStream.addSource(new VideoSource(source.url, source.headers, source.mode), true).then(() => {
                 window.fastStream.play();
             });
+
+
             window.fastStream.clearSubtitles();
             if (subs) {
 
@@ -53,7 +62,7 @@ chrome.runtime.onMessage.addListener(
                     if (!sub.data && sub.source) {
                         todo++;
                         let headers = sub.headers || [];
-                        let customHeaderCommands = headers.filter((header)=>{
+                        let customHeaderCommands = headers.filter((header) => {
                             return header.name === "Origin" || header.name === "Referer";
                         }).map(header => {
                             return {
@@ -63,25 +72,25 @@ chrome.runtime.onMessage.addListener(
                             }
                         });
 
-                            chrome.runtime.sendMessage({
-                                type: "header_commands",
-                                url: sub.source,
-                                commands: customHeaderCommands
-                            }).then(()=>{
-                                Utils.simpleRequest(sub.source, (err, req, body) => {
-                                    if (!err && body) {
-                                        sub.data = body;
-                                    }
-                                    if (err) {
-                                        console.warn(err);
-                                    }
-        
-                                    done++;
-                                    if (todo === done) loadondone();
-                                });
-                            })
-                        
-                     
+                        chrome.runtime.sendMessage({
+                            type: "header_commands",
+                            url: sub.source,
+                            commands: customHeaderCommands
+                        }).then(() => {
+                            Utils.simpleRequest(sub.source, (err, req, body) => {
+                                if (!err && body) {
+                                    sub.data = body;
+                                }
+                                if (err) {
+                                    console.warn(err);
+                                }
+
+                                done++;
+                                if (todo === done) loadondone();
+                            });
+                        })
+
+
                     }
                 });
                 todo = todo - 1;
@@ -89,43 +98,57 @@ chrome.runtime.onMessage.addListener(
 
                 function loadondone() {
 
-                    subs = subs.filter((sub) => sub.data);
-
-                    let done = 0;
-                    let todo = subs.length;
-                    subs.forEach((sub) => {
-                        chrome.i18n.detectLanguage(sub.data, (result) => {
-                            let lang = result.languages.find(lang => lang.language === "en");
-                            let score = lang ? lang.percentage : 0;
-                            sub.score = score;
-
-                            if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
-                                sub.language = result.languages[0].language;
+                    chrome.storage.sync.get("subtitlesSettings", (data) => {
+                        let defLang = "en";
+                        if (data.subtitlesSettings) {
+                            try {
+                                let settings = JSON.parse(data.subtitlesSettings);
+                                if (settings["default-lang"]) {
+                                    defLang = settings["default-lang"];
+                                }
+                            } catch (e) {
+                                console.log(e);
                             }
-                            done++;
-                            if (todo === done) sendSubs();
-                        });
-                    })
+                        }
 
-                    function sendSubs() {
-                        subs.sort((a, b) => {
-                            return b.score - a.score;
+                        subs = subs.filter((sub) => sub.data);
+
+                        let done = 0;
+                        let todo = subs.length;
+                        subs.forEach((sub) => {
+                            chrome.i18n.detectLanguage(sub.data, (result) => {
+                                let lang = result.languages.find(lang => lang.language === defLang);
+                                let score = lang ? lang.percentage : 0;
+                                sub.score = score;
+
+                                if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
+                                    sub.language = result.languages[0].language;
+                                }
+                                done++;
+                                if (todo === done) sendSubs();
+                            });
                         })
 
-                        try {
-                            subs.forEach((sub) => {
-                                const track = new SubtitleTrack(sub.label, sub.language);
-                                try {
-                                    track.loadText(sub.data);
-                                    window.fastStream.loadSubtitleTrack(track);
-                                } catch (e) {
-                                    console.error(e)
-                                }
+                        function sendSubs() {
+                            subs.sort((a, b) => {
+                                return b.score - a.score;
                             })
-                        } catch (e) {
-                            console.error(e)
+
+                            try {
+                                subs.forEach((sub) => {
+                                    const track = new SubtitleTrack(sub.label, sub.language);
+                                    try {
+                                        track.loadText(sub.data);
+                                        window.fastStream.loadSubtitleTrack(track);
+                                    } catch (e) {
+                                        console.error(e)
+                                    }
+                                })
+                            } catch (e) {
+                                console.error(e)
+                            }
                         }
-                    }
+                    });
                 }
             }
         }
@@ -209,8 +232,13 @@ if (window.location.hash) {
         mode = PlayerModes.DASH;
     }
 
-    window.fastStream.setSource(new VideoSource(url, {}, mode)).then(() => {
+    window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
         console.log("play")
         window.fastStream.play();
     });
 }
+
+window.fastStream.on("linkBtnClicked", () => {
+    DOMElements.playerContainer.classList.add("reduced_player")
+
+})

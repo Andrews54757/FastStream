@@ -204,24 +204,6 @@
 }
 
 
-.close_button {
-    position: absolute;
-    background: #000000 url("../static/close-icon.svg") no-repeat scroll center center;
-    height: 16px;
-    width: 16px;
-    top: 0;
-    right: 0;
-    background-size: 18px 18px;
-    cursor: pointer;
-    padding: 1px;
-    z-index: 31;
-}
-
-.close_button:hover {
-    background-color: #000000;
-    border: 1px solid #ffffff;
-}
-
 .vast_clickthrough_layer {
     /*IE Fix*/
     background-color: white;
@@ -992,6 +974,8 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_theatre,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard {
@@ -1013,6 +997,8 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_theatre:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard:before {
@@ -1058,6 +1044,10 @@ _:-ms-lang(x),
     background-position: -159px -19px;
 }
 
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:before {
+    background-position: -159px -56px;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source.hd:before {
     background-position: -123px -19px;
 }
@@ -1077,6 +1067,11 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:before {
     background-position: -267px -19px;
 }
+
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:before {
+    background-position: -232px -56px;
+}
+
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard:before {
     background-position: -267px -56px;
@@ -1108,6 +1103,8 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:hover:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:hover:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_theatre:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard:hover:before {
@@ -1257,6 +1254,8 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles {
     float: right;
@@ -1271,6 +1270,8 @@ _:-ms-lang(x),
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_cardboard {
     display: none;

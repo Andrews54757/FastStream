@@ -65,4 +65,32 @@ export class VideoSource {
         return filteredHeaders;
 
     }
+
+    equals(other) {
+        if (this.url !== other.url) {
+            return false;
+        }
+
+        if (this.mode !== other.mode) {
+            return false;
+        }
+
+        if (Object.keys(this.headers).length !== Object.keys(other.headers).length) {
+            return false;
+        }
+
+        for (let key in this.headers) {
+            if (this.headers[key] !== other.headers[key]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    copy() {
+        let newsource = new VideoSource(this.url, {}, this.mode);
+        newsource.headers = { ... this.headers };
+        return newsource;
+    }
 }

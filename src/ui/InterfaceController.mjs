@@ -17,7 +17,6 @@ export class InterfaceController {
         this.playbackRate = 10;
 
         this.hasShownSkip = false;
-
         this.setupDOM();
     }
     reset() {
@@ -189,6 +188,10 @@ export class InterfaceController {
             e.preventDefault();
         }, false);
 
+        DOMElements.settingsButton.addEventListener("click",()=>{
+            chrome.runtime.openOptionsPage();
+        })
+
         this.setupRateChanger();
     }
 
@@ -273,7 +276,7 @@ export class InterfaceController {
 
         if (src) {
             let source = new VideoSource(src, {}, mode);
-            await this.client.setSource(source);
+            await this.client.addSource(source, true);
         }
 
         (await Promise.all(captions.map(async (file) => {
@@ -282,6 +285,7 @@ export class InterfaceController {
             return track;
         }))).forEach((track) => {
             this.client.loadSubtitleTrack(track);
+            this.client.subtitlesManager.activateTrack(track);
         });
 
         this.client.play();

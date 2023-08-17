@@ -15,7 +15,8 @@ export class SubtitlesManager {
         this.settings = {
             "font-size": "40px",
             color: "rgba(255,255,255,1)",
-            background: "rgba(10,10,10,0.3)"
+            background: "rgba(10,10,10,0.3)",
+            "default-lang": "en",
         }
 
         this.isTesting = false;
@@ -141,7 +142,7 @@ export class SubtitlesManager {
 
         DOMElements.playerContainer.addEventListener("click", (e) => {
             DOMElements.subtitlesMenu.style.display = "none";
-            this.subui.container.style.display = "none";
+            DOMElements.subuiContainer.style.display = "none";
         });
 
         DOMElements.subtitlesOptionsTestButton.addEventListener("click", (e) => {
@@ -223,7 +224,8 @@ export class SubtitlesManager {
         internetbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         internetbutton.addEventListener("click", (e) => {
-            this.subui.container.style.display = "";
+            DOMElements.subuiContainer.style.display = "";
+            DOMElements.linkuiContainer.style.display = "none";
             this.subui.search.focus()
         })
         DOMElements.subtitlesView.appendChild(internetbutton)
@@ -264,77 +266,178 @@ export class SubtitlesManager {
     }
 
     subtitleQueryUI() {
+
+        DOMElements.subuiContainer.addEventListener("click", (e) => {
+            e.stopPropagation();
+        })
+        DOMElements.subuiContainer.addEventListener('dblclick', (e) => {
+            e.stopPropagation();
+        })
+
+        DOMElements.subuiContainer.getElementsByClassName("close_button")[0].addEventListener("click", (e) => {
+            DOMElements.subuiContainer.style.display = "none";
+        });
         this.subui = {};
-        this.subui.container = document.createElement("div");
-        this.subui.container.style = "display: none; padding: 5px; border-radius: 3px; border: 1px solid rgba(0,0,0,.1); position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 70%; height: 80%; background-color: rgba(50,50,50,.8); "
-        DOMElements.playerContainer.appendChild(this.subui.container)
+        this.subui.searchContainer = document.createElement('div');
+        this.subui.searchContainer.classList.add("subtitle-search-container");
 
-        this.subui.container.addEventListener('wheel', (e) => {
-            e.stopPropagation();
-        })
+        DOMElements.subuiContainer.appendChild(this.subui.searchContainer);
 
-        this.subui.container.addEventListener('click', (e) => {
-            e.stopPropagation();
-        })
 
-        this.subui.container.addEventListener('dblclick', (e) => {
-            e.stopPropagation();
-        })
-        this.subui.closeBtn = document.createElement("div");
-        this.subui.closeBtn.textContent = "X";
-        this.subui.closeBtn.style = "font-family: Arial; font-size: 15px; color: rgba(255,255,255,.8); cursor: pointer; user-select: none; position: absolute; top: 0%; right: 0%"
-        this.subui.closeBtn.addEventListener("click", () => {
-            this.subui.container.style.display = "none"
-        })
-        this.subui.container.appendChild(this.subui.closeBtn)
+        const searchInput = Utils.create("input", null, "text_input");
+        searchInput.placeholder = "Search by title, filename, etc...";
+        searchInput.classList.add("subtitle-search-input");
+        this.subui.searchContainer.appendChild(searchInput);
 
-        this.subui.search = document.createElement("div");
-        this.subui.search.contentEditable = "true";
-        this.subui.search.style = "display: inline-block; margin-top: 15px; font-family: Arial; font-size: 15px; width: calc(100% - 100px); color: rgba(255,255,255,.8); outline: none; padding: 5px; border-radius: 3px; height: 15px; border: 1px solid rgba(255,255,255,.1)"
+        this.subui.search = searchInput;
+
+        const searchBtn = Utils.create("div", "Search", "subtitle-search-btn");
+        searchBtn.textContent = "Search";
+        this.subui.searchContainer.appendChild(searchBtn);
+
+
+        const seasonInput = Utils.create("input", null, "text_input");
+        seasonInput.placeholder = "Season #";
+        seasonInput.classList.add("subtitle-season-input");
+        seasonInput.style.display = "none";
+
+        const episodeInput = Utils.create("input", null, "text_input");
+        episodeInput.placeholder = "Episode #";
+        episodeInput.classList.add("subtitle-episode-input");
+        episodeInput.style.display = "none";
+
+        const typeSelector = Utils.createDropdown("all",
+            "Type", {
+            "all": "All",
+            "movie": "Movie",
+            "episode": "Episode"
+        }, (val) => {
+            if (val == "episode") {
+                seasonInput.style.display = "";
+                episodeInput.style.display = "";
+            } else {
+                seasonInput.style.display = "none";
+                episodeInput.style.display = "none";
+            }
+        }
+        );
+
+        typeSelector.classList.add("subtitle-type-selector");
+
+        this.subui.searchContainer.appendChild(typeSelector)
+        this.subui.searchContainer.appendChild(seasonInput)
+        this.subui.searchContainer.appendChild(episodeInput)
+
+
+        const languageInput = Utils.create("input", null, "text_input");
+        languageInput.placeholder = "Language";
+        languageInput.classList.add("subtitle-language-input");
+        languageInput.value = this.settings["default-lang"];
+        this.subui.searchContainer.appendChild(languageInput)
+
+        const yearInput = Utils.create("input", null, "text_input");
+        yearInput.placeholder = "Year";
+        yearInput.classList.add("subtitle-year-input");
+        this.subui.searchContainer.appendChild(yearInput)
+
+
+
+        const sortSelector = Utils.createDropdown("download_count",
+            "Sort By", {
+            "download_count": "Downloads",
+            "upload_date": "Upload Date",
+            "rating": "Rating",
+            "votes": "Votes",
+        }
+        );
+        sortSelector.classList.add("subtitle-sort-selector");
+        this.subui.searchContainer.appendChild(sortSelector);
+
+
+        const sortDirectionSelector = Utils.createDropdown("desc",
+            "Sort", {
+            "desc": "Descending",
+            "asc": "Ascending",
+        }
+        );
+
+        sortDirectionSelector.classList.add("subtitle-sort-direction-selector");
+        this.subui.searchContainer.appendChild(sortDirectionSelector)
+
+
+
         this.subui.search.addEventListener("keydown", (e) => {
             if (e.key == "Enter") {
                 this.subui.search.blur();
-                this.queryOpenSubtitles(this.subui.search.textContent.toLowerCase())
+                this.queryOpenSubtitles({
+                    query: this.subui.search.value,
+                    type: typeSelector.dataset.val,
+                    season: seasonInput.value,
+                    episode: episodeInput.value,
+                    language: languageInput.value,
+                    year: yearInput.value,
+                    sortBy: sortSelector.dataset.val,
+                    sortDirection: sortDirectionSelector.dataset.val,
+                    page: 1
+                });
             }
             e.stopPropagation();
         }, true)
-        this.subui.search.addEventListener("focus", (e) => {
-            this.subui.search.style.borderColor = "rgba(255,255,255,.3)"
-        })
-        this.subui.search.addEventListener("blur", (e) => {
-            this.subui.search.style.borderColor = "rgba(255,255,255,.1)"
-        })
-        this.subui.container.appendChild(this.subui.search)
 
-
-        this.subui.searchBtn = document.createElement("div");
-        this.subui.searchBtn.textContent = "Search"
-        this.subui.searchBtn.style = "cursor: pointer; user-select: none; margin-left: 6px; display: inline-block; padding: 5px 16px; font-family: Arial; font-size: 15px; border-radius: 3px; border: 1px solid rgba(255,255,255,.1); color: rgba(255,255,255,.8); height: 15px;"
-        this.subui.container.appendChild(this.subui.searchBtn)
-        this.subui.searchBtn.addEventListener("mouseenter", (e) => {
-            this.subui.searchBtn.style.borderColor = "rgba(255,255,255,.3)"
-        })
-        this.subui.searchBtn.addEventListener("mouseleave", (e) => {
-            this.subui.searchBtn.style.borderColor = "rgba(255,255,255,.1)"
-        })
-        this.subui.searchBtn.addEventListener("click", (e) => {
-            this.queryOpenSubtitles(this.subui.search.textContent.toLowerCase());
+        searchBtn.addEventListener("click", (e) => {
+            this.queryOpenSubtitles({
+                query: this.subui.search.value,
+                type: typeSelector.dataset.val,
+                season: seasonInput.value,
+                episode: episodeInput.value,
+                language: languageInput.value,
+                year: yearInput.value,
+                sortBy: sortSelector.dataset.val,
+                sortDirection: sortDirectionSelector.dataset.val,
+                page: 1
+            });
         })
 
         this.subui.results = document.createElement('div');
-        this.subui.results.style = "margin-top: 10px; max-height: calc(100% - 52px); overflow-y: scroll"
-        this.subui.container.appendChild(this.subui.results)
+        this.subui.results.classList.add("subtitle-results");
+        DOMElements.subuiContainer.appendChild(this.subui.results)
 
     }
     async queryOpenSubtitles(query) {
 
-        let data = (await Utils.request({
-            responseType: "json",
-            url: "https://api.opensubtitles.com/api/v1/subtitles?order_by=download_count&query=" + encodeURIComponent(query),
-            headers: {
-                "Api-Key": API_KEY
+        let translated = {
+            query: query.query,
+            type: query.type,
+            season_number: query.season,
+            episode_number: query.episode,
+            languages: query.language,
+            year: query.year,
+            order_by: query.sortBy,
+            sort_direction: query.sortDirection,
+            page: query.page
+        }
+
+        let componentString = [];
+        for (let key in translated) {
+            if (translated[key].toString().trim().length > 0) {
+                componentString.push(key + "=" + encodeURIComponent(translated[key]));
             }
-        })).response.data;
+        }
+        let data;
+        try {
+            data = (await Utils.request({
+                responseType: "json",
+                url: "https://api.opensubtitles.com/api/v1/subtitles?" + componentString.join("&"),
+                headers: {
+                    "Api-Key": API_KEY
+                }
+            })).response.data;
+
+        } catch (e) {
+            if (DOMElements.subuiContainer.style.display == "none") return;
+            alert("OpenSubtitles is down!");
+            return;
+        }
 
 
         this.subui.results.innerHTML = "";
@@ -400,6 +503,93 @@ export class SubtitlesManager {
             });
         })
     }
+
+    showPages(obj, list) {
+        var total = Math.min(obj.total_pages, 1000);
+        var page = obj.page;
+        list.innerHTML = "";
+
+        var start = Math.max(page - 5, 1);
+        var max = Math.min(start + 10, total);
+        var style = `
+display: inline-block;
+margin: 2px 3px;
+user-select: none;
+cursor: pointer;
+padding: 3px 8px;
+min-width: 15px;
+text-align: center;
+border-radius: 3px;
+background-color: rgb(105, 75, 161);
+color: rgb(200,200,200);
+`
+        var create = this.create;
+
+        if (start > 1) {
+            var el = create("div", style);
+            el.textContent = 1;
+            el.addEventListener("click", () => {
+                this.searchDiscover(1)
+            })
+            list.appendChild(el);
+
+            if (start > 2) {
+                var el = create("div", style);
+                el.textContent = "...";
+                list.appendChild(el);
+            }
+
+        }
+        for (var i = start; i <= max; i++) {
+            ((i) => {
+
+                var el = create("div", style);
+                el.textContent = i;
+
+                if (i === page) {
+                    el.style.backgroundColor = "#453169";
+                    el.contentEditable = true;
+                    el.addEventListener("blur", () => {
+                        el.textContent = i;
+                    })
+                    el.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter") {
+                            this.searchDiscover(parseInt(el.textContent));
+                            e.preventDefault();
+                        }
+
+
+                        e.stopPropagation();
+                    })
+
+
+                } else {
+                    el.addEventListener("click", () => {
+                        this.searchDiscover(i)
+                    })
+                }
+                list.appendChild(el);
+
+
+            })(i);
+        }
+
+        if (max < total) {
+            if (max + 1 < total) {
+                var el = create("div", style);
+                el.textContent = "...";
+                list.appendChild(el);
+            }
+
+            var el = create("div", style);
+            el.textContent = total;
+            el.addEventListener("click", () => {
+                this.searchDiscover(total)
+            })
+            list.appendChild(el);
+        }
+    }
+
 
     updateTrackList() {
 

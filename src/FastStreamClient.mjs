@@ -14,10 +14,13 @@ import { MP4Player } from "./players/mp4/MP4Player.mjs";
 import { DashPlayer } from "./players/dash/DashPlayer.mjs";
 import { YTPlayer } from "./players/yt/YTPlayer.mjs";
 import { DirectVideoPlayer } from "./players/DirectVideoPlayer.mjs";
+import { EventEmitter } from "./modules/eventemitter.mjs";
+import { SourcesBrowser } from "./ui/SourcesBrowser.mjs";
 
 
-export class FastStreamClient {
+export class FastStreamClient extends EventEmitter {
     constructor() {
+        super();
         this.options = {
             introCutoff: 5 * 60,
             outroCutoff: 5 * 60,
@@ -37,11 +40,12 @@ export class FastStreamClient {
             playbackRate: 1,
             levels: []
         }
-
+        
         this.interfaceController = new InterfaceController(this);
         this.keybindManager = new KeybindManager(this);
         this.downloadManager = new DownloadManager(this);
         this.subtitlesManager = new SubtitlesManager(this);
+        this.sourcesBrowser = new SourcesBrowser(this);
         this.videoAnalyzer = new VideoAnalyzer(this);
 
         this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
@@ -54,9 +58,6 @@ export class FastStreamClient {
         this.seeks = [];
         this.fragmentsStore = [];
         this.mainloop();
-
-
-
     }
 
     cantDownloadAll() {
@@ -125,16 +126,21 @@ export class FastStreamClient {
         this.persistent.levels = this.player.levels;
         this.interfaceController.updateQualityLevels();
     }
-    async setSource(source, mode) {
-        console.log("setSource", source, mode)
-        this.resetPlayer();
 
-        if (typeof source === "string") {
-            source = new VideoSource(source, {}, mode);
+    async addSource(source, setSource = false) {
+        console.log("addSource", source)
+        this.sourcesBrowser.addSource(source);
+        if (setSource) {
+            await this.setSource(source);
         }
+        this.sourcesBrowser.updateSources();
+        return source;
+    }
 
-
-
+    
+    async setSource(source) {
+        console.log("setSource", source)
+        this.resetPlayer();
         this.source = source;
 
 

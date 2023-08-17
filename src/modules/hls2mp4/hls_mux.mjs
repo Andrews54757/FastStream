@@ -5609,7 +5609,7 @@ var HlsMux;
                         // Some browsers don't allow to use bind on console object anyway
                         // fallback to default if needed
                         try {
-                            exportedLogger.log(`Debug logs enabled for "${id}"`);
+                          //  exportedLogger.log(`Debug logs enabled for "${id}"`);
                         } catch (e) {
                             exportedLogger = fakeLogger;
                         }

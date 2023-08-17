@@ -47,4 +47,10 @@ export const DOMElements = {
     markerContainer: document.querySelector('.mainplayer .marker_container'),
 
     rateMenu: document.querySelector('.mainplayer .rate_menu'),
+
+    settingsButton: document.querySelector('.mainplayer .fluid_button_settings'),
+
+    linkButton: document.querySelector('.mainplayer .fluid_button_link'),
+    subuiContainer: document.querySelector('.mainplayer .subui_container'),
+    linkuiContainer: document.querySelector('.mainplayer .linkui_container'),
 }

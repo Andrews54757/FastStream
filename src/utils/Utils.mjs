@@ -2,6 +2,119 @@ import { DefaultPlayerEvents } from "../enums/DefaultPlayerEvents.mjs";
 
 export class Utils {
 
+
+    static validateHeadersString(str) {
+        var lines = str.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var split = line.split(":");
+            if (line.trim() == "") continue;
+            
+            if (split.length > 1) {
+                var name = split[0].trim();
+                var value = split.slice(1).join(":").trim();
+                if (name.length == 0 || value.length == 0) {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+    static objToHeadersString(obj) {
+        var str = "";
+        for (var name in obj) {
+            str += `${name}: ${obj[name]}\n`;
+        }
+        return str;
+    }
+
+    static headersStringToObj(str) {
+        var obj = {};
+        var lines = str.split("\n");
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var split = line.split(":");
+            if (split.length > 1) {
+                obj[split[0].trim()] = split.slice(1).join(":").trim();
+            }
+        }
+        return obj;
+    }
+
+    static create(type, style, cl) {
+        var el = document.createElement(type || "div");
+        if (style) el.style = style;
+        if (cl) el.className = cl;
+        return el;
+    }
+
+    static setupDropdown(itemListElement, text, container, call) {
+        container.addEventListener("click",(e)=>{
+            for (var j = 0; j < itemListElement.children.length; j++) {
+                let element = itemListElement.children[j];
+                if (element.dataset.val == container.dataset.val) {
+                    element.style.backgroundColor = ""
+                    let nextElement = (j < itemListElement.children.length - 1) ? itemListElement.children[j + 1] : itemListElement.children[0];
+                    nextElement.style.backgroundColor = "rgb(20,20,20)"
+                    text.children[0].textContent = nextElement.textContent;
+                    container.dataset.val = nextElement.dataset.val;
+                    if (call) call(container.dataset.val)
+                    break;
+                }
+            }
+            e.stopPropagation();
+        })
+        for (var i = 0; i < itemListElement.children.length; i++) {
+            ((i) => {
+                var el = itemListElement.children[i];
+
+                el.addEventListener("click", (e) => {
+                    text.children[0].textContent = el.textContent;
+                    container.dataset.val = el.dataset.val;
+
+                    for (var j = 0; j < itemListElement.children.length; j++) {
+                        if (j == i) {
+                            itemListElement.children[j].style.backgroundColor = "rgb(20,20,20)"
+                        } else {
+                            itemListElement.children[j].style.backgroundColor = "";
+                        }
+                    }
+                    e.stopPropagation();
+                    if (call) call(container.dataset.val)
+                });
+            })(i)
+        }
+
+
+
+    }
+
+    static createDropdown(defaultChoice, title, items, call) {
+        let create = Utils.create;
+        var container = create("div", ``, "dropdown");
+
+        var text = create("div", ``);
+        text.innerHTML = `${title}: <span style='color: rgb(200,200,200)'>${items[defaultChoice]}</span> ˅`;
+        container.dataset.val = defaultChoice;
+        container.appendChild(text);
+        var itemListElement = create("div", `position: absolute; top: 100%; left: 0px; right: 0px;`, "items");
+        for (var name in items) {
+            var div = create("div");
+            div.dataset.val = name;
+            div.textContent = items[name];
+
+            if (defaultChoice == name) {
+                div.style.backgroundColor = "rgb(20,20,20)"
+            }
+            itemListElement.appendChild(div);
+        }
+        container.appendChild(itemListElement)
+        this.setupDropdown(itemListElement, text, container, call);
+        return container;
+    }
+
     /**
      * Sends an AJAX request for the given options.
      * @param {object} options 
