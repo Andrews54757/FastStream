@@ -534,7 +534,7 @@
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#ad000000', GradientType=0);
     /* IE6-9 */
     height: 53px;
-    z-index: 1;
+    z-index: 3;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_vpaid_iframe {
