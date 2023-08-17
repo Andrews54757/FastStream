@@ -43,7 +43,7 @@ export class SourcesBrowser {
         sourceContainer.appendChild(sourceMode);
 
         let sourceHeadersBtn = Utils.create("div", null, "linkui-source-headers-button");
-        sourceHeadersBtn.textContent = "Header Editor";
+        sourceHeadersBtn.textContent = "Header Override (" + Object.keys(source.headers).length + ")";
         sourceHeadersBtn.addEventListener("click", (e) => {
             if (headersInput.style.display == "none") {
                 headersInput.style.display = "";
@@ -90,6 +90,7 @@ export class SourcesBrowser {
         headersInput.style.display = "none";
         headersInput.addEventListener("change", (e) => {
             source.headers = Utils.headersStringToObj(headersInput.value);
+            sourceHeadersBtn.textContent = "Header Override (" + Object.keys(source.headers).length + ")";
             this.updateSources();
         });
         sourceContainer.appendChild(headersInput);

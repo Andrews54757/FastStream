@@ -2,7 +2,11 @@ import { PlayerModes } from "./enums/PlayerModes.mjs";
 
 const headerWhitelist = [
     "Origin",
-    "Referer"
+    "Referer",
+    "Authorization",
+    "Cache-Control",
+    "Cookie",
+    "Proxy-Authorization"
 ]
 
 const redirectHeaders = [
