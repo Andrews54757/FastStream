@@ -130,6 +130,11 @@ export class SubtitlesManager {
             e.stopPropagation();
         });
 
+        DOMElements.subtitlesOptionsList.addEventListener("keyup", (e) => {
+            e.stopPropagation();
+        });
+
+
         DOMElements.subtitles.addEventListener("click", (e) => {
 
             if (DOMElements.subtitlesMenu.style.display == "none") {
@@ -272,7 +277,19 @@ export class SubtitlesManager {
         })
         DOMElements.subuiContainer.addEventListener('dblclick', (e) => {
             e.stopPropagation();
-        })
+        });
+
+        DOMElements.subuiContainer.addEventListener("keydown", (e) => {
+            e.stopPropagation();
+        });
+
+        DOMElements.subuiContainer.addEventListener("keyup", (e) => {
+            e.stopPropagation();
+        });
+
+        DOMElements.subuiContainer.addEventListener("keypress", (e) => {
+            e.stopPropagation();
+        });
 
         DOMElements.subuiContainer.getElementsByClassName("close_button")[0].addEventListener("click", (e) => {
             DOMElements.subuiContainer.style.display = "none";
