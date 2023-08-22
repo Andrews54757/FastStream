@@ -77,6 +77,10 @@ export class SourcesBrowser {
         sourceContainer.appendChild(sourceDeleteBtn);
 
         headersInput = Utils.create("textarea", null, "text_input linkui-source-headers");
+        headersInput.setAttribute("autocapitalize", "off");
+        headersInput.setAttribute("autocomplete", "off");
+        headersInput.setAttribute("autocorrect", "off");
+        headersInput.setAttribute("spellcheck", false);
         headersInput.placeholder = "Headers (1 enty per line)\nHeader Name: Header Value";
         headersInput.value = Utils.objToHeadersString(source.headers);
         headersInput.addEventListener("keyup", (e) => {
