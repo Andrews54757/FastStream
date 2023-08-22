@@ -84,7 +84,7 @@ export class MP4Player extends EventEmitter {
     }
 
     freeSamples(id) {
-       // return;
+        // return;
         let trak = this.mp4box.getTrackById(id);
 
         trak.samples_stored.forEach((sample) => {
@@ -105,7 +105,7 @@ export class MP4Player extends EventEmitter {
 
         this.mp4box.onSegment = (id, user, buffer, sampleNumber, last) => {
 
-           // console.log(id, sampleNumber)
+            // console.log(id, sampleNumber)
             if (videoTrack.id === id) {
                 this.videoSourceBuffer.appendBuffer(buffer);
 
@@ -274,6 +274,7 @@ export class MP4Player extends EventEmitter {
 
         if (this.readyState === 1) {
             let buffered = this.buffered;
+            this.setSeekSave(false);
             if (buffered.length > 0) {
                 let start = buffered.start(0);
                 if (this.currentTime < start) {
@@ -282,6 +283,7 @@ export class MP4Player extends EventEmitter {
             } else {
                 this.currentTime = this.currentTime;
             }
+            this.setSeekSave(true);
         }
 
         this.runLoad();

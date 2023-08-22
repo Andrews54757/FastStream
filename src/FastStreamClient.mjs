@@ -199,8 +199,9 @@ export class FastStreamClient extends EventEmitter {
             this.interfaceController.addVideo(video);
         });
 
-
+        this.setSeekSave(false);
         this.currentTime = 0;
+        this.setSeekSave(true);
 
         if (this.previewPlayer) {
             await this.previewPlayer.setSource(source);
