@@ -179,7 +179,6 @@ export class Utils {
                         url: options.url,
                         commands: options.header_commands
                     });
-                    console.log("Sent header commands", options.header_commands)
                 }
             }
 
