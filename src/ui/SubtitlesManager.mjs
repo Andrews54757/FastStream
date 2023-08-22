@@ -205,8 +205,6 @@ export class SubtitlesManager {
         urlbutton.addEventListener("click", (e) => {
             var url = prompt("Enter URL")
 
-            var ext = url.split(".").pop();
-
             if (url) {
                 Utils.simpleRequest(url, (err, req, body) => {
                     if (body) {
@@ -422,7 +420,7 @@ export class SubtitlesManager {
     }
     async queryOpenSubtitles(query) {
 
-        let translated = {
+        let translatedQuery = {
             query: query.query,
             type: query.type,
             season_number: query.season,
@@ -434,23 +432,27 @@ export class SubtitlesManager {
             page: query.page
         }
 
-        let componentString = [];
-        for (let key in translated) {
-            if (translated[key].toString().trim().length > 0) {
-                componentString.push(key + "=" + encodeURIComponent(translated[key]));
-            }
-        }
+
         let data;
         try {
             data = (await Utils.request({
                 responseType: "json",
-                url: "https://api.opensubtitles.com/api/v1/subtitles?" + componentString.join("&"),
+                url: "https://api.opensubtitles.com/api/v1/subtitles",
+                query: translatedQuery,
                 headers: {
                     "Api-Key": API_KEY
-                }
+                },
+                header_commands: [
+                    {
+                        operation: 'set',
+                        header: 'User-Agent',
+                        value: 'FastStream V1.0.12'
+                    }
+                ]
             })).response.data;
 
         } catch (e) {
+            console.log(e)
             if (DOMElements.subuiContainer.style.display == "none") return;
             alert("OpenSubtitles is down!");
             return;
@@ -493,29 +495,92 @@ export class SubtitlesManager {
             })
             container.addEventListener("click", async (e) => {
                 console.log(item.attributes.files[0].file_id)
+                let body;
+                if (item.downloading) {
+                    alert("Already downloading!");
+                    return;
+                }
 
-                let data = (await Utils.request({
-                    type: "POST",
-                    url: "https://api.opensubtitles.com/api/v1/download",
-                    responseType: "json",
-                    headers: {
-                        "Api-Key": API_KEY,
-                        "Content-Type": "application/json"
-                    },
+                item.downloading = true;
 
-                    data: JSON.stringify({
-                        file_id: item.attributes.files[0].file_id,
-                        sub_format: "webvtt"
-                    })
-                })).response;
-                console.log(data)
-                let body = (await Utils.request({
-                    url: data.link
-                })).responseText;
+                try {
+                    let link = item.cached_download_link;
+                    if (!link) {
+                        let data = (await Utils.request({
+                            type: "POST",
+                            url: "https://api.opensubtitles.com/api/v1/download",
+                            responseType: "json",
+                            headers: {
+                                "Api-Key": API_KEY,
+                                "Content-Type": "application/json"
+                            },
 
+                            header_commands: [
+                                {
+                                    operation: 'set',
+                                    header: 'User-Agent',
+                                    value: 'FastStream V1.0.12'
+                                }
+                            ],
+
+                            data: JSON.stringify({
+                                file_id: item.attributes.files[0].file_id,
+                                sub_format: "webvtt"
+                            })
+                        })).response;
+
+                        if (!data.link && data.remaining <= 0) {
+                            item.downloading = false;
+                            alert(`OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in ` + data.reset_time);
+                            if (confirm("Would you like to open the OpenSubtitles website to download the subtitle file manually?")) {
+                                window.open(item.attributes.url);
+                            }
+                            return;
+                        }
+
+                        if (!data.link) {
+                            throw new Error("No link");
+                        }
+
+                        item.cached_download_link = data.link;
+                        link = data.link;
+                    }
+
+                    body = (await Utils.request({
+                        url: link,
+
+                        header_commands: [
+                            {
+                                operation: 'set',
+                                header: 'User-Agent',
+                                value: 'FastStream V1.0.12'
+                            }
+                        ]
+                    }));
+
+                    if (body.status < 200 || body.status >= 300) {
+                        throw new Error("Bad status code");
+                    }
+
+                    body = body.responseText;
+
+                    if (!body) {
+                        throw new Error("No body");
+                    }
+
+                } catch (e) {
+                    console.log(e)
+                    if (DOMElements.subuiContainer.style.display == "none") return;
+                    alert("OpenSubtitles is down!");
+                    item.downloading = false;
+                    return;
+                }
+
+                item.downloading = false;
                 let track = new SubtitleTrack(item.attributes.uploader.name + " - " + item.attributes.feature_details.movie_name, item.attributes.language);
                 track.loadText(body);
                 this.addTrack(track);
+                this.activateTrack(track);
 
             });
         })

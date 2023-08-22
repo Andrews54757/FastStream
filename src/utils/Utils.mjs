@@ -9,7 +9,7 @@ export class Utils {
             var line = lines[i];
             var split = line.split(":");
             if (line.trim() == "") continue;
-            
+
             if (split.length > 1) {
                 var name = split[0].trim();
                 var value = split.slice(1).join(":").trim();
@@ -51,7 +51,7 @@ export class Utils {
     }
 
     static setupDropdown(itemListElement, text, container, call) {
-        container.addEventListener("click",(e)=>{
+        container.addEventListener("click", (e) => {
             for (var j = 0; j < itemListElement.children.length; j++) {
                 let element = itemListElement.children[j];
                 if (element.dataset.val == container.dataset.val) {
@@ -121,7 +121,7 @@ export class Utils {
      * @returns 
      */
     static request(options) {
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
 
             var xmlHttp = new XMLHttpRequest();
             options.xmlHttp = xmlHttp;
@@ -152,7 +152,14 @@ export class Utils {
                 if (options.onProgress) options.onProgress(e)
             })
 
-            xmlHttp.open(options.type === undefined ? "GET" : options.type, options.url, true); // true for asynchronous 
+            let query = "";
+            if (options.query) {
+                query = "?" + Object.keys(options.query).map((key) => {
+                    return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key])
+                }).join('&');
+            }
+            
+            xmlHttp.open(options.type === undefined ? "GET" : options.type, options.url + query, true); // true for asynchronous 
             if (options.range !== undefined) {
                 xmlHttp.setRequestHeader('Range', 'bytes=' + options.range.start + '-' + options.range.end)
             }
@@ -162,6 +169,17 @@ export class Utils {
             if (options.headers) {
                 for (var name in options.headers) {
                     xmlHttp.setRequestHeader(name, options.headers[name]);
+                }
+            }
+
+            if (options.header_commands) {
+                if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
+                    await chrome.runtime.sendMessage({
+                        type: "header_commands",
+                        url: options.url,
+                        commands: options.header_commands
+                    });
+                    console.log("Sent header commands", options.header_commands)
                 }
             }
 

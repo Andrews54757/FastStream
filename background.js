@@ -298,6 +298,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     var frame = tabs[sender.tab.id].frames[sender.frameId];
 
     if (msg.type === 'header_commands') {
+        console.log("Adding header commands", msg)
         if (msg.commands.length) {
             ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
                 if (logging) console.log("Added rule", msg, rule);
@@ -352,7 +353,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     } else if (msg.type === "iframe") {
         frame.url = msg.url;
         if (frame.url.substring(0, playerURL.length) !== playerURL) {
-            console.log("reset frame sources")
+          //  console.log("reset frame sources")
             frame.subtitles.length = 0;
             frame.sources.length = 0;
             frame.isFastStream = false;
