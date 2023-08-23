@@ -24,6 +24,7 @@ export class InterfaceController {
         DOMElements.seekPreviewVideo.innerHTML = "";
         DOMElements.seekPreviewVideo.style.display = "none";
         DOMElements.progressLoadedContainer.innerHTML = "";
+        DOMElements.downloadStatus.textContent = "";
         this.hasShownSkip = false;
         this.reuseDownloadURL = false;
         if (this.downloadURL) {
@@ -192,6 +193,12 @@ export class InterfaceController {
             chrome.runtime.openOptionsPage();
         })
 
+        const welcomeText = 'Welcome to FastStream v' + chrome.runtime.getManifest().version + "!";
+        DOMElements.downloadStatus.textContent = welcomeText;
+        setTimeout(() => {
+            if (DOMElements.downloadStatus.textContent == welcomeText)
+                DOMElements.downloadStatus.textContent = "";
+        }, 3000);
         this.setupRateChanger();
     }
 

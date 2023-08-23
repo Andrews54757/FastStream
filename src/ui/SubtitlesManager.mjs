@@ -454,7 +454,7 @@ export class SubtitlesManager {
                     {
                         operation: 'set',
                         header: 'User-Agent',
-                        value: 'FastStream V1.0.12'
+                        value: 'FastStream V' + chrome.runtime.getManifest().version
                     }
                 ]
             })).response.data;
@@ -534,7 +534,7 @@ export class SubtitlesManager {
                                 {
                                     operation: 'set',
                                     header: 'User-Agent',
-                                    value: 'FastStream V1.0.12'
+                                    value: 'FastStream V' + chrome.runtime.getManifest().version
                                 }
                             ],
 
@@ -568,7 +568,7 @@ export class SubtitlesManager {
                             {
                                 operation: 'set',
                                 header: 'User-Agent',
-                                value: 'FastStream V1.0.12'
+                                value: 'FastStream V' + chrome.runtime.getManifest().version
                             }
                         ]
                     }));
