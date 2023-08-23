@@ -423,14 +423,22 @@ export class SubtitlesManager {
         let translatedQuery = {
             query: query.query,
             type: query.type,
-            season_number: query.season,
-            episode_number: query.episode,
             languages: query.language,
             year: query.year,
             order_by: query.sortBy,
             sort_direction: query.sortDirection,
             page: query.page
         }
+
+        if (query.type === "episode") {
+            translatedQuery.season = query.season;
+            translatedQuery.episode = query.episode;
+        }
+
+        this.subui.results.innerHTML = "";
+        var container = document.createElement("div");
+        container.textContent = "Searching...";
+        this.subui.results.appendChild(container);
 
 
         let data;
@@ -460,6 +468,13 @@ export class SubtitlesManager {
 
 
         this.subui.results.innerHTML = "";
+
+        if (data.length === 0) {
+            var container = document.createElement("div");
+            container.textContent = "No results found";
+            this.subui.results.appendChild(container);
+            return;
+        }
 
         data.forEach((item) => {
             var container = document.createElement("div");
