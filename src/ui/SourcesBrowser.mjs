@@ -81,7 +81,7 @@ export class SourcesBrowser {
         headersInput.setAttribute("autocomplete", "off");
         headersInput.setAttribute("autocorrect", "off");
         headersInput.setAttribute("spellcheck", false);
-        headersInput.placeholder = "Headers (1 enty per line)\nHeader Name: Header Value";
+        headersInput.placeholder = "Headers (1 entry per line)\nHeader Name: Header Value\nHeader2 Name: Header2 Value";
         headersInput.value = Utils.objToHeadersString(source.headers);
         headersInput.addEventListener("keyup", (e) => {
             if (Utils.validateHeadersString(headersInput.value)) {
