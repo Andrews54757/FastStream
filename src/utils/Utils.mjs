@@ -154,7 +154,9 @@ export class Utils {
 
             let query = "";
             if (options.query) {
-                query = "?" + Object.keys(options.query).map((key) => {
+                query = "?" + Object.keys(options.query).filter((key)=>{
+                    return options.query[key] !== undefined && options.query[key] !== null && options.query[key] !== "";
+                }).map((key) => {
                     return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key])
                 }).join('&');
             }
@@ -165,7 +167,6 @@ export class Utils {
             }
 
             //xmlHttp.setRequestHeader('Origin', '');
-
             if (options.headers) {
                 for (var name in options.headers) {
                     xmlHttp.setRequestHeader(name, options.headers[name]);

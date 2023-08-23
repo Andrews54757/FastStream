@@ -380,8 +380,7 @@ export class SubtitlesManager {
         this.subui.searchContainer.appendChild(sortDirectionSelector)
 
 
-
-        this.subui.search.addEventListener("keydown", (e) => {
+        const searchOnEnter = (e) => {
             if (e.key == "Enter") {
                 this.subui.search.blur();
                 this.queryOpenSubtitles({
@@ -397,7 +396,13 @@ export class SubtitlesManager {
                 });
             }
             e.stopPropagation();
-        }, true)
+        };
+        
+        this.subui.search.addEventListener("keydown", searchOnEnter, true);
+        languageInput.addEventListener("keydown", searchOnEnter, true);
+        yearInput.addEventListener("keydown", searchOnEnter, true);
+        seasonInput.addEventListener("keydown", searchOnEnter, true);
+        episodeInput.addEventListener("keydown", searchOnEnter, true);
 
         searchBtn.addEventListener("click", (e) => {
             this.queryOpenSubtitles({
