@@ -436,8 +436,8 @@ export class SubtitlesManager {
         }
 
         if (query.type === "episode") {
-            translatedQuery.season = query.season;
-            translatedQuery.episode = query.episode;
+            translatedQuery.season_number = query.season;
+            translatedQuery.episode_number = query.episode;
         }
 
         this.subui.results.innerHTML = "";
