@@ -132,11 +132,30 @@
         .downloadstatus {
             display: inline-block;
             height: 24px;
-            line-height: 21px;
+            line-height: 22px;
             margin-left: 5px;
             vertical-align: top;
             font-size: 13px;
             font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
+        }
+        .buffering_spinner {
+            display: inline-block;
+            vertical-align: top;
+            height: 24px;
+            font-size: 13px;
+            line-height: 22px;
+            margin-left: 2px;
+        }
+
+        .buffering_spinner > .spinner {
+            background-image: url("./assets/fluidplayer/static/fluid-spinner.svg");
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 24px;
+            height: 24px;
+            opacity: 0.8;
+            float: left;
+            margin-right: 4px;
         }
 
         .subtitle-track-wrapper {
@@ -608,6 +627,11 @@
                 <div class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00</div>
 
                 <div class="downloadstatus"></div>
+
+                <div class="buffering_spinner" style="display: none;">
+                    <div class="spinner"></div>
+                    Loading...
+                </div>
             </div>
             <div class="fluid_controls_progress_container fluid_slider">
                 <div class="fluid_controls_progress">

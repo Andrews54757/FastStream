@@ -33,6 +33,21 @@ export class InterfaceController {
         this.downloadURL = null;
     }
 
+    setBuffering(isBuffering) {
+        if (this.persistent.buffering === isBuffering) {
+            return;
+        }
+
+        this.persistent.buffering = isBuffering;
+
+        if (isBuffering) {
+            DOMElements.bufferingSpinner.style.display = "";
+        } else {
+            DOMElements.bufferingSpinner.style.display = "none";
+        }
+
+    }
+
     dressVideo(video) {
 
         video.setAttribute('playsinline', 'playsinline');

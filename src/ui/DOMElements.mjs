@@ -53,4 +53,6 @@ export const DOMElements = {
     linkButton: document.querySelector('.mainplayer .fluid_button_link'),
     subuiContainer: document.querySelector('.mainplayer .subui_container'),
     linkuiContainer: document.querySelector('.mainplayer .linkui_container'),
+
+    bufferingSpinner: document.querySelector('.mainplayer .buffering_spinner')
 }

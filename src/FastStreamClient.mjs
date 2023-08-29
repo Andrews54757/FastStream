@@ -1,7 +1,7 @@
 import { InterfaceController } from "./ui/InterfaceController.mjs";
 import { PlayerModes } from "./enums/PlayerModes.mjs";
 import { KeybindManager } from "./ui/KeybindManager.mjs";
-import { HLSPlayer } from "./players/hls/HlsPlayer.mjs";
+import { HLSPlayer } from "./players/hls/HLSPlayer.mjs";
 import { VideoSource } from "./VideoSource.mjs";
 import { DownloadManager } from "./network/DownloadManager.mjs";
 import { DefaultPlayerEvents } from "./enums/DefaultPlayerEvents.mjs";
@@ -31,6 +31,7 @@ export class FastStreamClient extends EventEmitter {
         }
         this.persistent = {
             playing: false,
+            buffering: false,
             currentTime: 0,
             volume: 1,
             muted: false,
@@ -40,7 +41,7 @@ export class FastStreamClient extends EventEmitter {
             playbackRate: 1,
             levels: []
         }
-        
+
         this.interfaceController = new InterfaceController(this);
         this.keybindManager = new KeybindManager(this);
         this.downloadManager = new DownloadManager(this);
@@ -64,6 +65,7 @@ export class FastStreamClient extends EventEmitter {
         this.options.downloadAll = false;
         this.options.cantDownloadAll = true;
     }
+
     setSeekSave(value) {
         this.saveSeek = value;
     }
@@ -137,7 +139,7 @@ export class FastStreamClient extends EventEmitter {
         return source;
     }
 
-    
+
     async setSource(source) {
         console.log("setSource", source)
         this.resetPlayer();
@@ -267,6 +269,17 @@ export class FastStreamClient extends EventEmitter {
             this.interfaceController.updateFragmentsLoaded();
         }
 
+        // Detect buffering
+        if (this.player && this.persistent.playing) {
+            let time = this.currentTime;
+            if (time === this.lastTime) {
+                this.interfaceController.setBuffering(true);
+            } else {
+                this.interfaceController.setBuffering(false);
+            }
+            this.lastTime = time;
+        }
+
         this.videoAnalyzer.update();
         this.videoAnalyzer.saveAnalyzerData()
 
@@ -323,7 +336,7 @@ export class FastStreamClient extends EventEmitter {
                     this.freeFragment(fragment);
                 }
             }
-        }  
+        }
     }
 
     freeFragment(fragment) {
@@ -347,6 +360,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     resetPlayer() {
+        this.lastTime = 0;
 
         this.fragmentsStore.length = 0;
         this.seeks.length = 0;
@@ -375,6 +389,7 @@ export class FastStreamClient extends EventEmitter {
         this.subtitlesManager.clearTracks();
 
         this.persistent.currentLevel = -1;
+        this.persistent.buffering = false;
         this.persistent.levels = [];
 
 
@@ -452,6 +467,7 @@ export class FastStreamClient extends EventEmitter {
 
 
         this.context.on(DefaultPlayerEvents.PLAYING, (event) => {
+            this.interfaceController.setBuffering(false);
         })
 
 
@@ -496,12 +512,13 @@ export class FastStreamClient extends EventEmitter {
 
 
         this.context.on(DefaultPlayerEvents.WAITING, (event) => {
-
+            this.interfaceController.setBuffering(true);
         })
 
         this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
             this.interfaceController.updateFragmentsLoaded();
         })
+        
         if (this.previewPlayer) {
             this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
                 if (this.persistent.currentLevel !== -1)

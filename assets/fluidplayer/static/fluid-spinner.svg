@@ -1,7 +1,40 @@
-<svg class="lds-eclipse" width="200" height="200" style="background:0 0" preserveAspectRatio="xMidYMid"
-     viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <path d="M68.095 59.578A20 20 0 0031.14 44.27a22 20-67.5 0136.955 15.308" fill="#fff">
-        <animateTransform attributeName="transform" begin="0s" calcMode="linear" dur="0.8s" keyTimes="0;1"
-                          repeatCount="indefinite" type="rotate" values="0 50 51;360 50 51"/>
-    </path>
+<svg width="20" height="20" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .spinner_V8m1 {
+            transform-origin: center;
+            animation: spinner_zKoa 2s linear infinite
+        }
+
+        .spinner_V8m1 circle {
+            stroke-linecap: round;
+            animation: spinner_YpZS 1.5s ease-in-out infinite
+        }
+
+        @keyframes spinner_zKoa {
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+
+        @keyframes spinner_YpZS {
+            0% {
+                stroke-dasharray: 0 150;
+                stroke-dashoffset: 0
+            }
+
+            47.5% {
+                stroke-dasharray: 42 150;
+                stroke-dashoffset: -16
+            }
+
+            95%,
+            100% {
+                stroke-dasharray: 42 150;
+                stroke-dashoffset: -59
+            }
+        }
+    </style>
+    <g class="spinner_V8m1">
+        <circle cx="12" cy="12" r="9.5" fill="none" stroke-width="3"></circle>
+    </g>
 </svg>
