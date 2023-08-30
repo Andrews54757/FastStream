@@ -271,7 +271,7 @@ export class SubtitleSyncer extends EventEmitter {
             for (let i = startFrame; i < endFrame; i++) {
                 val = 1 - this.buffer[i];
 
-                context.lineTo((i - startFrame + 1) / (endFrame - startFrame) * el.element.width, val * el.element.height);
+                context.lineTo((i - startFrame + 1) / (10 * this.rate) * el.element.width, val * el.element.height);
 
             }
             context.stroke();
