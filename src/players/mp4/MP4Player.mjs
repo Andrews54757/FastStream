@@ -273,7 +273,7 @@ export class MP4Player extends EventEmitter {
             return;
         }
 
-        if (this.needsInit && this.readyState === 1 && this.currentTime === 0) {
+        if (this.needsInit && this.readyState === 1) {
             let buffered = this.buffered;
             this.client.setSeekSave(false);
             if (buffered.length > 0) {
@@ -290,7 +290,7 @@ export class MP4Player extends EventEmitter {
         if (this.readyState > 1) {
             this.needsInit = false;
         }
-        
+
         this.runLoad();
         this.loopTimeout = setTimeout(this.mainLoop.bind(this), 1);
     }
