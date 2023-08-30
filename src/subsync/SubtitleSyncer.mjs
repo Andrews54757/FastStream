@@ -43,10 +43,12 @@ export class SubtitleSyncer extends EventEmitter {
         // timeline is grabbable
         let isGrabbing = false;
         let grabStart = 0;
+        let grabStartTime = 0;
 
         this.ui.timelineTicks.addEventListener("mousedown", (e) => {
             isGrabbing = true;
             grabStart = e.clientX;
+            grabStartTime = this.video.currentTime;
         });
 
         document.addEventListener("mouseup", () => {
@@ -56,8 +58,7 @@ export class SubtitleSyncer extends EventEmitter {
         document.addEventListener("mousemove", (e) => {
             if (isGrabbing) {
                 const delta = e.clientX - grabStart;
-                grabStart = e.clientX;
-                this.video.currentTime += -delta / this.ui.timelineTicks.clientWidth * this.video.duration;
+                this.video.currentTime = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
             }
         });
 
