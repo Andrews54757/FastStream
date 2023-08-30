@@ -258,6 +258,7 @@ export class MP4Player extends EventEmitter {
         }
 
         this.source = source;
+        this.needsInit = true;
 
         if (!this.client.getFragment(0, 0))
             this.client.makeFragment(0, 0, new MP4Fragment(0, 0, source, 0, FRAGMENT_SIZE));
@@ -272,7 +273,7 @@ export class MP4Player extends EventEmitter {
             return;
         }
 
-        if (this.readyState === 1 && this.currentTime === 0) {
+        if (this.needsInit && this.readyState === 1 && this.currentTime === 0) {
             let buffered = this.buffered;
             this.client.setSeekSave(false);
             if (buffered.length > 0) {
@@ -286,6 +287,10 @@ export class MP4Player extends EventEmitter {
             this.client.setSeekSave(true);
         }
 
+        if (this.readyState > 1) {
+            this.needsInit = false;
+        }
+        
         this.runLoad();
         this.loopTimeout = setTimeout(this.mainLoop.bind(this), 1);
     }
