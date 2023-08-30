@@ -22,6 +22,21 @@ export class Utils {
         }
         return true;
     }
+
+    static formatTime(time) {
+        var hours = Math.floor(time / 3600);
+        time = time - hours * 3600;
+        var minutes = Math.floor(time / 60);
+        var seconds = Math.floor(time - minutes * 60);
+
+        function str_pad_left(string, pad, length) {
+            return (new Array(length + 1).join(pad) + string).slice(-length);
+        }
+
+        return (hours ? (hours + ':') : '') + str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
+    }
+
+    
     static objToHeadersString(obj) {
         var str = "";
         for (var name in obj) {
@@ -154,13 +169,13 @@ export class Utils {
 
             let query = "";
             if (options.query) {
-                query = "?" + Object.keys(options.query).filter((key)=>{
+                query = "?" + Object.keys(options.query).filter((key) => {
                     return options.query[key] !== undefined && options.query[key] !== null && options.query[key] !== "";
                 }).map((key) => {
                     return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key])
                 }).join('&');
             }
-            
+
             xmlHttp.open(options.type === undefined ? "GET" : options.type, options.url + query, true); // true for asynchronous 
             if (options.range !== undefined) {
                 xmlHttp.setRequestHeader('Range', 'bytes=' + options.range.start + '-' + options.range.end)

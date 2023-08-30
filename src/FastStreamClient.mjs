@@ -2,7 +2,6 @@ import { InterfaceController } from "./ui/InterfaceController.mjs";
 import { PlayerModes } from "./enums/PlayerModes.mjs";
 import { KeybindManager } from "./ui/KeybindManager.mjs";
 import { HLSPlayer } from "./players/hls/HLSPlayer.mjs";
-import { VideoSource } from "./VideoSource.mjs";
 import { DownloadManager } from "./network/DownloadManager.mjs";
 import { DefaultPlayerEvents } from "./enums/DefaultPlayerEvents.mjs";
 import { DownloadStatus } from "./enums/DownloadStatus.mjs";
@@ -25,7 +24,7 @@ export class FastStreamClient extends EventEmitter {
             introCutoff: 5 * 60,
             outroCutoff: 5 * 60,
             bufferAhead: 60,
-            bufferBehind: 10,
+            bufferBehind: 20,
             freeFragments: true,
             downloadAll: false
         }
@@ -48,7 +47,6 @@ export class FastStreamClient extends EventEmitter {
         this.subtitlesManager = new SubtitlesManager(this);
         this.sourcesBrowser = new SourcesBrowser(this);
         this.videoAnalyzer = new VideoAnalyzer(this);
-
         this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
             this.interfaceController.updateIntroOutroBar();
         });
@@ -194,9 +192,6 @@ export class FastStreamClient extends EventEmitter {
 
         await this.player.setSource(source);
 
-
-
-
         this.player.getVideos().forEach((video) => {
             this.interfaceController.addVideo(video);
         });
@@ -212,8 +207,8 @@ export class FastStreamClient extends EventEmitter {
             });
         }
         await this.videoAnalyzer.setSource(source);
+    //    this.subtitleSyncer.start(this.player.getCurrentVideo());
     }
-
 
 
 
@@ -659,6 +654,10 @@ export class FastStreamClient extends EventEmitter {
         this.persistent.playbackRate = value;
         if (this.player) this.player.playbackRate = value;
         this.interfaceController.updatePlaybackRate();
+    }
+
+    get currentVideo() {
+        return this.player?.getCurrentVideo() || null;
     }
 }
 

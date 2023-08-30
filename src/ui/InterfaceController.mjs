@@ -1,6 +1,7 @@
 import { DownloadStatus } from "../enums/DownloadStatus.mjs";
 import { PlayerModes } from "../enums/PlayerModes.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
+import { Utils } from "../utils/Utils.mjs";
 import { VideoSource } from "../VideoSource.mjs";
 import { DOMElements } from "./DOMElements.mjs";
 
@@ -98,7 +99,7 @@ export class InterfaceController {
             }
 
             let element = document.createElement("div");
-            element.style.left = Math.min(start / this.persistent.duration * 100,100) + "%";
+            element.style.left = Math.min(start / this.persistent.duration * 100, 100) + "%";
 
             if (frag.status === DownloadStatus.DOWNLOAD_INITIATED) {
                 element.classList.add("download-initiated");
@@ -204,7 +205,7 @@ export class InterfaceController {
             e.preventDefault();
         }, false);
 
-        DOMElements.settingsButton.addEventListener("click",()=>{
+        DOMElements.settingsButton.addEventListener("click", () => {
             chrome.runtime.openOptionsPage();
         })
 
@@ -227,16 +228,16 @@ export class InterfaceController {
 
         DOMElements.rateMenu.appendChild(speedList);
 
-        DOMElements.playbackRate.addEventListener("click",(e)=>{
-            if(DOMElements.rateMenu.style.display == "none"){
+        DOMElements.playbackRate.addEventListener("click", (e) => {
+            if (DOMElements.rateMenu.style.display == "none") {
                 DOMElements.rateMenu.style.display = "";
                 speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
-            } else{
+            } else {
                 DOMElements.rateMenu.style.display = "none";
             }
             e.stopPropagation();
         });
-       
+
         for (var i = 1; i <= 30; i += 1) {
             ((i) => {
                 var el = document.createElement("div");
@@ -287,7 +288,7 @@ export class InterfaceController {
                 src = file;
             } else if (ext == ".mp4" || ext == ".mkv" || ext == ".mov") {
                 src = file
-             //  mode = PlayerModes.ACCELERATED_MP4;
+                //  mode = PlayerModes.ACCELERATED_MP4;
             } else if (ext == ".vtt" || ext == ".srt") {
                 captions.push({
                     url: window.URL.createObjectURL(file),
@@ -327,18 +328,27 @@ export class InterfaceController {
         window.requestAnimationFrame(this.progressLoop.bind(this));
         this.client.updateTime(this.client.currentTime);
     }
+
     durationChanged() {
         let duration = this.persistent.duration;
         if (duration < 5 * 60) {
-            if (!this.isRunningProgressLoop) {
-                this.isRunningProgressLoop = true;
-                this.shouldRunProgressLoop = true;
-                this.progressLoop();
-            }
+            this.runProgressLoop();
         } else {
-            this.shouldRunProgressLoop = false;
+            this.stopProgressLoop();
         }
         this.updateProgress();
+    }
+
+    runProgressLoop() {
+        if (!this.isRunningProgressLoop) {
+            this.isRunningProgressLoop = true;
+            this.shouldRunProgressLoop = true;
+            this.progressLoop();
+        }
+    }
+
+    stopProgressLoop() {
+        this.shouldRunProgressLoop = false;
     }
 
     async downloadMovie() {
@@ -488,15 +498,14 @@ export class InterfaceController {
 
     hideControlBar() {
         clearTimeout(this.hideControlBarTimeout);
-        DOMElements.playerContainer.style.cursor = 'none';
+        DOMElements.playerContainer.classList.remove("controls_visible")
         DOMElements.controlsContainer.classList.remove('fade_in');
         DOMElements.controlsContainer.classList.add('fade_out');
         DOMElements.progressContainer.classList.remove('freeze');
     }
 
     showControlBar() {
-        DOMElements.playerContainer.style.cursor = '';
-
+        DOMElements.playerContainer.classList.add("controls_visible")
         DOMElements.controlsContainer.classList.remove('fade_out');
         DOMElements.controlsContainer.classList.add('fade_in');
     }
@@ -553,7 +562,7 @@ export class InterfaceController {
 
         const time = this.persistent.duration * currentX / totalWidth;
 
-        DOMElements.seekPreviewText.textContent = this.formatTime(time);
+        DOMElements.seekPreviewText.textContent = Utils.formatTime(time);
 
         let maxWidth = Math.max(DOMElements.seekPreviewVideo.clientWidth, DOMElements.seekPreview.clientWidth);
 
@@ -818,21 +827,9 @@ export class InterfaceController {
 
         currentVolumeTag.style.width = (volume * 100) + '%';
     }
-    formatTime(time) {
-        var hours = Math.floor(time / 3600);
-        time = time - hours * 3600;
-        var minutes = Math.floor(time / 60);
-        var seconds = Math.floor(time - minutes * 60);
-
-        function str_pad_left(string, pad, length) {
-            return (new Array(length + 1).join(pad) + string).slice(-length);
-        }
-
-        return (hours ? (hours + ':') : '') + str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
-    }
     updateProgress() {
         DOMElements.currentProgress.style.width = (this.persistent.currentTime / this.persistent.duration) * 100 + '%';
-        DOMElements.duration.textContent = this.formatTime(this.persistent.currentTime) + ' / ' + this.formatTime(this.persistent.duration);
+        DOMElements.duration.textContent = Utils.formatTime(this.persistent.currentTime) + ' / ' + Utils.formatTime(this.persistent.duration);
     }
 
     fullscreenToggle() {

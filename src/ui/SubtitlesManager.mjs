@@ -1,4 +1,5 @@
 import { WebVTT } from "../modules/vtt.mjs";
+import { SubtitleSyncer } from "../subsync/SubtitleSyncer.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
 import { SubtitleUtils } from "../utils/SubtitleUtils.mjs";
 import { Utils } from "../utils/Utils.mjs";
@@ -21,6 +22,8 @@ export class SubtitlesManager {
 
         this.isTesting = false;
         this.setupUI();
+
+        this.subtitleSyncer = new SubtitleSyncer(this.client);
     }
 
     addTrack(track) {
@@ -733,6 +736,19 @@ color: rgb(200,200,200);
                     e.preventDefault();
                 })
 
+                var resyncTool = document.createElement("div");
+                resyncTool.style = "display: none; position: absolute; right: 60px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"
+                resyncTool.title = "Resync Tool"
+                resyncTool.className = "fluid_button fluid_button_wand"
+                trackElement.appendChild(resyncTool)
+
+                resyncTool.addEventListener("click", (e) => {
+                    
+                    const res = this.subtitleSyncer.toggleTrack(track);                    
+                    e.stopPropagation();
+                }, true)
+
+
                 var downloadTrack = document.createElement("div");
                 // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
                 downloadTrack.style = "display: none; position: absolute; right: 10px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"
@@ -741,12 +757,6 @@ color: rgb(200,200,200);
                 trackElement.appendChild(downloadTrack)
 
                 downloadTrack.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                }, true)
-
-                downloadTrack.addEventListener("click", (e) => {
-
-
                     let dlname = prompt("Enter a name for the subtitle download file", name + ".srt");
 
                     if (!dlname) {
@@ -778,12 +788,13 @@ color: rgb(200,200,200);
 
                 removeTrack.addEventListener("click", (e) => {
                     this.removeTrack(track);
+                    this.subtitleSyncer.toggleTrack(track, true);
                     e.stopPropagation();
                 }, true)
 
 
                 var shiftLTrack = document.createElement("div");
-                shiftLTrack.style = "display: none; position: absolute; right: 70px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftLTrack.style = "display: none; position: absolute; right: 55px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftLTrack.title = "Shift subtitles -0.2s"
                 trackElement.appendChild(shiftLTrack)
 
@@ -793,19 +804,8 @@ color: rgb(200,200,200);
                     e.stopPropagation();
                 }, true)
 
-                var shiftLLTrack = document.createElement("div");
-                shiftLLTrack.style = "display: none; position: absolute; right: 85px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
-                shiftLLTrack.title = "Shift subtitles -2s"
-                trackElement.appendChild(shiftLLTrack)
-
-                shiftLLTrack.addEventListener("click", (e) => {
-                    track.shift(-2)
-                    this.renderSubtitles();
-                    e.stopPropagation();
-                }, true)
-
                 var shiftRTrack = document.createElement("div");
-                shiftRTrack.style = "display: none; position: absolute; right: 55px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
+                shiftRTrack.style = "display: none; position: absolute; right: 40px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
                 shiftRTrack.title = "Shift subtitles +0.2s"
                 trackElement.appendChild(shiftRTrack)
 
@@ -816,23 +816,12 @@ color: rgb(200,200,200);
                 }, true)
 
 
-                var shiftRRTrack = document.createElement("div");
-                shiftRRTrack.style = "display: none; position: absolute; right: 40px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(200,200,200,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;"
-                shiftRRTrack.title = "Shift subtitles +2s"
-                trackElement.appendChild(shiftRRTrack)
-
-                shiftRRTrack.addEventListener("click", (e) => {
-                    track.shift(2)
-                    this.renderSubtitles();
-                    e.stopPropagation();
-                }, true)
-
 
                 trackElement.addEventListener("mouseenter", () => {
-                    downloadTrack.style.display = shiftRRTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = shiftLLTrack.style.display = removeTrack.style.display = "block"
+                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "block"
                 })
                 trackElement.addEventListener("mouseleave", () => {
-                    downloadTrack.style.display = shiftRRTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = shiftLLTrack.style.display = removeTrack.style.display = "none"
+                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "none"
                 })
 
                 DOMElements.subtitlesList.appendChild(trackElement)
@@ -849,6 +838,7 @@ color: rgb(200,200,200);
         trackContainer.style.backgroundColor = this.settings.background;
     }
     renderSubtitles() {
+        this.subtitleSyncer.onVideoTimeUpdate();
         DOMElements.subtitlesContainer.innerHTML = "";
 
         if (this.isTesting) {

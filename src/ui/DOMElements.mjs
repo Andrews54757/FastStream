@@ -54,5 +54,6 @@ export const DOMElements = {
     subuiContainer: document.querySelector('.mainplayer .subui_container'),
     linkuiContainer: document.querySelector('.mainplayer .linkui_container'),
 
-    bufferingSpinner: document.querySelector('.mainplayer .buffering_spinner')
+    bufferingSpinner: document.querySelector('.mainplayer .buffering_spinner'),
+    timelineSyncer: document.querySelector('.mainplayer .fluid_controls_timeline_syncer'),
 }
