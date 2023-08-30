@@ -257,7 +257,7 @@ export class SubtitleSyncer extends EventEmitter {
             const time = index * 10;
 
             const startFrame = Math.floor(time * this.rate);
-            const endFrame = Math.floor((time + 10) * this.rate);
+            const endFrame = Math.floor(Math.min(time + 10, this.video.duration) * this.rate);
 
             const context = el.ctx;
             el.element.width = el.element.clientWidth * 2;
