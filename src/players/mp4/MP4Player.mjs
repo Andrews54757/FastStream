@@ -272,7 +272,7 @@ export class MP4Player extends EventEmitter {
             return;
         }
 
-        if (this.readyState === 1) {
+        if (this.readyState === 1 && this.currentTime === 0) {
             let buffered = this.buffered;
             this.client.setSeekSave(false);
             if (buffered.length > 0) {

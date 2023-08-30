@@ -51,6 +51,7 @@ export class FastStreamClient extends EventEmitter {
             this.interfaceController.updateIntroOutroBar();
         });
 
+        this.ignoreUpdateTime = false;
         this.player = null;
         this.previewPlayer = null;
         this.saveSeek = true;
@@ -386,6 +387,7 @@ export class FastStreamClient extends EventEmitter {
         this.persistent.currentLevel = -1;
         this.persistent.buffering = false;
         this.persistent.levels = [];
+        this.ignoreUpdateTime = false;
 
 
     }
@@ -492,7 +494,8 @@ export class FastStreamClient extends EventEmitter {
 
         this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
 
-
+            if (this.ignoreUpdateTime) return;
+            
             this.updateTime(this.currentTime)
 
             if (this.videoAnalyzer.pushFrame(this.player.getCurrentVideo()))

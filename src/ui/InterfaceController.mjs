@@ -326,7 +326,8 @@ export class InterfaceController {
             return;
         }
         window.requestAnimationFrame(this.progressLoop.bind(this));
-        this.client.updateTime(this.client.currentTime);
+        if (!this.client.ignoreUpdateTime)
+            this.client.updateTime(this.client.currentTime);
     }
 
     durationChanged() {
@@ -598,6 +599,7 @@ export class InterfaceController {
         }
 
         this.isSeeking = true;
+        this.client.ignoreUpdateTime = true;
         this.showPreview();
         this.client.savePosition();
         this.client.setSeekSave(false);
@@ -628,6 +630,7 @@ export class InterfaceController {
             document.removeEventListener('mouseup', onProgressbarMouseUp);
             document.removeEventListener('touchend', onProgressbarMouseUp);
             this.isSeeking = false;
+            this.client.ignoreUpdateTime = false;
 
             if (!this.isMouseOverProgressbar) {
                 this.hidePreview();

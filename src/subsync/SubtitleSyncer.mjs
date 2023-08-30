@@ -49,16 +49,22 @@ export class SubtitleSyncer extends EventEmitter {
             isGrabbing = true;
             grabStart = e.clientX;
             grabStartTime = this.video.currentTime;
+            this.client.ignoreUpdateTime = true;
         });
 
-        document.addEventListener("mouseup", () => {
+        document.addEventListener("mouseup", (e) => {
+            if (isGrabbing) {
+                const delta = e.clientX - grabStart;
+                this.client.currentTime = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
+                this.client.ignoreUpdateTime = false;
+            }
             isGrabbing = false;
         });
 
         document.addEventListener("mousemove", (e) => {
             if (isGrabbing) {
                 const delta = e.clientX - grabStart;
-                this.video.currentTime = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
+                this.client.currentTime = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
             }
         });
 
@@ -172,7 +178,7 @@ export class SubtitleSyncer extends EventEmitter {
 
     renderSyncTimeline() {
         if (!this.started) return;
-        const time = this.video.currentTime;
+        const time = this.client.persistent.currentTime;
 
         const timePerWidth = 60;
         const minTime = Math.floor(Math.max(0, time - timePerWidth / 2 - 5))
