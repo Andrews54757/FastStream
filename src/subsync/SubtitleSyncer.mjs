@@ -16,7 +16,7 @@ export class SubtitleSyncer extends EventEmitter {
 
             positiveSpeechThreshold: 1,
             negativeSpeechThreshold: 1,
-            frameSamples: 512
+            frameSamples: 1024
 
         }
         this.rate = 16000 / this.options.frameSamples;
