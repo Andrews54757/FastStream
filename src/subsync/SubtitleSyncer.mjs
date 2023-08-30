@@ -110,6 +110,7 @@ export class SubtitleSyncer extends EventEmitter {
 
         const frame = Math.floor(time * this.rate);
         this.buffer[frame] = isSpeechProb;
+        this.buffer[frame + 1] = isSpeechProb;
 
         this.canvasElements.find((el) => {
             if (el.index * 10 <= time && (el.index + 1) * 10 > time) {
@@ -164,7 +165,7 @@ export class SubtitleSyncer extends EventEmitter {
 
 
             const frames = this.video.duration * this.rate;
-            for (let i = 0; i < frames; i++) {
+            for (let i = 0; i <= frames; i++) {
                 this.buffer.push(0);
             }
 
