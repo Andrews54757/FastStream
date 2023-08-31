@@ -1,5 +1,6 @@
 import { EventEmitter } from "../modules/eventemitter.mjs";
 import { VadJS } from "../modules/vad/vad.mjs";
+import { WebVTT } from "../modules/vtt.mjs";
 import { DOMElements } from "../ui/DOMElements.mjs";
 import { Utils } from "../utils/Utils.mjs";
 
@@ -326,7 +327,7 @@ export class SubtitleSyncer extends EventEmitter {
             const el = Utils.create("div", '', "timeline_track_cue");
             el.style.left = cue.startTime / this.video.duration * 100 + "%";
             el.style.width = (cue.endTime - cue.startTime) / this.video.duration * 100 + "%";
-            el.textContent = cue.text;
+            el.appendChild(WebVTT.convertCueToDOMTree(window, cue.text));
             el.title = cue.text;
             this.ui.timelineTrack.appendChild(el);
 

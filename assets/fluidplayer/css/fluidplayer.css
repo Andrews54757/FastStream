@@ -2010,13 +2010,14 @@ body {
     border-radius: 2px;
     font-size: 12px;
     color: black;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     padding: 0px 2px;
     line-height: 20px;
 }
-
+.timeline_track_cue * {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .timeline_vod {
     position: absolute;
     top: 22px;
