@@ -443,6 +443,7 @@ export class FastStreamClient extends EventEmitter {
 
 
         this.context.on(DefaultPlayerEvents.ENDED, (event) => {
+            this.pause();
         })
 
 
