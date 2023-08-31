@@ -14,7 +14,7 @@ const assetPath = (file) => {
 };
 
 const modelFetcher = async () => {
-    const modelURL = assetPath("silero_vad.onnx");
+    const modelURL = assetPath("silero_vad.ort");
     return await fetch(modelURL).then((r) => r.arrayBuffer());
 };
 
@@ -59,7 +59,8 @@ class Silero {
         this.init = async () => {
             console.debug("initializing vad");
             const modelArrayBuffer = await this.modelFetcher();
-            this._session = await this.ort.InferenceSession.create(modelArrayBuffer);
+            this._session = await ort.InferenceSession.create(modelArrayBuffer);
+            console.log(this._session)
             this._sr = new this.ort.Tensor("int64", [16000n]);
             this.reset_state();
             console.debug("vad is initialized");

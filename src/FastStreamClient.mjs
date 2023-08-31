@@ -11,7 +11,6 @@ import { AnalyzerEvents } from "./enums/AnalyzerEvents.mjs";
 import { MP4Player } from "./players/mp4/MP4Player.mjs";
 
 import { DashPlayer } from "./players/dash/DashPlayer.mjs";
-import { YTPlayer } from "./players/yt/YTPlayer.mjs";
 import { DirectVideoPlayer } from "./players/DirectVideoPlayer.mjs";
 import { EventEmitter } from "./modules/eventemitter.mjs";
 import { SourcesBrowser } from "./ui/SourcesBrowser.mjs";
@@ -176,11 +175,6 @@ export class FastStreamClient extends EventEmitter {
                 break;
             case PlayerModes.ACCELERATED_DASH:
                 this.player = new DashPlayer(this);
-                await this.player.setup();
-
-                break;
-            case PlayerModes.YT:
-                this.player = new YTPlayer(this);
                 await this.player.setup();
                 break;
         }
