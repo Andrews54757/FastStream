@@ -4,7 +4,7 @@ import { DownloadStatus } from "../enums/DownloadStatus.mjs";
 import { PlayerModes } from "../enums/PlayerModes.mjs";
 import { EventEmitter } from "../modules/eventemitter.mjs";
 import { DirectVideoPlayer } from "../players/DirectVideoPlayer.mjs";
-import { HLSPlayer } from "../players/hls/HlsPlayer.mjs";
+import { HLSPlayer } from "../players/hls/HLSPlayer.mjs";
 import { MP4Player } from "../players/mp4/MP4Player.mjs";
 import { VideoAligner } from "./VideoAligner.mjs";
 
