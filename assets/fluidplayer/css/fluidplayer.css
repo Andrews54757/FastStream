@@ -1701,6 +1701,7 @@ body {
     background-color: rgba(50, 50, 50, .9);
     color: rgb(230, 230, 230, 0.8);
     z-index: 2;
+    transition: bottom 0.5s;
 }
 
 .popwindow .title {
@@ -1709,7 +1710,7 @@ body {
     margin-bottom: 5px;
 }
 
-.expanded .popwindow {
+.expanded.controls_visible .popwindow {
     bottom: 140px;
 }
 
