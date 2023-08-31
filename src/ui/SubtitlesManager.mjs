@@ -126,9 +126,6 @@ export class SubtitlesManager {
     setupUI() {
         this.loadSettings();
 
-        DOMElements.subtitlesMenu.addEventListener("wheel", (e) => {
-            e.stopPropagation();
-        });
         DOMElements.subtitlesOptionsList.addEventListener("keydown", (e) => {
             e.stopPropagation();
         });

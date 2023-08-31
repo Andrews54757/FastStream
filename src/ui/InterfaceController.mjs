@@ -222,9 +222,6 @@ export class InterfaceController {
         const els = [];
         const speedList = document.createElement('div');
         speedList.style = 'overflow-y: scroll; padding-right: 17px; box-sizing: content-box; width: 100%; height: 100%'
-        speedList.addEventListener("wheel", (e) => {
-            e.stopPropagation();
-        })
 
         DOMElements.rateMenu.appendChild(speedList);
 
