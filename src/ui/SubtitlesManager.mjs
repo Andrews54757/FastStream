@@ -594,8 +594,11 @@ export class SubtitlesManager {
                 } catch (e) {
                     console.log(e)
                     if (DOMElements.subuiContainer.style.display == "none") return;
-                    alert("OpenSubtitles is down!");
                     item.downloading = false;
+                    alert(`OpenSubtitles download failed! Their servers are probably down!`);
+                    if (confirm("Would you like to open the OpenSubtitles website to download the subtitle file manually?")) {
+                        window.open(item.attributes.url);
+                    }
                     return;
                 }
 
