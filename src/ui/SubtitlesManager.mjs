@@ -1,5 +1,5 @@
 import { WebVTT } from "../modules/vtt.mjs";
-import { SubtitleSyncer } from "../subsync/SubtitleSyncer.mjs";
+import { SubtitleSyncer } from "./SubtitleSyncer.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
 import { SubtitleUtils } from "../utils/SubtitleUtils.mjs";
 import { Utils } from "../utils/Utils.mjs";

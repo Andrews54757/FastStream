@@ -1,7 +1,7 @@
 import { EventEmitter } from "../modules/eventemitter.mjs";
 import { VadJS } from "../modules/vad/vad.mjs";
 import { WebVTT } from "../modules/vtt.mjs";
-import { DOMElements } from "../ui/DOMElements.mjs";
+import { DOMElements } from "./DOMElements.mjs";
 import { Utils } from "../utils/Utils.mjs";
 
 export class SubtitleSyncer extends EventEmitter {
