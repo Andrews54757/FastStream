@@ -176,13 +176,12 @@ const myParam = urlParams.get('frame_id');
 
 if (chrome.extension.inIncognitoContext) {
     window.fastStream.cantDownloadAll();
-    //console.log("Download all")
 }
 
 chrome.runtime.sendMessage({
     type: "faststream",
     isExt: true,
-    frameId: parseInt(myParam)
+    frameId: parseInt(myParam) || 0
 }).then((data) => {
     chrome.runtime.sendMessage({
         type: "ready"
