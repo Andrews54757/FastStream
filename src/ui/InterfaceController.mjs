@@ -32,6 +32,7 @@ export class InterfaceController {
             URL.revokeObjectURL(this.downloadURL);
         }
         this.downloadURL = null;
+        this.stopProgressLoop();
     }
 
     setBuffering(isBuffering) {
@@ -329,7 +330,7 @@ export class InterfaceController {
 
     durationChanged() {
         let duration = this.persistent.duration;
-        if (duration < 5 * 60) {
+        if (duration < 5 * 60 || this.client.subtitleSyncer.started) {
             this.runProgressLoop();
         } else {
             this.stopProgressLoop();

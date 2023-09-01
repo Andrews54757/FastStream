@@ -1,5 +1,4 @@
 import { WebVTT } from "../modules/vtt.mjs";
-import { SubtitleSyncer } from "./SubtitleSyncer.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
 import { SubtitleUtils } from "../utils/SubtitleUtils.mjs";
 import { Utils } from "../utils/Utils.mjs";
@@ -22,8 +21,6 @@ export class SubtitlesManager {
 
         this.isTesting = false;
         this.setupUI();
-
-        this.subtitleSyncer = new SubtitleSyncer(this.client);
     }
 
     addTrack(track) {
@@ -71,6 +68,8 @@ export class SubtitlesManager {
             console.error(e);
         }
         this.renderSubtitles();
+        this.client.subtitleSyncer.onVideoTimeUpdate();
+     
     }
     updateSettingsUI() {
         DOMElements.subtitlesOptionsList.innerHTML = "";
@@ -113,6 +112,7 @@ export class SubtitlesManager {
                         }
                     }
                     this.renderSubtitles();
+                    this.client.subtitleSyncer.onVideoTimeUpdate();
                     this.updateSettingsUI();
                 } else {
                     this.updateSettingsUI();
@@ -162,6 +162,8 @@ export class SubtitlesManager {
             }
 
             this.renderSubtitles();
+            this.client.subtitleSyncer.onVideoTimeUpdate();
+     
         });
         var filechooser = document.createElement("input");
         filechooser.type = "file";
@@ -744,7 +746,7 @@ color: rgb(200,200,200);
 
                 resyncTool.addEventListener("click", (e) => {
                     
-                    const res = this.subtitleSyncer.toggleTrack(track);                    
+                    const res = this.client.subtitleSyncer.toggleTrack(track);                    
                     e.stopPropagation();
                 }, true)
 
@@ -788,7 +790,7 @@ color: rgb(200,200,200);
 
                 removeTrack.addEventListener("click", (e) => {
                     this.removeTrack(track);
-                    this.subtitleSyncer.toggleTrack(track, true);
+                    this.client.subtitleSyncer.toggleTrack(track, true);
                     e.stopPropagation();
                 }, true)
 
@@ -801,6 +803,7 @@ color: rgb(200,200,200);
                 shiftLTrack.addEventListener("click", (e) => {
                     track.shift(-0.2)
                     this.renderSubtitles();
+                    this.client.subtitleSyncer.onVideoTimeUpdate();
                     e.stopPropagation();
                 }, true)
 
@@ -812,6 +815,7 @@ color: rgb(200,200,200);
                 shiftRTrack.addEventListener("click", (e) => {
                     track.shift(0.2)
                     this.renderSubtitles();
+                    this.client.subtitleSyncer.onVideoTimeUpdate();
                     e.stopPropagation();
                 }, true)
 
@@ -829,6 +833,7 @@ color: rgb(200,200,200);
         }
 
         this.renderSubtitles();
+        this.client.subtitleSyncer.onVideoTimeUpdate();
 
     }
 
@@ -838,7 +843,6 @@ color: rgb(200,200,200);
         trackContainer.style.backgroundColor = this.settings.background;
     }
     renderSubtitles() {
-        this.subtitleSyncer.onVideoTimeUpdate();
         DOMElements.subtitlesContainer.innerHTML = "";
 
         if (this.isTesting) {

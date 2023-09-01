@@ -14,6 +14,7 @@ import { DashPlayer } from "./players/dash/DashPlayer.mjs";
 import { DirectVideoPlayer } from "./players/DirectVideoPlayer.mjs";
 import { EventEmitter } from "./modules/eventemitter.mjs";
 import { SourcesBrowser } from "./ui/SourcesBrowser.mjs";
+import { SubtitleSyncer } from "./ui/SubtitleSyncer.mjs";
 
 
 export class FastStreamClient extends EventEmitter {
@@ -46,6 +47,7 @@ export class FastStreamClient extends EventEmitter {
         this.subtitlesManager = new SubtitlesManager(this);
         this.sourcesBrowser = new SourcesBrowser(this);
         this.videoAnalyzer = new VideoAnalyzer(this);
+        this.subtitleSyncer = new SubtitleSyncer(this);
         this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
             this.interfaceController.updateIntroOutroBar();
         });
@@ -113,6 +115,7 @@ export class FastStreamClient extends EventEmitter {
         this.persistent.currentTime = time;
         this.interfaceController.updateProgress();
         this.subtitlesManager.renderSubtitles();
+        this.subtitleSyncer.onVideoTimeUpdate();
         this.interfaceController.updateIntroOutroBar()
     }
 
