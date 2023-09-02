@@ -34,43 +34,25 @@ export class DashPlayer extends EventEmitter {
                     bufferToKeep: 10,
                     bufferTimeAtTopQuality: 10,
                     bufferTimeAtTopQualityLongForm: 10
-    
+
                 }
             }
         });
 
-        this.dash.on("initComplete" ,(a)=>{
-            a.streamProcessors.forEach((processor)=>{
+        this.dash.on("initialInit", (a) => {
+            a.streamProcessors.forEach((processor) => {
                 const mediaInfo = processor.getMediaInfo();
-                const segmentsController = processor.getSegmentsController();
-                const dashHandler = processor.getDashHandler();
-                mediaInfo.representations.forEach((rep)=>{
-                    let index = 0;
-                    const init = dashHandler.getInitRequest(mediaInfo, rep);
-                    if (init) {
-                        init.level = mediaInfo.index + ":" + rep.index;
-                        init.index = -1;
-                        init.startTime = init.duration = 0;
-                        this.client.makeFragment(init.level, -1, new DashFragment(init));
-                    }
-                    while (true) {
-                        let segment = segmentsController.getSegmentByIndex(rep,index,-1);
-                        if (!segment) break;
-                        const request = dashHandler._getRequestForSegment(mediaInfo, segment)
-                        request.level = mediaInfo.index + ":" + rep.index;
-                        const fragment = new DashFragment(request);
-                        if (!this.client.getFragment(fragment.level, fragment.sn))
-                            this.client.makeFragment(fragment.level, fragment.sn, fragment);
-                        index++;
-                    }
+                mediaInfo.representations.forEach((rep) => {
+                    rep.processor = processor;
+                    this.extractFragments(rep);    
                 });
             })
 
             let max = 0;
             let maxLevel = null;
-            
+
             // Get best quality but within screen resolution
-            this.levels.forEach((level, key)=>{
+            this.levels.forEach((level, key) => {
                 if (level.bitrate > max) {
                     if (level.width > window.innerWidth * window.devicePixelRatio * 2 || level.height > window.innerHeight * window.devicePixelRatio * 2) return;
                     max = level.bitrate;
@@ -82,6 +64,11 @@ export class DashPlayer extends EventEmitter {
             this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel, this.currentAudioLevel);
         })
 
+        this.dash.on("dataUpdateCompleted",(a)=>{
+            const representation = a.currentRepresentation
+            this.extractFragments(representation);
+        })
+
         // for (let eventName in dashjs.MediaPlayer.events) {
         //     let event = dashjs.MediaPlayer.events[eventName];
         //     let test = (() => {
@@ -90,7 +77,37 @@ export class DashPlayer extends EventEmitter {
         //         });
         //     })(event)
         // }
-        this.dash.extend("XHRLoader", DASHLoaderFactory(this) , false)
+        this.dash.extend("XHRLoader", DASHLoaderFactory(this), false)
+    }
+
+    extractFragments(rep) {
+        const processor = rep.processor;
+        const mediaInfo = processor.getMediaInfo();
+        const segmentsController = processor.getSegmentsController();
+        const dashHandler = processor.getDashHandler();
+        let index = 0;
+        if (rep.hasInitialization()) {
+            const init = dashHandler.getInitRequest(mediaInfo, rep);
+            if (init) {
+                init.level = mediaInfo.index + ":" + rep.index;
+                init.index = -1;
+                init.startTime = init.duration = 0;
+                if (!this.client.getFragment(init.level, -1))
+                    this.client.makeFragment(init.level, -1, new DashFragment(init));
+            }
+        }
+        if (rep.hasSegments() || rep.segments) {
+            while (true) {
+                let segment = segmentsController.getSegmentByIndex(rep, index, -1);
+                if (!segment || segment.index !== index) break;
+                const request = dashHandler._getRequestForSegment(mediaInfo, segment)
+                request.level = mediaInfo.index + ":" + rep.index;
+                const fragment = new DashFragment(request);
+                if (!this.client.getFragment(fragment.level, fragment.sn))
+                    this.client.makeFragment(fragment.level, fragment.sn, fragment);
+                index++;
+            }
+        }
     }
 
 
@@ -171,14 +188,14 @@ export class DashPlayer extends EventEmitter {
 
 
     get levels() {
-        const mediaInfo = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "video")?.getMediaInfo();
+        const mediaInfo = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "video")?.getMediaInfo();
         if (!mediaInfo) {
             return new Map();
         }
 
         let result = new Map();
 
-        mediaInfo.representations.map(rep=>{
+        mediaInfo.representations.map(rep => {
             result.set(mediaInfo.index + ":" + rep.index, {
                 bitrate: rep.bandwidth,
                 height: rep.height,
@@ -191,7 +208,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     get currentLevel() {
-        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "video");
+        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "video");
         if (!processor) {
             return -1;
         }
@@ -204,7 +221,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     get currentAudioLevel() {
-        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "audio");
+        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "audio");
         if (!processor) {
             return -1;
         }
@@ -224,7 +241,7 @@ export class DashPlayer extends EventEmitter {
         let frags = this.client.fragments;
         if (!frags) return null;
 
-        let index = Utils.binarySearch(frags, this.currentTime, (time, frag)=>{
+        let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
             if (time < frag.start) return -1;
             if (time >= frag.end) return 1;
             return 0;
@@ -239,7 +256,7 @@ export class DashPlayer extends EventEmitter {
         let frags = this.client.audioFragments;
         if (!frags) return null;
 
-        let index = Utils.binarySearch(frags, this.currentTime, (time, frag)=>{
+        let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
             if (time < frag.start) return -1;
             if (time >= frag.end) return 1;
             return 0;
@@ -251,7 +268,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     canSave() {
-        
+
         let obj = {
             canSave: false,
             isComplete: false

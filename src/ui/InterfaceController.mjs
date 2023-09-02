@@ -18,6 +18,7 @@ export class InterfaceController {
         this.playbackRate = 10;
 
         this.hasShownSkip = false;
+        this.failed = false;
         this.setupDOM();
     }
     reset() {
@@ -27,6 +28,7 @@ export class InterfaceController {
         DOMElements.progressLoadedContainer.innerHTML = "";
         DOMElements.downloadStatus.textContent = "";
         this.hasShownSkip = false;
+        this.failed = false;
         this.reuseDownloadURL = false;
         if (this.downloadURL) {
             URL.revokeObjectURL(this.downloadURL);
@@ -35,7 +37,16 @@ export class InterfaceController {
         this.stopProgressLoop();
     }
 
+    failedToLoad(reason) {
+        this.failed = true;
+        DOMElements.downloadStatus.textContent = reason;
+        this.setBuffering(false);
+    }
     setBuffering(isBuffering) {
+        if (this.failed) {
+            isBuffering = false;
+        }
+
         if (this.persistent.buffering === isBuffering) {
             return;
         }
@@ -148,10 +159,10 @@ export class InterfaceController {
 
         if (!this.makingDownload) {
             if (percentDone < 100) {
-                DOMElements.downloadStatus.textContent = `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`;
+                this.setDownloadStatus(`${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`);
             } else {
                 if (DOMElements.downloadStatus.textContent != "Save complete")
-                    DOMElements.downloadStatus.textContent = `100% Downloaded`;
+                    this.setDownloadStatus(`100% Downloaded`);
             }
         }
     }
@@ -222,10 +233,10 @@ export class InterfaceController {
         })
 
         const welcomeText = 'Welcome to FastStream v' + chrome.runtime.getManifest().version + "!";
-        DOMElements.downloadStatus.textContent = welcomeText;
+        this.setDownloadStatus(welcomeText);
         setTimeout(() => {
             if (DOMElements.downloadStatus.textContent == welcomeText)
-                DOMElements.downloadStatus.textContent = "";
+                this.setDownloadStatus("");
         }, 3000);
         this.setupRateChanger();
     }
@@ -361,6 +372,11 @@ export class InterfaceController {
         this.shouldRunProgressLoop = false;
     }
 
+    setDownloadStatus(text) {
+        if (this.failed) return;
+        DOMElements.downloadStatus.textContent = text;
+    }
+
     async downloadMovie() {
 
         if (!this.client.player) {
@@ -401,21 +417,21 @@ export class InterfaceController {
             this.reuseDownloadURL = isComplete;
             let result;
             this.makingDownload = true;
-            DOMElements.downloadStatus.textContent = `Making download...`;
+            this.setDownloadStatus(`Making download...`);
             try {
                 result = await player.getSaveBlob({
                     onProgress: (progress) => {
-                        DOMElements.downloadStatus.textContent = `Saving ${Math.round(progress * 100)}%`;
+                        this.setDownloadStatus(`Saving ${Math.round(progress * 100)}%`);
                     }
                 });
             } catch (e) {
                 console.error(e);
                 alert("Failed to save video!");
-                DOMElements.downloadStatus.textContent = `Save Failed`;
+                this.setDownloadStatus(`Save Failed`);
                 this.makingDownload = false;
                 return;
             }
-            DOMElements.downloadStatus.textContent = `Save complete`;
+            this.setDownloadStatus(`Save complete`);
             this.makingDownload = false;
             if (this.downloadURL) {
                 URL.revokeObjectURL(this.downloadURL);
@@ -433,7 +449,7 @@ export class InterfaceController {
                     this.reuseDownloadURL = false;
                 }
 
-                DOMElements.downloadStatus.textContent = "";
+                this.setDownloadStatus("");
 
                 this.updateFragmentsLoaded();
             }, 20000);

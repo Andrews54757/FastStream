@@ -22,6 +22,11 @@ export function DASHLoaderFactory(player) {
 
         function loadFragmentInternal(httpRequest) {
             try {
+                if (!httpRequest.request.mediaInfo) {
+                   // console.error("No mediainfo", httpRequest.request);
+                    request(httpRequest);
+                    return;
+                }
                 const trackIndex = httpRequest.request.mediaInfo.index;
                 const qualityIndex = httpRequest.request.quality;
                 let segmentIndex = httpRequest.request.index;
@@ -30,7 +35,15 @@ export function DASHLoaderFactory(player) {
                     segmentIndex = -1;
                 }
 
-                httpRequest._loader = player.fragmentRequester.requestFragment(player.client.getFragment(trackIndex + ":" + qualityIndex, segmentIndex), {
+                const frag = player.client.getFragment(trackIndex + ":" + qualityIndex, segmentIndex);
+                if (!frag) {
+                   //console.error("Fragment not found", httpRequest.request);
+                    request(httpRequest);
+                    return;
+                }
+
+              // console.log("frag found", frag, httpRequest.request)
+                httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
                     onSuccess: (entry, data) => {
                         httpRequest.onSuccess(data, entry.responseURL);
                     },
@@ -54,13 +67,13 @@ export function DASHLoaderFactory(player) {
             // Variables will be used in the callback functions
             const request = httpRequest.request;
 
-            const rangeStart = undefined;
-            const rangeEnd = undefined;
+            let rangeStart = undefined;
+            let rangeEnd = undefined;
 
             if (request.range && request.range.indexOf('-') > -1) {
                 const range = request.range.split('-');
                 rangeStart = parseInt(range[0], 10);
-                rangeEnd = parseInt(range[1], 10);
+                rangeEnd = parseInt(range[1], 10) + 1;
             }
 
             const context = {

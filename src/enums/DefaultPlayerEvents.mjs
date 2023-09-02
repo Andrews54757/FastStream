@@ -113,5 +113,10 @@ export const DefaultPlayerEvents = {
    * @param {number} suggestedLevel - The suggested level to load
    */
   MANIFEST_PARSED: "manifestparsed",
-  DESTROYED: "destroyed"
+  DESTROYED: "destroyed",
+
+  /**
+   * Failed to load video
+   */
+  ERROR: "error",
 }

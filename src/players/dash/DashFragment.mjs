@@ -14,7 +14,7 @@ export class DashFragment extends Fragment {
         let rangeEnd = undefined;
         if (this.request.range && this.request.range.indexOf('-') > -1) {
             rangeStart = parseInt(this.request.range.split('-')[0]);
-            rangeEnd = parseInt(this.request.range.split('-')[1]);
+            rangeEnd = parseInt(this.request.range.split('-')[1]) + 1;
         }
         return {
             url: this.request.url,

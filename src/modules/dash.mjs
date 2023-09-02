@@ -37259,7 +37259,7 @@ let dash;
                 }
               });
 
-              eventBus.trigger("initComplete", {
+              eventBus.trigger("initialInit", {
                 streamProcessors
               });
 
