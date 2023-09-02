@@ -730,7 +730,6 @@ export class MP4 {
             view.setUint32(offset, 1 << 16);
             offset += 4;
         }
-
         return MP4.box(MP4.types.elst, new Uint8Array(entries));
     }
     static edts(track) {

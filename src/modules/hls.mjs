@@ -13011,6 +13011,7 @@ class MP4Remuxer {
       hasAudio: false,
       hasVideo: true,
       nb: outputSamples.length,
+      outputSamples,
       dropped: track.dropped
     };
     track.samples = [];
@@ -13222,7 +13223,8 @@ class MP4Remuxer {
       type,
       hasAudio: true,
       hasVideo: false,
-      nb: nbSamples
+      nb: nbSamples,
+      outputSamples
     };
     this.isAudioContiguous = true;
     return audioData;
@@ -16610,6 +16612,8 @@ class AudioStreamController extends BaseStreamController {
     this.bufferFlushed = false;
     this.cachedTrackLoadedData = null;
     this._registerListeners();
+
+    console.log('audio stream controller created', this);
   }
   onHandlerDestroying() {
     this._unregisterListeners();
@@ -25778,5 +25782,5 @@ export class Hls {
   }
 }
 Hls.defaultConfig = void 0;
-
+Hls.Muxers = {TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer}
 //# sourceMappingURL=hls.mjs.map

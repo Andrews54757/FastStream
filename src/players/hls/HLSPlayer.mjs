@@ -114,15 +114,57 @@ export class HLSPlayer extends EventEmitter {
             }
         })
         let frags = [];
-        this.client.getFragments(this.currentLevel).map((f) => {
-            if (f.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+        const fragments = this.client.getFragments(this.currentLevel) || [];
+        const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
+
+        let fragIndex = 0;
+        let audioFragIndex = 0;
+
+        for (let i = 0; i < fragments.length + audioFragments.length; i++) {
+            let frag = fragments[fragIndex];
+            let audioFrag = audioFragments[audioFragIndex];
+
+            if (frag && audioFrag) {
+                if (frag.start < audioFrag.start) {
+                    frags.push({
+                        type: 0,
+                        fragment: frag,
+                        entry: this.client.downloadManager.getEntry(frag.getContext())
+                    });
+                    fragIndex++;
+                } else {
+                    frags.push({
+                        type: 1,
+                        fragment: audioFrag,
+                        entry: this.client.downloadManager.getEntry(audioFrag.getContext())
+                    });
+                    audioFragIndex++;
+                }
+            } else if (frag) {
                 frags.push({
-                    fragment: f,
-                    entry: this.client.downloadManager.getEntry(f.getContext())
+                    type: 0,
+                    fragment: frag,
+                    entry: this.client.downloadManager.getEntry(frag.getContext())
                 });
+                fragIndex++;
+            } else if (audioFrag) {
+                frags.push({
+                    type: 1,
+                    fragment: audioFrag,
+                    entry: this.client.downloadManager.getEntry(audioFrag.getContext())
+                });
+                audioFragIndex++;
             }
-        })
-        let blob = await hls2mp4.convert(this.hls.levels[this.getIndexes(this.currentLevel).levelID], frags);
+        }
+
+        frags = frags.filter((frag) => {
+            return frag.fragment.status === DownloadStatus.DOWNLOAD_COMPLETE;
+        });
+
+        const level = this.hls.levels[this.getIndexes(this.currentLevel).levelID];
+        const audioLevel = this.hls.audioTracks[this.hls.audioTrack];
+        
+        let blob = await hls2mp4.convert(level, audioLevel, frags);
 
         return {
             extension: "mp4",

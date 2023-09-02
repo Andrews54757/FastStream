@@ -1,11 +1,19 @@
-import { TSDemuxer, MP4Remuxer } from "./hls_mux.mjs";
+import { Hls } from "../hls.mjs";
+const { TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer } = Hls.Muxers;
 
-const muxConfig = [
-    //  { demux: MP4Demuxer, remux: PassThroughRemuxer },
-    { demux: TSDemuxer, remux: MP4Remuxer },
-    // { demux: AACDemuxer, remux: MP4Remuxer },
-    // { demux: MP3Demuxer, remux: MP4Remuxer },
-];
+const muxConfig = [{
+    demux: MP4Demuxer,
+    remux: PassThroughRemuxer
+  }, {
+    demux: TSDemuxer,
+    remux: MP4Remuxer
+  }, {
+    demux: AACDemuxer,
+    remux: MP4Remuxer
+  }, {
+    demux: MP3Demuxer,
+    remux: MP4Remuxer
+  }];
 export default class Transmuxer {
     constructor(transmuxConfig) {
         this.typeSupported = {
@@ -32,7 +40,7 @@ export default class Transmuxer {
             }
         })
 
-        this.vendor = "FastStream"
+        this.vendor = "AJS/FastStream"
 
         this.transmuxConfig = {
             audioCodec: null,
@@ -42,8 +50,6 @@ export default class Transmuxer {
             defaultInitPts: null,
             ...transmuxConfig
         }
-        this.remuxer = new MP4Remuxer(this.observer, this.config, this.typeSupported, "AJS/FastStream");
-        this.demuxer = new TSDemuxer(this.observer, this.config, this.typeSupported);
     }
 
     get observer() {
@@ -54,8 +60,46 @@ export default class Transmuxer {
         };
     }
 
+    configureTransmuxer(data) {
+        const {
+          config,
+          observer,
+          typeSupported,
+          vendor
+        } = this;
+        // probe for content type
+        let mux;
+        for (let i = 0, len = muxConfig.length; i < len; i++) {
+          if (muxConfig[i].demux.probe(data)) {
+            mux = muxConfig[i];
+            break;
+          }
+        }
+        if (!mux) {
+          return new Error('Failed to find demuxer by probing fragment data');
+        }
+        console.log("Probe result:", mux)
+        // so let's check that current remuxer and demuxer are still valid
+        const demuxer = this.demuxer;
+        const remuxer = this.remuxer;
+        const Remuxer = mux.remux;
+        const Demuxer = mux.demux;
+        if (!remuxer || !(remuxer instanceof Remuxer)) {
+          this.remuxer = new Remuxer(observer, config, typeSupported, vendor);
+        }
+        if (!demuxer || !(demuxer instanceof Demuxer)) {
+          this.demuxer = new Demuxer(observer, config, typeSupported);
+          this.probe = Demuxer.probe;
+        }
+      }
+
     pushData(data, discontinuity) {
         let uintData = new Uint8Array(data);
+
+        if (!this.demuxer || !this.remuxer) {
+            this.configureTransmuxer(uintData);
+        }
+        
         const { transmuxConfig } = this;
         const { audioCodec, videoCodec, defaultInitPts, duration, initSegmentData, } = transmuxConfig;
 
@@ -67,6 +111,8 @@ export default class Transmuxer {
         let result = this.demux(uintData);
 
         let remuxed = this.remux(result.videoTrack, result.audioTrack, result.minPTS);
+        remuxed.videoTrack = result.videoTrack;
+        remuxed.audioTrack = result.audioTrack;
         return remuxed;
     }
 

@@ -41,7 +41,7 @@ export class HLS2MP4 extends EventEmitter {
         if (result.video) {
             if (!this.videoTrack) {
                 this.videoTrack = {
-                    ...result.video.track,
+                    ...result.videoTrack,
                     samples: [],
                     chunks: [],
                     use64Offsets: false,
@@ -50,7 +50,7 @@ export class HLS2MP4 extends EventEmitter {
                 }
             }
 
-            result.video.track.pps.forEach((pps) => {
+            result.videoTrack.pps.forEach((pps) => {
                 if (!this.videoTrack.pps.find((p) => {
                     return this.arrayEquals(p, pps);
                 })) {
@@ -58,7 +58,7 @@ export class HLS2MP4 extends EventEmitter {
                 }
             });
 
-            result.video.track.sps.forEach((sps) => {
+            result.videoTrack.sps.forEach((sps) => {
                 if (!this.videoTrack.sps.find((s) => {
                     return this.arrayEquals(s, sps);
                 })) {
@@ -71,22 +71,22 @@ export class HLS2MP4 extends EventEmitter {
                 samples: result.video.outputSamples,
                 offset: this.datasOffset + headerLen,
                 originalOffset: this.datasOffset + headerLen,
-                startDTS: result.video.startDTS,
-                endDTS: result.video.endDTS,
-                startPTS: result.video.startPTS,
-                endPTS: result.video.endPTS,
+                startDTS: result.video.startDTS * this.videoTrack.inputTimeScale,
+                endDTS: result.video.endDTS * this.videoTrack.inputTimeScale,
+                startPTS: result.video.startPTS * this.videoTrack.inputTimeScale,
+                endPTS: result.video.endPTS * this.videoTrack.inputTimeScale,
             });
-            let blob = new Blob([result.video.mdat], {
+            let blob = new Blob([result.video.data2], {
                 type: "video/mp4"
             })
             this.datas.push(blob);
-            this.datasOffset += result.video.mdat.byteLength;
+            this.datasOffset += result.video.data2.byteLength;
         }
 
         if (result.audio) {
             if (!this.audioTrack) {
                 this.audioTrack = {
-                    ...result.audio.track,
+                    ...result.audioTrack,
                     samples: [],
                     chunks: [],
                     use64Offsets: false,
@@ -100,24 +100,71 @@ export class HLS2MP4 extends EventEmitter {
                 samples: result.audio.outputSamples,
                 offset: this.datasOffset + headerLen,
                 originalOffset: this.datasOffset + headerLen,
-                startDTS: result.audio.startDTS,
-                endDTS: result.audio.endDTS,
-                startPTS: result.audio.startPTS,
-                endPTS: result.audio.endPTS,
+                startDTS: result.audio.startDTS * this.audioTrack.inputTimeScale,
+                endDTS: result.audio.endDTS * this.audioTrack.inputTimeScale,
+                startPTS: result.audio.startPTS * this.audioTrack.inputTimeScale,
+                endPTS: result.audio.endPTS * this.audioTrack.inputTimeScale,
             });
-            let blob = new Blob([result.audio.mdat], {
+            let blob = new Blob([result.audio.data2], {
                 type: "video/mp4"
             })
             this.datas.push(blob);
-            this.datasOffset += result.audio.mdat.byteLength;
+            this.datasOffset += result.audio.data2.byteLength;
 
         }
     }
 
-    setup(level) {
+    async pushFragmentAudio(fragData) {
+        let data = await fragData.entry.getDataFromBlob();
+        let fragment = fragData.fragment;
+        let isDiscontinuity = !this.prevFragAudio || fragment.sn !== this.prevFragAudio.fragment.sn + 1 || fragment.cc !== this.prevFragAudio.fragment.cc;
+
+        if (isDiscontinuity) {
+            console.log("discontinuity");
+        }
+        this.prevFragAudio = fragData;
+        let result = this.transmuxerAudio.pushData(new Uint8Array(data), isDiscontinuity);
+        let headerLen = 8;
+        if (result.audio) {
+            if (!this.audioTrack) {
+                this.audioTrack = {
+                    ...result.audioTrack,
+                    samples: [],
+                    chunks: [],
+                    use64Offsets: false,
+                    nextChunkId: 1,
+                    elst: []
+                }
+            }
+
+            this.audioTrack.chunks.push({
+                id: this.audioTrack.nextChunkId++,
+                samples: result.audio.outputSamples,
+                offset: this.datasOffset + headerLen,
+                originalOffset: this.datasOffset + headerLen,
+                startDTS: result.audio.startDTS * this.audioTrack.inputTimeScale,
+                endDTS: result.audio.endDTS * this.audioTrack.inputTimeScale,
+                startPTS: result.audio.startPTS * this.audioTrack.inputTimeScale,
+                endPTS: result.audio.endPTS * this.audioTrack.inputTimeScale,
+            });
+            let blob = new Blob([result.audio.data2], {
+                type: "video/mp4"
+            })
+            this.datas.push(blob);
+            this.datasOffset += result.audio.data2.byteLength;
+        }
+    }
+
+    setup(level, audioLevel) {
         if (!level.details) {
             throw new Error("level.details is null");
         }
+
+        if (audioLevel && !audioLevel.details) {
+            throw new Error("audioLevel.details is null");
+        }
+
+
         this.transmuxer = new Transmuxer({
             audioCodec: level.audioCodec,
             videoCodec: level.videoCodec,
@@ -125,7 +172,20 @@ export class HLS2MP4 extends EventEmitter {
             duration: level.details.totalduration,
             defaultInitPts: 0,
         });
+
+        if (audioLevel) {
+
+            this.transmuxerAudio = new Transmuxer({
+                videoCodec: "",
+                audioCodec: audioLevel.audioCodec,
+                initSegmentData: [],
+                duration: level.details.totalduration,
+                defaultInitPts: 0,
+            });
+        }
+
         this.prevFrag = null;
+        this.prevFragAudio = null;
         this.datas = [];
         this.datasOffset = 0;
     }
@@ -164,7 +224,7 @@ export class HLS2MP4 extends EventEmitter {
                 track.samples.push(...chunk.samples);
             });
         })
-        //  console.log(tracks)
+         console.log(tracks)
         let initSeg;
         try {
             let initSegCount = MP4.initSegment(tracks);
@@ -198,13 +258,17 @@ export class HLS2MP4 extends EventEmitter {
             type: "video/mp4"
         });
     }
-    async convert(level, fragDatas) {
+    async convert(level, audioLevel, fragDatas) {
 
 
-        this.setup(level);
+        this.setup(level, audioLevel);
 
         for (let i = 0; i < fragDatas.length; i++) {
-            await this.pushFragment(fragDatas[i]);
+            if (fragDatas[i].type === 0) {
+                await this.pushFragment(fragDatas[i]);
+            } else {
+                await this.pushFragmentAudio(fragDatas[i]);
+            }
             this.emit("progress", (i + 1) / fragDatas.length);
         }
 
@@ -216,6 +280,8 @@ export class HLS2MP4 extends EventEmitter {
 
     destroy() {
         if (this.transmuxer) this.transmuxer.destroy();
+        if (this.transmuxerAudio) this.transmuxerAudio.destroy();
+        this.transmuxerAudio = null;
         this.transmuxer = null;
         this.videoTrack = null;
         this.audioTrack = null;
