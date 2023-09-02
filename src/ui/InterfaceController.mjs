@@ -78,20 +78,11 @@ export class InterfaceController {
         DOMElements.seekPreviewVideo.appendChild(video);
     }
 
-    updateFragmentsLoaded() {
-        DOMElements.progressLoadedContainer.innerHTML = "";
-        const fragments = this.client.fragments;
-
-        if (!fragments || !this.persistent.duration) {
-            return;
-        }
-
-        let currentTime = 0;
-
-
+    renderProgressBar(fragments, additionalClass = null) {
         let i = 0;
         let total = 0;
         let loaded = 0;
+        let currentTime = 0;
         while (i < fragments.length) {
             let frag = fragments[i];
 
@@ -112,6 +103,10 @@ export class InterfaceController {
 
             let element = document.createElement("div");
             element.style.left = Math.min(start / this.persistent.duration * 100, 100) + "%";
+
+            if (additionalClass) {
+                element.classList.add(additionalClass);
+            }
 
             if (frag.status === DownloadStatus.DOWNLOAD_INITIATED) {
                 element.classList.add("download-initiated");
@@ -139,16 +134,31 @@ export class InterfaceController {
 
             DOMElements.progressLoadedContainer.appendChild(element);
         }
-
+        return {
+            i, total, loaded
+        }
+    }
+    updateFragmentsLoaded() {
+        DOMElements.progressLoadedContainer.innerHTML = "";
+        const fragments = this.client.fragments;
         let audioFragments = this.client.audioFragments;
-        if (audioFragments) {
-           audioFragments.forEach((frag) => {
-                if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-                    loaded++;
-                }
-                total++;
-           });
 
+        if (!this.persistent.duration) {
+            return;
+        }
+        let total = 0;
+        let loaded = 0;
+
+        if (fragments) {
+            let result = this.renderProgressBar(fragments, audioFragments ? "download-video" : null);
+            total += result.total;
+            loaded += result.loaded;
+        }
+
+        if (audioFragments) {
+            let result = this.renderProgressBar(audioFragments, fragments ? "download-audio" : null);
+            total += result.total;
+            loaded += result.loaded;
         }
 
         let percentDone = Math.round((loaded / total) * 1000) / 10;

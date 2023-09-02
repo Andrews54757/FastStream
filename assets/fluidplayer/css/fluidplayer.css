@@ -1459,6 +1459,15 @@ body {
     bottom: 0px;
 }
 
+.progress_loaded_container>div.download-audio {
+    top: auto;
+    height: 1px;
+}
+
+.progress_loaded_container>div.download-video {
+    bottom: 1px;
+}
+
 .progress_loaded_container>div.download-initiated {
     background-color: rgba(100, 255, 100, 0.3);
 }
@@ -1470,6 +1479,7 @@ body {
 .progress_loaded_container>div.download-failed {
     background-color: rgba(255, 100, 100, 1);
 }
+
 
 .subtitles_menu {
 
