@@ -78,7 +78,6 @@ export default class Transmuxer {
         if (!mux) {
           return new Error('Failed to find demuxer by probing fragment data');
         }
-        console.log("Probe result:", mux)
         // so let's check that current remuxer and demuxer are still valid
         const demuxer = this.demuxer;
         const remuxer = this.remuxer;

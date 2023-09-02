@@ -16612,8 +16612,6 @@ class AudioStreamController extends BaseStreamController {
     this.bufferFlushed = false;
     this.cachedTrackLoadedData = null;
     this._registerListeners();
-
-    console.log('audio stream controller created', this);
   }
   onHandlerDestroying() {
     this._unregisterListeners();
