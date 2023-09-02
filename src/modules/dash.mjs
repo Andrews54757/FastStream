@@ -29715,6 +29715,7 @@ let dash;
                 break;
               }
               segments.push(segment);
+              index++;
             }
             return segment;
           }
@@ -29978,6 +29979,7 @@ let dash;
                 break;
               }
               segments.push(segment);
+              index++;
             }
             return segment;
           }
@@ -30368,6 +30370,7 @@ let dash;
                 break;
               }
               segments.push(segment);
+              index++;
             }
             return segment;
           }
