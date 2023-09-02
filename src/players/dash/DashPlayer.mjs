@@ -1,6 +1,8 @@
 import { DefaultPlayerEvents } from "../../enums/DefaultPlayerEvents.mjs";
+import { DownloadStatus } from "../../enums/DownloadStatus.mjs";
 import { DashJS } from "../../modules/dash.mjs";
 import { EmitterRelay, EventEmitter } from "../../modules/eventemitter.mjs";
+import { BlobManager } from "../../utils/BlobManager.mjs";
 import { Utils } from "../../utils/Utils.mjs";
 import { DashFragment } from "./DashFragment.mjs";
 import { DashFragmentRequester } from "./DashFragmentRequester.mjs";
@@ -249,11 +251,40 @@ export class DashPlayer extends EventEmitter {
     }
 
     canSave() {
-
-
-        return {
+        
+        let obj = {
             canSave: false,
             isComplete: false
+        }
+        let incomplete = false;
+        let frags = this.client.fragments || [];
+        for (let i = -1; i < frags.length; i++) {
+            if (frags[i] && frags[i].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+                incomplete = true;
+                break;
+            }
+        }
+
+        frags = this.client.audioFragments || [];
+        for (let i = -1; i < frags.length; i++) {
+            if (frags[i] && frags[i].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+                incomplete = true;
+                break;
+            }
+        }
+
+        obj.isComplete = !incomplete;
+        return obj;
+    }
+
+    async getSaveBlob(options) {
+        let data = [];
+        let videoFrags = this.client.fragments || [];
+        let audioFrags = this.client.audioFragments || [];
+
+        return {
+            extension: "mp4",
+            blob: BlobManager.createBlob(data, "video/mp4")
         }
     }
 
