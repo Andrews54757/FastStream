@@ -410,6 +410,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     failedToLoad(reason) {
+        this.downloadManager.removeAllDownloaders()
         this.interfaceController.failedToLoad(reason);
     }
 
@@ -510,7 +511,7 @@ export class FastStreamClient extends EventEmitter {
 
         this.context.on(DefaultPlayerEvents.ERROR, (event) => {
             console.log("ERROR", event)
-            this.interfaceController.failedToLoad("Failed to load video")
+            this.failedToLoad("Failed to load video")
         });
 
         this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {

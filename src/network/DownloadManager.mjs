@@ -131,6 +131,14 @@ export class DownloadManager {
 
         downloader.abort();
     }
+
+    removeAllDownloaders() {
+        this.testing = false;
+        this.downloaders.forEach((downloader) => {
+            downloader.abort();
+        });
+        this.downloaders.length = 0;
+    }
     onDownloaderFinished(downloader, entry) {
 
         if (this.testing) {

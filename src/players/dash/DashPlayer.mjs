@@ -39,7 +39,8 @@ export class DashPlayer extends EventEmitter {
             }
         });
 
-        this.dash.on("public_keyError",(e)=>{
+
+        this.dash.on("needkey",(e)=>{
             this.client.failedToLoad("Failed to load! DRM not supported!")
         })
         let initAlready = false;
@@ -74,8 +75,8 @@ export class DashPlayer extends EventEmitter {
             this.extractFragments(representation);
         })
 
-        // for (let eventName in dashjs.MediaPlayer.events) {
-        //     let event = dashjs.MediaPlayer.events[eventName];
+        // for (let eventName in dashjs.Protection.events) {
+        //     let event = dashjs.Protection.events[eventName];
         //     let test = (() => {
         //         this.dash.on(event, (e) => {
         //             console.log(event, e,  this.dash.getTracksFor("audio"))
