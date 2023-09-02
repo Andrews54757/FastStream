@@ -40,6 +40,7 @@ export class DashPlayer extends EventEmitter {
         });
 
         this.dash.on("initialInit", (a) => {
+            console.log("initialInit", a)
             a.streamProcessors.forEach((processor) => {
                 const mediaInfo = processor.getMediaInfo();
                 mediaInfo.representations.forEach((rep) => {
@@ -81,7 +82,9 @@ export class DashPlayer extends EventEmitter {
     }
 
     extractFragments(rep) {
+    //    console.log("extracting fragments", rep)
         const processor = rep.processor;
+        const streamIndex = processor.getStreamInfo().index;
         const mediaInfo = processor.getMediaInfo();
         const segmentsController = processor.getSegmentsController();
         const dashHandler = processor.getDashHandler();
@@ -89,7 +92,7 @@ export class DashPlayer extends EventEmitter {
         if (rep.hasInitialization()) {
             const init = dashHandler.getInitRequest(mediaInfo, rep);
             if (init) {
-                init.level = mediaInfo.index + ":" + rep.index;
+                init.level = this.getLevelIdentifier(streamIndex, mediaInfo.index, rep.index);
                 init.index = -1;
                 init.startTime = init.duration = 0;
                 if (!this.client.getFragment(init.level, -1))
@@ -100,7 +103,7 @@ export class DashPlayer extends EventEmitter {
             let segments = segmentsController.getAllSegments(rep);
             segments.forEach((segment) => {
                 const request = dashHandler._getRequestForSegment(mediaInfo, segment)
-                request.level = mediaInfo.index + ":" + rep.index;
+                request.level = this.getLevelIdentifier(streamIndex, mediaInfo.index, rep.index);
                 const fragment = new DashFragment(request);
                 if (!this.client.getFragment(fragment.level, fragment.sn))
                     this.client.makeFragment(fragment.level, fragment.sn, fragment);
@@ -109,6 +112,18 @@ export class DashPlayer extends EventEmitter {
     }
 
 
+    getLevelIdentifier(streamIndex, mediaIndex, repIndex) {
+        return streamIndex + ":" + mediaIndex + ":" + repIndex;
+    }
+
+    getLevelIndexes(identifier) {
+        let indexes = identifier.split(":");
+        return {
+            streamIndex: parseInt(indexes[0]),
+            mediaIndex: parseInt(indexes[1]),
+            repIndex: parseInt(indexes[2])
+        }
+    }
     load() {
 
     }
@@ -169,7 +184,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     set currentTime(value) {
-       // this.video.currentTime = value;
+        this.video.currentTime = value;
        this.dash.seek(value);
     }
 
@@ -187,15 +202,15 @@ export class DashPlayer extends EventEmitter {
 
 
     get levels() {
-        const mediaInfo = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "video")?.getMediaInfo();
-        if (!mediaInfo) {
+        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "video");
+        if (!processor) {
             return new Map();
         }
 
         let result = new Map();
 
-        mediaInfo.representations.map(rep => {
-            result.set(mediaInfo.index + ":" + rep.index, {
+        processor.getMediaInfo().representations.map(rep => {
+            result.set(this.getLevelIdentifier(processor.getStreamInfo().index, processor.getMediaInfo().index, rep.index), {
                 bitrate: rep.bandwidth,
                 height: rep.height,
                 width: rep.width
@@ -207,37 +222,36 @@ export class DashPlayer extends EventEmitter {
     }
 
     get currentLevel() {
-        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "video");
+        const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find(o => o.getType() === "video");
         if (!processor) {
             return -1;
         }
-
-        return processor.getMediaInfo().index + ":" + processor.getRepresentationController().getCurrentRepresentation().index;
+        return this.getLevelIdentifier(processor.getStreamInfo().index , processor.getMediaInfo().index , processor.getRepresentationController().getCurrentRepresentation().index);
     }
 
     set currentLevel(value) {
-        this.dash.setQualityFor("video", parseInt(value.split(":")[1]));
+        this.dash.setQualityFor("video", parseInt(this.getLevelIndexes(value).repIndex));
     }
 
     get currentAudioLevel() {
-        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o => o.getType() == "audio");
+        const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find(o => o.getType() === "audio");
         if (!processor) {
             return -1;
         }
-
-        return processor.getMediaInfo().index + ":" + processor.getRepresentationController().getCurrentRepresentation().index;
+        return this.getLevelIdentifier(processor.getStreamInfo().index , processor.getMediaInfo().index , processor.getRepresentationController().getCurrentRepresentation().index);
     }
 
     set currentAudioLevel(value) {
-        this.dash.setQualityFor("audio", parseInt(value.split(":")[1]));
+        this.dash.setQualityFor("audio", parseInt(this.getLevelIndexes(value).repIndex));
     }
+
     get duration() {
         return this.video.duration
     }
 
 
     get currentFragment() {
-        let frags = this.client.fragments;
+        let frags = this.client.getFragments(this.currentLevel)
         if (!frags) return null;
 
         let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
@@ -252,7 +266,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     get currentAudioFragment() {
-        let frags = this.client.audioFragments;
+        let frags = this.client.getFragments(this.currentAudioLevel)
         if (!frags) return null;
 
         let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {

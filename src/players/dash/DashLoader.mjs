@@ -30,12 +30,15 @@ export function DASHLoaderFactory(player) {
                 const trackIndex = httpRequest.request.mediaInfo.index;
                 const qualityIndex = httpRequest.request.quality;
                 let segmentIndex = httpRequest.request.index;
+                const streamLevel = httpRequest.request.mediaInfo.streamInfo.index;
 
                 if (httpRequest.request.type === "InitializationSegment") {
                     segmentIndex = -1;
                 }
 
-                const frag = player.client.getFragment(trackIndex + ":" + qualityIndex, segmentIndex);
+
+                const identifier = player.getLevelIdentifier(streamLevel, trackIndex, qualityIndex);
+                const frag = player.client.getFragment(httpRequest.requ, identifier, segmentIndex);
                 if (!frag) {
                    //console.error("Fragment not found", httpRequest.request);
                     request(httpRequest);

@@ -611,7 +611,7 @@ export class FastStreamClient extends EventEmitter {
 
             this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
                 console.log("Preview player error", e);
-                
+
             });
         }
 
