@@ -44,7 +44,7 @@ export class DashPlayer extends EventEmitter {
                 const mediaInfo = processor.getMediaInfo();
                 mediaInfo.representations.forEach((rep) => {
                     rep.processor = processor;
-                    this.extractFragments(rep);    
+                    this.extractFragments(rep);
                 });
             })
 
@@ -64,7 +64,7 @@ export class DashPlayer extends EventEmitter {
             this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel, this.currentAudioLevel);
         })
 
-        this.dash.on("dataUpdateCompleted",(a)=>{
+        this.dash.on("dataUpdateCompleted", (a) => {
             const representation = a.currentRepresentation
             this.extractFragments(representation);
         })
@@ -81,6 +81,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     extractFragments(rep) {
+        console.log(rep)
         const processor = rep.processor;
         const mediaInfo = processor.getMediaInfo();
         const segmentsController = processor.getSegmentsController();
@@ -97,16 +98,15 @@ export class DashPlayer extends EventEmitter {
             }
         }
         if (rep.hasSegments() || rep.segments) {
-            while (true) {
-                let segment = segmentsController.getSegmentByIndex(rep, index, -1);
-                if (!segment || segment.index !== index) break;
+            let segments = segmentsController.getAllSegments(rep);
+            console.log(segments)
+            segments.forEach((segment) => {
                 const request = dashHandler._getRequestForSegment(mediaInfo, segment)
                 request.level = mediaInfo.index + ":" + rep.index;
                 const fragment = new DashFragment(request);
                 if (!this.client.getFragment(fragment.level, fragment.sn))
                     this.client.makeFragment(fragment.level, fragment.sn, fragment);
-                index++;
-            }
+            });
         }
     }
 

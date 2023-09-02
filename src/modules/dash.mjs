@@ -26364,6 +26364,11 @@ let dash;
             return representation ? representation.segments ? getters[dashConstants.SEGMENT_BASE] : getters[representation.segmentInfoType] : null;
           }
 
+          function getAllSegments(representation) {
+            var getter = getSegmentsGetter(representation);
+            return getter ? getter.getAllSegments(representation) : null;
+          }
+
           function getSegmentByIndex(representation, index, lastSegmentTime) {
             var getter = getSegmentsGetter(representation);
             return getter ? getter.getSegmentByIndex(representation, index, lastSegmentTime) : null;
@@ -26388,6 +26393,7 @@ let dash;
             updateSegmentData: updateSegmentData,
             getSegmentByIndex: getSegmentByIndex,
             getSegmentByTime: getSegmentByTime,
+            getAllSegments: getAllSegments,
             getMediaFinishedInformation: getMediaFinishedInformation
           };
           setup();
@@ -29699,6 +29705,20 @@ let dash;
             return segment;
           }
 
+          function getAllSegments(representation) {
+            checkConfig();
+            let index = 0;
+            let segments = [];
+            while (true) {
+              let segment = getSegmentByIndex(representation, index);
+              if (!segment || segment.index !== index) {
+                break;
+              }
+              segments.push(segment);
+            }
+            return segment;
+          }
+
           function getSegmentByTime(representation, requestedTime) {
             checkConfig();
 
@@ -29720,6 +29740,7 @@ let dash;
           instance = {
             getSegmentByIndex: getSegmentByIndex,
             getSegmentByTime: getSegmentByTime,
+            getAllSegments: getAllSegments,
             getMediaFinishedInformation: getMediaFinishedInformation
           };
           return instance;
@@ -29947,6 +29968,20 @@ let dash;
             return null;
           }
 
+          function getAllSegments(representation) {
+            checkConfig();
+            let index = 0;
+            let segments = [];
+            while (true) {
+              let segment = getSegmentByIndex(representation, index);
+              if (!segment || segment.index !== index) {
+                break;
+              }
+              segments.push(segment);
+            }
+            return segment;
+          }
+
           function getSegmentByTime(representation, requestedTime) {
             checkConfig();
             var index = getIndexByTime(representation, requestedTime);
@@ -29983,6 +30018,7 @@ let dash;
           instance = {
             getSegmentByIndex: getSegmentByIndex,
             getSegmentByTime: getSegmentByTime,
+            getAllSegments: getAllSegments,
             getMediaFinishedInformation: getMediaFinishedInformation
           };
           return instance;
@@ -30322,6 +30358,20 @@ let dash;
             return seg;
           }
 
+          function getAllSegments(representation) {
+            checkConfig();
+            let index = 0;
+            let segments = [];
+            while (true) {
+              let segment = getSegmentByIndex(representation, index);
+              if (!segment || segment.index !== index) {
+                break;
+              }
+              segments.push(segment);
+            }
+            return segment;
+          }
+
           function getSegmentByTime(representation, requestedTime) {
             checkConfig();
 
@@ -30344,6 +30394,7 @@ let dash;
           instance = {
             getSegmentByIndex: getSegmentByIndex,
             getSegmentByTime: getSegmentByTime,
+            getAllSegments: getAllSegments,
             getMediaFinishedInformation: getMediaFinishedInformation
           };
           return instance;
@@ -30982,6 +31033,31 @@ let dash;
             return segment;
           }
 
+          function getAllSegments(representation) {
+            checkConfig();
+
+            if (!representation) {
+              return null;
+            }
+
+            var segments = [];
+            iterateSegments(representation, function (time, base, list, frag, fTimescale, relativeIdx, i) {
+
+              var media = base.media;
+              var mediaRange = frag.mediaRange;
+
+              if (list) {
+                media = list[i].media || '';
+                mediaRange = list[i].mediaRange;
+              }
+
+              var segment = Object(_SegmentsUtils__WEBPACK_IMPORTED_MODULE_2__["getTimeBasedSegment"])(timelineConverter, isDynamic, representation, time, frag.d, fTimescale, media, mediaRange, relativeIdx, frag.tManifest);
+              segments.push(segment);
+              return false;
+            });
+            return segments;
+          }
+
           function getSegmentByTime(representation, requestedTime) {
             checkConfig();
 
@@ -31026,7 +31102,8 @@ let dash;
           instance = {
             getSegmentByIndex: getSegmentByIndex,
             getSegmentByTime: getSegmentByTime,
-            getMediaFinishedInformation: getMediaFinishedInformation
+            getMediaFinishedInformation: getMediaFinishedInformation,
+            getAllSegments: getAllSegments
           };
           return instance;
         }
