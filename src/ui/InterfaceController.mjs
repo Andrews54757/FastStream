@@ -174,6 +174,10 @@ export class InterfaceController {
             loaded += result.loaded;
         }
 
+        if (total === 0) {
+            return;
+        }
+
         let percentDone = Math.round((loaded / total) * 1000) / 10;
 
         this.lastSpeed = (this.client.downloadManager.getSpeed() * 0.1 + this.lastSpeed * 0.9) || 0;
