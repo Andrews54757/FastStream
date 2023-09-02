@@ -63,6 +63,7 @@ export class XHRLoader {
 
     abortInternal() {
         const loader = this.loader;
+        this.callbacks = null;
         self.clearTimeout(this.requestTimeout);
         self.clearTimeout(this.retryTimeout);
         if (loader) {

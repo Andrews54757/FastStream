@@ -362,9 +362,9 @@ export class VideoAligner extends EventEmitter {
 
             }
 
-            if (identifier === this.currentIdentifier) {
-                this.currentSequence = sequence;
-            }
+            // if (identifier === this.currentIdentifier) {
+            //     this.currentSequence = sequence;
+            // }
 
             memory.set(identifier, {
                 identifier,

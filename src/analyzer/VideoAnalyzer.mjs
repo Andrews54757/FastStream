@@ -4,6 +4,7 @@ import { DownloadStatus } from "../enums/DownloadStatus.mjs";
 import { PlayerModes } from "../enums/PlayerModes.mjs";
 import { EventEmitter } from "../modules/eventemitter.mjs";
 import { DirectVideoPlayer } from "../players/DirectVideoPlayer.mjs";
+import { DashPlayer } from "../players/dash/DashPlayer.mjs";
 import { HLSPlayer } from "../players/hls/HLSPlayer.mjs";
 import { MP4Player } from "../players/mp4/MP4Player.mjs";
 import { VideoAligner } from "./VideoAligner.mjs";
@@ -159,8 +160,19 @@ export class VideoAnalyzer extends EventEmitter {
     destroy() {
         this.destroyPlayers();
     }
+
+    isModeSupported() {
+        let mode = this.source.mode
+        let supportedModes = [
+            PlayerModes.ACCELERATED_HLS,
+            PlayerModes.ACCELERATED_MP4,
+            PlayerModes.ACCELERATED_DASH
+        ]
+        return supportedModes.includes(mode);
+    }
+    
     shouldLoadPlayer(timeStart, timeEnd) {
-        if (this.source.mode === PlayerModes.ACCELERATED_HLS || this.source.mode === PlayerModes.ACCELERATED_MP4) {
+        if (this.isModeSupported()) {
             let fragments = this.client.fragments;
             if (!fragments || fragments.length === 0) return false;
 
@@ -185,8 +197,10 @@ export class VideoAnalyzer extends EventEmitter {
         fragments.length = 0;
     }
 
+
+
     referenceFragments(timeStart, timeEnd) {
-        if (this.source.mode !== PlayerModes.ACCELERATED_HLS && this.source.mode !== PlayerModes.ACCELERATED_MP4) {
+        if (!this.isModeSupported()) {
             return [];
         }
         let fragments = this.client.fragments;
@@ -228,6 +242,15 @@ export class VideoAnalyzer extends EventEmitter {
 
             player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
                 player.currentLevel = this.client.currentLevel;
+                player.load();
+            });
+        } else if (this.source.mode === PlayerModes.ACCELERATED_DASH) {
+            player = new DashPlayer(this.client);
+            await player.setup();
+
+            player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+                player.currentLevel = this.client.currentLevel;
+                player.currentAudioLevel = this.client.currentAudioLevel;
                 player.load();
             });
         } else if (this.source.mode === PlayerModes.DIRECT) {

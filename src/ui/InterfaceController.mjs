@@ -129,6 +129,17 @@ export class InterfaceController {
             DOMElements.progressLoadedContainer.appendChild(element);
         }
 
+        let audioFragments = this.client.audioFragments;
+        if (audioFragments) {
+           audioFragments.forEach((frag) => {
+                if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+                    loaded++;
+                }
+                total++;
+           });
+
+        }
+
         let percentDone = Math.round((loaded / total) * 1000) / 10;
 
         this.lastSpeed = (this.client.downloadManager.getSpeed() * 0.1 + this.lastSpeed * 0.9) || 0;
@@ -760,7 +771,7 @@ export class InterfaceController {
 
     }
     updateQualityLevels() {
-        if (this.persistent.levels.length <= 1) {
+        if (this.persistent.levels.size <= 1) {
             DOMElements.videoSource.style.display = "none";
             return;
         } else {
@@ -794,7 +805,11 @@ export class InterfaceController {
             DOMElements.videoSourceList.appendChild(levelelement)
         })
 
-        const current = this.persistent.levels[this.persistent.currentLevel];
+        const current = this.persistent.levels.get(this.persistent.currentLevel);
+        if (!current) {
+            console.warn("No current level");
+            return;
+        }
         const isHD = current.width >= 1280;
 
         if (isHD) {

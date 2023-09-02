@@ -37,8 +37,9 @@ export class FastStreamClient extends EventEmitter {
             latestVolume: 1,
             duration: 0,
             currentLevel: -1,
+            currentAudioLevel: -1,
             playbackRate: 1,
-            levels: []
+            levels: new Map()
         }
 
         this.interfaceController = new InterfaceController(this);
@@ -57,7 +58,7 @@ export class FastStreamClient extends EventEmitter {
         this.previewPlayer = null;
         this.saveSeek = true;
         this.seeks = [];
-        this.fragmentsStore = [];
+        this.fragmentsStore = {};
         this.mainloop();
     }
 
@@ -71,13 +72,13 @@ export class FastStreamClient extends EventEmitter {
     }
 
     resetFailed() {
-        this.fragmentsStore.forEach((level) => {
-            level.forEach((fragment) => {
+        for (let levelID in this.fragmentsStore) {
+            this.fragmentsStore[levelID].forEach((fragment) => {
                 if (fragment.status === DownloadStatus.DOWNLOAD_FAILED) {
                     fragment.status = DownloadStatus.WAITING;
                 }
             });
-        });
+        }
     }
 
     destroy() {
@@ -179,6 +180,11 @@ export class FastStreamClient extends EventEmitter {
             case PlayerModes.ACCELERATED_DASH:
                 this.player = new DashPlayer(this);
                 await this.player.setup();
+
+                this.previewPlayer = new DashPlayer(this, {
+                    isPreview: true
+                });
+                await this.previewPlayer.setup();
                 break;
         }
 
@@ -205,30 +211,54 @@ export class FastStreamClient extends EventEmitter {
             });
         }
         await this.videoAnalyzer.setSource(source);
-    //    this.subtitleSyncer.start(this.player.getCurrentVideo());
+        //    this.subtitleSyncer.start(this.player.getCurrentVideo());
     }
 
 
 
-    getNextToDownload(currentFragment) {
+    getNextToDownload() {
+        let currentFragment = this.currentFragment;
+        let audioFragment = this.currentAudioFragment;
+       
+        let nextVideo = this.getNextToDownloadTrack(currentFragment);
+        let nextAudio = this.getNextToDownloadTrack(audioFragment);
+
+
+        if (!nextVideo) {
+            return nextAudio;
+        }
+
+        if (!nextAudio) {
+            return nextVideo;
+        }
+        let diffV = Math.abs(nextVideo.start - this.persistent.currentTime);
+        let diffA = Math.abs(nextAudio.start - this.persistent.currentTime);
+
+        if (diffV < diffA) {
+            return nextVideo;
+        } else {
+            return nextAudio;
+        }
+    }
+
+    getNextToDownloadTrack(currentFragment) {
         if (!currentFragment) {
             return null;
         }
-
-        if (currentFragment.level !== this.currentLevel) {
+        
+        let fragments = this.getFragments(currentFragment.level);
+        if (!fragments) {
             return null;
         }
 
         let index = currentFragment.sn;
 
-        let nextItem = this.getNextForward(index) || this.getNextBackward(index);
+        let nextItem = this.getNextForward(fragments, index) || this.getNextBackward(fragments, index);
 
         return nextItem;
     }
 
-
-    getNextForward(index) {
-        let fragments = this.fragments;
+    getNextForward(fragments, index) {
         for (let i = index; i < fragments.length; i++) {
             let fragment = fragments[i];
             if (fragment && fragment.status === DownloadStatus.WAITING) {
@@ -238,8 +268,7 @@ export class FastStreamClient extends EventEmitter {
 
     }
 
-    getNextBackward(index) {
-        let fragments = this.fragments;
+    getNextBackward(fragments, index) {
         for (let i = index - 1; i >= 0; i--) {
             let fragment = fragments[i];
             if (fragment && fragment.status === DownloadStatus.WAITING) {
@@ -252,25 +281,26 @@ export class FastStreamClient extends EventEmitter {
         if (this.destroyed) return;
         setTimeout(this.mainloop.bind(this), 1000);
 
-        if (this.player && this.fragments && this.currentLevel !== -1) {
-            let hasDownloaded = this.predownloadFragments();
-            if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
-                this.predownloadReservedFragments();
+        if (this.player) {
+            this.predownloadFragments();
+            
+            if (!this.options.downloadAll) {
+                if (this.fragments) this.freeFragments(this.fragments);
+                if (this.audioFragments) this.freeFragments(this.audioFragments);
             }
-            if (!this.options.downloadAll)
-                this.freeFragments();
+            
             this.interfaceController.updateFragmentsLoaded();
-        }
 
-        // Detect buffering
-        if (this.player && this.persistent.playing) {
-            let time = this.currentTime;
-            if (time === this.lastTime) {
-                this.interfaceController.setBuffering(true);
-            } else {
-                this.interfaceController.setBuffering(false);
+            // Detect buffering
+            if (this.persistent.playing) {
+                let time = this.currentTime;
+                if (time === this.lastTime) {
+                    this.interfaceController.setBuffering(true);
+                } else {
+                    this.interfaceController.setBuffering(false);
+                }
+                this.lastTime = time;
             }
-            this.lastTime = time;
         }
 
         this.videoAnalyzer.update();
@@ -278,11 +308,10 @@ export class FastStreamClient extends EventEmitter {
 
     }
 
-
     predownloadFragments() {
-        let currentFragment = this.currentFragment;
-        let nextDownload = this.getNextToDownload(currentFragment);
+        let nextDownload = this.getNextToDownload();
         let hasDownloaded = false;
+        let index = 0;
         while (nextDownload) {
 
             if (nextDownload.canFree() && !this.options.downloadAll) {
@@ -301,27 +330,57 @@ export class FastStreamClient extends EventEmitter {
 
             hasDownloaded = true;
             this.player.downloadFragment(nextDownload);
-            nextDownload = this.getNextToDownload(currentFragment);
+            nextDownload = this.getNextToDownload();
+            
+            if (index++ > 10000) {
+                throw new Error("Infinite loop detected");
+            }
         }
 
+        if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
+            hasDownloaded = this.predownloadReservedFragments();
+        }
         return hasDownloaded;
     }
 
     predownloadReservedFragments() {
-        let fragments = this.fragments;
-        for (let i = 0; i < fragments.length; i++) {
-            let fragment = fragments[i];
-            if (fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree()) {
-                if (!this.downloadManager.canGetFile(fragment.getContext())) {
-                    break;
+        let fragments = this.getReservedFragments(this.fragments);
+        let audioFragments = this.getReservedFragments(this.audioFragments);
+
+        if (audioFragments.length) {
+            let currentVideoIndex = 0;
+            audioFragments.forEach((fragment) => {
+                let videoFragment = fragments[currentVideoIndex];
+                while (videoFragment && videoFragment.start < fragment.start) {
+                    currentVideoIndex++;
                 }
-                this.player.downloadFragment(fragment);
-            }
+
+                fragments.splice(currentVideoIndex, 0, fragment);
+            });
         }
+
+        let hasDownloaded = false;
+
+        fragments.every((fragment) => {
+            if (!this.downloadManager.canGetFile(fragment.getContext())) {
+                return false;
+            }
+            this.player.downloadFragment(fragment);
+            hasDownloaded = true;
+            return true;
+        });
+
+        return hasDownloaded;
     }
 
-    freeFragments() {
-        let fragments = this.fragments;
+    getReservedFragments(fragments) {
+        if (!fragments) return [];
+        return fragments.filter((fragment) => {
+            return fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree()
+        });
+    }
+
+    freeFragments(fragments) {
         for (let i = 0; i < fragments.length; i++) {
             let fragment = fragments[i];
             if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE && fragment.canFree()) {
@@ -355,7 +414,7 @@ export class FastStreamClient extends EventEmitter {
     resetPlayer() {
         this.lastTime = 0;
 
-        this.fragmentsStore.length = 0;
+        this.fragmentsStore = {};
         this.seeks.length = 0;
         if (this.context) {
             this.context.destroy();
@@ -382,8 +441,9 @@ export class FastStreamClient extends EventEmitter {
         this.subtitlesManager.clearTracks();
 
         this.persistent.currentLevel = -1;
+        this.persistent.currentAudioLevel = -1;
         this.persistent.buffering = false;
-        this.persistent.levels = [];
+        this.persistent.levels.clear();
         this.ignoreUpdateTime = false;
 
 
@@ -406,8 +466,11 @@ export class FastStreamClient extends EventEmitter {
 
 
 
-        this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel) => {
+        this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
             this.currentLevel = maxLevel;
+            if (maxAudioLevel !== undefined) {
+                this.currentAudioLevel = maxAudioLevel;
+            }
             this.player.load();
             if (this.previewPlayer) {
                 this.previewPlayer.load();
@@ -493,7 +556,7 @@ export class FastStreamClient extends EventEmitter {
         this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
 
             if (this.ignoreUpdateTime) return;
-            
+
             this.updateTime(this.currentTime)
 
             if (this.videoAnalyzer.pushFrame(this.player.getCurrentVideo()))
@@ -514,7 +577,7 @@ export class FastStreamClient extends EventEmitter {
         this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
             this.interfaceController.updateFragmentsLoaded();
         })
-        
+
         if (this.previewPlayer) {
             this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
                 if (this.persistent.currentLevel !== -1)
@@ -594,11 +657,15 @@ export class FastStreamClient extends EventEmitter {
     }
 
     get levels() {
-        return this.player?.levels || [];
+        return this.player?.levels || new Map();
     }
 
     get currentLevel() {
         return this.persistent.currentLevel;
+    }
+
+    get currentAudioLevel() {
+        return this.persistent.currentAudioLevel;
     }
 
     set currentLevel(value) {
@@ -611,18 +678,36 @@ export class FastStreamClient extends EventEmitter {
         }
         this.videoAnalyzer.setLevel(value);
 
-        if (value !== previousLevel && this.fragmentsStore[previousLevel])
+        if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
             this.fragmentsStore[previousLevel].forEach((fragment) => {
-
-                fragment.status = DownloadStatus.WAITING;
-                if (this.source.mode === PlayerModes.ACCELERATED_HLS)
-                    this.downloadManager.removeFile(fragment.getContext());
-
+                this.freeFragment(fragment);
             });
+        }
 
+        // Reset all fragments to waiting in case some have failed.
         if (this.fragmentsStore[this.persistent.currentLevel]) this.fragmentsStore[this.persistent.currentLevel].forEach((fragment) => {
             fragment.status = DownloadStatus.WAITING;
         });
+
+        if (this.fragmentsStore[this.persistent.currentAudioLevel]) this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment) => {
+            fragment.status = DownloadStatus.WAITING;
+        });
+
+        this.updateQualityLevels();
+    }
+
+    set currentAudioLevel(value) {
+        let previousLevel = this.currentAudioLevel;
+
+        this.persistent.currentAudioLevel = value;
+        this.player.currentAudioLevel = value;
+
+        if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
+            this.fragmentsStore[previousLevel].forEach((fragment) => {
+                this.freeFragment(fragment);
+            });
+        }
+
         this.updateQualityLevels();
     }
 
@@ -630,9 +715,18 @@ export class FastStreamClient extends EventEmitter {
         return this.fragmentsStore[this.currentLevel];
     }
 
+    get audioFragments() {
+        return this.fragmentsStore[this.currentAudioLevel];
+    }
+
     get currentFragment() {
         return this.player?.currentFragment || null;
     }
+
+    get currentAudioFragment() {
+        return this.player?.currentAudioFragment || null;
+    }
+
     getFragments(level) {
         return this.fragmentsStore[level];
     }

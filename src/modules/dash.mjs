@@ -23919,7 +23919,8 @@ let dash;
             isLastSegmentRequested: isLastSegmentRequested,
             reset: reset,
             getNextSegmentRequestIdempotent: getNextSegmentRequestIdempotent,
-            getValidTimeAheadOfTargetTime: getValidTimeAheadOfTargetTime
+            getValidTimeAheadOfTargetTime: getValidTimeAheadOfTargetTime,
+            _getRequestForSegment: _getRequestForSegment
           };
           setup();
           return instance;
@@ -25946,7 +25947,6 @@ let dash;
                 }
 
                 _setMediaFinishedInformation(currentRep);
-
                 _onRepresentationUpdated(currentRep);
 
                 resolve();
@@ -26068,6 +26068,7 @@ let dash;
             }
 
             if (isAllRepresentationsUpdated()) {
+             // console.log("qchange", getQualityForRepresentation(currentVoRepresentation))
               abrController.setPlaybackQuality(type, streamInfo, getQualityForRepresentation(currentVoRepresentation));
               var dvrInfo = dashMetrics.getCurrentDVRInfo(type);
 
@@ -26341,7 +26342,6 @@ let dash;
             if (hasInitialization) {
               return Promise.resolve();
             }
-
             return segmentBaseController.getSegmentBaseInitSegment({
               representation: voRepresentation,
               mediaType: type
@@ -33616,6 +33616,11 @@ let dash;
 
             logger.info('[dash.js ' + getVersion() + '] ' + 'MediaPlayer has been initialized');
           }
+
+          function getStreamController() {
+            return streamController;
+          }
+
           /**
            * Sets the MPD source and the video element to null. You can also reset the MediaPlayer by
            * calling attachSource with a new source file.
@@ -35769,6 +35774,7 @@ let dash;
             getTracksFor: getTracksFor,
             getTracksForTypeFromManifest: getTracksForTypeFromManifest,
             getCurrentTrackFor: getCurrentTrackFor,
+            getStreamController: getStreamController,
             setInitialMediaSettingsFor: setInitialMediaSettingsFor,
             getInitialMediaSettingsFor: getInitialMediaSettingsFor,
             setCurrentTrack: setCurrentTrack,
@@ -37251,6 +37257,10 @@ let dash;
                 if (mediaType !== _constants_Constants__WEBPACK_IMPORTED_MODULE_0__["default"].VIDEO || !element || element && /^VIDEO$/i.test(element.nodeName)) {
                   _initializeMediaForType(mediaType, mediaSource);
                 }
+              });
+
+              eventBus.trigger("initComplete", {
+                streamProcessors
               });
 
               _createBufferSinks(previousBufferSinks).then(function (bufferSinks) {
@@ -38899,6 +38909,7 @@ let dash;
               if (quality > maxQuality) {
                 quality = maxQuality;
               }
+              mediaInfo.representations = voRepresentations;
 
               return representationController.updateData(newRealAdaptation, voRepresentations, type, mediaInfo.isFragmented, quality);
             } else {
@@ -39197,6 +39208,13 @@ let dash;
             dashMetrics.pushPlayListTraceMetrics(time, reason);
           }
 
+          function getSegmentsController() {
+            return segmentsController;
+          }
+          
+          function getDashHandler() {
+            return dashHandler;
+          }
           instance = {
             initialize: initialize,
             getStreamId: getStreamId,
@@ -39226,7 +39244,9 @@ let dash;
             probeNextRequest: probeNextRequest,
             prepareInnerPeriodPlaybackSeeking: prepareInnerPeriodPlaybackSeeking,
             prepareOuterPeriodPlaybackSeeking: prepareOuterPeriodPlaybackSeeking,
-            reset: reset
+            reset: reset,
+            getSegmentsController: getSegmentsController,
+            getDashHandler: getDashHandler
           };
           setup();
           return instance;
@@ -55474,15 +55494,15 @@ let dash;
 
                   errHandler.error(new _vo_DashJSError__WEBPACK_IMPORTED_MODULE_4__["default"](downloadErrorToRequestTypeMap[request.type], request.url + ' is not available', {
                     request: request,
-                    response: httpRequest.response
+                    response: null
                   }));
 
                   if (config.error) {
-                    config.error(request, 'error', httpRequest.response.statusText);
+                    config.error(request, 'error', null);
                   }
 
                   if (config.complete) {
-                    config.complete(request, httpRequest.response.statusText);
+                    config.complete(request, null);
                   }
                 }
               }
@@ -55552,24 +55572,47 @@ let dash;
               logger.warn(timeoutMessage);
             };
 
+            var onFail = function onFail(entry) {
+             
+
+              onloadend();
+            }
+            
+            var onAbort = function onAbort(entry) {
+              onabort();
+              onloadend();
+            }
+
+            var onSuccess = function onSuccess(data,responseURL) {
+              handleLoaded(true);
+              if (config.success) {
+                config.success(data, "4 DONE OK", responseURL);
+              }
+
+              if (config.complete) {
+                config.complete(request, "4 DONE OK");
+              }
+
+              onloadend();
+            }
             var loader;
 
-            if (request.hasOwnProperty('availabilityTimeComplete') && request.availabilityTimeComplete === false && window.fetch && request.responseType === 'arraybuffer' && request.type === _vo_metrics_HTTPRequest__WEBPACK_IMPORTED_MODULE_2__["HTTPRequest"].MEDIA_SEGMENT_TYPE) {
-              loader = Object(_FetchLoader__WEBPACK_IMPORTED_MODULE_1__["default"])(context).create({
-                requestModifier: requestModifier,
-                lowLatencyThroughputModel: lowLatencyThroughputModel,
-                boxParser: boxParser
-              });
-              loader.setup({
-                dashMetrics: dashMetrics
-              });
-              fileLoaderType = _constants_Constants__WEBPACK_IMPORTED_MODULE_11__["default"].FILE_LOADER_TYPES.FETCH;
-            } else {
+            // if (request.hasOwnProperty('availabilityTimeComplete') && request.availabilityTimeComplete === false && window.fetch && request.responseType === 'arraybuffer' && request.type === _vo_metrics_HTTPRequest__WEBPACK_IMPORTED_MODULE_2__["HTTPRequest"].MEDIA_SEGMENT_TYPE) {
+            //   loader = Object(_FetchLoader__WEBPACK_IMPORTED_MODULE_1__["default"])(context).create({
+            //     requestModifier: requestModifier,
+            //     lowLatencyThroughputModel: lowLatencyThroughputModel,
+            //     boxParser: boxParser
+            //   });
+            //   loader.setup({
+            //     dashMetrics: dashMetrics
+            //   });
+            //   fileLoaderType = _constants_Constants__WEBPACK_IMPORTED_MODULE_11__["default"].FILE_LOADER_TYPES.FETCH;
+            // } else {
               loader = Object(_XHRLoader__WEBPACK_IMPORTED_MODULE_0__["default"])(context).create({
                 requestModifier: requestModifier
               });
               fileLoaderType = _constants_Constants__WEBPACK_IMPORTED_MODULE_11__["default"].FILE_LOADER_TYPES.XHR;
-            }
+           // }
 
             var headers = null;
             var modifiedUrl = requestModifier.modifyRequestURL ? requestModifier.modifyRequestURL(request.url) : request.url;
@@ -55594,14 +55637,10 @@ let dash;
               method: verb,
               withCredentials: withCredentials,
               request: request,
-              onload: onload,
-              onend: onloadend,
-              onerror: onloadend,
-              progress: progress,
-              onabort: onabort,
-              ontimeout: ontimeout,
+              onSuccess: onSuccess,
+              onFail: onFail,
+              onAbort: onAbort,
               loader: loader,
-              timeout: requestTimeout,
               headers: headers
             }; // Adds the ability to delay single fragment loading time to control buffer.
 

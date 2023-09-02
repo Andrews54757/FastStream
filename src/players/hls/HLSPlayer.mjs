@@ -270,13 +270,16 @@ export class HLSPlayer extends EventEmitter {
     }
 
     get levels() {
-        return this.hls.levels.map((level) => {
-            return {
+        let result = new Map();
+        this.hls.levels.forEach((level, index) => {
+            result.set(index, {
                 width: level.width,
                 height: level.height,
                 bitrate: level.bitrate
-            }
+            })
         })
+
+        return result;
     }
 
     get currentLevel() {

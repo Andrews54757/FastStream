@@ -25,6 +25,8 @@ export class DownloadEntry {
 
         this.downloader = null;
         this.watchers = [];
+
+        this.responseURL = null;
     }
 
     addWatcher(watcher) {
@@ -92,6 +94,7 @@ export class DownloadEntry {
         let mimeType = this.responseType === "arraybuffer" ? "application/octet-stream" : "text/plain";
         this.data = this.storeRaw ? response.data : BlobManager.createBlob([response.data], mimeType);
         this.stats = stats;
+        this.responseURL = response.url;
 
         this.watchers.forEach((watcher) => {
             watcher.callbacks.onSuccess(this, xhr);

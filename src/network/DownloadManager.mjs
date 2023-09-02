@@ -188,7 +188,6 @@ export class DownloadManager {
 
 
         this.client.predownloadFragments();
-
         this.queueNext();
     }
     queueNext() {

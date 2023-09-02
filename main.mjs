@@ -200,8 +200,6 @@ window.addEventListener("beforeunload", () => {
     }
 })
 
-//window.fastStream.setSource(new VideoSource("http://localhost/test.mp4", {}, PlayerModes.ACCELERATED_MP4));
-
 setInterval(() => {
     chrome.runtime.sendMessage({
         type: "ping"
@@ -228,7 +226,7 @@ if (window.location.hash) {
     } else if (ext === "m3u8") {
         mode = PlayerModes.ACCELERATED_HLS;
     } else if (ext === "mpd") {
-        mode = PlayerModes.DASH;
+        mode = PlayerModes.ACCELERATED_DASH;
     }
 
     window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {

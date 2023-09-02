@@ -1,12 +1,19 @@
+import { DefaultPlayerEvents } from "../../enums/DefaultPlayerEvents.mjs";
 import { DashJS } from "../../modules/dash.mjs";
 import { EmitterRelay, EventEmitter } from "../../modules/eventemitter.mjs";
 import { Utils } from "../../utils/Utils.mjs";
+import { DashFragment } from "./DashFragment.mjs";
+import { DashFragmentRequester } from "./DashFragmentRequester.mjs";
+import { DASHLoaderFactory } from "./DashLoader.mjs";
 
 export class DashPlayer extends EventEmitter {
-    constructor(options) {
+    constructor(client, options) {
         super();
+        this.client = client;
         this.video = document.createElement('video');
         this.isPreview = options?.isPreview || false;
+
+        this.fragmentRequester = new DashFragmentRequester(this);
     }
 
     async setup() {
@@ -16,6 +23,75 @@ export class DashPlayer extends EventEmitter {
         let emitter_relay = new EmitterRelay([pre_events, this]);
         Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
 
+        this.dash.updateSettings({
+            streaming: {
+                abr: {
+                    autoSwitchBitrate: { audio: false, video: false },
+                },
+                buffer: {
+                    bufferToKeep: 10,
+                    bufferTimeAtTopQuality: 10,
+                    bufferTimeAtTopQualityLongForm: 10
+    
+                }
+            }
+        });
+
+        this.dash.on("initComplete" ,(a)=>{
+            a.streamProcessors.forEach((processor)=>{
+                const mediaInfo = processor.getMediaInfo();
+                const segmentsController = processor.getSegmentsController();
+                const dashHandler = processor.getDashHandler();
+                const representationController = processor.getRepresentationController();
+                mediaInfo.representations.forEach((rep)=>{
+                    let index = 0;
+                    const init = dashHandler.getInitRequest(mediaInfo, rep);
+                    if (init) {
+                        init.level = mediaInfo.index + ":" + rep.index;
+                        init.index = -1;
+                        init.startTime = init.duration = 0;
+                        this.client.makeFragment(init.level, -1, new DashFragment(init));
+                    }
+                    while (true) {
+                        let segment = segmentsController.getSegmentByIndex(rep,index,-1);
+                        if (!segment) break;
+                        const request = dashHandler._getRequestForSegment(mediaInfo, segment)
+                        request.level = mediaInfo.index + ":" + rep.index;
+                        const fragment = new DashFragment(request);
+                        if (!this.client.getFragment(fragment.level, fragment.sn))
+                            this.client.makeFragment(fragment.level, fragment.sn, fragment);
+                        index++;
+                    }
+                });
+            })
+
+            let max = 0;
+            let maxLevel = null;
+            
+            // Get best quality but within screen resolution
+            this.levels.forEach((level, key)=>{
+                if (level.bitrate > max) {
+                    max = level.bitrate;
+                    maxLevel = key;
+                }
+            });
+
+            if (maxLevel) {
+                this.currentLevel = maxLevel;
+            }
+
+            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.currentLevel, this.currentAudioLevel);
+        })
+
+        // for (let eventName in dashjs.MediaPlayer.events) {
+        //     let event = dashjs.MediaPlayer.events[eventName];
+        //     let test = (() => {
+        //         this.dash.on(event, (e) => {
+        //             console.log(event, e,  this.dash.getTracksFor("audio"))
+        //         });
+        //     })(event)
+        // }
+        this.dash.extend("XHRLoader", DASHLoaderFactory(this) , false)
     }
 
 
@@ -45,7 +121,18 @@ export class DashPlayer extends EventEmitter {
 
 
     downloadFragment(fragment) {
+        this.fragmentRequester.requestFragment(fragment, {
+            onProgress: (e) => {
 
+            },
+            onSuccess: (e) => {
+
+            },
+            onFail: (e) => {
+
+            }
+
+        });
     }
 
 
@@ -85,90 +172,83 @@ export class DashPlayer extends EventEmitter {
 
 
     get levels() {
+        const mediaInfo = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "video")?.getMediaInfo();
+        if (!mediaInfo) {
+            return new Map();
+        }
+
+        let result = new Map();
+
+        mediaInfo.representations.map(rep=>{
+            result.set(mediaInfo.index + ":" + rep.index, {
+                bitrate: rep.bandwidth,
+                height: rep.height,
+                width: rep.width
+            });
+        });
+
+        return result;
 
     }
 
     get currentLevel() {
-        return this.currentVideoTrack;
+        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "video");
+        if (!processor) {
+            return -1;
+        }
+
+        return processor.getMediaInfo().index + ":" + processor.getRepresentationController().getCurrentRepresentation().index;
     }
 
     set currentLevel(value) {
-
+        this.dash.setQualityFor("video", parseInt(value.split(":")[1]));
     }
 
+    get currentAudioLevel() {
+        const processor = this.dash.getStreamController().getActiveStream().getProcessors().find(o=>o.getType() == "audio");
+        if (!processor) {
+            return -1;
+        }
+
+        return processor.getMediaInfo().index + ":" + processor.getRepresentationController().getCurrentRepresentation().index;
+    }
+
+    set currentAudioLevel(value) {
+        this.dash.setQualityFor("audio", parseInt(value.split(":")[1]));
+    }
     get duration() {
         return this.video.duration
     }
 
-    getFragmentOffset(samples, time) {
-        let index = Utils.binarySearch(samples, time * samples[0].timescale, (time, sample) => {
-            return time - sample.cts;
-        });
-
-        if (index < 0) {
-            index = Math.max(-1 - index - 1, 0);
-        }
-
-        return samples[index].offset;
-    }
 
     get currentFragment() {
-        let startOffset = 0;
-        if (!this.metaData && this.mp4box.nextParsePosition) {
-            startOffset = this.mp4box.nextParsePosition;
-        } else if (this.videoTracks.length || this.audioTracks.length) {
+        let frags = this.client.fragments;
+        if (!frags) return null;
 
-            let time = this.currentTime;
-            var seek_offset = Infinity;
-            let sortedSamples = [];
-            if (this.videoTracks[this.currentVideoTrack]) {
-                sortedSamples.push(this.videoTracks[this.currentVideoTrack].sortedSamples);
-            }
+        let index = Utils.binarySearch(frags, this.currentTime, (time, frag)=>{
+            if (time < frag.start) return -1;
+            if (time >= frag.end) return 1;
+            return 0;
+        });
+        if (index == -1) return null;
 
-            if (this.audioTracks[this.currentAudioTrack]) {
-                sortedSamples.push(this.audioTracks[this.currentAudioTrack].sortedSamples);
-            }
-            for (var i = 0; i < sortedSamples.length; i++) {
-                var samples = sortedSamples[i];
-                let offset = this.getFragmentOffset(samples, time)
-                if (offset < seek_offset) {
-                    seek_offset = offset;
-                }
-            }
-            startOffset = seek_offset;
-        }
-
-
-        let index = Math.floor(startOffset / FRAGMENT_SIZE);
-
-        return this.client.getFragment(this.currentVideoTrack, index);
+        if (index < -1) index = -index - 2;
+        return frags[index];
     }
 
-    getMinTimeFromOffset(samples, offset, end) {
-        let index = Utils.binarySearch(samples, offset, (offset, sample) => {
-            return offset - sample.offset;
+    get currentAudioFragment() {
+        let frags = this.client.audioFragments;
+        if (!frags) return null;
+
+        let index = Utils.binarySearch(frags, this.currentTime, (time, frag)=>{
+            if (time < frag.start) return -1;
+            if (time >= frag.end) return 1;
+            return 0;
         });
+        if (index == -1) return null;
 
-        if (index < 0) {
-            index = Math.max(-1 - index, 0);
-        }
-
-        let minTime = Infinity;
-        for (let i = index; i < samples.length; i++) {
-
-
-            if (samples[i].offset > end) {
-                break;
-            }
-            minTime = Math.min(minTime, samples[i].cts);
-        }
-
-
-        if (minTime !== Infinity) {
-            return minTime / samples[0].timescale;
-        } else {
-            return null;
-        }
+        if (index < -1) index = -index - 2;
+        return frags[index];
     }
 
     canSave() {

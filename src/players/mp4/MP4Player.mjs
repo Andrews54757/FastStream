@@ -308,8 +308,7 @@ export class MP4Player extends EventEmitter {
     }
 
     setFragmentTimes() {
-        let levels = this.levels;
-        for (let l = 0; l < levels.length; l++) {
+        this.levels.forEach((level, l) => {
             let frags = this.client.getFragments(l);
             let currentFragment = frags[0]
             currentFragment.start = 0;
@@ -327,7 +326,7 @@ export class MP4Player extends EventEmitter {
 
             currentFragment.end = Math.ceil(this.metaData.duration / this.metaData.timescale);
             currentFragment.duration = currentFragment.end - currentFragment.start;
-        }
+        });
     }
 
     removeFromBuffers(start, end) {
@@ -561,15 +560,16 @@ export class MP4Player extends EventEmitter {
 
 
     get levels() {
-        if (!this.metaData) return [];
+        if (!this.metaData) return new Map();
         let track = this.metaData.videoTracks[0]
-
-        return [{
+        let result = new Map();
+        result.set(0,{
             bitrate: track.bitrate,
             width: track.track_width,
             height: track.track_height,
             language: track.language
-        }];
+        });
+        return result;
     }
 
     get currentLevel() {
