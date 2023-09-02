@@ -245,7 +245,7 @@ export class FastStreamClient extends EventEmitter {
         if (!currentFragment) {
             return null;
         }
-        
+
         let fragments = this.getFragments(currentFragment.level);
         if (!fragments) {
             return null;
@@ -679,17 +679,20 @@ export class FastStreamClient extends EventEmitter {
         this.videoAnalyzer.setLevel(value);
 
         if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
-            this.fragmentsStore[previousLevel].forEach((fragment) => {
+            this.fragmentsStore[previousLevel].forEach((fragment, i) => {
+                if (i === -1) return;
                 this.freeFragment(fragment);
             });
         }
 
         // Reset all fragments to waiting in case some have failed.
-        if (this.fragmentsStore[this.persistent.currentLevel]) this.fragmentsStore[this.persistent.currentLevel].forEach((fragment) => {
+        if (this.fragmentsStore[this.persistent.currentLevel]) this.fragmentsStore[this.persistent.currentLevel].forEach((fragment, i) => {
+            if (i === -1) return;
             fragment.status = DownloadStatus.WAITING;
         });
 
-        if (this.fragmentsStore[this.persistent.currentAudioLevel]) this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment) => {
+        if (this.fragmentsStore[this.persistent.currentAudioLevel]) this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment, i) => {
+            if (i === -1) return;
             fragment.status = DownloadStatus.WAITING;
         });
 
@@ -703,7 +706,8 @@ export class FastStreamClient extends EventEmitter {
         this.player.currentAudioLevel = value;
 
         if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
-            this.fragmentsStore[previousLevel].forEach((fragment) => {
+            this.fragmentsStore[previousLevel].forEach((fragment, i) => {
+                if (i === -1) return;
                 this.freeFragment(fragment);
             });
         }

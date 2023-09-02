@@ -42,7 +42,6 @@ export class DashPlayer extends EventEmitter {
                 const mediaInfo = processor.getMediaInfo();
                 const segmentsController = processor.getSegmentsController();
                 const dashHandler = processor.getDashHandler();
-                const representationController = processor.getRepresentationController();
                 mediaInfo.representations.forEach((rep)=>{
                     let index = 0;
                     const init = dashHandler.getInitRequest(mediaInfo, rep);
