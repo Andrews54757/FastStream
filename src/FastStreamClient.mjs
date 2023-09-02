@@ -608,6 +608,11 @@ export class FastStreamClient extends EventEmitter {
 
                 this.previewPlayer.getVideos()[0].style.opacity = 1;
             })
+
+            this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
+                console.log("Preview player error", e);
+                
+            });
         }
 
     }

@@ -169,7 +169,8 @@ export class DashPlayer extends EventEmitter {
     }
 
     set currentTime(value) {
-        this.video.currentTime = value;
+       // this.video.currentTime = value;
+       this.dash.seek(value);
     }
 
     get currentTime() {
