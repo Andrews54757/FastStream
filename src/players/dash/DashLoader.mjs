@@ -40,7 +40,8 @@ export function DASHLoaderFactory(player) {
                 const identifier = player.getLevelIdentifier(streamLevel, trackIndex, qualityIndex);
                 const frag = player.client.getFragment(identifier, segmentIndex);
                 if (!frag) {
-                //   console.error("Fragment not found", httpRequest.request, identifier);
+                    console.error("Fragment not found", httpRequest.request, identifier, player.client.getFragments(identifier));
+              // throw new Error("Fragment not found");
                     request(httpRequest);
                     return;
                 }
@@ -79,6 +80,7 @@ export function DASHLoaderFactory(player) {
                 rangeEnd = parseInt(range[1], 10) + 1;
             }
 
+          //  console.log("request",request, httpRequest.request.range, rangeStart, rangeEnd, httpRequest.request.mediaInfo.representations)
             const context = {
                 url: httpRequest.url,
                 method: httpRequest.method || "GET",
@@ -114,47 +116,6 @@ export function DASHLoaderFactory(player) {
             });
 
             httpRequest._loader = loader;
-
-
-
-
-            // let xhr = new XMLHttpRequest();
-            // xhr.open(httpRequest.method, httpRequest.url, true);
-
-            // if (request.responseType) {
-            //     xhr.responseType = request.responseType;
-            // }
-
-            // if (request.range) {
-            //     xhr.setRequestHeader('Range', 'bytes=' + request.range);
-            // }
-
-            // if (!request.requestStartDate) {
-            //     request.requestStartDate = requestStartTime;
-            // }
-
-            // if (httpRequest.headers) {
-            //     for (let header in httpRequest.headers) {
-            //         let value = httpRequest.headers[header];
-            //         if (value) {
-            //             xhr.setRequestHeader(header, value);
-            //         }
-            //     }
-            // }
-
-            // xhr.withCredentials = httpRequest.withCredentials;
-
-            // xhr.onload = httpRequest.onload;
-            // xhr.onloadend = httpRequest.onend;
-            // xhr.onerror = httpRequest.onerror;
-            // xhr.onprogress = httpRequest.progress;
-            // xhr.onabort = httpRequest.onabort;
-            // xhr.ontimeout = httpRequest.ontimeout;
-            // xhr.timeout = httpRequest.timeout;
-
-            // xhr.send();
-
-            // httpRequest.response = xhr;
         }
 
         function abort(request) {

@@ -38480,9 +38480,9 @@ let dash;
 
                   return;
                 } // Init segment not in cache, send new request
+                
 
-
-                var request = dashHandler ? dashHandler.getInitRequest(mediaInfo, rep) : null;
+                var request = dashHandler ? (rep.hasInitialization() ? dashHandler.getInitRequest(mediaInfo, rep) : null) : null;
 
                 if (request) {
                   fragmentModel.executeRequest(request);
