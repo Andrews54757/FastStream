@@ -2,7 +2,7 @@ import { Fragment } from "../Fragment.mjs";
 
 export class HLSFragment extends Fragment {
     constructor(frag, start, end) {
-        super(frag.level, frag.sn)
+        super(frag.levelIdentifier, frag.sn)
         this.hlsFrag = frag;
         this.duration = frag.duration;
         this.start = start;

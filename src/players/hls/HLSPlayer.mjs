@@ -43,19 +43,7 @@ export class HLSPlayer extends EventEmitter {
             liveDurationInfinity: false,
             enableWorker: true,
             enableSoftwareAES: true,
-            manifestLoadingTimeOut: 10000,
-            manifestLoadingMaxRetry: 1,
-            manifestLoadingRetryDelay: 1000,
-            manifestLoadingMaxRetryTimeout: 64000,
             startLevel: 5,
-            levelLoadingTimeOut: 10000,
-            levelLoadingMaxRetry: 4,
-            levelLoadingRetryDelay: 1000,
-            levelLoadingMaxRetryTimeout: 64000,
-            fragLoadingTimeOut: 20000,
-            fragLoadingMaxRetry: 6,
-            fragLoadingRetryDelay: 1000,
-            fragLoadingMaxRetryTimeout: 64000,
             startFragPrefetch: false,
             testBandwidth: false,
             progressive: false,
@@ -142,7 +130,7 @@ export class HLSPlayer extends EventEmitter {
                 });
             }
         })
-        let blob = await hls2mp4.convert(this.hls.levels[this.currentLevel], frags);
+        let blob = await hls2mp4.convert(this.hls.levels[this.getIndexes(this.currentLevel).levelID], frags);
 
         return {
             extension: "mp4",
@@ -176,36 +164,49 @@ export class HLSPlayer extends EventEmitter {
 
 
         this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.hls.maxAutoLevel);
+            console.log(data)
+            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.getIdentifier(0, data.firstLevel));
         });
 
 
         this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {
-
-            let time = 0;
-            data.details.fragments.forEach((fragment) => {
-
-                if (fragment.encrypted) {
-                    fragment.fs_oldcryptdata = fragment.decryptdata;
-                    fragment.fs_oldlevelKeys = fragment.levelkeys;
-
-                    fragment.levelkeys = null;
-                    fragment._decryptdata = null;
-
-                    void fragment.decryptdata;
-                }
-                let start = time;
-                time += fragment.duration;
-                let end = time;
-                if (!this.client.getFragment(fragment.level, fragment.sn))
-                    this.client.makeFragment(fragment.level, fragment.sn, new HLSFragment(fragment, start, end));
-            })
+            console.log("levelupdated", data);
+            this.trackUpdated(data.details, 0);
+        });
 
 
+        this.hls.on(Hls.Events.AUDIO_TRACK_UPDATED, (a, data) => {
+            console.log("audioupdated", data);
+            this.trackUpdated(data.details, 1);
         });
 
     }
 
+    trackUpdated(levelDetails, trackID) {
+        levelDetails.trackID = trackID;
+        let time = 0;
+        levelDetails.fragments.forEach((fragment) => {
+
+            if (fragment.encrypted) {
+                fragment.fs_oldcryptdata = fragment.decryptdata;
+                fragment.fs_oldlevelKeys = fragment.levelkeys;
+
+                fragment.levelkeys = null;
+                fragment._decryptdata = null;
+
+                void fragment.decryptdata;
+            }
+            let start = time;
+            time += fragment.duration;
+            let end = time;
+
+            const identifier = this.getIdentifier(levelDetails.trackID, fragment.level);
+            fragment.levelIdentifier = identifier
+            fragment.trackID = levelDetails.trackID;
+            if (!this.client.getFragment(identifier, fragment.sn))
+                this.client.makeFragment(identifier, fragment.sn, new HLSFragment(fragment, start, end));
+        });
+    }
     getVideos() {
         return [this.video];
     }
@@ -213,6 +214,17 @@ export class HLSPlayer extends EventEmitter {
         return this.video;
     }
 
+    getIdentifier(trackID, levelID) {
+        return `${trackID}:${levelID}`;
+    }
+
+    getIndexes(identifier) {
+        let parts = identifier.split(":");
+        return {
+            trackID: parseInt(parts[0]),
+            levelID: parseInt(parts[1])
+        }
+    }
 
     async setSource(source) {
         this.source = source;
@@ -272,7 +284,8 @@ export class HLSPlayer extends EventEmitter {
     get levels() {
         let result = new Map();
         this.hls.levels.forEach((level, index) => {
-            result.set(index, {
+          
+            result.set(this.getIdentifier(0, index), {
                 width: level.width,
                 height: level.height,
                 bitrate: level.bitrate
@@ -283,11 +296,11 @@ export class HLSPlayer extends EventEmitter {
     }
 
     get currentLevel() {
-        return this.hls.currentLevel;
+        return this.getIdentifier(0, this.hls.currentLevel);
     }
 
     set currentLevel(value) {
-        this.hls.currentLevel = value;
+        this.hls.currentLevel = this.getIndexes(value).levelID;
     }
 
     get duration() {
@@ -296,7 +309,30 @@ export class HLSPlayer extends EventEmitter {
 
     get currentFragment() {
         if (!this.hls.streamController.currentFrag) return null;
-        return this.client.getFragment(this.hls.streamController.currentFrag.level, this.hls.streamController.currentFrag.sn);
+        return this.client.getFragment(this.getIdentifier(0, this.hls.streamController.currentFrag.level), this.hls.streamController.currentFrag.sn);
+    }
+
+    get currentAudioLevel() {
+        return this.getIdentifier(1, this.hls.audioTrack);
+    }
+
+    set currentAudioLevel(value) {
+        this.hls.audioTrack = this.getIndexes(value).levelID;
+    }
+    
+    get currentAudioFragment() {
+        let frags = this.client.getFragments(this.currentAudioLevel)
+        if (!frags) return null;
+
+        let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
+            if (time < frag.start) return -1;
+            if (time >= frag.end) return 1;
+            return 0;
+        });
+        if (index == -1) return null;
+
+        if (index < -1) index = -index - 2;
+        return frags[index];
     }
 
     get volume() {
