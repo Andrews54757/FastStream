@@ -91,8 +91,11 @@ export class InterfaceController {
                 continue;
             }
             total++;
-
+            if (frag.start && !currentTime) {
+                currentTime = frag.start
+            }
             let start = currentTime;
+          
             let end = currentTime + frag.duration;
             currentTime = end;
 
@@ -146,8 +149,15 @@ export class InterfaceController {
             return;
         }
 
-        const fragments = this.client.fragments;
-        let audioFragments = this.client.audioFragments;
+        if (!this.client.player) {
+            return;
+        }
+
+        let level = this.client.player.currentLevel;
+        let audioLevel = this.client.player.currentAudioLevel;
+
+        const fragments = this.client.getFragments(level);
+        let audioFragments = this.client.getFragments(audioLevel)
 
         let total = 0;
         let loaded = 0;

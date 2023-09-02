@@ -542,6 +542,7 @@ export class FastStreamClient extends EventEmitter {
 
 
         this.context.on(DefaultPlayerEvents.SEEKED, (event) => {
+            this.interfaceController.updateFragmentsLoaded();
         })
 
 

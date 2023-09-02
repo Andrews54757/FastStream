@@ -39,8 +39,8 @@ export class DashPlayer extends EventEmitter {
             }
         });
 
+        let initAlready = false;
         this.dash.on("initialInit", (a) => {
-            console.log("initialInit", a)
             a.streamProcessors.forEach((processor) => {
                 const mediaInfo = processor.getMediaInfo();
                 mediaInfo.representations.forEach((rep) => {
@@ -61,7 +61,8 @@ export class DashPlayer extends EventEmitter {
                 }
             });
 
-
+            if (initAlready) return;
+            initAlready = true;
             this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel, this.currentAudioLevel);
         })
 
