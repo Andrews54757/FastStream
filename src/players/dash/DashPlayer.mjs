@@ -39,6 +39,9 @@ export class DashPlayer extends EventEmitter {
             }
         });
 
+        this.dash.on("public_keyError",(e)=>{
+            this.client.failedToLoad("Failed to load! DRM not supported!")
+        })
         let initAlready = false;
         this.dash.on("initialInit", (a) => {
             a.streamProcessors.forEach((processor) => {
@@ -83,8 +86,11 @@ export class DashPlayer extends EventEmitter {
     }
 
     extractFragments(rep) {
-    //    console.log("extracting fragments", rep)
+       
         const processor = rep.processor;
+        if (!processor) {
+            return;
+        }
         const streamIndex = processor.getStreamInfo().index;
         const mediaInfo = processor.getMediaInfo();
         const segmentsController = processor.getSegmentsController();
@@ -101,14 +107,19 @@ export class DashPlayer extends EventEmitter {
             }
         }
         if (rep.hasSegments() || rep.segments) {
-            let segments = segmentsController.getAllSegments(rep);
-            segments.forEach((segment) => {
-                const request = dashHandler._getRequestForSegment(mediaInfo, segment)
+            let segments = segmentsController.getAllSegments(rep).map((segment) => {
+                return dashHandler._getRequestForSegment(mediaInfo, segment);
+            });
+            segments.forEach((request) => {
                 request.level = this.getLevelIdentifier(streamIndex, mediaInfo.index, rep.index);
                 const fragment = new DashFragment(request);
                 if (!this.client.getFragment(fragment.level, fragment.sn))
                     this.client.makeFragment(fragment.level, fragment.sn, fragment);
             });
+
+            if (this.currentTime == 0 && this.video.readyState < 2) {
+                this.currentTime = segments[0].startTime;
+            }
         }
     }
 
@@ -260,7 +271,8 @@ export class DashPlayer extends EventEmitter {
             if (time >= frag.end) return 1;
             return 0;
         });
-        if (index == -1) return null;
+    
+        if (index == -1) return frags[0];
 
         if (index < -1) index = -index - 2;
         return frags[index];

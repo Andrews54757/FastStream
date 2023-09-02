@@ -54,7 +54,7 @@ export class DashFragmentRequester {
             onAbort: (entry) => {
                 fragment.status = DownloadStatus.WAITING;
                 this.player.emit(DefaultPlayerEvents.FRAGMENT_UPDATE, fragment);
-                if (callbacks.onAbort(entry)) callbacks.onAbort(entry);
+                if (callbacks.onAbort) callbacks.onAbort(entry);
             }
         });
 

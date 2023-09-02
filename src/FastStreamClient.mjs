@@ -223,7 +223,6 @@ export class FastStreamClient extends EventEmitter {
         let nextVideo = this.getNextToDownloadTrack(currentFragment);
         let nextAudio = this.getNextToDownloadTrack(audioFragment);
 
-
         if (!nextVideo) {
             return nextAudio;
         }
@@ -331,7 +330,6 @@ export class FastStreamClient extends EventEmitter {
             hasDownloaded = true;
             this.player.downloadFragment(nextDownload);
             nextDownload = this.getNextToDownload();
-            
             if (index++ > 10000) {
                 throw new Error("Infinite loop detected");
             }
@@ -409,6 +407,10 @@ export class FastStreamClient extends EventEmitter {
         }
 
         this.fragmentsStore[level][sn] = frag
+    }
+
+    failedToLoad(reason) {
+        this.interfaceController.failedToLoad(reason);
     }
 
     resetPlayer() {
