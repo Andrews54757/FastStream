@@ -71,16 +71,14 @@ export class DashPlayer extends EventEmitter {
             // Get best quality but within screen resolution
             this.levels.forEach((level, key)=>{
                 if (level.bitrate > max) {
+                    if (level.width > window.innerWidth * window.devicePixelRatio * 2 || level.height > window.innerHeight * window.devicePixelRatio * 2) return;
                     max = level.bitrate;
                     maxLevel = key;
                 }
             });
 
-            if (maxLevel) {
-                this.currentLevel = maxLevel;
-            }
 
-            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.currentLevel, this.currentAudioLevel);
+            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel, this.currentAudioLevel);
         })
 
         // for (let eventName in dashjs.MediaPlayer.events) {
