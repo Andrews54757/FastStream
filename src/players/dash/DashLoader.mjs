@@ -23,14 +23,14 @@ export function DASHLoaderFactory(player) {
         function loadFragmentInternal(httpRequest) {
             try {
                 if (!httpRequest.request.mediaInfo) {
-                   // console.error("No mediainfo", httpRequest.request);
+                 //   console.error("No mediainfo", httpRequest.request);
                     request(httpRequest);
                     return;
                 }
+                const streamLevel = httpRequest.request.mediaInfo.streamInfo.index;
                 const trackIndex = httpRequest.request.mediaInfo.index;
                 const qualityIndex = httpRequest.request.quality;
                 let segmentIndex = httpRequest.request.index;
-                const streamLevel = httpRequest.request.mediaInfo.streamInfo.index;
 
                 if (httpRequest.request.type === "InitializationSegment") {
                     segmentIndex = -1;
@@ -38,9 +38,9 @@ export function DASHLoaderFactory(player) {
 
 
                 const identifier = player.getLevelIdentifier(streamLevel, trackIndex, qualityIndex);
-                const frag = player.client.getFragment(httpRequest.requ, identifier, segmentIndex);
+                const frag = player.client.getFragment(identifier, segmentIndex);
                 if (!frag) {
-                   //console.error("Fragment not found", httpRequest.request);
+                //   console.error("Fragment not found", httpRequest.request, identifier);
                     request(httpRequest);
                     return;
                 }
