@@ -243,6 +243,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     set currentLevel(value) {
+        if (typeof value !== "string") return;
         this.dash.setQualityFor("video", parseInt(this.getLevelIndexes(value).repIndex));
     }
 
@@ -255,6 +256,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     set currentAudioLevel(value) {
+        if (typeof value !== "string") return;
         this.dash.setQualityFor("audio", parseInt(this.getLevelIndexes(value).repIndex));
     }
 
