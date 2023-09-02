@@ -52,14 +52,6 @@ export class HLSPlayer extends EventEmitter {
             fpsDroppedMonitoringThreshold: 0.2,
             appendErrorMaxRetry: 3,
             loader: HLSLoaderFactory(this),
-            //loader: XHRTestLoader,
-            // xhrSetup: XMLHttpRequestSetupCallback,
-            // fetchSetup: FetchSetupCallback,
-            // abrController: AbrController,
-            // bufferController: BufferController,
-            // capLevelController: CapLevelController,
-            // fpsController: FPSController,
-            // timelineController: TimelineController,
             enableDateRangeMetadataCues: true,
             enableEmsgMetadataCues: true,
             enableID3MetadataCues: true,
@@ -164,19 +156,16 @@ export class HLSPlayer extends EventEmitter {
 
 
         this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            console.log(data)
             this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.getIdentifier(0, data.firstLevel));
         });
 
 
         this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {
-            console.log("levelupdated", data);
             this.trackUpdated(data.details, 0);
         });
 
 
         this.hls.on(Hls.Events.AUDIO_TRACK_UPDATED, (a, data) => {
-            console.log("audioupdated", data);
             this.trackUpdated(data.details, 1);
         });
 
