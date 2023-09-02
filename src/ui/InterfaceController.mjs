@@ -141,12 +141,14 @@ export class InterfaceController {
     updateFragmentsLoaded() {
         DOMElements.progressLoadedContainer.innerHTML = "";
         
-        const fragments = this.client.fragments;
-        let audioFragments = this.client.audioFragments;
-
+    
         if (!this.persistent.duration) {
             return;
         }
+
+        const fragments = this.client.fragments;
+        let audioFragments = this.client.audioFragments;
+
         let total = 0;
         let loaded = 0;
 
@@ -161,7 +163,7 @@ export class InterfaceController {
             total += result.total;
             loaded += result.loaded;
         }
-        
+
         let percentDone = Math.round((loaded / total) * 1000) / 10;
 
         this.lastSpeed = (this.client.downloadManager.getSpeed() * 0.1 + this.lastSpeed * 0.9) || 0;
