@@ -29717,7 +29717,7 @@ let dash;
               segments.push(segment);
               index++;
             }
-            return segment;
+            return segments;
           }
 
           function getSegmentByTime(representation, requestedTime) {
@@ -29981,7 +29981,7 @@ let dash;
               segments.push(segment);
               index++;
             }
-            return segment;
+            return segments;
           }
 
           function getSegmentByTime(representation, requestedTime) {
@@ -30372,7 +30372,7 @@ let dash;
               segments.push(segment);
               index++;
             }
-            return segment;
+            return segments;
           }
 
           function getSegmentByTime(representation, requestedTime) {
