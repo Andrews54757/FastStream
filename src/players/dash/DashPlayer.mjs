@@ -81,7 +81,6 @@ export class DashPlayer extends EventEmitter {
     }
 
     extractFragments(rep) {
-        console.log(rep)
         const processor = rep.processor;
         const mediaInfo = processor.getMediaInfo();
         const segmentsController = processor.getSegmentsController();
@@ -99,7 +98,6 @@ export class DashPlayer extends EventEmitter {
         }
         if (rep.hasSegments() || rep.segments) {
             let segments = segmentsController.getAllSegments(rep);
-            console.log(segments)
             segments.forEach((segment) => {
                 const request = dashHandler._getRequestForSegment(mediaInfo, segment)
                 request.level = mediaInfo.index + ":" + rep.index;
