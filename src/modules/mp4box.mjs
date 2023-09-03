@@ -8268,3 +8268,4 @@ MP4Box.createFile = function (_keepMdatData, _stream) {
     file.discardMdatData = (keepMdatData ? false : true);
     return file;
 }
+window.mp4box = MP4Box;

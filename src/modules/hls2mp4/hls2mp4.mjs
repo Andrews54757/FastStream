@@ -224,7 +224,6 @@ export class HLS2MP4 extends EventEmitter {
                 track.samples.push(...chunk.samples);
             });
         })
-         console.log(tracks)
         let initSeg;
         try {
             let initSegCount = MP4.initSegment(tracks);

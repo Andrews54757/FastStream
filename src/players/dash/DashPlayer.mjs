@@ -1,6 +1,7 @@
 import { DefaultPlayerEvents } from "../../enums/DefaultPlayerEvents.mjs";
 import { DownloadStatus } from "../../enums/DownloadStatus.mjs";
 import { DashJS } from "../../modules/dash.mjs";
+import { DASH2MP4 } from "../../modules/dash2mp4/dash2mp4.mjs";
 import { EmitterRelay, EventEmitter } from "../../modules/eventemitter.mjs";
 import { BlobManager } from "../../utils/BlobManager.mjs";
 import { Utils } from "../../utils/Utils.mjs";
@@ -40,7 +41,7 @@ export class DashPlayer extends EventEmitter {
         });
 
 
-        this.dash.on("needkey",(e)=>{
+        this.dash.on("needkey", (e) => {
             this.client.failedToLoad("Failed to load! DRM not supported!")
         })
         let initAlready = false;
@@ -87,7 +88,7 @@ export class DashPlayer extends EventEmitter {
     }
 
     extractFragments(rep) {
-       
+
         const processor = rep.processor;
         if (!processor) {
             return;
@@ -198,7 +199,7 @@ export class DashPlayer extends EventEmitter {
 
     set currentTime(value) {
         this.video.currentTime = value;
-       this.dash.seek(value);
+        this.dash.seek(value);
     }
 
     get currentTime() {
@@ -239,7 +240,7 @@ export class DashPlayer extends EventEmitter {
         if (!processor) {
             return -1;
         }
-        return this.getLevelIdentifier(processor.getStreamInfo().index , processor.getMediaInfo().index , processor.getRepresentationController().getCurrentRepresentation().index);
+        return this.getLevelIdentifier(processor.getStreamInfo().index, processor.getMediaInfo().index, processor.getRepresentationController().getCurrentRepresentation().index);
     }
 
     set currentLevel(value) {
@@ -252,7 +253,7 @@ export class DashPlayer extends EventEmitter {
         if (!processor) {
             return -1;
         }
-        return this.getLevelIdentifier(processor.getStreamInfo().index , processor.getMediaInfo().index , processor.getRepresentationController().getCurrentRepresentation().index);
+        return this.getLevelIdentifier(processor.getStreamInfo().index, processor.getMediaInfo().index, processor.getRepresentationController().getCurrentRepresentation().index);
     }
 
     set currentAudioLevel(value) {
@@ -274,7 +275,7 @@ export class DashPlayer extends EventEmitter {
             if (time >= frag.end) return 1;
             return 0;
         });
-    
+
         if (index == -1) return frags[0];
 
         if (index < -1) index = -index - 2;
@@ -297,13 +298,15 @@ export class DashPlayer extends EventEmitter {
     }
 
     canSave() {
-
-        let obj = {
-            canSave: false,
-            isComplete: false
+        let frags = this.client.fragments;
+        if (true || !frags || this.dash.getStreamController().getStreams().length > 1) {
+            return {
+                canSave: false,
+                isComplete: false
+            }
         }
+
         let incomplete = false;
-        let frags = this.client.fragments || [];
         for (let i = -1; i < frags.length; i++) {
             if (frags[i] && frags[i].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
                 incomplete = true;
@@ -319,18 +322,83 @@ export class DashPlayer extends EventEmitter {
             }
         }
 
-        obj.isComplete = !incomplete;
-        return obj;
+        return {
+            canSave: true,
+            isComplete: !incomplete
+        };
     }
 
     async getSaveBlob(options) {
-        let data = [];
-        let videoFrags = this.client.fragments || [];
-        let audioFrags = this.client.audioFragments || [];
+        let dash2mp4 = new DASH2MP4();
+
+        dash2mp4.on("progress", (progress) => {
+            if (options?.onProgress) {
+                options.onProgress(progress);
+            }
+        });
+
+        let frags = [];
+        const fragments = this.client.getFragments(this.currentLevel) || [];
+        const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
+
+        let fragIndex = 0;
+        let audioFragIndex = 0;
+
+        for (let i = 0; i < fragments.length + audioFragments.length; i++) {
+            let frag = fragments[fragIndex];
+            let audioFrag = audioFragments[audioFragIndex];
+
+            if (frag && audioFrag) {
+                if (frag.start < audioFrag.start) {
+                    frags.push({
+                        type: 0,
+                        fragment: frag,
+                        entry: this.client.downloadManager.getEntry(frag.getContext())
+                    });
+                    fragIndex++;
+                } else {
+                    frags.push({
+                        type: 1,
+                        fragment: audioFrag,
+                        entry: this.client.downloadManager.getEntry(audioFrag.getContext())
+                    });
+                    audioFragIndex++;
+                }
+            } else if (frag) {
+                frags.push({
+                    type: 0,
+                    fragment: frag,
+                    entry: this.client.downloadManager.getEntry(frag.getContext())
+                });
+                fragIndex++;
+            } else if (audioFrag) {
+                frags.push({
+                    type: 1,
+                    fragment: audioFrag,
+                    entry: this.client.downloadManager.getEntry(audioFrag.getContext())
+                });
+                audioFragIndex++;
+            }
+        }
+
+        frags = frags.filter((frag) => {
+            return frag.fragment.status === DownloadStatus.DOWNLOAD_COMPLETE;
+        });
+
+        const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find(o => o.getType() === "video");
+        const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find(o => o.getType() === "audio");
+
+        const videoInitSegment = fragments?.[-1];
+        const audioInitSegment = audioFragments?.[-1];
+
+        const videoInitSegmentData = videoInitSegment ? await this.client.downloadManager.getEntry(videoInitSegment.getContext()).getDataFromBlob() : null;
+        const audioInitSegmentData = audioInitSegment ? await this.client.downloadManager.getEntry(audioInitSegment.getContext()).getDataFromBlob() : null;
+
+        let blob = await dash2mp4.convert(videoProcessor, videoInitSegmentData, audioProcessor, audioInitSegmentData, frags);
 
         return {
             extension: "mp4",
-            blob: BlobManager.createBlob(data, "video/mp4")
+            blob: blob
         }
     }
 

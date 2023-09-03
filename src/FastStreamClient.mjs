@@ -678,7 +678,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     get currentAudioLevel() {
-        return this.persistent.currentAudioLevel;
+        return this.player?.currentAudioLevel;
     }
 
     set currentLevel(value) {

@@ -108,8 +108,7 @@ export default class Transmuxer {
             this.resetContiguity();
         }
         let result = this.demux(uintData);
-
-        let remuxed = this.remux(result.videoTrack, result.audioTrack, result.minPTS);
+        let remuxed = this.remux(result.videoTrack, result.audioTrack, result.minPTS || 0);
         remuxed.videoTrack = result.videoTrack;
         remuxed.audioTrack = result.audioTrack;
         return remuxed;
