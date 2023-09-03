@@ -1,6 +1,6 @@
 import { EventEmitter } from "../eventemitter.mjs";
 import { MP4Box } from "../mp4box.mjs";
-import { MP4 } from "./MP4Generator.mjs";
+import { MP4 } from "../hls2mp4/MP4Generator.mjs";
 
 
 
