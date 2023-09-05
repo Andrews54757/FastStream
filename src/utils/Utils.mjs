@@ -65,6 +65,16 @@ export class Utils {
         return el;
     }
 
+    static setupTabIndex(element) {
+        element.tabIndex = 0;
+        element.addEventListener("keydown", (e) => {
+            if (e.key == "Enter") {
+                element.click();
+                e.stopPropagation();
+            }
+        });
+    }
+
     static setupDropdown(itemListElement, text, container, call) {
         container.addEventListener("click", (e) => {
             for (var j = 0; j < itemListElement.children.length; j++) {
@@ -81,6 +91,41 @@ export class Utils {
             }
             e.stopPropagation();
         })
+        container.addEventListener("mouseleave", (e) => {
+            container.blur();
+        });
+
+        container.addEventListener("keydown", (e) => {
+            if (e.key == "ArrowDown" ) {
+                for (var j = 0; j < itemListElement.children.length; j++) {
+                    let element = itemListElement.children[j];
+                    if (element.dataset.val == container.dataset.val) {
+                        element.style.backgroundColor = ""
+                        let nextElement = (j < itemListElement.children.length - 1) ? itemListElement.children[j + 1] : itemListElement.children[0];
+                        nextElement.style.backgroundColor = "rgb(20,20,20)"
+                        text.children[0].textContent = nextElement.textContent;
+                        container.dataset.val = nextElement.dataset.val;
+                        if (call) call(container.dataset.val)
+                        break;
+                    }
+                }
+                e.stopPropagation();
+            } else if (e.key == "ArrowUp") {
+                for (var j = 0; j < itemListElement.children.length; j++) {
+                    let element = itemListElement.children[j];
+                    if (element.dataset.val == container.dataset.val) {
+                        element.style.backgroundColor = ""
+                        let nextElement = (j > 0) ? itemListElement.children[j - 1] : itemListElement.children[itemListElement.children.length - 1];
+                        nextElement.style.backgroundColor = "rgb(20,20,20)"
+                        text.children[0].textContent = nextElement.textContent;
+                        container.dataset.val = nextElement.dataset.val;
+                        if (call) call(container.dataset.val)
+                        break;
+                    }
+                }
+                e.stopPropagation();
+            }
+        });
         for (var i = 0; i < itemListElement.children.length; i++) {
             ((i) => {
                 var el = itemListElement.children[i];
@@ -113,6 +158,7 @@ export class Utils {
         var text = create("div", ``);
         text.innerHTML = `${title}: <span style='color: rgb(200,200,200)'>${items[defaultChoice]}</span> ˅`;
         container.dataset.val = defaultChoice;
+        container.tabIndex = 0;
         container.appendChild(text);
         var itemListElement = create("div", `position: absolute; top: 100%; left: 0px; right: 0px;`, "items");
         for (var name in items) {

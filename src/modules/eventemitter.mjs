@@ -1,4 +1,4 @@
-
+export const EmitterCancel = Symbol("EmitterCancel");
 
 class EventEmitterContext {
     constructor(parent) {
@@ -10,11 +10,15 @@ class EventEmitterContext {
         this.parent.removeContext(this);
     }
 
-    on(event, callback) {
+    on(event, callback, prepend = false) {
         if (!this.events.has(event)) {
             this.events.set(event, []);
         }
-        this.events.get(event).push(callback);
+        if (prepend) {
+            this.events.get(event).unshift(callback);
+        } else {
+            this.events.get(event).push(callback);
+        }
         return this;
     }
 
@@ -39,7 +43,13 @@ class EventEmitterContext {
         if (!this.events.has(event)) {
             return this;
         }
-        this.events.get(event).forEach(callback => callback(...args));
+        this.events.get(event).every(callback => {
+            const result = callback(...args);
+            if (result === EmitterCancel) {
+                return false;
+            }
+            return true;
+        });
         return this;
     }
 }
@@ -94,7 +104,6 @@ export class EventEmitter {
     }
 }
 
-export const EmitterCancel = Symbol("EmitterCancel");
 export class EmitterRelay {
     constructor(outs) {
         this.outs = [];

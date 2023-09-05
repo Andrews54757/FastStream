@@ -144,6 +144,8 @@ export class SourcesBrowser {
             e.stopPropagation();
         })
 
+        Utils.setupTabIndex(DOMElements.linkButton);
+
         DOMElements.linkuiContainer.addEventListener("click", (e) => {
             e.stopPropagation();
         });

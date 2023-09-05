@@ -81,6 +81,7 @@ export class SubtitlesManager {
             label.textContent = key.charAt(0).toUpperCase() + key.substring(1);
 
             let input = document.createElement("input");
+            input.name = key;
             input.type = "text";
             input.value = this.settings[key];
             let timeout = null;
@@ -145,6 +146,8 @@ export class SubtitlesManager {
             e.stopPropagation();
         })
 
+        Utils.setupTabIndex(DOMElements.subtitles);
+
         DOMElements.playerContainer.addEventListener("click", (e) => {
             DOMElements.subtitlesMenu.style.display = "none";
             DOMElements.subuiContainer.style.display = "none";
@@ -165,6 +168,8 @@ export class SubtitlesManager {
             this.client.subtitleSyncer.onVideoTimeUpdate();
      
         });
+        Utils.setupTabIndex(DOMElements.subtitlesOptionsTestButton);
+
         var filechooser = document.createElement("input");
         filechooser.type = "file";
         filechooser.style = "display: none";
@@ -192,6 +197,7 @@ export class SubtitlesManager {
         document.body.appendChild(filechooser);
 
         var filebutton = document.createElement('div');
+        Utils.setupTabIndex(filebutton);
         filebutton.textContent = "Upload File"
         filebutton.style = "padding: 3px 5px; color: rgba(255,255,255,.8)";
 
@@ -202,6 +208,7 @@ export class SubtitlesManager {
 
         var urlbutton = document.createElement('div');
         urlbutton.textContent = "From URL"
+        Utils.setupTabIndex(urlbutton);
         urlbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         urlbutton.addEventListener("click", (e) => {
@@ -226,6 +233,7 @@ export class SubtitlesManager {
 
         var internetbutton = document.createElement('div');
         internetbutton.textContent = "Search OpenSubtitles"
+        Utils.setupTabIndex(internetbutton);
         internetbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         internetbutton.addEventListener("click", (e) => {
@@ -237,6 +245,7 @@ export class SubtitlesManager {
 
         var clearbutton = document.createElement('div');
         clearbutton.textContent = "Clear Subtitles"
+        Utils.setupTabIndex(clearbutton);
         clearbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         clearbutton.addEventListener("click", (e) => {
@@ -246,6 +255,7 @@ export class SubtitlesManager {
 
         var optionsbutton = document.createElement('div');
         optionsbutton.textContent = "Subtitle Settings"
+        Utils.setupTabIndex(optionsbutton);
         optionsbutton.style = "border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)";
 
         optionsbutton.addEventListener("click", (e) => {
@@ -257,6 +267,7 @@ export class SubtitlesManager {
             DOMElements.subtitlesOptions.style.display = "none";
             DOMElements.subtitlesView.style.display = "";
         });
+        Utils.setupTabIndex(DOMElements.subtitlesOptionsBackButton);
 
         DOMElements.subtitlesView.appendChild(optionsbutton)
 
@@ -306,6 +317,7 @@ export class SubtitlesManager {
 
         const searchBtn = Utils.create("div", "Search", "subtitle-search-btn");
         searchBtn.textContent = "Search";
+        Utils.setupTabIndex(searchBtn);
         this.subui.searchContainer.appendChild(searchBtn);
 
 
@@ -401,6 +413,9 @@ export class SubtitlesManager {
         yearInput.addEventListener("keydown", searchOnEnter, true);
         seasonInput.addEventListener("keydown", searchOnEnter, true);
         episodeInput.addEventListener("keydown", searchOnEnter, true);
+        typeSelector.addEventListener("keydown", searchOnEnter, true);
+        sortSelector.addEventListener("keydown", searchOnEnter, true);
+        sortDirectionSelector.addEventListener("keydown", searchOnEnter, true);
 
         searchBtn.addEventListener("click", (e) => {
             this.queryOpenSubtitles({
@@ -505,6 +520,7 @@ export class SubtitlesManager {
             rank.textContent = item.attributes.ratings;
             container.appendChild(rank)
 
+            Utils.setupTabIndex(container);
             container.addEventListener("mouseenter", (e) => {
                 container.style.color = "rgba(255,200,200,.8)"
             })
@@ -733,6 +749,8 @@ color: rgb(200,200,200);
                     e.stopPropagation();
                     e.preventDefault();
                 })
+
+                Utils.setupTabIndex(trackElement);
 
                 var resyncTool = document.createElement("div");
                 resyncTool.style = "display: none; position: absolute; right: 60px; top: 50%; transform: translate(0%,-50%); opacity: 0.7"

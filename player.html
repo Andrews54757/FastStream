@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <title>FastStream</title>
@@ -22,12 +22,13 @@
         </div>
 
         <div class="fluid_controls_container fade_in">
+            
             <div class="skip_button" style="display: none;">Skip Intro</div>
 
             <div class="fluid_controls_left">
-                <div class="fluid_button fluid_button_play fluid_control_playpause"></div>
+                <div title="Play or pause video" class="fluid_button fluid_button_play fluid_control_playpause"></div>
                 <div class="volume_block">
-                    <div class="fluid_button fluid_button_volume fluid_control_mute"></div>
+                    <div title="Mute audio" class="fluid_button fluid_button_volume fluid_control_mute"></div>
                     <div class="fluid_control_volume_container fluid_slider">
                         <div class="fluid_control_volume">
                             <div class="fluid_control_currentvolume" style="width: 100%">
@@ -36,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00</div>
+                <div name="Timestamp" tabindex="0" class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00</div>
 
                 <div class="downloadstatus"></div>
 
@@ -74,13 +75,13 @@
                 </div>
             </div>
             <div class="fluid_controls_right">
-                <div class="fluid_button fluid_control_fullscreen fluid_button_fullscreen"></div>
+                <div title="Fullscreen" class="fluid_button fluid_control_fullscreen fluid_button_fullscreen"></div>
 
-                <div class="fluid_button fluid_button_download main_download" style="display: inline-block;"></div>
+                <div title="Save video" class="fluid_button fluid_button_download main_download" style="display: inline-block;"></div>
 
-                <div class="fluid_button fluid_button_settings" style="display: inline-block;"></div>
+                <div title="Settings" class="fluid_button fluid_button_settings" style="display: inline-block;"></div>
 
-                <div class="fluid_button fluid_control_video_source fluid_button_video_source">
+                <div title="Video quality" class="fluid_button fluid_control_video_source fluid_button_video_source">
                     <div class="fluid_video_sources_list" style="display: none;">
                         <div class="fluid_video_source_list_item"><span
                                 class="source_button_icon source_selected"></span>1080p</div>
@@ -89,14 +90,14 @@
                     </div>
                 </div>
                 
-                <div class="fluid_button fluid_button_playback_rate" style="display: inline-block;">
+                <div title="Playback rate" class="fluid_button fluid_button_playback_rate" style="display: inline-block;">
                     <div class="rate_menu" style="display: none;">
 
                     </div>
                 </div>
 
 
-                <div class="fluid_button fluid_control_subtitles fluid_button_subtitles" style="display: inline-block;">
+                <div title="Toggle subtitles menu" class="fluid_button fluid_control_subtitles fluid_button_subtitles" style="display: inline-block;">
                     <div class="subtitles_menu" style="display: none;">
                         <div class="subtitles_view">
                             <div class="subtitles_list">
@@ -116,7 +117,7 @@
 
                 </div>
 
-                <div class="fluid_button fluid_button_link" style="display: inline-block;"></div>
+                <div title="Toggle sources browser" class="fluid_button fluid_button_link" style="display: inline-block;"></div>
 
             </div>
 
@@ -124,9 +125,12 @@
                
            
             </div>
+
+            <div class="hide_button" tabindex="0">Hide Controls</div>
+
         </div>
         <div class="fluid_html_on_pause">
-            <div class="fluid_control_playpause_big_circle fluid_initial_play"
+            <div title="Play or pause video" class="fluid_control_playpause_big_circle fluid_initial_play"
                 style="background-color: rgb(51, 51, 51);">
                 <div class="fluid_control_playpause_big fluid_initial_play_button"></div>
             </div>

@@ -237,13 +237,29 @@ export class InterfaceController {
         DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
         DOMElements.controlsContainer.addEventListener('mouseenter', this.onControlsMouseEnter.bind(this));
         DOMElements.controlsContainer.addEventListener('mouseleave', this.onControlsMouseLeave.bind(this));
+        DOMElements.controlsContainer.addEventListener('focusin', ()=>{
+            this.focusingControls = true;
+            this.showControlBar();
+        });
+        DOMElements.controlsContainer.addEventListener('focusout',()=>{
+            this.focusingControls = false;
+            this.queueControlsHide();
+        });
         DOMElements.videoContainer.addEventListener('click', () => {
 
             this.hideControlBarOnAction();
         });
+        DOMElements.hideButton.addEventListener('click', () => {
+            DOMElements.hideButton.blur();
+            this.focusingControls = false;
+            this.hideControlBar();
+        });
+
+        Utils.setupTabIndex(DOMElements.hideButton);
 
         DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
         DOMElements.download.addEventListener('click', this.downloadMovie.bind(this));
+        Utils.setupTabIndex(DOMElements.download);
         DOMElements.playerContainer.addEventListener('drop', this.onFileDrop.bind(this), false);
 
         DOMElements.playerContainer.addEventListener("dragenter", (e) => {
@@ -275,15 +291,36 @@ export class InterfaceController {
 
         DOMElements.rateMenu.appendChild(speedList);
 
-        DOMElements.playbackRate.addEventListener("click", (e) => {
+        let clicked = false;
+        
+        DOMElements.playbackRate.addEventListener("focus", (e) => {
             if (DOMElements.rateMenu.style.display == "none") {
                 DOMElements.rateMenu.style.display = "";
                 speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
-            } else {
+            }
+            
+        });
+
+        DOMElements.playbackRate.addEventListener("blur", (e) => {
+            if (!clicked)
                 DOMElements.rateMenu.style.display = "none";
+        });
+        
+        DOMElements.playbackRate.addEventListener("click", (e) => {
+            clicked = !clicked
+            if (!clicked) {
+                DOMElements.rateMenu.style.display = "none";
+            } else {
+                DOMElements.rateMenu.style.display = "";
+                speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
             }
             e.stopPropagation();
         });
+
+
+
+        Utils.setupTabIndex(DOMElements.playbackRate);
+
 
         for (var i = 1; i <= 30; i += 1) {
             ((i) => {
@@ -301,9 +338,23 @@ export class InterfaceController {
 
             })(i)
         }
+
+        
         els[this.playbackRate - 1].style.backgroundColor = "rgba(0,0,0,0.3)"
 
         this.playbackElements = els;
+
+        DOMElements.playbackRate.addEventListener("keydown", (e) => {
+            if (e.key === "ArrowDown") {
+                this.client.playbackRate = Math.min(3, (this.playbackRate + 1) / 10);
+                speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+                e.stopPropagation();
+            } else if (e.key === "ArrowUp") {
+                this.client.playbackRate = Math.max(0.1, (this.playbackRate - 1) / 10);
+                speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+                e.stopPropagation();
+            }
+        });
 
         DOMElements.playerContainer.addEventListener("click", (e) => {
             DOMElements.rateMenu.style.display = "none";
@@ -407,6 +458,7 @@ export class InterfaceController {
     async downloadMovie() {
 
         if (!this.client.player) {
+            alert("No video loaded!");
             return;
         }
 
@@ -535,13 +587,13 @@ export class InterfaceController {
     queueControlsHide(time) {
         clearTimeout(this.hideControlBarTimeout);
         this.hideControlBarTimeout = setTimeout(() => {
-            if (!this.mouseOverControls && DOMElements.playPauseButtonBigCircle.style.display == 'none')
+            if (!this.focusingControls && !this.mouseOverControls && DOMElements.playPauseButtonBigCircle.style.display == 'none')
                 this.hideControlBar();
         }, time || 2000);
     }
 
     hideControlBarOnAction(cooldown) {
-        if (!this.mouseOverControls) {
+        if (!this.mouseOverControls && !this.focusingControls) {
             this.mouseActivityCooldown = Date.now() + (cooldown || 500);
             if (DOMElements.playPauseButtonBigCircle.style.display == 'none')
                 this.hideControlBar();

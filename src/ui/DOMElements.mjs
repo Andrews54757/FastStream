@@ -56,4 +56,6 @@ export const DOMElements = {
 
     bufferingSpinner: document.querySelector('.mainplayer .buffering_spinner'),
     timelineSyncer: document.querySelector('.mainplayer .fluid_controls_timeline_syncer'),
+
+    hideButton: document.querySelector('.mainplayer .hide_button'),
 }

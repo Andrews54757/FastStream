@@ -363,7 +363,6 @@
 }
 
 .initial_controls_show {
-    visibility: visible !important;
     opacity: 1 !important;
 }
 
@@ -589,7 +588,6 @@
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fade_out {
-    visibility: hidden;
     opacity: 0;
     -webkit-transition: visibility 0.5s, opacity 0.5s;
     /* Safari */
@@ -597,7 +595,6 @@
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fade_in {
-    visibility: visible;
     opacity: 1;
     -webkit-transition: visibility 0.5s, opacity 0.5s;
     /* Safari */
@@ -1544,6 +1541,24 @@ body {
     background-color: rgb(222, 187, 0);
 }
 
+
+.hide_button {
+    color: white;
+    position: absolute;
+    bottom: 50px;
+    left: 12px;
+    background-color: rgba(20, 20, 20, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    font-family: Arial;
+    font-size: 16px;
+    cursor: pointer;
+    opacity: 0;
+}
+
+.hide_button:focus {
+    opacity: 1;
+}
 .skip_button {
     color: white;
     position: absolute;
@@ -1755,6 +1770,10 @@ body {
 }
 
 .dropdown:hover .items {
+    display: block;
+}
+
+.dropdown:focus .items {
     display: block;
 }
 
