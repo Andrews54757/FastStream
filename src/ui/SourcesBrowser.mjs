@@ -44,6 +44,7 @@ export class SourcesBrowser {
 
         let sourceHeadersBtn = Utils.create("div", null, "linkui-source-headers-button");
         sourceHeadersBtn.textContent = "Header Override (" + Object.keys(source.headers).length + ")";
+        sourceHeadersBtn.name = "Toggle header override input"
         sourceHeadersBtn.addEventListener("click", (e) => {
             if (headersInput.style.display == "none") {
                 headersInput.style.display = "";
@@ -53,6 +54,7 @@ export class SourcesBrowser {
                 sourceHeadersBtn.classList.remove("active");
             }
         });
+        Utils.setupTabIndex(sourceHeadersBtn);
         sourceContainer.appendChild(sourceHeadersBtn);
 
         let sourceSetBtn = Utils.create("div", null, "linkui-source-set-button");
@@ -63,6 +65,7 @@ export class SourcesBrowser {
             await this.client.setSource(source.copy());
             this.updateSources();
         });
+        Utils.setupTabIndex(sourceSetBtn);
         sourceContainer.appendChild(sourceSetBtn);
 
         let sourceDeleteBtn = Utils.create("div", null, "linkui-source-delete-button");
@@ -74,6 +77,7 @@ export class SourcesBrowser {
             this.sources.splice(ind, 1);
             this.updateSources();
         });
+        Utils.setupTabIndex(sourceDeleteBtn);
         sourceContainer.appendChild(sourceDeleteBtn);
 
         headersInput = Utils.create("textarea", null, "text_input linkui-source-headers");
@@ -81,6 +85,7 @@ export class SourcesBrowser {
         headersInput.setAttribute("autocomplete", "off");
         headersInput.setAttribute("autocorrect", "off");
         headersInput.setAttribute("spellcheck", false);
+        headersInput.name = "Header override input";
         headersInput.placeholder = "Headers (1 entry per line)\nHeader Name: Header Value\nHeader2 Name: Header2 Value";
         headersInput.value = Utils.objToHeadersString(source.headers);
         headersInput.addEventListener("keyup", (e) => {
@@ -174,7 +179,7 @@ export class SourcesBrowser {
 
         this.linkui.addNewButton = Utils.create("div", null, "linkui-addnew-button");
         this.linkui.addNewButton.textContent = "Add Source";
-        this.linkui.addNewButton.tabIndex = 0;
+        Utils.setupTabIndex(this.linkui.addNewButton);
         DOMElements.linkuiContainer.appendChild(this.linkui.addNewButton);
 
 
@@ -186,7 +191,7 @@ export class SourcesBrowser {
 
         this.linkui.clearButton = Utils.create("div", null, "linkui-clear-button");
         this.linkui.clearButton.textContent = "Clear Sources";
-        this.linkui.clearButton.tabIndex = 0;
+        Utils.setupTabIndex(this.linkui.clearButton);
         DOMElements.linkuiContainer.appendChild(this.linkui.clearButton);
 
         this.linkui.clearButton.addEventListener("click", (e) => {
