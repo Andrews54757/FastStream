@@ -91,7 +91,10 @@ function createKeybindElement(keybind) {
     });
 
     keybindInput.addEventListener("blur", (e) => {
-        keybindInput.textContent = options.keybinds[keybind];
+        if (keybindInput.textContent == "Press a key") {
+            keybindInput.textContent = options.keybinds[keybind] = "None";
+            optionChanged();
+        }
     });
 
     containerElement.appendChild(keybindInput);
