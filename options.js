@@ -78,10 +78,8 @@ function createKeybindElement(keybind) {
         if (e.key === "Tab") {
             return;
         } else if (e.key === "Escape") {
-            if (keybindInput.textContent == "Press a key") {
-                keybindInput.textContent = options.keybinds[keybind] = "None";
-                optionChanged();
-            }
+            keybindInput.textContent = options.keybinds[keybind] = "None";
+            optionChanged();
             keybindInput.blur();
             return;
         }
@@ -97,7 +95,7 @@ function createKeybindElement(keybind) {
         e.preventDefault();
     });
 
-    keybindInput.addEventListener("mousedown", (e) => {
+    keybindInput.addEventListener("click", (e) => {
         keybindInput.textContent = "Press a key";
     });
 
