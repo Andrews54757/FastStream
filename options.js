@@ -4,23 +4,23 @@ const default_options = {
     analyzeVideos: true,
     downloadAll: true,
     keybinds: {
-        "HidePlayer": "Alt",
+        "HidePlayer": "AltLeft",
         "PlayPause": "Space",
-        "Fullscreen": "f",
+        "Fullscreen": "KeyF",
         "VolumeUp": "ArrowUp",
         "VolumeDown": "ArrowDown",
         "SeekForward": "ArrowRight",
         "SeekBackward": "ArrowLeft",
         "SeekForwardSmall": "Shift+ArrowRight",
         "SeekBackwardSmall": "Shift+ArrowLeft",
-        "SeekForwardLarge": ".",
-        "SeekBackwardLarge": ",",
-        "UndoSeek": "z",
-        "ResetFailed": "`",
-        "RemoveDownloader": "-",
-        "AddDownloader": "=",
-        "SkipIntroOutro": "s",
-        "GoToStart": "0"
+        "SeekForwardLarge": "Period",
+        "SeekBackwardLarge": "Comma",
+        "UndoSeek": "KeyZ",
+        "ResetFailed": "Backquote",
+        "RemoveDownloader": "Equal",
+        "AddDownloader": "Minus",
+        "SkipIntroOutro": "KeyS",
+        "GoToStart": "Digit0"
     }
 }
 
@@ -71,9 +71,16 @@ function createKeybindElement(keybind) {
     const keybindInput = document.createElement("div");
     keybindInput.classList.add("keybind-input");
     keybindInput.tabIndex = 0;
+    keybindInput.name = keybind;
     keybindInput.textContent = options.keybinds[keybind];
-
+    
     keybindInput.addEventListener("keydown", (e) => {
+        if (e.key === "Tab") {
+            return;
+        } else if (e.key === "Escape") {
+            keybindInput.blur();
+            return;
+        }
         e.stopPropagation();
         e.preventDefault();
         keybindInput.textContent = getKeyString(e);
@@ -86,7 +93,7 @@ function createKeybindElement(keybind) {
         e.preventDefault();
     });
 
-    keybindInput.addEventListener("focus", (e) => {
+    keybindInput.addEventListener("mousedown", (e) => {
         keybindInput.textContent = "Press a key";
     });
 

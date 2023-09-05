@@ -274,6 +274,7 @@ export class InterfaceController {
         DOMElements.settingsButton.addEventListener("click", () => {
             chrome.runtime.openOptionsPage();
         })
+        Utils.setupTabIndex(DOMElements.settingsButton);
 
         const welcomeText = 'Welcome to FastStream v' + this.client.version + "!";
         this.setDownloadStatus(welcomeText);
