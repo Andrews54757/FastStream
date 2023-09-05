@@ -1554,6 +1554,8 @@ body {
     opacity: 0;
     width: 0px;
     height: 0px;
+
+    overflow: hidden;
 }
 
 .hide_button:focus {
