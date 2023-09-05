@@ -1548,16 +1548,21 @@ body {
     bottom: 50px;
     left: 12px;
     background-color: rgba(20, 20, 20, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 4px 10px;
+    padding: 0px;
     font-family: Arial;
     font-size: 16px;
-    cursor: pointer;
     opacity: 0;
+    width: 0px;
+    height: 0px;
 }
 
 .hide_button:focus {
     opacity: 1;
+    height: auto;
+    width: auto;
+    cursor: pointer;
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 .skip_button {
     color: white;
