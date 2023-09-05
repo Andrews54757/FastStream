@@ -21,9 +21,6 @@ export class DownloadManager {
         this.failed = 0;
     }
 
-
-
-
     canGetFile(details) {
         const key = this.getIdentifier(details);
         let storedEntry = this.storage.get(key);
@@ -41,7 +38,6 @@ export class DownloadManager {
         })
     }
 
-
     getEntry(details) {
         const key = this.getIdentifier(details);
         return this.storage.get(key);
@@ -55,6 +51,7 @@ export class DownloadManager {
             this.storage.delete(key);
         }
     }
+
     destroy() {
         this.downloaders.forEach((downloader) => {
             downloader.destroy();
@@ -62,6 +59,7 @@ export class DownloadManager {
         this.downloaders = null;
         this.storage = null;
     }
+
     getFile(details, callbacks) {
         const key = this.getIdentifier(details);
         let storedEntry = this.storage.get(key);
@@ -118,6 +116,7 @@ export class DownloadManager {
 
         return totalSpeed;
     }
+
     addDownloader() {
         this.testing = false;
         this.downloaders.push(new StandardDownloader(this));
@@ -139,6 +138,7 @@ export class DownloadManager {
         });
         this.downloaders.length = 0;
     }
+
     onDownloaderFinished(downloader, entry) {
 
         if (this.testing) {
@@ -198,6 +198,7 @@ export class DownloadManager {
         this.client.predownloadFragments();
         this.queueNext();
     }
+
     queueNext() {
 
 
@@ -257,6 +258,4 @@ export class DownloadManager {
             downloader.abort();
         });
     }
-
-
 }

@@ -287,10 +287,6 @@ export class SubtitlesManager {
             e.stopPropagation();
         });
 
-        DOMElements.subuiContainer.addEventListener("keypress", (e) => {
-            e.stopPropagation();
-        });
-
         DOMElements.subuiContainer.getElementsByClassName("close_button")[0].addEventListener("click", (e) => {
             DOMElements.subuiContainer.style.display = "none";
         });
@@ -461,7 +457,7 @@ export class SubtitlesManager {
                     {
                         operation: 'set',
                         header: 'User-Agent',
-                        value: 'FastStream V' + chrome.runtime.getManifest().version
+                        value: 'FastStream V' + this.client.version
                     }
                 ]
             })).response.data;
@@ -541,7 +537,7 @@ export class SubtitlesManager {
                                 {
                                     operation: 'set',
                                     header: 'User-Agent',
-                                    value: 'FastStream V' + chrome.runtime.getManifest().version
+                                    value: 'FastStream V' + this.client.version
                                 }
                             ],
 
@@ -575,7 +571,7 @@ export class SubtitlesManager {
                             {
                                 operation: 'set',
                                 header: 'User-Agent',
-                                value: 'FastStream V' + chrome.runtime.getManifest().version
+                                value: 'FastStream V' + this.client.version
                             }
                         ]
                     }));

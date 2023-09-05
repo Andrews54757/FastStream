@@ -259,7 +259,7 @@ export class InterfaceController {
             chrome.runtime.openOptionsPage();
         })
 
-        const welcomeText = 'Welcome to FastStream v' + chrome.runtime.getManifest().version + "!";
+        const welcomeText = 'Welcome to FastStream v' + this.client.version + "!";
         this.setDownloadStatus(welcomeText);
         setTimeout(() => {
             if (DOMElements.downloadStatus.textContent == welcomeText)

@@ -3,9 +3,28 @@ const default_options = {
     playStreamURLs: true,
     analyzeVideos: true,
     downloadAll: true,
+    keybinds: {
+        "HidePlayer": "AltLeft",
+        "PlayPause": "Space",
+        "Fullscreen": "KeyF",
+        "VolumeUp": "ArrowUp",
+        "VolumeDown": "ArrowDown",
+        "SeekForward": "ArrowRight",
+        "SeekBackward": "ArrowLeft",
+        "SeekForwardSmall": "Shift+ArrowRight",
+        "SeekBackwardSmall": "Shift+ArrowLeft",
+        "SeekForwardLarge": "Period",
+        "SeekBackwardLarge": "Comma",
+        "UndoSeek": "KeyZ",
+        "ResetFailed": "Backquote",
+        "RemoveDownloader": "Equal",
+        "AddDownloader": "Minus",
+        "SkipIntroOutro": "KeyS",
+        "GoToStart": "Digit0"
+    }
 }
 
-const options = {};
+let options = {};
 
 const PlayerModes = {
     DIRECT: 0,
@@ -351,7 +370,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     } else if (msg.type === "iframe") {
         frame.url = msg.url;
         if (frame.url.substring(0, playerURL.length) !== playerURL) {
-          //  console.log("reset frame sources")
+            //  console.log("reset frame sources")
             frame.subtitles.length = 0;
             frame.sources.length = 0;
             frame.isFastStream = false;
@@ -375,28 +394,39 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 })
 
+function mergeOptions(defaultOptions, newOptions) {
+    let options = {};
+    for (var prop in defaultOptions) {
+        let opt = defaultOptions[prop];
+        if (typeof opt === "object") {
+            options[prop] = mergeOptions(opt, newOptions[prop] || {});
+        } else {
+            options[prop] = Object.hasOwn(newOptions, prop) ? newOptions[prop] : opt;
+        }
+    }
+    return options;
+}
+
+function resetOptions() {
+    chrome.storage.local.set({
+        options: JSON.stringify(default_options)
+    }, () => {
+        loadOptions();
+    });
+}
+
 function loadOptions() {
     chrome.storage.local.get({
         options: '{}'
     }, (results) => {
         let newOptions = JSON.parse(results.options) || {};
-       
-        for (var prop in newOptions) {
-            options[prop] = newOptions[prop];
-        }
 
-        let defaultsSet = false;
-        for (var prop in default_options) {
-            if (Object.hasOwn(options, prop)) continue;
-            options[prop] = default_options[prop];
-            defaultsSet = true;
-        }
+        options = mergeOptions(default_options, newOptions);
 
-        if (defaultsSet) {
-            chrome.storage.local.set({
-                options: JSON.stringify(options)
-            });
-        }
+        chrome.storage.local.set({
+            options: JSON.stringify(options)
+        });
+
 
         chrome.tabs.query({}, function (tabs) {
             var message = {
@@ -407,7 +437,7 @@ function loadOptions() {
                 chrome.tabs.sendMessage(tabs[i].id, message);
             }
         });
-        
+
 
         if (options.playMP4URLs) {
             setupRedirectRule(1, ["mp4"])
@@ -593,7 +623,7 @@ async function onSourceRecieved(details, frame, mode) {
                 openPlayer(frame);
             }
 
-        }, 2000);
+        }, mode === PlayerModes.ACCELERATED_MP4 ? 1500 : 200);
     }
 
     if (logging) console.log("Found source", details, frame)

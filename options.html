@@ -59,6 +59,29 @@
             opacity: .7;
             font-style: italic;
         }
+
+        .keybind-container {
+            line-height: 18px;
+            padding: 2px;
+        }
+        .keybind-name {
+            display: inline-block;
+        }
+
+        .keybind-input {
+            float: right;
+            width: 50%;
+            height: 18px;
+            cursor: pointer;
+            border: 1px solid black;
+            border-radius: 2px;
+            text-align: center;
+        }
+
+        .keybind-input:focus {
+            border: 1px solid blue;
+            color: rgb(0, 0, 255);
+        }
     </style>
 </head>
 
@@ -68,9 +91,13 @@
         <div> <input type="checkbox" id="analyzevideos"> Automatically analyze sequential videos for intros/outros</div>
         <div> <input type="checkbox" id="playstreamurls"> Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)</div>
         <div> <input type="checkbox" id="playmp4urls"> Use player to play MP4 videos when opening video URLs (.mp4)</div>
-    
     <h1>Help</h1>
     <a href="#" id="welcome">Welcome Page</a>
+
+    <h1>Keybinds</h1>
+    <p>Keybinds are only active when the player is focused.</p>
+    <button id="resetdefault">Reset to Defaults</button>
+    <div id="keybindslist"></div>
 </body>
 <script src='options.js'></script>
 

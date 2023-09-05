@@ -20,6 +20,8 @@ import { SubtitleSyncer } from "./ui/SubtitleSyncer.mjs";
 export class FastStreamClient extends EventEmitter {
     constructor() {
         super();
+        this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : "#.#.#"; 
+
         this.options = {
             introCutoff: 5 * 60,
             outroCutoff: 5 * 60,
@@ -93,6 +95,10 @@ export class FastStreamClient extends EventEmitter {
         this.options.analyzeVideos = options.analyzeVideos;
         if (!this.options.cantDownloadAll)
             this.options.downloadAll = options.downloadAll;
+
+        if (options.keybinds) {
+            this.keybindManager.setKeybinds(options.keybinds);
+        }
     }
 
     loadAnalyzerData(data) {

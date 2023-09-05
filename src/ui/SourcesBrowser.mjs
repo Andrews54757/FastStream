@@ -156,11 +156,6 @@ export class SourcesBrowser {
             e.stopPropagation();
         });
 
-        DOMElements.linkuiContainer.addEventListener("keypress", (e) => {
-            e.stopPropagation();
-        });
-
-
         DOMElements.playerContainer.addEventListener("click", (e) => {
             DOMElements.linkuiContainer.style.display = "none";
         });
