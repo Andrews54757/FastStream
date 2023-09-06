@@ -438,20 +438,33 @@ export class SubtitlesManager {
     }
     async queryOpenSubtitles(query) {
 
+        let defaulQuery = {
+            page: "1",
+            type: "all",
+        }
         let translatedQuery = {
-            query: query.query,
-            type: query.type,
-            languages: query.language,
-            year: query.year,
-            order_by: query.sortBy,
-            sort_direction: query.sortDirection,
-            page: query.page
+            query: "" + query.query,
+            type: "" + query.type,
+            languages: "" + query.language,
+            year: "" + query.year,
+            order_by: "" + query.sortBy,
+            sort_direction: "" + query.sortDirection,
+            page: "" + query.page
         }
 
         if (query.type === "episode") {
-            translatedQuery.season_number = query.season;
-            translatedQuery.episode_number = query.episode;
+            translatedQuery.season_number = "" + query.season;
+            translatedQuery.episode_number = "" + query.episode;
         }
+        console.log(translatedQuery)
+
+        // sort query alphabetically
+        let sortedQuery = {};
+        Object.keys(translatedQuery).sort().forEach(function (key) {
+            if (translatedQuery[key].length > 0 && translatedQuery[key] !== defaulQuery[key]) {
+                sortedQuery[key] = translatedQuery[key];
+            }
+        });
 
         this.subui.results.innerHTML = "";
         var container = document.createElement("div");
@@ -461,10 +474,11 @@ export class SubtitlesManager {
 
         let data;
         try {
-            data = (await Utils.request({
+            let response = (await Utils.request({
+                usePlusForSpaces: true,
                 responseType: "json",
                 url: "https://api.opensubtitles.com/api/v1/subtitles",
-                query: translatedQuery,
+                query: sortedQuery,
                 headers: {
                     "Api-Key": API_KEY
                 },
@@ -475,12 +489,18 @@ export class SubtitlesManager {
                         value: 'FastStream V' + this.client.version
                     }
                 ]
-            })).response.data;
+            })).response;
+
+            if (response.errors) {
+                container.textContent = "Error: " + response.errors.join(", ");
+                return;
+            }
+
+            data = response.data || [];
 
         } catch (e) {
             console.log(e)
-            if (DOMElements.subuiContainer.style.display == "none") return;
-            alert("OpenSubtitles is down!");
+            container.textContent = "OpenSubtitles is down!";
             return;
         }
 

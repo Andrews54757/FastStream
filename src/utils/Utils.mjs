@@ -218,6 +218,9 @@ export class Utils {
                 query = "?" + Object.keys(options.query).filter((key) => {
                     return options.query[key] !== undefined && options.query[key] !== null && options.query[key] !== "";
                 }).map((key) => {
+                    if (options.usePlusForSpaces) {
+                        return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key]).replace(/%20/g, '+')
+                    }
                     return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key])
                 }).join('&');
             }
