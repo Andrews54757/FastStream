@@ -1716,7 +1716,6 @@ body {
 .popwindow .close_button {
     top: 5px;
     right: 5px;
-
 }
 
 .popwindow {
@@ -1734,6 +1733,7 @@ body {
     color: rgb(230, 230, 230, 0.8);
     z-index: 2;
     transition: bottom 0.5s;
+    cursor: auto;
 }
 
 .popwindow .title {
