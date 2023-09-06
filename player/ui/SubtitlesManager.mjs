@@ -788,19 +788,20 @@ export class SubtitlesManager {
                 });
 
                 trackElement.addEventListener("keydown",(e)=>{
-                    if (e.key == "Backspace" || e.key == "Delete") {
+                    const keybind = this.client.keybindManager.eventToKeybind(e);
+                    if (keybind === "SubtrackDelete") {
                         e.stopPropagation();
                         removeTrack.click();
-                    } else if (e.key == "ArrowRight") {
+                    } else if (keybind === "SubtrackShiftRight") {
                         e.stopPropagation();
                         shiftRTrack.click();
-                    } else if (e.key == "ArrowLeft") {
+                    } else if (keybind === "SubtrackShiftLeft") {
                         e.stopPropagation();
                         shiftLTrack.click();
-                    } else if (e.key === "d") {
+                    } else if (keybind === "SubtrackDownload") {
                         e.stopPropagation();
                         downloadTrack.click();
-                    } else if (e.key === "r") {
+                    } else if (keybind === "SubtrackToggleResync") {
                         e.stopPropagation();
                         resyncTool.click();
                     }

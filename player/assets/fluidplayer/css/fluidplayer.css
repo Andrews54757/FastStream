@@ -270,16 +270,6 @@
     pointer-events: auto;
 }
 
-/*Mobile Layout*/
-.fluid_video_wrapper.mobile .skip_button {
-    bottom: 50px;
-}
-
-/*
-.fluid_video_wrapper.mobile .fluid_ad_cta {
-        bottom: 125px;
-}
-*/
 .fluid_initial_play {
     width: 60px;
     height: 60px;
@@ -1554,7 +1544,7 @@ body {
     opacity: 0;
     width: 0px;
     height: 0px;
-
+    transition: bottom 0.5s;
     overflow: hidden;
 }
 
@@ -1577,6 +1567,12 @@ body {
     font-family: Arial;
     font-size: 16px;
     cursor: pointer;
+    transition: bottom 0.5s;
+}
+
+.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .hide_button,
+.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button {
+    bottom: 130px;
 }
 
 .skip_button:hover {

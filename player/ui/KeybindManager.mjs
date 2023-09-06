@@ -146,8 +146,8 @@ export class KeybindManager extends EventEmitter {
 
         return (metaPressed ? "Meta+" : "") + (ctrlPressed ? "Control+" : "") + (altPressed ? "Alt+" : "") + (shiftPressed ? "Shift+" : "") + key;
     }
-    
-    onKeyDown(e) {
+
+    eventToKeybind(e) {
         const keyString = this.getKeyString(e);
         let keybind = null;
         for (const [key, value] of this.keybindMap.entries()) {
@@ -156,6 +156,11 @@ export class KeybindManager extends EventEmitter {
                 break;
             }
         }
+        return keybind;
+    }
+    
+    onKeyDown(e) {
+        let keybind = this.eventToKeybind(e);
 
         if (keybind) {
             this.emit("keybind", keybind[0], e);

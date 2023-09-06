@@ -15,5 +15,10 @@ export const DefaultKeybinds = {
     "RemoveDownloader": "Equal",
     "AddDownloader": "Minus",
     "SkipIntroOutro": "KeyS",
-    "GoToStart": "Digit0"
+    "GoToStart": "Digit0",
+    "SubtrackDelete": "Delete",
+    "SubtrackShiftRight": "BracketRight",
+    "SubtrackShiftLeft": "BracketLeft",
+    "SubtrackDownload": "KeyD",
+    "SubtrackToggleResync": "KeyR"
 }
