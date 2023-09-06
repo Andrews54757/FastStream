@@ -16227,6 +16227,7 @@ class AbrController {
       quickly enough to prevent underbuffering
     */
   _abandonRulesCheck() {
+    return; // We dont need this
     const {
       fragCurrent: frag,
       partCurrent: part,
