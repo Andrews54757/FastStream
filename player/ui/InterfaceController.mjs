@@ -288,7 +288,7 @@ export class InterfaceController {
     setupRateChanger() {
         const els = [];
         const speedList = document.createElement('div');
-        speedList.style = 'overflow-y: scroll; padding-right: 17px; box-sizing: content-box; width: 100%; height: 100%'
+        speedList.style = 'overflow-y: scroll; padding-right: 20px; box-sizing: content-box; width: 80px; height: 100%'
 
         DOMElements.rateMenu.appendChild(speedList);
 
@@ -327,7 +327,7 @@ export class InterfaceController {
             ((i) => {
                 var el = document.createElement("div");
                 els.push(el)
-                el.style = 'font-family: Arial; font-size: 15px; width: 100%; text-align: center; padding: 3px 0px; line-height: 1em'
+                el.style = 'font-family: Arial; font-size: 15px; width: 60px; text-align: center; padding: 3px 0px; line-height: 1em'
                 el.textContent = ((i + 0.1) / 10).toString().substring(0, 3);
 
                 el.addEventListener('click', (e) => {
