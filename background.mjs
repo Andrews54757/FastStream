@@ -1,6 +1,6 @@
-import { DefaultOptions } from "../options/defaults/DefaultOptions.mjs";
-import { PlayerModes } from "../player/enums/PlayerModes.mjs";
-import { Utils } from "../player/utils/Utils.mjs";
+import { DefaultOptions } from "./options/defaults/DefaultOptions.mjs";
+import { PlayerModes } from "./player/enums/PlayerModes.mjs";
+import { Utils } from "./player/utils/Utils.mjs";
 
 let options = {};
 

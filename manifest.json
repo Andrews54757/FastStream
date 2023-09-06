@@ -18,7 +18,7 @@
         "default_title": "Toggle FastStream"
     },
     "background": {
-        "service_worker": "background/background.mjs",
+        "service_worker": "background.mjs",
         "type": "module"
     },
     "content_scripts": [
