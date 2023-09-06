@@ -484,7 +484,7 @@ export class InterfaceController {
             }
         }
 
-        let name = prompt("Enter a name for the file", "video");
+        let name = prompt("Enter a name for the file", (this.client.mediaName || "video").replaceAll(" ","_"));
 
         if (!name) {
             return;
@@ -1022,5 +1022,7 @@ export class InterfaceController {
             },
             500
         );
-    };
+    }
+
+
 }

@@ -25,7 +25,12 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessag
                 if (window.fastStream) window.fastStream.setOptions(OPTIONS);
             } if (request.type == "analyzerData") {
                 window.fastStream.loadAnalyzerData(request.data)
-            } else if (request.type == "sources" && window.fastStream) {
+            } else if (request.type === "media_name") {
+                const name = request.name;
+                if (name) {
+                    if (window.fastStream) window.fastStream.setMediaName(name);
+                }
+            } else if (request.type === "sources" && window.fastStream) {
                 console.log("Recieved sources", request.sources, request.subtitles)
                 var subs = request.subtitles;
                 const sources = request.sources;

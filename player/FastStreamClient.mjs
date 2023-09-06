@@ -458,6 +458,11 @@ export class FastStreamClient extends EventEmitter {
 
     }
 
+    setMediaName(name) {
+        this.mediaName = name;
+        this.subtitlesManager.mediaNameSet();
+    }
+    
     debugstuff() {
         let res = [];
         this.fragmentsStore[this.currentLevel].forEach((fragment) => {

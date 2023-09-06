@@ -789,22 +789,22 @@ export class SubtitlesManager {
 
                 trackElement.addEventListener("keydown",(e)=>{
                     if (e.key == "Backspace" || e.key == "Delete") {
+                        e.stopPropagation();
                         removeTrack.click();
-                        e.stopPropagation();
                     } else if (e.key == "ArrowRight") {
+                        e.stopPropagation();
                         shiftRTrack.click();
-                        e.stopPropagation();
                     } else if (e.key == "ArrowLeft") {
-                        shiftLTrack.click();
                         e.stopPropagation();
+                        shiftLTrack.click();
                     } else if (e.key === "d") {
                         e.stopPropagation();
                         downloadTrack.click();
                     } else if (e.key === "r") {
-                        resyncTool.click();
                         e.stopPropagation();
+                        resyncTool.click();
                     }
-                })
+                });
                 DOMElements.subtitlesList.appendChild(trackElement)
             })(i);
         }
@@ -886,5 +886,9 @@ export class SubtitlesManager {
 
             }
         })
+    }
+
+    mediaNameSet() {
+        this.subui.search.value = this.client.mediaName;
     }
 }
