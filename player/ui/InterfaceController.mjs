@@ -575,6 +575,7 @@ export class InterfaceController {
     }
     onControlsMouseLeave() {
         this.mouseOverControls = false;
+        document.activeElement.blur();
         this.queueControlsHide();
     }
     onPlayerMouseMove() {
