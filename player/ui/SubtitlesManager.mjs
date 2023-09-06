@@ -47,7 +47,7 @@ export class SubtitlesManager {
         this.tracks.length = 0;
         this.activeTracks.length = 0;
         this.updateTrackList();
-
+        this.client.subtitleSyncer.stop();
     }
 
     removeTrack(track) {
@@ -55,8 +55,8 @@ export class SubtitlesManager {
         if (ind !== -1) this.tracks.splice(ind, 1);
         ind = this.activeTracks.indexOf(track);
         if (ind !== -1) this.activeTracks.splice(ind, 1);
-
         this.updateTrackList();
+        this.client.subtitleSyncer.toggleTrack(track, true);
     }
 
     updateSettings() {
@@ -824,7 +824,6 @@ color: rgb(200,200,200);
 
                 removeTrack.addEventListener("click", (e) => {
                     this.removeTrack(track);
-                    this.client.subtitleSyncer.toggleTrack(track, true);
                     e.stopPropagation();
                 }, true)
 
