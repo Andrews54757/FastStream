@@ -163,8 +163,8 @@ export class KeybindManager extends EventEmitter {
         let keybind = this.eventToKeybind(e);
 
         if (keybind) {
-            this.emit("keybind", keybind[0], e);
-            this.emit(keybind[0], e)
+            this.emit("keybind", keybind, e);
+            this.emit(keybind, e)
             e.preventDefault();
         }
     }
