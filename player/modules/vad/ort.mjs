@@ -2974,5 +2974,5 @@ exports.version = '1.16.0';
 
 ort.env.wasm.numThreads = 1;
 ort.env.wasm.simd = false;
-ort.env.wasm.wasmPaths = import.meta.url.split('/').slice(3, -1).join('/') + "/";
+ort.env.wasm.wasmPaths = "/" + import.meta.url.split('/').slice(3, -1).join('/') + "/";
 export const OrtJS = ort;
