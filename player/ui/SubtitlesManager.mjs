@@ -300,9 +300,12 @@ export class SubtitlesManager {
             e.stopPropagation();
         });
 
-        DOMElements.subuiContainer.getElementsByClassName("close_button")[0].addEventListener("click", (e) => {
+        const closeBtn = DOMElements.subuiContainer.getElementsByClassName("close_button")[0];
+        closeBtn.addEventListener("click", (e) => {
             DOMElements.subuiContainer.style.display = "none";
         });
+        Utils.setupTabIndex(closeBtn);
+        
         this.subui = {};
         this.subui.searchContainer = document.createElement('div');
         this.subui.searchContainer.classList.add("subtitle-search-container");

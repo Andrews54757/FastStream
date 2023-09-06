@@ -167,9 +167,11 @@ export class SourcesBrowser {
             DOMElements.linkuiContainer.style.display = "none";
         });
 
-        DOMElements.linkuiContainer.getElementsByClassName("close_button")[0].addEventListener("click", (e) => {
+        const closeBtn = DOMElements.linkuiContainer.getElementsByClassName("close_button")[0];
+        closeBtn.addEventListener("click", (e) => {
             DOMElements.linkuiContainer.style.display = "none";
         });
+        Utils.setupTabIndex(closeBtn);
 
         this.linkui = {};
 
