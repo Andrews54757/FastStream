@@ -711,6 +711,7 @@ export class SubtitlesManager {
                 trackElement.appendChild(downloadTrack)
 
                 downloadTrack.addEventListener("click", (e) => {
+                    e.stopPropagation();
                     let dlname = prompt("Enter a name for the subtitle download file", name + ".srt");
 
                     if (!dlname) {
@@ -732,7 +733,6 @@ export class SubtitlesManager {
                     a.click();
                     document.body.removeChild(a);
                     window.URL.revokeObjectURL(url);
-                    e.stopPropagation();
                 }, true)
 
                 var removeTrack = document.createElement("div");
@@ -773,12 +773,38 @@ export class SubtitlesManager {
 
 
                 trackElement.addEventListener("mouseenter", () => {
-                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "block"
-                })
-                trackElement.addEventListener("mouseleave", () => {
-                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "none"
+                    trackElement.focus();
                 })
 
+                trackElement.addEventListener("focus", () => {
+                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "block"
+                });
+                trackElement.addEventListener("mouseleave", () => {
+                    trackElement.blur();
+                })
+
+                trackElement.addEventListener("blur", () => {
+                    downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = "none"
+                });
+
+                trackElement.addEventListener("keydown",(e)=>{
+                    if (e.key == "Backspace" || e.key == "Delete") {
+                        removeTrack.click();
+                        e.stopPropagation();
+                    } else if (e.key == "ArrowRight") {
+                        shiftRTrack.click();
+                        e.stopPropagation();
+                    } else if (e.key == "ArrowLeft") {
+                        shiftLTrack.click();
+                        e.stopPropagation();
+                    } else if (e.key === "d") {
+                        e.stopPropagation();
+                        downloadTrack.click();
+                    } else if (e.key === "r") {
+                        resyncTool.click();
+                        e.stopPropagation();
+                    }
+                })
                 DOMElements.subtitlesList.appendChild(trackElement)
             })(i);
         }
