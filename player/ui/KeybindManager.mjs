@@ -152,7 +152,7 @@ export class KeybindManager extends EventEmitter {
         let keybind = null;
         for (const [key, value] of this.keybindMap.entries()) {
             if (value === keyString) {
-                keybind = [key, value];
+                keybind = key;
                 break;
             }
         }

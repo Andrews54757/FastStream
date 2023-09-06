@@ -789,6 +789,7 @@ export class SubtitlesManager {
 
                 trackElement.addEventListener("keydown",(e)=>{
                     const keybind = this.client.keybindManager.eventToKeybind(e);
+                    console.log(keybind)
                     if (keybind === "SubtrackDelete") {
                         e.stopPropagation();
                         removeTrack.click();
