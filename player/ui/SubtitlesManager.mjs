@@ -27,6 +27,8 @@ export class SubtitlesManager {
         this.tracks.push(track);
 
         this.updateTrackList();
+        this.client.interfaceController.showControlBar();
+        this.client.interfaceController.queueControlsHide(5000);
     }
 
     activateTrack(track) {
