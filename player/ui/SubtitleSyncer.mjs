@@ -24,6 +24,12 @@ export class SubtitleSyncer extends EventEmitter {
         this.setup();
     }
 
+    shiftSubtitles(delta) {
+        if (!this.started) return;
+        this.trackToSync.shift(delta);
+        this.client.subtitlesManager.renderSubtitles();
+        this.onVideoTimeUpdate();
+    }
     setup() {
         this.ui = {};
         this.ui.currentPosition = Utils.create("div", '', "current_position_bar");
@@ -79,8 +85,6 @@ export class SubtitleSyncer extends EventEmitter {
                 this.client.updateTime(time);
             }
         });
-
-
 
         // track line is grabbable
         let isGrabbingTrack = false;
