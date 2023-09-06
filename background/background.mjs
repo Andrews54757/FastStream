@@ -1,42 +1,13 @@
-const default_options = {
-    playMP4URLs: false,
-    playStreamURLs: true,
-    analyzeVideos: true,
-    downloadAll: true,
-    keybinds: {
-        "HidePlayer": "AltLeft",
-        "PlayPause": "Space",
-        "Fullscreen": "KeyF",
-        "VolumeUp": "ArrowUp",
-        "VolumeDown": "ArrowDown",
-        "SeekForward": "ArrowRight",
-        "SeekBackward": "ArrowLeft",
-        "SeekForwardSmall": "Shift+ArrowRight",
-        "SeekBackwardSmall": "Shift+ArrowLeft",
-        "SeekForwardLarge": "Period",
-        "SeekBackwardLarge": "Comma",
-        "UndoSeek": "KeyZ",
-        "ResetFailed": "Backquote",
-        "RemoveDownloader": "Equal",
-        "AddDownloader": "Minus",
-        "SkipIntroOutro": "KeyS",
-        "GoToStart": "Digit0"
-    }
-}
+import { DefaultOptions } from "../options/defaults/DefaultOptions.mjs";
+import { PlayerModes } from "../player/enums/PlayerModes.mjs";
+import { Utils } from "../player/utils/Utils.mjs";
 
 let options = {};
 
-const PlayerModes = {
-    DIRECT: 0,
-    ACCELERATED_MP4: 1,
-    ACCELERATED_HLS: 2,
-    ACCELERATED_DASH: 3,
-    IFRAME: 4
-}
 
 var version = chrome.runtime.getManifest().version;
 var logging = false;
-var playerURL = chrome.runtime.getURL("player.html");
+var playerURL = chrome.runtime.getURL("player/player.html");
 var tabs = {};
 
 
@@ -230,12 +201,12 @@ function updateTabIcon(tab, skipNotify) {
             tabId: tab.tab
         });
         chrome.action.setIcon({
-            path: "icon2_128.png",
+            path: "/icon2_128.png",
             tabId: tab.tab
         });
     } else {
         chrome.action.setIcon({
-            path: "icon128.png",
+            path: "/icon128.png",
             tabId: tab.tab
         });
         if (skipNotify) {
@@ -409,7 +380,7 @@ function mergeOptions(defaultOptions, newOptions) {
 
 function resetOptions() {
     chrome.storage.local.set({
-        options: JSON.stringify(default_options)
+        options: JSON.stringify(DefaultOptions)
     }, () => {
         loadOptions();
     });
@@ -421,7 +392,7 @@ function loadOptions() {
     }, (results) => {
         let newOptions = JSON.parse(results.options) || {};
 
-        options = mergeOptions(default_options, newOptions);
+        options = mergeOptions(DefaultOptions, newOptions);
 
         chrome.storage.local.set({
             options: JSON.stringify(options)
@@ -478,9 +449,6 @@ async function removeRule(ruleID) {
     return chrome.declarativeNetRequest.updateDynamicRules({
         removeRuleIds: [ruleID],
     });
-}
-function get_url_extension(url) {
-    return url.split(/[#?]/)[0].split('.').pop().trim();
 }
 
 function handleSubtitles(url, frame, headers) {
@@ -673,7 +641,7 @@ function frameHasPlayer(frame) {
 chrome.webRequest.onHeadersReceived.addListener(
     function (details) {
         var url = details.url;
-        var ext = get_url_extension(url);
+        var ext = Utils.get_url_extension(url);
         const frame = getOrCreateFrame(details);
         if (frameHasPlayer(frame)) return;
 

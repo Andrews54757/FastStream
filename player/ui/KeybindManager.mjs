@@ -1,3 +1,4 @@
+import { DefaultKeybinds } from "../../options/defaults/DefaultKeybinds.mjs";
 import { EventEmitter } from "../modules/eventemitter.mjs";
 import { DOMElements } from "./DOMElements.mjs";
 
@@ -6,30 +7,15 @@ export class KeybindManager extends EventEmitter {
         super();
         this.client = client;
         this.hidden = false;
-        this.keybindMap = {
-            "HidePlayer": "AltLeft",
-            "PlayPause": "Space",
-            "Fullscreen": "KeyF",
-            "VolumeUp": "ArrowUp",
-            "VolumeDown": "ArrowDown",
-            "SeekForward": "ArrowRight",
-            "SeekBackward": "ArrowLeft",
-            "SeekForwardSmall": "Shift+ArrowRight",
-            "SeekBackwardSmall": "Shift+ArrowLeft",
-            "SeekForwardLarge": "Period",
-            "SeekBackwardLarge": "Comma",
-            "UndoSeek": "KeyZ",
-            "ResetFailed": "Backquote",
-            "RemoveDownloader": "Equal",
-            "AddDownloader": "Minus",
-            "SkipIntroOutro": "KeyS",
-            "GoToStart": "Digit0"
-        }
+        this.keybindMap = new Map();
         this.setup();
     }
     setup() {
-        document.addEventListener('keydown', (e) => {
+        for (let keybind in DefaultKeybinds) {
+            this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
+        }
 
+        document.addEventListener('keydown', (e) => {
             this.onKeyDown(e);
         })
 
@@ -42,7 +28,7 @@ export class KeybindManager extends EventEmitter {
                 DOMElements.subtitlesContainer.style.display = "";
                 this.hidden = false;
                 if (this.client.persistent.playing) {
-                    this.client.player.play();
+                    this.client.player?.play();
                 }
             } else {
                 DOMElements.videoContainer.style.display = "none";
@@ -52,7 +38,7 @@ export class KeybindManager extends EventEmitter {
                 DOMElements.subtitlesContainer.style.display = "none";
 
                 this.hidden = true;
-                this.client.player.pause();
+                this.client.player?.pause();
             }
         });
 
@@ -146,8 +132,8 @@ export class KeybindManager extends EventEmitter {
 
     setKeybinds(keybinds) {
         for (const keybind in keybinds) {
-            if (this.keybindMap.hasOwnProperty(keybind)) {
-                this.keybindMap[keybind] = keybinds[keybind];
+            if (this.keybindMap.has(keybind)) {
+                this.keybindMap.set(keybind, keybinds[keybind]);
             }
         }
     }
@@ -160,12 +146,20 @@ export class KeybindManager extends EventEmitter {
 
         return (metaPressed ? "Meta+" : "") + (ctrlPressed ? "Control+" : "") + (altPressed ? "Alt+" : "") + (shiftPressed ? "Shift+" : "") + key;
     }
+    
     onKeyDown(e) {
         const keyString = this.getKeyString(e);
-        const keybind = Object.keys(this.keybindMap).find((key) => this.keybindMap[key] === keyString);
+        let keybind = null;
+        for (const [key, value] of this.keybindMap.entries()) {
+            if (value === keyString) {
+                keybind = [key, value];
+                break;
+            }
+        }
+
         if (keybind) {
-            this.emit("keybind", keybind, e);
-            this.emit(keybind, e)
+            this.emit("keybind", keybind[0], e);
+            this.emit(keybind[0], e)
             e.preventDefault();
         }
     }

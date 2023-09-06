@@ -2,6 +2,9 @@ import { DefaultPlayerEvents } from "../enums/DefaultPlayerEvents.mjs";
 
 export class Utils {
 
+    static get_url_extension(url) {
+        return url.split(/[#?]/)[0].split('.').pop().trim();
+    }
 
     static validateHeadersString(str) {
         var lines = str.split("\n");

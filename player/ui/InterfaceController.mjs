@@ -754,7 +754,7 @@ export class InterfaceController {
             DOMElements.progressContainer.classList.remove('freeze');
 
             if (this.persistent.playing) {
-                this.client.player.play();
+                this.client.player?.play();
             }
         };
         shiftTime(initialPosition);
@@ -979,10 +979,10 @@ export class InterfaceController {
     playPauseToggle() {
         if (!this.persistent.playing) {
             this.play();
-            this.client.player.play();
+            this.client.player?.play();
         } else {
             this.pause();
-            this.client.player.pause();
+            this.client.player?.pause();
         }
     }
 

@@ -1,10 +1,9 @@
 
-import { PlayerModes } from "./src/enums/PlayerModes.mjs";
-import { FastStreamClient } from "./src/FastStreamClient.mjs";
-import { SubtitleTrack } from "./src/SubtitleTrack.mjs";
-import { DOMElements } from "./src/ui/DOMElements.mjs";
-import { Utils } from "./src/utils/Utils.mjs";
-import { VideoSource } from "./src/VideoSource.mjs";
+import { PlayerModes } from "./enums/PlayerModes.mjs";
+import { FastStreamClient } from "./FastStreamClient.mjs";
+import { SubtitleTrack } from "./SubtitleTrack.mjs";
+import { Utils } from "./utils/Utils.mjs";
+import { VideoSource } from "./VideoSource.mjs";
 
 
 var OPTIONS = null;
@@ -207,14 +206,9 @@ window.addEventListener("beforeunload", () => {
     }
 })
 
-function get_url_extension(url) {
-    return url.split(/[#?]/)[0].split('.').pop().trim();
-}
-
-
 if (window.location.hash) {
     const url = window.location.hash.substring(1);
-    const ext = get_url_extension(url);
+    const ext = Utils.get_url_extension(url);
     let mode = PlayerModes.DIRECT;
     if (ext === "mp4") {
         mode = PlayerModes.ACCELERATED_MP4;

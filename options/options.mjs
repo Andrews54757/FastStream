@@ -1,30 +1,5 @@
-const default_options = {
-    playMP4URLs: false,
-    playStreamURLs: true,
-    analyzeVideos: true,
-    downloadAll: true,
-    keybinds: {
-        "HidePlayer": "AltLeft",
-        "PlayPause": "Space",
-        "Fullscreen": "KeyF",
-        "VolumeUp": "ArrowUp",
-        "VolumeDown": "ArrowDown",
-        "SeekForward": "ArrowRight",
-        "SeekBackward": "ArrowLeft",
-        "SeekForwardSmall": "Shift+ArrowRight",
-        "SeekBackwardSmall": "Shift+ArrowLeft",
-        "SeekForwardLarge": "Period",
-        "SeekBackwardLarge": "Comma",
-        "UndoSeek": "KeyZ",
-        "ResetFailed": "Backquote",
-        "RemoveDownloader": "Equal",
-        "AddDownloader": "Minus",
-        "SkipIntroOutro": "KeyS",
-        "GoToStart": "Digit0"
-    }
-}
+import { DefaultKeybinds } from "../options/defaults/DefaultKeybinds.mjs";
 
-var activeEl = document.getElementById("active")
 var options = {};
 var analyzeVideos = document.getElementById('analyzevideos');
 var playStreamURLs = document.getElementById('playstreamurls');
@@ -137,7 +112,7 @@ downloadAll.addEventListener("change", () => {
 });
 
 document.getElementById("resetdefault").addEventListener("click", () => {
-    options.keybinds = JSON.parse(JSON.stringify(default_options.keybinds));
+    options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
     keybindsList.innerHTML = "";
     for (const keybind in options.keybinds) {
         createKeybindElement(keybind);
