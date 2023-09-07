@@ -127,7 +127,7 @@ document.getElementById("resetdefault").addEventListener("click", () => {
     optionChanged();
 });
 
-autoEnableURLSInput.addEventListener("change", (e) => {
+autoEnableURLSInput.addEventListener("input", (e) => {
     options.autoEnableURLs = autoEnableURLSInput.value.split("\n").map(o=>o.trim()).filter(o=>o.length);
     optionChanged();
 });

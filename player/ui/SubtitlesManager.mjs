@@ -1,3 +1,4 @@
+import { Coloris } from "../modules/coloris.mjs";
 import { WebVTT } from "../modules/vtt.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
 import { SubtitleUtils } from "../utils/SubtitleUtils.mjs";
@@ -5,6 +6,7 @@ import { Utils } from "../utils/Utils.mjs";
 import { DOMElements } from "./DOMElements.mjs";
 
 const API_KEY = "jolY3ZCVYguxFxl8CkIKl52zpHJT2eTw";
+const COLOR_SETTINGS = ["color", "background"];
 export class SubtitlesManager {
     constructor(client) {
         this.client = client;
@@ -86,6 +88,16 @@ export class SubtitlesManager {
             input.name = key;
             input.type = "text";
             input.value = this.settings[key];
+            if (COLOR_SETTINGS.includes(key)) {
+                Coloris.bindElement(input);
+                input.addEventListener("keydown",(e)=>{
+                    if (e.key === "Enter") {
+                        e.stopPropagation();
+                        input.click();
+                    }
+                })
+            }
+
             let timeout = null;
             input.addEventListener("keyup", () => {
                 clearTimeout(timeout);
@@ -94,7 +106,8 @@ export class SubtitlesManager {
                     this.updateSettings();
                 }, 200);
             });
-            input.addEventListener("change", () => {
+
+            input.addEventListener("input", () => {
                 this.settings[key] = input.value;
                 this.updateSettings();
             });

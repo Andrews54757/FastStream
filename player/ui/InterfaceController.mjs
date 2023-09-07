@@ -1,5 +1,6 @@
 import { DownloadStatus } from "../enums/DownloadStatus.mjs";
 import { PlayerModes } from "../enums/PlayerModes.mjs";
+import { Coloris } from "../modules/coloris.mjs";
 import { SubtitleTrack } from "../SubtitleTrack.mjs";
 import { Utils } from "../utils/Utils.mjs";
 import { VideoSource } from "../VideoSource.mjs";
@@ -283,6 +284,21 @@ export class InterfaceController {
                 this.setDownloadStatus("");
         }, 3000);
         this.setupRateChanger();
+
+        Coloris({
+            theme: 'pill',
+            themeMode: 'dark',
+            formatToggle: true,
+            swatches: [
+                'rgb(255,255,255)',
+                'rgba(10,10,10,0.3)',
+                '#067bc2',
+                '#ecc30b',
+                '#f37748',
+                '#d56062'
+            ],
+            alpha: true
+        })
     }
 
     setupRateChanger() {

@@ -24,7 +24,7 @@ export class SourcesBrowser {
         let sourceURL = Utils.create("input", null, "text_input linkui-source-url");
         sourceURL.value = source.url;
         sourceURL.placeholder = "Source URL";
-        sourceURL.addEventListener("change", (e) => {
+        sourceURL.addEventListener("input", (e) => {
             source.url = sourceURL.value;
             this.updateSources();
         });
@@ -88,20 +88,19 @@ export class SourcesBrowser {
         headersInput.name = "Header override input";
         headersInput.placeholder = "Headers (1 entry per line)\nHeader Name: Header Value\nHeader2 Name: Header2 Value";
         headersInput.value = Utils.objToHeadersString(source.headers);
-        headersInput.addEventListener("keyup", (e) => {
+        headersInput.addEventListener("input", (e) => {
             if (Utils.validateHeadersString(headersInput.value)) {
                 headersInput.classList.remove("invalid");
             } else {
                 headersInput.classList.add("invalid");
             }
-        });
 
-        headersInput.style.display = "none";
-        headersInput.addEventListener("change", (e) => {
             source.headers = Utils.headersStringToObj(headersInput.value);
             sourceHeadersBtn.textContent = "Header Override (" + Object.keys(source.headers).length + ")";
             this.updateSources();
         });
+
+        headersInput.style.display = "none";
         sourceContainer.appendChild(headersInput);
 
         source.sourceBrowserElements = {
