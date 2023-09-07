@@ -11,7 +11,7 @@ autoEnableURLSInput.setAttribute("autocapitalize", "off");
 autoEnableURLSInput.setAttribute("autocomplete", "off");
 autoEnableURLSInput.setAttribute("autocorrect", "off");
 autoEnableURLSInput.setAttribute("spellcheck", false);
-autoEnableURLSInput.placeholder = "^https:\/\/example\.com\/movie\/"
+autoEnableURLSInput.placeholder = "^https:\\/\\/example\\.com\\/movie\\/"
 chrome.storage.local.get({
     options: '{}'
 }, (results) => {
