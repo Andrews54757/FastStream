@@ -139,11 +139,11 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessag
                                 })
 
                                 try {
-                                    subs.forEach((sub) => {
+                                    subs.forEach((sub, i) => {
                                         const track = new SubtitleTrack(sub.label, sub.language);
                                         try {
                                             track.loadText(sub.data);
-                                            window.fastStream.loadSubtitleTrack(track);
+                                            window.fastStream.loadSubtitleTrack(track, OPTIONS?.autoEnableBestSubtitles && i === 0 && sub.language === defLang);
                                         } catch (e) {
                                             console.error(e)
                                         }

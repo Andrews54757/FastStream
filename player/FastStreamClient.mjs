@@ -110,8 +110,9 @@ export class FastStreamClient extends EventEmitter {
         this.subtitlesManager.clearTracks();
     }
 
-    loadSubtitleTrack(subtitleTrack) {
+    loadSubtitleTrack(subtitleTrack, enable) {
         this.subtitlesManager.addTrack(subtitleTrack);
+        if (enable) this.subtitleSyncer.activateTrack(subtitleTrack)
     }
     updateDuration(duration) {
         this.persistent.duration = duration;

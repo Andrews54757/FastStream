@@ -7,6 +7,7 @@ var playMP4URLs = document.getElementById('playmp4urls');
 var downloadAll = document.getElementById('downloadall');
 var keybindsList = document.getElementById('keybindslist');
 var autoEnableURLSInput = document.getElementById("autoEnableURLs");
+var autoSub = document.getElementById("autosub");
 autoEnableURLSInput.setAttribute("autocapitalize", "off");
 autoEnableURLSInput.setAttribute("autocomplete", "off");
 autoEnableURLSInput.setAttribute("autocorrect", "off");
@@ -21,6 +22,7 @@ chrome.storage.local.get({
     analyzeVideos.checked = !!options.analyzeVideos;
     playStreamURLs.checked = !!options.playStreamURLs;
     playMP4URLs.checked = !!options.playMP4URLs;
+    autosub.checked = !!options.autoEnableBestSubtitles;
     if (options.keybinds) {
         keybindsList.innerHTML = "";
         for (const keybind in options.keybinds) {
@@ -100,6 +102,11 @@ document.getElementById("welcome").addEventListener("click", () => {
 
 playMP4URLs.addEventListener("change", () => {
     options.playMP4URLs = playMP4URLs.checked;
+    optionChanged();
+});
+
+autosub.addEventListener("change", () => {
+    options.autoEnableBestSubtitles = autoSub.checked;
     optionChanged();
 });
 
