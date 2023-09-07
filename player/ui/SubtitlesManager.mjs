@@ -397,6 +397,7 @@ export class SubtitlesManager {
 
         const searchOnEnter = (e) => {
             if (e.key == "Enter") {
+                e.stopPropagation();
                 this.subui.search.blur();
                 this.queryOpenSubtitles({
                     query: this.subui.search.value,
@@ -410,7 +411,6 @@ export class SubtitlesManager {
                     page: 1
                 });
             }
-            e.stopPropagation();
         };
         
         this.subui.search.addEventListener("keydown", searchOnEnter, true);
