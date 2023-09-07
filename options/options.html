@@ -64,6 +64,7 @@
             line-height: 18px;
             padding: 2px;
         }
+
         .keybind-name {
             display: inline-block;
         }
@@ -82,15 +83,36 @@
             border: 1px solid blue;
             color: rgb(0, 0, 255);
         }
+
+        #autoEnableURLs {
+            color: black;
+            background-color: transparent;
+            font-size: 12px;
+            border-radius: 2px;
+            padding: 2px 5px;
+            height: 20px;
+            outline: none;
+            border: 1px solid black;
+            width: 100%;
+            height: 200px;
+        }
     </style>
 </head>
 
 <body>
     <h1>General Options</h1>
-        <div> <input type="checkbox" id="downloadall" name="Predownload video in background"> Predownload entire video in the background if possible</div>
-        <div> <input type="checkbox" id="analyzevideos" name="Find intros and outros"> Automatically analyze sequential videos for intros/outros</div>
-        <div> <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player"> Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)</div>
-        <div> <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player"> Use player to play MP4 videos when opening video URLs (.mp4)</div>
+    <div> <input type="checkbox" id="downloadall" name="Predownload video in background"> Predownload entire video in
+        the background if possible</div>
+    <div> <input type="checkbox" id="analyzevideos" name="Find intros and outros"> Automatically analyze sequential
+        videos for intros/outros</div>
+    <div> <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player"> Use player to play HLS/DASH
+        streams when opening playlist URLs (.m3u8/.mpd)</div>
+    <div> <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player"> Use player to play MP4 videos when
+        opening video URLs (.mp4)</div>
+    <h1>Auto-enable URLs</h1>
+    <p>Will automatically enable the extension upon visiting these URLs and disable upon leaving. One regex per line</p>
+    <textarea id="autoEnableURLs"></textarea>
+
     <h1>Help</h1>
     <a href="#" id="welcome">Welcome Page</a>
 

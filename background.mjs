@@ -4,6 +4,7 @@ import { Utils } from "./player/utils/Utils.mjs";
 
 let options = {};
 
+let autoEnableRegexes = [];
 
 var version = chrome.runtime.getManifest().version;
 var logging = false;
@@ -59,6 +60,7 @@ class TabHolder {
     constructor(tabId) {
         this.tab = tabId
         this.isOn = false;
+        this.regexMatched = false;
         this.frames = {};
         this.hostname;
         this.analyzerData = undefined;
@@ -409,10 +411,10 @@ function mergeOptions(defaultOptions, newOptions) {
     let options = {};
     for (var prop in defaultOptions) {
         let opt = defaultOptions[prop];
-        if (typeof opt === "object") {
+        if (typeof opt === "object" && !Array.isArray(opt)) {
             options[prop] = mergeOptions(opt, newOptions[prop] || {});
         } else {
-            options[prop] = Object.hasOwn(newOptions, prop) ? newOptions[prop] : opt;
+            options[prop] = (Object.hasOwn(newOptions, prop) && typeof newOptions[prop] === typeof opt) ? newOptions[prop] : opt;
         }
     }
     return options;
@@ -461,6 +463,11 @@ function loadOptions() {
         } else {
             removeRule(2);
         }
+
+        autoEnableRegexes.length = 0;
+        options.autoEnableURLs.forEach((regexStr)=>{
+            autoEnableRegexes.push(new RegExp(regexStr));
+        })
     })
 }
 
@@ -734,7 +741,25 @@ chrome.tabs.onUpdated.addListener(function (tabid, changeInfo, tab) {
             if (tabs[tabid].hostname && tabs[tabid].hostname !== url.hostname) {
                 tabs[tabid].analyzerData = undefined;
             }
-            tabs[tabid].hostname = url.hostname
+            tabs[tabid].hostname = url.hostname;
+
+            const foundRegex = autoEnableRegexes.some((regex)=>{
+                try {
+                    return regex.test(changeInfo.url);
+                } catch (e) {
+
+                }
+                return false;
+            });
+
+            if (foundRegex && !tabs[tabid].regexMatched) {
+                tabs[tabid].regexMatched = true;
+                tabs[tabid].isOn = true;
+                openPlayersWithSources(tab.id);
+            } else if (!foundRegex && tabs[tabid].regexMatched) {
+                tabs[tabid].isOn = false;
+                tabs[tabid].regexMatched = false;
+            }
         }
 
         updateTabIcon(tabs[tabid], true);
@@ -742,5 +767,6 @@ chrome.tabs.onUpdated.addListener(function (tabid, changeInfo, tab) {
 });
 
 loadOptions();
+setInterval(chrome.runtime.getPlatformInfo, 20e3);
 
 console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;')

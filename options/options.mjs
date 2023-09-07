@@ -6,7 +6,12 @@ var playStreamURLs = document.getElementById('playstreamurls');
 var playMP4URLs = document.getElementById('playmp4urls');
 var downloadAll = document.getElementById('downloadall');
 var keybindsList = document.getElementById('keybindslist');
-
+var autoEnableURLSInput = document.getElementById("autoEnableURLs");
+autoEnableURLSInput.setAttribute("autocapitalize", "off");
+autoEnableURLSInput.setAttribute("autocomplete", "off");
+autoEnableURLSInput.setAttribute("autocorrect", "off");
+autoEnableURLSInput.setAttribute("spellcheck", false);
+autoEnableURLSInput.placeholder = "^https:\/\/example\.com\/movie\/"
 chrome.storage.local.get({
     options: '{}'
 }, (results) => {
@@ -22,6 +27,8 @@ chrome.storage.local.get({
             createKeybindElement(keybind);
         }
     }
+
+    autoEnableURLSInput.value = options.autoEnableURLs.join("\n");
 })
 
 function getKeyString(e) {
@@ -120,6 +127,11 @@ document.getElementById("resetdefault").addEventListener("click", () => {
     optionChanged();
 });
 
+autoEnableURLSInput.addEventListener("change", (e) => {
+    options.autoEnableURLs = autoEnableURLSInput.value.split("\n").map(o=>o.trim()).filter(o=>o.length);
+    optionChanged();
+});
+
 function optionChanged() {
     var optstr = JSON.stringify(options);
     chrome.storage.local.set({
@@ -131,3 +143,4 @@ function optionChanged() {
         })
     });
 }
+
