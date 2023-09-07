@@ -8,7 +8,7 @@ const WIDTH = 16;
 const HEIGHT = 8;
 const HASH_BITS = WIDTH * HEIGHT / 2;
 const HASH_LENGTH = Math.ceil(HASH_BITS / 32);
-const ALIGN_CUTOFF = 16;
+const ALIGN_CUTOFF = 12;
 export class VideoAligner extends EventEmitter {
     constructor() {
         super();
@@ -383,7 +383,7 @@ export class VideoAligner extends EventEmitter {
     getMatch() {
         if (!this.found) return null;
         return {
-            startTime: this.detectedStartTime,
+            startTime: Math.max(this.detectedStartTime, 0),
             endTime: this.detectedEndTime,
         }
     }
@@ -478,11 +478,11 @@ export class VideoAligner extends EventEmitter {
                     while (ai >= 0 && bi >= 0) {
                         let durationA = timeA - sequenceA[ai].time;
                         let durationB = timeB - sequenceB[bi].time;
-                        if (durationA > 10 || durationB > 10) {
+                        if (durationA > 7 || durationB > 7) {
                             break;
                         }
                         let diff = Math.abs(durationA - durationB) * 2;
-                        if (diff <= 3) {
+                        if (diff <= 2) {
                             let val = matrix[ai][bi].value - diff * Math.ceil(ALIGN_CUTOFF / 4);
                             if (val > max) {
                                 max = val;

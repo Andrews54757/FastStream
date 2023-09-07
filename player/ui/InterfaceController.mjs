@@ -841,8 +841,9 @@ export class InterfaceController {
 
         let introMatch = this.client.videoAnalyzer.getIntro();
         let outroMatch = this.client.videoAnalyzer.getOutro();
-
+     
         if (introMatch) {
+            introMatch.endTime = Math.min(introMatch.endTime, this.persistent.duration);
             let introElement = document.createElement("div");
             introElement.style.left = introMatch.startTime / this.persistent.duration * 100 + "%";
             introElement.style.width = (introMatch.endTime - introMatch.startTime) / this.persistent.duration * 100 + "%";
@@ -851,6 +852,7 @@ export class InterfaceController {
 
 
         if (outroMatch) {
+            outroMatch.endTime = Math.min(outroMatch.endTime, this.persistent.duration);
             let outroElement = document.createElement("div");
             outroElement.style.left = outroMatch.startTime / this.persistent.duration * 100 + "%";
             outroElement.style.width = (outroMatch.endTime - outroMatch.startTime) / this.persistent.duration * 100 + "%";
