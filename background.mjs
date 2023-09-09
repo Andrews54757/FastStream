@@ -382,7 +382,8 @@ function getMediaNameFromTab(tab) {
     let hostname = url.hostname;
     let name = hostname.split(".");
     name = name[name.length - 2];
-    
+
+    if (!name) return;
     
     let title = tab.title || "";
   
