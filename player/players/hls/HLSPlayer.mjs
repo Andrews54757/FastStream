@@ -24,7 +24,7 @@ export class HLSPlayer extends EventEmitter {
         this.hls = new Hls({
             autoStartLoad: false,
             startPosition: -1,
-            debug: false,
+            debug: true,
             capLevelOnFPSDrop: false,
             capLevelToPlayerSize: true,
             defaultAudioCodec: undefined,
@@ -198,7 +198,18 @@ export class HLSPlayer extends EventEmitter {
 
 
         this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, this.getIdentifier(0, data.firstLevel));
+            let max = 0;
+            let maxLevel = 0;
+
+            // Get best quality but within screen resolution
+            this.levels.forEach((level, key) => {
+                if (level.bitrate > max) {
+                    if (level.width > window.innerWidth * window.devicePixelRatio * 2 || level.height > window.innerHeight * window.devicePixelRatio * 2) return;
+                    max = level.bitrate;
+                    maxLevel = key;
+                }
+            });
+            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
         });
 
 

@@ -55,7 +55,7 @@ export class DashPlayer extends EventEmitter {
             })
 
             let max = 0;
-            let maxLevel = null;
+            let maxLevel = 0;
 
             // Get best quality but within screen resolution
             this.levels.forEach((level, key) => {
