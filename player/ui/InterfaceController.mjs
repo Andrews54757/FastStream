@@ -448,7 +448,7 @@ export class InterfaceController {
             return;
         }
         window.requestAnimationFrame(this.progressLoop.bind(this));
-        if (!this.client.ignoreUpdateTime)
+        if (!this.isSeeking)
             this.client.updateTime(this.client.currentTime);
     }
 
@@ -723,12 +723,13 @@ export class InterfaceController {
 
 
     onProgressbarMouseDown(event) {
+        let shouldPlay = false;
         if (this.persistent.playing) {
             this.client.player.pause();
+            shouldPlay = true;
         }
 
         this.isSeeking = true;
-        this.client.ignoreUpdateTime = true;
         this.showPreview();
         this.client.savePosition();
         this.client.setSeekSave(false);
@@ -759,7 +760,6 @@ export class InterfaceController {
             document.removeEventListener('mouseup', onProgressbarMouseUp);
             document.removeEventListener('touchend', onProgressbarMouseUp);
             this.isSeeking = false;
-            this.client.ignoreUpdateTime = false;
 
             if (!this.isMouseOverProgressbar) {
                 this.hidePreview();
@@ -777,7 +777,7 @@ export class InterfaceController {
 
             DOMElements.progressContainer.classList.remove('freeze');
 
-            if (this.persistent.playing) {
+            if (shouldPlay) {
                 this.client.player?.play();
             }
         };
@@ -1038,6 +1038,9 @@ export class InterfaceController {
         }
     }
     playPauseAnimation() {
+        if (this.isSeeking) {
+            return;
+        }
         DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
         void DOMElements.playPauseButtonBigCircle.offsetWidth;
         DOMElements.playPauseButtonBigCircle.classList.add('transform-active');

@@ -55,7 +55,6 @@ export class FastStreamClient extends EventEmitter {
             this.interfaceController.updateIntroOutroBar();
         });
 
-        this.ignoreUpdateTime = false;
         this.player = null;
         this.previewPlayer = null;
         this.saveSeek = true;
@@ -454,7 +453,6 @@ export class FastStreamClient extends EventEmitter {
         this.persistent.currentAudioLevel = -1;
         this.persistent.buffering = false;
         this.persistent.levels.clear();
-        this.ignoreUpdateTime = false;
 
 
     }
@@ -536,10 +534,12 @@ export class FastStreamClient extends EventEmitter {
 
 
         this.context.on(DefaultPlayerEvents.PAUSE, (event) => {
+            this.interfaceController.pause();
         })
 
 
         this.context.on(DefaultPlayerEvents.PLAY, (event) => {
+            this.interfaceController.play();
         })
 
 
@@ -575,7 +575,7 @@ export class FastStreamClient extends EventEmitter {
 
         this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
 
-            if (this.ignoreUpdateTime) return;
+            if (this.interfaceController.isSeeking) return;
 
             this.updateTime(this.currentTime)
 

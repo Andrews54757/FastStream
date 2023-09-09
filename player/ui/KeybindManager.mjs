@@ -19,6 +19,7 @@ export class KeybindManager extends EventEmitter {
             this.onKeyDown(e);
         })
 
+        let shouldPlay = false;
         this.on("HidePlayer", (e) => {
             if (this.hidden) {
                 DOMElements.videoContainer.style.display = "";
@@ -27,7 +28,7 @@ export class KeybindManager extends EventEmitter {
                 DOMElements.playerContainer.style.cursor = '';
                 DOMElements.subtitlesContainer.style.display = "";
                 this.hidden = false;
-                if (this.client.persistent.playing) {
+                if (shouldPlay) {
                     this.client.player?.play();
                 }
             } else {
@@ -38,6 +39,7 @@ export class KeybindManager extends EventEmitter {
                 DOMElements.subtitlesContainer.style.display = "none";
 
                 this.hidden = true;
+                shouldPlay = this.client.persistent.playing;
                 this.client.player?.pause();
             }
         });

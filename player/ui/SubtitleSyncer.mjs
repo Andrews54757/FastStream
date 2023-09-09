@@ -51,13 +51,14 @@ export class SubtitleSyncer extends EventEmitter {
         let isGrabbing = false;
         let grabStart = 0;
         let grabStartTime = 0;
+        let shouldPlay = false;
 
         this.ui.timelineTicks.addEventListener("mousedown", (e) => {
             isGrabbing = true;
             grabStart = e.clientX;
             grabStartTime = this.video.currentTime;
-            this.client.ignoreUpdateTime = true;
-
+            this.client.interfaceController.isSeeking = true;
+            shouldPlay = this.client.persistent.playing;
             if (this.client.persistent.playing) {
                 this.client.player.pause();
             }
@@ -68,9 +69,10 @@ export class SubtitleSyncer extends EventEmitter {
                 const delta = e.clientX - grabStart;
                 const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
                 this.client.currentTime = time;
-                this.client.updateTime(time); this.client.ignoreUpdateTime = false;
+                this.client.updateTime(time);
+                this.client.interfaceController.isSeeking = false;
 
-                if (this.client.persistent.playing) {
+                if (shouldPlay) {
                     this.client.player.play();
                 }
             }
