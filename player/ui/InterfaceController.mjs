@@ -40,6 +40,7 @@ export class InterfaceController {
         this.updatePlayPauseButton();
         DOMElements.playPauseButtonBigCircle.style.display = "";
         DOMElements.playerContainer.classList.add("controls_visible")
+        this.persistent.duration = 0;
     }
 
     failedToLoad(reason) {
@@ -99,7 +100,7 @@ export class InterfaceController {
             if (frag.start && !currentTime) {
                 currentTime = frag.start
             }
-            let start = currentTime;
+            let start = Math.max(currentTime, 0);
           
             let end = currentTime + frag.duration;
             currentTime = end;
@@ -137,6 +138,8 @@ export class InterfaceController {
                     loaded++;
                 }
             }
+
+            end = Math.min(end, this.persistent.duration);
 
             element.style.width = Math.min((end - start) / this.persistent.duration * 100, 100) + "%";
 
