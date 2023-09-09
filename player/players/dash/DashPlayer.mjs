@@ -68,7 +68,7 @@ export class DashPlayer extends EventEmitter {
 
             if (initAlready) return;
             initAlready = true;
-            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel, this.currentAudioLevel);
+            this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
         })
 
         this.dash.on("dataUpdateCompleted", (a) => {
