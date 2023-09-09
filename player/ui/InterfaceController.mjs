@@ -36,6 +36,10 @@ export class InterfaceController {
         }
         this.downloadURL = null;
         this.stopProgressLoop();
+        this.persistent.playing = false;
+        this.updatePlayPauseButton();
+        DOMElements.playPauseButtonBigCircle.style.display = "";
+        DOMElements.playerContainer.classList.add("controls_visible")
     }
 
     failedToLoad(reason) {

@@ -539,8 +539,10 @@ function sendSources(frame) {
             sources.push(currentFrame.sources[i]);
         }
 
-        currentFrame.sources.length = 0;
-        currentFrame.subtitles.length = 0;
+        if (currentFrame === frame) {
+            currentFrame.sources.length = 0;
+            currentFrame.subtitles.length = 0;
+        }
 
         if (currentFrame.sources.length !== 0) break;
         currentFrame = frame.tab.frames[currentFrame.parent];
