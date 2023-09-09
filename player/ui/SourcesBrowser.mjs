@@ -64,6 +64,7 @@ export class SourcesBrowser {
             sourceSetBtn.textContent = "Loading...";
             await this.client.setSource(source.copy());
             this.updateSources();
+            this.client.play();
         });
         Utils.setupTabIndex(sourceSetBtn);
         sourceContainer.appendChild(sourceSetBtn);
