@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "FastStream",
     "description": "Stream without ever buffering",
-    "version": "1.0.18",
+    "version": "1.0.19",
     "author": "Andrew S",
     "options_ui": {
         "page": "options/options.html",

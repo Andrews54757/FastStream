@@ -29,7 +29,7 @@ export class HLSDecrypter {
     setupEncryptionWorker() {
 
         if (this.encryptionWorker) this.encryptionWorker.terminate();
-        this.encryptionWorker = new Worker("src/modules/decrypter-worker.js");
+        this.encryptionWorker = new Worker("modules/decrypter-worker.js");
         this.encryptionWorker.addEventListener('message', (event) => {
             let data = event.data;
             this.encryptionWorkerCallbacks.get(data.id)(data.decrypted);
