@@ -1,5 +1,5 @@
 export const DownloadType = {
-    CACHEABLE_DATA: 0,
-    FRAGMENT: 1,
+  CACHEABLE_DATA: 0,
+  FRAGMENT: 1,
 
-}
+};

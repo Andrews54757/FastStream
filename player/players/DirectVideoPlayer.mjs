@@ -1,133 +1,126 @@
-import { DefaultPlayerEvents } from "../enums/DefaultPlayerEvents.mjs";
-import { EmitterRelay, EventEmitter } from "../modules/eventemitter.mjs";
-import { Utils } from "../utils/Utils.mjs";
+import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
+import {EmitterRelay, EventEmitter} from '../modules/eventemitter.mjs';
+import {Utils} from '../utils/Utils.mjs';
 
 export class DirectVideoPlayer extends EventEmitter {
-    constructor(client, config) {
-        super();
-        this.client = client;
+  constructor(client, config) {
+    super();
+    this.client = client;
 
-        this.video = document.createElement("video");
-
-
-    }
+    this.video = document.createElement('video');
+  }
 
 
-    load() {
+  load() {
 
-    }
+  }
 
-    getClient() {
-        return this.client;
-    }
-
-
-    async setup() {
-        let pre_events = new EventEmitter();
-        let emitter_relay = new EmitterRelay([pre_events, this]);
-        Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
-    }
+  getClient() {
+    return this.client;
+  }
 
 
-    getVideo() {
-        return this.video;
-    }
-
-    async setSource(source) {
-        this.source = source;
-        this.video.src = source.url;
-    }
+  async setup() {
+    const pre_events = new EventEmitter();
+    const emitter_relay = new EmitterRelay([pre_events, this]);
+    Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
+  }
 
 
+  getVideo() {
+    return this.video;
+  }
 
-    get buffered() {
-        return this.video.buffered;
-    }
-
-    async play() {
-        return this.video.play();
-    }
-
-    async pause() {
-        return this.video.pause();
-    }
-
-    destroy() {
-
-        this.video.src = "";
-
-        this.emit(DefaultPlayerEvents.DESTROYED);
-    }
+  async setSource(source) {
+    this.source = source;
+    this.video.src = source.url;
+  }
 
 
-    set currentTime(value) {
-        this.video.currentTime = value;
+  get buffered() {
+    return this.video.buffered;
+  }
 
-    }
+  async play() {
+    return this.video.play();
+  }
 
-    get currentTime() {
-        return this.video.currentTime;
-    }
+  async pause() {
+    return this.video.pause();
+  }
 
-    get readyState() {
-        return this.video.readyState;
-    }
+  destroy() {
+    this.video.src = '';
 
-    get paused() {
-        return this.video.paused;
-    }
-
-
-    get levels() {
-        return [];
-    }
-
-    get currentLevel() {
-        return -1;
-    }
-
-    set currentLevel(value) {
-
-    }
-
-    get duration() {
-
-        return this.video.duration;
-    }
+    this.emit(DefaultPlayerEvents.DESTROYED);
+  }
 
 
-    get currentFragment() {
-        return null;
-    }
+  set currentTime(value) {
+    this.video.currentTime = value;
+  }
 
-    canSave() {
+  get currentTime() {
+    return this.video.currentTime;
+  }
 
-        return {
-            canSave: false,
-            isComplete: true
-        }
-    }
+  get readyState() {
+    return this.video.readyState;
+  }
 
-    async getSaveBlob(options) {
+  get paused() {
+    return this.video.paused;
+  }
 
 
-    }
+  get levels() {
+    return [];
+  }
 
-    get volume() {
-        return this.video.volume;
-    }
+  get currentLevel() {
+    return -1;
+  }
 
-    set volume(value) {
-        this.video.volume = value;
-        if (value === 0) this.video.muted = true;
-        else this.video.muted = false;
-    }
+  set currentLevel(value) {
 
-    get playbackRate() {
-        return this.video.playbackRate;
-    }
+  }
 
-    set playbackRate(value) {
-        this.video.playbackRate = value;
-    }
+  get duration() {
+    return this.video.duration;
+  }
+
+
+  get currentFragment() {
+    return null;
+  }
+
+  canSave() {
+    return {
+      canSave: false,
+      isComplete: true,
+    };
+  }
+
+  async getSaveBlob(options) {
+
+
+  }
+
+  get volume() {
+    return this.video.volume;
+  }
+
+  set volume(value) {
+    this.video.volume = value;
+    if (value === 0) this.video.muted = true;
+    else this.video.muted = false;
+  }
+
+  get playbackRate() {
+    return this.video.playbackRate;
+  }
+
+  set playbackRate(value) {
+    this.video.playbackRate = value;
+  }
 }
