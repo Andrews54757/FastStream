@@ -15,7 +15,6 @@ module.exports = {
       'parserOptions': {
         'sourceType': 'script',
       },
-      'require-jsdoc': 'off'
     },
   ],
   'parserOptions': {
@@ -23,5 +22,6 @@ module.exports = {
     'sourceType': 'module',
   },
   'rules': {
+    'require-jsdoc': 'off',
   },
 };
