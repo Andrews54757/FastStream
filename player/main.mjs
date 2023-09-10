@@ -136,7 +136,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
                       const track = new SubtitleTrack(sub.label, sub.language);
                       try {
                         track.loadText(sub.data);
-                        window.fastStream.loadSubtitleTrack(track, OPTIONS?.autoEnableBestSubtitles && i === 0 && sub.language === defLang);
+                        window.fastStream.loadSubtitleTrack(track);
                       } catch (e) {
                         console.error(e);
                       }
@@ -199,11 +199,12 @@ if (window.location.hash) {
   const url = window.location.hash.substring(1);
   const ext = Utils.get_url_extension(url);
   let mode = PlayerModes.DIRECT;
-  if (ext === 'mp4') {
+  if (Utils.is_url_yt(url)) {
+    mode = PlayerModes.ACCELERATED_YT;
+  } else if (ext === 'mp4') {
     mode = PlayerModes.ACCELERATED_MP4;
 
     // check if file url;
-
     if (url.startsWith('file://')) {
       mode = PlayerModes.DIRECT;
     }

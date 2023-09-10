@@ -26,6 +26,7 @@ window.addEventListener('message', (e) => {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+      console.log(request);
       if (request.type === 'fullscreen') {
         const element = iframeMap.get(request.frameId);
         if (!element) {
@@ -87,6 +88,7 @@ chrome.runtime.onMessage.addListener(
             iframe.style.height = rect.height + 'px';
 
             iframe.style.position = styles.position;
+            iframe.id = video.highest.id;
             // iframe.style.top = styles.top;
             // iframe.style.left = styles.left;
             iframe.style.zIndex = styles.zIndex;
@@ -189,8 +191,7 @@ function getParentElementsWithSameBounds(element) {
     const parent = element.parentElement;
     const rect = element.getBoundingClientRect();
     const parentRect = parent.getBoundingClientRect();
-
-    if (rect.top === parentRect.top && rect.left === parentRect.left && rect.width === parentRect.width && rect.height === parentRect.height) {
+    if (rect.top === parentRect.top && rect.left === parentRect.left && rect.right === parentRect.right && rect.bottom === parentRect.bottom) {
       elements.push(parent);
     } else {
       break;
@@ -208,6 +209,14 @@ function getParentElementsWithSameBounds(element) {
 
 
 async function getVideo() {
+  const ytplayer = querySelectorAllIncludingShadows('#player.ytd-watch-flexy');
+  if (ytplayer.length) {
+    const element = ytplayer[0];
+    return {
+      size: element.clientWidth * element.clientHeight,
+      highest: element,
+    };
+  }
   const videos = Array.from(querySelectorAllIncludingShadows('video'));
 
   let visibleVideos = await Promise.all(videos.map(async (video) => {
@@ -238,7 +247,9 @@ async function getVideo() {
   };
 }
 
-chrome.runtime.sendMessage({
-  type: 'iframe',
-  url: window.location.href,
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.runtime.sendMessage({
+    type: 'iframe',
+    url: window.location.href,
+  });
 });

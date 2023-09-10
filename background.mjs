@@ -355,6 +355,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     });
+
+    checkFrameURL(frame);
   } else if (msg.type === 'ready') {
     if (logging) console.log('Ready');
     frame.ready = true;
@@ -363,6 +365,23 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
+function checkFrameURL(frame) {
+  const url = frame.url;
+  // Check if url is youtube
+
+  if (url.substring(0, playerURL.length) === playerURL) {
+    return;
+  }
+
+  if (Utils.is_url_yt(url)) {
+    setTimeout(()=>{
+      onSourceRecieved({
+        url: url,
+        requestId: -1,
+      }, frame, PlayerModes.ACCELERATED_YT);
+    }, 1000);
+  }
+}
 function getMediaNameFromTab(tab) {
   if (!tab || tab.url === playerURL) return;
   // Get name of website through tab url
@@ -618,7 +637,6 @@ async function onSourceRecieved(details, frame, mode) {
     clearTimeout(currentTimeout);
     currentTimeout = setTimeout(() => {
       if (frame.tab.isOn) {
-        // console.log("Opening player from source recieved", frame)
         openPlayer(frame);
       }
     }, mode === PlayerModes.ACCELERATED_MP4 ? 1500 : 200);

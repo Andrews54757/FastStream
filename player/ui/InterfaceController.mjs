@@ -999,17 +999,23 @@ export class InterfaceController {
   }
 
   play() {
+    const previousValue = this.persistent.playing;
     this.persistent.playing = true;
     DOMElements.playPauseButtonBigCircle.style.display = 'none';
     this.updatePlayPauseButton();
-    this.playPauseAnimation();
-    this.queueControlsHide();
+    if (!previousValue) {
+      this.playPauseAnimation();
+      this.queueControlsHide();
+    }
   }
 
   pause() {
+    const previousValue = this.persistent.playing;
     this.persistent.playing = false;
     this.updatePlayPauseButton();
-    this.playPauseAnimation();
+    if (previousValue) {
+      this.playPauseAnimation();
+    }
   }
 
   updatePlayPauseButton() {

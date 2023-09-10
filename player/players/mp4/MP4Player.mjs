@@ -254,6 +254,10 @@ export class MP4Player extends EventEmitter {
     this.mainLoop();
   }
 
+  getSource() {
+    return this.source;
+  }
+
   mainLoop() {
     if (!this.running) {
       return;

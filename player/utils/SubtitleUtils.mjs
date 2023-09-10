@@ -16,25 +16,56 @@ export class SubtitleUtils {
     return result;
   }
 
-  static cuesToSrt(cues) {
-    function srtTimeFormat(sec) {
-      const h = Math.floor(sec / 3600);
-      const m = Math.floor(sec / 60) % 60;
-      const s = Math.floor(sec % 60);
-      const ms = Math.floor(sec * 1000) % 1000;
-
-      const hh = (100 + h).toString().substring(1);
-      const mm = (100 + m).toString().substring(1);
-      const ss = (100 + s).toString().substring(1);
-      const msms = (1000 + ms).toString().substring(1);
-      // HH:MM:SS,MS
-      return hh + ':' + mm + ':' + ss + ',' + msms;
+  static xml2vtt(data) {
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data, 'text/xml');
+    const cues = xml.getElementsByTagName('text');
+    const result = ['WEBVTT'];
+    for (let i = 0; i < cues.length; i++) {
+      const cue = cues[i];
+      const start = parseFloat(cue.getAttribute('start'));
+      const dur = parseFloat(cue.getAttribute('dur'));
+      const end = start + dur;
+      const text = cue.textContent;
+      result.push((i + 1) + '\n' + this.vttTimeFormat(start) + ' --> ' + this.vttTimeFormat(end) + '\n' + text);
     }
+    return result.join('\n\n');
+  }
+
+  static vttTimeFormat(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor(sec / 60) % 60;
+    const s = Math.floor(sec % 60);
+    const ms = Math.floor(sec * 1000) % 1000;
+
+    const hh = (100 + h).toString().substring(1);
+    const mm = (100 + m).toString().substring(1);
+    const ss = (100 + s).toString().substring(1);
+    const msms = (1000 + ms).toString().substring(1);
+    // HH:MM:SS,MS
+    return hh + ':' + mm + ':' + ss + '.' + msms;
+  }
+
+  static srtTimeFormat(sec) {
+    const h = Math.floor(sec / 3600);
+    const m = Math.floor(sec / 60) % 60;
+    const s = Math.floor(sec % 60);
+    const ms = Math.floor(sec * 1000) % 1000;
+
+    const hh = (100 + h).toString().substring(1);
+    const mm = (100 + m).toString().substring(1);
+    const ss = (100 + s).toString().substring(1);
+    const msms = (1000 + ms).toString().substring(1);
+    // HH:MM:SS,MS
+    return hh + ':' + mm + ':' + ss + ',' + msms;
+  }
+
+  static cuesToSrt(cues) {
     const result = [];
     for (let i = 0; i < cues.length; i++) {
       const cue = cues[i];
-      const start = srtTimeFormat(cue.startTime);
-      const end = srtTimeFormat(cue.endTime);
+      const start = this.srtTimeFormat(cue.startTime);
+      const end = this.srtTimeFormat(cue.endTime);
       const text = cue.text;
       result.push((i + 1) + '\n' + start + ' --> ' + end + '\n' + text);
     }

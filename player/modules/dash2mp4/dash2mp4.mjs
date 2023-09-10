@@ -4,7 +4,6 @@ import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {Hls} from '../hls.mjs';
 
 const {ExpGolomb, Mp4Sample} = Hls.Muxers;
-const InputTimeScale = 90000;
 
 export class DASH2MP4 extends EventEmitter {
   constructor() {
@@ -101,7 +100,6 @@ export class DASH2MP4 extends EventEmitter {
       file.appendBuffer(videoInitSegment);
       file.flush();
 
-      const movieTimescale = file.moov.mvhd.timescale;
       const mediaInfo = videoProcessor.getMediaInfo();
       const trak = file.moov.traks[0];
       const timescale = trak.mdia.mdhd.timescale;
@@ -159,13 +157,10 @@ export class DASH2MP4 extends EventEmitter {
       audioInitSegment.fileStart = 0;
       file.appendBuffer(audioInitSegment);
       file.flush();
-
-      const movieTimescale = file.moov.mvhd.timescale;
       const mediaInfo = audioProcessor.getMediaInfo();
       const trak = file.moov.traks[0];
       const timescale = trak.mdia.mdhd.timescale;
       const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'mp4a');
-
       this.audioTrack = {
         type: 'audio',
         id: 2,

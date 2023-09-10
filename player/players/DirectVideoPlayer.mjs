@@ -36,6 +36,9 @@ export class DirectVideoPlayer extends EventEmitter {
     this.video.src = source.url;
   }
 
+  getSource() {
+    return this.source;
+  }
 
   get buffered() {
     return this.video.buffered;

@@ -1,6 +1,18 @@
 import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
 
 export class Utils {
+  static is_url_yt(urlStr) {
+    const url = new URL(urlStr);
+    const hostname = url.hostname;
+    if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
+      const pathname = url.pathname;
+      if (pathname.startsWith('/watch')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   static get_url_extension(url) {
     return url.split(/[#?]/)[0].split('.').pop().trim();
   }

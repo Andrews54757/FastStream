@@ -265,6 +265,10 @@ export class HLSPlayer extends EventEmitter {
     this.hls.loadSource(source.url);
   }
 
+  getSource() {
+    return this.source;
+  }
+
   downloadFragment(fragment) {
     this.fragmentRequester.requestFragment(fragment, {
       onProgress: (e) => {

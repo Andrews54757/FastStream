@@ -15,6 +15,7 @@ import {DirectVideoPlayer} from './players/DirectVideoPlayer.mjs';
 import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
 import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
+import {YTPlayer} from './players/yt/YTPlayer.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -97,6 +98,7 @@ export class FastStreamClient extends EventEmitter {
     if (!this.options.cantDownloadAll) {
       this.options.downloadAll = options.downloadAll;
     }
+    this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
 
     if (options.keybinds) {
       this.keybindManager.setKeybinds(options.keybinds);
@@ -111,9 +113,12 @@ export class FastStreamClient extends EventEmitter {
     this.subtitlesManager.clearTracks();
   }
 
-  loadSubtitleTrack(subtitleTrack, enable) {
+  loadSubtitleTrack(subtitleTrack) {
     this.subtitlesManager.addTrack(subtitleTrack);
-    if (enable) this.subtitlesManager.activateTrack(subtitleTrack);
+    const defLang = this.subtitlesManager.settings['default-lang'];
+    if (this.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.subtitlesManager.activeTracks.length === 0) {
+      this.subtitlesManager.activateTrack(subtitleTrack);
+    }
   }
   updateDuration(duration) {
     this.persistent.duration = duration;
@@ -193,6 +198,16 @@ export class FastStreamClient extends EventEmitter {
         });
         await this.previewPlayer.setup();
         break;
+      case PlayerModes.ACCELERATED_YT:
+        this.player = new YTPlayer(this);
+        await this.player.setup();
+
+        this.previewPlayer = new DashPlayer(this, {
+          isPreview: true,
+        });
+
+        await this.previewPlayer.setup();
+        break;
     }
 
     this.bindPlayer(this.player);
@@ -202,7 +217,6 @@ export class FastStreamClient extends EventEmitter {
     this.player.playbackRate = this.persistent.playbackRate;
 
     await this.player.setSource(source);
-
     this.interfaceController.addVideo(this.player.getVideo());
 
 
@@ -211,10 +225,10 @@ export class FastStreamClient extends EventEmitter {
     this.setSeekSave(true);
 
     if (this.previewPlayer) {
-      await this.previewPlayer.setSource(source);
+      await this.previewPlayer.setSource(this.player.getSource());
       this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
     }
-    await this.videoAnalyzer.setSource(source);
+    await this.videoAnalyzer.setSource(this.player.getSource());
   }
 
 

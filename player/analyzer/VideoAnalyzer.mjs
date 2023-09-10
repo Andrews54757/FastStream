@@ -291,6 +291,10 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   shouldAnalyze() {
+    if (!this.source) {
+      return false;
+    }
+
     const duration = this.client.duration;
     if (!duration) { // No duration
       return false;
@@ -424,7 +428,6 @@ export class VideoAnalyzer extends EventEmitter {
 
   async setSource(source) {
     this.reset();
-
 
     this.source = source;
     this.introAligner.prepare(source.identifier);

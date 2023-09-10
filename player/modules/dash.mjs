@@ -1,3 +1,4 @@
+/* eslint-disable */
 let dash;
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -69246,7 +69247,6 @@ let dash;
             var cache = [];
 
             var segments = _normalizeSegments(data, representation);
-
             representation.segments = segments;
             track.segmentDuration = representation.segments[0].duration; //assume all segments have the same duration
 

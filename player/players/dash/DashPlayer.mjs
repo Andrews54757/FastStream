@@ -3,7 +3,6 @@ import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {DashJS} from '../../modules/dash.mjs';
 import {DASH2MP4} from '../../modules/dash2mp4/dash2mp4.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
-import {BlobManager} from '../../utils/BlobManager.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
@@ -20,6 +19,7 @@ export class DashPlayer extends EventEmitter {
   }
 
   async setup() {
+    // eslint-disable-next-line new-cap
     this.dash = DashJS.MediaPlayer().create();
 
     const pre_events = new EventEmitter();
@@ -44,15 +44,13 @@ export class DashPlayer extends EventEmitter {
     this.dash.on('needkey', (e) => {
       this.client.failedToLoad('Failed to load! DRM not supported!');
     });
+
+
     let initAlready = false;
-    this.dash.on('initialInit', (a) => {
-      a.streamProcessors.forEach((processor) => {
-        const mediaInfo = processor.getMediaInfo();
-        mediaInfo.representations.forEach((rep) => {
-          rep.processor = processor;
-          this.extractFragments(rep);
-        });
-      });
+
+    const initialize = ()=> {
+      if (initAlready) return;
+      initAlready = true;
 
       let max = 0;
       let maxLevel = 0;
@@ -65,15 +63,28 @@ export class DashPlayer extends EventEmitter {
           maxLevel = key;
         }
       });
-
-      if (initAlready) return;
-      initAlready = true;
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
+    };
+
+    this.dash.on('initialInit', (a) => {
+      a.streamProcessors.forEach((processor) => {
+        const mediaInfo = processor.getMediaInfo();
+        mediaInfo.representations.forEach((rep) => {
+          rep.processor = processor;
+          this.extractFragments(rep);
+        });
+      });
+      initialize();
     });
 
     this.dash.on('dataUpdateCompleted', (a) => {
-      const representation = a.currentRepresentation;
-      this.extractFragments(representation);
+      const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+      processors.forEach((processor) => {
+        const mediaInfo = processor.getMediaInfo();
+        mediaInfo.representations.forEach((rep) => {
+          this.extractFragments(rep);
+        });
+      });
     });
 
     // for (let eventName in dashjs.Protection.events) {
@@ -154,6 +165,10 @@ export class DashPlayer extends EventEmitter {
   async setSource(source) {
     this.source = source;
     this.dash.initialize(this.video, this.source.url, false);
+  }
+
+  getSource() {
+    return this.source;
   }
 
 
@@ -238,7 +253,11 @@ export class DashPlayer extends EventEmitter {
 
   set currentLevel(value) {
     if (typeof value !== 'string') return;
-    this.dash.setQualityFor('video', parseInt(this.getLevelIndexes(value).repIndex));
+    try {
+      this.dash.setQualityFor('video', parseInt(this.getLevelIndexes(value).repIndex));
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   get currentAudioLevel() {
