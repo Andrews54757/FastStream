@@ -71,10 +71,10 @@ export class HLS2MP4 extends EventEmitter {
                 samples: result.video.outputSamples,
                 offset: this.datasOffset + headerLen,
                 originalOffset: this.datasOffset + headerLen,
-                startDTS: result.video.startDTS * this.videoTrack.inputTimeScale,
-                endDTS: result.video.endDTS * this.videoTrack.inputTimeScale,
-                startPTS: result.video.startPTS * this.videoTrack.inputTimeScale,
-                endPTS: result.video.endPTS * this.videoTrack.inputTimeScale,
+                startDTS: result.video.startDTS,
+                endDTS: result.video.endDTS,
+                startPTS: result.video.startPTS,
+                endPTS: result.video.endPTS,
             });
             let blob = new Blob([result.video.data2], {
                 type: "video/mp4"

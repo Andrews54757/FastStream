@@ -95,8 +95,6 @@ export class DASH2MP4 extends EventEmitter {
             throw new Error("no processor");
         }
 
-
-
         if (videoProcessor) {
 
             let file = MP4Box.createFile(false);
@@ -187,6 +185,7 @@ export class DASH2MP4 extends EventEmitter {
                 trexs: file.moov?.mvex?.trexs || []
             }
         }
+        
         this.prevFrag = null;
         this.prevFragAudio = null;
         this.datas = [];

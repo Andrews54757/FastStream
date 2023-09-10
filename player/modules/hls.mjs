@@ -11354,7 +11354,6 @@ class TSDemuxer {
     const lastState = state;
     const units = [];
     let i = 0;
-    let value;
     let overflow;
     let unitType;
     let lastUnitStart = -1;
@@ -11370,9 +11369,9 @@ class TSDemuxer {
       i = 1;
     }
     while (i < len) {
-      value = array[i++];
+      const value = array[i++];
       // optimization. state 0 and 1 are the predominant case. let's handle them outside of the switch/case
-      if (!state) {
+      if (state === 0) {
         state = value ? 0 : 1;
         continue;
       }
