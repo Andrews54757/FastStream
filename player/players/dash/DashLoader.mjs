@@ -40,7 +40,7 @@ export function DASHLoaderFactory(player) {
                 const identifier = player.getLevelIdentifier(streamLevel, trackIndex, qualityIndex);
                 const frag = player.client.getFragment(identifier, segmentIndex);
                 if (!frag) {
-                    console.error("Fragment not found", httpRequest.request, identifier, player.client.getFragments(identifier));
+                    console.warn("Fragment not found", httpRequest.request, identifier, player.client.getFragments(identifier));
               // throw new Error("Fragment not found");
                     request(httpRequest);
                     return;

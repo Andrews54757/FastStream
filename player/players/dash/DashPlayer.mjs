@@ -299,7 +299,7 @@ export class DashPlayer extends EventEmitter {
 
     canSave() {
         let frags = this.client.fragments;
-        if (true || !frags || this.dash.getStreamController().getStreams().length > 1) {
+        if (!frags || this.dash.getStreamController().getStreams().length > 1) {
             return {
                 canSave: false,
                 isComplete: false

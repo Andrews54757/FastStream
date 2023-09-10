@@ -1,8 +1,10 @@
 import { EventEmitter } from "../eventemitter.mjs";
 import { MP4Box } from "../mp4box.mjs";
 import { MP4 } from "../hls2mp4/MP4Generator.mjs";
+import { Hls } from "../hls.mjs";
 
-
+const { ExpGolomb, Mp4Sample } = Hls.Muxers;
+const InputTimeScale = 90000;
 
 export class DASH2MP4 extends EventEmitter {
     constructor() {
@@ -26,7 +28,7 @@ export class DASH2MP4 extends EventEmitter {
         return true;
     }
 
-    async pushFragment(fragData) {
+    async pushFragment(track, fragData) {
         let blob = await fragData.entry.getData();
         let data = await fragData.entry.getDataFromBlob()
         data.fileStart = 0;
@@ -37,20 +39,55 @@ export class DASH2MP4 extends EventEmitter {
 
         mp4boxfile.appendBuffer(data);
         mp4boxfile.flush();
+   
 
         const mdats = mp4boxfile.mdats;
-        mdats.forEach((mdat) => {
-            this.datas.push(blob.slice(mdat.start, mdat.start + mdat.size));
+        if (mdats.length !== 1) throw "Unsupported mdat count!";
+        if (mp4boxfile.moofs.length !== 1) throw "Unsupported moofs count!";
+
+        const moof = mp4boxfile.moofs[0];
+
+        if (moof.trafs.length !== 1) throw "Unsupported trafs count!";
+
+        const traf = moof.trafs[0];
+        let headerLen = 8;
+        const samplesList = mp4boxfile.getSampleList(moof, track.trexs)[0];
+        const baseDecodeTime = traf.tfdt?.baseMediaDecodeTime || 0;
+        let earliestPresentationTime = mp4boxfile.sidx ? mp4boxfile.sidx.earliest_presentation_time : baseDecodeTime;
+        const outputSamples = samplesList.samples.map((sample)=>{
+            return new Mp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
         });
 
-        console.log(fragData, mp4boxfile)
-    }
+        if (track.chunks.length > 0) {
+            const lastChunk = track.chunks[track.chunks.length - 1];
+            if (lastChunk.baseDecodeTime + lastChunk.samplesDuration < baseDecodeTime) {
+                console.log("Extending", lastChunk);
+                lastChunk.samples[lastChunk.samples.length - 1].duration += baseDecodeTime - (lastChunk.baseDecodeTime + lastChunk.samplesDuration)
+            } else if (lastChunk.baseDecodeTime + lastChunk.samplesDuration > baseDecodeTime) {
+                console.log("Too long")
+            }
+        }
 
+        if (samplesList.samples_duration === 0) {
+            console.log(track)
+            throw "Sample duration is zero!"
+        }
 
-
-    async pushFragmentAudio(fragData) {
-        let data = await fragData.entry.getDataFromBlob();
-
+        track.chunks.push({
+            id: track.nextChunkId++,
+            samples: outputSamples,
+            samplesDuration: samplesList.samples_duration,
+            offset: this.datasOffset + headerLen,
+            originalOffset: this.datasOffset + headerLen,
+            startPTS: earliestPresentationTime,
+            endPTS: earliestPresentationTime + samplesList.samples_duration,
+            baseDecodeTime: baseDecodeTime
+        });
+        
+        mdats.forEach((mdat) => {
+            this.datas.push(blob.slice(mdat.start, mdat.start + mdat.size));
+            this.datasOffset += mdat.size;
+        });
     }
 
     setup(videoProcessor, videoInitSegment, audioProcessor, audioInitSegment) {
@@ -67,9 +104,6 @@ export class DASH2MP4 extends EventEmitter {
             file.appendBuffer(videoInitSegment);
             file.flush();
 
-            file.moov.mvhd
-            
-
             const movieTimescale = file.moov.mvhd.timescale;
             const mediaInfo = videoProcessor.getMediaInfo();
             const trak = file.moov.traks[0];
@@ -78,7 +112,6 @@ export class DASH2MP4 extends EventEmitter {
                 type: "video",
                 id: 1,
                 timescale: timescale,
-                movieTimescale: movieTimescale,
                 duration: mediaInfo.streamInfo.duration,
                 width: trak.tkhd.width >> 16,
                 height: trak.tkhd.height >> 16,
@@ -94,16 +127,65 @@ export class DASH2MP4 extends EventEmitter {
                 chunks: [],
                 use64Offsets: false,
                 nextChunkId: 1,
-                elst: []
+                elst: [],
+                trexs: file.moov?.mvex?.trexs || []
             }
 
-            const avcC = trak.mdia.minf.stbl.stsd.entries.find((e)=>e.type === "avc1").avcC;
+            const avcC = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === "avc1").avcC;
             avcC.PPS.forEach((pps) => {
                 this.videoTrack.pps.push(pps.nalu);
             });
             avcC.SPS.forEach((sps) => {
                 this.videoTrack.sps.push(sps.nalu);
             });
+            const sps = this.videoTrack.sps[0];
+            const expGolombDecoder = new ExpGolomb(sps);
+            const config = expGolombDecoder.readSPS();
+
+            this.videoTrack.pixelRatio = config.pixelRatio;
+            this.videoTrack.width = config.width;
+            this.videoTrack.height = config.height;
+            const codecarray = sps.subarray(1, 4);
+            let codecstring = 'avc1.';
+            for (let i = 0; i < 3; i++) {
+                let h = codecarray[i].toString(16);
+                if (h.length < 2) {
+                    h = '0' + h;
+                }
+                codecstring += h;
+            }
+            this.videoTrack.codec = codecstring;
+        }
+
+        if (audioProcessor) {
+            let file = MP4Box.createFile(false);
+            audioInitSegment.fileStart = 0;
+            file.appendBuffer(audioInitSegment);
+            file.flush();
+
+            const movieTimescale = file.moov.mvhd.timescale;
+            const mediaInfo = audioProcessor.getMediaInfo();
+            const trak = file.moov.traks[0];
+            const timescale = trak.mdia.mdhd.timescale;
+            const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === "mp4a");
+
+            this.audioTrack = {
+                type: "audio",
+                id: 2,
+                timescale: timescale,
+                duration: mediaInfo.streamInfo.duration,
+                segmentCodec: null,
+                codec: mp4a.getCodec(),
+                esds: mp4a.esds.data,
+                channelCount: mp4a.channel_count,
+                sampleRate: mp4a.samplerate,
+                samples: [],
+                chunks: [],
+                use64Offsets: false,
+                nextChunkId: 1,
+                elst: [],
+                trexs: file.moov?.mvex?.trexs || []
+            }
         }
         this.prevFrag = null;
         this.prevFragAudio = null;
@@ -115,12 +197,14 @@ export class DASH2MP4 extends EventEmitter {
         let tracks = [];
         let videoTrack = this.videoTrack;
         let audioTrack = this.audioTrack;
-        if (videoTrack) tracks.push(videoTrack);
-        if (audioTrack) {
+        if (videoTrack && videoTrack.chunks.length) {
+            tracks.push(videoTrack);
+        }
+        if (audioTrack && audioTrack.chunks.length) {
             tracks.push(audioTrack);
 
         }
-
+        
         let len = tracks[0].chunks.length;
         let minPts = tracks[0].chunks[0].startPTS;
 
@@ -134,18 +218,18 @@ export class DASH2MP4 extends EventEmitter {
             }
         }
 
+        let movieTimescale = tracks[0].timescale;
         tracks.forEach((track) => {
             track.elst.push({
-                media_time: track.chunks[0].startPTS - minPts,
-                segment_duration: track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS,
+                media_time: (track.chunks[0].startPTS - minPts) / track.timescale * movieTimescale,
+                segment_duration: (track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS) / track.timescale * movieTimescale,
             })
-
+            
             track.samples = [];
             track.chunks.forEach((chunk) => {
                 track.samples.push(...chunk.samples);
             });
         })
-        console.log(tracks)
         let initSeg;
         try {
             let initSegCount = MP4.initSegment(tracks);
@@ -186,9 +270,9 @@ export class DASH2MP4 extends EventEmitter {
 
         for (let i = 0; i < fragDatas.length; i++) {
             if (fragDatas[i].type === 0) {
-                await this.pushFragment(fragDatas[i]);
+                await this.pushFragment(this.videoTrack, fragDatas[i]);
             } else {
-                await this.pushFragmentAudio(fragDatas[i]);
+                await this.pushFragment(this.audioTrack, fragDatas[i]);
             }
             this.emit("progress", (i + 1) / fragDatas.length);
         }

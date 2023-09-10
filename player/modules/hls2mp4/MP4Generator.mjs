@@ -560,8 +560,18 @@ export class MP4 {
             vSpacing >> 16 & 0xff, vSpacing >> 8 & 0xff, vSpacing & 0xff])));
     }
     static esds(track) {
+        if (track.esds) {
+            return new Uint8Array([
+                0x00,
+                // version 0
+                0x00, 0x00, 0x00,
+                // flags
+                ... track.esds
+            ]);
+        }
         const configlen = track.config.length;
-        return new Uint8Array([0x00,
+        return new Uint8Array([
+            0x00,
             // version 0
             0x00, 0x00, 0x00,
             // flags

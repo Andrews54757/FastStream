@@ -25781,5 +25781,5 @@ export class Hls {
   }
 }
 Hls.defaultConfig = void 0;
-Hls.Muxers = {TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer}
+Hls.Muxers = {TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer, ExpGolomb, Mp4Sample}
 //# sourceMappingURL=hls.mjs.map

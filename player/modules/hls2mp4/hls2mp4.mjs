@@ -100,10 +100,10 @@ export class HLS2MP4 extends EventEmitter {
                 samples: result.audio.outputSamples,
                 offset: this.datasOffset + headerLen,
                 originalOffset: this.datasOffset + headerLen,
-                startDTS: result.audio.startDTS * this.audioTrack.inputTimeScale,
-                endDTS: result.audio.endDTS * this.audioTrack.inputTimeScale,
-                startPTS: result.audio.startPTS * this.audioTrack.inputTimeScale,
-                endPTS: result.audio.endPTS * this.audioTrack.inputTimeScale,
+                startDTS: result.audio.startDTS,
+                endDTS: result.audio.endDTS,
+                startPTS: result.audio.startPTS,
+                endPTS: result.audio.endPTS,
             });
             let blob = new Blob([result.audio.data2], {
                 type: "video/mp4"
@@ -142,10 +142,10 @@ export class HLS2MP4 extends EventEmitter {
                 samples: result.audio.outputSamples,
                 offset: this.datasOffset + headerLen,
                 originalOffset: this.datasOffset + headerLen,
-                startDTS: result.audio.startDTS * this.audioTrack.inputTimeScale,
-                endDTS: result.audio.endDTS * this.audioTrack.inputTimeScale,
-                startPTS: result.audio.startPTS * this.audioTrack.inputTimeScale,
-                endPTS: result.audio.endPTS * this.audioTrack.inputTimeScale,
+                startDTS: result.audio.startDTS,
+                endDTS: result.audio.endDTS,
+                startPTS: result.audio.startPTS,
+                endPTS: result.audio.endPTS,
             });
             let blob = new Blob([result.audio.data2], {
                 type: "video/mp4"
@@ -212,11 +212,11 @@ export class HLS2MP4 extends EventEmitter {
                 minPts = tracks[i].chunks[0].startPTS;
             }
         }
-
+        let movieTimescale = tracks[0].timescale;
         tracks.forEach((track) => {
             track.elst.push({
-                media_time: track.chunks[0].startPTS - minPts,
-                segment_duration: track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS,
+                media_time: (track.chunks[0].startPTS - minPts) * movieTimescale,
+                segment_duration: (track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS) * movieTimescale,
             })
 
             track.samples = [];

@@ -7689,6 +7689,140 @@ ISOFile.prototype.updateSampleLists = function () {
     }
 }
 
+ISOFile.prototype.getSampleList = function (moof, trexList) {
+    var i, j, k;
+    var default_sample_description_index, default_sample_duration, default_sample_size, default_sample_flags;
+    var last_run_position;
+    var moof, traf, trak, trex;
+    var sample;
+    var sample_flags;
+
+    let results = [];
+    if (moof.type == "moof") {
+        for (i = 0; i < moof.trafs.length; i++) {
+            traf = moof.trafs[i];
+            trak = {
+                track_id: traf.tfhd.track_id,
+                samples: [],
+                samples_size: 0,
+                samples_duration: 0
+            };
+            results.push(trak);
+            trex = trexList.find((t)=>{
+                return t.track_id == traf.tfhd.track_id
+            });
+            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_DESC) {
+                default_sample_description_index = traf.tfhd.default_sample_description_index;
+            } else {
+                default_sample_description_index = (trex ? trex.default_sample_description_index : 1);
+            }
+            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_DUR) {
+                default_sample_duration = traf.tfhd.default_sample_duration;
+            } else {
+                default_sample_duration = (trex ? trex.default_sample_duration : 0);
+            }
+            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_SIZE) {
+                default_sample_size = traf.tfhd.default_sample_size;
+            } else {
+                default_sample_size = (trex ? trex.default_sample_size : 0);
+            }
+            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_FLAGS) {
+                default_sample_flags = traf.tfhd.default_sample_flags;
+            } else {
+                default_sample_flags = (trex ? trex.default_sample_flags : 0);
+            }
+            traf.sample_number = 0;
+            for (j = 0; j < traf.truns.length; j++) {
+                var trun = traf.truns[j];
+                for (k = 0; k < trun.sample_count; k++) {
+                    sample = {};
+                    sample.moof_number = this.lastMoofIndex;
+                    sample.number_in_traf = traf.sample_number;
+                    traf.sample_number++;
+                    sample.number = trak.samples.length;
+                    traf.first_sample_index = trak.samples.length;
+                    trak.samples.push(sample);
+                    sample.description_index = default_sample_description_index - 1;
+                    sample.size = default_sample_size;
+                    if (trun.flags & BoxParser.TRUN_FLAGS_SIZE) {
+                        sample.size = trun.sample_size[k];
+                    }
+                    trak.samples_size += sample.size;
+                    sample.duration = default_sample_duration;
+                    if (trun.flags & BoxParser.TRUN_FLAGS_DURATION) {
+                        sample.duration = trun.sample_duration[k];
+                    }
+                    trak.samples_duration += sample.duration;
+                    if (trak.first_traf_merged || k > 0) {
+                        sample.dts = trak.samples[trak.samples.length - 2].dts + trak.samples[trak.samples.length - 2].duration;
+                    } else {
+                        if (traf.tfdt) {
+                            sample.dts = traf.tfdt.baseMediaDecodeTime;
+                        } else {
+                            sample.dts = 0;
+                        }
+                        trak.first_traf_merged = true;
+                    }
+                    sample.cts = sample.dts;
+                    if (trun.flags & BoxParser.TRUN_FLAGS_CTS_OFFSET) {
+                        sample.cts = sample.dts + trun.sample_composition_time_offset[k];
+                    }
+                    sample_flags = default_sample_flags;
+                    if (trun.flags & BoxParser.TRUN_FLAGS_FLAGS) {
+                        sample_flags = trun.sample_flags[k];
+                    } else if (k === 0 && (trun.flags & BoxParser.TRUN_FLAGS_FIRST_FLAG)) {
+                        sample_flags = trun.first_sample_flags;
+                    }
+                    sample.is_sync = ((sample_flags >> 16 & 0x1) ? false : true);
+                    sample.is_leading = (sample_flags >> 26 & 0x3);
+                    sample.depends_on = (sample_flags >> 24 & 0x3);
+                    sample.is_depended_on = (sample_flags >> 22 & 0x3);
+                    sample.has_redundancy = (sample_flags >> 20 & 0x3);
+                    sample.degradation_priority = (sample_flags & 0xFFFF);
+                    //ISOFile.process_sdtp(traf.sdtp, sample, sample.number_in_traf);
+                    var bdop = (traf.tfhd.flags & BoxParser.TFHD_FLAG_BASE_DATA_OFFSET) ? true : false;
+                    var dbim = (traf.tfhd.flags & BoxParser.TFHD_FLAG_DEFAULT_BASE_IS_MOOF) ? true : false;
+                    var dop = (trun.flags & BoxParser.TRUN_FLAGS_DATA_OFFSET) ? true : false;
+                    var bdo = 0;
+                    if (!bdop) {
+                        if (!dbim) {
+                            if (j === 0) { // the first track in the movie fragment
+                                bdo = moof.start; // the position of the first byte of the enclosing Movie Fragment Box
+                            } else {
+                                bdo = last_run_position; // end of the data defined by the preceding *track* (irrespective of the track id) fragment in the moof
+                            }
+                        } else {
+                            bdo = moof.start;
+                        }
+                    } else {
+                        bdo = traf.tfhd.base_data_offset;
+                    }
+                    if (j === 0 && k === 0) {
+                        if (dop) {
+                            sample.offset = bdo + trun.data_offset; // If the data-offset is present, it is relative to the base-data-offset established in the track fragment header
+                        } else {
+                            sample.offset = bdo; // the data for this run starts the base-data-offset defined by the track fragment header
+                        }
+                    } else {
+                        sample.offset = last_run_position; // this run starts immediately after the data of the previous run
+                    }
+                    last_run_position = sample.offset + sample.size;
+                }
+            }
+            if (traf.subs) {
+                trak.has_fragment_subsamples = true;
+                var sample_index = traf.first_sample_index;
+                for (j = 0; j < traf.subs.entries.length; j++) {
+                    sample_index += traf.subs.entries[j].sample_delta;
+                    sample = trak.samples[sample_index - 1];
+                    sample.subsamples = traf.subs.entries[j].subsamples;
+                }
+            }
+        }
+    }
+    return results;
+}
+
 /* Try to get sample data for a given sample:
 returns null if not found
 returns the same sample if already requested
