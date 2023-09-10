@@ -74,11 +74,13 @@ export class FastStreamClient extends EventEmitter {
 
   resetFailed() {
     for (const levelID in this.fragmentsStore) {
-      this.fragmentsStore[levelID].forEach((fragment) => {
-        if (fragment.status === DownloadStatus.DOWNLOAD_FAILED) {
-          fragment.status = DownloadStatus.WAITING;
-        }
-      });
+      if (Object.hasOwn(this.fragmentsStore, levelID)) {
+        this.fragmentsStore[levelID].forEach((fragment) => {
+          if (fragment.status === DownloadStatus.DOWNLOAD_FAILED) {
+            fragment.status = DownloadStatus.WAITING;
+          }
+        });
+      }
     }
   }
 

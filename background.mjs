@@ -68,11 +68,6 @@ class TabHolder {
   }
 }
 
-const MatchTypes = {
-  MEDIA: 'media',
-  XHR: 'xmlhttprequest',
-};
-
 class RuleEntry {
   constructor(id) {
     this.id = id;
@@ -157,7 +152,8 @@ class RuleManager {
         tabIds: [tabId],
       },
     };
-    const result = await chrome.declarativeNetRequest.updateSessionRules({
+
+    await chrome.declarativeNetRequest.updateSessionRules({
       addRules: [ruleObj],
     });
 
@@ -403,22 +399,16 @@ function getMediaNameFromTab(tab) {
 function mergeOptions(defaultOptions, newOptions) {
   const options = {};
   for (const prop in defaultOptions) {
-    const opt = defaultOptions[prop];
-    if (typeof opt === 'object' && !Array.isArray(opt)) {
-      options[prop] = mergeOptions(opt, newOptions[prop] || {});
-    } else {
-      options[prop] = (Object.hasOwn(newOptions, prop) && typeof newOptions[prop] === typeof opt) ? newOptions[prop] : opt;
+    if (Object.hasOwn(defaultOptions, prop)) {
+      const opt = defaultOptions[prop];
+      if (typeof opt === 'object' && !Array.isArray(opt)) {
+        options[prop] = mergeOptions(opt, newOptions[prop] || {});
+      } else {
+        options[prop] = (Object.hasOwn(newOptions, prop) && typeof newOptions[prop] === typeof opt) ? newOptions[prop] : opt;
+      }
     }
   }
   return options;
-}
-
-function resetOptions() {
-  chrome.storage.local.set({
-    options: JSON.stringify(DefaultOptions),
-  }, () => {
-    loadOptions();
-  });
 }
 
 function loadOptions() {
@@ -645,10 +635,12 @@ async function openPlayersWithSources(tabid) {
 
   let framesWithSources = [];
   for (const i in tab.frames) {
-    const frame = tab.frames[i];
-    if (!frame || frameHasPlayer(frame)) continue;
-    if (frame.sources.length > 0) {
-      framesWithSources.push(frame);
+    if (Object.hasOwn(tab.frames, i)) {
+      const frame = tab.frames[i];
+      if (!frame || frameHasPlayer(frame)) continue;
+      if (frame.sources.length > 0) {
+        framesWithSources.push(frame);
+      }
     }
   }
 
@@ -717,7 +709,6 @@ chrome.webRequest.onErrorOccurred.addListener(deleteHeaderCache, {
 
 function deleteHeaderCache(details) {
   const frame = getOrCreateFrame(details);
-  const tab = frame.tab;
   delete frame.requests[details.requestId];
 }
 chrome.tabs.onRemoved.addListener(function(tabid, removed) {

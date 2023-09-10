@@ -26,6 +26,7 @@ export class SubtitleTrack {
 
   loadText(text) {
     if (text.trim().split('\n')[0].trim().substr(0, 6) !== 'WEBVTT') text = SubtitleUtils.srt2webvtt(text);
+    // eslint-disable-next-line new-cap
     const parser = new WebVTT.Parser(window, WebVTT.StringDecoder());
     parser.onRegion = (region) => {
       this.regions.push(region);

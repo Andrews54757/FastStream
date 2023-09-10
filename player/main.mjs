@@ -158,19 +158,10 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
   }, 10000);
 }
 
-const head = document.head;
+document.body.style = 'position: absolute; margin: 0px; left: 0; right: 0; top: 0; bottom: 0';
 
-const body = document.body;
-
-
-body.style = 'position: absolute; margin: 0px; left: 0; right: 0; top: 0; bottom: 0';
-
-
-if (window.fastStream) {
-  var vid = window.fastStream;
-} else {
-  var vid = new FastStreamClient();
-  window.fastStream = vid;
+if (!window.fastStream) {
+  window.fastStream = new FastStreamClient();
 }
 if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
 

@@ -1,49 +1,4 @@
 
-const Request = function( /**/) {
-  const url = arguments[0];
-  let post = undefined;
-  let callback;
-  let bust = false;
-
-  if (arguments[2]) { // post
-    post = arguments[1];
-    callback = arguments[2];
-    bust = arguments[3];
-  } else {
-    callback = arguments[1];
-    bust = arguments[2];
-  }
-  try {
-    const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); // IE support
-    xhr.open(post ? 'POST' : 'GET', url + (bust ? ('?' + Date.now()) : ''));
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
-        if (xhr.status === 200) {
-          callback(undefined, xhr, xhr.responseText);
-        } else {
-          callback(true, xhr, false);
-        }
-
-        const body = xhr.responseText;
-        const res = xhr;
-      }
-    };
-    if (post) {
-      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-      const toPost = [];
-      for (const i in post) {
-        toPost.push(encodeURIComponent(i) + '=' + encodeURIComponent(post[i]));
-      }
-
-      post = toPost.join('&');
-    }
-
-    xhr.send(post);
-  } catch (e) {
-    callback(e);
-  }
-};
 
 const iframeMap = new Map();
 window.addEventListener('message', (e) => {
@@ -56,7 +11,7 @@ window.addEventListener('message', (e) => {
   switch (dt.type) {
     case 'frame':
       console.log('Frame info', dt);
-      var iframes = querySelectorAllIncludingShadows('iframe');
+      const iframes = querySelectorAllIncludingShadows('iframe');
       for (let i = 0; i < iframes.length; i++) {
         if (iframes[i].contentWindow == src) {
           iframeMap.set(dt.id, iframes[i]);
@@ -89,14 +44,14 @@ chrome.runtime.onMessage.addListener(
           }, '*');
         }
       } else if (request.type == 'scrape_captions') {
-        var tracks = querySelectorAllIncludingShadows('track');
+        const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;
-        var tracks = [];
-        for (let i = 0; i < tracks.length; i++) {
-          var track = tracks[i];
+        const tracks = [];
+        for (let i = 0; i < trackElements.length; i++) {
+          const track = trackElements[i];
           if (track.src && track.kind == 'captions') {
-            var source = track.src;
-            Request(source, (err, req, body) => {
+            const source = track.src;
+            httpRequest(source, (err, req, body) => {
               done++;
               if (body) {
                 tracks.push({
@@ -159,6 +114,50 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
+function httpRequest( ...args ) {
+  const url = args[0];
+  let post = undefined;
+  let callback;
+  let bust = false;
+
+  if (args[2]) { // post
+    post = args[1];
+    callback = args[2];
+    bust = args[3];
+  } else {
+    callback = args[1];
+    bust = args[2];
+  }
+  try {
+    const xhr = new XMLHttpRequest();
+    xhr.open(post ? 'POST' : 'GET', url + (bust ? ('?' + Date.now()) : ''));
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState == 4) {
+        if (xhr.status === 200) {
+          callback(undefined, xhr, xhr.responseText);
+        } else {
+          callback(true, xhr, false);
+        }
+      }
+    };
+    if (post) {
+      xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+      const toPost = [];
+      for (const i in post) {
+        if (Object.hasOwn(post, i)) {
+          toPost.push(encodeURIComponent(i) + '=' + encodeURIComponent(post[i]));
+        }
+      }
+
+      post = toPost.join('&');
+    }
+
+    xhr.send(post);
+  } catch (e) {
+    callback(e);
+  }
+}
 
 function querySelectorAllIncludingShadows(tagName, currentElement = document.body, results = []) {
   Array.from(currentElement.querySelectorAll(tagName)).forEach((el) => results.push(el));
