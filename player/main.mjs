@@ -38,6 +38,14 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
 
           let source = sources[0];
 
+          sources.find((s) => {
+            if (s.mode === PlayerModes.ACCELERATED_YT) {
+              source = s;
+              return true;
+            }
+            return false;
+          });
+
           if (source.mode === PlayerModes.ACCELERATED_MP4) {
             source = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
           }
