@@ -1,787 +1,772 @@
-import { InterfaceController } from "./ui/InterfaceController.mjs";
-import { PlayerModes } from "./enums/PlayerModes.mjs";
-import { KeybindManager } from "./ui/KeybindManager.mjs";
-import { HLSPlayer } from "./players/hls/HLSPlayer.mjs";
-import { DownloadManager } from "./network/DownloadManager.mjs";
-import { DefaultPlayerEvents } from "./enums/DefaultPlayerEvents.mjs";
-import { DownloadStatus } from "./enums/DownloadStatus.mjs";
-import { SubtitlesManager } from "./ui/SubtitlesManager.mjs";
-import { VideoAnalyzer } from "./analyzer/VideoAnalyzer.mjs";
-import { AnalyzerEvents } from "./enums/AnalyzerEvents.mjs";
-import { MP4Player } from "./players/mp4/MP4Player.mjs";
+import {InterfaceController} from './ui/InterfaceController.mjs';
+import {PlayerModes} from './enums/PlayerModes.mjs';
+import {KeybindManager} from './ui/KeybindManager.mjs';
+import {HLSPlayer} from './players/hls/HLSPlayer.mjs';
+import {DownloadManager} from './network/DownloadManager.mjs';
+import {DefaultPlayerEvents} from './enums/DefaultPlayerEvents.mjs';
+import {DownloadStatus} from './enums/DownloadStatus.mjs';
+import {SubtitlesManager} from './ui/SubtitlesManager.mjs';
+import {VideoAnalyzer} from './analyzer/VideoAnalyzer.mjs';
+import {AnalyzerEvents} from './enums/AnalyzerEvents.mjs';
+import {MP4Player} from './players/mp4/MP4Player.mjs';
 
-import { DashPlayer } from "./players/dash/DashPlayer.mjs";
-import { DirectVideoPlayer } from "./players/DirectVideoPlayer.mjs";
-import { EventEmitter } from "./modules/eventemitter.mjs";
-import { SourcesBrowser } from "./ui/SourcesBrowser.mjs";
-import { SubtitleSyncer } from "./ui/SubtitleSyncer.mjs";
+import {DashPlayer} from './players/dash/DashPlayer.mjs';
+import {DirectVideoPlayer} from './players/DirectVideoPlayer.mjs';
+import {EventEmitter} from './modules/eventemitter.mjs';
+import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
+import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
-    constructor() {
-        super();
-        this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : "#.#.#"; 
+  constructor() {
+    super();
+    this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : '#.#.#';
 
-        this.options = {
-            introCutoff: 5 * 60,
-            outroCutoff: 5 * 60,
-            bufferAhead: 60,
-            bufferBehind: 20,
-            freeFragments: true,
-            downloadAll: false
-        }
-        this.persistent = {
-            playing: false,
-            buffering: false,
-            currentTime: 0,
-            volume: 1,
-            muted: false,
-            latestVolume: 1,
-            duration: 0,
-            currentLevel: -1,
-            currentAudioLevel: -1,
-            playbackRate: 1,
-            levels: new Map()
-        }
+    this.options = {
+      introCutoff: 5 * 60,
+      outroCutoff: 5 * 60,
+      bufferAhead: 60,
+      bufferBehind: 20,
+      freeFragments: true,
+      downloadAll: false,
+    };
+    this.persistent = {
+      playing: false,
+      buffering: false,
+      currentTime: 0,
+      volume: 1,
+      muted: false,
+      latestVolume: 1,
+      duration: 0,
+      currentLevel: -1,
+      currentAudioLevel: -1,
+      playbackRate: 1,
+      levels: new Map(),
+    };
 
-        this.interfaceController = new InterfaceController(this);
-        this.keybindManager = new KeybindManager(this);
-        this.downloadManager = new DownloadManager(this);
-        this.subtitlesManager = new SubtitlesManager(this);
-        this.sourcesBrowser = new SourcesBrowser(this);
-        this.videoAnalyzer = new VideoAnalyzer(this);
-        this.subtitleSyncer = new SubtitleSyncer(this);
-        this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
-            this.interfaceController.updateIntroOutroBar();
+    this.interfaceController = new InterfaceController(this);
+    this.keybindManager = new KeybindManager(this);
+    this.downloadManager = new DownloadManager(this);
+    this.subtitlesManager = new SubtitlesManager(this);
+    this.sourcesBrowser = new SourcesBrowser(this);
+    this.videoAnalyzer = new VideoAnalyzer(this);
+    this.subtitleSyncer = new SubtitleSyncer(this);
+    this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
+      this.interfaceController.updateIntroOutroBar();
+    });
+
+    this.player = null;
+    this.previewPlayer = null;
+    this.saveSeek = true;
+    this.seeks = [];
+    this.fragmentsStore = {};
+    this.mainloop();
+  }
+
+  cantDownloadAll() {
+    this.options.downloadAll = false;
+    this.options.cantDownloadAll = true;
+  }
+
+  setSeekSave(value) {
+    this.saveSeek = value;
+  }
+
+  resetFailed() {
+    for (const levelID in this.fragmentsStore) {
+      this.fragmentsStore[levelID].forEach((fragment) => {
+        if (fragment.status === DownloadStatus.DOWNLOAD_FAILED) {
+          fragment.status = DownloadStatus.WAITING;
+        }
+      });
+    }
+  }
+
+  destroy() {
+    this.destroyed = true;
+    this.resetPlayer();
+    this.downloadManager.destroy();
+    this.videoAnalyzer.destroy();
+    this.interfaceController.destroy();
+  }
+
+  setOptions(options) {
+    this.options.analyzeVideos = options.analyzeVideos;
+    if (!this.options.cantDownloadAll) {
+      this.options.downloadAll = options.downloadAll;
+    }
+
+    if (options.keybinds) {
+      this.keybindManager.setKeybinds(options.keybinds);
+    }
+  }
+
+  loadAnalyzerData(data) {
+    if (data) this.videoAnalyzer.loadAnalyzerData(data);
+  }
+
+  clearSubtitles() {
+    this.subtitlesManager.clearTracks();
+  }
+
+  loadSubtitleTrack(subtitleTrack, enable) {
+    this.subtitlesManager.addTrack(subtitleTrack);
+    if (enable) this.subtitlesManager.activateTrack(subtitleTrack);
+  }
+  updateDuration(duration) {
+    this.persistent.duration = duration;
+    this.interfaceController.durationChanged();
+  }
+
+  updateTime(time) {
+    this.persistent.currentTime = time;
+    this.interfaceController.updateProgress();
+    this.subtitlesManager.renderSubtitles();
+    this.subtitleSyncer.onVideoTimeUpdate();
+    this.interfaceController.updateIntroOutroBar();
+  }
+
+
+  seekPreview(time) {
+    if (this.previewPlayer) {
+      this.previewPlayer.currentTime = time;
+    }
+  }
+  updateQualityLevels() {
+    this.persistent.levels = this.player.levels;
+    this.interfaceController.updateQualityLevels();
+  }
+
+  async addSource(source, setSource = false) {
+    console.log('addSource', source);
+    this.sourcesBrowser.addSource(source);
+    if (setSource) {
+      await this.setSource(source);
+    }
+    this.sourcesBrowser.updateSources();
+    return source;
+  }
+
+
+  async setSource(source) {
+    console.log('setSource', source);
+    this.resetPlayer();
+    this.source = source;
+
+
+    switch (source.mode) {
+      case PlayerModes.DIRECT:
+        this.player = new DirectVideoPlayer(this);
+        this.previewPlayer = new DirectVideoPlayer(this);
+
+        await this.player.setup();
+        await this.previewPlayer.setup();
+
+        break;
+      case PlayerModes.ACCELERATED_HLS:
+        this.player = new HLSPlayer(this);
+        await this.player.setup();
+
+        this.previewPlayer = new HLSPlayer(this, {
+          isPreview: true,
         });
+        await this.previewPlayer.setup();
+        break;
 
-        this.player = null;
-        this.previewPlayer = null;
-        this.saveSeek = true;
-        this.seeks = [];
-        this.fragmentsStore = {};
-        this.mainloop();
-    }
+      case PlayerModes.ACCELERATED_MP4:
+        this.player = new MP4Player(this);
+        await this.player.setup();
 
-    cantDownloadAll() {
-        this.options.downloadAll = false;
-        this.options.cantDownloadAll = true;
-    }
-
-    setSeekSave(value) {
-        this.saveSeek = value;
-    }
-
-    resetFailed() {
-        for (let levelID in this.fragmentsStore) {
-            this.fragmentsStore[levelID].forEach((fragment) => {
-                if (fragment.status === DownloadStatus.DOWNLOAD_FAILED) {
-                    fragment.status = DownloadStatus.WAITING;
-                }
-            });
-        }
-    }
-
-    destroy() {
-        this.destroyed = true;
-        this.resetPlayer();
-        this.downloadManager.destroy();
-        this.videoAnalyzer.destroy();
-        this.interfaceController.destroy();
-    }
-
-    setOptions(options) {
-        this.options.analyzeVideos = options.analyzeVideos;
-        if (!this.options.cantDownloadAll)
-            this.options.downloadAll = options.downloadAll;
-
-        if (options.keybinds) {
-            this.keybindManager.setKeybinds(options.keybinds);
-        }
-    }
-
-    loadAnalyzerData(data) {
-
-        if (data) this.videoAnalyzer.loadAnalyzerData(data);
-    }
-
-    clearSubtitles() {
-        this.subtitlesManager.clearTracks();
-    }
-
-    loadSubtitleTrack(subtitleTrack, enable) {
-        this.subtitlesManager.addTrack(subtitleTrack);
-        if (enable) this.subtitlesManager.activateTrack(subtitleTrack)
-    }
-    updateDuration(duration) {
-        this.persistent.duration = duration;
-        this.interfaceController.durationChanged();
-    }
-
-    updateTime(time) {
-        this.persistent.currentTime = time;
-        this.interfaceController.updateProgress();
-        this.subtitlesManager.renderSubtitles();
-        this.subtitleSyncer.onVideoTimeUpdate();
-        this.interfaceController.updateIntroOutroBar()
-    }
-
-
-    seekPreview(time) {
-        if (this.previewPlayer) {
-            this.previewPlayer.currentTime = time;
-        }
-    }
-    updateQualityLevels() {
-        this.persistent.levels = this.player.levels;
-        this.interfaceController.updateQualityLevels();
-    }
-
-    async addSource(source, setSource = false) {
-        console.log("addSource", source)
-        this.sourcesBrowser.addSource(source);
-        if (setSource) {
-            await this.setSource(source);
-        }
-        this.sourcesBrowser.updateSources();
-        return source;
-    }
-
-
-    async setSource(source) {
-        console.log("setSource", source)
-        this.resetPlayer();
-        this.source = source;
-
-
-
-        switch (source.mode) {
-            case PlayerModes.DIRECT:
-                this.player = new DirectVideoPlayer(this);
-                this.previewPlayer = new DirectVideoPlayer(this);
-
-                await this.player.setup();
-                await this.previewPlayer.setup();
-
-                break;
-            case PlayerModes.ACCELERATED_HLS:
-                this.player = new HLSPlayer(this);
-                await this.player.setup();
-
-                this.previewPlayer = new HLSPlayer(this, {
-                    isPreview: true
-                });
-                await this.previewPlayer.setup();
-                break;
-
-            case PlayerModes.ACCELERATED_MP4:
-                this.player = new MP4Player(this);
-                await this.player.setup();
-
-                this.previewPlayer = new MP4Player(this, {
-                    isPreview: true
-                });
-                await this.previewPlayer.setup();
-                break;
-            case PlayerModes.ACCELERATED_DASH:
-                this.player = new DashPlayer(this);
-                await this.player.setup();
-
-                this.previewPlayer = new DashPlayer(this, {
-                    isPreview: true
-                });
-                await this.previewPlayer.setup();
-                break;
-        }
-
-        this.bindPlayer(this.player);
-
-
-        this.player.volume = this.persistent.volume;
-        this.player.playbackRate = this.persistent.playbackRate;
-
-        await this.player.setSource(source);
-
-        this.player.getVideos().forEach((video) => {
-            this.interfaceController.addVideo(video);
+        this.previewPlayer = new MP4Player(this, {
+          isPreview: true,
         });
+        await this.previewPlayer.setup();
+        break;
+      case PlayerModes.ACCELERATED_DASH:
+        this.player = new DashPlayer(this);
+        await this.player.setup();
 
-        this.setSeekSave(false);
-        this.currentTime = 0;
-        this.setSeekSave(true);
-
-        if (this.previewPlayer) {
-            await this.previewPlayer.setSource(source);
-            this.previewPlayer.getVideos().forEach((video) => {
-                this.interfaceController.addPreviewVideo(video);
-            });
-        }
-        await this.videoAnalyzer.setSource(source);
-        //    this.subtitleSyncer.start(this.player.getCurrentVideo());
+        this.previewPlayer = new DashPlayer(this, {
+          isPreview: true,
+        });
+        await this.previewPlayer.setup();
+        break;
     }
 
+    this.bindPlayer(this.player);
 
 
-    getNextToDownload() {
-        let currentFragment = this.currentFragment;
-        let audioFragment = this.currentAudioFragment;
-       
-        let nextVideo = this.getNextToDownloadTrack(currentFragment);
-        let nextAudio = this.getNextToDownloadTrack(audioFragment);
+    this.player.volume = this.persistent.volume;
+    this.player.playbackRate = this.persistent.playbackRate;
 
-        if (!nextVideo) {
-            return nextAudio;
-        }
+    await this.player.setSource(source);
 
-        if (!nextAudio) {
-            return nextVideo;
-        }
-        let diffV = Math.abs(nextVideo.start - this.persistent.currentTime);
-        let diffA = Math.abs(nextAudio.start - this.persistent.currentTime);
+    this.interfaceController.addVideo(this.player.getVideo());
 
-        if (diffV < diffA) {
-            return nextVideo;
+
+    this.setSeekSave(false);
+    this.currentTime = 0;
+    this.setSeekSave(true);
+
+    if (this.previewPlayer) {
+      await this.previewPlayer.setSource(source);
+      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+    }
+    await this.videoAnalyzer.setSource(source);
+  }
+
+
+  getNextToDownload() {
+    const currentFragment = this.currentFragment;
+    const audioFragment = this.currentAudioFragment;
+
+    const nextVideo = this.getNextToDownloadTrack(currentFragment);
+    const nextAudio = this.getNextToDownloadTrack(audioFragment);
+
+    if (!nextVideo) {
+      return nextAudio;
+    }
+
+    if (!nextAudio) {
+      return nextVideo;
+    }
+    const diffV = Math.abs(nextVideo.start - this.persistent.currentTime);
+    const diffA = Math.abs(nextAudio.start - this.persistent.currentTime);
+
+    if (diffV < diffA) {
+      return nextVideo;
+    } else {
+      return nextAudio;
+    }
+  }
+
+  getNextToDownloadTrack(currentFragment) {
+    if (!currentFragment) {
+      return null;
+    }
+
+    const fragments = this.getFragments(currentFragment.level);
+    if (!fragments) {
+      return null;
+    }
+
+    const index = currentFragment.sn;
+
+    const nextItem = this.getNextForward(fragments, index) || this.getNextBackward(fragments, index);
+
+    return nextItem;
+  }
+
+  getNextForward(fragments, index) {
+    for (let i = index; i < fragments.length; i++) {
+      const fragment = fragments[i];
+      if (fragment && fragment.status === DownloadStatus.WAITING) {
+        return fragment;
+      }
+    }
+  }
+
+  getNextBackward(fragments, index) {
+    for (let i = index - 1; i >= 0; i--) {
+      const fragment = fragments[i];
+      if (fragment && fragment.status === DownloadStatus.WAITING) {
+        return fragment;
+      }
+    }
+  }
+
+  mainloop() {
+    if (this.destroyed) return;
+    setTimeout(this.mainloop.bind(this), 1000);
+
+    if (this.player) {
+      this.predownloadFragments();
+
+      if (!this.options.downloadAll) {
+        if (this.fragments) this.freeFragments(this.fragments);
+        if (this.audioFragments) this.freeFragments(this.audioFragments);
+      }
+
+      this.interfaceController.updateFragmentsLoaded();
+
+      // Detect buffering
+      if (this.persistent.playing) {
+        const time = this.currentTime;
+        if (time === this.lastTime) {
+          this.interfaceController.setBuffering(true);
         } else {
-            return nextAudio;
+          this.interfaceController.setBuffering(false);
         }
+        this.lastTime = time;
+      }
     }
 
-    getNextToDownloadTrack(currentFragment) {
-        if (!currentFragment) {
-            return null;
+    this.videoAnalyzer.update();
+    this.videoAnalyzer.saveAnalyzerData();
+  }
+
+  predownloadFragments() {
+    let nextDownload = this.getNextToDownload();
+    let hasDownloaded = false;
+    let index = 0;
+    while (nextDownload) {
+      if (nextDownload.canFree() && !this.options.downloadAll) {
+        if (nextDownload.start > this.persistent.currentTime + this.options.bufferAhead) {
+          break;
         }
 
-        let fragments = this.getFragments(currentFragment.level);
-        if (!fragments) {
-            return null;
+        if (nextDownload.end < this.persistent.currentTime - this.options.bufferBehind) {
+          break;
         }
+      }
 
-        let index = currentFragment.sn;
+      if (!this.downloadManager.canGetFile(nextDownload.getContext())) {
+        break;
+      }
 
-        let nextItem = this.getNextForward(fragments, index) || this.getNextBackward(fragments, index);
-
-        return nextItem;
+      hasDownloaded = true;
+      this.player.downloadFragment(nextDownload);
+      nextDownload = this.getNextToDownload();
+      if (index++ > 10000) {
+        throw new Error('Infinite loop detected');
+      }
     }
 
-    getNextForward(fragments, index) {
-        for (let i = index; i < fragments.length; i++) {
-            let fragment = fragments[i];
-            if (fragment && fragment.status === DownloadStatus.WAITING) {
-                return fragment;
-            }
+    if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
+      hasDownloaded = this.predownloadReservedFragments();
+    }
+    return hasDownloaded;
+  }
+
+  predownloadReservedFragments() {
+    const fragments = this.getReservedFragments(this.fragments);
+    const audioFragments = this.getReservedFragments(this.audioFragments);
+
+    if (audioFragments.length) {
+      let currentVideoIndex = 0;
+      audioFragments.forEach((fragment) => {
+        const videoFragment = fragments[currentVideoIndex];
+        while (videoFragment && videoFragment.start < fragment.start) {
+          currentVideoIndex++;
         }
 
+        fragments.splice(currentVideoIndex, 0, fragment);
+      });
     }
 
-    getNextBackward(fragments, index) {
-        for (let i = index - 1; i >= 0; i--) {
-            let fragment = fragments[i];
-            if (fragment && fragment.status === DownloadStatus.WAITING) {
-                return fragment;
-            }
+    let hasDownloaded = false;
+
+    fragments.every((fragment) => {
+      if (!this.downloadManager.canGetFile(fragment.getContext())) {
+        return false;
+      }
+      this.player.downloadFragment(fragment);
+      hasDownloaded = true;
+      return true;
+    });
+
+    return hasDownloaded;
+  }
+
+  getReservedFragments(fragments) {
+    if (!fragments) return [];
+    return fragments.filter((fragment) => {
+      return fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree();
+    });
+  }
+
+  freeFragments(fragments) {
+    for (let i = 0; i < fragments.length; i++) {
+      const fragment = fragments[i];
+      if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE && fragment.canFree()) {
+        if (fragment.end < this.persistent.currentTime - this.options.bufferBehind || fragment.start > this.persistent.currentTime + this.options.bufferAhead) {
+          this.freeFragment(fragment);
         }
+      }
+    }
+  }
+
+  freeFragment(fragment) {
+    this.downloadManager.removeFile(fragment.getContext());
+    fragment.status = DownloadStatus.WAITING;
+  }
+
+  getFragment(level, sn) {
+    if (!this.fragmentsStore[level]) {
+      return null;
+    }
+    return this.fragmentsStore[level][sn];
+  }
+
+  makeFragment(level, sn, frag) {
+    if (!this.fragmentsStore[level]) {
+      this.fragmentsStore[level] = [];
     }
 
-    mainloop() {
-        if (this.destroyed) return;
-        setTimeout(this.mainloop.bind(this), 1000);
+    this.fragmentsStore[level][sn] = frag;
+  }
 
-        if (this.player) {
-            this.predownloadFragments();
-            
-            if (!this.options.downloadAll) {
-                if (this.fragments) this.freeFragments(this.fragments);
-                if (this.audioFragments) this.freeFragments(this.audioFragments);
-            }
-            
-            this.interfaceController.updateFragmentsLoaded();
+  failedToLoad(reason) {
+    this.downloadManager.removeAllDownloaders();
+    this.interfaceController.failedToLoad(reason);
+  }
 
-            // Detect buffering
-            if (this.persistent.playing) {
-                let time = this.currentTime;
-                if (time === this.lastTime) {
-                    this.interfaceController.setBuffering(true);
-                } else {
-                    this.interfaceController.setBuffering(false);
-                }
-                this.lastTime = time;
-            }
-        }
+  resetPlayer() {
+    this.lastTime = 0;
 
-        this.videoAnalyzer.update();
-        this.videoAnalyzer.saveAnalyzerData()
-
+    this.fragmentsStore = {};
+    this.seeks.length = 0;
+    if (this.context) {
+      this.context.destroy();
+      this.context = null;
     }
 
-    predownloadFragments() {
-        let nextDownload = this.getNextToDownload();
-        let hasDownloaded = false;
-        let index = 0;
-        while (nextDownload) {
-
-            if (nextDownload.canFree() && !this.options.downloadAll) {
-                if (nextDownload.start > this.persistent.currentTime + this.options.bufferAhead) {
-                    break;
-                }
-
-                if (nextDownload.end < this.persistent.currentTime - this.options.bufferBehind) {
-                    break;
-                }
-            }
-
-            if (!this.downloadManager.canGetFile(nextDownload.getContext())) {
-                break;
-            }
-
-            hasDownloaded = true;
-            this.player.downloadFragment(nextDownload);
-            nextDownload = this.getNextToDownload();
-            if (index++ > 10000) {
-                throw new Error("Infinite loop detected");
-            }
-        }
-
-        if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
-            hasDownloaded = this.predownloadReservedFragments();
-        }
-        return hasDownloaded;
+    if (this.player) {
+      this.player.destroy();
+      this.player = null;
     }
 
-    predownloadReservedFragments() {
-        let fragments = this.getReservedFragments(this.fragments);
-        let audioFragments = this.getReservedFragments(this.audioFragments);
+    if (this.source) {
+      this.source.destroy();
+      this.source = null;
+    }
 
-        if (audioFragments.length) {
-            let currentVideoIndex = 0;
-            audioFragments.forEach((fragment) => {
-                let videoFragment = fragments[currentVideoIndex];
-                while (videoFragment && videoFragment.start < fragment.start) {
-                    currentVideoIndex++;
-                }
+    if (this.previewPlayer) {
+      this.previewPlayer.destroy();
+      this.previewPlayer = null;
+    }
 
-                fragments.splice(currentVideoIndex, 0, fragment);
-            });
+    this.downloadManager.reset();
+    this.interfaceController.reset();
+    this.subtitlesManager.clearTracks();
+
+    this.persistent.currentLevel = -1;
+    this.persistent.currentAudioLevel = -1;
+    this.persistent.buffering = false;
+    this.persistent.levels.clear();
+  }
+
+  setMediaName(name) {
+    this.mediaName = name;
+    this.subtitlesManager.mediaNameSet();
+  }
+
+  debugstuff() {
+    const res = [];
+    this.fragmentsStore[this.currentLevel].forEach((fragment) => {
+      const entry = this.downloadManager.getEntry(fragment.getContext());
+      res.push(entry.data.size);
+    });
+    console.log(res.join('\n'));
+  }
+
+  bindPlayer() {
+    this.context = this.player.createContext();
+
+
+    this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
+      this.currentLevel = maxLevel;
+      if (maxAudioLevel !== undefined) {
+        this.currentAudioLevel = maxAudioLevel;
+      }
+      this.player.load();
+      if (this.previewPlayer) {
+        this.previewPlayer.load();
+      }
+    });
+
+    this.context.on(DefaultPlayerEvents.ABORT, (event) => {
+
+    });
+
+    this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
+
+    });
+
+    this.context.on(DefaultPlayerEvents.CANPLAYTHROUGH, (event) => {
+
+    });
+
+    this.context.on(DefaultPlayerEvents.COMPLETE, (event) => {
+
+    });
+
+    this.context.on(DefaultPlayerEvents.DURATIONCHANGE, (event) => {
+      this.updateDuration(this.duration);
+      this.interfaceController.updateFragmentsLoaded();
+    });
+
+    this.context.on(DefaultPlayerEvents.EMPTIED, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.ENDED, (event) => {
+      this.pause();
+    });
+
+    this.context.on(DefaultPlayerEvents.ERROR, (event) => {
+      console.log('ERROR', event);
+      this.failedToLoad('Failed to load video');
+    });
+
+    this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.LOADEDMETADATA, (event) => {
+
+    });
+
+
+    this.context.on(DefaultPlayerEvents.PAUSE, (event) => {
+      this.interfaceController.pause();
+    });
+
+
+    this.context.on(DefaultPlayerEvents.PLAY, (event) => {
+      this.interfaceController.play();
+    });
+
+
+    this.context.on(DefaultPlayerEvents.PLAYING, (event) => {
+      this.interfaceController.setBuffering(false);
+    });
+
+
+    this.context.on(DefaultPlayerEvents.PROGRESS, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.RATECHANGE, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.SEEKED, (event) => {
+      this.interfaceController.updateFragmentsLoaded();
+    });
+
+
+    this.context.on(DefaultPlayerEvents.SEEKING, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.STALLED, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.SUSPEND, (event) => {
+    });
+
+
+    this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
+      if (this.interfaceController.isSeeking) return;
+
+      this.updateTime(this.currentTime);
+
+      if (this.videoAnalyzer.pushFrame(this.player.getVideo())) {
+        this.videoAnalyzer.calculate();
+      }
+    });
+
+
+    this.context.on(DefaultPlayerEvents.VOLUMECHANGE, (event) => {
+
+    });
+
+
+    this.context.on(DefaultPlayerEvents.WAITING, (event) => {
+      this.interfaceController.setBuffering(true);
+    });
+
+    this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
+      this.interfaceController.updateFragmentsLoaded();
+    });
+
+    if (this.previewPlayer) {
+      this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+        if (this.persistent.currentLevel !== -1) {
+          this.previewPlayer.currentLevel = this.persistent.currentLevel;
         }
+      });
 
-        let hasDownloaded = false;
+      this.previewPlayer.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
+        this.interfaceController.updateFragmentsLoaded();
+      });
 
-        fragments.every((fragment) => {
-            if (!this.downloadManager.canGetFile(fragment.getContext())) {
-                return false;
-            }
-            this.player.downloadFragment(fragment);
-            hasDownloaded = true;
-            return true;
+      const seekHideTimeouts = [];
+      this.previewPlayer.on(DefaultPlayerEvents.SEEKING, () => {
+        seekHideTimeouts.push(setTimeout(() => {
+          this.previewPlayer.getVideo().style.opacity = 0;
+        }, 200));
+      });
+
+      this.previewPlayer.on(DefaultPlayerEvents.SEEKED, () => {
+        seekHideTimeouts.forEach((timeout) => {
+          clearTimeout(timeout);
         });
+        seekHideTimeouts.length = 0;
 
-        return hasDownloaded;
+        this.previewPlayer.getVideo().style.opacity = 1;
+      });
+
+      this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
+        console.log('Preview player error', e);
+      });
+    }
+  }
+
+  async play() {
+    await this.player.play();
+    this.interfaceController.play();
+  }
+
+  async pause() {
+    await this.player.pause();
+    this.interfaceController.pause();
+  }
+
+  undoSeek() {
+    if (this.seeks.length) {
+      this.player.currentTime = this.seeks.pop();
+      this.interfaceController.updateMarkers();
+    }
+  }
+  savePosition() {
+    if (!this.seeks.length || this.seeks[this.seeks.length - 1] != this.persistent.currentTime) {
+      this.seeks.push(this.persistent.currentTime);
+    }
+    if (this.seeks.length > 50) {
+      this.seeks.shift();
+    }
+    this.interfaceController.updateMarkers();
+  }
+  set currentTime(value) {
+    if (this.saveSeek) {
+      this.savePosition();
+    }
+    this.persistent.currentTime = value;
+    if (this.player) {
+      this.player.currentTime = value;
+    }
+  }
+
+  get duration() {
+    return this.player?.duration || 0;
+  }
+
+  get currentTime() {
+    return this.player?.currentTime || 0;
+  }
+
+  get paused() {
+    return this.player?.paused || true;
+  }
+
+  get levels() {
+    return this.player?.levels || new Map();
+  }
+
+  get currentLevel() {
+    return this.persistent.currentLevel;
+  }
+
+  get currentAudioLevel() {
+    return this.player?.currentAudioLevel;
+  }
+
+  set currentLevel(value) {
+    const previousLevel = this.currentLevel;
+
+    this.persistent.currentLevel = value;
+    this.player.currentLevel = value;
+    if (this.previewPlayer) {
+      this.previewPlayer.currentLevel = value;
+    }
+    this.videoAnalyzer.setLevel(value);
+
+    if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
+      this.fragmentsStore[previousLevel].forEach((fragment, i) => {
+        if (i === -1) return;
+        this.freeFragment(fragment);
+      });
     }
 
-    getReservedFragments(fragments) {
-        if (!fragments) return [];
-        return fragments.filter((fragment) => {
-            return fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree()
-        });
-    }
-
-    freeFragments(fragments) {
-        for (let i = 0; i < fragments.length; i++) {
-            let fragment = fragments[i];
-            if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE && fragment.canFree()) {
-                if (fragment.end < this.persistent.currentTime - this.options.bufferBehind || fragment.start > this.persistent.currentTime + this.options.bufferAhead) {
-                    this.freeFragment(fragment);
-                }
-            }
-        }
-    }
-
-    freeFragment(fragment) {
-        this.downloadManager.removeFile(fragment.getContext());
+    // Reset all fragments to waiting in case some have failed.
+    if (this.fragmentsStore[this.persistent.currentLevel]) {
+      this.fragmentsStore[this.persistent.currentLevel].forEach((fragment, i) => {
+        if (i === -1) return;
         fragment.status = DownloadStatus.WAITING;
+      });
     }
 
-    getFragment(level, sn) {
-        if (!this.fragmentsStore[level]) {
-            return null;
-        }
-        return this.fragmentsStore[level][sn];
+    if (this.fragmentsStore[this.persistent.currentAudioLevel]) {
+      this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment, i) => {
+        if (i === -1) return;
+        fragment.status = DownloadStatus.WAITING;
+      });
     }
 
-    makeFragment(level, sn, frag) {
-        if (!this.fragmentsStore[level]) {
-            this.fragmentsStore[level] = [];
-        }
+    this.updateQualityLevels();
+  }
 
-        this.fragmentsStore[level][sn] = frag
+  set currentAudioLevel(value) {
+    const previousLevel = this.currentAudioLevel;
+
+    this.persistent.currentAudioLevel = value;
+    this.player.currentAudioLevel = value;
+
+    if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
+      this.fragmentsStore[previousLevel].forEach((fragment, i) => {
+        if (i === -1) return;
+        this.freeFragment(fragment);
+      });
     }
 
-    failedToLoad(reason) {
-        this.downloadManager.removeAllDownloaders()
-        this.interfaceController.failedToLoad(reason);
-    }
-
-    resetPlayer() {
-        this.lastTime = 0;
-
-        this.fragmentsStore = {};
-        this.seeks.length = 0;
-        if (this.context) {
-            this.context.destroy();
-            this.context = null;
-        }
-
-        if (this.player) {
-            this.player.destroy();
-            this.player = null;
-        }
-
-        if (this.source) {
-            this.source.destroy();
-            this.source = null;
-        }
-
-        if (this.previewPlayer) {
-            this.previewPlayer.destroy();
-            this.previewPlayer = null;
-        }
-
-        this.downloadManager.reset();
-        this.interfaceController.reset();
-        this.subtitlesManager.clearTracks();
-
-        this.persistent.currentLevel = -1;
-        this.persistent.currentAudioLevel = -1;
-        this.persistent.buffering = false;
-        this.persistent.levels.clear();
-
-
-    }
-
-    setMediaName(name) {
-        this.mediaName = name;
-        this.subtitlesManager.mediaNameSet();
-    }
-    
-    debugstuff() {
-        let res = [];
-        this.fragmentsStore[this.currentLevel].forEach((fragment) => {
-            let entry = this.downloadManager.getEntry(fragment.getContext());
-            res.push(entry.data.size)
-        });
-        console.log(res.join('\n'));
-    }
-
-    bindPlayer() {
-
-
-
-        this.context = this.player.createContext();
-
-
-
-        this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
-            this.currentLevel = maxLevel;
-            if (maxAudioLevel !== undefined) {
-                this.currentAudioLevel = maxAudioLevel;
-            }
-            this.player.load();
-            if (this.previewPlayer) {
-                this.previewPlayer.load();
-            }
-        });
-
-        this.context.on(DefaultPlayerEvents.ABORT, (event) => {
-
-        })
-
-        this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
-
-        })
-
-        this.context.on(DefaultPlayerEvents.CANPLAYTHROUGH, (event) => {
-
-        })
-
-        this.context.on(DefaultPlayerEvents.COMPLETE, (event) => {
-
-        })
-
-        this.context.on(DefaultPlayerEvents.DURATIONCHANGE, (event) => {
-            this.updateDuration(this.duration);
-            this.interfaceController.updateFragmentsLoaded();
-        })
-
-        this.context.on(DefaultPlayerEvents.EMPTIED, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.ENDED, (event) => {
-            this.pause();
-        })
-
-        this.context.on(DefaultPlayerEvents.ERROR, (event) => {
-            console.log("ERROR", event)
-            this.failedToLoad("Failed to load video")
-        });
-
-        this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.LOADEDMETADATA, (event) => {
-
-        })
-
-
-        this.context.on(DefaultPlayerEvents.PAUSE, (event) => {
-            this.interfaceController.pause();
-        })
-
-
-        this.context.on(DefaultPlayerEvents.PLAY, (event) => {
-            this.interfaceController.play();
-        })
-
-
-        this.context.on(DefaultPlayerEvents.PLAYING, (event) => {
-            this.interfaceController.setBuffering(false);
-        })
-
-
-        this.context.on(DefaultPlayerEvents.PROGRESS, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.RATECHANGE, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.SEEKED, (event) => {
-            this.interfaceController.updateFragmentsLoaded();
-        })
-
-
-        this.context.on(DefaultPlayerEvents.SEEKING, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.STALLED, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.SUSPEND, (event) => {
-        })
-
-
-        this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
-
-            if (this.interfaceController.isSeeking) return;
-
-            this.updateTime(this.currentTime)
-
-            if (this.videoAnalyzer.pushFrame(this.player.getCurrentVideo()))
-                this.videoAnalyzer.calculate();
-
-        })
-
-
-        this.context.on(DefaultPlayerEvents.VOLUMECHANGE, (event) => {
-
-        })
-
-
-        this.context.on(DefaultPlayerEvents.WAITING, (event) => {
-            this.interfaceController.setBuffering(true);
-        })
-
-        this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
-            this.interfaceController.updateFragmentsLoaded();
-        })
-
-        if (this.previewPlayer) {
-            this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-                if (this.persistent.currentLevel !== -1)
-                    this.previewPlayer.currentLevel = this.persistent.currentLevel;
-            });
-
-            this.previewPlayer.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
-                this.interfaceController.updateFragmentsLoaded();
-            });
-
-            let seekHideTimeouts = [];
-            this.previewPlayer.on(DefaultPlayerEvents.SEEKING, () => {
-                seekHideTimeouts.push(setTimeout(() => {
-                    this.previewPlayer.getVideos()[0].style.opacity = 0;
-                }, 200));
-            });
-
-            this.previewPlayer.on(DefaultPlayerEvents.SEEKED, () => {
-
-                seekHideTimeouts.forEach((timeout) => {
-                    clearTimeout(timeout);
-                });
-                seekHideTimeouts.length = 0;
-
-                this.previewPlayer.getVideos()[0].style.opacity = 1;
-            })
-
-            this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
-                console.log("Preview player error", e);
-
-            });
-        }
-
-    }
-
-    async play() {
-
-        await this.player.play();
-        this.interfaceController.play();
-    }
-
-    async pause() {
-        await this.player.pause();
-        this.interfaceController.pause();
-    }
-
-    undoSeek() {
-        if (this.seeks.length) {
-            this.player.currentTime = this.seeks.pop();
-            this.interfaceController.updateMarkers();
-        }
-    }
-    savePosition() {
-        if (!this.seeks.length || this.seeks[this.seeks.length - 1] != this.persistent.currentTime) {
-
-            this.seeks.push(this.persistent.currentTime);
-        }
-        if (this.seeks.length > 50) {
-            this.seeks.shift();
-        }
-        this.interfaceController.updateMarkers();
-    }
-    set currentTime(value) {
-        if (this.saveSeek) {
-            this.savePosition();
-        }
-        this.persistent.currentTime = value;
-        if (this.player)
-            this.player.currentTime = value;
-    }
-
-    get duration() {
-        return this.player?.duration || 0;
-    }
-
-    get currentTime() {
-        return this.player?.currentTime || 0;
-    }
-
-    get paused() {
-        return this.player?.paused || true;
-    }
-
-    get levels() {
-        return this.player?.levels || new Map();
-    }
-
-    get currentLevel() {
-        return this.persistent.currentLevel;
-    }
-
-    get currentAudioLevel() {
-        return this.player?.currentAudioLevel;
-    }
-
-    set currentLevel(value) {
-        let previousLevel = this.currentLevel;
-
-        this.persistent.currentLevel = value;
-        this.player.currentLevel = value;
-        if (this.previewPlayer) {
-            this.previewPlayer.currentLevel = value;
-        }
-        this.videoAnalyzer.setLevel(value);
-
-        if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
-            this.fragmentsStore[previousLevel].forEach((fragment, i) => {
-                if (i === -1) return;
-                this.freeFragment(fragment);
-            });
-        }
-
-        // Reset all fragments to waiting in case some have failed.
-        if (this.fragmentsStore[this.persistent.currentLevel]) this.fragmentsStore[this.persistent.currentLevel].forEach((fragment, i) => {
-            if (i === -1) return;
-            fragment.status = DownloadStatus.WAITING;
-        });
-
-        if (this.fragmentsStore[this.persistent.currentAudioLevel]) this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment, i) => {
-            if (i === -1) return;
-            fragment.status = DownloadStatus.WAITING;
-        });
-
-        this.updateQualityLevels();
-    }
-
-    set currentAudioLevel(value) {
-        let previousLevel = this.currentAudioLevel;
-
-        this.persistent.currentAudioLevel = value;
-        this.player.currentAudioLevel = value;
-
-        if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
-            this.fragmentsStore[previousLevel].forEach((fragment, i) => {
-                if (i === -1) return;
-                this.freeFragment(fragment);
-            });
-        }
-
-        this.updateQualityLevels();
-    }
-
-    get fragments() {
-        return this.fragmentsStore[this.currentLevel];
-    }
-
-    get audioFragments() {
-        return this.fragmentsStore[this.currentAudioLevel];
-    }
-
-    get currentFragment() {
-        return this.player?.currentFragment || null;
-    }
-
-    get currentAudioFragment() {
-        return this.player?.currentAudioFragment || null;
-    }
-
-    getFragments(level) {
-        return this.fragmentsStore[level];
-    }
-
-    get volume() {
-        return this.player?.volume || this.persistent.volume;
-    }
-
-    set volume(value) {
-        this.persistent.volume = value;
-        if (this.player) this.player.volume = value;
-        this.interfaceController.updateVolumeBar();
-    }
-
-    get playbackRate() {
-        return this.player?.playbackRate || this.persistent.playbackRate;
-    }
-
-    set playbackRate(value) {
-        this.persistent.playbackRate = value;
-        if (this.player) this.player.playbackRate = value;
-        this.interfaceController.updatePlaybackRate();
-    }
-
-    get currentVideo() {
-        return this.player?.getCurrentVideo() || null;
-    }
+    this.updateQualityLevels();
+  }
+
+  get fragments() {
+    return this.fragmentsStore[this.currentLevel];
+  }
+
+  get audioFragments() {
+    return this.fragmentsStore[this.currentAudioLevel];
+  }
+
+  get currentFragment() {
+    return this.player?.currentFragment || null;
+  }
+
+  get currentAudioFragment() {
+    return this.player?.currentAudioFragment || null;
+  }
+
+  getFragments(level) {
+    return this.fragmentsStore[level];
+  }
+
+  get volume() {
+    return this.player?.volume || this.persistent.volume;
+  }
+
+  set volume(value) {
+    this.persistent.volume = value;
+    if (this.player) this.player.volume = value;
+    this.interfaceController.updateVolumeBar();
+  }
+
+  get playbackRate() {
+    return this.player?.playbackRate || this.persistent.playbackRate;
+  }
+
+  set playbackRate(value) {
+    this.persistent.playbackRate = value;
+    if (this.player) this.player.playbackRate = value;
+    this.interfaceController.updatePlaybackRate();
+  }
+
+  get currentVideo() {
+    return this.player?.getVideo() || null;
+  }
 }
 

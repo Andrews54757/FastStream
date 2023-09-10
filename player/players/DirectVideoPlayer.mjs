@@ -29,13 +29,9 @@ export class DirectVideoPlayer extends EventEmitter {
     }
 
 
-    getVideos() {
-        return [this.video];
-    }
-    getCurrentVideo() {
+    getVideo() {
         return this.video;
     }
-
 
     async setSource(source) {
         this.source = source;

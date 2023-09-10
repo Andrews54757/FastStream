@@ -1,236 +1,229 @@
 
-import { PlayerModes } from "./enums/PlayerModes.mjs";
-import { FastStreamClient } from "./FastStreamClient.mjs";
-import { SubtitleTrack } from "./SubtitleTrack.mjs";
-import { Utils } from "./utils/Utils.mjs";
-import { VideoSource } from "./VideoSource.mjs";
+import {PlayerModes} from './enums/PlayerModes.mjs';
+import {FastStreamClient} from './FastStreamClient.mjs';
+import {SubtitleTrack} from './SubtitleTrack.mjs';
+import {Utils} from './utils/Utils.mjs';
+import {VideoSource} from './VideoSource.mjs';
 
 
-var OPTIONS = null;
-if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.sendMessage) {
-    chrome.runtime.onMessage.addListener(
-        function (request, sender, sendResponse) {
-            if (request.type == "init") {
+let OPTIONS = null;
+if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+  chrome.runtime.onMessage.addListener(
+      function(request, sender, sendResponse) {
+        if (request.type == 'init') {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'frame',
+              id: request.frameId,
+            }, '*');
+          }
+        } else if (request.type == 'settings') {
+          OPTIONS = request.options;
+          if (window.fastStream) window.fastStream.setOptions(OPTIONS);
+        } if (request.type == 'analyzerData') {
+          window.fastStream.loadAnalyzerData(request.data);
+        } else if (request.type === 'media_name') {
+          const name = request.name;
+          if (name) {
+            if (window.fastStream) window.fastStream.setMediaName(name);
+          }
+        } else if (request.type === 'sources' && window.fastStream) {
+          console.log('Recieved sources', request.sources, request.subtitles);
+          let subs = request.subtitles;
+          const sources = request.sources;
 
-                if (window.parent !== window) {
-                    window.parent.postMessage({
-                        type: "frame",
-                        id: request.frameId
-                    }, "*")
-                }
+          if (sources.length === 0) {
+            return;
+          }
 
-            } else if (request.type == "settings") {
+          let source = sources[0];
 
-                OPTIONS = request.options;
-                if (window.fastStream) window.fastStream.setOptions(OPTIONS);
-            } if (request.type == "analyzerData") {
-                window.fastStream.loadAnalyzerData(request.data)
-            } else if (request.type === "media_name") {
-                const name = request.name;
-                if (name) {
-                    if (window.fastStream) window.fastStream.setMediaName(name);
-                }
-            } else if (request.type === "sources" && window.fastStream) {
-                console.log("Recieved sources", request.sources, request.subtitles)
-                var subs = request.subtitles;
-                const sources = request.sources;
+          if (source.mode === PlayerModes.ACCELERATED_MP4) {
+            source = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+          }
 
-                if (sources.length === 0) {
-                    return;
-                }
+          sources.forEach((s) => {
+            if (s !== source) {
+              window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
+            }
+          });
 
-                let source = sources[0];
+          window.fastStream.addSource(new VideoSource(source.url, source.headers, source.mode), true).then(() => {
+            window.fastStream.play();
+          });
 
-                if (source.mode === PlayerModes.ACCELERATED_MP4) {
-                    source = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
-                }
 
-                sources.forEach((s) => {
-                    if (s !== source) {
-                        window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
-                    }
-                })
-
-                window.fastStream.addSource(new VideoSource(source.url, source.headers, source.mode), true).then(() => {
-                    window.fastStream.play();
+          window.fastStream.clearSubtitles();
+          if (subs) {
+            subs = subs.filter((sub) => sub);
+            let todo = 1;
+            let done = 0;
+            subs.forEach((sub) => {
+              if (!sub.data && sub.source) {
+                todo++;
+                const headers = sub.headers || [];
+                const customHeaderCommands = headers.filter((header) => {
+                  return header.name === 'Origin' || header.name === 'Referer';
+                }).map((header) => {
+                  return {
+                    operation: 'set',
+                    header: header.name,
+                    value: header.value,
+                  };
                 });
 
-
-                window.fastStream.clearSubtitles();
-                if (subs) {
-
-                    subs = subs.filter((sub) => sub);
-                    let todo = 1;
-                    let done = 0;
-                    subs.forEach((sub) => {
-                        if (!sub.data && sub.source) {
-                            todo++;
-                            let headers = sub.headers || [];
-                            let customHeaderCommands = headers.filter((header) => {
-                                return header.name === "Origin" || header.name === "Referer";
-                            }).map(header => {
-                                return {
-                                    operation: "set",
-                                    header: header.name,
-                                    value: header.value
-                                }
-                            });
-
-                            chrome.runtime.sendMessage({
-                                type: "header_commands",
-                                url: sub.source,
-                                commands: customHeaderCommands
-                            }).then(() => {
-                                Utils.simpleRequest(sub.source, (err, req, body) => {
-                                    if (!err && body) {
-                                        sub.data = body;
-                                    }
-                                    if (err) {
-                                        console.warn(err);
-                                    }
-
-                                    done++;
-                                    if (todo === done) loadondone();
-                                });
-                            })
-
-
-                        }
-                    });
-                    todo = todo - 1;
-                    if (todo === done) loadondone();
-
-                    function loadondone() {
-
-                        chrome.storage.sync.get("subtitlesSettings", (data) => {
-                            let defLang = "en";
-                            if (data.subtitlesSettings) {
-                                try {
-                                    let settings = JSON.parse(data.subtitlesSettings);
-                                    if (settings["default-lang"]) {
-                                        defLang = settings["default-lang"];
-                                    }
-                                } catch (e) {
-                                    console.log(e);
-                                }
-                            }
-
-                            subs = subs.filter((sub) => sub.data);
-
-                            let done = 0;
-                            let todo = subs.length;
-                            subs.forEach((sub) => {
-                                chrome.i18n.detectLanguage(sub.data, (result) => {
-                                    let lang = result.languages.find(lang => lang.language === defLang);
-                                    let score = lang ? lang.percentage : 0;
-                                    sub.score = score;
-
-                                    if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
-                                        sub.language = result.languages[0].language;
-                                    }
-                                    done++;
-                                    if (todo === done) sendSubs();
-                                });
-                            })
-
-                            function sendSubs() {
-                                subs.sort((a, b) => {
-                                    return b.score - a.score;
-                                })
-
-                                try {
-                                    subs.forEach((sub, i) => {
-                                        const track = new SubtitleTrack(sub.label, sub.language);
-                                        try {
-                                            track.loadText(sub.data);
-                                            window.fastStream.loadSubtitleTrack(track, OPTIONS?.autoEnableBestSubtitles && i === 0 && sub.language === defLang);
-                                        } catch (e) {
-                                            console.error(e)
-                                        }
-                                    })
-                                } catch (e) {
-                                    console.error(e)
-                                }
-                            }
-                        });
+                chrome.runtime.sendMessage({
+                  type: 'header_commands',
+                  url: sub.source,
+                  commands: customHeaderCommands,
+                }).then(() => {
+                  Utils.simpleRequest(sub.source, (err, req, body) => {
+                    if (!err && body) {
+                      sub.data = body;
                     }
-                }
-            }
-        });
+                    if (err) {
+                      console.warn(err);
+                    }
 
-    setInterval(() => {
-        chrome.runtime.sendMessage({
-            type: "ping"
-        });
-    }, 10000)
+                    done++;
+                    if (todo === done) loadondone();
+                  });
+                });
+              }
+            });
+            todo = todo - 1;
+            if (todo === done) loadondone();
+
+            function loadondone() {
+              chrome.storage.sync.get('subtitlesSettings', (data) => {
+                let defLang = 'en';
+                if (data.subtitlesSettings) {
+                  try {
+                    const settings = JSON.parse(data.subtitlesSettings);
+                    if (settings['default-lang']) {
+                      defLang = settings['default-lang'];
+                    }
+                  } catch (e) {
+                    console.log(e);
+                  }
+                }
+
+                subs = subs.filter((sub) => sub.data);
+
+                let done = 0;
+                const todo = subs.length;
+                subs.forEach((sub) => {
+                  chrome.i18n.detectLanguage(sub.data, (result) => {
+                    const lang = result.languages.find((lang) => lang.language === defLang);
+                    const score = lang ? lang.percentage : 0;
+                    sub.score = score;
+
+                    if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
+                      sub.language = result.languages[0].language;
+                    }
+                    done++;
+                    if (todo === done) sendSubs();
+                  });
+                });
+
+                function sendSubs() {
+                  subs.sort((a, b) => {
+                    return b.score - a.score;
+                  });
+
+                  try {
+                    subs.forEach((sub, i) => {
+                      const track = new SubtitleTrack(sub.label, sub.language);
+                      try {
+                        track.loadText(sub.data);
+                        window.fastStream.loadSubtitleTrack(track, OPTIONS?.autoEnableBestSubtitles && i === 0 && sub.language === defLang);
+                      } catch (e) {
+                        console.error(e);
+                      }
+                    });
+                  } catch (e) {
+                    console.error(e);
+                  }
+                }
+              });
+            }
+          }
+        }
+      });
+
+  setInterval(() => {
+    chrome.runtime.sendMessage({
+      type: 'ping',
+    });
+  }, 10000);
 }
 
-var head = document.head
+const head = document.head;
 
-var body = document.body
+const body = document.body;
 
 
-body.style = "position: absolute; margin: 0px; left: 0; right: 0; top: 0; bottom: 0"
+body.style = 'position: absolute; margin: 0px; left: 0; right: 0; top: 0; bottom: 0';
 
 
 if (window.fastStream) {
-    var vid = window.fastStream;
+  var vid = window.fastStream;
 } else {
-    var vid = new FastStreamClient();
-    window.fastStream = vid;
+  var vid = new FastStreamClient();
+  window.fastStream = vid;
 }
 if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
 
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('frame_id');
 
-if (typeof chrome !== "undefined") {
-    if (chrome?.extension?.inIncognitoContext) {
-        window.fastStream.cantDownloadAll();
-    }
+if (typeof chrome !== 'undefined') {
+  if (chrome?.extension?.inIncognitoContext) {
+    window.fastStream.cantDownloadAll();
+  }
 
-    chrome?.runtime?.sendMessage({
-        type: "faststream",
-        isExt: true,
-        frameId: parseInt(myParam) || 0
-    }).then((data) => {
-        chrome.runtime.sendMessage({
-            type: "ready"
-        });
+  chrome?.runtime?.sendMessage({
+    type: 'faststream',
+    isExt: true,
+    frameId: parseInt(myParam) || 0,
+  }).then((data) => {
+    chrome.runtime.sendMessage({
+      type: 'ready',
     });
+  });
 }
 
-var version = window.fastStream.version;
-console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;')
+const version = window.fastStream.version;
+console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
 
 
-window.addEventListener("beforeunload", () => {
-    if (window.fastStream) {
-        window.fastStream.destroy();
-        delete window.fastStream;
-    }
-})
+window.addEventListener('beforeunload', () => {
+  if (window.fastStream) {
+    window.fastStream.destroy();
+    delete window.fastStream;
+  }
+});
 
 if (window.location.hash) {
-    const url = window.location.hash.substring(1);
-    const ext = Utils.get_url_extension(url);
-    let mode = PlayerModes.DIRECT;
-    if (ext === "mp4") {
-        mode = PlayerModes.ACCELERATED_MP4;
+  const url = window.location.hash.substring(1);
+  const ext = Utils.get_url_extension(url);
+  let mode = PlayerModes.DIRECT;
+  if (ext === 'mp4') {
+    mode = PlayerModes.ACCELERATED_MP4;
 
-        // check if file url;
+    // check if file url;
 
-        if (url.startsWith("file://")) {
-            mode = PlayerModes.DIRECT;
-        }
-    } else if (ext === "m3u8") {
-        mode = PlayerModes.ACCELERATED_HLS;
-    } else if (ext === "mpd") {
-        mode = PlayerModes.ACCELERATED_DASH;
+    if (url.startsWith('file://')) {
+      mode = PlayerModes.DIRECT;
     }
+  } else if (ext === 'm3u8') {
+    mode = PlayerModes.ACCELERATED_HLS;
+  } else if (ext === 'mpd') {
+    mode = PlayerModes.ACCELERATED_DASH;
+  }
 
-    window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
-        console.log("play")
-        window.fastStream.play();
-    });
+  window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
+    console.log('play');
+    window.fastStream.play();
+  });
 }

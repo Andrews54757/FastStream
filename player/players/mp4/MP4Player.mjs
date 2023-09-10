@@ -244,13 +244,9 @@ export class MP4Player extends EventEmitter {
         this.setupHLS();
     }
 
-    getVideos() {
-        return [this.video];
-    }
-    getCurrentVideo() {
+    getVideo() {
         return this.video;
     }
-
 
     async setSource(source) {
         if (this.source) {

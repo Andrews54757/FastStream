@@ -249,10 +249,7 @@ export class HLSPlayer extends EventEmitter {
                 this.client.makeFragment(identifier, fragment.sn, new HLSFragment(fragment, start, end));
         });
     }
-    getVideos() {
-        return [this.video];
-    }
-    getCurrentVideo() {
+    getVideo() {
         return this.video;
     }
 

@@ -146,16 +146,9 @@ export class DashPlayer extends EventEmitter {
         return this.client;
     }
 
-
-
-
-    getVideos() {
-        return [this.video];
-    }
-    getCurrentVideo() {
+    getVideo() {
         return this.video;
     }
-
 
     async setSource(source) {
         this.source = source;

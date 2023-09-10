@@ -1,0 +1,24 @@
+{
+  "name": "faststream",
+  "version": "1.0.19",
+  "description": "Stream without buffering",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://andrews54757@github.com/Andrews54757/FastStream.git"
+  },
+  "author": "Andrews54757",
+  "bugs": {
+    "url": "https://github.com/Andrews54757/FastStream/issues"
+  },
+  "homepage": "https://github.com/Andrews54757/FastStream#readme",
+  "devDependencies": {
+    "eslint": "^8.49.0",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.0.2",
+    "eslint-plugin-promise": "^6.1.1"
+  }
+}
