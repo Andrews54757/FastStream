@@ -1,7 +1,6 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {DashJS} from '../../modules/dash.mjs';
-import {DASH2MP4} from '../../modules/dash2mp4/dash2mp4.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {DashFragment} from './DashFragment.mjs';
@@ -341,6 +340,8 @@ export default class DashPlayer extends EventEmitter {
   }
 
   async getSaveBlob(options) {
+    const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
+
     const dash2mp4 = new DASH2MP4();
 
     dash2mp4.on('progress', (progress) => {

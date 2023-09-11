@@ -2,7 +2,6 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Hls} from '../../modules/hls.mjs';
-import {HLS2MP4} from '../../modules/hls2mp4/hls2mp4.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {HLSFragment} from './HLSFragment.mjs';
 import {HLSFragmentRequester} from './HLSFragmentRequester.mjs';
@@ -105,6 +104,7 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   async getSaveBlob(options) {
+    const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
     const hls2mp4 = new HLS2MP4();
 
     hls2mp4.on('progress', (progress) => {
