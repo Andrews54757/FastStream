@@ -77,6 +77,7 @@ export class SubtitlesManager {
   updateSettingsUI() {
     DOMElements.subtitlesOptionsList.innerHTML = '';
     for (const key in this.settings) {
+      if (!Object.hasOwn(this.settings, key)) continue;
       const option = document.createElement('div');
       option.classList.add('option');
 
@@ -471,7 +472,7 @@ export class SubtitlesManager {
     });
 
     this.subui.results.innerHTML = '';
-    var container = document.createElement('div');
+    const container = document.createElement('div');
     container.textContent = 'Searching...';
     this.subui.results.appendChild(container);
 
@@ -511,7 +512,7 @@ export class SubtitlesManager {
     this.subui.results.innerHTML = '';
 
     if (data.length === 0) {
-      var container = document.createElement('div');
+      const container = document.createElement('div');
       container.textContent = 'No results found';
       this.subui.results.appendChild(container);
       return;
@@ -691,7 +692,7 @@ export class SubtitlesManager {
         trackElement.appendChild(resyncTool);
 
         resyncTool.addEventListener('click', (e) => {
-          const res = this.client.subtitleSyncer.toggleTrack(track);
+          this.client.subtitleSyncer.toggleTrack(track);
           e.stopPropagation();
         }, true);
 

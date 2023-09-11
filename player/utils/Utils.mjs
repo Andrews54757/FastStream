@@ -46,18 +46,20 @@ export class Utils {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time - minutes * 60);
 
-    function str_pad_left(string, pad, length) {
+    function strPadLeft(string, pad, length) {
       return (new Array(length + 1).join(pad) + string).slice(-length);
     }
 
-    return (hours ? (hours + ':') : '') + str_pad_left(minutes, '0', 2) + ':' + str_pad_left(seconds, '0', 2);
+    return (hours ? (hours + ':') : '') + strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
   }
 
 
   static objToHeadersString(obj) {
     let str = '';
     for (const name in obj) {
-      str += `${name}: ${obj[name]}\n`;
+      if (Object.hasOwn(obj, name)) {
+        str += `${name}: ${obj[name]}\n`;
+      }
     }
     return str;
   }
@@ -114,7 +116,7 @@ export class Utils {
 
     container.addEventListener('keydown', (e) => {
       if (e.key == 'ArrowDown' ) {
-        for (var j = 0; j < itemListElement.children.length; j++) {
+        for (let j = 0; j < itemListElement.children.length; j++) {
           const element = itemListElement.children[j];
           if (element.dataset.val == container.dataset.val) {
             element.style.backgroundColor = '';
@@ -128,7 +130,7 @@ export class Utils {
         }
         e.stopPropagation();
       } else if (e.key == 'ArrowUp') {
-        for (var j = 0; j < itemListElement.children.length; j++) {
+        for (let j = 0; j < itemListElement.children.length; j++) {
           const element = itemListElement.children[j];
           if (element.dataset.val == container.dataset.val) {
             element.style.backgroundColor = '';
@@ -176,25 +178,22 @@ export class Utils {
     container.appendChild(text);
     const itemListElement = create('div', `position: absolute; top: 100%; left: 0px; right: 0px;`, 'items');
     for (const name in items) {
-      const div = create('div');
-      div.dataset.val = name;
-      div.textContent = items[name];
+      if (Object.hasOwn(items, name)) {
+        const div = create('div');
+        div.dataset.val = name;
+        div.textContent = items[name];
 
-      if (defaultChoice == name) {
-        div.style.backgroundColor = 'rgb(20,20,20)';
+        if (defaultChoice == name) {
+          div.style.backgroundColor = 'rgb(20,20,20)';
+        }
+        itemListElement.appendChild(div);
       }
-      itemListElement.appendChild(div);
     }
     container.appendChild(itemListElement);
     this.setupDropdown(itemListElement, text, container, call);
     return container;
   }
 
-  /**
-     * Sends an AJAX request for the given options.
-     * @param {object} options
-     * @returns
-     */
   static request(options) {
     return new Promise(async (resolve, reject) => {
       const xmlHttp = new XMLHttpRequest();
@@ -246,7 +245,9 @@ export class Utils {
       // xmlHttp.setRequestHeader('Origin', '');
       if (options.headers) {
         for (const name in options.headers) {
-          xmlHttp.setRequestHeader(name, options.headers[name]);
+          if (Object.hasOwn(options.headers, name)) {
+            xmlHttp.setRequestHeader(name, options.headers[name]);
+          }
         }
       }
 
@@ -265,19 +266,19 @@ export class Utils {
     });
   }
 
-  static simpleRequest( /**/) {
-    const url = arguments[0];
+  static simpleRequest(...args) {
+    const url = args[0];
     let post = undefined;
     let callback;
     let bust = false;
 
-    if (arguments[2]) { // post
-      post = arguments[1];
-      callback = arguments[2];
-      bust = arguments[3];
+    if (args[2]) { // post
+      post = args[1];
+      callback = args[2];
+      bust = args[3];
     } else {
-      callback = arguments[1];
-      bust = arguments[2];
+      callback = args[1];
+      bust = args[2];
     }
     try {
       const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); // IE support
@@ -289,9 +290,6 @@ export class Utils {
           } else {
             callback(true, xhr, false);
           }
-
-          const body = xhr.responseText;
-          const res = xhr;
         }
       };
       if (post) {
@@ -299,7 +297,9 @@ export class Utils {
 
         const toPost = [];
         for (const i in post) {
-          toPost.push(encodeURIComponent(i) + '=' + encodeURIComponent(post[i]));
+          if (Object.hasOwn(post, i)) {
+            toPost.push(encodeURIComponent(i) + '=' + encodeURIComponent(post[i]));
+          }
         }
 
         post = toPost.join('&');
@@ -315,15 +315,15 @@ export class Utils {
      * Binary search utility.
      * @param {array} array
      * @param {*} el
-     * @param {function} compare_fn
+     * @param {function} compareFn
      * @return {*}
      */
-  static binarySearch(array, el, compare_fn) {
+  static binarySearch(array, el, compareFn) {
     let lower = 0;
     let upper = array.length - 1;
     while (lower <= upper) {
       const middle = (upper + lower) >> 1;
-      const cmp = compare_fn(el, array[middle]);
+      const cmp = compareFn(el, array[middle]);
       if (cmp > 0) {
         lower = middle + 1;
       } else if (cmp < 0) {

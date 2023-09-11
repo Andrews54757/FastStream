@@ -342,6 +342,7 @@ export class VideoAligner extends EventEmitter {
     //  console.log("Load")
     const memory = this.memory;
     for (const identifier in saved) {
+      if (!Object.hasOwn(saved, identifier)) continue;
       const hashBuffer = new Uint32Array(Pako.inflate(Uint8Array.from(atob(saved[identifier].hashBuffer), (c) => c.charCodeAt(0))).buffer);
       const timeBuffer = new Uint16Array(Pako.inflate(Uint8Array.from(atob(saved[identifier].timeBuffer), (c) => c.charCodeAt(0))).buffer);
 

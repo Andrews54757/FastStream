@@ -17,6 +17,7 @@ export class SourcesBrowser {
     }
     source = source.copy();
     this.sources.unshift(source);
+    // eslint-disable-next-line prefer-const
     let headersInput;
     const sourceContainer = Utils.create('div', null, 'linkui-source');
     this.linkui.sourcesList.insertBefore(sourceContainer, this.linkui.sourcesList.firstChild);

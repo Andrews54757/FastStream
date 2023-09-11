@@ -1,3 +1,4 @@
+/* eslint-disable */
 /*!
 * ONNX Runtime Web v1.16.0
 * Copyright (c) Microsoft Corporation. All rights reserved.

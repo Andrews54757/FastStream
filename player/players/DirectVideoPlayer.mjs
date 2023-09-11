@@ -21,9 +21,9 @@ export class DirectVideoPlayer extends EventEmitter {
 
 
   async setup() {
-    const pre_events = new EventEmitter();
-    const emitter_relay = new EmitterRelay([pre_events, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
+    const preEvents = new EventEmitter();
+    const emitterRelay = new EmitterRelay([preEvents, this]);
+    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
   }
 
 

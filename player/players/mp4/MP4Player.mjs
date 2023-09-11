@@ -146,14 +146,14 @@ export class MP4Player extends EventEmitter {
 
   async setup() {
     return new Promise((resolve, reject) => {
-      const pre_events = new EventEmitter();
+      const preEvents = new EventEmitter();
 
-      pre_events.on(DefaultPlayerEvents.DURATIONCHANGE, () => {
+      preEvents.on(DefaultPlayerEvents.DURATIONCHANGE, () => {
         return EmitterCancel;
       });
 
-      const emitter_relay = new EmitterRelay([pre_events, this]);
-      Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
+      const emitterRelay = new EmitterRelay([preEvents, this]);
+      Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
       this.mp4box.onReady = (info) => {
         this.onMetadataParsed(info);
@@ -585,7 +585,7 @@ export class MP4Player extends EventEmitter {
       startOffset = this.mp4box.nextParsePosition;
     } else if (this.videoTracks.length || this.audioTracks.length) {
       const time = this.currentTime;
-      let seek_offset = Infinity;
+      let seekOffset = Infinity;
       const sortedSamples = [];
       if (this.videoTracks[this.currentVideoTrack]) {
         sortedSamples.push(this.videoTracks[this.currentVideoTrack].sortedSamples);
@@ -597,11 +597,11 @@ export class MP4Player extends EventEmitter {
       for (let i = 0; i < sortedSamples.length; i++) {
         const samples = sortedSamples[i];
         const offset = this.getFragmentOffset(samples, time);
-        if (offset < seek_offset) {
-          seek_offset = offset;
+        if (offset < seekOffset) {
+          seekOffset = offset;
         }
       }
-      startOffset = seek_offset;
+      startOffset = seekOffset;
     }
 
 

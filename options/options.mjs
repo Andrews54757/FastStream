@@ -26,7 +26,9 @@ chrome.storage.local.get({
   if (options.keybinds) {
     keybindsList.innerHTML = '';
     for (const keybind in options.keybinds) {
-      createKeybindElement(keybind);
+      if (Object.hasOwn(options.keybinds, keybind)) {
+        createKeybindElement(keybind);
+      }
     }
   }
 
@@ -128,7 +130,9 @@ document.getElementById('resetdefault').addEventListener('click', () => {
   options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
   keybindsList.innerHTML = '';
   for (const keybind in options.keybinds) {
-    createKeybindElement(keybind);
+    if (Object.hasOwn(options.keybinds, keybind)) {
+      createKeybindElement(keybind);
+    }
   }
   optionChanged();
 });

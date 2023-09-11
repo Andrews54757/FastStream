@@ -259,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// eslint-disable-next-line camelcase
 function is_url_yt(urlStr) {
   const url = new URL(urlStr);
   const hostname = url.hostname;
@@ -268,6 +269,7 @@ function is_url_yt(urlStr) {
   return false;
 }
 
+// eslint-disable-next-line camelcase
 function is_url_yt_watch(urlStr) {
   const url = new URL(urlStr);
   const pathname = url.pathname;

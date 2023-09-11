@@ -289,6 +289,7 @@ export class InterfaceController {
     }, 3000);
     this.setupRateChanger();
 
+    // eslint-disable-next-line new-cap
     Coloris({
       theme: 'pill',
       themeMode: 'dark',
@@ -930,9 +931,6 @@ export class InterfaceController {
 
   updateVolumeBar() {
     const currentVolumeTag = DOMElements.currentVolume;
-    const volumeposTag = DOMElements.currentVolumePos;
-    const volumebarTotalWidth = DOMElements.volumeControlBar.clientWidth;
-    const volumeposTagWidth = volumeposTag.clientWidth;
     const muteButtonTag = DOMElements.muteBtn;
 
     const volume = this.persistent.volume;

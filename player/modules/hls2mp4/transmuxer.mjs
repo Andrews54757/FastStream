@@ -191,7 +191,7 @@ export default class Transmuxer {
     return startPTS;
   }
   demux(data) {
-    const {audioTrack, videoTrack, id3Track, textTrack} = this.demuxer.demux(data, null, false, true);
+    const {audioTrack, videoTrack} = this.demuxer.demux(data, null, false, true);
 
 
     const videoStartPTS = videoTrack.samples.length ? this.getVideoStartPts(videoTrack.samples) : 0;
@@ -208,10 +208,6 @@ export default class Transmuxer {
     };
   }
 }
-const emptyResult = (chunkMeta) => ({
-  remuxResult: {},
-  chunkMeta,
-});
 export function isPromise(p) {
   return 'then' in p && p.then instanceof Function;
 }

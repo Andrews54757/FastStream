@@ -1,3 +1,4 @@
+/* eslint-disable */
 const UINT32_MAX = Math.pow(2, 32) - 1;
 export class MP4 {
   static init() {

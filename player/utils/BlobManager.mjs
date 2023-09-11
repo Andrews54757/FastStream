@@ -3,10 +3,12 @@ export class BlobManager {
     this.blobUrlStore = {};
 
     for (const name in schema) {
-      this.blobUrlStore[name] = {
-        limit: schema[name].limit || -1,
-        urls: [],
-      };
+      if (Object.hasOwn(schema, name)) {
+        this.blobUrlStore[name] = {
+          limit: schema[name].limit || -1,
+          urls: [],
+        };
+      }
     }
   }
   /**
@@ -41,7 +43,9 @@ export class BlobManager {
 
   revokeAllBlobURLs() {
     for (const name in this.blobUrlStore) {
-      this.revokeBlobURLS(name);
+      if (Object.hasOwn(this.blobUrlStore, name)) {
+        this.revokeBlobURLS(name);
+      }
     }
   }
 

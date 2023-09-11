@@ -51,6 +51,7 @@ export class HLSPlayer extends EventEmitter {
       fpsDroppedMonitoringPeriod: 5000,
       fpsDroppedMonitoringThreshold: 0.2,
       appendErrorMaxRetry: 3,
+      // eslint-disable-next-line new-cap
       loader: HLSLoaderFactory(this),
       enableDateRangeMetadataCues: true,
       enableEmsgMetadataCues: true,
@@ -188,9 +189,9 @@ export class HLSPlayer extends EventEmitter {
       });
     });
 
-    const pre_events = new EventEmitter();
-    const emitter_relay = new EmitterRelay([pre_events, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
+    const preEvents = new EventEmitter();
+    const emitterRelay = new EmitterRelay([preEvents, this]);
+    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {

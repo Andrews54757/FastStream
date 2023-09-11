@@ -12,7 +12,9 @@ export class KeybindManager extends EventEmitter {
   }
   setup() {
     for (const keybind in DefaultKeybinds) {
-      this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
+      if (Object.hasOwn(DefaultKeybinds, keybind)) {
+        this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
+      }
     }
 
     document.addEventListener('keydown', (e) => {

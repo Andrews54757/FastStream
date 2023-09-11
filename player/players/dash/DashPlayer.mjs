@@ -22,9 +22,9 @@ export class DashPlayer extends EventEmitter {
     // eslint-disable-next-line new-cap
     this.dash = DashJS.MediaPlayer().create();
 
-    const pre_events = new EventEmitter();
-    const emitter_relay = new EmitterRelay([pre_events, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitter_relay);
+    const preEvents = new EventEmitter();
+    const emitterRelay = new EmitterRelay([preEvents, this]);
+    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
     this.dash.updateSettings({
       streaming: {
@@ -95,6 +95,7 @@ export class DashPlayer extends EventEmitter {
     //         });
     //     })(event)
     // }
+    // eslint-disable-next-line new-cap
     this.dash.extend('XHRLoader', DASHLoaderFactory(this), false);
   }
 
@@ -107,7 +108,6 @@ export class DashPlayer extends EventEmitter {
     const mediaInfo = processor.getMediaInfo();
     const segmentsController = processor.getSegmentsController();
     const dashHandler = processor.getDashHandler();
-    const index = 0;
     if (rep.hasInitialization()) {
       const init = dashHandler.getInitRequest(mediaInfo, rep);
       if (init) {

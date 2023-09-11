@@ -1,3 +1,4 @@
+/* eslint-disable valid-jsdoc */
 
 /**
      * Calling load() will start retrieving content located at given URL (HTTP GET).
@@ -62,7 +63,9 @@ export function HLSLoaderFactory(player) {
 
     copyStats(stats) {
       for (const key in stats) {
-        this.stats[key] = stats[key];
+        if (Object.hasOwn(stats, key)) {
+          this.stats[key] = stats[key];
+        }
       }
     }
 

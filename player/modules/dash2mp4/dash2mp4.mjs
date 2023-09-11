@@ -41,12 +41,12 @@ export class DASH2MP4 extends EventEmitter {
 
 
     const mdats = mp4boxfile.mdats;
-    if (mdats.length !== 1) throw 'Unsupported mdat count!';
-    if (mp4boxfile.moofs.length !== 1) throw 'Unsupported moofs count!';
+    if (mdats.length !== 1) throw new Error('Unsupported mdat count!');
+    if (mp4boxfile.moofs.length !== 1) throw new Error('Unsupported moofs count!');
 
     const moof = mp4boxfile.moofs[0];
 
-    if (moof.trafs.length !== 1) throw 'Unsupported trafs count!';
+    if (moof.trafs.length !== 1) throw new Error('Unsupported trafs count!');
 
     const traf = moof.trafs[0];
     const headerLen = 8;
@@ -69,7 +69,7 @@ export class DASH2MP4 extends EventEmitter {
 
     if (samplesList.samples_duration === 0) {
       console.log(track);
-      throw 'Sample duration is zero!';
+      throw new Error('Sample duration is zero!');
     }
 
     track.chunks.push({

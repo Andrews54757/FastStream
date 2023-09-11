@@ -96,6 +96,7 @@ export class XHRLoader {
       if (headers) {
         const customHeaderCommands = [];
         for (const header in headers) {
+          if (!Object.hasOwn(headers, header)) continue;
           const name = header;
           if (name.substring(0, 13) === 'x-faststream-') {
             const command = name.substring(13);

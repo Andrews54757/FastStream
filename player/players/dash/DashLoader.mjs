@@ -3,8 +3,6 @@
 export function DASHLoaderFactory(player) {
   return (cfg) => {
     cfg = cfg || {};
-    let instance;
-
 
     function load(httpRequest) {
       if (httpRequest.request.type === 'InitializationSegment' ||
@@ -122,11 +120,9 @@ export function DASHLoaderFactory(player) {
       }
     }
 
-    instance = {
+    return {
       load: load,
       abort: abort,
     };
-
-    return instance;
   };
 }
