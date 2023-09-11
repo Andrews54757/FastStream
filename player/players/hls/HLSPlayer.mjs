@@ -9,7 +9,7 @@ import {HLSFragmentRequester} from './HLSFragmentRequester.mjs';
 import {HLSLoaderFactory} from './HLSLoader.mjs';
 
 
-export class HLSPlayer extends EventEmitter {
+export default class HLSPlayer extends EventEmitter {
   constructor(client, config) {
     super();
     this.client = client;

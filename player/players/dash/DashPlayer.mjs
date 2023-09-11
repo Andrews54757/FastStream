@@ -8,7 +8,7 @@ import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
 import {DASHLoaderFactory} from './DashLoader.mjs';
 
-export class DashPlayer extends EventEmitter {
+export default class DashPlayer extends EventEmitter {
   constructor(client, options) {
     super();
     this.client = client;

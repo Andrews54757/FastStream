@@ -9,7 +9,7 @@ import {MP4FragmentRequester} from './MP4FragmentRequester.mjs';
 import {SourceBufferWrapper} from './SourceBufferWrapper.mjs';
 const FRAGMENT_SIZE = 1000000;
 
-export class MP4Player extends EventEmitter {
+export default class MP4Player extends EventEmitter {
   constructor(client, config) {
     super();
     this.client = client;

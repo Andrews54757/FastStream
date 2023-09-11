@@ -3,10 +3,6 @@ import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
-import {DirectVideoPlayer} from '../players/DirectVideoPlayer.mjs';
-import {DashPlayer} from '../players/dash/DashPlayer.mjs';
-import {HLSPlayer} from '../players/hls/HLSPlayer.mjs';
-import {MP4Player} from '../players/mp4/MP4Player.mjs';
 import {VideoAligner} from './VideoAligner.mjs';
 
 
@@ -223,41 +219,16 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   async loadPlayer(aligner, timeStart, timeEnd, onDone) {
-    let player = null;
+    const player = await this.client.playerLoader.createPlayer(this.source.mode, this.client, {
+      isAnalyzer: true,
+    });
 
-    if (this.source.mode === PlayerModes.ACCELERATED_HLS) {
-      player = new HLSPlayer(this.client);
-      await player.setup();
+    await player.setup();
 
-      player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        player.currentLevel = this.client.currentLevel;
-        player.load();
-      });
-    } else if (this.source.mode === PlayerModes.ACCELERATED_MP4) {
-      player = new MP4Player(this.client);
-      await player.setup();
-
-      player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        player.currentLevel = this.client.currentLevel;
-        player.load();
-      });
-    } else if (this.source.mode === PlayerModes.ACCELERATED_DASH) {
-      player = new DashPlayer(this.client);
-      await player.setup();
-
-      player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        player.currentLevel = this.client.currentLevel;
-        player.currentAudioLevel = this.client.currentAudioLevel;
-        player.load();
-      });
-    } else if (this.source.mode === PlayerModes.DIRECT) {
-      player = new DirectVideoPlayer();
-      await player.setup();
-    }
-
-    if (!player) {
-      return null;
-    }
+    player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+      player.currentLevel = this.client.currentLevel;
+      player.load();
+    });
 
     const onLoadMeta = () => {
       player.off(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);

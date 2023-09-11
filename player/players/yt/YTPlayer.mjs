@@ -1,9 +1,9 @@
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
-import {DashPlayer} from '../dash/DashPlayer.mjs';
+import DashPlayer from '../dash/DashPlayer.mjs';
 
-export class YTPlayer extends DashPlayer {
+export default class YTPlayer extends DashPlayer {
   constructor(client, options) {
     super(client, options);
   }

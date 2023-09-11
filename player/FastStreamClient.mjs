@@ -1,21 +1,15 @@
 import {InterfaceController} from './ui/InterfaceController.mjs';
-import {PlayerModes} from './enums/PlayerModes.mjs';
 import {KeybindManager} from './ui/KeybindManager.mjs';
-import {HLSPlayer} from './players/hls/HLSPlayer.mjs';
 import {DownloadManager} from './network/DownloadManager.mjs';
 import {DefaultPlayerEvents} from './enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from './enums/DownloadStatus.mjs';
 import {SubtitlesManager} from './ui/SubtitlesManager.mjs';
 import {VideoAnalyzer} from './analyzer/VideoAnalyzer.mjs';
 import {AnalyzerEvents} from './enums/AnalyzerEvents.mjs';
-import {MP4Player} from './players/mp4/MP4Player.mjs';
-
-import {DashPlayer} from './players/dash/DashPlayer.mjs';
-import {DirectVideoPlayer} from './players/DirectVideoPlayer.mjs';
 import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
 import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
-import {YTPlayer} from './players/yt/YTPlayer.mjs';
+import {PlayerLoader} from './players/PlayerLoader.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -45,6 +39,7 @@ export class FastStreamClient extends EventEmitter {
       levels: new Map(),
     };
 
+    this.playerLoader = new PlayerLoader();
     this.interfaceController = new InterfaceController(this);
     this.keybindManager = new KeybindManager(this);
     this.downloadManager = new DownloadManager(this);
@@ -161,57 +156,10 @@ export class FastStreamClient extends EventEmitter {
     this.source = source;
 
 
-    switch (source.mode) {
-      case PlayerModes.DIRECT:
-        this.player = new DirectVideoPlayer(this);
-        this.previewPlayer = new DirectVideoPlayer(this);
-
-        await this.player.setup();
-        await this.previewPlayer.setup();
-
-        break;
-      case PlayerModes.ACCELERATED_HLS:
-        this.player = new HLSPlayer(this);
-        await this.player.setup();
-
-        this.previewPlayer = new HLSPlayer(this, {
-          isPreview: true,
-        });
-        await this.previewPlayer.setup();
-        break;
-
-      case PlayerModes.ACCELERATED_MP4:
-        this.player = new MP4Player(this);
-        await this.player.setup();
-
-        this.previewPlayer = new MP4Player(this, {
-          isPreview: true,
-        });
-        await this.previewPlayer.setup();
-        break;
-      case PlayerModes.ACCELERATED_DASH:
-        this.player = new DashPlayer(this);
-        await this.player.setup();
-
-        this.previewPlayer = new DashPlayer(this, {
-          isPreview: true,
-        });
-        await this.previewPlayer.setup();
-        break;
-      case PlayerModes.ACCELERATED_YT:
-        this.player = new YTPlayer(this);
-        await this.player.setup();
-
-        this.previewPlayer = new DashPlayer(this, {
-          isPreview: true,
-        });
-
-        await this.previewPlayer.setup();
-        break;
-    }
+    this.player = await this.playerLoader.createPlayer(source.mode, this);
+    await this.player.setup();
 
     this.bindPlayer(this.player);
-
 
     this.player.volume = this.persistent.volume;
     this.player.playbackRate = this.persistent.playbackRate;
@@ -224,10 +172,14 @@ export class FastStreamClient extends EventEmitter {
     this.currentTime = 0;
     this.setSeekSave(true);
 
-    if (this.previewPlayer) {
-      await this.previewPlayer.setSource(this.player.getSource());
-      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
-    }
+    this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
+      isPreview: true,
+    });
+    await this.previewPlayer.setup();
+
+    await this.previewPlayer.setSource(this.player.getSource());
+    this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+
     await this.videoAnalyzer.setSource(this.player.getSource());
   }
 

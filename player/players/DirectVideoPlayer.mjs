@@ -2,7 +2,7 @@ import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
 import {EmitterRelay, EventEmitter} from '../modules/eventemitter.mjs';
 import {Utils} from '../utils/Utils.mjs';
 
-export class DirectVideoPlayer extends EventEmitter {
+export default class DirectVideoPlayer extends EventEmitter {
   constructor(client, config) {
     super();
     this.client = client;
