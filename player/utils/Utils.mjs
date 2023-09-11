@@ -5,12 +5,15 @@ export class Utils {
     const url = new URL(urlStr);
     const hostname = url.hostname;
     if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
-      const pathname = url.pathname;
-      if (pathname.startsWith('/watch')) {
-        return true;
-      }
+      return true;
     }
     return false;
+  }
+
+  static is_url_yt_watch(urlStr) {
+    const url = new URL(urlStr);
+    const pathname = url.pathname;
+    return pathname.startsWith('/watch');
   }
 
   static get_url_extension(url) {

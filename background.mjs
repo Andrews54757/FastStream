@@ -58,6 +58,7 @@ class TabHolder {
   constructor(tabId) {
     this.tab = tabId;
     this.isOn = false;
+    this.complete = false;
     this.regexMatched = false;
     this.frames = {};
     this.hostname;
@@ -348,15 +349,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.isFastStream = false;
       frame.playerOpening = false;
     }
-
+  } else if (msg.type === 'loaded') {
     chrome.tabs.sendMessage(frame.tab.tab, {
       type: 'init',
       frameId: frame.frame,
     }, {
       frameId: frame.frame,
     });
-
-    checkFrameURL(frame);
+  } else if (msg.type === 'yt_loaded') {
+    frame.url = msg.url;
+    checkYTURL(frame);
   } else if (msg.type === 'ready') {
     if (logging) console.log('Ready');
     frame.ready = true;
@@ -365,7 +367,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-function checkFrameURL(frame) {
+function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
 
@@ -373,13 +375,11 @@ function checkFrameURL(frame) {
     return;
   }
 
-  if (Utils.is_url_yt(url)) {
-    setTimeout(()=>{
-      onSourceRecieved({
-        url: url,
-        requestId: -1,
-      }, frame, PlayerModes.ACCELERATED_YT);
-    }, 1000);
+  if (Utils.is_url_yt(url) && Utils.is_url_yt_watch(url)) {
+    onSourceRecieved({
+      url: url,
+      requestId: -1,
+    }, frame, PlayerModes.ACCELERATED_YT);
   }
 }
 function getMediaNameFromTab(tab) {
@@ -615,6 +615,9 @@ async function openPlayer(frame) {
 }
 let currentTimeout = null;
 async function onSourceRecieved(details, frame, mode) {
+  if (((frame.url && Utils.is_url_yt(frame.url)) || (frame.tab.url && Utils.is_url_yt(frame.tab.url))) && mode !== PlayerModes.ACCELERATED_YT) {
+    return;
+  }
   const url = details.url;
   if (getSourceFromURL(frame, url)) return;
 
@@ -759,6 +762,11 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
         tabs[tabid].isOn = false;
         tabs[tabid].regexMatched = false;
       }
+    }
+    if (changeInfo.status === 'complete') {
+      tabs[tabid].complete = true;
+    } else if (changeInfo.status === 'loading') {
+      tabs[tabid].complete = false;
     }
 
     updateTabIcon(tabs[tabid], true);

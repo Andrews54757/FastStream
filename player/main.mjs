@@ -207,7 +207,7 @@ if (window.location.hash) {
   const url = window.location.hash.substring(1);
   const ext = Utils.get_url_extension(url);
   let mode = PlayerModes.DIRECT;
-  if (Utils.is_url_yt(url)) {
+  if (Utils.is_url_yt(url) && Utils.is_url_yt_watch(url)) {
     mode = PlayerModes.ACCELERATED_YT;
   } else if (ext === 'mp4') {
     mode = PlayerModes.ACCELERATED_MP4;

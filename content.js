@@ -84,8 +84,8 @@ chrome.runtime.onMessage.addListener(
             iframe.src = request.url;
             iframe.setAttribute('style', video.highest.getAttribute('style'));
             iframe.classList = video.highest.classList;
-            iframe.style.width = rect.width + 'px';
-            iframe.style.height = rect.height + 'px';
+            iframe.style.width = (rect.width || 100) + 'px';
+            iframe.style.height = (rect.height || 100) + 'px';
 
             iframe.style.position = styles.position;
             iframe.id = video.highest.id;
@@ -209,13 +209,15 @@ function getParentElementsWithSameBounds(element) {
 
 
 async function getVideo() {
-  const ytplayer = querySelectorAllIncludingShadows('#player.ytd-watch-flexy');
-  if (ytplayer.length) {
-    const element = ytplayer[0];
-    return {
-      size: element.clientWidth * element.clientHeight,
-      highest: element,
-    };
+  if (is_url_yt(window.location.href)) {
+    const ytplayer = querySelectorAllIncludingShadows('#player.ytd-watch-flexy');
+    if (ytplayer.length) {
+      const element = ytplayer[0];
+      return {
+        size: element.clientWidth * element.clientHeight,
+        highest: element,
+      };
+    }
   }
   const videos = Array.from(querySelectorAllIncludingShadows('video'));
 
@@ -247,9 +249,48 @@ async function getVideo() {
   };
 }
 
+chrome.runtime.sendMessage({
+  type: 'iframe',
+  url: window.location.href,
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.sendMessage({
-    type: 'iframe',
-    url: window.location.href,
+    type: 'loaded',
   });
 });
+
+function is_url_yt(urlStr) {
+  const url = new URL(urlStr);
+  const hostname = url.hostname;
+  if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
+    return true;
+  }
+  return false;
+}
+
+function is_url_yt_watch(urlStr) {
+  const url = new URL(urlStr);
+  const pathname = url.pathname;
+  return pathname.startsWith('/watch');
+}
+
+let lastPlayerNode = null;
+if (is_url_yt(window.location.href)) {
+  const observer = new MutationObserver((mutations)=> {
+    const pnode = document.querySelectorAll('#player.ytd-watch-flexy')[0];
+    if (pnode && is_url_yt_watch(window.location.href)) {
+      const rect = pnode.getBoundingClientRect();
+      if (rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
+        lastPlayerNode = pnode;
+        chrome.runtime.sendMessage({
+          type: 'yt_loaded',
+          url: window.location.href,
+        });
+      }
+    }
+  });
+
+  observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
+}
+
