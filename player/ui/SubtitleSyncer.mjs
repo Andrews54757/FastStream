@@ -1,5 +1,4 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
-import {VadJS} from '../modules/vad/vad.mjs';
 import {WebVTT} from '../modules/vtt.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {Utils} from '../utils/Utils.mjs';
@@ -176,6 +175,7 @@ export class SubtitleSyncer extends EventEmitter {
       }
     }
 
+    const {VadJS} = await import('../modules/vad/vad.mjs');
     this.audioNodeVAD = await VadJS.AudioNodeVAD.new(this.audioContext, this.options);
     this.audioNodeVAD.receive(this.audioSource);
     this.audioNodeVAD.start();
