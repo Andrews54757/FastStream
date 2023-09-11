@@ -26,7 +26,6 @@ window.addEventListener('message', (e) => {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      console.log(request);
       if (request.type === 'fullscreen') {
         const element = iframeMap.get(request.frameId);
         if (!element) {
