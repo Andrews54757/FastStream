@@ -535,27 +535,27 @@ export class SubtitlesManager {
 
     response.data.forEach((item) => {
       const container = document.createElement('div');
-      container.style = 'position: relative; overflow-y: scroll; user-select: none; cursor: pointer; font-family: Arial; font-size: 15px; width: 100%; height: 50px; color: rgba(255,255,255,.8); border-top: 1px solid rgba(255,255,255,0.1)';
+      container.classList.add('subtitle-result-container');
       this.subui.results.appendChild(container);
 
       const lang = document.createElement('div');
-      lang.style = 'position: absolute; top: 50%; transform: translate(0%, -50%); left: 0px; text-align: center; width: 100px;';
+      lang.classList.add('subtitle-result-lang');
       lang.textContent = item.attributes.language;
       container.appendChild(lang);
 
       const title = document.createElement('div');
-      title.style = 'position: absolute; left: 100px; width: calc(100% - 300px); top: 50%; padding: 0px 10px; transform: translate(0%, -50%);';
+      title.classList.add('subtitle-result-title');
       title.textContent = item.attributes.feature_details.movie_name + ' (' + item.attributes.feature_details.year + ')';
       container.appendChild(title);
 
       const user = document.createElement('div');
-      user.style = 'position: absolute; right: 60px; width: 100px; top: 50%; padding: 0px 10px; transform: translate(0%, -50%);';
+      user.classList.add('subtitle-result-user');
       user.textContent = item.attributes.uploader.name;
       container.appendChild(user);
 
 
       const rank = document.createElement('div');
-      rank.style = 'position: absolute; right: 0px; width: 50px; top: 50%; transform: translate(0%, -50%);';
+      rank.classList.add('subtitle-result-rank');
       rank.textContent = item.attributes.ratings;
       container.appendChild(rank);
 
@@ -668,8 +668,7 @@ export class SubtitlesManager {
       ((i) => {
         const track = tracks[i];
         const trackElement = document.createElement('div');
-        trackElement.style = 'position: relative; border-bottom: 1px solid rgba(255,255,255,.4); padding: 3px 5px; color: rgba(255,255,255,.8)';
-
+        trackElement.classList.add('subtitle-track-element');
         const activeIndex = this.activeTracks.indexOf(track);
         const name = (track.language ? ('(' + track.language + ') ') : '') + (track.label || `Track ${i + 1}`);
 
@@ -701,9 +700,8 @@ export class SubtitlesManager {
         Utils.setupTabIndex(trackElement);
 
         const resyncTool = document.createElement('div');
-        resyncTool.style = 'display: none; position: absolute; right: 60px; top: 50%; transform: translate(0%,-50%); opacity: 0.7';
         resyncTool.title = 'Resync Tool';
-        resyncTool.className = 'fluid_button fluid_button_wand';
+        resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
         trackElement.appendChild(resyncTool);
 
         resyncTool.addEventListener('click', (e) => {
@@ -714,9 +712,8 @@ export class SubtitlesManager {
 
         const downloadTrack = document.createElement('div');
         // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
-        downloadTrack.style = 'display: none; position: absolute; right: 10px; top: 50%; transform: translate(0%,-50%); opacity: 0.7';
         downloadTrack.title = 'Download subtitle file';
-        downloadTrack.className = 'fluid_button fluid_button_download';
+        downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
         trackElement.appendChild(downloadTrack);
 
         downloadTrack.addEventListener('click', (e) => {
@@ -745,7 +742,7 @@ export class SubtitlesManager {
         }, true);
 
         const removeTrack = document.createElement('div');
-        removeTrack.style = 'display: none; position: absolute; right: 5px; top: 50%; width: 10px; height: 10px; transform: translate(0%,-50%); color: rgba(100,100,100,.5); background-color: rgba(255,0,0,.5); border-radius: 50%;';
+        removeTrack.classList.add('subtitle-remove-tool');
         removeTrack.title = 'Remove subtitle track';
         trackElement.appendChild(removeTrack);
 
@@ -756,7 +753,7 @@ export class SubtitlesManager {
 
 
         const shiftLTrack = document.createElement('div');
-        shiftLTrack.style = 'display: none; position: absolute; right: 55px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-right: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;';
+        shiftLTrack.classList.add('subtitle-shiftl-tool');
         shiftLTrack.title = 'Shift subtitles -0.2s';
         trackElement.appendChild(shiftLTrack);
 
@@ -768,7 +765,7 @@ export class SubtitlesManager {
         }, true);
 
         const shiftRTrack = document.createElement('div');
-        shiftRTrack.style = 'display: none; position: absolute; right: 40px; top: 50%; width: 0px; height: 0px; transform: translate(0%,-50%); border-left: 8px solid rgba(255,255,255,.5); border-bottom: 8px solid transparent; border-top: 8px solid transparent;';
+        shiftRTrack.classList.add('subtitle-shiftr-tool');
         shiftRTrack.title = 'Shift subtitles +0.2s';
         trackElement.appendChild(shiftRTrack);
 
@@ -784,16 +781,10 @@ export class SubtitlesManager {
           trackElement.focus();
         });
 
-        trackElement.addEventListener('focus', () => {
-          downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = 'block';
-        });
         trackElement.addEventListener('mouseleave', () => {
           trackElement.blur();
         });
 
-        trackElement.addEventListener('blur', () => {
-          downloadTrack.style.display = shiftRTrack.style.display = shiftLTrack.style.display = removeTrack.style.display = resyncTool.style.display = 'none';
-        });
 
         trackElement.addEventListener('keydown', (e)=>{
           const keybind = this.client.keybindManager.eventToKeybind(e);

@@ -1792,10 +1792,131 @@ body {
 .page-marker.selected {
     background-color: rgba(255, 255, 255, 0.2);
 }
+
 .subtitle-pages {
     text-align: center;
 }
 
 .page-bar {
     padding: 5px 0px;
+}
+
+.subtitle-result-container {
+    position: relative;
+    overflow-y: scroll;
+    user-select: none;
+    cursor: pointer;
+    font-family: Arial;
+    font-size: 15px;
+    width: 100%;
+    height: 50px;
+    color: rgba(255, 255, 255, .8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1)
+}
+
+.subtitle-result-lang {
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+    left: 0px;
+    text-align: center;
+    width: 100px;
+}
+
+.subtitle-result-title {
+    position: absolute;
+    left: 100px;
+    width: calc(100% - 300px);
+    top: 50%;
+    padding: 0px 10px;
+    transform: translate(0%, -50%);
+}
+
+.subtitle-result-user {
+    position: absolute;
+    right: 60px;
+    width: 100px;
+    top: 50%;
+    padding: 0px 10px;
+    transform: translate(0%, -50%);
+}
+
+.subtitle-result-rank {
+    position: absolute;
+    right: 0px;
+    width: 50px;
+    top: 50%;
+    transform: translate(0%, -50%);
+}
+
+.subtitle-track-element {
+    position: relative;
+    border-bottom: 1px solid rgba(255, 255, 255, .4);
+    padding: 3px 5px;
+    color: rgba(255, 255, 255, .8)
+}
+
+.subtitle-resync-tool,
+.subtitle-download-tool,
+.subtitle-remove-tool,
+.subtitle-shiftl-tool,
+.subtitle-shiftr-tool {
+    display: none;
+    position: absolute !important;
+    cursor: pointer;
+    top: 50%;
+    transform: translate(0%, -50%);
+    opacity: 0.7 !important;
+    transition: opacity 0.2s !important;
+}
+
+.subtitle-track-element:hover .subtitle-resync-tool,
+.subtitle-track-element:hover .subtitle-download-tool,
+.subtitle-track-element:hover .subtitle-remove-tool,
+.subtitle-track-element:hover .subtitle-shiftl-tool,
+.subtitle-track-element:hover .subtitle-shiftr-tool {
+    display: block !important;
+}
+
+
+.subtitle-resync-tool:hover,
+.subtitle-download-tool:hover,
+.subtitle-remove-tool:hover,
+.subtitle-shiftl-tool:hover,
+.subtitle-shiftr-tool:hover {
+    opacity: 0.9 !important;
+}
+
+.subtitle-resync-tool {
+    right: 60px;
+}
+
+.subtitle-download-tool {
+    right: 10px;
+}
+
+.subtitle-remove-tool {
+    right: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+}
+
+.subtitle-shiftl-tool {
+    right: 55px;
+    width: 0px;
+    height: 0px;
+    border-right: 8px solid white;
+    border-bottom: 8px solid transparent;
+    border-top: 8px solid transparent;
+}
+
+.subtitle-shiftr-tool {
+    right: 40px;
+    width: 0px;
+    height: 0px;
+    border-left: 8px solid white;
+    border-bottom: 8px solid transparent;
+    border-top: 8px solid transparent;
 }
