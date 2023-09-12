@@ -98,8 +98,9 @@ export class Utils {
     const create = this.create;
     const total = Math.min(totalPages, 1000);
     let start = Math.max(page - 5, 1);
-    if (totalPages <= 10) {
-      start = 1;
+
+    if (start + 10 > total) {
+      start = Math.max(total - 10, 1);
     }
 
     const max = Math.min(start + 10, total);
