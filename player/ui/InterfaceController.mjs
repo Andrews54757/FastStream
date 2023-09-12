@@ -262,15 +262,20 @@ export class InterfaceController {
     Utils.setupTabIndex(DOMElements.hideButton);
 
     DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
+
     DOMElements.download.addEventListener('click', this.downloadMovie.bind(this));
+    Utils.setupTabIndex(DOMElements.download);
+
     DOMElements.screenshot.addEventListener('click', this.downloadFrame.bind(this));
+    Utils.setupTabIndex(DOMElements.screenshot);
 
     // check if picture in picture is supported
     if (document.pictureInPictureEnabled) {
       DOMElements.pip.style.display = 'inline-block';
     }
     DOMElements.pip.addEventListener('click', this.pipToggle.bind(this));
-    Utils.setupTabIndex(DOMElements.download);
+    Utils.setupTabIndex(DOMElements.pip);
+
     DOMElements.playerContainer.addEventListener('drop', this.onFileDrop.bind(this), false);
 
     DOMElements.playerContainer.addEventListener('dragenter', (e) => {
