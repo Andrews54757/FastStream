@@ -263,6 +263,13 @@ export class InterfaceController {
 
     DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
     DOMElements.download.addEventListener('click', this.downloadMovie.bind(this));
+    DOMElements.screenshot.addEventListener('click', this.downloadFrame.bind(this));
+
+    // check if picture in picture is supported
+    if (document.pictureInPictureEnabled) {
+      DOMElements.pip.style.display = 'inline-block';
+    }
+    DOMElements.pip.addEventListener('click', this.pipToggle.bind(this));
     Utils.setupTabIndex(DOMElements.download);
     DOMElements.playerContainer.addEventListener('drop', this.onFileDrop.bind(this), false);
 
@@ -306,6 +313,13 @@ export class InterfaceController {
     });
   }
 
+  pipToggle() {
+    if (document.pictureInPictureElement) {
+      document.exitPictureInPicture();
+    } else {
+      this.client.player.getVideo().requestPictureInPicture();
+    }
+  }
   setupRateChanger() {
     const els = [];
     const speedList = document.createElement('div');
@@ -470,9 +484,60 @@ export class InterfaceController {
     this.shouldRunProgressLoop = false;
   }
 
-  setDownloadStatus(text) {
+  setDownloadStatus(text, keepUntil = 0) {
     if (this.failed) return;
+    if (keepUntil !== -1 && this.downloadStatusExpires && Date.now() < this.downloadStatusExpires) return;
+    if (keepUntil) {
+      this.downloadStatusExpires = Date.now() + keepUntil;
+    }
     DOMElements.downloadStatus.textContent = text;
+  }
+
+  async downloadFrame() {
+    if (!this.client.player) {
+      alert('No video loaded!');
+      return;
+    }
+
+    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + Utils.formatTime(this.client.currentTime) + '.png';
+    const name = prompt('Enter a name for the file', suggestedName);
+
+    if (!name) {
+      return;
+    }
+
+    this.setDownloadStatus(`Taking screenshot...`, Infinity);
+
+    const video = this.client.player.getVideo();
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const ctx = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    // const blob = await new Promise((resolve) => {
+    //   canvas.toBlob(resolve, 'image/png');
+    // });
+
+    const url = canvas.toDataURL('image/png'); // For some reason this is faster than async
+
+    this.setDownloadStatus(``, -1);
+    this.setDownloadStatus(`Screenshot Saved!`, 1000);
+
+    // const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', name);
+    link.setAttribute('target', '_blank');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(() => {
+      // URL.revokeObjectURL(url);
+      if (DOMElements.downloadStatus.textContent === 'Screenshot Saved!') {
+        this.setDownloadStatus('', -1);
+      }
+    }, 1000);
   }
 
   async downloadMovie() {

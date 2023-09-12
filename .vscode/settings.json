@@ -4,5 +4,6 @@
     },
     "eslint.validate": [
         "javascript"
-    ]
+    ],
+    "svg.preview.background": "editor"
 }

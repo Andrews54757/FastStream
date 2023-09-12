@@ -32,6 +32,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+## Photo Icon: MIT
+
+MIT License
+
+Copyright (c) 2020 Bitcoindesign
+
+https://www.svgrepo.com/svg/470415/photo
+
 ## hls.js: Apache
 
 Copyright (c) 2017 Dailymotion (http://www.dailymotion.com)
