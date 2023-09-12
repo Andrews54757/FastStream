@@ -110,6 +110,7 @@ export class Utils {
       el.addEventListener('click', () => {
         callback(1);
       });
+      this.setupTabIndex(el);
       list.appendChild(el);
 
       if (start > 2) {
@@ -122,12 +123,12 @@ export class Utils {
       ((i) => {
         const el = create('div', null, 'page-marker');
         el.textContent = i;
-
         if (i === page) {
           el.classList.add('selected');
           el.contentEditable = true;
           el.addEventListener('blur', () => {
             el.textContent = i;
+            window.getSelection().empty();
           });
           el.addEventListener('focus', () => {
             window.getSelection().selectAllChildren(el);
@@ -148,6 +149,7 @@ export class Utils {
             callback(i);
           });
         }
+        this.setupTabIndex(el);
         list.appendChild(el);
       })(i);
     }
@@ -164,6 +166,7 @@ export class Utils {
       el.addEventListener('click', () => {
         callback(total);
       });
+      this.setupTabIndex(el);
       list.appendChild(el);
     }
     return list;
