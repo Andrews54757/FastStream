@@ -103,7 +103,7 @@ export class Utils {
     }
 
     const max = Math.min(start + 10, total);
-    const list = create('div');
+    const list = create('div', null, 'page-bar');
     if (start > 1) {
       const el = create('div', null, 'page-marker');
       el.textContent = 1;

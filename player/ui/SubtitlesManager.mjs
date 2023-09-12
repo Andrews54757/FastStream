@@ -524,10 +524,13 @@ export class SubtitlesManager {
     if (response.total_pages > 1) {
       const responseBar = Utils.createPagesBar(response.page, response.total_pages, (page) => {
         query.page = page;
+        this.subui.pages.innerHTML = '';
+        this.subui.pages.appendChild(Utils.createPagesBar(page, response.total_pages, ()=>{
+          this.queryOpenSubtitles(query);
+        }));
         this.queryOpenSubtitles(query);
       });
       this.subui.pages.appendChild(responseBar);
-      responseBar.classList.add('subtitle-results-page-bar');
     }
 
     response.data.forEach((item) => {
