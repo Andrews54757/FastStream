@@ -317,6 +317,10 @@ export class InterfaceController {
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     } else {
+      if (!this.client.player) {
+        alert('No video loaded!');
+        return;
+      }
       this.client.player.getVideo().requestPictureInPicture();
     }
   }
