@@ -441,6 +441,10 @@ export class SubtitlesManager {
     this.subui.results = document.createElement('div');
     this.subui.results.classList.add('subtitle-results');
     DOMElements.subuiContainer.appendChild(this.subui.results);
+
+    this.subui.pages = document.createElement('div');
+    this.subui.pages.classList.add('subtitle-pages');
+    DOMElements.subuiContainer.appendChild(this.subui.pages);
   }
   async queryOpenSubtitles(query) {
     const defaulQuery = {
@@ -477,9 +481,9 @@ export class SubtitlesManager {
     this.subui.results.appendChild(container);
 
 
-    let data;
+    let response;
     try {
-      const response = (await Utils.request({
+      response = (await Utils.request({
         usePlusForSpaces: true,
         responseType: 'json',
         url: 'https://api.opensubtitles.com/api/v1/subtitles',
@@ -500,8 +504,6 @@ export class SubtitlesManager {
         container.textContent = 'Error: ' + response.errors.join(', ');
         return;
       }
-
-      data = response.data || [];
     } catch (e) {
       console.log(e);
       container.textContent = 'OpenSubtitles is down!';
@@ -510,15 +512,25 @@ export class SubtitlesManager {
 
 
     this.subui.results.innerHTML = '';
+    this.subui.pages.innerHTML = '';
 
-    if (data.length === 0) {
+    if (response.data.length === 0) {
       const container = document.createElement('div');
       container.textContent = 'No results found';
       this.subui.results.appendChild(container);
       return;
     }
 
-    data.forEach((item) => {
+    if (response.total_pages > 1) {
+      const responseBar = Utils.createPagesBar(response.page, response.total_pages, (page) => {
+        query.page = page;
+        this.queryOpenSubtitles(query);
+      });
+      this.subui.pages.appendChild(responseBar);
+      responseBar.classList.add('subtitle-results-page-bar');
+    }
+
+    response.data.forEach((item) => {
       const container = document.createElement('div');
       container.style = 'position: relative; overflow-y: scroll; user-select: none; cursor: pointer; font-family: Arial; font-size: 15px; width: 100%; height: 50px; color: rgba(255,255,255,.8); border-top: 1px solid rgba(255,255,255,0.1)';
       this.subui.results.appendChild(container);
@@ -812,6 +824,7 @@ export class SubtitlesManager {
     trackContainer.style.fontSize = this.settings['font-size'];
     trackContainer.style.backgroundColor = this.settings.background;
   }
+
   renderSubtitles() {
     DOMElements.subtitlesContainer.innerHTML = '';
 

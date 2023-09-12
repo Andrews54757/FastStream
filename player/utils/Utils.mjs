@@ -94,6 +94,81 @@ export class Utils {
     });
   }
 
+  static createPagesBar(page, totalPages, callback) {
+    const create = this.create;
+    const total = Math.min(totalPages, 1000);
+    let start = Math.max(page - 5, 1);
+    if (totalPages <= 10) {
+      start = 1;
+    }
+
+    const max = Math.min(start + 10, total);
+    const list = create('div');
+    if (start > 1) {
+      const el = create('div', null, 'page-marker');
+      el.textContent = 1;
+      el.addEventListener('click', () => {
+        callback(1);
+      });
+      list.appendChild(el);
+
+      if (start > 2) {
+        const el = create('div', null, 'page-marker');
+        el.textContent = '...';
+        list.appendChild(el);
+      }
+    }
+    for (let i = start; i <= max; i++) {
+      ((i) => {
+        const el = create('div', null, 'page-marker');
+        el.textContent = i;
+
+        if (i === page) {
+          el.classList.add('selected');
+          el.contentEditable = true;
+          el.addEventListener('blur', () => {
+            el.textContent = i;
+          });
+          el.addEventListener('focus', () => {
+            window.getSelection().selectAllChildren(el);
+          });
+          el.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              const page = parseInt(el.textContent);
+              if (page > 0 && page <= total) {
+                callback(parseInt(el.textContent));
+              } else {
+                el.textContent = i;
+              }
+            }
+            e.stopPropagation();
+          });
+        } else {
+          el.addEventListener('click', () => {
+            callback(i);
+          });
+        }
+        list.appendChild(el);
+      })(i);
+    }
+
+    if (max < total) {
+      if (max + 1 < total) {
+        const el = create('div', null, 'page-marker');
+        el.textContent = '...';
+        list.appendChild(el);
+      }
+
+      const el = create('div', null, 'page-marker');
+      el.textContent = total;
+      el.addEventListener('click', () => {
+        callback(total);
+      });
+      list.appendChild(el);
+    }
+    return list;
+  }
+
   static setupDropdown(itemListElement, text, container, call) {
     container.addEventListener('click', (e) => {
       for (let j = 0; j < itemListElement.children.length; j++) {

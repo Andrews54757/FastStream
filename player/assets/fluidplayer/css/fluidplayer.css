@@ -1752,8 +1752,8 @@ body {
 
 
 
-  
-  /* total width */
+
+/* total width */
 ::-webkit-scrollbar {
     background-color: transparent;
     width: 2px;
@@ -1773,5 +1773,29 @@ body {
 
 /* set button(top and bottom of the scrollbar) */
 ::-webkit-scrollbar-button {
-    display:none;
+    display: none;
+}
+
+.page-marker {
+    display: inline-block;
+    margin: 2px 3px;
+    user-select: none;
+    cursor: pointer;
+    padding: 3px 8px;
+    min-width: 15px;
+    text-align: center;
+    border-radius: 3px;
+    background-color: rgba(20, 20, 20, 0.7);
+    color: rgb(200, 200, 200);
+}
+
+.page-marker.selected {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+.subtitle-pages {
+    text-align: center;
+}
+
+.subtitle-results-page-bar {
+    padding: 5px 0px;
 }
