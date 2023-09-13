@@ -28,6 +28,10 @@ export class VideoAligner extends EventEmitter {
     this.hasMemoryChanges = false;
   }
 
+  setRange(start, end) {
+    this.scanStart = start;
+    this.scanEnd = end;
+  }
 
   prepare(identifier) {
     //   identifier += Math.random();
@@ -35,6 +39,8 @@ export class VideoAligner extends EventEmitter {
     this.detectedEndTime = -1;
     this.lastMatched = null;
     this.currentIdentifier = identifier;
+    this.scanStart = -Infinity;
+    this.scanEnd = Infinity;
 
     if (this.currentSequence) {
       this.currentSequence.forEach((value) => {
@@ -189,6 +195,10 @@ export class VideoAligner extends EventEmitter {
     return index;
   }
 
+  clampTime(time) {
+    return Math.max(this.scanStart, Math.min(this.scanEnd, time));
+  }
+
   calculate() {
     const matches = [];
     this.memory.forEach((memoryEntry, identifier) => {
@@ -206,14 +216,14 @@ export class VideoAligner extends EventEmitter {
           memoryEntry.matchStart = aligned.startB;
           this.hasMemoryChanges = true;
         } else {
-          const time = sequence[memoryEntry.matchStart].time + offsetStart;
+          const time = this.clampTime(sequence[memoryEntry.matchStart].time + offsetStart);
           const indexA = this.getClosestIndex(this.currentSequence, time);
-          const indexB = memoryEntry.matchStart;
+          const indexB = this.getClosestIndex(sequence, time - offsetStart);
 
           if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
             const filled = (aligned.startA - indexA) / (aligned.startB - indexB);
 
-            if (filled > 0.7) {
+            if (filled > 0.75) {
               // console.log("filled start", filled, memoryEntry.matchStart, aligned.startB, aligned)
               memoryEntry.matchStart = aligned.startB;
               this.hasMemoryChanges = true;
@@ -225,14 +235,14 @@ export class VideoAligner extends EventEmitter {
           memoryEntry.matchEnd = aligned.endB;
           this.hasMemoryChanges = true;
         } else {
-          const time = sequence[memoryEntry.matchEnd].time + offsetEnd;
+          const time = this.clampTime(sequence[memoryEntry.matchEnd].time + offsetEnd);
           const indexA = this.getClosestIndex(this.currentSequence, time);
-          const indexB = memoryEntry.matchEnd;
+          const indexB = this.getClosestIndex(sequence, time - offsetStart);
 
           if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
             const filled = (indexA - aligned.endA) / (indexB - aligned.endB);
 
-            if (filled > 0.7) {
+            if (filled > 0.75) {
               // console.log("filled end", filled, memoryEntry.matchEnd, aligned.endB, aligned)
               memoryEntry.matchEnd = aligned.endB;
               this.hasMemoryChanges = true;
@@ -378,8 +388,8 @@ export class VideoAligner extends EventEmitter {
   getMatch() {
     if (!this.found) return null;
     return {
-      startTime: Math.max(this.detectedStartTime, 0),
-      endTime: this.detectedEndTime,
+      startTime: this.clampTime(this.detectedStartTime),
+      endTime: this.clampTime(this.detectedEndTime),
     };
   }
 

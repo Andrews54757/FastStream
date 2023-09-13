@@ -107,15 +107,20 @@ export class VideoAnalyzer extends EventEmitter {
   async update() {
     if (!this.shouldAnalyze()) return;
     const duration = this.client.duration;
+    const introStart = 0;
+    const introEnd = Math.min(introStart + this.options.introCutoff, duration);
+    const outroStart = Math.max(duration - this.options.outroCutoff, introEnd);
+    const outroEnd = duration;
 
+    this.introAligner.setRange(introStart, introEnd);
+    this.outroAligner.setRange(outroStart, outroEnd);
 
-    if (this.outroStatus !== AnalyzerStatus.RUNNING && this.introStatus == AnalyzerStatus.IDLE) {
-      const introEnd = Math.min(this.options.introCutoff, duration);
-      if (this.shouldLoadPlayer(0, introEnd)) {
-        console.log('[VideoAnalyzer] Running intro finder in background', 0, introEnd);
+    if (this.outroStatus !== AnalyzerStatus.RUNNING && this.introStatus == AnalyzerStatus.IDLE && introEnd - introStart > 30) {
+      if (this.shouldLoadPlayer(introStart, introEnd)) {
+        console.log('[VideoAnalyzer] Running intro finder in background', introStart, introEnd);
         this.introStatus = AnalyzerStatus.RUNNING;
-        const reserved = this.referenceFragments(0, introEnd);
-        this.introPlayer = await this.loadPlayer(this.introAligner, 0, introEnd, (completed) => {
+        const reserved = this.referenceFragments(introStart, introEnd);
+        this.introPlayer = await this.loadPlayer(this.introAligner, introStart, introEnd, (completed) => {
           this.introStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Intro finder completed', completed);
           this.dereferenceFragments(reserved);
@@ -128,13 +133,12 @@ export class VideoAnalyzer extends EventEmitter {
       }
     }
 
-    const outroStart = Math.max(duration - this.options.outroCutoff, this.options.introCutoff);
-    if (this.introStatus !== AnalyzerStatus.RUNNING && this.outroStatus == AnalyzerStatus.IDLE && duration - outroStart > 30) {
-      if (this.shouldLoadPlayer(outroStart, duration)) {
-        console.log('[VideoAnalyzer] Running outro finder in background', outroStart, duration);
+    if (this.introStatus !== AnalyzerStatus.RUNNING && this.outroStatus == AnalyzerStatus.IDLE && outroEnd - outroStart > 30) {
+      if (this.shouldLoadPlayer(outroStart, outroEnd)) {
+        console.log('[VideoAnalyzer] Running outro finder in background', outroStart, outroEnd);
         this.outroStatus = AnalyzerStatus.RUNNING;
-        const reserved = this.referenceFragments(outroStart, duration);
-        this.outroPlayer = await this.loadPlayer(this.outroAligner, outroStart, duration, (completed) => {
+        const reserved = this.referenceFragments(outroStart, outroEnd);
+        this.outroPlayer = await this.loadPlayer(this.outroAligner, outroStart, outroEnd, (completed) => {
           this.outroStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Outro finder completed', completed);
           this.dereferenceFragments(reserved);
