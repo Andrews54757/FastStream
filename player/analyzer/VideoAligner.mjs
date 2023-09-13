@@ -434,15 +434,23 @@ export class VideoAligner extends EventEmitter {
       const a = sequenceA.find((item) => item.time === i);
       const b = sequenceB.find((item) => (item.time + offsetTime) === i);
       if (a && b) {
-        arr.push(`T+${i}:${this.hashDistance(a.hash, b.hash)}\n${a.debugHash}\n${b.debugHash}`);
+        arr.push(`T+${i}:${this.hashDistance(a.hash, b.hash)}\n${this.debugHashString(a.hash)}\n${this.debugHashString(b.hash)}`);
       } else if (a) {
-        arr.push(`T+${i}\n${a.debugHash}\n`);
+        arr.push(`T+${i}\n${this.debugHashString(a.hash)}\n`);
       } else if (b) {
-        arr.push(`T+${i}\n\n${b.debugHash}`);
+        arr.push(`T+${i}\n\n${this.debugHashString(b.hash)}`);
       }
     }
 
     console.log(arr.join('\n\n'));
+  }
+
+  debugHashString(hash) {
+    const str = [];
+    for (let i = 0; i < hash.length; i++) {
+      str.push(hash[i].toString(2).padStart(32, '0'));
+    }
+    return str.join('');
   }
 
   hackyAlignment(sequenceA, sequenceB) {
