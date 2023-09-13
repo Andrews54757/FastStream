@@ -177,10 +177,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('frame_id');
 
 if (typeof chrome !== 'undefined') {
-  if (chrome?.extension?.inIncognitoContext) {
-    window.fastStream.cantDownloadAll();
-  }
-
   chrome?.runtime?.sendMessage({
     type: 'faststream',
     isExt: true,

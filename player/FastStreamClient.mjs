@@ -33,10 +33,7 @@ export class FastStreamClient extends EventEmitter {
       muted: false,
       latestVolume: 1,
       duration: 0,
-      currentLevel: -1,
-      currentAudioLevel: -1,
       playbackRate: 1,
-      levels: new Map(),
     };
 
     this.playerLoader = new PlayerLoader();
@@ -59,9 +56,8 @@ export class FastStreamClient extends EventEmitter {
     this.mainloop();
   }
 
-  cantDownloadAll() {
-    this.options.downloadAll = false;
-    this.options.cantDownloadAll = true;
+  shouldDownloadAll() {
+    return this.options.downloadAll && this.hasDownloadSpace;
   }
 
   setSeekSave(value) {
@@ -90,9 +86,7 @@ export class FastStreamClient extends EventEmitter {
 
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
-    if (!this.options.cantDownloadAll) {
-      this.options.downloadAll = options.downloadAll;
-    }
+    this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
 
     if (options.keybinds) {
@@ -118,6 +112,7 @@ export class FastStreamClient extends EventEmitter {
   updateDuration(duration) {
     this.persistent.duration = duration;
     this.interfaceController.durationChanged();
+    this.updateHasDownloadSpace();
   }
 
   updateTime(time) {
@@ -135,8 +130,25 @@ export class FastStreamClient extends EventEmitter {
     }
   }
   updateQualityLevels() {
-    this.persistent.levels = this.player.levels;
     this.interfaceController.updateQualityLevels();
+    this.updateHasDownloadSpace();
+  }
+
+  updateHasDownloadSpace() {
+    this.hasDownloadSpace = false;
+    const levels = this.levels;
+    if (!levels) return;
+
+    const currentLevel = this.previousLevel;
+    const level = levels.get(currentLevel);
+
+    if (!level) return;
+
+    if (level.bitrate && this.duration) {
+      this.hasDownloadSpace = (level.bitrate * this.duration) < (this.storageAvailable * 4);
+    } else {
+      this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
+    }
   }
 
   async addSource(source, setSource = false) {
@@ -155,6 +167,8 @@ export class FastStreamClient extends EventEmitter {
     this.resetPlayer();
     this.source = source;
 
+    const estimate = await navigator.storage.estimate();
+    this.storageAvailable = estimate.quota - estimate.usage;
 
     this.player = await this.playerLoader.createPlayer(source.mode, this);
     await this.player.setup();
@@ -250,7 +264,7 @@ export class FastStreamClient extends EventEmitter {
     if (this.player) {
       this.predownloadFragments();
 
-      if (!this.options.downloadAll) {
+      if (!this.shouldDownloadAll()) {
         if (this.fragments) this.freeFragments(this.fragments);
         if (this.audioFragments) this.freeFragments(this.audioFragments);
       }
@@ -278,7 +292,7 @@ export class FastStreamClient extends EventEmitter {
     let hasDownloaded = false;
     let index = 0;
     while (nextDownload) {
-      if (nextDownload.canFree() && !this.options.downloadAll) {
+      if (nextDownload.canFree() && !this.shouldDownloadAll()) {
         if (nextDownload.start > this.persistent.currentTime + this.options.bufferAhead) {
           break;
         }
@@ -408,10 +422,12 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.reset();
     this.subtitlesManager.clearTracks();
 
-    this.persistent.currentLevel = -1;
-    this.persistent.currentAudioLevel = -1;
     this.persistent.buffering = false;
-    this.persistent.levels.clear();
+
+    this.storageAvailable = 0;
+    this.hasDownloadSpace = false;
+    this.previousLevel = -1;
+    this.previousAudioLevel = -1;
   }
 
   setMediaName(name) {
@@ -441,6 +457,7 @@ export class FastStreamClient extends EventEmitter {
       if (this.previewPlayer) {
         this.previewPlayer.load();
       }
+      this.updateQualityLevels();
     });
 
     this.context.on(DefaultPlayerEvents.ABORT, (event) => {
@@ -552,9 +569,7 @@ export class FastStreamClient extends EventEmitter {
 
     if (this.previewPlayer) {
       this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        if (this.persistent.currentLevel !== -1) {
-          this.previewPlayer.currentLevel = this.persistent.currentLevel;
-        }
+        this.previewPlayer.currentLevel = this.currentLevel;
       });
 
       this.previewPlayer.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
@@ -635,7 +650,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   get currentLevel() {
-    return this.persistent.currentLevel;
+    return this.player.currentLevel;
   }
 
   get currentAudioLevel() {
@@ -643,9 +658,8 @@ export class FastStreamClient extends EventEmitter {
   }
 
   set currentLevel(value) {
-    const previousLevel = this.currentLevel;
-
-    this.persistent.currentLevel = value;
+    const previousLevel = this.previousLevel;
+    this.previousLevel = value;
     this.player.currentLevel = value;
     if (this.previewPlayer) {
       this.previewPlayer.currentLevel = value;
@@ -659,16 +673,19 @@ export class FastStreamClient extends EventEmitter {
       });
     }
 
+    const currentLevel = this.currentLevel;
+    const currentAudioLevel = this.currentAudioLevel;
+
     // Reset all fragments to waiting in case some have failed.
-    if (this.fragmentsStore[this.persistent.currentLevel]) {
-      this.fragmentsStore[this.persistent.currentLevel].forEach((fragment, i) => {
+    if (this.fragmentsStore[currentLevel]) {
+      this.fragmentsStore[currentLevel].forEach((fragment, i) => {
         if (i === -1) return;
         fragment.status = DownloadStatus.WAITING;
       });
     }
 
-    if (this.fragmentsStore[this.persistent.currentAudioLevel]) {
-      this.fragmentsStore[this.persistent.currentAudioLevel].forEach((fragment, i) => {
+    if (this.fragmentsStore[currentAudioLevel]) {
+      this.fragmentsStore[currentAudioLevel].forEach((fragment, i) => {
         if (i === -1) return;
         fragment.status = DownloadStatus.WAITING;
       });
@@ -678,9 +695,8 @@ export class FastStreamClient extends EventEmitter {
   }
 
   set currentAudioLevel(value) {
-    const previousLevel = this.currentAudioLevel;
-
-    this.persistent.currentAudioLevel = value;
+    const previousLevel = this.previousAudioLevel;
+    this.previousAudioLevel = value;
     this.player.currentAudioLevel = value;
 
     if (value !== previousLevel && this.fragmentsStore[previousLevel]) {

@@ -1009,15 +1009,19 @@ export class InterfaceController {
     }
   }
   updateQualityLevels() {
-    if (this.persistent.levels.size <= 1) {
+    const levels = this.client.levels;
+
+    if (!levels || levels.size <= 1) {
       DOMElements.videoSource.style.display = 'none';
       return;
     } else {
       DOMElements.videoSource.style.display = 'inline-block';
     }
 
+    const currentLevel = this.client.previousLevel;
+
     DOMElements.videoSourceList.innerHTML = '';
-    this.persistent.levels.forEach((level, i) => {
+    levels.forEach((level, i) => {
       const levelelement = document.createElement('div');
 
       levelelement.classList.add('fluid_video_source_list_item');
@@ -1027,7 +1031,7 @@ export class InterfaceController {
         e.stopPropagation();
       });
 
-      if (i === this.persistent.currentLevel) {
+      if (i === currentLevel) {
         levelelement.classList.add('source_active');
       }
 
@@ -1037,14 +1041,14 @@ export class InterfaceController {
       const text = document.createElement('span');
       const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
 
-      text.textContent = (i === this.persistent.currentLevel) ? label + ' (current)' : label;
+      text.textContent = (i === currentLevel) ? label + ' (current)' : label;
       //   levelelement.appendChild(icon);
       levelelement.appendChild(text);
 
       DOMElements.videoSourceList.appendChild(levelelement);
     });
 
-    const current = this.persistent.levels.get(this.persistent.currentLevel);
+    const current = levels.get(currentLevel);
     if (!current) {
       console.warn('No current level');
       return;
