@@ -136,6 +136,8 @@ export class FastStreamClient extends EventEmitter {
 
   updateHasDownloadSpace() {
     this.hasDownloadSpace = false;
+    this.options.bufferBehind = 20;
+    this.options.bufferAhead = 60;
     const levels = this.levels;
     if (!levels) return;
 
@@ -152,8 +154,6 @@ export class FastStreamClient extends EventEmitter {
       this.options.bufferAhead = Math.round(bufferable - this.options.bufferBehind);
     } else {
       this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
-      this.options.bufferBehind = 20;
-      this.options.bufferAhead = 60;
     }
 
     if (!this.hasDownloadSpace) {
@@ -439,6 +439,8 @@ export class FastStreamClient extends EventEmitter {
     this.hasDownloadSpace = false;
     this.previousLevel = -1;
     this.previousAudioLevel = -1;
+    this.options.bufferBehind = 20;
+    this.options.bufferAhead = 60;
   }
 
   setMediaName(name) {
