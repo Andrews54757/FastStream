@@ -123,12 +123,12 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updateIntroOutroBar();
   }
 
-
   seekPreview(time) {
     if (this.previewPlayer) {
       this.previewPlayer.currentTime = time;
     }
   }
+
   updateQualityLevels() {
     this.interfaceController.updateQualityLevels();
     this.updateHasDownloadSpace();
@@ -145,9 +145,15 @@ export class FastStreamClient extends EventEmitter {
     if (!level) return;
 
     if (level.bitrate && this.duration) {
-      this.hasDownloadSpace = (level.bitrate * this.duration) < (this.storageAvailable * 4);
+      const storageAvailable = (this.storageAvailable * 8) * 0.8;
+      this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
+      const bufferable = storageAvailable / level.bitrate;
+      this.options.bufferBehind = Math.min(20, bufferable / 2);
+      this.options.bufferAhead = bufferable - this.options.bufferBehind;
     } else {
       this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
+      this.options.bufferBehind = 20;
+      this.options.bufferAhead = 60;
     }
   }
 

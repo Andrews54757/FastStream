@@ -250,4 +250,12 @@ export class DownloadManager {
       downloader.abort();
     });
   }
+
+  getStorageByteCount() {
+    let count = 0;
+    this.storage.forEach((entry) => {
+      count += entry.getDataSize();
+    });
+    return count;
+  }
 }

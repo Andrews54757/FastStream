@@ -44,7 +44,6 @@ export class DownloadEntry {
     }
   }
 
-
   abort() {
     this.status = DownloadStatus.DOWNLOAD_FAILED;
     this.aborted = true;
@@ -151,5 +150,18 @@ export class DownloadEntry {
         reject(reader.error);
       };
     });
+  }
+
+
+  getDataSize() {
+    if (this.data) {
+      if (this.storeRaw) {
+        if (typeof this.data === 'string') return this.data.length * 2;
+        else if (this.data instanceof ArrayBuffer) return this.data.byteLength;
+        return 0;
+      }
+      return this.data.size;
+    }
+    return 0;
   }
 }
