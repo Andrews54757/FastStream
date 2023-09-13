@@ -153,7 +153,7 @@ export class HLS2MP4 extends EventEmitter {
     }
   }
 
-  setup(level, audioLevel) {
+  setup(level, levelInitData, audioLevel, audioInitData) {
     if (!level.details) {
       throw new Error('level.details is null');
     }
@@ -166,7 +166,7 @@ export class HLS2MP4 extends EventEmitter {
     this.transmuxer = new Transmuxer({
       audioCodec: level.audioCodec,
       videoCodec: level.videoCodec,
-      initSegmentData: [],
+      initSegmentData: levelInitData || [],
       duration: level.details.totalduration,
       defaultInitPts: 0,
     });
@@ -175,7 +175,7 @@ export class HLS2MP4 extends EventEmitter {
       this.transmuxerAudio = new Transmuxer({
         videoCodec: '',
         audioCodec: audioLevel.audioCodec,
-        initSegmentData: [],
+        initSegmentData: audioInitData || [],
         duration: level.details.totalduration,
         defaultInitPts: 0,
       });
@@ -253,8 +253,8 @@ export class HLS2MP4 extends EventEmitter {
       type: 'video/mp4',
     });
   }
-  async convert(level, audioLevel, fragDatas) {
-    this.setup(level, audioLevel);
+  async convert(level, levelInitData, audioLevel, audioInitData, fragDatas) {
+    this.setup(level, levelInitData, audioLevel, audioInitData);
 
     for (let i = 0; i < fragDatas.length; i++) {
       if (fragDatas[i].type === 0) {

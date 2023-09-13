@@ -89,25 +89,24 @@ export class DASH2MP4 extends EventEmitter {
     });
   }
 
-  setup(videoProcessor, videoInitSegment, audioProcessor, audioInitSegment) {
-    if (!videoProcessor && !audioProcessor) {
-      throw new Error('no processor');
+  setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment) {
+    if (!videoDuration && !audioDuration) {
+      throw new Error('no video or audio');
     }
 
-    if (videoProcessor) {
+    if (videoDuration) {
       const file = MP4Box.createFile(false);
       videoInitSegment.fileStart = 0;
       file.appendBuffer(videoInitSegment);
       file.flush();
 
-      const mediaInfo = videoProcessor.getMediaInfo();
       const trak = file.moov.traks[0];
       const timescale = trak.mdia.mdhd.timescale;
       this.videoTrack = {
         type: 'video',
         id: 1,
         timescale: timescale,
-        duration: mediaInfo.streamInfo.duration,
+        duration: videoDuration,
         width: trak.tkhd.width >> 16,
         height: trak.tkhd.height >> 16,
         pixelRatio: [1, 1],
@@ -152,12 +151,11 @@ export class DASH2MP4 extends EventEmitter {
       this.videoTrack.codec = codecstring;
     }
 
-    if (audioProcessor) {
+    if (audioDuration) {
       const file = MP4Box.createFile(false);
       audioInitSegment.fileStart = 0;
       file.appendBuffer(audioInitSegment);
       file.flush();
-      const mediaInfo = audioProcessor.getMediaInfo();
       const trak = file.moov.traks[0];
       const timescale = trak.mdia.mdhd.timescale;
       const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'mp4a');
@@ -165,7 +163,7 @@ export class DASH2MP4 extends EventEmitter {
         type: 'audio',
         id: 2,
         timescale: timescale,
-        duration: mediaInfo.streamInfo.duration,
+        duration: audioDuration,
         segmentCodec: null,
         codec: mp4a.getCodec(),
         esds: mp4a.esds.data,
@@ -255,8 +253,8 @@ export class DASH2MP4 extends EventEmitter {
       type: 'video/mp4',
     });
   }
-  async convert(videoProcessor, videoInitSegment, audioProcessor, audioInitSegment, fragDatas) {
-    this.setup(videoProcessor, videoInitSegment, audioProcessor, audioInitSegment);
+  async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, fragDatas) {
+    this.setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment);
 
     for (let i = 0; i < fragDatas.length; i++) {
       if (fragDatas[i].type === 0) {

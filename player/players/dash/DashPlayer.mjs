@@ -340,16 +340,6 @@ export default class DashPlayer extends EventEmitter {
   }
 
   async getSaveBlob(options) {
-    const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
-
-    const dash2mp4 = new DASH2MP4();
-
-    dash2mp4.on('progress', (progress) => {
-      if (options?.onProgress) {
-        options.onProgress(progress);
-      }
-    });
-
     let frags = [];
     const fragments = this.client.getFragments(this.currentLevel) || [];
     const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
@@ -401,13 +391,26 @@ export default class DashPlayer extends EventEmitter {
     const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
     const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
 
+    const videoDuration = videoProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
+    const audioDuration = audioProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
+
     const videoInitSegment = fragments?.[-1];
     const audioInitSegment = audioFragments?.[-1];
 
     const videoInitSegmentData = videoInitSegment ? await this.client.downloadManager.getEntry(videoInitSegment.getContext()).getDataFromBlob() : null;
     const audioInitSegmentData = audioInitSegment ? await this.client.downloadManager.getEntry(audioInitSegment.getContext()).getDataFromBlob() : null;
 
-    const blob = await dash2mp4.convert(videoProcessor, videoInitSegmentData, audioProcessor, audioInitSegmentData, frags);
+    const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
+
+    const dash2mp4 = new DASH2MP4();
+
+    dash2mp4.on('progress', (progress) => {
+      if (options?.onProgress) {
+        options.onProgress(progress);
+      }
+    });
+
+    const blob = await dash2mp4.convert(videoDuration, videoInitSegmentData, audioDuration, audioInitSegmentData, frags);
 
     return {
       extension: 'mp4',

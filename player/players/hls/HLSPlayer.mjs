@@ -104,14 +104,6 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   async getSaveBlob(options) {
-    const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
-    const hls2mp4 = new HLS2MP4();
-
-    hls2mp4.on('progress', (progress) => {
-      if (options?.onProgress) {
-        options.onProgress(progress);
-      }
-    });
     let frags = [];
     const fragments = this.client.getFragments(this.currentLevel) || [];
     const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
@@ -163,12 +155,50 @@ export default class HLSPlayer extends EventEmitter {
     const level = this.hls.levels[this.getIndexes(this.currentLevel).levelID];
     const audioLevel = this.hls.audioTracks[this.hls.audioTrack];
 
-    const blob = await hls2mp4.convert(level, audioLevel, frags);
+    let levelInitData = null;
+    let audioLevelInitData = null;
 
-    return {
-      extension: 'mp4',
-      blob: blob,
-    };
+    if (fragments[-1]) {
+      levelInitData = new Uint8Array(await this.client.downloadManager.getEntry(fragments[-1].getContext()).getDataFromBlob());
+    }
+
+    if (audioFragments[-1]) {
+      audioLevelInitData = new Uint8Array(await this.client.downloadManager.getEntry(audioFragments[-1].getContext()).getDataFromBlob());
+    }
+
+    if (levelInitData && audioLevelInitData) {
+      const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
+
+      const dash2mp4 = new DASH2MP4();
+
+      dash2mp4.on('progress', (progress) => {
+        if (options?.onProgress) {
+          options.onProgress(progress);
+        }
+      });
+
+      const blob = await dash2mp4.convert(level.details.totalduration, levelInitData.buffer, audioLevel.details.totalduration, audioLevelInitData.buffer, frags);
+
+      return {
+        extension: 'mp4',
+        blob: blob,
+      };
+    } else {
+      const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
+      const hls2mp4 = new HLS2MP4();
+
+      hls2mp4.on('progress', (progress) => {
+        if (options?.onProgress) {
+          options.onProgress(progress);
+        }
+      });
+      const blob = await hls2mp4.convert(level, levelInitData, audioLevel, audioLevelInitData, frags);
+
+      return {
+        extension: 'mp4',
+        blob: blob,
+      };
+    }
   }
 
   load() {
@@ -223,7 +253,14 @@ export default class HLSPlayer extends EventEmitter {
   trackUpdated(levelDetails, trackID) {
     levelDetails.trackID = trackID;
     let time = 0;
-    levelDetails.fragments.forEach((fragment) => {
+    levelDetails.fragments.forEach((fragment, i) => {
+      const identifier = this.getIdentifier(levelDetails.trackID, fragment.level);
+      if (fragment.initSegment && i === 0) {
+        fragment.initSegment.trackID = levelDetails.trackID;
+        if (!this.client.getFragment(identifier, -1)) {
+          this.client.makeFragment(identifier, -1, new HLSFragment(fragment.initSegment, 0, 0));
+        }
+      }
       if (fragment.encrypted) {
         fragment.fs_oldcryptdata = fragment.decryptdata;
         fragment.fs_oldlevelKeys = fragment.levelkeys;
@@ -236,8 +273,6 @@ export default class HLSPlayer extends EventEmitter {
       const start = time;
       time += fragment.duration;
       const end = time;
-
-      const identifier = this.getIdentifier(levelDetails.trackID, fragment.level);
       fragment.levelIdentifier = identifier;
       fragment.trackID = levelDetails.trackID;
       if (!this.client.getFragment(identifier, fragment.sn)) {

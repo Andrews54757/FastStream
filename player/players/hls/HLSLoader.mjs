@@ -85,8 +85,12 @@ export function HLSLoaderFactory(player) {
 
     loadFragmentInternal() {
       try {
+        let sn = this.context.frag.sn;
+        if (this.context.frag.sn === 'initSegment') {
+          sn = -1;
+        }
         const identifier = player.getIdentifier(this.context.frag.trackID, this.context.frag.level);
-        const frag = player.client.getFragment(identifier, this.context.frag.sn);
+        const frag = player.client.getFragment(identifier, sn);
         if (!frag) {
           console.error('Fragment not found', identifier, this.context.frag);
           throw new Error('Fragment not found');
