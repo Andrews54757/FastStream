@@ -1027,7 +1027,6 @@ export class InterfaceController {
       levelelement.classList.add('fluid_video_source_list_item');
       levelelement.addEventListener('click', (e) => {
         this.client.currentLevel = i;
-        this.updateQualityLevels();
         e.stopPropagation();
       });
 

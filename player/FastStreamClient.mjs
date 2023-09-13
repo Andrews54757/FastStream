@@ -145,15 +145,19 @@ export class FastStreamClient extends EventEmitter {
     if (!level) return;
 
     if (level.bitrate && this.duration) {
-      const storageAvailable = (this.storageAvailable * 8) * 0.8;
+      const storageAvailable = (this.storageAvailable * 8) * 0.7;
       this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
       const bufferable = storageAvailable / level.bitrate;
-      this.options.bufferBehind = Math.min(20, bufferable / 2);
-      this.options.bufferAhead = bufferable - this.options.bufferBehind;
+      this.options.bufferBehind = Math.round(Math.min(20, bufferable / 2));
+      this.options.bufferAhead = Math.round(bufferable - this.options.bufferBehind);
     } else {
       this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
       this.options.bufferBehind = 20;
       this.options.bufferAhead = 60;
+    }
+
+    if (!this.hasDownloadSpace) {
+      this.interfaceController.setDownloadStatus(`Not enough space to download video, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
     }
   }
 
