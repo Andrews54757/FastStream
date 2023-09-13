@@ -718,7 +718,8 @@ export class SubtitlesManager {
 
         downloadTrack.addEventListener('click', (e) => {
           e.stopPropagation();
-          const dlname = prompt('Enter a name for the subtitle download file', name + '.srt');
+          const suggestedName = name + '.srt';
+          const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the subtitle download file', suggestedName);
 
           if (!dlname) {
             return;

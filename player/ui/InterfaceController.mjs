@@ -573,7 +573,7 @@ export class InterfaceController {
     }
 
     const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + Utils.formatTime(this.client.currentTime) + '.png';
-    const name = prompt('Enter a name for the file', suggestedName);
+    const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
       return;
@@ -640,7 +640,8 @@ export class InterfaceController {
       }
     }
 
-    const name = prompt('Enter a name for the file', (this.client.mediaName || 'video').replaceAll(' ', '_'));
+    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_');
+    const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
       return;
