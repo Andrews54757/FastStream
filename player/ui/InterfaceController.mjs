@@ -201,15 +201,8 @@ export class InterfaceController {
     }
   }
 
-
   setupDOM() {
     DOMElements.volumeContainer.addEventListener('mousedown', this.onVolumeBarMouseDown.bind(this));
-    // DOMElements.muteBtn.addEventListener('mouseenter', () => {
-    //     DOMElements.volumeContainer.classList.remove("hidden");
-    // });
-    // DOMElements.muteBtn.addEventListener('mouseleave', () => {
-    //     DOMElements.volumeContainer.classList.add("hidden");
-    // });
     DOMElements.muteBtn.addEventListener('click', this.muteToggle.bind(this));
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     DOMElements.playPauseButtonBigCircle.addEventListener('click', () => {
