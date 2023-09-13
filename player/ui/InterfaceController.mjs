@@ -238,6 +238,53 @@ export class InterfaceController {
     DOMElements.playerContainer.addEventListener('click', (e) => {
       DOMElements.videoSourceList.style.display = 'none';
     });
+    Utils.setupTabIndex(DOMElements.videoSource);
+    DOMElements.videoSource.addEventListener('blur', ()=>{
+      const candidates = Array.from(DOMElements.videoSourceList.children);
+      let current = candidates.find((el) => el.classList.contains('candidate'));
+      if (!current) {
+        current = candidates.find((el) => el.classList.contains('source_active'));
+      }
+      if (!current) {
+        return;
+      }
+      current.classList.remove('candidate');
+    });
+    DOMElements.videoSource.addEventListener('keydown', (e) => {
+      const candidates = Array.from(DOMElements.videoSourceList.children);
+      let current = candidates.find((el) => el.classList.contains('candidate'));
+      if (!current) {
+        current = candidates.find((el) => el.classList.contains('source_active'));
+      }
+      if (!current) {
+        return;
+      }
+
+      const index = candidates.indexOf(current);
+      if (e.key === 'ArrowDown') {
+        current.classList.remove('candidate');
+        if (index < candidates.length - 1) {
+          candidates[index + 1].classList.add('candidate');
+        } else {
+          candidates[0].classList.add('candidate');
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === 'ArrowUp') {
+        current.classList.remove('candidate');
+        if (index > 0) {
+          candidates[index - 1].classList.add('candidate');
+        } else {
+          candidates[candidates.length - 1].classList.add('candidate');
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === 'Enter') {
+        current.click();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
 
     DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
     DOMElements.controlsContainer.addEventListener('mouseenter', this.onControlsMouseEnter.bind(this));
@@ -390,10 +437,12 @@ export class InterfaceController {
       if (e.key === 'ArrowDown') {
         this.client.playbackRate = Math.min(3, (this.playbackRate + 1) / 10);
         speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+        e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'ArrowUp') {
         this.client.playbackRate = Math.max(0.1, (this.playbackRate - 1) / 10);
         speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+        e.preventDefault();
         e.stopPropagation();
       }
     });

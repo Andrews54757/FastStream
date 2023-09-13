@@ -207,6 +207,7 @@ export class Utils {
             break;
           }
         }
+        e.preventDefault();
         e.stopPropagation();
       } else if (e.key == 'ArrowUp') {
         for (let j = 0; j < itemListElement.children.length; j++) {
@@ -221,6 +222,7 @@ export class Utils {
             break;
           }
         }
+        e.preventDefault();
         e.stopPropagation();
       }
     });

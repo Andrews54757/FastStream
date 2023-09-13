@@ -563,8 +563,8 @@
     right: 3px;
     z-index: 888888;
     opacity: 99%;
-    background-color: rgba(0, 0, 0, 1);
-    border-radius: 2px;
+    background-color: rgba(70, 70, 70, .8);
+    border-radius: 3px;
     color: #ffffff;
     font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
@@ -572,19 +572,18 @@
     white-space: nowrap;
     text-align: start;
     width: max-content;
-    padding: 0.5em;
+    padding: 0;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_list .fluid_subtitle_list_item,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item {
-    padding: 12px 34px 12px 24px;
+    padding: 8px 15px 8px 15px;
     line-height: 15px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item:hover,
-.fluid_video_playback_rates_item:hover,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_list .fluid_subtitle_list_item:hover {
-    background-color: #3a3a3a;
+.fluid_video_source_list_item:hover,
+.fluid_video_source_list_item.candidate {
+    background-color: rgba(30, 30, 30, .8);
 }
 
 
@@ -1022,8 +1021,9 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.source_active {
+.fluid_video_source_list_item.source_active {
     font-weight: bold;
+    background-color: rgba(20, 20, 20, 0.8);
 }
 
 .fluid_controls_progress_container .seek_preview {
