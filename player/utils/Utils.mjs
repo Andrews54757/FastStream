@@ -4,6 +4,7 @@ import {PlayerModes} from '../enums/PlayerModes.mjs';
 const ModesMap = new Map();
 ModesMap.set('m3u8', PlayerModes.ACCELERATED_HLS);
 ModesMap.set('m3u8v1', PlayerModes.ACCELERATED_HLS);
+ModesMap.set('m3u', PlayerModes.ACCELERATED_HLS);
 ModesMap.set('mpd', PlayerModes.ACCELERATED_DASH);
 
 export class Utils {
