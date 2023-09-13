@@ -242,7 +242,7 @@ export class InterfaceController {
       DOMElements.videoSourceList.style.display = 'none';
     });
 
-    Utils.setupTabIndex(DOMElements.videoSource);
+    DOMElements.videoSource.tabIndex = 0;
 
     DOMElements.videoSource.addEventListener('focus', ()=>{
       DOMElements.videoSourceList.style.display = '';
