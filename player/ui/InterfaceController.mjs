@@ -227,19 +227,31 @@ export class InterfaceController {
 
     DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
     document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
+    let videoSourceClicked = false;
     DOMElements.videoSource.addEventListener('click', (e) => {
-      if (DOMElements.videoSourceList.style.display === 'none') {
-        DOMElements.videoSourceList.style.display = 'block';
+      videoSourceClicked = !videoSourceClicked;
+      if (videoSourceClicked) {
+        DOMElements.videoSourceList.style.display = '';
       } else {
         DOMElements.videoSourceList.style.display = 'none';
       }
       e.stopPropagation();
     });
     DOMElements.playerContainer.addEventListener('click', (e) => {
+      videoSourceClicked = false;
       DOMElements.videoSourceList.style.display = 'none';
     });
+
     Utils.setupTabIndex(DOMElements.videoSource);
+
+    DOMElements.videoSource.addEventListener('focus', ()=>{
+      DOMElements.videoSourceList.style.display = '';
+    });
+
     DOMElements.videoSource.addEventListener('blur', ()=>{
+      if (!videoSourceClicked) {
+        DOMElements.videoSourceList.style.display = 'none';
+      }
       const candidates = Array.from(DOMElements.videoSourceList.children);
       let current = candidates.find((el) => el.classList.contains('candidate'));
       if (!current) {
@@ -1016,9 +1028,10 @@ export class InterfaceController {
       const levelelement = document.createElement('div');
 
       levelelement.classList.add('fluid_video_source_list_item');
-      levelelement.addEventListener('click', () => {
+      levelelement.addEventListener('click', (e) => {
         this.client.currentLevel = i;
         this.updateQualityLevels();
+        e.stopPropagation();
       });
 
       if (i === this.persistent.currentLevel) {
