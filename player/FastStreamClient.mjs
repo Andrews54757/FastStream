@@ -156,8 +156,8 @@ export class FastStreamClient extends EventEmitter {
       this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
     }
 
+    this.interfaceController.setDownloadStatus(``, -1);
     if (!this.hasDownloadSpace) {
-      this.interfaceController.setDownloadStatus(``, -1);
       this.interfaceController.setDownloadStatus(`Not enough space to download video, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
     }
   }

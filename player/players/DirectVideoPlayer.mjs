@@ -75,7 +75,6 @@ export default class DirectVideoPlayer extends EventEmitter {
     return this.video.paused;
   }
 
-
   get levels() {
     return null;
   }
