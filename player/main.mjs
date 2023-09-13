@@ -205,17 +205,12 @@ if (window.location.hash) {
   let mode = PlayerModes.DIRECT;
   if (Utils.is_url_yt(url) && Utils.is_url_yt_watch(url)) {
     mode = PlayerModes.ACCELERATED_YT;
-  } else if (ext === 'mp4') {
-    mode = PlayerModes.ACCELERATED_MP4;
+  } else if (Utils.getModeFromExtension(ext)) {
+    mode = Utils.getModeFromExtension(ext);
+  }
 
-    // check if file url;
-    if (url.startsWith('file://')) {
-      mode = PlayerModes.DIRECT;
-    }
-  } else if (ext === 'm3u8') {
-    mode = PlayerModes.ACCELERATED_HLS;
-  } else if (ext === 'mpd') {
-    mode = PlayerModes.ACCELERATED_DASH;
+  if (url.startsWith('file://') && mode === PlayerModes.ACCELERATED_MP4) {
+    mode = PlayerModes.DIRECT;
   }
 
   window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {

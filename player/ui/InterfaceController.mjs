@@ -465,29 +465,39 @@ export class InterfaceController {
     const files = dt.files;
     const captions = [];
     const audioFormats = [
-      '.mp3',
-      '.wav',
-      '.m4a',
-      '.m4r',
+      'mp3',
+      'wav',
+      'm4a',
+      'm4r',
     ];
+
+    const subtitleFormats = [
+      'vtt',
+      'srt',
+      'xml',
+    ];
+
     let src = null;
-    const mode = PlayerModes.DIRECT;
+    let mode = PlayerModes.DIRECT;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const ext = file.name.substring(file.name.length - 4);
+      const ext = Utils.get_url_extension(file.name);
 
-      if (audioFormats.indexOf(ext) !== -1) {
-        src = file;
-      } else if (ext == 'm3u8') {
-        src = file;
-      } else if (ext == '.mp4' || ext == '.mkv' || ext == '.mov') {
-        src = file;
-        //  mode = PlayerModes.ACCELERATED_MP4;
-      } else if (ext == '.vtt' || ext == '.srt') {
+      if (subtitleFormats.includes(ext)) {
         captions.push({
           url: window.URL.createObjectURL(file),
           name: file.name.substring(0, file.name.length - 4),
         });
+      } else if (audioFormats.includes(ext)) {
+        src = file;
+        mode = PlayerModes.DIRECT;
+      } else if (Utils.getModeFromExtension(ext)) {
+        src = file;
+        mode = Utils.getModeFromExtension(ext);
+
+        if (mode === PlayerModes.ACCELERATED_MP4) {
+          mode = PlayerModes.DIRECT;
+        }
       }
     }
 
