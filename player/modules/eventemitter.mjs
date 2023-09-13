@@ -44,10 +44,16 @@ class EventEmitterContext {
       return this;
     }
     this.events.get(event).every((callback) => {
-      const result = callback(...args);
-      if (result === EmitterCancel) {
-        return false;
+      try {
+        const result = callback(...args);
+        if (result === EmitterCancel) {
+          return false;
+        }
+      } catch (e) {
+        console.log(`Error in event ${event}`);
+        console.error(e);
       }
+
       return true;
     });
     return this;

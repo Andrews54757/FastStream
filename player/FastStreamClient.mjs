@@ -157,6 +157,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (!this.hasDownloadSpace) {
+      this.interfaceController.setDownloadStatus(``, -1);
       this.interfaceController.setDownloadStatus(`Not enough space to download video, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
     }
   }
@@ -459,10 +460,15 @@ export class FastStreamClient extends EventEmitter {
 
 
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
-      this.currentLevel = maxLevel;
+      if (maxLevel !== undefined) {
+        this.currentLevel = maxLevel;
+      } else {
+        console.warn('No recommended level found');
+      }
       if (maxAudioLevel !== undefined) {
         this.currentAudioLevel = maxAudioLevel;
       }
+
       this.player.load();
       if (this.previewPlayer) {
         this.previewPlayer.load();

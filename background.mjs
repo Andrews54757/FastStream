@@ -701,16 +701,13 @@ chrome.webRequest.onHeadersReceived.addListener(
       if (isSubtitles(ext)) {
         return handleSubtitles(url, frame, frame.requests[details.requestId]);
       }
-      let mode = PlayerModes.DIRECT;
-
-      if (ext === 'm3u8') {
-        mode = PlayerModes.ACCELERATED_HLS;
-      } else if (ext === 'mpd') {
-        mode = PlayerModes.ACCELERATED_DASH;
-      } else if (details.type === 'media') {
-        mode = PlayerModes.ACCELERATED_MP4;
-      } else {
-        return;
+      let mode = Utils.getModeFromExtension(ext);
+      if (!mode) {
+        if (details.type === 'media') {
+          mode = PlayerModes.ACCELERATED_MP4;
+        } else {
+          return;
+        }
       }
 
       onSourceRecieved(details, frame, mode);

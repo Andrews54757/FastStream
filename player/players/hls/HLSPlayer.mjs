@@ -225,9 +225,8 @@ export default class HLSPlayer extends EventEmitter {
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      let max = 0;
-      let maxLevel = 0;
-
+      let max = -1;
+      let maxLevel = undefined;
       // Get best quality but within screen resolution
       this.levels.forEach((level, key) => {
         if (level.bitrate > max) {

@@ -1,8 +1,8 @@
 export const PlayerModes = {
-  DIRECT: 0,
-  ACCELERATED_MP4: 1,
-  ACCELERATED_HLS: 2,
-  ACCELERATED_DASH: 3,
-  ACCELERATED_YT: 4,
-  IFRAME: 5,
+  DIRECT: 'direct',
+  ACCELERATED_MP4: 'accelerated_mp4',
+  ACCELERATED_HLS: 'accelerated_hls',
+  ACCELERATED_DASH: 'accelerated_dash',
+  ACCELERATED_YT: 'accelerated_yt',
+  IFRAME: 'iframe',
 };
