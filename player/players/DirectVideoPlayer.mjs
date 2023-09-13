@@ -77,7 +77,7 @@ export default class DirectVideoPlayer extends EventEmitter {
 
 
   get levels() {
-    return [];
+    return null;
   }
 
   get currentLevel() {
