@@ -213,7 +213,7 @@ export class VideoAligner extends EventEmitter {
           if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
             const filled = (aligned.startA - indexA) / (aligned.startB - indexB);
 
-            if (filled > 0.8) {
+            if (filled > 0.7) {
               // console.log("filled start", filled, memoryEntry.matchStart, aligned.startB, aligned)
               memoryEntry.matchStart = aligned.startB;
               this.hasMemoryChanges = true;
@@ -232,7 +232,7 @@ export class VideoAligner extends EventEmitter {
           if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
             const filled = (indexA - aligned.endA) / (indexB - aligned.endB);
 
-            if (filled > 0.8) {
+            if (filled > 0.7) {
               // console.log("filled end", filled, memoryEntry.matchEnd, aligned.endB, aligned)
               memoryEntry.matchEnd = aligned.endB;
               this.hasMemoryChanges = true;
