@@ -1,6 +1,6 @@
 import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
 import {EmitterRelay, EventEmitter} from '../modules/eventemitter.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {VideoUtils} from '../utils/VideoUtils.mjs';
 
 export default class DirectVideoPlayer extends EventEmitter {
   constructor(client, config) {
@@ -23,7 +23,7 @@ export default class DirectVideoPlayer extends EventEmitter {
   async setup() {
     const preEvents = new EventEmitter();
     const emitterRelay = new EmitterRelay([preEvents, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
+    VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
   }
 
 

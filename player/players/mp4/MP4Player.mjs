@@ -4,6 +4,7 @@ import {EmitterCancel, EmitterRelay, EventEmitter} from '../../modules/eventemit
 import {MP4Box} from '../../modules/mp4box.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
 import {Utils} from '../../utils/Utils.mjs';
+import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {MP4Fragment} from './MP4Fragment.mjs';
 import {MP4FragmentRequester} from './MP4FragmentRequester.mjs';
 import {SourceBufferWrapper} from './SourceBufferWrapper.mjs';
@@ -153,7 +154,7 @@ export default class MP4Player extends EventEmitter {
       });
 
       const emitterRelay = new EmitterRelay([preEvents, this]);
-      Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
+      VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
       this.mp4box.onReady = (info) => {
         this.onMetadataParsed(info);
@@ -184,7 +185,6 @@ export default class MP4Player extends EventEmitter {
   }
 
   onMetadataParsed(info) {
-    console.log('onReady', info);
     this.metaData = info;
 
     if (info.isFragmented) {

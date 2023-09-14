@@ -3,6 +3,7 @@ import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {DashJS} from '../../modules/dash.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Utils} from '../../utils/Utils.mjs';
+import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
 import {DASHLoaderFactory} from './DashLoader.mjs';
@@ -23,7 +24,7 @@ export default class DashPlayer extends EventEmitter {
 
     const preEvents = new EventEmitter();
     const emitterRelay = new EmitterRelay([preEvents, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
+    VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
     this.dash.updateSettings({
       streaming: {
@@ -282,6 +283,7 @@ export default class DashPlayer extends EventEmitter {
     if (!frags) return null;
 
     let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
+      if (!frag) return 1;
       if (time < frag.start) return -1;
       if (time >= frag.end) return 1;
       return 0;
@@ -298,6 +300,7 @@ export default class DashPlayer extends EventEmitter {
     if (!frags) return null;
 
     let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
+      if (!frag) return 1;
       if (time < frag.start) return -1;
       if (time >= frag.end) return 1;
       return 0;

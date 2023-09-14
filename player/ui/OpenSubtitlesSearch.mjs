@@ -1,6 +1,7 @@
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {RequestUtils} from '../utils/RequestUtils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
 const API_KEY = 'jolY3ZCVYguxFxl8CkIKl52zpHJT2eTw';
@@ -37,38 +38,37 @@ export class OpenSubtitlesSearch extends EventEmitter {
     closeBtn.addEventListener('click', (e) => {
       DOMElements.subuiContainer.style.display = 'none';
     });
-    Utils.setupTabIndex(closeBtn);
+    WebUtils.setupTabIndex(closeBtn);
 
     this.subui.searchContainer = document.createElement('div');
     this.subui.searchContainer.classList.add('subtitle-search-container');
 
     DOMElements.subuiContainer.appendChild(this.subui.searchContainer);
 
-
-    const searchInput = Utils.create('input', null, 'text_input');
+    const searchInput = WebUtils.create('input', null, 'text_input');
     searchInput.placeholder = 'Search by title, filename, etc...';
     searchInput.classList.add('subtitle-search-input');
     this.subui.searchContainer.appendChild(searchInput);
 
     this.subui.search = searchInput;
 
-    const searchBtn = Utils.create('div', 'Search', 'subtitle-search-btn');
+    const searchBtn = WebUtils.create('div', 'Search', 'subtitle-search-btn');
     searchBtn.textContent = 'Search';
-    Utils.setupTabIndex(searchBtn);
+    WebUtils.setupTabIndex(searchBtn);
     this.subui.searchContainer.appendChild(searchBtn);
 
 
-    const seasonInput = Utils.create('input', null, 'text_input');
+    const seasonInput = WebUtils.create('input', null, 'text_input');
     seasonInput.placeholder = 'Season #';
     seasonInput.classList.add('subtitle-season-input');
     seasonInput.style.display = 'none';
 
-    const episodeInput = Utils.create('input', null, 'text_input');
+    const episodeInput = WebUtils.create('input', null, 'text_input');
     episodeInput.placeholder = 'Episode #';
     episodeInput.classList.add('subtitle-episode-input');
     episodeInput.style.display = 'none';
 
-    const typeSelector = Utils.createDropdown('all',
+    const typeSelector = WebUtils.createDropdown('all',
         'Type', {
           'all': 'All',
           'movie': 'Movie',
@@ -91,19 +91,19 @@ export class OpenSubtitlesSearch extends EventEmitter {
     this.subui.searchContainer.appendChild(episodeInput);
 
 
-    const languageInput = Utils.create('input', null, 'text_input');
+    const languageInput = WebUtils.create('input', null, 'text_input');
     languageInput.placeholder = 'Language';
     languageInput.classList.add('subtitle-language-input');
     this.subui.searchContainer.appendChild(languageInput);
     this.subui.languageInput = languageInput;
 
-    const yearInput = Utils.create('input', null, 'text_input');
+    const yearInput = WebUtils.create('input', null, 'text_input');
     yearInput.placeholder = 'Year';
     yearInput.classList.add('subtitle-year-input');
     this.subui.searchContainer.appendChild(yearInput);
 
 
-    const sortSelector = Utils.createDropdown('download_count',
+    const sortSelector = WebUtils.createDropdown('download_count',
         'Sort By', {
           'download_count': 'Downloads',
           'upload_date': 'Upload Date',
@@ -115,7 +115,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     this.subui.searchContainer.appendChild(sortSelector);
 
 
-    const sortDirectionSelector = Utils.createDropdown('desc',
+    const sortDirectionSelector = WebUtils.createDropdown('desc',
         'Sort', {
           'desc': 'Descending',
           'asc': 'Ascending',
@@ -213,7 +213,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
     let response;
     try {
-      response = (await Utils.request({
+      response = (await RequestUtils.request({
         usePlusForSpaces: true,
         responseType: 'json',
         url: 'https://api.opensubtitles.com/api/v1/subtitles',
@@ -252,10 +252,10 @@ export class OpenSubtitlesSearch extends EventEmitter {
     }
 
     if (response.total_pages > 1) {
-      const responseBar = Utils.createPagesBar(response.page, response.total_pages, (page) => {
+      const responseBar = WebUtils.createPagesBar(response.page, response.total_pages, (page) => {
         query.page = page;
         this.subui.pages.innerHTML = '';
-        this.subui.pages.appendChild(Utils.createPagesBar(page, response.total_pages, ()=>{
+        this.subui.pages.appendChild(WebUtils.createPagesBar(page, response.total_pages, ()=>{
           this.queryOpenSubtitles(query);
         }));
         this.queryOpenSubtitles(query);
@@ -289,7 +289,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       rank.textContent = item.attributes.ratings;
       container.appendChild(rank);
 
-      Utils.setupTabIndex(container);
+      WebUtils.setupTabIndex(container);
       container.addEventListener('mouseenter', (e) => {
         container.style.color = 'rgba(255,200,200,.8)';
       });
@@ -309,7 +309,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
         try {
           let link = item.cached_download_link;
           if (!link) {
-            const data = (await Utils.request({
+            const data = (await RequestUtils.request({
               type: 'POST',
               url: 'https://api.opensubtitles.com/api/v1/download',
               responseType: 'json',
@@ -349,7 +349,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
             link = data.link;
           }
 
-          body = (await Utils.request({
+          body = (await RequestUtils.request({
             url: link,
 
             header_commands: [

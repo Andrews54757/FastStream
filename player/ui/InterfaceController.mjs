@@ -2,7 +2,9 @@ import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {StringUtils} from '../utils/StringUtils.mjs';
+import {URLUtils} from '../utils/URLUtils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
@@ -311,22 +313,22 @@ export class InterfaceController {
       this.hideControlBar();
     });
 
-    Utils.setupTabIndex(DOMElements.hideButton);
+    WebUtils.setupTabIndex(DOMElements.hideButton);
 
     DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
 
     DOMElements.download.addEventListener('click', this.downloadMovie.bind(this));
-    Utils.setupTabIndex(DOMElements.download);
+    WebUtils.setupTabIndex(DOMElements.download);
 
     DOMElements.screenshot.addEventListener('click', this.downloadFrame.bind(this));
-    Utils.setupTabIndex(DOMElements.screenshot);
+    WebUtils.setupTabIndex(DOMElements.screenshot);
 
     // check if picture in picture is supported
     if (document.pictureInPictureEnabled) {
       DOMElements.pip.style.display = 'inline-block';
     }
     DOMElements.pip.addEventListener('click', this.pipToggle.bind(this));
-    Utils.setupTabIndex(DOMElements.pip);
+    WebUtils.setupTabIndex(DOMElements.pip);
 
     DOMElements.playerContainer.addEventListener('drop', this.onFileDrop.bind(this), false);
 
@@ -342,7 +344,7 @@ export class InterfaceController {
     DOMElements.settingsButton.addEventListener('click', () => {
       chrome.runtime.openOptionsPage();
     });
-    Utils.setupTabIndex(DOMElements.settingsButton);
+    WebUtils.setupTabIndex(DOMElements.settingsButton);
 
     const welcomeText = 'Welcome to FastStream v' + this.client.version + '!';
     this.setDownloadStatus(welcomeText);
@@ -425,7 +427,7 @@ export class InterfaceController {
     });
 
 
-    Utils.setupTabIndex(DOMElements.playbackRate);
+    WebUtils.setupTabIndex(DOMElements.playbackRate);
 
 
     for (let i = 1; i <= 30; i += 1) {
@@ -490,7 +492,7 @@ export class InterfaceController {
     let mode = PlayerModes.DIRECT;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const ext = Utils.get_url_extension(file.name);
+      const ext = URLUtils.get_url_extension(file.name);
 
       if (subtitleFormats.includes(ext)) {
         captions.push({
@@ -500,9 +502,9 @@ export class InterfaceController {
       } else if (audioFormats.includes(ext)) {
         src = file;
         mode = PlayerModes.DIRECT;
-      } else if (Utils.getModeFromExtension(ext)) {
+      } else if (URLUtils.getModeFromExtension(ext)) {
         src = file;
-        mode = Utils.getModeFromExtension(ext);
+        mode = URLUtils.getModeFromExtension(ext);
 
         if (mode === PlayerModes.ACCELERATED_MP4) {
           mode = PlayerModes.DIRECT;
@@ -581,7 +583,7 @@ export class InterfaceController {
       return;
     }
 
-    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + Utils.formatTime(this.client.currentTime) + '.png';
+    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + StringUtils.formatTime(this.client.currentTime) + '.png';
     const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
@@ -840,7 +842,7 @@ export class InterfaceController {
 
     const time = this.persistent.duration * currentX / totalWidth;
 
-    DOMElements.seekPreviewText.textContent = Utils.formatTime(time);
+    DOMElements.seekPreviewText.textContent = StringUtils.formatTime(time);
 
     const maxWidth = Math.max(DOMElements.seekPreviewVideo.clientWidth, DOMElements.seekPreview.clientWidth);
 
@@ -1110,7 +1112,7 @@ export class InterfaceController {
   }
   updateProgress() {
     DOMElements.currentProgress.style.width = (this.persistent.currentTime / this.persistent.duration) * 100 + '%';
-    DOMElements.duration.textContent = Utils.formatTime(this.persistent.currentTime) + ' / ' + Utils.formatTime(this.persistent.duration);
+    DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(this.persistent.duration);
   }
 
   fullscreenToggle() {

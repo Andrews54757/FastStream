@@ -2,7 +2,8 @@
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
 import {SubtitleTrack} from './SubtitleTrack.mjs';
-import {Utils} from './utils/Utils.mjs';
+import {RequestUtils} from './utils/RequestUtils.mjs';
+import {URLUtils} from './utils/URLUtils.mjs';
 import {VideoSource} from './VideoSource.mjs';
 
 
@@ -85,7 +86,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
                   url: sub.source,
                   commands: customHeaderCommands,
                 }).then(() => {
-                  Utils.simpleRequest(sub.source, (err, req, body) => {
+                  RequestUtils.simpleRequest(sub.source, (err, req, body) => {
                     if (!err && body) {
                       sub.data = body;
                     }
@@ -199,12 +200,12 @@ window.addEventListener('beforeunload', () => {
 
 if (window.location.hash) {
   const url = window.location.hash.substring(1);
-  const ext = Utils.get_url_extension(url);
+  const ext = URLUtils.get_url_extension(url);
   let mode = PlayerModes.DIRECT;
-  if (Utils.is_url_yt(url) && Utils.is_url_yt_watch(url)) {
+  if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
     mode = PlayerModes.ACCELERATED_YT;
-  } else if (Utils.getModeFromExtension(ext)) {
-    mode = Utils.getModeFromExtension(ext);
+  } else if (URLUtils.getModeFromExtension(ext)) {
+    mode = URLUtils.getModeFromExtension(ext);
   }
 
   if (url.startsWith('file://') && mode === PlayerModes.ACCELERATED_MP4) {

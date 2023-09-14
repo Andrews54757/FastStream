@@ -1,6 +1,7 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {URLUtils} from '../utils/URLUtils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
 export class SourcesBrowser {
@@ -19,10 +20,10 @@ export class SourcesBrowser {
     this.sources.unshift(source);
     // eslint-disable-next-line prefer-const
     let headersInput;
-    const sourceContainer = Utils.create('div', null, 'linkui-source');
+    const sourceContainer = WebUtils.create('div', null, 'linkui-source');
     this.linkui.sourcesList.insertBefore(sourceContainer, this.linkui.sourcesList.firstChild);
 
-    const sourceURL = Utils.create('input', null, 'text_input linkui-source-url');
+    const sourceURL = WebUtils.create('input', null, 'text_input linkui-source-url');
     sourceURL.value = source.url;
     sourceURL.placeholder = 'Source URL';
     sourceURL.addEventListener('input', (e) => {
@@ -37,14 +38,14 @@ export class SourcesBrowser {
     modes[PlayerModes.ACCELERATED_HLS] = 'Accelerated HLS';
     modes[PlayerModes.ACCELERATED_DASH] = 'Accelerated DASH';
     modes[PlayerModes.ACCELERATED_YT] = 'Accelerated Youtube';
-    const sourceMode = Utils.createDropdown(source.mode, 'Mode', modes, (val) => {
+    const sourceMode = WebUtils.createDropdown(source.mode, 'Mode', modes, (val) => {
       source.mode = parseInt(val);
       this.updateSources();
     });
     sourceMode.classList.add('linkui-source-mode');
     sourceContainer.appendChild(sourceMode);
 
-    const sourceHeadersBtn = Utils.create('div', null, 'linkui-source-headers-button');
+    const sourceHeadersBtn = WebUtils.create('div', null, 'linkui-source-headers-button');
     sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
     sourceHeadersBtn.name = 'Toggle header override input';
     sourceHeadersBtn.addEventListener('click', (e) => {
@@ -56,10 +57,10 @@ export class SourcesBrowser {
         sourceHeadersBtn.classList.remove('active');
       }
     });
-    Utils.setupTabIndex(sourceHeadersBtn);
+    WebUtils.setupTabIndex(sourceHeadersBtn);
     sourceContainer.appendChild(sourceHeadersBtn);
 
-    const sourceSetBtn = Utils.create('div', null, 'linkui-source-set-button');
+    const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
       if (sourceSetBtn.textContent != 'Play') return;
@@ -68,10 +69,10 @@ export class SourcesBrowser {
       this.updateSources();
       this.client.play();
     });
-    Utils.setupTabIndex(sourceSetBtn);
+    WebUtils.setupTabIndex(sourceSetBtn);
     sourceContainer.appendChild(sourceSetBtn);
 
-    const sourceDeleteBtn = Utils.create('div', null, 'linkui-source-delete-button');
+    const sourceDeleteBtn = WebUtils.create('div', null, 'linkui-source-delete-button');
     sourceDeleteBtn.textContent = 'Delete';
     sourceDeleteBtn.addEventListener('click', (e) => {
       sourceContainer.remove();
@@ -80,25 +81,25 @@ export class SourcesBrowser {
       this.sources.splice(ind, 1);
       this.updateSources();
     });
-    Utils.setupTabIndex(sourceDeleteBtn);
+    WebUtils.setupTabIndex(sourceDeleteBtn);
     sourceContainer.appendChild(sourceDeleteBtn);
 
-    headersInput = Utils.create('textarea', null, 'text_input linkui-source-headers');
+    headersInput = WebUtils.create('textarea', null, 'text_input linkui-source-headers');
     headersInput.setAttribute('autocapitalize', 'off');
     headersInput.setAttribute('autocomplete', 'off');
     headersInput.setAttribute('autocorrect', 'off');
     headersInput.setAttribute('spellcheck', false);
     headersInput.name = 'Header override input';
     headersInput.placeholder = 'Headers (1 entry per line)\nHeader Name: Header Value\nHeader2 Name: Header2 Value';
-    headersInput.value = Utils.objToHeadersString(source.headers);
+    headersInput.value = URLUtils.objToHeadersString(source.headers);
     headersInput.addEventListener('input', (e) => {
-      if (Utils.validateHeadersString(headersInput.value)) {
+      if (URLUtils.validateHeadersString(headersInput.value)) {
         headersInput.classList.remove('invalid');
       } else {
         headersInput.classList.add('invalid');
       }
 
-      source.headers = Utils.headersStringToObj(headersInput.value);
+      source.headers = URLUtils.headersStringToObj(headersInput.value);
       sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
       this.updateSources();
     });
@@ -148,7 +149,7 @@ export class SourcesBrowser {
       e.stopPropagation();
     });
 
-    Utils.setupTabIndex(DOMElements.linkButton);
+    WebUtils.setupTabIndex(DOMElements.linkButton);
 
     DOMElements.linkuiContainer.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -170,17 +171,17 @@ export class SourcesBrowser {
     closeBtn.addEventListener('click', (e) => {
       DOMElements.linkuiContainer.style.display = 'none';
     });
-    Utils.setupTabIndex(closeBtn);
+    WebUtils.setupTabIndex(closeBtn);
 
     this.linkui = {};
 
-    this.linkui.sourcesFound = Utils.create('div', null, 'linkui-sources-found');
+    this.linkui.sourcesFound = WebUtils.create('div', null, 'linkui-sources-found');
     this.linkui.sourcesFound.textContent = 'No Sources Found';
     DOMElements.linkuiContainer.appendChild(this.linkui.sourcesFound);
 
-    this.linkui.addNewButton = Utils.create('div', null, 'linkui-addnew-button');
+    this.linkui.addNewButton = WebUtils.create('div', null, 'linkui-addnew-button');
     this.linkui.addNewButton.textContent = 'Add Source';
-    Utils.setupTabIndex(this.linkui.addNewButton);
+    WebUtils.setupTabIndex(this.linkui.addNewButton);
     DOMElements.linkuiContainer.appendChild(this.linkui.addNewButton);
 
 
@@ -189,9 +190,9 @@ export class SourcesBrowser {
     });
 
 
-    this.linkui.clearButton = Utils.create('div', null, 'linkui-clear-button');
+    this.linkui.clearButton = WebUtils.create('div', null, 'linkui-clear-button');
     this.linkui.clearButton.textContent = 'Clear Sources';
-    Utils.setupTabIndex(this.linkui.clearButton);
+    WebUtils.setupTabIndex(this.linkui.clearButton);
     DOMElements.linkuiContainer.appendChild(this.linkui.clearButton);
 
     this.linkui.clearButton.addEventListener('click', (e) => {
@@ -199,7 +200,7 @@ export class SourcesBrowser {
       this.linkui.sourcesList.innerHTML = '';
     });
 
-    this.linkui.sourcesList = Utils.create('div', null, 'linkui-sources-list');
+    this.linkui.sourcesList = WebUtils.create('div', null, 'linkui-sources-list');
     DOMElements.linkuiContainer.appendChild(this.linkui.sourcesList);
   }
 }

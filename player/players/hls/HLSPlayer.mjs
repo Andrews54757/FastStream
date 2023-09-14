@@ -3,6 +3,7 @@ import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Hls} from '../../modules/hls.mjs';
 import {Utils} from '../../utils/Utils.mjs';
+import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {HLSFragment} from './HLSFragment.mjs';
 import {HLSFragmentRequester} from './HLSFragmentRequester.mjs';
 import {HLSLoaderFactory} from './HLSLoader.mjs';
@@ -221,7 +222,7 @@ export default class HLSPlayer extends EventEmitter {
 
     const preEvents = new EventEmitter();
     const emitterRelay = new EmitterRelay([preEvents, this]);
-    Utils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
+    VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
@@ -397,6 +398,7 @@ export default class HLSPlayer extends EventEmitter {
     if (!frags) return null;
 
     let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
+      if (!frag) return 1;
       if (time < frag.start) return -1;
       if (time >= frag.end) return 1;
       return 0;

@@ -1,5 +1,7 @@
 import {DefaultOptions} from './options/defaults/DefaultOptions.mjs';
 import {PlayerModes} from './player/enums/PlayerModes.mjs';
+import {StringUtils} from './player/utils/StringUtils.mjs';
+import {URLUtils} from './player/utils/URLUtils.mjs';
 import {Utils} from './player/utils/Utils.mjs';
 
 let options = {};
@@ -375,7 +377,7 @@ function checkYTURL(frame) {
     return;
   }
 
-  if (Utils.is_url_yt(url) && Utils.is_url_yt_watch(url)) {
+  if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
     onSourceRecieved({
       url: url,
       requestId: -1,
@@ -402,7 +404,7 @@ function getMediaNameFromTab(tab) {
 
   // Remove any words too similar to the website name
   words = words.filter((word) => {
-    return word.length > 0 && (word.length <= 3 || Utils.levenshteinDistance(word.toLowerCase(), name.toLowerCase()) >= Math.ceil(name.length * 0.4));
+    return word.length > 0 && (word.length <= 3 || StringUtils.levenshteinDistance(word.toLowerCase(), name.toLowerCase()) >= Math.ceil(name.length * 0.4));
   });
 
   // Remove words like TV, Movie, HD, etc...
@@ -601,7 +603,7 @@ async function openPlayer(frame) {
 }
 let currentTimeout = null;
 async function onSourceRecieved(details, frame, mode) {
-  if (((frame.url && Utils.is_url_yt(frame.url)) || (frame.tab.url && Utils.is_url_yt(frame.tab.url))) && mode !== PlayerModes.ACCELERATED_YT) {
+  if (((frame.url && URLUtils.is_url_yt(frame.url)) || (frame.tab.url && URLUtils.is_url_yt(frame.tab.url))) && mode !== PlayerModes.ACCELERATED_YT) {
     return;
   }
   const url = details.url;
@@ -680,14 +682,14 @@ function frameHasPlayer(frame) {
 chrome.webRequest.onHeadersReceived.addListener(
     function(details) {
       const url = details.url;
-      const ext = Utils.get_url_extension(url);
+      const ext = URLUtils.get_url_extension(url);
       const frame = getOrCreateFrame(details);
       if (frameHasPlayer(frame)) return;
 
       if (isSubtitles(ext)) {
         return handleSubtitles(url, frame, frame.requests[details.requestId]);
       }
-      let mode = Utils.getModeFromExtension(ext);
+      let mode = URLUtils.getModeFromExtension(ext);
       if (!mode) {
         if (details.type === 'media') {
           mode = PlayerModes.ACCELERATED_MP4;

@@ -1,7 +1,8 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebVTT} from '../modules/vtt.mjs';
 import {DOMElements} from './DOMElements.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
+import {StringUtils} from '../utils/StringUtils.mjs';
 
 export class SubtitleSyncer extends EventEmitter {
   constructor(client) {
@@ -31,19 +32,19 @@ export class SubtitleSyncer extends EventEmitter {
   }
   setup() {
     this.ui = {};
-    this.ui.currentPosition = Utils.create('div', '', 'current_position_bar');
+    this.ui.currentPosition = WebUtils.create('div', '', 'current_position_bar');
     DOMElements.timelineSyncer.appendChild(this.ui.currentPosition);
 
-    this.ui.timelineContainer = Utils.create('div', '', 'timeline_container');
+    this.ui.timelineContainer = WebUtils.create('div', '', 'timeline_container');
     DOMElements.timelineSyncer.appendChild(this.ui.timelineContainer);
 
-    this.ui.timelineTicks = Utils.create('div', '', 'timeline_ticks');
+    this.ui.timelineTicks = WebUtils.create('div', '', 'timeline_ticks');
     this.ui.timelineContainer.appendChild(this.ui.timelineTicks);
 
-    this.ui.timelineVOD = Utils.create('div', '', 'timeline_vod');
+    this.ui.timelineVOD = WebUtils.create('div', '', 'timeline_vod');
     this.ui.timelineContainer.appendChild(this.ui.timelineVOD);
 
-    this.ui.timelineTrack = Utils.create('div', '', 'timeline_track');
+    this.ui.timelineTrack = WebUtils.create('div', '', 'timeline_track');
     this.ui.timelineContainer.appendChild(this.ui.timelineTrack);
 
     // timeline is grabbable
@@ -217,7 +218,7 @@ export class SubtitleSyncer extends EventEmitter {
     for (let tickTime = minTime; tickTime < maxTime; tickTime++) {
       if (hasArr[tickTime - minTime]) continue;
 
-      const el = Utils.create('div', '', 'timeline_tick');
+      const el = WebUtils.create('div', '', 'timeline_tick');
       el.style.left = tickTime / this.video.duration * 100 + '%';
       this.ui.timelineTicks.appendChild(el);
       this.ticklineElements.push({
@@ -227,8 +228,8 @@ export class SubtitleSyncer extends EventEmitter {
 
 
       if (tickTime % 10 === 0) {
-        const label = Utils.create('div', '', 'timeline_tick_label');
-        label.textContent = Utils.formatTime(tickTime);
+        const label = WebUtils.create('div', '', 'timeline_tick_label');
+        label.textContent = StringUtils.formatTime(tickTime);
         el.appendChild(label);
 
         if (tickTime % (60 * 60) === 0) {
@@ -258,7 +259,7 @@ export class SubtitleSyncer extends EventEmitter {
     for (let canvIndex = minCanvIndex; canvIndex < maxCanvIndex; canvIndex++) {
       if (hasArr[canvIndex - minCanvIndex]) continue;
 
-      const el = Utils.create('canvas', '', 'timeline_vod_canvas');
+      const el = WebUtils.create('canvas', '', 'timeline_vod_canvas');
       el.style.left = canvIndex * 10 / this.video.duration * 100 + '%';
       el.style.width = 10 / this.video.duration * 100 + '%';
       el.height = 40;
@@ -325,7 +326,7 @@ export class SubtitleSyncer extends EventEmitter {
     this.visibleCues.forEach((cue) => {
       if (this.trackElements.find((el) => el.cue === cue)) return;
 
-      const el = Utils.create('div', '', 'timeline_track_cue');
+      const el = WebUtils.create('div', '', 'timeline_track_cue');
       el.style.left = cue.startTime / this.video.duration * 100 + '%';
       el.style.width = (cue.endTime - cue.startTime) / this.video.duration * 100 + '%';
       el.appendChild(WebVTT.convertCueToDOMTree(window, cue.text));

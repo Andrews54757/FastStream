@@ -24,21 +24,13 @@ export class KeybindManager extends EventEmitter {
     let shouldPlay = false;
     this.on('HidePlayer', (e) => {
       if (this.hidden) {
-        DOMElements.videoContainer.style.display = '';
-        DOMElements.controlsContainer.style.display = '';
-        DOMElements.playPauseButtonBigCircle.style.opacity = 1;
-        DOMElements.playerContainer.style.cursor = '';
-        DOMElements.subtitlesContainer.style.display = '';
+        DOMElements.playerContainer.classList.remove('player-hidden');
         this.hidden = false;
         if (shouldPlay) {
           this.client.player?.play();
         }
       } else {
-        DOMElements.videoContainer.style.display = 'none';
-        DOMElements.controlsContainer.style.display = 'none';
-        DOMElements.playPauseButtonBigCircle.style.opacity = 0;
-        DOMElements.playerContainer.style.cursor = 'none';
-        DOMElements.subtitlesContainer.style.display = 'none';
+        DOMElements.playerContainer.classList.add('player-hidden');
 
         this.hidden = true;
         shouldPlay = this.client.persistent.playing;

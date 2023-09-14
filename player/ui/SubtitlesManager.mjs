@@ -1,7 +1,9 @@
 import {WebVTT} from '../modules/vtt.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
+import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {SubtitleUtils} from '../utils/SubtitleUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSearch.mjs';
 import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
@@ -91,7 +93,7 @@ export class SubtitlesManager {
       e.stopPropagation();
     });
 
-    Utils.setupTabIndex(DOMElements.subtitles);
+    WebUtils.setupTabIndex(DOMElements.subtitles);
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
       DOMElements.subtitlesMenu.style.display = 'none';
@@ -111,7 +113,7 @@ export class SubtitlesManager {
       this.renderSubtitles();
       this.client.subtitleSyncer.onVideoTimeUpdate();
     });
-    Utils.setupTabIndex(DOMElements.subtitlesOptionsTestButton);
+    WebUtils.setupTabIndex(DOMElements.subtitlesOptionsTestButton);
 
     const filechooser = document.createElement('input');
     filechooser.type = 'file';
@@ -140,7 +142,7 @@ export class SubtitlesManager {
 
     const filebutton = document.createElement('div');
     filebutton.classList.add('subtitle-menu-option');
-    Utils.setupTabIndex(filebutton);
+    WebUtils.setupTabIndex(filebutton);
     filebutton.textContent = 'Upload File';
 
     filebutton.addEventListener('click', (e) => {
@@ -151,12 +153,12 @@ export class SubtitlesManager {
     const urlbutton = document.createElement('div');
     urlbutton.classList.add('subtitle-menu-option');
     urlbutton.textContent = 'From URL';
-    Utils.setupTabIndex(urlbutton);
+    WebUtils.setupTabIndex(urlbutton);
     urlbutton.addEventListener('click', (e) => {
       const url = prompt('Enter URL');
 
       if (url) {
-        Utils.simpleRequest(url, (err, req, body) => {
+        RequestUtils.simpleRequest(url, (err, req, body) => {
           if (body) {
             const track = new SubtitleTrack('URL Track', null);
             track.loadText(body);
@@ -172,7 +174,7 @@ export class SubtitlesManager {
     const internetbutton = document.createElement('div');
     internetbutton.textContent = 'Search OpenSubtitles';
     internetbutton.classList.add('subtitle-menu-option');
-    Utils.setupTabIndex(internetbutton);
+    WebUtils.setupTabIndex(internetbutton);
     internetbutton.addEventListener('click', (e) => {
       this.openSubtitlesSearch.openUI();
     });
@@ -180,7 +182,7 @@ export class SubtitlesManager {
 
     const clearbutton = document.createElement('div');
     clearbutton.textContent = 'Clear Subtitles';
-    Utils.setupTabIndex(clearbutton);
+    WebUtils.setupTabIndex(clearbutton);
     clearbutton.classList.add('subtitle-menu-option');
 
     clearbutton.addEventListener('click', (e) => {
@@ -191,13 +193,13 @@ export class SubtitlesManager {
     const optionsbutton = document.createElement('div');
     optionsbutton.classList.add('subtitle-menu-option');
     optionsbutton.textContent = 'Subtitle Settings';
-    Utils.setupTabIndex(optionsbutton);
+    WebUtils.setupTabIndex(optionsbutton);
 
     optionsbutton.addEventListener('click', (e) => {
       this.settingsManager.showUI();
     });
 
-    Utils.setupTabIndex(DOMElements.subtitlesOptionsBackButton);
+    WebUtils.setupTabIndex(DOMElements.subtitlesOptionsBackButton);
 
     DOMElements.subtitlesView.appendChild(optionsbutton);
 
@@ -244,7 +246,7 @@ export class SubtitlesManager {
           e.preventDefault();
         });
 
-        Utils.setupTabIndex(trackElement);
+        WebUtils.setupTabIndex(trackElement);
 
         const resyncTool = document.createElement('div');
         resyncTool.title = 'Resync Tool';
