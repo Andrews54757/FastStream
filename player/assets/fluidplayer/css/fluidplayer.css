@@ -1238,10 +1238,10 @@ body {
 }
 
 .marker_container > div.analyzer_marker {
-    background-color: rgba(255, 229, 82, 0.64);
+    background-color: rgb(222, 197, 57);
     bottom: 0px;
     top: 3px;
-    width: 3px;
+    width: 2px;
 }
 
 .rate_menu {
