@@ -246,7 +246,10 @@ export class VideoAligner extends EventEmitter {
           }
         }
 
-        const filled = (indexEnd - indexStart) / (indexBEnd - indexBStart);
+        let filled = (indexEnd - indexStart) / (indexBEnd - indexBStart);
+        if (timeEnd === timeStart) {
+          filled = 1;
+        }
 
         if (aligned.startB < memoryEntry.matchStart) {
           // If the match start is before the stored start, we need to move the stored start earlier
