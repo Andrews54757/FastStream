@@ -250,7 +250,7 @@ export class VideoAligner extends EventEmitter {
         if (timeEnd === timeStart) {
           filled = 1;
         }
-        if (filled > 0.75 && Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
+        if ( aligned.count > 8 && filled > 0.75 && Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
           if (aligned.startB !== memoryEntry.matchStart) {
             memoryEntry.matchStart = aligned.startB;
             this.hasMemoryChanges = true;
