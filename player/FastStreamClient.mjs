@@ -148,7 +148,7 @@ export class FastStreamClient extends EventEmitter {
 
     if (chrome?.extension?.inIncognitoContext) {
       this.interfaceController.setDownloadStatus(``, -1);
-      this.interfaceController.setDownloadStatus(`Not enough space to download video in Incognito mode`, 5000);
+      this.interfaceController.setDownloadStatus(`Not enough space to download video in incognito mode`, 5000);
       this.hasDownloadSpace = false;
     } else {
       if (level.bitrate && this.duration) {
