@@ -1221,7 +1221,7 @@ body {
 .marker_container {
     position: absolute;
     inset: 0px;
-    z-index: 1;
+    z-index: 2;
 }
 
 .marker_container>div {
@@ -1238,7 +1238,7 @@ body {
 }
 
 .marker_container > div.analyzer_marker {
-    background-color: rgb(222, 197, 57);
+    background-color: rgb(210, 186, 53);
     bottom: 0px;
     top: 3px;
     width: 2px;
