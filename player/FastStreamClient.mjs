@@ -146,19 +146,25 @@ export class FastStreamClient extends EventEmitter {
 
     if (!level) return;
 
-    if (level.bitrate && this.duration) {
-      const storageAvailable = (this.storageAvailable * 8) * 0.6;
-      this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
-      const bufferable = storageAvailable / level.bitrate;
-      this.options.bufferBehind = Math.round(Math.min(20, bufferable / 2));
-      this.options.bufferAhead = Math.round(bufferable - this.options.bufferBehind);
+    if (chrome?.extension?.inIncognitoContext) {
+      this.interfaceController.setDownloadStatus(``, -1);
+      this.interfaceController.setDownloadStatus(`Not enough space to download video in Incognito mode`, 5000);
+      this.hasDownloadSpace = false;
     } else {
-      this.hasDownloadSpace = !chrome?.extension?.inIncognitoContext;
-    }
+      if (level.bitrate && this.duration) {
+        const storageAvailable = (this.storageAvailable * 8) * 0.6;
+        this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
+        const bufferable = storageAvailable / level.bitrate;
+        this.options.bufferBehind = Math.round(Math.min(20, bufferable / 2));
+        this.options.bufferAhead = Math.round(bufferable - this.options.bufferBehind);
+      } else {
+        this.hasDownloadSpace = true;
+      }
 
-    this.interfaceController.setDownloadStatus(``, -1);
-    if (!this.hasDownloadSpace) {
-      this.interfaceController.setDownloadStatus(`Not enough space to download video, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
+      this.interfaceController.setDownloadStatus(``, -1);
+      if (!this.hasDownloadSpace) {
+        this.interfaceController.setDownloadStatus(`Not enough space to download video, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
+      }
     }
   }
 
