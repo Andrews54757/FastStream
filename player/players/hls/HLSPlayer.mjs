@@ -2,7 +2,6 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Hls} from '../../modules/hls.mjs';
-import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {HLSFragment} from './HLSFragment.mjs';
 import {HLSFragmentRequester} from './HLSFragmentRequester.mjs';
