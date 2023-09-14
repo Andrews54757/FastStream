@@ -1,28 +1,35 @@
-import {Coloris} from '../modules/coloris.mjs';
 import {WebVTT} from '../modules/vtt.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {SubtitleUtils} from '../utils/SubtitleUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSearch.mjs';
+import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
 
-const API_KEY = 'jolY3ZCVYguxFxl8CkIKl52zpHJT2eTw';
-const COLOR_SETTINGS = ['color', 'background'];
 export class SubtitlesManager {
   constructor(client) {
     this.client = client;
     this.tracks = [];
 
     this.activeTracks = [];
+    this.isTestSubtitleActive = false;
 
-    this.settings = {
-      'font-size': '40px',
-      'color': 'rgba(255,255,255,1)',
-      'background': 'rgba(10,10,10,0.3)',
-      'default-lang': 'en',
-    };
+    this.settingsManager = new SubtitlesSettingsManager();
+    this.settingsManager.on(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.onSettingsChanged.bind(this));
+    this.settingsManager.loadSettings();
 
-    this.isTesting = false;
+    this.openSubtitlesSearch = new OpenSubtitlesSearch(client.version);
+    this.openSubtitlesSearch.on(OpenSubtitlesSearchEvents.TRACK_DOWNLOADED, this.onSubtitleTrackDownloaded.bind(this));
+
     this.setupUI();
+  }
+
+  loadTrackAndActivateBest(subtitleTrack) {
+    this.addTrack(subtitleTrack);
+    const defLang = this.settingsManager.getSettings()['default-lang'];
+    if (this.client.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.activeTracks.length === 0) {
+      this.activateTrack(subtitleTrack);
+    }
   }
 
   addTrack(track) {
@@ -63,94 +70,18 @@ export class SubtitlesManager {
     this.client.subtitleSyncer.toggleTrack(track, true);
   }
 
-  updateSettings() {
-    try {
-      chrome.storage.sync.set({
-        subtitlesSettings: JSON.stringify(this.settings),
-      });
-    } catch (e) {
-      console.error(e);
-    }
+  onSettingsChanged(settings) {
+    this.openSubtitlesSearch.setLanguageInputValue(settings['default-lang']);
     this.renderSubtitles();
     this.client.subtitleSyncer.onVideoTimeUpdate();
   }
-  updateSettingsUI() {
-    DOMElements.subtitlesOptionsList.innerHTML = '';
-    for (const key in this.settings) {
-      if (!Object.hasOwn(this.settings, key)) continue;
-      const option = document.createElement('div');
-      option.classList.add('option');
 
-      const label = document.createElement('div');
-      label.textContent = key.charAt(0).toUpperCase() + key.substring(1);
-
-      const input = document.createElement('input');
-      input.name = key;
-      input.type = 'text';
-      input.value = this.settings[key];
-      if (COLOR_SETTINGS.includes(key)) {
-        Coloris.bindElement(input);
-        input.addEventListener('keydown', (e)=>{
-          if (e.key === 'Enter') {
-            e.stopPropagation();
-            input.click();
-          }
-        });
-      }
-
-      let timeout = null;
-      input.addEventListener('keyup', () => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          this.settings[key] = input.value;
-          this.updateSettings();
-        }, 200);
-      });
-
-      input.addEventListener('input', () => {
-        this.settings[key] = input.value;
-        this.updateSettings();
-      });
-      option.appendChild(label);
-      option.appendChild(input);
-      DOMElements.subtitlesOptionsList.appendChild(option);
-    }
+  onSubtitleTrackDownloaded(track) {
+    this.addTrack(track);
+    this.activateTrack(track);
   }
 
-  loadSettings() {
-    try {
-      chrome.storage.sync.get('subtitlesSettings', (data) => {
-        if (data.subtitlesSettings) {
-          const settings = JSON.parse(data.subtitlesSettings);
-          for (const key in this.settings) {
-            if (settings[key]) {
-              this.settings[key] = settings[key];
-            }
-          }
-          this.renderSubtitles();
-          this.client.subtitleSyncer.onVideoTimeUpdate();
-          this.updateSettingsUI();
-        } else {
-          this.updateSettingsUI();
-        }
-      });
-    } catch (e) {
-      console.error(e);
-      this.updateSettingsUI();
-    }
-  }
   setupUI() {
-    this.loadSettings();
-
-    DOMElements.subtitlesOptionsList.addEventListener('keydown', (e) => {
-      e.stopPropagation();
-    });
-
-    DOMElements.subtitlesOptionsList.addEventListener('keyup', (e) => {
-      e.stopPropagation();
-    });
-
-
     DOMElements.subtitles.addEventListener('click', (e) => {
       if (DOMElements.subtitlesMenu.style.display == 'none') {
         DOMElements.subtitlesMenu.style.display = '';
@@ -168,8 +99,8 @@ export class SubtitlesManager {
     });
 
     DOMElements.subtitlesOptionsTestButton.addEventListener('click', (e) => {
-      this.isTesting = !this.isTesting;
-      if (this.isTesting) {
+      this.isTestSubtitleActive = !this.isTestSubtitleActive;
+      if (this.isTestSubtitleActive) {
         DOMElements.subtitlesOptionsTestButton.textContent = 'Stop Testing';
         DOMElements.playerContainer.style.backgroundImage = 'linear-gradient(to right, black, white)';
       } else {
@@ -184,7 +115,7 @@ export class SubtitlesManager {
 
     const filechooser = document.createElement('input');
     filechooser.type = 'file';
-    filechooser.style = 'display: none';
+    filechooser.style.display = 'none';
     filechooser.accept = '.vtt, .srt';
 
     filechooser.addEventListener('change', () => {
@@ -208,9 +139,9 @@ export class SubtitlesManager {
     document.body.appendChild(filechooser);
 
     const filebutton = document.createElement('div');
+    filebutton.classList.add('subtitle-menu-option');
     Utils.setupTabIndex(filebutton);
     filebutton.textContent = 'Upload File';
-    filebutton.style = 'padding: 3px 5px; color: rgba(255,255,255,.8)';
 
     filebutton.addEventListener('click', (e) => {
       filechooser.click();
@@ -218,10 +149,9 @@ export class SubtitlesManager {
     DOMElements.subtitlesView.appendChild(filebutton);
 
     const urlbutton = document.createElement('div');
+    urlbutton.classList.add('subtitle-menu-option');
     urlbutton.textContent = 'From URL';
     Utils.setupTabIndex(urlbutton);
-    urlbutton.style = 'border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)';
-
     urlbutton.addEventListener('click', (e) => {
       const url = prompt('Enter URL');
 
@@ -237,25 +167,21 @@ export class SubtitlesManager {
       }
     });
 
-
     DOMElements.subtitlesView.appendChild(urlbutton);
 
     const internetbutton = document.createElement('div');
     internetbutton.textContent = 'Search OpenSubtitles';
+    internetbutton.classList.add('subtitle-menu-option');
     Utils.setupTabIndex(internetbutton);
-    internetbutton.style = 'border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)';
-
     internetbutton.addEventListener('click', (e) => {
-      DOMElements.subuiContainer.style.display = '';
-      DOMElements.linkuiContainer.style.display = 'none';
-      this.subui.search.focus();
+      this.openSubtitlesSearch.openUI();
     });
     DOMElements.subtitlesView.appendChild(internetbutton);
 
     const clearbutton = document.createElement('div');
     clearbutton.textContent = 'Clear Subtitles';
     Utils.setupTabIndex(clearbutton);
-    clearbutton.style = 'border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)';
+    clearbutton.classList.add('subtitle-menu-option');
 
     clearbutton.addEventListener('click', (e) => {
       this.clearTracks();
@@ -263,19 +189,14 @@ export class SubtitlesManager {
     DOMElements.subtitlesView.appendChild(clearbutton);
 
     const optionsbutton = document.createElement('div');
+    optionsbutton.classList.add('subtitle-menu-option');
     optionsbutton.textContent = 'Subtitle Settings';
     Utils.setupTabIndex(optionsbutton);
-    optionsbutton.style = 'border-top: 1px solid rgba(255,255,255,0.4); padding: 3px 5px; color: rgba(255,255,255,.8)';
 
     optionsbutton.addEventListener('click', (e) => {
-      DOMElements.subtitlesOptions.style.display = '';
-      DOMElements.subtitlesView.style.display = 'none';
+      this.settingsManager.showUI();
     });
 
-    DOMElements.subtitlesOptionsBackButton.addEventListener('click', (e) => {
-      DOMElements.subtitlesOptions.style.display = 'none';
-      DOMElements.subtitlesView.style.display = '';
-    });
     Utils.setupTabIndex(DOMElements.subtitlesOptionsBackButton);
 
     DOMElements.subtitlesView.appendChild(optionsbutton);
@@ -283,380 +204,6 @@ export class SubtitlesManager {
     DOMElements.subtitlesMenu.addEventListener('click', (e) => {
       e.stopPropagation();
       e.preventDefault();
-    });
-    this.subtitleQueryUI();
-  }
-
-  subtitleQueryUI() {
-    DOMElements.subuiContainer.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-    DOMElements.subuiContainer.addEventListener('dblclick', (e) => {
-      e.stopPropagation();
-    });
-
-    DOMElements.subuiContainer.addEventListener('keydown', (e) => {
-      e.stopPropagation();
-    });
-
-    DOMElements.subuiContainer.addEventListener('keyup', (e) => {
-      e.stopPropagation();
-    });
-
-    const closeBtn = DOMElements.subuiContainer.getElementsByClassName('close_button')[0];
-    closeBtn.addEventListener('click', (e) => {
-      DOMElements.subuiContainer.style.display = 'none';
-    });
-    Utils.setupTabIndex(closeBtn);
-
-    this.subui = {};
-    this.subui.searchContainer = document.createElement('div');
-    this.subui.searchContainer.classList.add('subtitle-search-container');
-
-    DOMElements.subuiContainer.appendChild(this.subui.searchContainer);
-
-
-    const searchInput = Utils.create('input', null, 'text_input');
-    searchInput.placeholder = 'Search by title, filename, etc...';
-    searchInput.classList.add('subtitle-search-input');
-    this.subui.searchContainer.appendChild(searchInput);
-
-    this.subui.search = searchInput;
-
-    const searchBtn = Utils.create('div', 'Search', 'subtitle-search-btn');
-    searchBtn.textContent = 'Search';
-    Utils.setupTabIndex(searchBtn);
-    this.subui.searchContainer.appendChild(searchBtn);
-
-
-    const seasonInput = Utils.create('input', null, 'text_input');
-    seasonInput.placeholder = 'Season #';
-    seasonInput.classList.add('subtitle-season-input');
-    seasonInput.style.display = 'none';
-
-    const episodeInput = Utils.create('input', null, 'text_input');
-    episodeInput.placeholder = 'Episode #';
-    episodeInput.classList.add('subtitle-episode-input');
-    episodeInput.style.display = 'none';
-
-    const typeSelector = Utils.createDropdown('all',
-        'Type', {
-          'all': 'All',
-          'movie': 'Movie',
-          'episode': 'Episode',
-        }, (val) => {
-          if (val == 'episode') {
-            seasonInput.style.display = '';
-            episodeInput.style.display = '';
-          } else {
-            seasonInput.style.display = 'none';
-            episodeInput.style.display = 'none';
-          }
-        },
-    );
-
-    typeSelector.classList.add('subtitle-type-selector');
-
-    this.subui.searchContainer.appendChild(typeSelector);
-    this.subui.searchContainer.appendChild(seasonInput);
-    this.subui.searchContainer.appendChild(episodeInput);
-
-
-    const languageInput = Utils.create('input', null, 'text_input');
-    languageInput.placeholder = 'Language';
-    languageInput.classList.add('subtitle-language-input');
-    languageInput.value = this.settings['default-lang'];
-    this.subui.searchContainer.appendChild(languageInput);
-
-    const yearInput = Utils.create('input', null, 'text_input');
-    yearInput.placeholder = 'Year';
-    yearInput.classList.add('subtitle-year-input');
-    this.subui.searchContainer.appendChild(yearInput);
-
-
-    const sortSelector = Utils.createDropdown('download_count',
-        'Sort By', {
-          'download_count': 'Downloads',
-          'upload_date': 'Upload Date',
-          'rating': 'Rating',
-          'votes': 'Votes',
-        },
-    );
-    sortSelector.classList.add('subtitle-sort-selector');
-    this.subui.searchContainer.appendChild(sortSelector);
-
-
-    const sortDirectionSelector = Utils.createDropdown('desc',
-        'Sort', {
-          'desc': 'Descending',
-          'asc': 'Ascending',
-        },
-    );
-
-    sortDirectionSelector.classList.add('subtitle-sort-direction-selector');
-    this.subui.searchContainer.appendChild(sortDirectionSelector);
-
-
-    const searchOnEnter = (e) => {
-      if (e.key == 'Enter') {
-        e.stopPropagation();
-        this.subui.search.blur();
-        this.queryOpenSubtitles({
-          query: this.subui.search.value,
-          type: typeSelector.dataset.val,
-          season: seasonInput.value,
-          episode: episodeInput.value,
-          language: languageInput.value,
-          year: yearInput.value,
-          sortBy: sortSelector.dataset.val,
-          sortDirection: sortDirectionSelector.dataset.val,
-          page: 1,
-        });
-      }
-    };
-
-    this.subui.search.addEventListener('keydown', searchOnEnter, true);
-    languageInput.addEventListener('keydown', searchOnEnter, true);
-    yearInput.addEventListener('keydown', searchOnEnter, true);
-    seasonInput.addEventListener('keydown', searchOnEnter, true);
-    episodeInput.addEventListener('keydown', searchOnEnter, true);
-    typeSelector.addEventListener('keydown', searchOnEnter, true);
-    sortSelector.addEventListener('keydown', searchOnEnter, true);
-    sortDirectionSelector.addEventListener('keydown', searchOnEnter, true);
-
-    searchBtn.addEventListener('click', (e) => {
-      this.queryOpenSubtitles({
-        query: this.subui.search.value,
-        type: typeSelector.dataset.val,
-        season: seasonInput.value,
-        episode: episodeInput.value,
-        language: languageInput.value,
-        year: yearInput.value,
-        sortBy: sortSelector.dataset.val,
-        sortDirection: sortDirectionSelector.dataset.val,
-        page: 1,
-      });
-    });
-
-    this.subui.results = document.createElement('div');
-    this.subui.results.classList.add('subtitle-results');
-    DOMElements.subuiContainer.appendChild(this.subui.results);
-
-    this.subui.pages = document.createElement('div');
-    this.subui.pages.classList.add('subtitle-pages');
-    DOMElements.subuiContainer.appendChild(this.subui.pages);
-  }
-  async queryOpenSubtitles(query) {
-    const defaulQuery = {
-      page: '1',
-      type: 'all',
-    };
-    const translatedQuery = {
-      query: '' + query.query,
-      type: '' + query.type,
-      languages: '' + query.language,
-      year: '' + query.year,
-      order_by: '' + query.sortBy,
-      sort_direction: '' + query.sortDirection,
-      page: '' + query.page,
-    };
-
-    if (query.type === 'episode') {
-      translatedQuery.season_number = '' + query.season;
-      translatedQuery.episode_number = '' + query.episode;
-    }
-    console.log(translatedQuery);
-
-    // sort query alphabetically
-    const sortedQuery = {};
-    Object.keys(translatedQuery).sort().forEach(function(key) {
-      if (translatedQuery[key].length > 0 && translatedQuery[key] !== defaulQuery[key]) {
-        sortedQuery[key] = translatedQuery[key];
-      }
-    });
-
-    this.subui.results.innerHTML = '';
-    const container = document.createElement('div');
-    container.textContent = 'Searching...';
-    this.subui.results.appendChild(container);
-
-
-    let response;
-    try {
-      response = (await Utils.request({
-        usePlusForSpaces: true,
-        responseType: 'json',
-        url: 'https://api.opensubtitles.com/api/v1/subtitles',
-        query: sortedQuery,
-        headers: {
-          'Api-Key': API_KEY,
-        },
-        header_commands: [
-          {
-            operation: 'set',
-            header: 'User-Agent',
-            value: 'FastStream V' + this.client.version,
-          },
-        ],
-      })).response;
-
-      if (response.errors) {
-        container.textContent = 'Error: ' + response.errors.join(', ');
-        return;
-      }
-    } catch (e) {
-      console.log(e);
-      container.textContent = 'OpenSubtitles is down!';
-      return;
-    }
-
-
-    this.subui.results.innerHTML = '';
-    this.subui.pages.innerHTML = '';
-
-    if (response.data.length === 0) {
-      const container = document.createElement('div');
-      container.textContent = 'No results found';
-      this.subui.results.appendChild(container);
-      return;
-    }
-
-    if (response.total_pages > 1) {
-      const responseBar = Utils.createPagesBar(response.page, response.total_pages, (page) => {
-        query.page = page;
-        this.subui.pages.innerHTML = '';
-        this.subui.pages.appendChild(Utils.createPagesBar(page, response.total_pages, ()=>{
-          this.queryOpenSubtitles(query);
-        }));
-        this.queryOpenSubtitles(query);
-      });
-      this.subui.pages.appendChild(responseBar);
-    }
-
-    response.data.forEach((item) => {
-      const container = document.createElement('div');
-      container.classList.add('subtitle-result-container');
-      this.subui.results.appendChild(container);
-
-      const lang = document.createElement('div');
-      lang.classList.add('subtitle-result-lang');
-      lang.textContent = item.attributes.language;
-      container.appendChild(lang);
-
-      const title = document.createElement('div');
-      title.classList.add('subtitle-result-title');
-      title.textContent = item.attributes.feature_details.movie_name + ' (' + item.attributes.feature_details.year + ')';
-      container.appendChild(title);
-
-      const user = document.createElement('div');
-      user.classList.add('subtitle-result-user');
-      user.textContent = item.attributes.uploader.name;
-      container.appendChild(user);
-
-
-      const rank = document.createElement('div');
-      rank.classList.add('subtitle-result-rank');
-      rank.textContent = item.attributes.ratings;
-      container.appendChild(rank);
-
-      Utils.setupTabIndex(container);
-      container.addEventListener('mouseenter', (e) => {
-        container.style.color = 'rgba(255,200,200,.8)';
-      });
-      container.addEventListener('mouseleave', (e) => {
-        container.style.color = 'rgba(255,255,255,.8)';
-      });
-      container.addEventListener('click', async (e) => {
-        console.log(item.attributes.files[0].file_id);
-        let body;
-        if (item.downloading) {
-          alert('Already downloading!');
-          return;
-        }
-
-        item.downloading = true;
-
-        try {
-          let link = item.cached_download_link;
-          if (!link) {
-            const data = (await Utils.request({
-              type: 'POST',
-              url: 'https://api.opensubtitles.com/api/v1/download',
-              responseType: 'json',
-              headers: {
-                'Api-Key': API_KEY,
-                'Content-Type': 'application/json',
-              },
-
-              header_commands: [
-                {
-                  operation: 'set',
-                  header: 'User-Agent',
-                  value: 'FastStream V' + this.client.version,
-                },
-              ],
-
-              data: JSON.stringify({
-                file_id: item.attributes.files[0].file_id,
-                sub_format: 'webvtt',
-              }),
-            })).response;
-
-            if (!data.link && data.remaining <= 0) {
-              item.downloading = false;
-              alert(`OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in ` + data.reset_time);
-              if (confirm('Would you like to open the OpenSubtitles website to download the subtitle file manually?')) {
-                window.open(item.attributes.url);
-              }
-              return;
-            }
-
-            if (!data.link) {
-              throw new Error('No link');
-            }
-
-            item.cached_download_link = data.link;
-            link = data.link;
-          }
-
-          body = (await Utils.request({
-            url: link,
-
-            header_commands: [
-              {
-                operation: 'set',
-                header: 'User-Agent',
-                value: 'FastStream V' + this.client.version,
-              },
-            ],
-          }));
-
-          if (body.status < 200 || body.status >= 300) {
-            throw new Error('Bad status code');
-          }
-
-          body = body.responseText;
-
-          if (!body) {
-            throw new Error('No body');
-          }
-        } catch (e) {
-          console.log(e);
-          if (DOMElements.subuiContainer.style.display == 'none') return;
-          item.downloading = false;
-          alert(`OpenSubtitles download failed! Their servers are probably down!`);
-          if (confirm('Would you like to open the OpenSubtitles website to download the subtitle file manually?')) {
-            window.open(item.attributes.url);
-          }
-          return;
-        }
-
-        item.downloading = false;
-        const track = new SubtitleTrack(item.attributes.uploader.name + ' - ' + item.attributes.feature_details.movie_name, item.attributes.language);
-        track.loadText(body);
-        this.addTrack(track);
-        this.activateTrack(track);
-      });
     });
   }
 
@@ -815,15 +362,16 @@ export class SubtitlesManager {
   }
 
   applyStyles(trackContainer) {
-    trackContainer.style.color = this.settings.color;
-    trackContainer.style.fontSize = this.settings['font-size'];
-    trackContainer.style.backgroundColor = this.settings.background;
+    const settings = this.settingsManager.getSettings();
+    trackContainer.style.color = settings.color;
+    trackContainer.style.fontSize = settings['font-size'];
+    trackContainer.style.backgroundColor = settings.background;
   }
 
   renderSubtitles() {
     DOMElements.subtitlesContainer.innerHTML = '';
 
-    if (this.isTesting) {
+    if (this.isTestSubtitleActive) {
       const trackContainer = document.createElement('div');
       trackContainer.className = 'subtitle-track';
       this.applyStyles(trackContainer);
@@ -887,6 +435,6 @@ export class SubtitlesManager {
   }
 
   mediaNameSet() {
-    this.subui.search.value = this.client.mediaName;
+    this.openSubtitlesSearch.setQueryInputValue(this.client.mediaName);
   }
 }

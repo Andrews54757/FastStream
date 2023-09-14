@@ -415,20 +415,6 @@ function getMediaNameFromTab(tab) {
 
   return words.join(' ');
 }
-function mergeOptions(defaultOptions, newOptions) {
-  const options = {};
-  for (const prop in defaultOptions) {
-    if (Object.hasOwn(defaultOptions, prop)) {
-      const opt = defaultOptions[prop];
-      if (typeof opt === 'object' && !Array.isArray(opt)) {
-        options[prop] = mergeOptions(opt, newOptions[prop] || {});
-      } else {
-        options[prop] = (Object.hasOwn(newOptions, prop) && typeof newOptions[prop] === typeof opt) ? newOptions[prop] : opt;
-      }
-    }
-  }
-  return options;
-}
 
 function loadOptions() {
   chrome.storage.local.get({
@@ -436,7 +422,7 @@ function loadOptions() {
   }, (results) => {
     const newOptions = JSON.parse(results.options) || {};
 
-    options = mergeOptions(DefaultOptions, newOptions);
+    options = Utils.mergeOptions(DefaultOptions, newOptions);
 
     chrome.storage.local.set({
       options: JSON.stringify(options),

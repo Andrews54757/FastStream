@@ -9,6 +9,21 @@ ModesMap.set('m3u', PlayerModes.ACCELERATED_HLS);
 ModesMap.set('mpd', PlayerModes.ACCELERATED_DASH);
 
 export class Utils {
+  static mergeOptions(defaultOptions, newOptions) {
+    const options = {};
+    for (const prop in defaultOptions) {
+      if (Object.hasOwn(defaultOptions, prop)) {
+        const opt = defaultOptions[prop];
+        if (typeof opt === 'object' && !Array.isArray(opt)) {
+          options[prop] = this.mergeOptions(opt, newOptions[prop] || {});
+        } else {
+          options[prop] = (Object.hasOwn(newOptions, prop) && typeof newOptions[prop] === typeof opt) ? newOptions[prop] : opt;
+        }
+      }
+    }
+    return options;
+  }
+
   static is_url_yt(urlStr) {
     const url = new URL(urlStr);
     const hostname = url.hostname;

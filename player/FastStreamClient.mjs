@@ -103,12 +103,9 @@ export class FastStreamClient extends EventEmitter {
   }
 
   loadSubtitleTrack(subtitleTrack) {
-    this.subtitlesManager.addTrack(subtitleTrack);
-    const defLang = this.subtitlesManager.settings['default-lang'];
-    if (this.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.subtitlesManager.activeTracks.length === 0) {
-      this.subtitlesManager.activateTrack(subtitleTrack);
-    }
+    this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack);
   }
+
   updateDuration(duration) {
     this.persistent.duration = duration;
     this.interfaceController.durationChanged();

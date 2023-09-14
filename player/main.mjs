@@ -166,8 +166,6 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
   }, 10000);
 }
 
-document.body.style = 'position: absolute; margin: 0px; left: 0; right: 0; top: 0; bottom: 0';
-
 if (!window.fastStream) {
   window.fastStream = new FastStreamClient();
 }

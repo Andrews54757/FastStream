@@ -1237,7 +1237,7 @@ body {
     background-color: rgba(92, 255, 255, .9);
 }
 
-.marker_container > div.analyzer_marker {
+.marker_container>div.analyzer_marker {
     background-color: rgb(210, 186, 53);
     bottom: 0px;
     top: 3px;
@@ -1926,4 +1926,31 @@ body {
     border-left: 8px solid white;
     border-bottom: 8px solid transparent;
     border-top: 8px solid transparent;
+}
+
+.rate-changer-list {
+    overflow-y: scroll;
+    padding-right: 20px;
+    box-sizing: content-box;
+    width: 80px;
+    height: 100%;
+}
+
+.rate-changer-list>div {
+    font-family: Arial;
+    font-size: 15px;
+    width: 60px;
+    text-align: center;
+    padding: 3px 0px;
+    line-height: 1em;
+}
+
+.subtitle-menu-option {
+    padding: 3px 5px;
+    color: rgba(255, 255, 255, .8);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.subtitle-menu-option:nth-child(2) {
+    border-top: none;
 }
