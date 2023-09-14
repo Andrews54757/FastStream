@@ -253,8 +253,11 @@ export class VideoAligner extends EventEmitter {
         if (filled > 0.75) {
           if (aligned.startB < memoryEntry.matchStart) {
             // If the match start is before the stored start, we need to move the stored start earlier
-            memoryEntry.matchStart = aligned.startB;
-            this.hasMemoryChanges = true;
+            // But only do it if the end has been analyzed
+            if (Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
+              memoryEntry.matchStart = aligned.startB;
+              this.hasMemoryChanges = true;
+            }
           } else if (aligned.startB > memoryEntry.matchStart) {
             // If the match start is after the stored start, we need to move the stored start later
             memoryEntry.matchStart = aligned.startB;
