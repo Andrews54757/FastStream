@@ -250,39 +250,30 @@ export class VideoAligner extends EventEmitter {
         if (timeEnd === timeStart) {
           filled = 1;
         }
-
-        if (aligned.startB < memoryEntry.matchStart) {
-          // If the match start is before the stored start, we need to move the stored start earlier
-          // But only do it if we have 50% of the match filled
-          if (filled > 0.5) {
+        if (filled > 0.75) {
+          if (aligned.startB < memoryEntry.matchStart) {
+            // If the match start is before the stored start, we need to move the stored start earlier
+            memoryEntry.matchStart = aligned.startB;
+            this.hasMemoryChanges = true;
+          } else if (aligned.startB > memoryEntry.matchStart) {
+            // If the match start is after the stored start, we need to move the stored start later
             memoryEntry.matchStart = aligned.startB;
             this.hasMemoryChanges = true;
           }
-        } else if (aligned.startB > memoryEntry.matchStart) {
-          // If the match start is after the stored start, we need to move the stored start later
-          // But only do it if we have 75% of the match filled
-          if (filled > 0.75) {
-            memoryEntry.matchStart = aligned.startB;
-            this.hasMemoryChanges = true;
-          }
-        }
 
-        if (aligned.endB < memoryEntry.matchEnd) {
-          // If the match end is before the stored end, we need to move the stored end earlier
-          // But only do it if we have 75% of the match filled and the end has been analyzed
-          if (filled > 0.75 && Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
-            memoryEntry.matchEnd = aligned.endB;
-            this.hasMemoryChanges = true;
-          }
-        } else if (aligned.endB > memoryEntry.matchEnd) {
-          // If the match end is after the stored end, we need to move the stored end later
-          // But only do it if we have 50% of the match filled
-          if (filled > 0.5) {
+          if (aligned.endB < memoryEntry.matchEnd) {
+            // If the match end is before the stored end, we need to move the stored end earlier
+            // But only do it if the end has been analyzed
+            if (Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
+              memoryEntry.matchEnd = aligned.endB;
+              this.hasMemoryChanges = true;
+            }
+          } else if (aligned.endB > memoryEntry.matchEnd) {
+            // If the match end is after the stored end, we need to move the stored end later
             memoryEntry.matchEnd = aligned.endB;
             this.hasMemoryChanges = true;
           }
         }
-
         if (aligned.endB >= memoryEntry.matchStart && aligned.startB <= memoryEntry.matchEnd) {
           matches.push({
             identifier,
