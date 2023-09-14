@@ -124,11 +124,13 @@ export class VideoAnalyzer extends EventEmitter {
           this.introStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Intro finder completed', completed);
           this.dereferenceFragments(reserved);
+          this.client.interfaceController.updateMarkers();
         });
 
         if (!this.introPlayer) {
           this.introStatus = AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Intro finder failed');
+          this.client.interfaceController.updateMarkers();
         }
       }
     }
@@ -142,11 +144,13 @@ export class VideoAnalyzer extends EventEmitter {
           this.outroStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Outro finder completed', completed);
           this.dereferenceFragments(reserved);
+          this.client.interfaceController.updateMarkers();
         });
 
         if (!this.outroPlayer) {
           this.outroStatus = AnalyzerStatus.FAILED;
           console.log('[VideoAnalyzer] Outro finder failed');
+          this.client.interfaceController.updateMarkers();
         }
       }
     }
@@ -286,6 +290,14 @@ export class VideoAnalyzer extends EventEmitter {
     return true;
   }
 
+  getMarkerPosition() {
+    if (this.introStatus === AnalyzerStatus.RUNNING) {
+      return this.introPlayer.currentTime;
+    } else if (this.outroStatus === AnalyzerStatus.RUNNING) {
+      return this.outroPlayer.currentTime;
+    }
+    return null;
+  }
 
   runAnalyzerInBackground(player, aligner, timeStart, timeEnd, onDone) {
     //  document.body.appendChild(player.video);
@@ -368,6 +380,8 @@ export class VideoAnalyzer extends EventEmitter {
         }, 1);
         lastCalculate = Date.now();
       }
+
+      this.client.interfaceController.updateMarkers();
     };
 
     requestAnimationFrame(onAnimFrame);

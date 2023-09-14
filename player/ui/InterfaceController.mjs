@@ -353,6 +353,16 @@ export class InterfaceController {
     }, 3000);
     this.setupRateChanger();
 
+    this.seekMarker = document.createElement('div');
+    this.seekMarker.classList.add('seek_marker');
+    DOMElements.markerContainer.appendChild(this.seekMarker);
+    this.seekMarker.style.display = 'none';
+
+    this.analyzerMarker = document.createElement('div');
+    this.analyzerMarker.classList.add('analyzer_marker');
+    DOMElements.markerContainer.appendChild(this.analyzerMarker);
+    this.analyzerMarker.style.display = 'none';
+
     // eslint-disable-next-line new-cap
     Coloris({
       theme: 'pill',
@@ -703,14 +713,21 @@ export class InterfaceController {
     document.body.removeChild(link);
   }
   updateMarkers() {
-    DOMElements.markerContainer.innerHTML = '';
     const seeks = this.client.seeks;
     if (seeks.length) {
       const time = seeks[seeks.length - 1];
-      const marker = document.createElement('div');
-      marker.classList.add('seek_marker');
-      marker.style.left = (time / this.persistent.duration * 100) + '%';
-      DOMElements.markerContainer.appendChild(marker);
+      this.seekMarker.style.left = (time / this.persistent.duration * 100) + '%';
+      this.seekMarker.style.display = '';
+    } else {
+      this.seekMarker.style.display = 'none';
+    }
+
+    const analyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition(); ;
+    if (analyzerMarkerPosition !== null) {
+      this.analyzerMarker.style.left = (analyzerMarkerPosition / this.persistent.duration * 100) + '%';
+      this.analyzerMarker.style.display = '';
+    } else {
+      this.analyzerMarker.style.display = 'none';
     }
   }
   skipIntroOutro() {

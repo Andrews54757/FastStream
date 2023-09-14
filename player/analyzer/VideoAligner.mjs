@@ -8,7 +8,7 @@ const WIDTH = 16;
 const HEIGHT = 8;
 const HASH_BITS = WIDTH * HEIGHT / 2;
 const HASH_LENGTH = Math.ceil(HASH_BITS / 32);
-const ALIGN_CUTOFF = 12;
+const ALIGN_CUTOFF = 14;
 export class VideoAligner extends EventEmitter {
   constructor() {
     super();
@@ -207,55 +207,87 @@ export class VideoAligner extends EventEmitter {
       const sequence = memoryEntry.sequence;
       const aligned = this.hackyAlignment(this.currentSequence, sequence);
 
-      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 5)) {
+      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 30)) {
         const offsetStart = this.currentSequence[aligned.startA].time - sequence[aligned.startB].time;
         const offsetEnd = this.currentSequence[aligned.endA].time - sequence[aligned.endB].time;
 
 
-        if (memoryEntry.matchStart === -1 || aligned.startB <= memoryEntry.matchStart) {
+        if (memoryEntry.matchStart === -1) {
           memoryEntry.matchStart = aligned.startB;
           this.hasMemoryChanges = true;
-        } else {
-          const time = this.clampTime(sequence[memoryEntry.matchStart].time + offsetStart);
-          const indexA = this.getClosestIndex(this.currentSequence, time);
-          const indexB = this.getClosestIndex(sequence, time - offsetStart);
-
-          if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
-            const filled = (aligned.startA - indexA) / (aligned.startB - indexB);
-
-            if (filled > 0.75) {
-              // console.log("filled start", filled, memoryEntry.matchStart, aligned.startB, aligned)
-              memoryEntry.matchStart = aligned.startB;
-              this.hasMemoryChanges = true;
-            }
-          }
         }
 
-        if (memoryEntry.matchEnd === -1 || aligned.endB >= memoryEntry.matchEnd) {
+
+        if (memoryEntry.matchEnd === -1) {
           memoryEntry.matchEnd = aligned.endB;
           this.hasMemoryChanges = true;
-        } else {
-          const time = this.clampTime(sequence[memoryEntry.matchEnd].time + offsetEnd);
-          const indexA = this.getClosestIndex(this.currentSequence, time);
-          const indexB = this.getClosestIndex(sequence, time - offsetStart);
+        }
 
-          if (Math.abs(this.currentSequence[indexA].time - time) <= 2) {
-            const filled = (indexA - aligned.endA) / (indexB - aligned.endB);
+        const timeStart = this.clampTime(sequence[memoryEntry.matchStart].time + offsetStart);
+        const timeEnd = this.clampTime(sequence[memoryEntry.matchEnd].time + offsetStart);
+        const indexBStart = this.getClosestIndex(sequence, timeStart - offsetStart);
+        const indexBEnd = this.getClosestIndex(sequence, timeEnd - offsetEnd);
 
-            if (filled > 0.75) {
-              // console.log("filled end", filled, memoryEntry.matchEnd, aligned.endB, aligned)
-              memoryEntry.matchEnd = aligned.endB;
-              this.hasMemoryChanges = true;
-            }
+        let indexStart = this.getClosestIndex(this.currentSequence, timeStart);
+
+        if (this.currentSequence[indexStart].time < timeStart) {
+          // get closest one that is bigger
+          while (indexStart < this.currentSequence.length && this.currentSequence[indexStart].time < timeStart) {
+            indexStart++;
           }
         }
 
-        matches.push({
-          identifier,
-          startTime: sequence[memoryEntry.matchStart].time + offsetStart,
-          endTime: sequence[memoryEntry.matchEnd].time + offsetEnd,
-          count: memoryEntry.matchEnd - memoryEntry.matchStart,
-        });
+        let indexEnd = this.getClosestIndex(this.currentSequence, timeEnd);
+
+        if (this.currentSequence[indexEnd].time > timeEnd) {
+          // get closest one that is smaller
+          while (indexEnd > 0 && this.currentSequence[indexEnd].time > timeEnd) {
+            indexEnd--;
+          }
+        }
+
+        const filled = (indexEnd - indexStart) / (indexBEnd - indexBStart);
+
+        if (aligned.startB < memoryEntry.matchStart) {
+          // If the match start is before the stored start, we need to move the stored start earlier
+          // But only do it if we have 50% of the match filled
+          if (filled > 0.5) {
+            memoryEntry.matchStart = aligned.startB;
+            this.hasMemoryChanges = true;
+          }
+        } else if (aligned.startB > memoryEntry.matchStart) {
+          // If the match start is after the stored start, we need to move the stored start later
+          // But only do it if we have 75% of the match filled
+          if (filled > 0.75) {
+            memoryEntry.matchStart = aligned.startB;
+            this.hasMemoryChanges = true;
+          }
+        }
+
+        if (aligned.endB < memoryEntry.matchEnd) {
+          // If the match end is before the stored end, we need to move the stored end earlier
+          // But only do it if we have 75% of the match filled
+          if (filled > 0.75) {
+            memoryEntry.matchEnd = aligned.endB;
+            this.hasMemoryChanges = true;
+          }
+        } else if (aligned.endB > memoryEntry.matchEnd) {
+          // If the match end is after the stored end, we need to move the stored end later
+          // But only do it if we have 50% of the match filled
+          if (filled > 0.5) {
+            memoryEntry.matchEnd = aligned.endB;
+            this.hasMemoryChanges = true;
+          }
+        }
+
+        if (aligned.endB >= memoryEntry.matchStart && aligned.startB <= memoryEntry.matchEnd) {
+          matches.push({
+            identifier,
+            startTime: sequence[memoryEntry.matchStart].time + offsetStart,
+            endTime: sequence[memoryEntry.matchEnd].time + offsetEnd,
+            count: memoryEntry.matchEnd - memoryEntry.matchStart,
+          });
+        }
       };
     });
 
@@ -423,7 +455,7 @@ export class VideoAligner extends EventEmitter {
     const sequenceB = memoryEntry.sequence;
 
     const aligned = this.hackyAlignment(sequenceA, sequenceB);
-    console.log(aligned.matrix.map((row) => row.map((val) => val.value.toString().padStart(4, ' ')).join(',')).join('\n'));
+    console.log(aligned.matrix.map((row) => row.map((val) => val.value.toString()).join('\t')).join('\n'));
     console.log(aligned);
   }
 
@@ -478,6 +510,7 @@ export class VideoAligner extends EventEmitter {
         };
 
         if (matrix[a][b].value > 0) {
+          matrix[a][b].value += ALIGN_CUTOFF * 5;
           let ai = a - 1;
           let bi = b - 1;
           const timeA = sequenceA[a].time;
@@ -489,10 +522,10 @@ export class VideoAligner extends EventEmitter {
           while (ai >= 0 && bi >= 0) {
             const durationA = timeA - sequenceA[ai].time;
             const durationB = timeB - sequenceB[bi].time;
-            if (durationA > 7 || durationB > 7) {
+            if (durationA > 8 || durationB > 8) {
               break;
             }
-            const diff = Math.abs(durationA - durationB) * 2;
+            const diff = Math.abs(durationA - durationB);
             if (diff <= 2) {
               const val = matrix[ai][bi].value - diff * Math.ceil(ALIGN_CUTOFF / 4);
               if (val > max) {
