@@ -2,7 +2,6 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {DashJS} from '../../modules/dash.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
-import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
@@ -282,33 +281,22 @@ export default class DashPlayer extends EventEmitter {
     const frags = this.client.getFragments(this.currentLevel);
     if (!frags) return null;
 
-    let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
-      if (!frag) return 1;
-      if (time < frag.start) return -1;
-      if (time >= frag.end) return 1;
-      return 0;
+    const time = this.currentTime;
+    return frags.find((frag) => {
+      if (!frag) return false;
+      return time >= frag.start && time < frag.end;
     });
-
-    if (index == -1) return frags[0];
-
-    if (index < -1) index = -index - 2;
-    return frags[index];
   }
 
   get currentAudioFragment() {
     const frags = this.client.getFragments(this.currentAudioLevel);
     if (!frags) return null;
 
-    let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
-      if (!frag) return 1;
-      if (time < frag.start) return -1;
-      if (time >= frag.end) return 1;
-      return 0;
+    const time = this.currentTime;
+    return frags.find((frag) => {
+      if (!frag) return false;
+      return time >= frag.start && time < frag.end;
     });
-    if (index == -1) return null;
-
-    if (index < -1) index = -index - 2;
-    return frags[index];
   }
 
   canSave() {

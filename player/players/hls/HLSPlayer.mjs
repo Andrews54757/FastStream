@@ -397,16 +397,11 @@ export default class HLSPlayer extends EventEmitter {
     const frags = this.client.getFragments(this.currentAudioLevel);
     if (!frags) return null;
 
-    let index = Utils.binarySearch(frags, this.currentTime, (time, frag) => {
-      if (!frag) return 1;
-      if (time < frag.start) return -1;
-      if (time >= frag.end) return 1;
-      return 0;
+    const time = this.currentTime;
+    return frags.find((frag) => {
+      if (!frag) return false;
+      return time >= frag.start && time < frag.end;
     });
-    if (index == -1) return null;
-
-    if (index < -1) index = -index - 2;
-    return frags[index];
   }
 
   get volume() {
