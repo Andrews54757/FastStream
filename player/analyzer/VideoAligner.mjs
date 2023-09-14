@@ -123,6 +123,7 @@ export class VideoAligner extends EventEmitter {
         hash: null,
         entries: [],
         timeSet: new Set(),
+        hashCounts: new Uint8Array(HASH_LENGTH * 32),
       };
       this.currentSequence.splice(-index - 1, 0, entry);
       this.hasMemoryChanges = true;
@@ -134,30 +135,29 @@ export class VideoAligner extends EventEmitter {
 
     entry.timeSet.add(data.time);
 
-    const entries = entry.entries;
-    let found = false;
-    for (let i = 0; i < entries.length; i++) {
-      const distance = this.hashDistance(entries[i].hash, hash);
-      entries[i].score += HASH_LENGTH * 32 - distance;
-      if (distance === 0) {
-        found = true;
+    for (let i = 0; i < HASH_LENGTH; i++) {
+      for (let j = 0; j < 32; j++) {
+        if (hash[i] & (1 << j)) {
+          entry.hashCounts[i * 32 + j]++;
+        }
       }
     }
 
-    entry.entries.sort((a, b) => b.score - a.score);
-
-    if (!found) {
-      entry.entries.push({
-        hash,
-        score: 0,
-      });
+    const averageHash = new Uint32Array(HASH_LENGTH);
+    for (let i = 0; i < HASH_LENGTH; i++) {
+      for (let j = 0; j < 32; j++) {
+        if (entry.hashCounts[i * 32 + j] > (entry.timeSet.size / 2)) {
+          averageHash[i] |= (1 << j);
+        }
+      }
     }
 
-    if (!entry.hash || !this.hashEquals(entry.hash, entry.entries[0].hash)) {
+    if (!entry.hash || !this.hashEquals(entry.hash, averageHash)) {
       this.hasMemoryChanges = true;
-      entry.hash = entry.entries[0].hash;
+      entry.hash = averageHash;
     }
   }
+
 
   getClosestIndex(sequence, time) {
     let index = Utils.binarySearch(sequence, time, (time, item) => {
@@ -207,7 +207,7 @@ export class VideoAligner extends EventEmitter {
       const sequence = memoryEntry.sequence;
       const aligned = this.hackyAlignment(this.currentSequence, sequence);
 
-      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 5)) {
+      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 9)) {
         const offsetStart = this.currentSequence[aligned.startA].time - sequence[aligned.startB].time;
         const offsetEnd = this.currentSequence[aligned.endA].time - sequence[aligned.endB].time;
 
@@ -395,7 +395,7 @@ export class VideoAligner extends EventEmitter {
 
       if (identifier === this.currentIdentifier) {
         sequence.forEach((item) => {
-          item.entries = [];
+          item.hashCounts = new Uint8Array(HASH_LENGTH * 32);
           item.timeSet = new Set();
         });
         this.currentSequence = sequence;
@@ -504,6 +504,7 @@ export class VideoAligner extends EventEmitter {
         };
 
         if (matrix[a][b].value > 0) {
+          matrix[a][b].value += ALIGN_CUTOFF;
           let ai = a - 1;
           let bi = b - 1;
           const timeA = sequenceA[a].time;
