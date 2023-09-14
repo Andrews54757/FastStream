@@ -207,7 +207,7 @@ export class VideoAligner extends EventEmitter {
       const sequence = memoryEntry.sequence;
       const aligned = this.hackyAlignment(this.currentSequence, sequence);
 
-      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 8)) {
+      if (aligned && aligned.count > 4 && aligned.score > (ALIGN_CUTOFF * 5)) {
         const offsetStart = this.currentSequence[aligned.startA].time - sequence[aligned.startB].time;
         const offsetEnd = this.currentSequence[aligned.endA].time - sequence[aligned.endB].time;
 
