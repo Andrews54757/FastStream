@@ -224,7 +224,7 @@ export class VideoAligner extends EventEmitter {
         }
 
         const timeStart = this.clampTime(sequence[memoryEntry.matchStart].time + offsetStart);
-        const timeEnd = this.clampTime(sequence[memoryEntry.matchEnd].time + offsetStart);
+        const timeEnd = this.clampTime(sequence[memoryEntry.matchEnd].time + offsetEnd);
         const indexBStart = this.getClosestIndex(sequence, timeStart - offsetStart);
         const indexBEnd = this.getClosestIndex(sequence, timeEnd - offsetEnd);
 
@@ -250,29 +250,13 @@ export class VideoAligner extends EventEmitter {
         if (timeEnd === timeStart) {
           filled = 1;
         }
-        if (filled > 0.75) {
-          if (aligned.startB < memoryEntry.matchStart) {
-            // If the match start is before the stored start, we need to move the stored start earlier
-            // But only do it if the end has been analyzed
-            if (Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
-              memoryEntry.matchStart = aligned.startB;
-              this.hasMemoryChanges = true;
-            }
-          } else if (aligned.startB > memoryEntry.matchStart) {
-            // If the match start is after the stored start, we need to move the stored start later
+        if (filled > 0.75 && Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
+          if (aligned.startB !== memoryEntry.matchStart) {
             memoryEntry.matchStart = aligned.startB;
             this.hasMemoryChanges = true;
           }
 
-          if (aligned.endB < memoryEntry.matchEnd) {
-            // If the match end is before the stored end, we need to move the stored end earlier
-            // But only do it if the end has been analyzed
-            if (Math.abs(this.currentSequence[indexEnd].time - timeEnd) <= 2) {
-              memoryEntry.matchEnd = aligned.endB;
-              this.hasMemoryChanges = true;
-            }
-          } else if (aligned.endB > memoryEntry.matchEnd) {
-            // If the match end is after the stored end, we need to move the stored end later
+          if (aligned.endB !== memoryEntry.matchEnd) {
             memoryEntry.matchEnd = aligned.endB;
             this.hasMemoryChanges = true;
           }
