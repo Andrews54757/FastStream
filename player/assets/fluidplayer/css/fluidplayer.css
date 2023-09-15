@@ -378,6 +378,10 @@
     height: 5px;
 }
 
+.fluid_controls_currentprogress {
+    background-color: red;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container:hover .fluid_controls_progress .fluid_controls_currentprogress {
     height: 5px;
 }
@@ -1077,6 +1081,7 @@ body {
 
 .progress_loaded_container {
     position: absolute;
+    overflow: hidden;
     inset: 0px;
     z-index: -1;
 }
@@ -1229,17 +1234,28 @@ body {
     z-index: 2;
 }
 
-.marker_container>div {
+.marker_container > div {
     border-radius: 1px;
     position: absolute;
     transform: translate(-50%, 0);
-    top: 0px;
-    bottom: 3px;
-    width: 3px;
 }
 
-.seek_marker {
-    background-color: rgba(92, 255, 255, .9);
+.marker_container > div.seek_marker {
+    top: 0px;
+    width: 0px;
+    height: 0px;;
+    border-top: 3px solid rgb(84, 244, 255);
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+}
+
+.fluid_controls_progress_container .seek_marker {
+    display: none;
+}
+
+.fluid_controls_progress_container:hover .seek_marker,
+.fluid_controls_progress_container.skip_freeze .seek_marker {
+    display: block;
 }
 
 .marker_container>div.analyzer_marker {

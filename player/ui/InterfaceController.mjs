@@ -30,6 +30,8 @@ export class InterfaceController {
     DOMElements.seekPreviewVideo.style.display = 'none';
     DOMElements.progressLoadedContainer.innerHTML = '';
     DOMElements.downloadStatus.textContent = '';
+    this.progressCache = [];
+    this.progressCacheAudio = [];
     this.hasShownSkip = false;
     this.failed = false;
     this.reuseDownloadURL = false;
@@ -84,11 +86,12 @@ export class InterfaceController {
     DOMElements.seekPreviewVideo.appendChild(video);
   }
 
-  renderProgressBar(fragments, additionalClass = null) {
+  collectProgressbarData(fragments) {
     let i = 0;
     let total = 0;
     let loaded = 0;
-    let currentTime = 0;
+    let currentTime = -1;
+    const results = [];
     while (i < fragments.length) {
       const frag = fragments[i];
 
@@ -97,10 +100,11 @@ export class InterfaceController {
         continue;
       }
       total++;
-      if (frag.start && !currentTime) {
-        currentTime = frag.start;
+      if (currentTime === -1) {
+        currentTime = frag.start ? Math.max(frag.start, 0) : 0;
       }
-      const start = Math.max(currentTime, 0);
+
+      const start = currentTime;
 
       let end = currentTime + frag.duration;
       currentTime = end;
@@ -110,20 +114,21 @@ export class InterfaceController {
         continue;
       }
 
-      const element = document.createElement('div');
-      element.style.left = Math.min(start / this.persistent.duration * 100, 100) + '%';
-
-      if (additionalClass) {
-        element.classList.add(additionalClass);
-      }
+      const entry = {
+        start: start,
+        end: 0,
+        width: 0,
+        statusClass: 'download-uninitiated',
+      };
+      results.push(entry);
 
       if (frag.status === DownloadStatus.DOWNLOAD_INITIATED) {
-        element.classList.add('download-initiated');
+        entry.statusClass = 'download-initiated';
       } else if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
         loaded++;
-        element.classList.add('download-complete');
+        entry.statusClass = 'download-complete';
       } else if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
-        element.classList.add('download-failed');
+        entry.statusClass = 'download-failed';
       }
 
       i++;
@@ -139,25 +144,66 @@ export class InterfaceController {
         }
       }
 
-      end = Math.min(end, this.persistent.duration);
-
-      element.style.width = Math.min((end - start) / this.persistent.duration * 100, 100) + '%';
-
-      DOMElements.progressLoadedContainer.appendChild(element);
+      entry.end = end;
+      entry.width = end - start;
     }
     return {
-      i, total, loaded,
+      results, total, loaded,
+    };
+  }
+
+  updateProgressBar(cache, results, additionalClass) {
+    for (let i = cache.length; i < results.length; i++) {
+      const entry = {
+        start: -1,
+        width: -1,
+        className: '',
+        element: document.createElement('div'),
+      };
+      DOMElements.progressLoadedContainer.appendChild(entry.element);
+      cache.push(entry);
+    }
+
+    for (let i = results.length; i < cache.length; i++) {
+      cache[i].element.remove();
+    }
+
+    cache.length = results.length;
+
+    for (let i = 0; i < results.length; i++) {
+      const result = results[i];
+      const entry = cache[i];
+      if (entry.start !== result.start) {
+        entry.start = result.start;
+        entry.element.style.left = Math.min(result.start / this.persistent.duration * 100, 100) + '%';
+      }
+
+      if (entry.width !== result.width) {
+        entry.width = result.width;
+        entry.element.style.width = Math.min(result.width / this.persistent.duration * 100, 100) + '%';
+      }
+
+      const className = ([result.statusClass, additionalClass]).join(' ');
+      if (entry.className !== className) {
+        entry.className = className;
+        entry.element.className = className;
+      }
+    }
+  }
+  renderProgressBar(cache, fragments, additionalClass = null) {
+    const {results, total, loaded} = this.collectProgressbarData(fragments);
+
+    this.updateProgressBar(cache, results, additionalClass);
+
+    return {
+      total,
+      loaded,
     };
   }
   updateFragmentsLoaded() {
-    DOMElements.progressLoadedContainer.innerHTML = '';
-
-
-    if (!this.persistent.duration) {
-      return;
-    }
-
-    if (!this.client.player) {
+    if (!this.persistent.duration || !this.client.player) {
+      this.renderProgressBar(this.progressCache, []);
+      this.renderProgressBar(this.progressCacheAudio, []);
       return;
     }
 
@@ -171,13 +217,13 @@ export class InterfaceController {
     let loaded = 0;
 
     if (fragments) {
-      const result = this.renderProgressBar(fragments, audioFragments ? 'download-video' : null);
+      const result = this.renderProgressBar(this.progressCache, fragments, audioFragments ? 'download-video' : null);
       total += result.total;
       loaded += result.loaded;
     }
 
     if (audioFragments) {
-      const result = this.renderProgressBar(audioFragments, fragments ? 'download-audio' : null);
+      const result = this.renderProgressBar(this.progressCacheAudio, audioFragments, fragments ? 'download-audio' : null);
       total += result.total;
       loaded += result.loaded;
     }
