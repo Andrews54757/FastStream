@@ -18,8 +18,6 @@ export default class MP4Player extends EventEmitter {
     this.isPreview = config?.isPreview || false;
     this.video = document.createElement('video');
 
-    //  this.persistentCurrentTime = 0;
-
     this.mp4box = MP4Box.createFile(false);
 
     this.options = {
