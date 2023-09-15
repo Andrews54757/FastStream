@@ -15,8 +15,9 @@ export class VideoAligner extends EventEmitter {
     this.canvas = document.createElement('canvas');
     this.canvas.width = WIDTH;
     this.canvas.height = HEIGHT;
-    this.ctx = this.canvas.getContext('2d', {willReadFrequently: true});
-
+    this.ctx = this.canvas.getContext('2d', {
+      willReadFrequently: true,
+    });
     this.currentSequence = [];
 
     this.currentIdentifier = '';

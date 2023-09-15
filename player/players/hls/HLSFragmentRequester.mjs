@@ -9,8 +9,10 @@ export class HLSFragmentRequester {
   }
 
   destroy() {
-    this.decrypter.destroy();
-    this.decrypter = null;
+    if (this.decrypter) {
+      this.decrypter.destroy();
+      this.decrypter = null;
+    }
   }
 
   requestFragment(fragment, callbacks, config) {

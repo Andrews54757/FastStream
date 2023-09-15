@@ -122,6 +122,7 @@ export class VideoAnalyzer extends EventEmitter {
         const reserved = this.referenceFragments(introStart, introEnd);
         this.introPlayer = await this.loadPlayer(this.introAligner, introStart, introEnd, (completed) => {
           this.introStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
+          this.introPlayer = null;
           console.log('[VideoAnalyzer] Intro finder completed', completed);
           this.dereferenceFragments(reserved);
           this.client.interfaceController.updateMarkers();
@@ -142,6 +143,7 @@ export class VideoAnalyzer extends EventEmitter {
         const reserved = this.referenceFragments(outroStart, outroEnd);
         this.outroPlayer = await this.loadPlayer(this.outroAligner, outroStart, outroEnd, (completed) => {
           this.outroStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
+          this.outroPlayer = null;
           console.log('[VideoAnalyzer] Outro finder completed', completed);
           this.dereferenceFragments(reserved);
           this.client.interfaceController.updateMarkers();
@@ -246,27 +248,6 @@ export class VideoAnalyzer extends EventEmitter {
     player.on(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
     await player.setSource(this.source);
     return player;
-  }
-  load(currentLevel, duration) {
-    const outroStart = Math.max(duration - this.options.outroCutoff, this.options.introCutoff);
-    if (this.outroPlayer && outroStart + 10 > duration) {
-      this.outroPlayer.destroy();
-      this.outroPlayer = null;
-    }
-    this.setLevel(currentLevel);
-    if (this.introPlayer) {
-      this.runAnalyzerInBackground(this.introPlayer, this.introAligner, 0, Math.min(this.options.introCutoff, duration));
-      this.introPlayer.on(DefaultPlayerEvents.DESTROYED, () => {
-        this.introPlayer = null;
-      });
-    }
-
-    if (this.outroPlayer) {
-      this.runAnalyzerInBackground(this.outroPlayer, this.outroAligner, outroStart, duration);
-      this.outroPlayer.on(DefaultPlayerEvents.DESTROYED, () => {
-        this.outroPlayer = null;
-      });
-    }
   }
 
   shouldAnalyze() {
@@ -386,6 +367,7 @@ export class VideoAnalyzer extends EventEmitter {
 
     requestAnimationFrame(onAnimFrame);
   }
+
   setLevel(level) {
     this.destroyPlayers();
 
@@ -397,6 +379,7 @@ export class VideoAnalyzer extends EventEmitter {
       this.outroStatus = AnalyzerStatus.IDLE;
     }
   }
+
   pushFrame(video) {
     if (!this.shouldAnalyze()) return false;
 
