@@ -103,7 +103,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   loadSubtitleTrack(subtitleTrack) {
-    this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack);
+    return this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack);
   }
 
   updateDuration(duration) {
@@ -166,8 +166,10 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async addSource(source, setSource = false) {
+    source = source.copy();
+
     console.log('addSource', source);
-    this.sourcesBrowser.addSource(source);
+    source = this.sourcesBrowser.addSource(source);
     if (setSource) {
       await this.setSource(source);
     }
@@ -175,8 +177,9 @@ export class FastStreamClient extends EventEmitter {
     return source;
   }
 
-
   async setSource(source) {
+    source = source.copy();
+
     console.log('setSource', source);
     this.resetPlayer();
     this.source = source;

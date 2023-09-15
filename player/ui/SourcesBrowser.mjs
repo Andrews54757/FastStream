@@ -13,11 +13,20 @@ export class SourcesBrowser {
   }
 
   addSource(source) {
-    if (this.sources.find((s) => s.equals(source))) {
-      return;
+    const existing = this.sources.find((s) => s.equals(source));
+    if (existing) {
+      return existing;
     }
-    source = source.copy();
+
     this.sources.unshift(source);
+
+    this.setupSourceListing(source);
+    this.updateSources();
+
+    return source;
+  }
+
+  setupSourceListing(source) {
     // eslint-disable-next-line prefer-const
     let headersInput;
     const sourceContainer = WebUtils.create('div', null, 'linkui-source');
@@ -65,7 +74,7 @@ export class SourcesBrowser {
     sourceSetBtn.addEventListener('click', async (e) => {
       if (sourceSetBtn.textContent != 'Play') return;
       sourceSetBtn.textContent = 'Loading...';
-      await this.client.setSource(source.copy());
+      await this.client.setSource(source);
       this.updateSources();
       this.client.play();
     });
@@ -115,8 +124,6 @@ export class SourcesBrowser {
       setBtn: sourceSetBtn,
       deleteBtn: sourceDeleteBtn,
     };
-
-    this.updateSources();
   }
 
   updateSources() {

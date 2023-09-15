@@ -1243,7 +1243,7 @@ body {
 }
 
 .marker_container>div.analyzer_marker {
-    background-color: rgb(210, 186, 53);
+    background-color: rgb(199, 199, 199);
     bottom: 0px;
     top: 3px;
     width: 2px;

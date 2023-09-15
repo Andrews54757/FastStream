@@ -37,32 +37,38 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
             return;
           }
 
-          let source = sources[0];
+          let autoPlaySource = sources[0];
 
           sources.find((s) => {
             if (s.mode === PlayerModes.ACCELERATED_YT) {
-              source = s;
+              autoPlaySource = s;
               return true;
             }
             return false;
           });
 
-          if (source.mode === PlayerModes.ACCELERATED_MP4) {
-            source = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+          if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
+            autoPlaySource = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+          }
+
+          if (window.fastStream.source) {
+            autoPlaySource = null;
           }
 
           sources.forEach((s) => {
-            if (s !== source) {
+            if (s !== autoPlaySource) {
               window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
             }
           });
 
-          window.fastStream.addSource(new VideoSource(source.url, source.headers, source.mode), true).then(() => {
-            window.fastStream.play();
-          });
+          if (autoPlaySource) {
+            window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
+              window.fastStream.play();
+            });
 
+            window.fastStream.clearSubtitles();
+          }
 
-          window.fastStream.clearSubtitles();
           if (subs) {
             subs = subs.filter((sub) => sub);
             let todo = 1;

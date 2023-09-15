@@ -27,22 +27,40 @@ export class SubtitlesManager {
   }
 
   loadTrackAndActivateBest(subtitleTrack) {
-    this.addTrack(subtitleTrack);
+    const returnedTrack = this.addTrack(subtitleTrack);
+    if (returnedTrack !== subtitleTrack) {
+      return returnedTrack;
+    }
+
     const defLang = this.settingsManager.getSettings()['default-lang'];
     if (this.client.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.activeTracks.length === 0) {
       this.activateTrack(subtitleTrack);
     }
+
+    return returnedTrack;
   }
 
   addTrack(track) {
+    const existing = this.tracks.find((t) => t.equals(track));
+    if (existing) {
+      return existing;
+    }
+
     this.tracks.push(track);
 
     this.updateTrackList();
     this.client.interfaceController.showControlBar();
     this.client.interfaceController.queueControlsHide(1000);
+
+    return track;
   }
 
   activateTrack(track) {
+    if (this.tracks.indexOf(track) === -1) {
+      console.error('Cannot activate track that is not loaded', track);
+      return;
+    }
+
     if (this.activeTracks.indexOf(track) === -1) {
       this.activeTracks.push(track);
       this.updateTrackList();
@@ -56,6 +74,7 @@ export class SubtitlesManager {
       this.updateTrackList();
     }
   }
+
   clearTracks() {
     this.tracks.length = 0;
     this.activeTracks.length = 0;
@@ -79,8 +98,7 @@ export class SubtitlesManager {
   }
 
   onSubtitleTrackDownloaded(track) {
-    this.addTrack(track);
-    this.activateTrack(track);
+    this.activateTrack(this.addTrack(track));
   }
 
   setupUI() {

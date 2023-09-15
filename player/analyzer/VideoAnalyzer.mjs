@@ -84,6 +84,7 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   loadAnalyzerData(data) {
+    console.log('[VideoAnalyzer] Loading analyzer data');
     if (data.intro) {
       this.introAligner.loadMemoryFromSave(data.intro);
     }

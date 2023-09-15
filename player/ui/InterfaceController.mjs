@@ -522,8 +522,8 @@ export class InterfaceController {
       await track.loadURL(file.url);
       return track;
     }))).forEach((track) => {
-      this.client.loadSubtitleTrack(track);
-      this.client.subtitlesManager.activateTrack(track);
+      const returnedTrack = this.client.loadSubtitleTrack(track);
+      this.client.subtitlesManager.activateTrack(returnedTrack);
     });
 
     this.client.play();

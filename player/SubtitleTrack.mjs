@@ -52,4 +52,25 @@ export class SubtitleTrack {
     parser.parse(text);
     parser.flush();
   }
+
+  equals(otherTrack) {
+    if (this.label !== otherTrack.label && this.language !== otherTrack.language) {
+      return false;
+    }
+
+    if (this.cues.length !== otherTrack.cues.length) {
+      return false;
+    }
+
+    for (let i = 0; i < this.cues.length; i++) {
+      const cue = this.cues[i];
+      const otherCue = otherTrack.cues[i];
+
+      if (cue.startTime !== otherCue.startTime || cue.endTime !== otherCue.endTime || cue.text !== otherCue.text) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
