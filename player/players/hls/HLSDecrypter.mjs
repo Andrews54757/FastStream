@@ -1,10 +1,16 @@
 
 export class HLSDecrypter {
   constructor() {
-    this.setupEncryptionWorker();
     this.lastId = 0;
   }
   async decryptAES(data, iv, key) {
+    if (this.destroyed) {
+      console.error('Decrypter already destroyed');
+      return;
+    }
+    if (!this.encryptionWorker) {
+      this.setupEncryptionWorker();
+    }
     const id = this.lastId++;
     return new Promise((resolve, reject) => {
       this.encryptionWorkerCallbacks.set(id, (data, idn) => {
@@ -20,11 +26,14 @@ export class HLSDecrypter {
   }
 
   destroy() {
-    this.encryptionWorker.terminate();
+    if (this.encryptionWorker) {
+      this.encryptionWorker.terminate();
+      this.encryptionWorker = null;
+    }
+    this.destroyed = true;
   }
 
   setupEncryptionWorker() {
-    if (this.encryptionWorker) this.encryptionWorker.terminate();
     this.encryptionWorker = new Worker('modules/decrypter-worker.js');
     this.encryptionWorker.addEventListener('message', (event) => {
       const data = event.data;
