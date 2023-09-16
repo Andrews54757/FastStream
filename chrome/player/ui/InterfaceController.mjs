@@ -1007,7 +1007,7 @@ export class InterfaceController {
     };
 
     const onVolumeBarMouseMove = (event) => {
-      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer);
+      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 5;
       shiftVolume(currentX);
     };
 
@@ -1017,7 +1017,7 @@ export class InterfaceController {
       document.removeEventListener('mouseup', onVolumeBarMouseUp);
       document.removeEventListener('touchend', onVolumeBarMouseUp);
 
-      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer);
+      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 5;
 
       if (!isNaN(currentX)) {
         shiftVolume(currentX);
@@ -1159,6 +1159,7 @@ export class InterfaceController {
     }
 
     currentVolumeTag.style.width = (volume * 100) / 3 + '%';
+    DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
   }
   updateProgress() {
     DOMElements.currentProgress.style.width = (this.persistent.currentTime / this.persistent.duration) * 100 + '%';

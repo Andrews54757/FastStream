@@ -432,7 +432,6 @@
     top: -1px;
     z-index: 2;
     opacity: 0.8;
-    overflow: hidden;
     -webkit-transition: width 0.2s ease-in-out;
     -moz-transition: width 0.2s ease-in-out;
     -ms-transition: width 0.2s ease-in-out;
@@ -1988,4 +1987,43 @@ body {
     transform: translate(-50%, 0%);
     border-radius: 1px;
     z-index: 2;
+}
+
+
+.tooltip {
+	position: relative;
+}
+
+
+.tooltip .tooltiptext {
+	visibility: hidden;
+	background-color: rgb(200, 200, 200);
+	color: black;
+	text-align: center;
+	padding: 2px 0;
+	border-radius: 3px;
+	position: absolute;
+	z-index: 1;
+
+	width: 50px;
+	bottom: 100%;
+	left: 50%;
+	margin-left: -25px;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.tooltip:hover .tooltiptext {
+	visibility: visible;
+}
+
+.tooltip .tooltiptext::after {
+	content: " ";
+	position: absolute;
+	top: 100%;
+	left: 50%;
+	margin-left: -5px;
+	border-width: 5px;
+	border-style: solid;
+	border-color: rgb(200, 200, 200) transparent transparent transparent;
 }
