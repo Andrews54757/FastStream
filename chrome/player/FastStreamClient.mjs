@@ -20,7 +20,7 @@ export class FastStreamClient extends EventEmitter {
     this.options = {
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
-      bufferAhead: 60,
+      bufferAhead: 120,
       bufferBehind: 20,
       freeFragments: true,
       downloadAll: false,
@@ -162,7 +162,7 @@ export class FastStreamClient extends EventEmitter {
   updateHasDownloadSpace() {
     this.hasDownloadSpace = false;
     this.options.bufferBehind = 20;
-    this.options.bufferAhead = 60;
+    this.options.bufferAhead = 120;
     const levels = this.levels;
     if (!levels) return;
 
@@ -496,7 +496,7 @@ export class FastStreamClient extends EventEmitter {
     this.previousLevel = -1;
     this.previousAudioLevel = -1;
     this.options.bufferBehind = 20;
-    this.options.bufferAhead = 60;
+    this.options.bufferAhead = 120;
   }
 
   setMediaName(name) {
