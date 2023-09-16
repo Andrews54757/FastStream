@@ -342,9 +342,11 @@ export class SubtitleSyncer extends EventEmitter {
     this.started = false;
 
     const node = this.audioNodeVAD.getNode();
-    node.port.postMessage('close');
-    this.audioSource.disconnect(node);
-    node.disconnect();
+    if (node) {
+      node.port.postMessage('close');
+      this.audioSource.disconnect(node);
+    }
+
     this.audioNodeVAD = null;
 
     this.client.interfaceController.durationChanged();
