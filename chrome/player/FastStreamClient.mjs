@@ -124,6 +124,33 @@ export class FastStreamClient extends EventEmitter {
   seekPreview(time) {
     if (this.previewPlayer) {
       this.previewPlayer.currentTime = time;
+      this.updatePreview();
+    }
+  }
+
+  updatePreview() {
+    if (!this.previewPlayer) return;
+
+    if (this.previewPlayer.getVideo().readyState > 1) {
+      this.previewPlayer.getVideo().style.opacity = 1;
+      return;
+    }
+
+    let shouldShowPreview = false;
+    // check if time is buffered
+    const time = this.previewPlayer.currentTime;
+    const buffered = this.previewPlayer.buffered;
+    for (let i = 0; i < buffered.length; i++) {
+      if (time >= buffered.start(i) && time <= buffered.end(i)) {
+        shouldShowPreview = true;
+        break;
+      }
+    }
+
+    if (shouldShowPreview) {
+      this.previewPlayer.getVideo().style.opacity = 1;
+    } else {
+      this.previewPlayer.getVideo().style.opacity = 0;
     }
   }
 
@@ -283,9 +310,10 @@ export class FastStreamClient extends EventEmitter {
 
   mainloop() {
     if (this.destroyed) return;
-    setTimeout(this.mainloop.bind(this), 1000);
+    setTimeout(this.mainloop.bind(this), 500);
 
     if (this.player) {
+      this.updatePreview();
       this.predownloadFragments();
 
       if (!this.shouldDownloadAll()) {
@@ -620,22 +648,6 @@ export class FastStreamClient extends EventEmitter {
 
       this.previewPlayer.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
         this.interfaceController.updateFragmentsLoaded();
-      });
-
-      const seekHideTimeouts = [];
-      this.previewPlayer.on(DefaultPlayerEvents.SEEKING, () => {
-        seekHideTimeouts.push(setTimeout(() => {
-          this.previewPlayer.getVideo().style.opacity = 0;
-        }, 200));
-      });
-
-      this.previewPlayer.on(DefaultPlayerEvents.SEEKED, () => {
-        seekHideTimeouts.forEach((timeout) => {
-          clearTimeout(timeout);
-        });
-        seekHideTimeouts.length = 0;
-
-        this.previewPlayer.getVideo().style.opacity = 1;
       });
 
       this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
