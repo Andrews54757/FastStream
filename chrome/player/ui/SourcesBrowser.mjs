@@ -47,9 +47,9 @@ export class SourcesBrowser {
     modes[PlayerModes.ACCELERATED_HLS] = 'Accelerated HLS';
     modes[PlayerModes.ACCELERATED_DASH] = 'Accelerated DASH';
 
-    // SPLICER:REMOVE_START
+    // SPLICER:CENSORYT:REMOVE_START
     modes[PlayerModes.ACCELERATED_YT] = 'Accelerated Youtube';
-    // SPLICER:REMOVE_END
+    // SPLICER:CENSORYT:REMOVE_END
 
     const sourceMode = WebUtils.createDropdown(source.mode, 'Mode', modes, (val) => {
       source.mode = parseInt(val);

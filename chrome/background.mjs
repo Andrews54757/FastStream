@@ -359,11 +359,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frameId: frame.frame,
     });
 
-    // SPLICER:REMOVE_START
+    // SPLICER:CENSORYT:REMOVE_START
   } else if (msg.type === 'yt_loaded') {
     frame.url = msg.url;
     checkYTURL(frame);
-    // SPLICER:REMOVE_END
+    // SPLICER:CENSORYT:REMOVE_END
   } else if (msg.type === 'ready') {
     if (logging) console.log('Ready');
     frame.ready = true;
@@ -372,7 +372,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-// SPLICER:REMOVE_START
+// SPLICER:CENSORYT:REMOVE_START
 function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
@@ -388,7 +388,7 @@ function checkYTURL(frame) {
     }, frame, PlayerModes.ACCELERATED_YT);
   }
 }
-// SPLICER:REMOVE_END
+// SPLICER:CENSORYT:REMOVE_END
 
 function getMediaNameFromTab(tab) {
   if (!tab || tab.url === playerURL) return;
@@ -682,12 +682,21 @@ async function openPlayersWithSources(tabid) {
     }
   }
 }
+
+const webRequestPerms = ['requestHeaders'];
+const webRequestPerms2 = [];
+
+// SPLICER:FIREFOX:REMOVE_START
+webRequestPerms.push('extraHeaders');
+webRequestPerms2.push('extraHeaders');
+// SPLICER:FIREFOX:REMOVE_END
+
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   const frame = getOrCreateFrame(details);
   frame.requests[details.requestId] = details.requestHeaders;
 }, {
   urls: ['<all_urls>'],
-}, ['requestHeaders', 'extraHeaders']);
+}, webRequestPerms);
 
 function frameHasPlayer(frame) {
   return frame.isFastStream || frame.url.substring(0, playerURL.length) === playerURL;
@@ -715,7 +724,7 @@ chrome.webRequest.onHeadersReceived.addListener(
       onSourceRecieved(details, frame, mode);
     }, {
       urls: ['<all_urls>'],
-    }, ['responseHeaders', 'extraHeaders'],
+    }, webRequestPerms2,
 );
 
 chrome.webRequest.onHeadersReceived.addListener(deleteHeaderCache, {

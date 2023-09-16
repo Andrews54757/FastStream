@@ -1,4 +1,4 @@
-// SPLICER:REMOVE_FILE
+// SPLICER:CENSORYT:REMOVE_FILE
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
