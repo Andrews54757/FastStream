@@ -1,4 +1,5 @@
 /* eslint-disable */
+// Minified to reduce loading time (https://minify-js.com/)
 /*!
 * Copyright (c) 2021 Momo Bassit.
 * Licensed under the MIT License (MIT)
