@@ -3,7 +3,8 @@
   "version": "1.0.19",
   "description": "Stream without buffering",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node build.mjs"
   },
   "repository": {
     "type": "git",
