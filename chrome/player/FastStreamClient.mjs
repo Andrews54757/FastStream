@@ -198,6 +198,9 @@ export class FastStreamClient extends EventEmitter {
     await this.player.setSource(source);
     this.interfaceController.addVideo(this.player.getVideo());
 
+    this.audioContext = new AudioContext();
+    this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+    this.audioSource.connect(this.audioContext.destination);
 
     this.setSeekSave(false);
     this.currentTime = 0;
@@ -433,6 +436,16 @@ export class FastStreamClient extends EventEmitter {
     if (this.previewPlayer) {
       this.previewPlayer.destroy();
       this.previewPlayer = null;
+    }
+
+    if (this.audioContext) {
+      this.audioContext.close();
+      this.audioContext = null;
+    }
+
+    if (this.audioSource) {
+      this.audioSource.disconnect();
+      this.audioSource = null;
     }
 
     this.downloadManager.reset();

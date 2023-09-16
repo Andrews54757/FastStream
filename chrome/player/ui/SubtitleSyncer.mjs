@@ -134,7 +134,7 @@ export class SubtitleSyncer extends EventEmitter {
       this.stop();
     } else if (!removeOnly) {
       this.trackToSync = track;
-      this.start(this.client.currentVideo);
+      this.start();
       this.renderSyncTimeline();
     }
 
@@ -142,10 +142,7 @@ export class SubtitleSyncer extends EventEmitter {
   }
 
   reset() {
-    if (this.audioContext) {
-      this.audioContext.close();
-      this.audioContext = null;
-    }
+    this.audioContext = null;
     this.audioSource = null;
     this.audioNodeVAD = null;
     this.buffer.length = 0;
@@ -158,16 +155,16 @@ export class SubtitleSyncer extends EventEmitter {
     this.ui.timelineTrack.innerHTML = '';
   }
 
-  async start(video) {
+  async start() {
+    const video = this.client.currentVideo;
     if (this.started || !video) return;
     this.started = true;
 
     if (this.video !== video) {
       this.reset();
       this.video = video;
-      this.audioContext = new AudioContext();
-      this.audioSource = this.audioContext.createMediaElementSource(video);
-      this.audioSource.connect(this.audioContext.destination);
+      this.audioSource = this.client.audioSource;
+      this.audioContext = this.client.audioContext;
 
 
       const frames = this.video.duration * this.rate;
@@ -343,9 +340,11 @@ export class SubtitleSyncer extends EventEmitter {
   async stop() {
     if (!this.started) return;
     this.started = false;
-    this.audioNodeVAD.stop();
-    this.audioSource.disconnect();
-    this.audioSource.connect(this.audioContext.destination);
+
+    const node = this.audioNodeVAD.getNode();
+    node.port.postMessage('close');
+    this.audioSource.disconnect(node);
+    node.disconnect();
     this.audioNodeVAD = null;
 
     this.client.interfaceController.durationChanged();

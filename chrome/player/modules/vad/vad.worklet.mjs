@@ -45,6 +45,7 @@ class Processor extends AudioWorkletProcessor {
   constructor(options) {
     super();
     this._initialized = false;
+    this._closed = false;
     this.init = async () => {
       console.debug('initializing worklet');
       this.resampler = new Resampler({
@@ -55,10 +56,20 @@ class Processor extends AudioWorkletProcessor {
       this._initialized = true;
       console.debug('initialized worklet');
     };
+
+    this.port.onmessage = (event) => {
+      if (event.data === 'close') {
+        this.close();
+      }
+    };
+
     this.options = options.processorOptions;
     this.init();
   }
   process(inputs, outputs, parameters) {
+    if (this._closed) {
+      return false;
+    }
     // @ts-ignore
     const arr = inputs[0][0];
     if (this._initialized && arr instanceof Float32Array) {
@@ -68,6 +79,11 @@ class Processor extends AudioWorkletProcessor {
       }
     }
     return true;
+  }
+
+  close() {
+    console.debug('closing worklet');
+    this._closed = true;
   }
 }
 
