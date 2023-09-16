@@ -252,7 +252,23 @@ export class InterfaceController {
   setupDOM() {
     DOMElements.volumeContainer.addEventListener('mousedown', this.onVolumeBarMouseDown.bind(this));
     DOMElements.muteBtn.addEventListener('click', this.muteToggle.bind(this));
+    DOMElements.volumeBlock.tabIndex = 0;
+    DOMElements.volumeBlock.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        this.muteToggle();
+        e.stopPropagation();
+      } else if (e.key === 'ArrowLeft') {
+        this.client.volume = Math.max(0, this.client.volume - 0.1);
+        e.stopPropagation();
+      } else if (e.key === 'ArrowRight') {
+        this.client.volume = Math.min(3, this.client.volume + 0.1);
+        e.stopPropagation();
+      }
+    });
+
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
+    WebUtils.setupTabIndex(DOMElements.playPauseButton);
+
     DOMElements.playPauseButtonBigCircle.addEventListener('click', () => {
       this.hideControlBarOnAction();
       this.playPauseToggle();
@@ -267,6 +283,8 @@ export class InterfaceController {
     DOMElements.progressContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
 
     DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
+    WebUtils.setupTabIndex(DOMElements.fullscreen);
+
     document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
     let videoSourceClicked = false;
     DOMElements.videoSource.addEventListener('click', (e) => {
