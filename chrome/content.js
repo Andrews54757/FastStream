@@ -208,6 +208,7 @@ function getParentElementsWithSameBounds(element) {
 
 
 async function getVideo() {
+  // SPLICER:REMOVE_START
   if (is_url_yt(window.location.href)) {
     const ytplayer = querySelectorAllIncludingShadows('#ytd-player.ytd-watch-flexy > #container > div');
     if (ytplayer.length) {
@@ -218,6 +219,8 @@ async function getVideo() {
       };
     }
   }
+  // SPLICER:REMOVE_END
+
   const videos = Array.from(querySelectorAllIncludingShadows('video'));
 
   let visibleVideos = await Promise.all(videos.map(async (video) => {
@@ -259,6 +262,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
+// SPLICER:REMOVE_START
 // eslint-disable-next-line camelcase
 function is_url_yt(urlStr) {
   const url = new URL(urlStr);
@@ -291,7 +295,7 @@ if (is_url_yt(window.location.href)) {
       }
     }
   });
-
   observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
 }
+// SPLICER:REMOVE_END
 

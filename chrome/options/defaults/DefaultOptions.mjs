@@ -6,7 +6,6 @@ export const DefaultOptions = {
   analyzeVideos: true,
   downloadAll: true,
   autoEnableBestSubtitles: false,
-  autoEnableOnYoutube: false,
   autoEnableURLs: [],
   keybinds: DefaultKeybinds,
 };

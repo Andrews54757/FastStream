@@ -1,3 +1,4 @@
 .DS_Store
 web-ext-artifacts
 node_modules
+build

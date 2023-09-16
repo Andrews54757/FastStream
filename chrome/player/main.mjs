@@ -39,6 +39,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
 
           let autoPlaySource = sources[0];
 
+          // SPLICER:REMOVE_START
           sources.find((s) => {
             if (s.mode === PlayerModes.ACCELERATED_YT) {
               autoPlaySource = s;
@@ -46,6 +47,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
             }
             return false;
           });
+          // SPLICER:REMOVE_END
 
           if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
             autoPlaySource = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
@@ -208,9 +210,14 @@ if (window.location.hash) {
   const url = window.location.hash.substring(1);
   const ext = URLUtils.get_url_extension(url);
   let mode = PlayerModes.DIRECT;
+
+  // SPLICER:REMOVE_START
   if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
     mode = PlayerModes.ACCELERATED_YT;
-  } else if (URLUtils.getModeFromExtension(ext)) {
+  }
+  // SPLICER:REMOVE_END
+
+  if (mode === PlayerModes.DIRECT && URLUtils.getModeFromExtension(ext)) {
     mode = URLUtils.getModeFromExtension(ext);
   }
 

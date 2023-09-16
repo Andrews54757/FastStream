@@ -6,7 +6,7 @@ import {Utils} from './player/utils/Utils.mjs';
 
 let options = {};
 
-const autoEnableRegexes = [];
+const autoEnableList = [];
 
 const version = chrome.runtime.getManifest().version;
 const logging = false;
@@ -358,9 +358,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     });
+
+    // SPLICER:REMOVE_START
   } else if (msg.type === 'yt_loaded') {
     frame.url = msg.url;
     checkYTURL(frame);
+    // SPLICER:REMOVE_END
   } else if (msg.type === 'ready') {
     if (logging) console.log('Ready');
     frame.ready = true;
@@ -369,6 +372,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
+// SPLICER:REMOVE_START
 function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
@@ -384,6 +388,8 @@ function checkYTURL(frame) {
     }, frame, PlayerModes.ACCELERATED_YT);
   }
 }
+// SPLICER:REMOVE_END
+
 function getMediaNameFromTab(tab) {
   if (!tab || tab.url === playerURL) return;
   // Get name of website through tab url
@@ -454,9 +460,17 @@ function loadOptions() {
       removeRule(2);
     }
 
-    autoEnableRegexes.length = 0;
-    options.autoEnableURLs.forEach((regexStr)=>{
-      autoEnableRegexes.push(new RegExp(regexStr));
+    autoEnableList.length = 0;
+    options.autoEnableURLs.forEach((urlStr)=>{
+      if (urlStr.length === 0) {
+        return;
+      }
+
+      if (urlStr[0] === '~') {
+        autoEnableList.push(new RegExp(urlStr.substring(1)));
+      } else {
+        autoEnableList.push(urlStr);
+      }
     });
   });
 }
@@ -730,20 +744,24 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
       }
       tabs[tabid].hostname = url.hostname;
 
-      const foundRegex = autoEnableRegexes.some((regex)=>{
+      const urlIsInAutoList = autoEnableList.some((regex)=>{
         try {
-          return regex.test(changeInfo.url);
+          if (typeof regex === 'string') {
+            return changeInfo.url.substring(0, regex.length) === regex;
+          } else {
+            return regex.test(changeInfo.url);
+          }
         } catch (e) {
 
         }
         return false;
       });
 
-      if (foundRegex && !tabs[tabid].regexMatched) {
+      if (urlIsInAutoList && !tabs[tabid].regexMatched) {
         tabs[tabid].regexMatched = true;
         tabs[tabid].isOn = true;
         openPlayersWithSources(tab.id);
-      } else if (!foundRegex && tabs[tabid].regexMatched) {
+      } else if (!urlIsInAutoList && tabs[tabid].regexMatched) {
         tabs[tabid].isOn = false;
         tabs[tabid].regexMatched = false;
       }
