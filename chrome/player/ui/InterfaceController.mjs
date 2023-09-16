@@ -986,12 +986,16 @@ export class InterfaceController {
       const totalWidth = DOMElements.volumeControlBar.clientWidth;
 
       if (totalWidth) {
-        let newVolume = volumeBarX / totalWidth;
+        let newVolume = volumeBarX / totalWidth * 3;
 
         if (newVolume < 0.05) {
           newVolume = 0;
           this.persistent.muted = true;
-        } else if (newVolume > 0.95) {
+        } else if (newVolume > 2.95) {
+          newVolume = 3;
+        }
+
+        if (newVolume > 0.92 && newVolume < 1.08) {
           newVolume = 1;
         }
 
@@ -1154,7 +1158,7 @@ export class InterfaceController {
       muteButtonTag.classList.replace('fluid_button_mute', 'fluid_button_volume');
     }
 
-    currentVolumeTag.style.width = (volume * 100) + '%';
+    currentVolumeTag.style.width = (volume * 100) / 3 + '%';
   }
   updateProgress() {
     DOMElements.currentProgress.style.width = (this.persistent.currentTime / this.persistent.duration) * 100 + '%';

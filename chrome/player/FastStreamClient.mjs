@@ -47,6 +47,7 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateIntroOutroBar();
     });
+    this.interfaceController.updateVolumeBar();
 
     this.player = null;
     this.previewPlayer = null;
@@ -192,15 +193,18 @@ export class FastStreamClient extends EventEmitter {
 
     this.bindPlayer(this.player);
 
-    this.player.volume = this.persistent.volume;
-    this.player.playbackRate = this.persistent.playbackRate;
-
     await this.player.setSource(source);
     this.interfaceController.addVideo(this.player.getVideo());
 
     this.audioContext = new AudioContext();
     this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-    this.audioSource.connect(this.audioContext.destination);
+
+    this.audioGain = this.audioContext.createGain();
+    this.audioSource.connect(this.audioGain);
+    this.audioGain.connect(this.audioContext.destination);
+
+    this.updateVolume();
+    this.player.playbackRate = this.persistent.playbackRate;
 
     this.setSeekSave(false);
     this.currentTime = 0;
@@ -446,6 +450,11 @@ export class FastStreamClient extends EventEmitter {
     if (this.audioSource) {
       this.audioSource.disconnect();
       this.audioSource = null;
+    }
+
+    if (this.audioGain) {
+      this.audioGain.disconnect();
+      this.audioGain = null;
     }
 
     this.downloadManager.reset();
@@ -766,14 +775,20 @@ export class FastStreamClient extends EventEmitter {
     return this.fragmentsStore[level];
   }
 
+  updateVolume() {
+    const value = this.persistent.volume;
+    if (this.player) this.player.volume = Math.min(value, 1);
+    if (this.audioGain) this.audioGain.gain.value = Math.max(value, 1);
+    this.interfaceController.updateVolumeBar();
+  }
+
   get volume() {
-    return this.player?.volume || this.persistent.volume;
+    return this.persistent.volume;
   }
 
   set volume(value) {
     this.persistent.volume = value;
-    if (this.player) this.player.volume = value;
-    this.interfaceController.updateVolumeBar();
+    this.updateVolume();
   }
 
   get playbackRate() {

@@ -43,7 +43,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('VolumeUp', (e) => {
-      this.client.volume = Math.min(this.client.volume + 0.10, 1);
+      this.client.volume = Math.min(this.client.volume + 0.10, 3);
     });
 
     this.on('VolumeDown', (e) => {

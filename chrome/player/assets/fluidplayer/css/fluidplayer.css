@@ -442,7 +442,7 @@
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:hover .fluid_control_volume_container {
-    width: 70px;
+    width: 210px;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
@@ -464,6 +464,7 @@
     position: absolute;
     transform: translate(50%, -50%);
     top: 50%;
+    z-index: 3;
     border-radius: 50%;
 }
 
@@ -1974,4 +1975,17 @@ body {
 
 .subtitle-menu-option:nth-child(2) {
     border-top: none;
+}
+
+.unity_volume_marker {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 3px;
+    border-radius: 50% !important;
+    background-color: rgb(192, 192, 192);
+    left: 33.333%;
+    transform: translate(-50%, 0%);
+    border-radius: 1px;
+    z-index: 2;
 }
