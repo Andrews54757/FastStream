@@ -2,7 +2,7 @@ import {glob} from './miniglob.mjs';
 import fs from 'fs';
 import path from 'path';
 import * as url from 'url';
-import * as child from 'child_process';
+import webExt from 'web-ext';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
@@ -21,10 +21,11 @@ function deleteDirectoryRecursively(dirPath) {
   }
 }
 
-deleteDirectoryRecursively('build');
 
 const sourceDir = path.resolve(__dirname, 'chrome');
 const buildDir = path.resolve(__dirname, 'build');
+deleteDirectoryRecursively(buildDir);
+
 const ignoreList = ['.DS_Store'];
 glob(sourceDir + '/**')
     .forEach((file) => {
@@ -90,17 +91,11 @@ glob(sourceDir + '/**')
     });
 
 // run web-ext build
-
-child.exec('web-ext build --overwrite-dest', {
-  cwd: path.resolve(__dirname, 'build'),
-}, (error, stdout, stderr) => {
-  if (error) {
-    console.error(`[web-ext] error: ${error.message}`);
-    return;
-  }
-  if (stderr) {
-    console.error(`[web-ext] stderr: ${stderr}`);
-    return;
-  }
-  console.log(`[web-ext] stdout: ${stdout}`);
+webExt.cmd.build({
+  sourceDir: buildDir,
+  artifactsDir: path.resolve(__dirname, 'dist'),
+  overwriteDest: true,
+}).then((result) => {
+  console.log('Build successful', result.extensionPath);
+  deleteDirectoryRecursively(buildDir);
 });

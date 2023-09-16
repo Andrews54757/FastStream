@@ -20,6 +20,7 @@
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-n": "^16.0.2",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "web-ext": "^7.7.0"
   }
 }
