@@ -647,6 +647,9 @@ export class FastStreamClient extends EventEmitter {
   async play() {
     await this.player.play();
     this.interfaceController.play();
+    if (this.audioContext && this.audioContext.state === 'suspended') {
+      await this.audioContext.resume();
+    }
   }
 
   async pause() {

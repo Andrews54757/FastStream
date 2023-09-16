@@ -1218,11 +1218,9 @@ export class InterfaceController {
 
   playPauseToggle() {
     if (!this.persistent.playing) {
-      this.play();
-      this.client.player?.play();
+      this.client.play();
     } else {
-      this.pause();
-      this.client.player?.pause();
+      this.client.pause();
     }
   }
 

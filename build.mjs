@@ -267,7 +267,7 @@ async function buildFirefoxLibre() {
 }
 
 async function runAll() {
-  const builtFiles = await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre()]);
+  await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre()]);
   removeBuildDirs();
 }
 
