@@ -1,3 +1,4 @@
+/* eslint-disable */
 //
 // miniglob is a port of golang path/filepath
 //
