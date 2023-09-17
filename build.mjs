@@ -9,6 +9,7 @@ const builtDir = path.resolve(__dirname, 'built');
 const chromeSourceDir = path.resolve(__dirname, 'chrome');
 const chromeBuildDir = path.resolve(__dirname, 'build_chrome_dist');
 const firefoxBuildDir = path.resolve(__dirname, 'build_firefox_libre');
+const licenseText = fs.readFileSync(path.resolve(__dirname, 'LICENSE.md'), 'utf8');
 
 fs.mkdirSync(builtDir, {recursive: true});
 glob(builtDir + '/*.zip').forEach((file) => {
@@ -213,9 +214,15 @@ async function runWebExtBuild(sourceDir, artifactsDir) {
     });
   });
 }
+
+function insertLicense(buildDir) {
+  const newLicensePath = path.join(buildDir, 'LICENSE.md');
+  fs.writeFileSync(newLicensePath, licenseText);
+}
+
 async function buildChromeDist() {
   spliceAndCopy(chromeSourceDir, chromeBuildDir, ['CENSORYT']);
-
+  insertLicense(chromeBuildDir);
   const builtPath = await runWebExtBuild(chromeBuildDir, path.join(chromeBuildDir, 'dist'));
   const name = path.basename(builtPath);
   const finalPath = path.join(builtDir, 'chrome-dist-' + name);
@@ -224,7 +231,11 @@ async function buildChromeDist() {
 }
 
 async function buildChromeLibre() {
+  insertLicense(chromeSourceDir);
   const builtPath = await runWebExtBuild(chromeSourceDir, path.join(chromeBuildDir, 'libre'));
+
+  fs.unlinkSync(path.join(chromeSourceDir, 'LICENSE.md'));
+
   const name = path.basename(builtPath);
   const finalPath = path.join(builtDir, 'chrome-libre-' + name);
   fs.renameSync(builtPath, finalPath);
@@ -234,7 +245,7 @@ async function buildChromeLibre() {
 
 async function buildFirefoxLibre() {
   spliceAndCopy(chromeSourceDir, firefoxBuildDir, ['FIREFOX']);
-
+  insertLicense(firefoxBuildDir);
   const backgroundScriptPath = path.join(firefoxBuildDir, 'background.mjs');
   const newBacgroundScriptPath = path.join(firefoxBuildDir, 'background.js');
   const builtBackground = generateScriptWithAllImports(firefoxBuildDir, backgroundScriptPath);
