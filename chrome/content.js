@@ -70,6 +70,12 @@ chrome.runtime.onMessage.addListener(
         return true;
       } else if (request.type == 'player') {
         getVideo().then((video) => {
+          if (!video && !request.force) {
+            console.log('no video found');
+            sendResponse('no_video');
+            return;
+          }
+
           if (!video || video.highest && video.highest.tagName === 'BODY') {
             window.location = request.url;
             console.log('redirecting to player');
