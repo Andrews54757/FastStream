@@ -38,6 +38,18 @@ function loadOptions() {
       }
     }
 
+    console.log(options);
+    document.querySelectorAll('.video-option').forEach((option) => {
+      const numberInput = option.querySelector('input.number');
+      const rangeInput = option.querySelector('input.range');
+      const unit = option.dataset.unit || '%';
+      const unitMultiplier = parseInt(option.dataset.multiplier || 100);
+      const optionKey = option.dataset.option;
+      const val = Math.round(options[optionKey] * unitMultiplier);
+      rangeInput.value = val;
+      numberInput.value = val + unit;
+    });
+
     autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
   });
 }
@@ -61,6 +73,27 @@ document.querySelectorAll('.option').forEach((option) => {
   });
 
   WebUtils.setupTabIndex(option.querySelector('input'));
+});
+
+document.querySelectorAll('.video-option').forEach((option) => {
+  const numberInput = option.querySelector('input.number');
+  const rangeInput = option.querySelector('input.range');
+  const unit = option.dataset.unit || '%';
+  const unitMultiplier = parseInt(option.dataset.multiplier || 100);
+
+  const optionKey = option.dataset.option;
+
+  numberInput.addEventListener('input', (e) => {
+    rangeInput.value = parseInt(numberInput.value.replace(unit, '')) || 0;
+    options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    optionChanged();
+  });
+
+  rangeInput.addEventListener('input', (e) => {
+    numberInput.value = rangeInput.value + unit;
+    options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    optionChanged();
+  });
 });
 
 function createKeybindElement(keybind) {

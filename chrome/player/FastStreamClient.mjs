@@ -24,6 +24,13 @@ export class FastStreamClient extends EventEmitter {
       bufferBehind: 20,
       freeFragments: true,
       downloadAll: false,
+      videoBrightness: 1,
+      videoContrast: 1,
+      videoSaturation: 1,
+      videoGrayscale: 0,
+      videoSepia: 0,
+      videoInvert: 0,
+      videoHueRotate: 0,
     };
     this.persistent = {
       playing: false,
@@ -90,8 +97,58 @@ export class FastStreamClient extends EventEmitter {
     this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
 
+    this.options.videoBrightness = options.videoBrightness;
+    this.options.videoContrast = options.videoContrast;
+    this.options.videoSaturation = options.videoSaturation;
+    this.options.videoGrayscale = options.videoGrayscale;
+    this.options.videoSepia = options.videoSepia;
+    this.options.videoInvert = options.videoInvert;
+    this.options.videoHueRotate = options.videoHueRotate;
+    this.updateCSSFilters();
+
     if (options.keybinds) {
       this.keybindManager.setKeybinds(options.keybinds);
+    }
+  }
+
+  updateCSSFilters() {
+    const filters = [];
+    if (this.options.videoBrightness !== 1) {
+      filters.push(`brightness(${this.options.videoBrightness})`);
+    }
+
+    if (this.options.videoContrast !== 1) {
+      filters.push(`contrast(${this.options.videoContrast})`);
+    }
+
+    if (this.options.videoSaturation !== 1) {
+      filters.push(`saturate(${this.options.videoSaturation})`);
+    }
+
+    if (this.options.videoGrayscale !== 0) {
+      filters.push(`grayscale(${this.options.videoGrayscale})`);
+    }
+
+    if (this.options.videoSepia !== 0) {
+      filters.push(`sepia(${this.options.videoSepia})`);
+    }
+
+    if (this.options.videoInvert !== 0) {
+      filters.push(`invert(${this.options.videoInvert})`);
+    }
+
+    if (this.options.videoHueRotate !== 0) {
+      filters.push(`hue-rotate(${this.options.videoHueRotate}deg)`);
+    }
+
+    const filterStr = filters.join(' ');
+
+    if (this.player) {
+      this.player.getVideo().style.filter = filterStr;
+    }
+
+    if (this.previewPlayer) {
+      this.previewPlayer.getVideo().style.filter = filterStr;
     }
   }
 
@@ -249,6 +306,8 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
 
     await this.videoAnalyzer.setSource(this.player.getSource());
+
+    this.updateCSSFilters();
   }
 
 

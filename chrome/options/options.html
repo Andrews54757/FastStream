@@ -157,10 +157,91 @@
             display: inline-block;
             margin-left: 5px;
         }
+
+        .video-option {
+            display: flex;
+            padding: 4px 0px;
+            width: 100%;
+            max-width: 500px;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .video-option input {
+            position: relative;
+            margin: 0 5px;
+        }
+
+        .video-option .label {
+            position: relative;
+            width: 90px;
+        }
+
+        .video-option .range {
+            width: 100%;
+        }
+
+        .video-option .number {
+            text-align: center;
+            width: 50px;
+        }
+
     </style>
 </head>
 
 <body>
+    <h1>Video Options</h1>
+    <p>Applies CSS filters to the video. Doesn't work with picture-in-picture.</p>
+
+    <datalist id="snap-hundred">
+        <option value="100">
+    </datalist>
+
+    <div class="video-option" data-option="videoBrightness">
+        <div class="label">Brightness</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
+    </div>
+
+
+    <div class="video-option" data-option="videoContrast">
+        <div class="label">Contrast</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
+    </div>
+
+
+    <div class="video-option" data-option="videoSaturation">
+        <div class="label">Saturation</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
+    </div>
+
+
+    <div class="video-option" data-option="videoGrayscale">
+        <div class="label">Grayscale</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
+    </div>
+
+    <div class="video-option" data-option="videoSepia">
+        <div class="label">Sepia</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
+    </div>
+
+    <div class="video-option" data-option="videoInvert">
+        <div class="label">Invert</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
+    </div>
+
+    <div class="video-option" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
+        <div class="label">Hue Rotate</div>
+        <input class="number" type="text"></input>
+        <input class="range" type="range" min="0" max="360" value="0" step="1"></input>
+    </div>
+
     <h1>General Options</h1>
     <div class="option">
         <input type="checkbox" id="downloadall" name="Predownload video in background">
