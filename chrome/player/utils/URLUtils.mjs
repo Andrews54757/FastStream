@@ -20,7 +20,7 @@ export class URLUtils {
   static is_url_yt_watch(urlStr) {
     const url = new URL(urlStr);
     const pathname = url.pathname;
-    return pathname.startsWith('/watch');
+    return pathname.startsWith('/watch') || pathname.startsWith('/embed');
   }
 
   static get_url_extension(url) {
