@@ -42,14 +42,18 @@ export class VideoAnalyzer extends EventEmitter {
     this.outroStatus = AnalyzerStatus.IDLE;
 
     this.lastAnalyzerSave = 0;
+
+    this.enabled = true;
   }
 
 
   getOutro() {
+    if (!this.enabled) return null;
     return this.outroAligner.getMatch();
   }
 
   getIntro() {
+    if (!this.enabled) return null;
     return this.introAligner.getMatch();
   }
 
@@ -252,6 +256,10 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   shouldAnalyze() {
+    if (!this.enabled) {
+      return false;
+    }
+
     if (!this.source) {
       return false;
     }
@@ -405,5 +413,14 @@ export class VideoAnalyzer extends EventEmitter {
     this.source = source;
     this.introAligner.prepare(source.identifier);
     this.outroAligner.prepare(source.identifier);
+  }
+
+  enable() {
+    this.enabled = true;
+  }
+
+  disable() {
+    this.enabled = false;
+    this.reset();
   }
 }

@@ -109,6 +109,12 @@ export class FastStreamClient extends EventEmitter {
     if (options.keybinds) {
       this.keybindManager.setKeybinds(options.keybinds);
     }
+
+    if (this.options.analyzeVideos) {
+      this.videoAnalyzer.enable();
+    } else {
+      this.videoAnalyzer.disable();
+    }
   }
 
   updateCSSFilters() {
