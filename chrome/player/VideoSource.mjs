@@ -93,6 +93,7 @@ export class VideoSource {
 
   copy() {
     const newsource = new VideoSource(this.url, {}, this.mode);
+    newsource.identifier = this.identifier;
     newsource.headers = {...this.headers};
     return newsource;
   }
