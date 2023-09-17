@@ -1648,15 +1648,20 @@ body {
 }
 
 
-.fluid_controls_timeline_syncer {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_timeline_syncer {
     position: absolute;
     top: 53px;
-    height: 100px;
+    height: 80px;
     left: 13px;
     right: 13px;
     overflow: hidden;
+    transition: display 0.5s;
+    display: none;
 }
 
+.fluid_video_wrapper.fluid_player_layout_default.controls_visible.expanded .fluid_controls_timeline_syncer {
+    display: block;
+}
 
 .timeline_container {
     position: absolute;
