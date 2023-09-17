@@ -33,7 +33,9 @@ Notes:
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
 
-## Manual Installation
+It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/faststream/)
+
+## Manual Installation For Chrome
 
 The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions to interface with other Google products, such as Youtube (anti-trust anybody?). To get the latest updates, and restricted features, please do the following steps:
 
