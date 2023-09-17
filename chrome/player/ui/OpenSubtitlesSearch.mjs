@@ -1,5 +1,6 @@
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -18,6 +19,16 @@ export class OpenSubtitlesSearch extends EventEmitter {
     this.setupUI();
   }
 
+  openUI() {
+    InterfaceUtils.closeWindows();
+    DOMElements.subuiContainer.style.display = '';
+    this.subui.search.focus();
+  }
+
+  closeUI() {
+    DOMElements.subuiContainer.style.display = 'none';
+  }
+
   setupUI() {
     DOMElements.subuiContainer.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -34,10 +45,15 @@ export class OpenSubtitlesSearch extends EventEmitter {
       e.stopPropagation();
     });
 
+    DOMElements.playerContainer.addEventListener('click', (e) => {
+      this.closeUI();
+    });
+
     const closeBtn = DOMElements.subuiContainer.getElementsByClassName('close_button')[0];
     closeBtn.addEventListener('click', (e) => {
-      DOMElements.subuiContainer.style.display = 'none';
+      this.closeUI();
     });
+
     WebUtils.setupTabIndex(closeBtn);
 
     this.subui.searchContainer = document.createElement('div');
@@ -388,12 +404,6 @@ export class OpenSubtitlesSearch extends EventEmitter {
         this.emit(OpenSubtitlesSearchEvents.TRACK_DOWNLOADED, track);
       });
     });
-  }
-
-  openUI() {
-    DOMElements.subuiContainer.style.display = '';
-    DOMElements.linkuiContainer.style.display = 'none';
-    this.subui.search.focus();
   }
 
   setQueryInputValue(value) {

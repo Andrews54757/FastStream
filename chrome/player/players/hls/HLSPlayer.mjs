@@ -184,6 +184,9 @@ export default class HLSPlayer extends EventEmitter {
         blob: blob,
       };
     } else {
+      if (levelInitData || audioLevelInitData) {
+        console.warn('Unexpected init data');
+      }
       const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
       const hls2mp4 = new HLS2MP4();
 

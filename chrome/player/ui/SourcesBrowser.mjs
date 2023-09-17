@@ -1,5 +1,6 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
+import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -149,13 +150,21 @@ export class SourcesBrowser {
     });
   }
 
+  openUI() {
+    InterfaceUtils.closeWindows();
+    DOMElements.linkuiContainer.style.display = '';
+  }
+
+  closeUI() {
+    DOMElements.linkuiContainer.style.display = 'none';
+  }
+
   setupUI() {
     DOMElements.linkButton.addEventListener('click', (e) => {
       if (DOMElements.linkuiContainer.style.display == 'none') {
-        DOMElements.linkuiContainer.style.display = '';
-        DOMElements.subuiContainer.style.display = 'none';
+        this.openUI();
       } else {
-        DOMElements.linkuiContainer.style.display = 'none';
+        this.closeUI();
       }
       e.stopPropagation();
     });
@@ -175,12 +184,12 @@ export class SourcesBrowser {
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      DOMElements.linkuiContainer.style.display = 'none';
+      this.closeUI();
     });
 
     const closeBtn = DOMElements.linkuiContainer.getElementsByClassName('close_button')[0];
     closeBtn.addEventListener('click', (e) => {
-      DOMElements.linkuiContainer.style.display = 'none';
+      this.closeUI();
     });
     WebUtils.setupTabIndex(closeBtn);
 

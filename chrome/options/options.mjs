@@ -1,4 +1,5 @@
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
+import {WebUtils} from '../player/utils/WebUtils.mjs';
 
 let options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -13,27 +14,33 @@ autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
 autoEnableURLSInput.setAttribute('spellcheck', false);
 autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/example\\.com\\/(movie|othermovie)\\/';
-chrome.storage.local.get({
-  options: '{}',
-}, (results) => {
-  options = JSON.parse(results.options) || {};
 
-  downloadAll.checked = !!options.downloadAll;
-  analyzeVideos.checked = !!options.analyzeVideos;
-  playStreamURLs.checked = !!options.playStreamURLs;
-  playMP4URLs.checked = !!options.playMP4URLs;
-  autosub.checked = !!options.autoEnableBestSubtitles;
-  if (options.keybinds) {
-    keybindsList.innerHTML = '';
-    for (const keybind in options.keybinds) {
-      if (Object.hasOwn(options.keybinds, keybind)) {
-        createKeybindElement(keybind);
+loadOptions();
+
+function loadOptions() {
+  console.log('Loading options');
+  chrome.storage.local.get({
+    options: '{}',
+  }, (results) => {
+    options = JSON.parse(results.options) || {};
+
+    downloadAll.checked = !!options.downloadAll;
+    analyzeVideos.checked = !!options.analyzeVideos;
+    playStreamURLs.checked = !!options.playStreamURLs;
+    playMP4URLs.checked = !!options.playMP4URLs;
+    autosub.checked = !!options.autoEnableBestSubtitles;
+    if (options.keybinds) {
+      keybindsList.innerHTML = '';
+      for (const keybind in options.keybinds) {
+        if (Object.hasOwn(options.keybinds, keybind)) {
+          createKeybindElement(keybind);
+        }
       }
     }
-  }
 
-  autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
-});
+    autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
+  });
+}
 
 function getKeyString(e) {
   const metaPressed = e.metaKey && e.key !== 'Meta';
@@ -44,6 +51,17 @@ function getKeyString(e) {
 
   return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
 }
+
+document.querySelectorAll('.option').forEach((option) => {
+  option.addEventListener('click', (e) => {
+    if (e.target.tagName !== 'INPUT') {
+      const input = option.querySelector('input');
+      input.click();
+    }
+  });
+
+  WebUtils.setupTabIndex(option.querySelector('input'));
+});
 
 function createKeybindElement(keybind) {
   const containerElement = document.createElement('div');
@@ -137,6 +155,8 @@ document.getElementById('resetdefault').addEventListener('click', () => {
   optionChanged();
 });
 
+WebUtils.setupTabIndex(document.getElementById('resetdefault'));
+
 autoEnableURLSInput.addEventListener('input', (e) => {
   options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
   optionChanged();
@@ -154,3 +174,9 @@ function optionChanged() {
   });
 }
 
+// Load options on options event
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.type === 'options') {
+    loadOptions();
+  }
+});

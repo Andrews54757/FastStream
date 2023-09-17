@@ -7,6 +7,31 @@
         body {
             padding: 15px;
             font-family: sans-serif;
+            user-select: none;
+        }
+
+
+        /* total width */
+        ::-webkit-scrollbar {
+            background-color: transparent;
+            width: 4px;
+        }
+
+        /* background of the scrollbar except button or resizer */
+        ::-webkit-scrollbar-track {
+            background-color: transparent;
+        }
+
+        /* scrollbar itself */
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(100, 100, 100);
+            border-radius: 2px;
+            border: none;
+        }
+
+        /* set button(top and bottom of the scrollbar) */
+        ::-webkit-scrollbar-button {
+            display: none;
         }
 
         h1 {
@@ -75,7 +100,7 @@
             height: 18px;
             cursor: pointer;
             border: 1px solid black;
-            border-radius: 2px;
+            border-radius: 3px;
             text-align: center;
         }
 
@@ -88,31 +113,90 @@
             color: black;
             background-color: transparent;
             font-size: 12px;
-            border-radius: 2px;
+            border-radius: 3px;
             padding: 2px 5px;
             height: 20px;
             outline: none;
             border: 1px solid black;
             width: 100%;
             height: 150px;
+            resize: none;
+        }
+
+        #autoEnableURLs:focus {
+            border: 1px solid blue;
+        }
+
+        #resetdefault {
+            background-color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(0, 0, 0, 0.4);
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 2px 5px;
+        }
+
+        #resetdefault:hover {
+            color: rgb(0, 0, 255);
+            border: 1px solid rgb(0, 0, 255);
+        }
+
+        .option {
+            display: flex;
+            padding: 3px 0px;
+            width: 100%;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .option input {
+            position: relative;
+        }
+
+        .option .label {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
         }
     </style>
 </head>
 
 <body>
     <h1>General Options</h1>
-    <div> <input type="checkbox" id="downloadall" name="Predownload video in background"> Predownload entire video in
-        the background if possible</div>
-    <div> <input type="checkbox" id="analyzevideos" name="Find intros and outros"> Automatically analyze sequential
-        videos for intros/outros</div>
-    <div> <input type="checkbox" id="autosub" name="Automatically enable best subtitles"> Automatically enable best
-        found subtitle track</div>
-    <div> <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player"> Use player to play HLS/DASH
-        streams when opening playlist URLs (.m3u8/.mpd)</div>
-    <div> <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player"> Use player to play MP4 videos when
-        opening video URLs (.mp4)</div>
+    <div class="option">
+        <input type="checkbox" id="downloadall" name="Predownload video in background">
+        <div class="label">
+            Predownload entire video in the background if possible
+        </div>
+    </div>
+    <div class="option">
+        <input type="checkbox" id="analyzevideos" name="Find intros and outros">
+        <div class="label">
+            Automatically analyze sequential videos for intros/outros
+        </div>
+    </div>
+    <div class="option">
+        <input type="checkbox" id="autosub" name="Automatically enable best subtitles">
+        <div class="label">
+            Automatically enable best found subtitle track
+        </div>
+    </div>
+    <div class="option">
+        <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player">
+        <div class="label">
+            Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)
+        </div>
+    </div>
+    <div class="option">
+        <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player">
+        <div class="label">
+            Use player to play MP4 videos when opening video URLs (.mp4)
+        </div>
+    </div>
+
     <h1>Auto-enable URLs</h1>
-    <p>Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line.<br>Hint: Test regex on <a target="_blank" rel="noopener noreferrer" href="https://regex101.com/">Regex101</a></p>
+    <p>Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line,
+        pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line.<br>Hint:
+        Test regex on <a target="_blank" rel="noopener noreferrer" href="https://regex101.com/">Regex101</a></p>
     <textarea id="autoEnableURLs"></textarea>
 
     <h1>Keybinds</h1>
@@ -121,7 +205,8 @@
     <div id="keybindslist"></div>
 
     <h1>Help</h1>
-    <a href="#" id="welcome">Welcome Page</a>
+    <a href="#" id="welcome">Welcome Page</a><br><br>
+    <a href="https://github.com/Andrews54757/FastStream/issues">Issue Tracker</a>
 </body>
 <script src='options.mjs' type="module"></script>
 

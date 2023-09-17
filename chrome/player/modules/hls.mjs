@@ -9774,12 +9774,11 @@ const initPTSFn = (timestamp, timeOffset, initPTS) => {
  * ADTS parser helper
  * @link https://wiki.multimedia.cx/index.php?title=ADTS
  */
-function getAudioConfig(observer, data, offset, audioCodec) {
+function getAudioConfig(observer, data, offset, audioCodec, userAgent) {
   let adtsObjectType;
   let adtsExtensionSamplingIndex;
   let adtsChannelConfig;
   let config;
-  const userAgent = navigator.userAgent.toLowerCase();
   const manifestCodec = audioCodec;
   const adtsSamplingRates = [96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350];
   // byte 2
@@ -9936,9 +9935,9 @@ function probe$1(data, offset) {
   }
   return false;
 }
-function initTrackConfig(track, observer, data, offset, audioCodec) {
+function initTrackConfig(track, observer, data, offset, audioCodec, userAgent) {
   if (!track.samplerate) {
-    const config = getAudioConfig(observer, data, offset, audioCodec);
+    const config = getAudioConfig(observer, data, offset, audioCodec, userAgent);
     if (!config) {
       return;
     }
@@ -10025,6 +10024,7 @@ class AACDemuxer extends BaseAudioDemuxer {
     this.config = void 0;
     this.observer = observer;
     this.config = config;
+    this.userAgent = config.userAgent || navigator.userAgent.toLowerCase();
   }
   resetInitSegment(initSegment, audioCodec, videoCodec, trackDuration) {
     super.resetInitSegment(initSegment, audioCodec, videoCodec, trackDuration);
@@ -10067,7 +10067,7 @@ class AACDemuxer extends BaseAudioDemuxer {
     return canParse$1(data, offset);
   }
   appendFrame(track, data, offset) {
-    initTrackConfig(track, this.observer, data, offset, track.manifestCodec);
+    initTrackConfig(track, this.observer, data, offset, track.manifestCodec, this.userAgent);
     const frame = appendFrame$1(track, data, offset, this.basePTS, this.frameIndex);
     if (frame && frame.missing === 0) {
       return frame;
@@ -10807,6 +10807,7 @@ class TSDemuxer {
     this.observer = observer;
     this.config = config;
     this.typeSupported = typeSupported;
+    this.userAgent = config.userAgent || navigator.userAgent.toLowerCase();
   }
   static probe(data) {
     const syncOffset = TSDemuxer.syncOffset(data);
@@ -11510,7 +11511,7 @@ class TSDemuxer {
         return;
       }
     }
-    initTrackConfig(track, this.observer, data, offset, this.audioCodec);
+    initTrackConfig(track, this.observer, data, offset, this.audioCodec, this.userAgent);
     let pts;
     if (pes.pts !== undefined) {
       pts = pes.pts;

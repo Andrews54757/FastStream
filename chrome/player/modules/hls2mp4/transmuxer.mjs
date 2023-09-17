@@ -28,6 +28,7 @@ export default class Transmuxer {
       maxAudioFramesDrift: 1,
       enableSoftwareAES: true,
       forceKeyFrameOnDiscontinuity: true,
+      userAgent: 'android',
     }, {
       get: (obj, prop) => {
         // console.log("get", prop)

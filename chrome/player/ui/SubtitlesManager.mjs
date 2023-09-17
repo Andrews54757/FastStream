@@ -115,7 +115,6 @@ export class SubtitlesManager {
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
       DOMElements.subtitlesMenu.style.display = 'none';
-      DOMElements.subuiContainer.style.display = 'none';
     });
 
     DOMElements.subtitlesOptionsTestButton.addEventListener('click', (e) => {

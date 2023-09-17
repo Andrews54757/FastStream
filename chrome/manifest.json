@@ -46,8 +46,8 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "content.js",
-                "player/player.html"
+                "player/player.html",
+                "options/options.html"
             ],
             "matches": [
                 "<all_urls>"

@@ -7,6 +7,7 @@ import {URLUtils} from '../utils/URLUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {OptionsWindow} from './OptionsWindow.mjs';
 
 export class InterfaceController {
   constructor(client) {
@@ -22,6 +23,9 @@ export class InterfaceController {
 
     this.hasShownSkip = false;
     this.failed = false;
+
+    this.optionsWindow = new OptionsWindow();
+
     this.setupDOM();
   }
   reset() {
@@ -405,9 +409,11 @@ export class InterfaceController {
       e.preventDefault();
     }, false);
 
-    DOMElements.settingsButton.addEventListener('click', () => {
-      chrome.runtime.openOptionsPage();
+    DOMElements.settingsButton.addEventListener('click', (e) => {
+      this.optionsWindow.toggleUI();
+      e.stopPropagation();
     });
+
     WebUtils.setupTabIndex(DOMElements.settingsButton);
 
     const welcomeText = 'Welcome to FastStream v' + this.client.version + '!';

@@ -2033,3 +2033,15 @@ body {
 .volume_block:focus .tooltip .tooltiptext {
 	visibility: visible;
 }
+
+.options_frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background-color: rgba(255, 255, 255, .9);
+}
+
+.options_container {
+    padding: 1px 0px;
+    overflow: hidden;
+}
