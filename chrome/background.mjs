@@ -613,6 +613,10 @@ async function openPlayer(frame) {
     url: playerURL + '?frame_id=' + frame.frame,
   }, {
     frameId: frame.frame,
+  }, (response) => {
+    if (response === 'no_video') {
+      frame.playerOpening = false;
+    }
   });
 }
 let currentTimeout = null;

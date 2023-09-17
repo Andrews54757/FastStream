@@ -221,6 +221,12 @@ async function getVideo() {
       ytplayer = document.querySelectorAll('body > #player')[0];
     }
     if (ytplayer) {
+      const visibleRatio = await isVisible(ytplayer);
+      const rect = ytplayer.getBoundingClientRect();
+      if (rect.width * rect.height * visibleRatio < 1000) {
+        return null;
+      }
+
       return {
         size: ytplayer.clientWidth * ytplayer.clientHeight,
         highest: ytplayer,

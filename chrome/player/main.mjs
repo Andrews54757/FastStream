@@ -65,7 +65,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
 
           if (autoPlaySource) {
             window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
-              window.fastStream.play();
+              // window.fastStream.play();
             });
 
             window.fastStream.clearSubtitles();
@@ -226,7 +226,7 @@ if (window.location.hash) {
   }
 
   window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
-    console.log('play');
-    window.fastStream.play();
+    // console.log('play');
+    // window.fastStream.play();
   });
 }
