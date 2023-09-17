@@ -2044,6 +2044,9 @@ body {
 .options_container {
     padding: 1px 0px;
     overflow: hidden;
-    width: 500px;
+    max-width: 500px;
+    width: 90%;
     margin: auto;
+    left: auto;
+    right: auto;
 }
