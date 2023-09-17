@@ -221,7 +221,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       }
     });
 
-    this.subui.results.innerHTML = '';
+    this.subui.results.replaceChildren();
     const container = document.createElement('div');
     container.textContent = 'Searching...';
     this.subui.results.appendChild(container);
@@ -257,8 +257,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
     }
 
 
-    this.subui.results.innerHTML = '';
-    this.subui.pages.innerHTML = '';
+    this.subui.results.replaceChildren();
+    this.subui.pages.replaceChildren();
 
     if (response.data.length === 0) {
       const container = document.createElement('div');
@@ -270,7 +270,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     if (response.total_pages > 1) {
       const responseBar = WebUtils.createPagesBar(response.page, response.total_pages, (page) => {
         query.page = page;
-        this.subui.pages.innerHTML = '';
+        this.subui.pages.replaceChildren();
         this.subui.pages.appendChild(WebUtils.createPagesBar(page, response.total_pages, ()=>{
           this.queryOpenSubtitles(query);
         }));

@@ -227,7 +227,7 @@ export class SubtitlesManager {
   }
 
   updateTrackList() {
-    DOMElements.subtitlesList.innerHTML = '';
+    DOMElements.subtitlesList.replaceChildren();
 
     const tracks = this.tracks;
     for (let i = 0; i < tracks.length; i++) {
@@ -388,7 +388,7 @@ export class SubtitlesManager {
   }
 
   renderSubtitles() {
-    DOMElements.subtitlesContainer.innerHTML = '';
+    DOMElements.subtitlesContainer.replaceChildren();
 
     if (this.isTestSubtitleActive) {
       const trackContainer = document.createElement('div');

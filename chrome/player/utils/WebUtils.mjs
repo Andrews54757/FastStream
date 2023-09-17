@@ -175,7 +175,12 @@ export class WebUtils {
     const container = create('div', ``, 'dropdown');
 
     const text = create('div', ``);
-    text.innerHTML = `${title}: <span style='color: rgb(200,200,200)'>${items[defaultChoice]}</span> ˅`;
+    text.appendChild(document.createTextNode(`${title}: `));
+    const span = create('span', `color: rgb(200,200,200)`);
+    span.textContent = items[defaultChoice];
+    text.appendChild(span);
+    text.appendChild(document.createTextNode(' ˅'));
+
     container.dataset.val = defaultChoice;
     container.tabIndex = 0;
     container.appendChild(text);

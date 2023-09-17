@@ -150,9 +150,9 @@ export class SubtitleSyncer extends EventEmitter {
     this.ticklineElements = [];
     this.canvasElements = [];
     this.trackElements = [];
-    this.ui.timelineTicks.innerHTML = '';
-    this.ui.timelineVOD.innerHTML = '';
-    this.ui.timelineTrack.innerHTML = '';
+    this.ui.timelineTicks.replaceChildren();
+    this.ui.timelineVOD.replaceChildren();
+    this.ui.timelineTrack.replaceChildren();
   }
 
   async start() {

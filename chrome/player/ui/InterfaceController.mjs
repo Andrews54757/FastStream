@@ -29,10 +29,10 @@ export class InterfaceController {
     this.setupDOM();
   }
   reset() {
-    DOMElements.videoContainer.innerHTML = '';
-    DOMElements.seekPreviewVideo.innerHTML = '';
+    DOMElements.videoContainer.replaceChildren();
+    DOMElements.seekPreviewVideo.replaceChildren();
     DOMElements.seekPreviewVideo.style.display = 'none';
-    DOMElements.progressLoadedContainer.innerHTML = '';
+    DOMElements.progressLoadedContainer.replaceChildren();
     DOMElements.downloadStatus.textContent = '';
     this.progressCache = [];
     this.progressCacheAudio = [];
@@ -1064,7 +1064,7 @@ export class InterfaceController {
   }
 
   updateIntroOutroBar() {
-    DOMElements.introOutroContainer.innerHTML = '';
+    DOMElements.introOutroContainer.replaceChildren();
 
     const introMatch = this.client.videoAnalyzer.getIntro();
     const outroMatch = this.client.videoAnalyzer.getOutro();
@@ -1123,7 +1123,7 @@ export class InterfaceController {
 
     const currentLevel = this.client.previousLevel;
 
-    DOMElements.videoSourceList.innerHTML = '';
+    DOMElements.videoSourceList.replaceChildren();
     levels.forEach((level, i) => {
       const levelelement = document.createElement('div');
 

@@ -54,7 +54,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
   }
 
   updateSettingsUI() {
-    DOMElements.subtitlesOptionsList.innerHTML = '';
+    DOMElements.subtitlesOptionsList.replaceChildren();
     for (const key in this.settings) {
       if (!Object.hasOwn(this.settings, key)) continue;
       const option = document.createElement('div');

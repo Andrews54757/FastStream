@@ -30,7 +30,7 @@ function loadOptions() {
     playMP4URLs.checked = !!options.playMP4URLs;
     autosub.checked = !!options.autoEnableBestSubtitles;
     if (options.keybinds) {
-      keybindsList.innerHTML = '';
+      keybindsList.replaceChildren();
       for (const keybind in options.keybinds) {
         if (Object.hasOwn(options.keybinds, keybind)) {
           createKeybindElement(keybind);
@@ -179,7 +179,7 @@ downloadAll.addEventListener('change', () => {
 
 document.getElementById('resetdefault').addEventListener('click', () => {
   options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
-  keybindsList.innerHTML = '';
+  keybindsList.replaceChildren();
   for (const keybind in options.keybinds) {
     if (Object.hasOwn(options.keybinds, keybind)) {
       createKeybindElement(keybind);

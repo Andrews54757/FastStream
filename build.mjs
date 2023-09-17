@@ -258,7 +258,7 @@ async function buildFirefoxLibre() {
   manifest.browser_specific_settings = {
     gecko: {
       id: 'faststream@andrews',
-      strict_min_version: '109.0',
+      strict_min_version: '113.0',
     },
   };
 
