@@ -240,7 +240,10 @@ export class FastStreamClient extends EventEmitter {
     this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
       isPreview: true,
     });
+
     await this.previewPlayer.setup();
+    this.bindPreviewPlayer(this.previewPlayer);
+
 
     await this.previewPlayer.setSource(this.player.getSource());
     this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
@@ -455,6 +458,11 @@ export class FastStreamClient extends EventEmitter {
       this.context = null;
     }
 
+    if (this.previewContext) {
+      this.previewContext.destroy();
+      this.previewContext = null;
+    }
+
     if (this.player) {
       this.player.destroy();
       this.player = null;
@@ -513,9 +521,8 @@ export class FastStreamClient extends EventEmitter {
     console.log(res.join('\n'));
   }
 
-  bindPlayer() {
-    this.context = this.player.createContext();
-
+  bindPlayer(player) {
+    this.context = player.createContext();
 
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
       if (maxLevel !== undefined) {
@@ -528,9 +535,6 @@ export class FastStreamClient extends EventEmitter {
       }
 
       this.player.load();
-      if (this.previewPlayer) {
-        this.previewPlayer.load();
-      }
       this.updateQualityLevels();
     });
 
@@ -640,20 +644,33 @@ export class FastStreamClient extends EventEmitter {
     this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
       this.interfaceController.updateFragmentsLoaded();
     });
+  }
 
-    if (this.previewPlayer) {
-      this.previewPlayer.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        this.previewPlayer.currentLevel = this.currentLevel;
-      });
+  bindPreviewPlayer(player) {
+    this.previewContext = player.createContext();
 
-      this.previewPlayer.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
-        this.interfaceController.updateFragmentsLoaded();
-      });
+    this.previewContext.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+      player.currentLevel = this.previousLevel;
+      player.load();
+    });
 
-      this.previewPlayer.on(DefaultPlayerEvents.ERROR, (e) => {
-        console.log('Preview player error', e);
-      });
-    }
+    this.previewContext.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
+      this.interfaceController.updateFragmentsLoaded();
+    });
+
+    this.previewContext.on(DefaultPlayerEvents.SEEKED, (event) => {
+      this.updatePreview();
+    });
+
+
+    this.previewContext.on(DefaultPlayerEvents.SEEKING, (event) => {
+      this.updatePreview();
+    });
+
+
+    this.previewContext.on(DefaultPlayerEvents.ERROR, (e) => {
+      console.log('Preview player error', e);
+    });
   }
 
   async play() {

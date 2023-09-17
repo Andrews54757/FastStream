@@ -1074,6 +1074,7 @@ body {
     left: 50%;
     transform: translate(-50%, 0%);
     border: 1px solid rgba(200, 200, 200, 0.2);
+    height: 70px;
 }
 
 .fluid_controls_progress_container .seek_preview .seek_preview_video video {
