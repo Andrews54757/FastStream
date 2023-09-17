@@ -210,12 +210,14 @@ function getParentElementsWithSameBounds(element) {
 async function getVideo() {
   // SPLICER:CENSORYT:REMOVE_START
   if (is_url_yt(window.location.href)) {
-    const ytplayer = querySelectorAllIncludingShadows('#ytd-player.ytd-watch-flexy > #container > div');
-    if (ytplayer.length) {
-      const element = ytplayer[0];
+    let ytplayer = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
+    if (!ytplayer) {
+      ytplayer = document.querySelectorAll('body > #player')[0];
+    }
+    if (ytplayer) {
       return {
-        size: element.clientWidth * element.clientHeight,
-        highest: element,
+        size: ytplayer.clientWidth * ytplayer.clientHeight,
+        highest: ytplayer,
       };
     }
   }
@@ -283,7 +285,10 @@ function is_url_yt_watch(urlStr) {
 let lastPlayerNode = null;
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
-    const pnode = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
+    let pnode = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
+    if (!pnode) {
+      pnode = document.querySelectorAll('body > #player')[0];
+    }
     if (pnode && is_url_yt_watch(window.location.href)) {
       const rect = pnode.getBoundingClientRect();
       if (rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
