@@ -218,6 +218,7 @@ export class SourcesBrowser {
     this.linkui.clearButton.addEventListener('click', (e) => {
       this.sources.length = 0;
       this.linkui.sourcesList.replaceChildren();
+      this.updateSources();
     });
 
     this.linkui.sourcesList = WebUtils.create('div', null, 'linkui-sources-list');
