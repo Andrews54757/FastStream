@@ -83,7 +83,10 @@ export default class YTPlayer extends DashPlayer {
     });
 
     const url = new URL(source.url);
-    const identifier = url.searchParams.get('v');
+    let identifier = url.searchParams.get('v');
+    if (!identifier) {
+      identifier = url.pathname.split('/').pop();
+    }
     const videoInfo = await youtube.getInfo(identifier);
     this.youtube = youtube;
     this.videoInfo = videoInfo;
