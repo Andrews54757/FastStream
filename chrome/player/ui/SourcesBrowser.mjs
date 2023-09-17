@@ -13,9 +13,9 @@ export class SourcesBrowser {
     this.setupUI();
   }
 
-  addSource(source) {
+  addSource(source, force = false) {
     const existing = this.sources.find((s) => s.equals(source));
-    if (existing) {
+    if (existing && !force) {
       return existing;
     }
 
@@ -206,7 +206,7 @@ export class SourcesBrowser {
 
 
     this.linkui.addNewButton.addEventListener('click', (e) => {
-      this.addSource(new VideoSource('', null, PlayerModes.DIRECT));
+      this.addSource(new VideoSource('', null, PlayerModes.DIRECT), true);
     });
 
 
