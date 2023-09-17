@@ -8,7 +8,7 @@ const WIDTH = 16;
 const HEIGHT = 8;
 const HASH_BITS = WIDTH * HEIGHT / 2;
 const HASH_LENGTH = Math.ceil(HASH_BITS / 32);
-const ALIGN_CUTOFF = 14;
+const ALIGN_CUTOFF = 12;
 export class VideoAligner extends EventEmitter {
   constructor() {
     super();
