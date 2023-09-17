@@ -277,7 +277,7 @@ function is_url_yt(urlStr) {
 function is_url_yt_watch(urlStr) {
   const url = new URL(urlStr);
   const pathname = url.pathname;
-  return pathname.startsWith('/watch');
+  return pathname.startsWith('/watch') || pathname.startsWith('/embed');
 }
 
 let lastPlayerNode = null;
