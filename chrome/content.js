@@ -10,7 +10,6 @@ window.addEventListener('message', (e) => {
 
   switch (dt.type) {
     case 'frame':
-      console.log('Frame info', dt);
       const iframes = querySelectorAllIncludingShadows('iframe');
       for (let i = 0; i < iframes.length; i++) {
         if (iframes[i].contentWindow == src) {
@@ -20,8 +19,6 @@ window.addEventListener('message', (e) => {
       }
       break;
   }
-
-  // console.log(e, frameId)
 });
 
 chrome.runtime.onMessage.addListener(
