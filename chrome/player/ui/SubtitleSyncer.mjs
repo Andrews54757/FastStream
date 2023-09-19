@@ -267,12 +267,15 @@ export class SubtitleSyncer extends EventEmitter {
         element: el,
         ctx: el.getContext('2d'),
         update: true,
+        width: 0,
       });
     }
 
     this.canvasElements.forEach((el) => {
-      if (!el.update) return;
+      const newWidth = el.element.clientWidth * 2;
+      if (!el.update && el.width === newWidth) return;
       el.update = false;
+      el.width = newWidth;
       const index = el.index;
       const time = index * 10;
 
@@ -280,7 +283,7 @@ export class SubtitleSyncer extends EventEmitter {
       const endFrame = Math.floor(Math.min(time + 10, this.video.duration) * this.rate);
 
       const context = el.ctx;
-      el.element.width = el.element.clientWidth * 2;
+      el.element.width = newWidth;
       context.clearRect(0, 0, el.element.width, el.element.height);
 
       // Draw line using buffer

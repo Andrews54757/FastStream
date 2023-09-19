@@ -1655,12 +1655,12 @@ body {
     left: 13px;
     right: 13px;
     overflow: hidden;
-    transition: display 0.5s;
-    display: none;
+    transition: visibility 0.5s;
+    visibility: hidden;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.controls_visible.expanded .fluid_controls_timeline_syncer {
-    display: block;
+    visibility: visible;
 }
 
 .timeline_container {
