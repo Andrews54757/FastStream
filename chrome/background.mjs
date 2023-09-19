@@ -14,13 +14,13 @@ const playerURL = chrome.runtime.getURL('player/player.html');
 const tabs = {};
 
 
-chrome.runtime.onInstalled.addListener(function(object) {
-  chrome.storage.local.get('welcome', function(result) {
+chrome.runtime.onInstalled.addListener((object) => {
+  chrome.storage.local.get('welcome', (result) => {
     if (!result || !result.welcome) {
       if (logging) console.log(result);
       chrome.tabs.create({
         url: chrome.runtime.getURL('welcome.html'),
-      }, function(tab) {
+      }, (tab) => {
         chrome.storage.local.set({
           welcome: true,
         });
@@ -220,7 +220,7 @@ function updateTabIcon(tab, skipNotify) {
         text: 'Off',
         tabId: tab.tab,
       });
-      tabIconTimeout = setTimeout(function() {
+      tabIconTimeout = setTimeout(() => {
         chrome.action.setBadgeText({
           text: '',
           tabId: tab.tab,
@@ -235,18 +235,7 @@ async function checkPermissions() {
     chrome.permissions.contains({
       origins: ['<all_urls>'],
       permissions: ['storage', 'tabs', 'webRequest', 'declarativeNetRequest'],
-    }, function(result) {
-      resolve(result);
-    });
-  });
-}
-
-async function askPermissions() {
-  return new Promise((resolve, reject) => {
-    chrome.permissions.request({
-      origins: ['<all_urls>'],
-      permissions: ['storage', 'tabs', 'webRequest', 'declarativeNetRequest'],
-    }, function(result) {
+    }, (result) => {
       resolve(result);
     });
   });
@@ -258,13 +247,10 @@ async function onClicked(tab) {
   // check permissions
   const hasPerms = await checkPermissions();
   if (!hasPerms) {
-    const result = await askPermissions();
-    if (!result) {
-      chrome.tabs.create({
-        url: chrome.runtime.getURL('perms.html'),
-      });
-      return;
-    }
+    chrome.tabs.create({
+      url: chrome.runtime.getURL('perms.html'),
+    });
+    return;
   }
 
   if (tab.url && tab.url !== 'about:newtab' && tab.url !== 'chrome://newtab/') {
@@ -285,7 +271,7 @@ async function onClicked(tab) {
     });
   }
 }
-chrome.action.onClicked.addListener(function(tab) {
+chrome.action.onClicked.addListener((tab) => {
   onClicked(tab);
 });
 
@@ -298,7 +284,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === 'welcome') {
     chrome.tabs.create({
       url: chrome.runtime.getURL('welcome.html'),
-    }, function(tab) {
+    }, (tab) => {
 
     });
     return;
@@ -474,14 +460,14 @@ async function loadOptions(newOptions) {
   });
 
 
-  chrome.tabs.query({}, function(tabs) {
+  chrome.tabs.query({}, (tabs) => {
     const message = {
       type: 'settings',
       options: options,
     };
     for (let i = 0; i < tabs.length; ++i) {
       try {
-        chrome.tabs.sendMessage(tabs[i].id, message, ()=>{
+        chrome.tabs.sendMessage(tabs[i].id, message, () => {
           if (chrome.runtime.lastError) {
             if (logging) console.log('Error sending message to tab', tabs[i], chrome.runtime.lastError);
           }
@@ -506,7 +492,7 @@ async function loadOptions(newOptions) {
   }
 
   autoEnableList.length = 0;
-  options.autoEnableURLs.forEach((urlStr)=>{
+  options.autoEnableURLs.forEach((urlStr) => {
     if (urlStr.length === 0) {
       return;
     }
@@ -751,7 +737,7 @@ function frameHasPlayer(frame) {
 }
 
 chrome.webRequest.onHeadersReceived.addListener(
-    function(details) {
+    (details) => {
       const url = details.url;
       const ext = URLUtils.get_url_extension(url);
       const frame = getOrCreateFrame(details);
@@ -788,11 +774,12 @@ function deleteHeaderCache(details) {
   const frame = getOrCreateFrame(details);
   delete frame.requests[details.requestId];
 }
-chrome.tabs.onRemoved.addListener(function(tabid, removed) {
+
+chrome.tabs.onRemoved.addListener((tabid, removed) => {
   delete tabs[tabid];
 });
 
-chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
   if (tabs[tabid]) {
     if (changeInfo.url) {
       const url = new URL(changeInfo.url);
@@ -801,7 +788,7 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
       }
       tabs[tabid].hostname = url.hostname;
 
-      const urlIsInAutoList = autoEnableList.some((regex)=>{
+      const urlIsInAutoList = autoEnableList.some((regex) => {
         try {
           if (typeof regex === 'string') {
             return changeInfo.url.substring(0, regex.length) === regex;

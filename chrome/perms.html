@@ -49,6 +49,26 @@
         .note {
             font-size: 12px;
         }
+
+        .permstatus {
+            display: none;
+            color: white;
+            padding: 2px 5px;
+            border-radius: 2px;
+            margin-left: 5px;
+            user-select: none;
+        }
+
+        .permstatus.has-perms {
+            background-color: green;
+            display: inline-block;
+        }
+
+        .permstatus.no-perms {
+            background-color: red;
+            display: inline-block;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -84,7 +104,7 @@
             <p>Here is a breakdown of the permissions FastStream requires, and why it needs them.</p>
             <p class="note">Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance.</p>
        
-            <h4>Be able to access and modify all websites</h4>
+            <h4>Be able to access and modify all websites <span class="permstatus" data-perm="all-urls"></span></h4>
             <p>FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:</p>
             <ul>
                 <li>
@@ -101,7 +121,7 @@
                 </li>
             </ul>
 
-            <h4>Store data on your browser</h4>
+            <h4>Store data on your browser <span class="permstatus" data-perm="storage"></span></h4>
             <p>FastStream needs to be able to store data in your browser so that it can remember your settings.</p>
             <ul>
                 <li>
@@ -114,7 +134,7 @@
                 </li>
             </ul>
 
-            <h4>Access the tabs API</h4>
+            <h4>Access the tabs API <span class="permstatus" data-perm="tabs"></span></h4>
             <p>FastStream needs to be able to send messages between players and content scripts in each tab.</p>
             <ul>
                 <li>
@@ -127,7 +147,7 @@
                 </li>
             </ul>
 
-            <h4>Access the webRequest API</h4>
+            <h4>Access the webRequest API <span class="permstatus" data-perm="webRequest"></span></h4>
             <p>FastStream needs to be able to intercept HTTP requests to video sources in order to play them with the FastStream player</p>
             <ul>
                 <li>
@@ -141,7 +161,7 @@
             </ul>
 
 
-            <h4>Access the declarativeNetRequest API</h4>
+            <h4>Access the declarativeNetRequest API <span class="permstatus" data-perm="declarativeNetRequest"></span></h4>
             <p>FastStream needs to be able to modify HTTP headers of certain requests in order to communicate with web servers</p>
             <ul>
                 <li>
@@ -153,7 +173,7 @@
         <div class="center" style="font-size: 8px;color: rgba(255, 255, 255, 0.4)">Copyright © 2017-2023 Andrew S
             (Andrews54757@gmail.com)</div>
     </div>
-    <script src="welcome.js"></script>
+    <script src="perms.mjs" charset="UTF-8" type="module"></script>
 </body>
 
 </html>
