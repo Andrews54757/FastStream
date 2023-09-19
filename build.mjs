@@ -10,6 +10,7 @@ const chromeSourceDir = path.resolve(__dirname, 'chrome');
 const chromeBuildDir = path.resolve(__dirname, 'build_chrome_dist');
 const firefoxBuildDir = path.resolve(__dirname, 'build_firefox_libre');
 const licenseText = fs.readFileSync(path.resolve(__dirname, 'LICENSE.md'), 'utf8');
+const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'));
 
 fs.mkdirSync(builtDir, {recursive: true});
 glob(builtDir + '/*.zip').forEach((file) => {
@@ -277,7 +278,15 @@ async function buildFirefoxLibre() {
   return finalPath;
 }
 
+
 async function runAll() {
+  // update manifest version
+  const manifestPath = path.join(chromeSourceDir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  manifest.version = packageJson.version;
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  console.log(`Building version ${manifest.version}`);
+
   await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre()]);
   removeBuildDirs();
 }
