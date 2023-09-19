@@ -1,4 +1,5 @@
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
+import {Utils} from '../player/utils/Utils.mjs';
 import {WebUtils} from '../player/utils/WebUtils.mjs';
 
 let options = {};
@@ -17,41 +18,36 @@ autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/exa
 
 loadOptions();
 
-function loadOptions() {
-  console.log('Loading options');
-  chrome.storage.local.get({
-    options: '{}',
-  }, (results) => {
-    options = JSON.parse(results.options) || {};
+async function loadOptions(newOptions) {
+  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  options = JSON.parse(newOptions) || {};
 
-    downloadAll.checked = !!options.downloadAll;
-    analyzeVideos.checked = !!options.analyzeVideos;
-    playStreamURLs.checked = !!options.playStreamURLs;
-    playMP4URLs.checked = !!options.playMP4URLs;
-    autosub.checked = !!options.autoEnableBestSubtitles;
-    if (options.keybinds) {
-      keybindsList.replaceChildren();
-      for (const keybind in options.keybinds) {
-        if (Object.hasOwn(options.keybinds, keybind)) {
-          createKeybindElement(keybind);
-        }
+  downloadAll.checked = !!options.downloadAll;
+  analyzeVideos.checked = !!options.analyzeVideos;
+  playStreamURLs.checked = !!options.playStreamURLs;
+  playMP4URLs.checked = !!options.playMP4URLs;
+  autosub.checked = !!options.autoEnableBestSubtitles;
+  if (options.keybinds) {
+    keybindsList.replaceChildren();
+    for (const keybind in options.keybinds) {
+      if (Object.hasOwn(options.keybinds, keybind)) {
+        createKeybindElement(keybind);
       }
     }
+  }
 
-    console.log(options);
-    document.querySelectorAll('.video-option').forEach((option) => {
-      const numberInput = option.querySelector('input.number');
-      const rangeInput = option.querySelector('input.range');
-      const unit = option.dataset.unit || '%';
-      const unitMultiplier = parseInt(option.dataset.multiplier || 100);
-      const optionKey = option.dataset.option;
-      const val = Math.round(options[optionKey] * unitMultiplier);
-      rangeInput.value = val;
-      numberInput.value = val + unit;
-    });
-
-    autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
+  document.querySelectorAll('.video-option').forEach((option) => {
+    const numberInput = option.querySelector('input.number');
+    const rangeInput = option.querySelector('input.range');
+    const unit = option.dataset.unit || '%';
+    const unitMultiplier = parseInt(option.dataset.multiplier || 100);
+    const optionKey = option.dataset.option;
+    const val = Math.round(options[optionKey] * unitMultiplier);
+    rangeInput.value = val;
+    numberInput.value = val + unit;
   });
+
+  autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
 }
 
 function getKeyString(e) {
@@ -91,7 +87,6 @@ document.querySelectorAll('.video-option').forEach((option) => {
 
   function rangeInputChanged() {
     numberInput.value = rangeInput.value + unit;
-    console.log(rangeInput.value);
     options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
     optionChanged();
   }
@@ -211,6 +206,6 @@ function optionChanged() {
 // Load options on options event
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'options') {
-    loadOptions();
+    loadOptions(request.options);
   }
 });

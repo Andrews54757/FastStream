@@ -428,18 +428,8 @@ function getMediaNameFromTab(tab) {
   return words.join(' ');
 }
 
-async function getOptionsFromStorage() {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get({
-      options: '{}',
-    }, (results) => {
-      resolve(results.options);
-    });
-  });
-}
-
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await getOptionsFromStorage();
+  newOptions = newOptions || await Utils.getOptionsFromStorage();
   newOptions = JSON.parse(newOptions) || {};
 
   options = Utils.mergeOptions(DefaultOptions, newOptions);

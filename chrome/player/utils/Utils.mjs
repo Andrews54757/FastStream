@@ -1,4 +1,14 @@
 export class Utils {
+  static async getOptionsFromStorage() {
+    return new Promise((resolve, reject) => {
+      chrome.storage.local.get({
+        options: '{}',
+      }, (results) => {
+        resolve(results.options);
+      });
+    });
+  }
+
   static mergeOptions(defaultOptions, newOptions) {
     const options = {};
     for (const prop in defaultOptions) {

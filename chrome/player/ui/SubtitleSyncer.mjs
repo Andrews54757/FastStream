@@ -121,7 +121,7 @@ export class SubtitleSyncer extends EventEmitter {
 
     this.canvasElements.find((el) => {
       if (el.index * 10 <= time && (el.index + 1) * 10 > time) {
-        el.update = true;
+        el.cachedWidth = 0;
         return true;
       }
       return false;
@@ -266,16 +266,14 @@ export class SubtitleSyncer extends EventEmitter {
         index: canvIndex,
         element: el,
         ctx: el.getContext('2d'),
-        update: true,
-        width: 0,
+        cachedWidth: 0,
       });
     }
 
     this.canvasElements.forEach((el) => {
       const newWidth = el.element.clientWidth * 2;
-      if (!el.update && el.width === newWidth) return;
-      el.update = false;
-      el.width = newWidth;
+      if (el.cachedWidth === newWidth) return;
+      el.cachedWidth = newWidth;
       const index = el.index;
       const time = index * 10;
 
