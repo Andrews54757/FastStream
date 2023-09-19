@@ -83,17 +83,23 @@ document.querySelectorAll('.video-option').forEach((option) => {
 
   const optionKey = option.dataset.option;
 
-  numberInput.addEventListener('input', (e) => {
+  function numberInputChanged() {
     rangeInput.value = parseInt(numberInput.value.replace(unit, '')) || 0;
     options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
     optionChanged();
-  });
+  }
 
-  rangeInput.addEventListener('input', (e) => {
+  function rangeInputChanged() {
     numberInput.value = rangeInput.value + unit;
+    console.log(rangeInput.value);
     options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
     optionChanged();
-  });
+  }
+
+  numberInput.addEventListener('change', numberInputChanged);
+  numberInput.addEventListener('input', numberInputChanged);
+  rangeInput.addEventListener('change', rangeInputChanged);
+  rangeInput.addEventListener('input', rangeInputChanged);
 });
 
 function createKeybindElement(keybind) {
@@ -196,14 +202,9 @@ autoEnableURLSInput.addEventListener('input', (e) => {
 });
 
 function optionChanged() {
-  const optstr = JSON.stringify(options);
-  chrome.storage.local.set({
-    options: optstr,
-  }, (results) => {
-    chrome.runtime.sendMessage({
-      type: 'options',
-      optstr: optstr,
-    });
+  chrome.runtime.sendMessage({
+    type: 'options',
+    options: JSON.stringify(options),
   });
 }
 

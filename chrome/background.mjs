@@ -32,7 +32,11 @@ chrome.runtime.onInstalled.addListener(function(object) {
 chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
   ctabs.forEach((tab) => {
     if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
-    updateTabIcon(tab.id, true);
+    try {
+      updateTabIcon(tab.id, true);
+    } catch (e) {
+      console.error(e);
+    }
   });
 });
 
@@ -266,7 +270,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   if (msg.type === 'options') {
-    loadOptions();
+    loadOptions(msg.options);
     return;
   }
 
@@ -424,54 +428,69 @@ function getMediaNameFromTab(tab) {
   return words.join(' ');
 }
 
-function loadOptions() {
-  chrome.storage.local.get({
-    options: '{}',
-  }, (results) => {
-    const newOptions = JSON.parse(results.options) || {};
-
-    options = Utils.mergeOptions(DefaultOptions, newOptions);
-
-    chrome.storage.local.set({
-      options: JSON.stringify(options),
+async function getOptionsFromStorage() {
+  return new Promise((resolve, reject) => {
+    chrome.storage.local.get({
+      options: '{}',
+    }, (results) => {
+      resolve(results.options);
     });
+  });
+}
+
+async function loadOptions(newOptions) {
+  newOptions = newOptions || await getOptionsFromStorage();
+  newOptions = JSON.parse(newOptions) || {};
+
+  options = Utils.mergeOptions(DefaultOptions, newOptions);
+
+  chrome.storage.local.set({
+    options: JSON.stringify(options),
+  });
 
 
-    chrome.tabs.query({}, function(tabs) {
-      const message = {
-        type: 'settings',
-        options: options,
-      };
-      for (let i = 0; i < tabs.length; ++i) {
-        chrome.tabs.sendMessage(tabs[i].id, message);
+  chrome.tabs.query({}, function(tabs) {
+    const message = {
+      type: 'settings',
+      options: options,
+    };
+    for (let i = 0; i < tabs.length; ++i) {
+      try {
+        chrome.tabs.sendMessage(tabs[i].id, message, ()=>{
+          if (chrome.runtime.lastError) {
+            if (logging) console.log('Error sending message to tab', tabs[i], chrome.runtime.lastError);
+          }
+        });
+      } catch (e) {
+        console.error(e);
       }
-    });
+    }
+  });
 
 
-    if (options.playMP4URLs) {
-      setupRedirectRule(1, ['mp4']);
-    } else {
-      removeRule(1);
+  if (options.playMP4URLs) {
+    setupRedirectRule(1, ['mp4']);
+  } else {
+    removeRule(1);
+  }
+
+  if (options.playStreamURLs) {
+    setupRedirectRule(2, ['m3u8', 'mpd']);
+  } else {
+    removeRule(2);
+  }
+
+  autoEnableList.length = 0;
+  options.autoEnableURLs.forEach((urlStr)=>{
+    if (urlStr.length === 0) {
+      return;
     }
 
-    if (options.playStreamURLs) {
-      setupRedirectRule(2, ['m3u8', 'mpd']);
+    if (urlStr[0] === '~') {
+      autoEnableList.push(new RegExp(urlStr.substring(1)));
     } else {
-      removeRule(2);
+      autoEnableList.push(urlStr);
     }
-
-    autoEnableList.length = 0;
-    options.autoEnableURLs.forEach((urlStr)=>{
-      if (urlStr.length === 0) {
-        return;
-      }
-
-      if (urlStr[0] === '~') {
-        autoEnableList.push(new RegExp(urlStr.substring(1)));
-      } else {
-        autoEnableList.push(urlStr);
-      }
-    });
   });
 }
 
@@ -789,7 +808,7 @@ chrome.tabs.onUpdated.addListener(function(tabid, changeInfo, tab) {
   }
 });
 
-loadOptions();
+loadOptions().catch(console.error);
 setInterval(chrome.runtime.getPlatformInfo, 20e3);
 
 console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
