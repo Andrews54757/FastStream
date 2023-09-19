@@ -229,8 +229,43 @@ function updateTabIcon(tab, skipNotify) {
     }
   }
 }
-function onClicked(tab) {
+
+async function checkPermissions() {
+  return new Promise((resolve, reject) => {
+    chrome.permissions.contains({
+      origins: ['<all_urls>'],
+      permissions: ['storage', 'tabs', 'webRequest', 'declarativeNetRequest'],
+    }, function(result) {
+      resolve(result);
+    });
+  });
+}
+
+async function askPermissions() {
+  return new Promise((resolve, reject) => {
+    chrome.permissions.request({
+      origins: ['<all_urls>'],
+      permissions: ['storage', 'tabs', 'webRequest', 'declarativeNetRequest'],
+    }, function(result) {
+      resolve(result);
+    });
+  });
+}
+
+async function onClicked(tab) {
   if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
+
+  // check permissions
+  const hasPerms = await checkPermissions();
+  if (!hasPerms) {
+    const result = await askPermissions();
+    if (!result) {
+      chrome.tabs.create({
+        url: chrome.runtime.getURL('perms.html'),
+      });
+      return;
+    }
+  }
 
   if (tab.url && tab.url !== 'about:newtab' && tab.url !== 'chrome://newtab/') {
     tabs[tab.id].isOn = !tabs[tab.id].isOn;
