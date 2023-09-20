@@ -269,6 +269,7 @@ async function buildFirefoxLibre() {
   };
 
   delete manifest.incognito;
+  delete manifest.minimum_chrome_version;
 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
