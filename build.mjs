@@ -105,6 +105,7 @@ function extractExports(fileText) {
   };
 }
 
+// eslint-disable-next-line no-unused-vars
 function generateScriptWithAllImports(sourceDir, filePath, resolvedPaths = []) {
   const text = extractExports(fs.readFileSync(filePath, 'utf8')).fileText;
   const {imports, fileText} = extractImports(text);

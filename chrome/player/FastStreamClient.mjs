@@ -314,6 +314,7 @@ export class FastStreamClient extends EventEmitter {
     await this.videoAnalyzer.setSource(this.player.getSource());
 
     this.updateCSSFilters();
+    this.interfaceController.updateToolVisibility();
   }
 
 
@@ -378,7 +379,7 @@ export class FastStreamClient extends EventEmitter {
 
   mainloop() {
     if (this.destroyed) return;
-    setTimeout(this.mainloop.bind(this), 500);
+    setTimeout(this.mainloop.bind(this), 1000);
 
     if (this.player) {
       this.updatePreview();

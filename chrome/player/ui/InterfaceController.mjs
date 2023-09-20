@@ -49,6 +49,7 @@ export class InterfaceController {
     DOMElements.playPauseButtonBigCircle.style.display = '';
     DOMElements.playerContainer.classList.add('controls_visible');
     this.persistent.duration = 0;
+    this.updateToolVisibility();
   }
 
   failedToLoad(reason) {
@@ -385,16 +386,12 @@ export class InterfaceController {
 
     DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
 
-    DOMElements.download.addEventListener('click', this.downloadMovie.bind(this));
+    DOMElements.download.addEventListener('click', this.saveVideo.bind(this));
     WebUtils.setupTabIndex(DOMElements.download);
 
-    DOMElements.screenshot.addEventListener('click', this.downloadFrame.bind(this));
+    DOMElements.screenshot.addEventListener('click', this.saveScreenshot.bind(this));
     WebUtils.setupTabIndex(DOMElements.screenshot);
 
-    // check if picture in picture is supported
-    if (document.pictureInPictureEnabled) {
-      DOMElements.pip.style.display = 'inline-block';
-    }
     DOMElements.pip.addEventListener('click', this.pipToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.pip);
 
@@ -450,6 +447,14 @@ export class InterfaceController {
       ],
       alpha: true,
     });
+
+    this.updateToolVisibility();
+  }
+
+  updateToolVisibility() {
+    DOMElements.pip.style.display = (this.client.player && document.pictureInPictureEnabled) ? 'inline-block' : 'none';
+    DOMElements.download.style.display = this.client.player ? 'inline-block' : 'none';
+    DOMElements.screenshot.style.display = this.client.player ? 'inline-block' : 'none';
   }
 
   pipToggle() {
@@ -647,7 +652,7 @@ export class InterfaceController {
     DOMElements.downloadStatus.textContent = text;
   }
 
-  async downloadFrame() {
+  async saveScreenshot() {
     if (!this.client.player) {
       alert('No video loaded!');
       return;
@@ -694,7 +699,7 @@ export class InterfaceController {
     }, 1000);
   }
 
-  async downloadMovie() {
+  async saveVideo() {
     if (!this.client.player) {
       alert('No video loaded!');
       return;

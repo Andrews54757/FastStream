@@ -316,7 +316,6 @@ export class OpenSubtitlesSearch extends EventEmitter {
         console.log(item.attributes.files[0].file_id);
         let body;
         if (item.downloading) {
-          alert('Already downloading!');
           return;
         }
 
