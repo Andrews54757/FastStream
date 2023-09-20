@@ -14,6 +14,12 @@ const playerURL = chrome.runtime.getURL('player/player.html');
 const tabs = {};
 
 
+function checkMessageError(message) {
+  if (chrome.runtime.lastError) {
+    console.warn(`Unable to send message '${message}'`, chrome.runtime.lastError);
+  }
+}
+
 chrome.runtime.onInstalled.addListener((object) => {
   chrome.storage.local.get('welcome', (result) => {
     if (!result || !result.welcome) {
@@ -314,6 +320,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frameId: frame.frame,
     }, {
       frameId: frame.parent,
+    }, () => {
+      checkMessageError('fullscreen');
     });
   } else if (msg.type === 'faststream') {
     if (logging) console.log('Found FastStream window', frame);
@@ -329,6 +337,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frameId: frame.frame,
     }, {
       frameId: frame.frame,
+    }, ()=>{
+      checkMessageError('init');
     });
 
 
@@ -337,6 +347,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       name: getMediaNameFromTab(sender?.tab),
     }, {
       frameId: frame.frame,
+    }, ()=>{
+      checkMessageError('media_name');
     });
 
     chrome.tabs.sendMessage(frame.tab.tab, {
@@ -344,6 +356,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       options: options,
     }, {
       frameId: frame.frame,
+    }, ()=>{
+      checkMessageError('settings');
     });
 
     chrome.tabs.sendMessage(frame.tab.tab, {
@@ -351,6 +365,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       data: tab.analyzerData,
     }, {
       frameId: frame.frame,
+    }, ()=>{
+      checkMessageError('analyzerData');
     });
   } else if (msg.type === 'analyzerData') {
     if (logging) console.log('Analyzer data', msg.data);
@@ -373,6 +389,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frameId: frame.frame,
     }, {
       frameId: frame.frame,
+    }, ()=>{
+      checkMessageError('init');
     });
 
     // SPLICER:CENSORYT:REMOVE_START
@@ -459,9 +477,7 @@ async function loadOptions(newOptions) {
     for (let i = 0; i < tabs.length; ++i) {
       try {
         chrome.tabs.sendMessage(tabs[i].id, message, () => {
-          if (chrome.runtime.lastError) {
-            if (logging) console.log('Error sending message to tab', tabs[i], chrome.runtime.lastError);
-          }
+          checkMessageError('settings'')
         });
       } catch (e) {
         console.error(e);
@@ -578,6 +594,8 @@ function sendSources(frame) {
     sources: sources,
   }, {
     frameId: frame.frame,
+  }, ()=>{
+    checkMessageError('sources');
   });
 }
 
@@ -605,6 +623,7 @@ async function scrapeCaptionsTags(frame) {
     }, {
       frameId: frame.frame,
     }, (sub) => {
+      checkMessageError('scrape_captions');
       resolve(sub);
     });
   });
@@ -617,6 +636,7 @@ async function getVideoSize(frame) {
     }, {
       frameId: frame.frame,
     }, (size) => {
+      checkMessageError('get_video_size');
       resolve(size);
     });
   });
