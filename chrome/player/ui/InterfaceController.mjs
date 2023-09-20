@@ -427,6 +427,12 @@ export class InterfaceController {
     DOMElements.markerContainer.appendChild(this.seekMarker);
     this.seekMarker.style.display = 'none';
 
+    this.unseekMarker = document.createElement('div');
+    this.unseekMarker.classList.add('seek_marker');
+    this.unseekMarker.classList.add('unseek_marker');
+    DOMElements.markerContainer.appendChild(this.unseekMarker);
+    this.unseekMarker.style.display = 'none';
+
     this.analyzerMarker = document.createElement('div');
     this.analyzerMarker.classList.add('analyzer_marker');
     DOMElements.markerContainer.appendChild(this.analyzerMarker);
@@ -789,13 +795,22 @@ export class InterfaceController {
     document.body.removeChild(link);
   }
   updateMarkers() {
-    const seeks = this.client.seeks;
-    if (seeks.length) {
-      const time = seeks[seeks.length - 1];
+    const pastSeeks = this.client.pastSeeks;
+    if (pastSeeks.length) {
+      const time = pastSeeks[pastSeeks.length - 1];
       this.seekMarker.style.left = (time / this.persistent.duration * 100) + '%';
       this.seekMarker.style.display = '';
     } else {
       this.seekMarker.style.display = 'none';
+    }
+
+    const pastUnseeks = this.client.pastUnseeks;
+    if (pastUnseeks.length) {
+      const time = pastUnseeks[pastUnseeks.length - 1];
+      this.unseekMarker.style.left = (time / this.persistent.duration * 100) + '%';
+      this.unseekMarker.style.display = '';
+    } else {
+      this.unseekMarker.style.display = 'none';
     }
 
     const analyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition(); ;

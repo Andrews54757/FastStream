@@ -99,6 +99,10 @@ export class KeybindManager extends EventEmitter {
       this.client.undoSeek();
     });
 
+    this.on('RedoSeek', (e) => {
+      this.client.redoSeek();
+    });
+
     this.on('ResetFailed', (e) => {
       this.client.resetFailed();
     });

@@ -1178,7 +1178,7 @@ body {
     top: 0px;
     width: 0px;
     height: 0px;;
-    border-top: 3px solid rgb(84, 244, 255);
+    border-top: 3px solid #54f4ff;
     border-left: 2px solid transparent;
     border-right: 2px solid transparent;
 }
@@ -1190,6 +1190,11 @@ body {
 .fluid_controls_progress_container:hover .seek_marker,
 .fluid_controls_progress_container.skip_freeze .seek_marker {
     display: block;
+}
+
+
+.marker_container > div.unseek_marker {
+    border-top: 3px solid #F4FF54;
 }
 
 .marker_container>div.analyzer_marker {

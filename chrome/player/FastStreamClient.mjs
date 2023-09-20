@@ -59,7 +59,8 @@ export class FastStreamClient extends EventEmitter {
     this.player = null;
     this.previewPlayer = null;
     this.saveSeek = true;
-    this.seeks = [];
+    this.pastSeeks = [];
+    this.pastUnseeks = [];
     this.fragmentsStore = {};
     this.mainloop();
   }
@@ -524,7 +525,8 @@ export class FastStreamClient extends EventEmitter {
     this.lastTime = 0;
 
     this.fragmentsStore = {};
-    this.seeks.length = 0;
+    this.pastSeeks.length = 0;
+    this.pastUnseeks.length = 0;
     if (this.context) {
       this.context.destroy();
       this.context = null;
@@ -760,18 +762,29 @@ export class FastStreamClient extends EventEmitter {
   }
 
   undoSeek() {
-    if (this.seeks.length) {
-      this.player.currentTime = this.seeks.pop();
+    if (this.pastSeeks.length) {
+      this.pastUnseeks.push(this.player.currentTime);
+      this.player.currentTime = this.pastSeeks.pop();
       this.interfaceController.updateMarkers();
     }
   }
+
+  redoSeek() {
+    if (this.pastUnseeks.length) {
+      this.pastSeeks.push(this.player.currentTime);
+      this.player.currentTime = this.pastUnseeks.pop();
+      this.interfaceController.updateMarkers();
+    }
+  }
+
   savePosition() {
-    if (!this.seeks.length || this.seeks[this.seeks.length - 1] != this.persistent.currentTime) {
-      this.seeks.push(this.persistent.currentTime);
+    if (!this.pastSeeks.length || this.pastSeeks[this.pastSeeks.length - 1] != this.persistent.currentTime) {
+      this.pastSeeks.push(this.persistent.currentTime);
     }
-    if (this.seeks.length > 50) {
-      this.seeks.shift();
+    if (this.pastSeeks.length > 50) {
+      this.pastSeeks.shift();
     }
+    this.pastUnseeks.length = 0;
     this.interfaceController.updateMarkers();
   }
   set currentTime(value) {

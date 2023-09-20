@@ -11,6 +11,7 @@ export const DefaultKeybinds = {
   'SeekForwardLarge': 'Period',
   'SeekBackwardLarge': 'Comma',
   'UndoSeek': 'KeyZ',
+  'RedoSeek': 'Shift+KeyZ',
   'ResetFailed': 'Backquote',
   'AddDownloader': 'Equal',
   'RemoveDownloader': 'Minus',
