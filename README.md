@@ -15,7 +15,9 @@ Player features:
 - OpenSubtitles support so you can search for subtitles directly from the player.
 - Subtitle offset controls to correct bad subtitle timings within the player
 - Precise video previews when hovering over the timeline.
-- Helpful (remappable) keybinds such as: Alt to hide player, Z to undo seek, <> to skip 2 seconds.
+- Helpful (remappable) keybinds such as: Right Alt to hide player, Z to undo seek, <> to skip 2 seconds.
+- Adjustable video brightness, contrast, saturation, hue, and more
+- Adjustable volume, up to 300% volume boost
 
 Should you like binging shows, the player also comes equipped with a custom video analysis system that runs in the background to identify intro/outro sequences based on repetitive scenes. Once they have been identified, you can skip them easily by pressing S.
 

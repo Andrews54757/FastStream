@@ -1,5 +1,5 @@
 export const DefaultKeybinds = {
-  'HidePlayer': 'AltLeft',
+  'HidePlayer': 'AltRight',
   'PlayPause': 'Space',
   'Fullscreen': 'KeyF',
   'VolumeUp': 'ArrowUp',
