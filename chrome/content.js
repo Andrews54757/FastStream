@@ -98,8 +98,13 @@ chrome.runtime.onMessage.addListener(
             iframe.src = request.url;
             iframe.setAttribute('style', video.highest.getAttribute('style'));
             iframe.classList = video.highest.classList;
-            iframe.style.width = (rect.width || 100) + 'px';
-            iframe.style.height = (rect.height || 100) + 'px';
+
+            const width = (rect.width || 100) + 'px';
+            const height = (rect.height || 100) + 'px';
+
+            iframe.style.setProperty('width', width, 'important');
+            iframe.style.setProperty('height', height, 'important');
+
 
             iframe.style.position = styles.position;
             iframe.id = video.highest.id;
