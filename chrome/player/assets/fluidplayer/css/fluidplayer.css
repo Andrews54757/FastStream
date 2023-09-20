@@ -1774,6 +1774,7 @@ body {
 
 .mainplayer {
     cursor: none;
+    overflow: hidden;
 }
 
 .mainplayer.controls_visible {

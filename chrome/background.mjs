@@ -281,15 +281,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
-  if (msg.type === 'welcome') {
-    chrome.tabs.create({
-      url: chrome.runtime.getURL('welcome.html'),
-    }, (tab) => {
-
-    });
-    return;
-  }
-
   if (msg.type === 'options') {
     loadOptions(msg.options);
     return;

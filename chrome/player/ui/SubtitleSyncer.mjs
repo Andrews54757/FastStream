@@ -272,7 +272,7 @@ export class SubtitleSyncer extends EventEmitter {
 
     this.canvasElements.forEach((el) => {
       const newWidth = el.element.clientWidth * 2;
-      if (el.cachedWidth === newWidth) return;
+      if (el.cachedWidth === newWidth || newWidth === 0) return;
       el.cachedWidth = newWidth;
       const index = el.index;
       const time = index * 10;

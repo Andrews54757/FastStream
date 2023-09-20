@@ -146,12 +146,7 @@ function createKeybindElement(keybind) {
   keybindsList.appendChild(containerElement);
 }
 
-document.getElementById('welcome').addEventListener('click', () => {
-  chrome.runtime.sendMessage({
-    type: 'welcome',
-  });
-});
-
+document.getElementById('welcome').href = chrome.runtime.getURL('welcome.html');
 
 playMP4URLs.addEventListener('change', () => {
   options.playMP4URLs = playMP4URLs.checked;
