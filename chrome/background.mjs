@@ -477,7 +477,7 @@ async function loadOptions(newOptions) {
     for (let i = 0; i < tabs.length; ++i) {
       try {
         chrome.tabs.sendMessage(tabs[i].id, message, () => {
-          checkMessageError('settings'')
+          checkMessageError('settings');
         });
       } catch (e) {
         console.error(e);
