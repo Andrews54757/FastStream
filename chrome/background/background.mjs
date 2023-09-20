@@ -1,8 +1,11 @@
-import {DefaultOptions} from './options/defaults/DefaultOptions.mjs';
-import {PlayerModes} from './player/enums/PlayerModes.mjs';
-import {StringUtils} from './player/utils/StringUtils.mjs';
-import {URLUtils} from './player/utils/URLUtils.mjs';
-import {Utils} from './player/utils/Utils.mjs';
+import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
+import {PlayerModes} from '../player/enums/PlayerModes.mjs';
+import {StringUtils} from '../player/utils/StringUtils.mjs';
+import {URLUtils} from '../player/utils/URLUtils.mjs';
+import {Utils} from '../player/utils/Utils.mjs';
+import {BackgroundUtils} from './BackgroundUtils.mjs';
+import {TabHolder} from './Containers.mjs';
+import {RuleManager} from './NetRequestRuleManager.mjs';
 
 let options = {};
 
@@ -12,13 +15,6 @@ const version = chrome.runtime.getManifest().version;
 const logging = false;
 const playerURL = chrome.runtime.getURL('player/player.html');
 const tabs = {};
-
-
-function checkMessageError(message) {
-  if (chrome.runtime.lastError) {
-    console.warn(`Unable to send message '${message}'`, chrome.runtime.lastError);
-  }
-}
 
 chrome.runtime.onInstalled.addListener((object) => {
   chrome.storage.local.get('welcome', (result) => {
@@ -45,157 +41,6 @@ chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
     }
   });
 });
-
-class FrameHolder {
-  constructor(frameId, parent, tab) {
-    if (parent === undefined) throw new Error('Parent is undefined');
-    this.frame = frameId;
-    this.parent = parent;
-    this.urls = [];
-
-    this.sources = [];
-    this.requests = {};
-
-    this.requests = [];
-    this.tab = tab;
-    this.subtitles = [];
-
-    this.isMain = frameId === 0;
-
-
-    this.url = '';
-  }
-}
-class TabHolder {
-  constructor(tabId) {
-    this.tab = tabId;
-    this.isOn = false;
-    this.complete = false;
-    this.regexMatched = false;
-    this.frames = {};
-    this.hostname;
-    this.analyzerData = undefined;
-  }
-  addFrame(frameId, parent) {
-    this.frames[frameId] = new FrameHolder(frameId, parent, this);
-  }
-}
-
-class RuleEntry {
-  constructor(id) {
-    this.id = id;
-    this.expiresAt = Date.now() + 1000 * 5;
-  }
-}
-
-class RuleManager {
-  constructor() {
-    this.rules = [];
-    this.isLoopRunning = false;
-    this.dumpRules();
-  }
-
-  getInsertionIndex(id) {
-    // use binary search
-    let min = 0;
-    let max = this.rules.length - 1;
-    let mid = 0;
-    while (min <= max) {
-      mid = Math.floor((min + max) / 2);
-      if (this.rules[mid].id < id) {
-        min = mid + 1;
-      } else if (this.rules[mid].id > id) {
-        max = mid - 1;
-      } else {
-        return -1;
-      }
-    }
-    return min;
-  }
-
-  startLoop() {
-    if (this.isLoopRunning) return;
-    this.isLoopRunning = true;
-    this.mainLoop();
-  }
-
-  mainLoop() {
-    if (this.rules.length === 0) {
-      this.isLoopRunning = false;
-      return;
-    }
-    setTimeout(() => this.mainLoop(), 1000);
-    this.filterRules();
-  }
-
-  async filterRules() {
-    const now = Date.now();
-    const removed = [];
-    this.rules = this.rules.filter((rule) => {
-      if (rule.expiresAt < now) {
-        removed.push(rule);
-        return false;
-      }
-      return true;
-    });
-
-    return chrome.declarativeNetRequest.updateSessionRules({
-      removeRuleIds: removed.map((rule) => rule.id),
-    });
-  }
-
-  async addHeaderRule(url, tabId, requestHeaderCommands) {
-    const rule = new RuleEntry(this.getNextID());
-    //   if (logging) console.log("Adding rule", rule.id, url, tabId, requestHeaderCommands)
-
-    // insert rule in order
-    const index = this.getInsertionIndex(rule.id);
-    if (index === -1) throw new Error('Rule already exists');
-    this.rules.splice(index, 0, rule);
-
-    const ruleObj = {
-      id: rule.id,
-      priority: 1,
-      action: {
-        type: 'modifyHeaders',
-        requestHeaders: requestHeaderCommands,
-      },
-      condition: {
-        urlFilter: '||' + url.replace('https://', '').replace('http://', ''),
-        tabIds: [tabId],
-      },
-    };
-
-    await chrome.declarativeNetRequest.updateSessionRules({
-      addRules: [ruleObj],
-    });
-
-    this.startLoop();
-    return rule;
-  }
-
-  getNextID() {
-    let nextRuleID = 10;
-    for (let i = 0; i < this.rules.length; i++) {
-      const rule = this.rules[i];
-      if (rule.id === nextRuleID) {
-        nextRuleID++;
-      } else {
-        break;
-      }
-    }
-    return nextRuleID;
-  }
-
-  async dumpRules() {
-    const rules = await chrome.declarativeNetRequest.getSessionRules();
-    if (logging) console.log('Dumping ' + rules.length + ' rules');
-    return chrome.declarativeNetRequest.updateSessionRules({
-      removeRuleIds: rules.map((rule) => rule.id),
-    });
-  }
-}
-
 
 const ruleManager = new RuleManager();
 
@@ -236,22 +81,11 @@ function updateTabIcon(tab, skipNotify) {
   }
 }
 
-async function checkPermissions() {
-  return new Promise((resolve, reject) => {
-    chrome.permissions.contains({
-      origins: ['<all_urls>'],
-      permissions: ['storage', 'tabs', 'webRequest', 'declarativeNetRequest'],
-    }, (result) => {
-      resolve(result);
-    });
-  });
-}
-
 async function onClicked(tab) {
   if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
 
   // check permissions
-  const hasPerms = await checkPermissions();
+  const hasPerms = await BackgroundUtils.checkPermissions();
   if (!hasPerms) {
     chrome.tabs.create({
       url: chrome.runtime.getURL('perms.html'),
@@ -277,6 +111,7 @@ async function onClicked(tab) {
     });
   }
 }
+
 chrome.action.onClicked.addListener((tab) => {
   onClicked(tab);
 });
@@ -289,6 +124,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   if (msg.type === 'options') {
     loadOptions(msg.options);
+    sendResponse('ok');
     return;
   }
 
@@ -311,8 +147,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         sendResponse();
       });
       return true;
-    } else {
-      sendResponse();
     }
   } else if (msg.type === 'fullscreen') {
     chrome.tabs.sendMessage(frame.tab.tab, {
@@ -321,7 +155,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.parent,
     }, () => {
-      checkMessageError('fullscreen');
+      BackgroundUtils.checkMessageError('fullscreen');
     });
   } else if (msg.type === 'faststream') {
     if (logging) console.log('Found FastStream window', frame);
@@ -338,7 +172,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     }, ()=>{
-      checkMessageError('init');
+      BackgroundUtils.checkMessageError('init');
     });
 
 
@@ -348,16 +182,16 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     }, ()=>{
-      checkMessageError('media_name');
+      BackgroundUtils.checkMessageError('media_name');
     });
 
     chrome.tabs.sendMessage(frame.tab.tab, {
-      type: 'settings',
-      options: options,
+      type: 'options',
+      options: JSON.stringify(options),
     }, {
       frameId: frame.frame,
     }, ()=>{
-      checkMessageError('settings');
+      BackgroundUtils.checkMessageError('settings');
     });
 
     chrome.tabs.sendMessage(frame.tab.tab, {
@@ -366,7 +200,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     }, ()=>{
-      checkMessageError('analyzerData');
+      BackgroundUtils.checkMessageError('analyzerData');
     });
   } else if (msg.type === 'analyzerData') {
     if (logging) console.log('Analyzer data', msg.data);
@@ -390,7 +224,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, {
       frameId: frame.frame,
     }, ()=>{
-      checkMessageError('init');
+      BackgroundUtils.checkMessageError('init');
     });
 
     // SPLICER:CENSORYT:REMOVE_START
@@ -403,7 +237,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     frame.ready = true;
 
     sendSources(frame);
+  } else {
+    sendResponse('unknown');
+    return;
   }
+
+  sendResponse('ok');
 });
 
 // SPLICER:CENSORYT:REMOVE_START
@@ -459,7 +298,7 @@ function getMediaNameFromTab(tab) {
 }
 
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  newOptions = newOptions || await BackgroundUtils.getOptionsFromStorage();
   newOptions = JSON.parse(newOptions) || {};
 
   options = Utils.mergeOptions(DefaultOptions, newOptions);
@@ -467,24 +306,6 @@ async function loadOptions(newOptions) {
   chrome.storage.local.set({
     options: JSON.stringify(options),
   });
-
-
-  chrome.tabs.query({}, (tabs) => {
-    const message = {
-      type: 'settings',
-      options: options,
-    };
-    for (let i = 0; i < tabs.length; ++i) {
-      try {
-        chrome.tabs.sendMessage(tabs[i].id, message, () => {
-          checkMessageError('settings');
-        });
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  });
-
 
   if (options.playMP4URLs) {
     setupRedirectRule(1, ['mp4']);
@@ -595,7 +416,7 @@ function sendSources(frame) {
   }, {
     frameId: frame.frame,
   }, ()=>{
-    checkMessageError('sources');
+    BackgroundUtils.checkMessageError('sources');
   });
 }
 
@@ -623,7 +444,7 @@ async function scrapeCaptionsTags(frame) {
     }, {
       frameId: frame.frame,
     }, (sub) => {
-      checkMessageError('scrape_captions');
+      BackgroundUtils.checkMessageError('scrape_captions');
       resolve(sub);
     });
   });
@@ -636,8 +457,43 @@ async function getVideoSize(frame) {
     }, {
       frameId: frame.frame,
     }, (size) => {
-      checkMessageError('get_video_size');
+      BackgroundUtils.checkMessageError('get_video_size');
       resolve(size);
+    });
+  });
+}
+
+async function pingContentScript() {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.query({}, (tabs) => {
+      const message = {
+        type: 'ping',
+      };
+
+      // try one tab at a time. If it fails, try the next one
+      let i = 0;
+      const tryTab = () => {
+        if (i >= tabs.length) {
+          resolve(false);
+          return;
+        }
+
+        try {
+          chrome.tabs.sendMessage(tabs[i].id, message, (returnMessage) => {
+            if (chrome.runtime.lastError || returnMessage !== 'pong') {
+              i++;
+              tryTab();
+            } else {
+              resolve(true);
+            }
+          });
+        } catch (e) {
+          i++;
+          tryTab();
+        }
+      };
+
+      tryTab();
     });
   });
 }
@@ -832,6 +688,10 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
 });
 
 loadOptions().catch(console.error);
-setInterval(chrome.runtime.getPlatformInfo, 20e3);
+
+setInterval(async ()=>{
+  await chrome.runtime.getPlatformInfo();
+  await pingContentScript();
+}, 10e3);
 
 console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');

@@ -22,17 +22,28 @@ window.addEventListener('message', (e) => {
 });
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-      if (request.type === 'fullscreen') {
+    (request, sender, sendResponse) => {
+      if (request.type === 'ping') {
+        sendResponse('pong');
+      } else if (request.type === 'fullscreen') {
         const element = iframeMap.get(request.frameId);
         if (!element) {
+          sendResponse('no_element');
           throw new Error('No element found for frame id ' + request.frameId);
         }
+
         if (document.fullscreenElement === element) {
           document.exitFullscreen();
+          sendResponse('exit');
         } else {
-          element.requestFullscreen();
+          element.requestFullscreen().then(() => {
+            sendResponse('enter');
+          }).catch((e) => {
+            sendResponse('error');
+            throw e;
+          });
         }
+        return true;
       } else if (request.type == 'init') {
         if (window.parent !== window) {
           window.parent.postMessage({
@@ -40,6 +51,7 @@ chrome.runtime.onMessage.addListener(
             id: request.frameId,
           }, '*');
         }
+        sendResponse('ok');
       } else if (request.type == 'scrape_captions') {
         const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;

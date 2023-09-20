@@ -247,11 +247,11 @@ async function buildChromeLibre() {
 async function buildFirefoxLibre() {
   spliceAndCopy(chromeSourceDir, firefoxBuildDir, ['FIREFOX']);
   insertLicense(firefoxBuildDir);
-  const backgroundScriptPath = path.join(firefoxBuildDir, 'background.mjs');
-  const newBacgroundScriptPath = path.join(firefoxBuildDir, 'background.js');
-  const builtBackground = generateScriptWithAllImports(firefoxBuildDir, backgroundScriptPath);
-  fs.writeFileSync(newBacgroundScriptPath, builtBackground);
-  fs.unlinkSync(backgroundScriptPath);
+  // const backgroundScriptPath = path.join(firefoxBuildDir, 'background/background.mjs');
+  // const newBackgroundScriptPath = path.join(firefoxBuildDir, 'background/background.js');
+  // const builtBackground = generateScriptWithAllImports(firefoxBuildDir, backgroundScriptPath);
+  // fs.writeFileSync(newBackgroundScriptPath, builtBackground);
+  // fs.unlinkSync(backgroundScriptPath);
 
   const manifestPath = path.join(firefoxBuildDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -264,7 +264,8 @@ async function buildFirefoxLibre() {
   };
 
   manifest.background = {
-    scripts: ['background.js'],
+    scripts: ['background/background.mjs'],
+    type: 'module',
   };
 
   delete manifest.incognito;

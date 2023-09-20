@@ -1,5 +1,5 @@
+import {BackgroundUtils} from '../background/BackgroundUtils.mjs';
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
-import {Utils} from '../player/utils/Utils.mjs';
 import {WebUtils} from '../player/utils/WebUtils.mjs';
 
 let options = {};
@@ -19,7 +19,7 @@ autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/exa
 loadOptions();
 
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  newOptions = newOptions || await BackgroundUtils.getOptionsFromStorage();
   options = JSON.parse(newOptions) || {};
 
   downloadAll.checked = !!options.downloadAll;
