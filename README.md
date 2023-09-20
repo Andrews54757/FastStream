@@ -47,6 +47,17 @@ The chrome extension store version recieves updates slowly due to their review p
 
 ### THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. If you go this route, please make sure to check back often for updates because I will often fix bugs as I encounter them.
 
+## Manual Installation For Firefox
+
+The extension is, by default, configured to work on Chrome. In order to create a firefox extension bundle, you need to build FastStream by following these steps:
+
+1. Install NodeJS and NPM
+2. Run `npm install --only=dev` to install dev dependencies
+3. Run `npm run build`
+4. Firefox bundle is available in the `built` directory
+
+You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
+
 ## Disclaimer
 
 (I'm not a lawyer, don't take this as legal advice but do pay attention)
