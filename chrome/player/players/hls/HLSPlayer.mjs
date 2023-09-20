@@ -371,7 +371,7 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   get currentLevel() {
-    return this.getIdentifier(0, this.hls.currentLevel);
+    return this.getIdentifier(0, this.hls.currentLevel === -1 ? this.hls.loadLevel : this.hls.currentLevel);
   }
 
   set currentLevel(value) {

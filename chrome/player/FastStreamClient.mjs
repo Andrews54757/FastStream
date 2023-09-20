@@ -400,6 +400,12 @@ export class FastStreamClient extends EventEmitter {
           this.interfaceController.setBuffering(false);
         }
         this.lastTime = time;
+      } else if (this.currentVideo) {
+        if (this.currentVideo.readyState === 0) {
+          this.interfaceController.setBuffering(true);
+        } else if (this.currentVideo.readyState > 1) {
+          this.interfaceController.setBuffering(false);
+        }
       }
     }
 
@@ -590,6 +596,7 @@ export class FastStreamClient extends EventEmitter {
     this.context = player.createContext();
 
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
+      console.log('MANIFEST_PARSED', maxLevel, maxAudioLevel);
       if (maxLevel !== undefined) {
         this.currentLevel = maxLevel;
       } else {
