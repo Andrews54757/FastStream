@@ -98,6 +98,7 @@ export default class DirectVideoPlayer extends EventEmitter {
 
   canSave() {
     return {
+      cantSave: true,
       canSave: false,
       isComplete: true,
     };
