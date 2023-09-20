@@ -54,7 +54,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
             autoPlaySource = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
           }
 
-          if (window.fastStream.source) {
+          if (window.fastStream.source || !request.autoSetSource) {
             autoPlaySource = null;
           }
 
@@ -192,6 +192,7 @@ const myParam = urlParams.get('frame_id');
 if (typeof chrome !== 'undefined') {
   chrome?.runtime?.sendMessage({
     type: 'faststream',
+    url: window.location.href,
     isExt: true,
     frameId: parseInt(myParam) || 0,
   }).then((data) => {

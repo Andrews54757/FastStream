@@ -1,33 +1,29 @@
 export class FrameHolder {
-  constructor(frameId, parent, tab) {
-    if (parent === undefined) throw new Error('Parent is undefined');
-    this.frame = frameId;
-    this.parent = parent;
-    this.urls = [];
-
+  constructor(frameId, parentId, tab) {
+    if (parentId === undefined) throw new Error('Parent is undefined');
+    this.frameId = frameId;
+    this.parentId = parentId;
     this.sources = [];
-    this.requests = {};
-
-    this.requests = [];
-    this.tab = tab;
     this.subtitles = [];
-
-    this.isMain = frameId === 0;
-
-
+    this.requestHeaders = [];
+    this.tab = tab;
     this.url = '';
+    this.playerOpening = false;
+    this.isFastStream = false;
+    this.ready = false;
   }
 }
 
 export class TabHolder {
   constructor(tabId) {
-    this.tab = tabId;
+    this.tabId = tabId;
     this.isOn = false;
     this.complete = false;
     this.regexMatched = false;
     this.frames = {};
     this.hostname;
     this.analyzerData = undefined;
+    this.url = '';
   }
   addFrame(frameId, parent) {
     this.frames[frameId] = new FrameHolder(frameId, parent, this);

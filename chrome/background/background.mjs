@@ -7,19 +7,18 @@ import {BackgroundUtils} from './BackgroundUtils.mjs';
 import {TabHolder} from './Containers.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
 
-let options = {};
+let Options = {};
 
-const autoEnableList = [];
-
-const version = chrome.runtime.getManifest().version;
-const logging = false;
-const playerURL = chrome.runtime.getURL('player/player.html');
-const tabs = {};
+const AutoEnableList = [];
+const ExtensionVersion = chrome.runtime.getManifest().version;
+const Logging = false;
+const PlayerURL = chrome.runtime.getURL('player/player.html');
+const CachedTabs = {};
 
 chrome.runtime.onInstalled.addListener((object) => {
   chrome.storage.local.get('welcome', (result) => {
     if (!result || !result.welcome) {
-      if (logging) console.log(result);
+      if (Logging) console.log(result);
       chrome.tabs.create({
         url: chrome.runtime.getURL('welcome.html'),
       }, (tab) => {
@@ -33,7 +32,7 @@ chrome.runtime.onInstalled.addListener((object) => {
 
 chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
   ctabs.forEach((tab) => {
-    if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
+    if (!CachedTabs[tab.id]) CachedTabs[tab.id] = new TabHolder(tab.id);
     try {
       updateTabIcon(tab.id, true);
     } catch (e) {
@@ -50,31 +49,31 @@ function updateTabIcon(tab, skipNotify) {
   if (tab.isOn) {
     chrome.action.setBadgeText({
       text: 'On',
-      tabId: tab.tab,
+      tabId: tab.tabId,
     });
     chrome.action.setIcon({
       path: '/icon2_128.png',
-      tabId: tab.tab,
+      tabId: tab.tabId,
     });
   } else {
     chrome.action.setIcon({
       path: '/icon128.png',
-      tabId: tab.tab,
+      tabId: tab.tabId,
     });
     if (skipNotify) {
       chrome.action.setBadgeText({
         text: '',
-        tabId: tab.tab,
+        tabId: tab.tabId,
       });
     } else {
       chrome.action.setBadgeText({
         text: 'Off',
-        tabId: tab.tab,
+        tabId: tab.tabId,
       });
       tabIconTimeout = setTimeout(() => {
         chrome.action.setBadgeText({
           text: '',
-          tabId: tab.tab,
+          tabId: tab.tabId,
         });
       }, 1000);
     }
@@ -82,7 +81,7 @@ function updateTabIcon(tab, skipNotify) {
 }
 
 async function onClicked(tab) {
-  if (!tabs[tab.id]) tabs[tab.id] = new TabHolder(tab.id);
+  if (!CachedTabs[tab.id]) CachedTabs[tab.id] = new TabHolder(tab.id);
 
   // check permissions
   const hasPerms = await BackgroundUtils.checkPermissions();
@@ -94,17 +93,17 @@ async function onClicked(tab) {
   }
 
   if (tab.url && tab.url !== 'about:newtab' && tab.url !== 'chrome://newtab/') {
-    tabs[tab.id].isOn = !tabs[tab.id].isOn;
+    CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
 
-    updateTabIcon(tabs[tab.id]);
-    if (tabs[tab.id].isOn) {
+    updateTabIcon(CachedTabs[tab.id]);
+    if (CachedTabs[tab.id].isOn) {
       openPlayersWithSources(tab.id);
     }
   } else {
-    if (!tabs[tab.id].frames[0]) tabs[tab.id].addFrame(0, -1);
+    if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
     //   tabs[tab.id].frames[0].source = "null"
     chrome.tabs.update(tab.id, {
-      url: playerURL,
+      url: PlayerURL,
     }, () => {
 
 
@@ -128,89 +127,90 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
-  if (!tabs[sender.tab.id]) {
-    tabs[sender.tab.id] = new TabHolder(sender.tab.id);
+  if (!CachedTabs[sender.tab.id]) {
+    CachedTabs[sender.tab.id] = new TabHolder(sender.tab.id);
   }
-  const tab = tabs[sender.tab.id];
+  const tab = CachedTabs[sender.tab.id];
 
-  if (!tabs[sender.tab.id].frames[sender.frameId]) {
+  if (!CachedTabs[sender.tab.id].frames[sender.frameId]) {
     const parentFrameId = -2;
-    tabs[sender.tab.id].addFrame(sender.frameId, parentFrameId);
+    CachedTabs[sender.tab.id].addFrame(sender.frameId, parentFrameId);
   }
 
-  const frame = tabs[sender.tab.id].frames[sender.frameId];
+  const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
 
   if (msg.type === 'header_commands') {
     if (msg.commands.length) {
       ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
-        if (logging) console.log('Added rule', msg, rule);
+        if (Logging) console.log('Added rule', msg, rule);
         sendResponse();
       });
       return true;
     }
   } else if (msg.type === 'fullscreen') {
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'fullscreen',
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, {
-      frameId: frame.parent,
+      frameId: frame.parentId,
     }, () => {
       BackgroundUtils.checkMessageError('fullscreen');
     });
   } else if (msg.type === 'faststream') {
-    if (logging) console.log('Found FastStream window', frame);
+    if (Logging) console.log('Found FastStream window', frame);
     frame.isFastStream = true;
     frame.playerOpening = false;
+    frame.url = msg.url;
 
-    if (frame.parent === -2 && frame.frame != msg.frameId) {
-      frame.parent = msg.frameId;
+    if (frame.parentId === -2 && frame.frameId != msg.frameId) {
+      frame.parentId = msg.frameId;
     }
 
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'init',
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, ()=>{
       BackgroundUtils.checkMessageError('init');
     });
 
 
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'media_name',
       name: getMediaNameFromTab(sender?.tab),
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, ()=>{
       BackgroundUtils.checkMessageError('media_name');
     });
 
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'options',
-      options: JSON.stringify(options),
+      options: JSON.stringify(Options),
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, ()=>{
       BackgroundUtils.checkMessageError('settings');
     });
 
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'analyzerData',
       data: tab.analyzerData,
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, ()=>{
       BackgroundUtils.checkMessageError('analyzerData');
     });
   } else if (msg.type === 'analyzerData') {
-    if (logging) console.log('Analyzer data', msg.data);
+    if (Logging) console.log('Analyzer data', msg.data);
     tab.analyzerData = msg.data;
   } else if (msg.type === 'iframe_controls') {
     frame.frame_referer = msg.mode == PlayerModes.IFRAME ? msg.referer : null;
-    if (logging) console.log('Iframe-controls', frame.frame_referer);
+    if (Logging) console.log('Iframe-controls', frame.frame_referer);
   } else if (msg.type === 'iframe') {
     frame.url = msg.url;
-    if (frame.url.substring(0, playerURL.length) !== playerURL) {
+    if (frame.url.substring(0, PlayerURL.length) !== PlayerURL) {
       //  console.log("reset frame sources")
       frame.subtitles.length = 0;
       frame.sources.length = 0;
@@ -218,11 +218,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.playerOpening = false;
     }
   } else if (msg.type === 'loaded') {
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'init',
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, ()=>{
       BackgroundUtils.checkMessageError('init');
     });
@@ -233,7 +233,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     checkYTURL(frame);
     // SPLICER:CENSORYT:REMOVE_END
   } else if (msg.type === 'ready') {
-    if (logging) console.log('Ready');
+    if (Logging) console.log('Ready');
     frame.ready = true;
 
     sendSources(frame);
@@ -250,7 +250,7 @@ function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
 
-  if (url.substring(0, playerURL.length) === playerURL) {
+  if (url.substring(0, PlayerURL.length) === PlayerURL) {
     return;
   }
 
@@ -264,7 +264,7 @@ function checkYTURL(frame) {
 // SPLICER:CENSORYT:REMOVE_END
 
 function getMediaNameFromTab(tab) {
-  if (!tab || tab.url === playerURL) return;
+  if (!tab || tab.url === PlayerURL) return;
   // Get name of website through tab url
   const url = new URL(tab.url);
   const hostname = url.hostname;
@@ -301,34 +301,34 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || await BackgroundUtils.getOptionsFromStorage();
   newOptions = JSON.parse(newOptions) || {};
 
-  options = Utils.mergeOptions(DefaultOptions, newOptions);
+  Options = Utils.mergeOptions(DefaultOptions, newOptions);
 
   chrome.storage.local.set({
-    options: JSON.stringify(options),
+    options: JSON.stringify(Options),
   });
 
-  if (options.playMP4URLs) {
+  if (Options.playMP4URLs) {
     setupRedirectRule(1, ['mp4']);
   } else {
     removeRule(1);
   }
 
-  if (options.playStreamURLs) {
+  if (Options.playStreamURLs) {
     setupRedirectRule(2, ['m3u8', 'mpd']);
   } else {
     removeRule(2);
   }
 
-  autoEnableList.length = 0;
-  options.autoEnableURLs.forEach((urlStr) => {
+  AutoEnableList.length = 0;
+  Options.autoEnableURLs.forEach((urlStr) => {
     if (urlStr.length === 0) {
       return;
     }
 
     if (urlStr[0] === '~') {
-      autoEnableList.push(new RegExp(urlStr.substring(1)));
+      AutoEnableList.push(new RegExp(urlStr.substring(1)));
     } else {
-      autoEnableList.push(urlStr);
+      AutoEnableList.push(urlStr);
     }
   });
 }
@@ -338,11 +338,11 @@ async function setupRedirectRule(ruleID, filetypes) {
     id: ruleID,
     action: {
       type: 'redirect',
-      redirect: {regexSubstitution: playerURL + '#\\0'},
+      redirect: {regexSubstitution: PlayerURL + '#\\0'},
     },
     condition: {
       // exclude self
-      excludedRequestDomains: [(new URL(playerURL)).hostname],
+      excludedRequestDomains: [(new URL(PlayerURL)).hostname],
       // only match m3u8 or mpds
       regexFilter: '^.+\\.(' + filetypes.join('|') + ')$',
       resourceTypes: ['main_frame'],
@@ -365,7 +365,7 @@ function handleSubtitles(url, frame, headers) {
     return a.source === url;
   })) return;
 
-  if (logging) console.log('Found subtitle', url);
+  if (Logging) console.log('Found subtitle', url);
   const u = (new URL(url)).pathname.split('/').pop();
 
   frame.subtitles.push({
@@ -373,7 +373,10 @@ function handleSubtitles(url, frame, headers) {
     headers: headers,
     label: u.split('.')[0],
   });
+
+  sendSourcesToMainFramePlayers(frame);
 }
+
 function getSourceFromURL(frame, url) {
   return frame.sources.find((a) => {
     return a.url === url;
@@ -386,7 +389,7 @@ function addSource(frame, url, mode, headers) {
   });
 }
 
-function sendSources(frame) {
+function collectSources(frame, remove = false) {
   const subtitles = [];
   const sources = [];
 
@@ -400,35 +403,42 @@ function sendSources(frame) {
       sources.push(currentFrame.sources[i]);
     }
 
-    if (currentFrame === frame) {
+    if (currentFrame === frame && remove) {
       currentFrame.sources.length = 0;
       currentFrame.subtitles.length = 0;
     }
 
     if (currentFrame.sources.length !== 0) break;
-    currentFrame = frame.tab.frames[currentFrame.parent];
+    currentFrame = frame.tab.frames[currentFrame.parentId];
   }
 
-  chrome.tabs.sendMessage(frame.tab.tab, {
+  return {subtitles, sources};
+}
+
+function sendSources(frame) {
+  const {subtitles, sources} = collectSources(frame, true);
+
+  chrome.tabs.sendMessage(frame.tab.tabId, {
     type: 'sources',
     subtitles: subtitles,
     sources: sources,
+    autoSetSource: true,
   }, {
-    frameId: frame.frame,
+    frameId: frame.frameId,
   }, ()=>{
     BackgroundUtils.checkMessageError('sources');
   });
 }
 
 function getOrCreateFrame(details) {
-  if (!tabs[details.tabId]) tabs[details.tabId] = new TabHolder(details.tabId);
-  const tab = tabs[details.tabId];
+  if (!CachedTabs[details.tabId]) CachedTabs[details.tabId] = new TabHolder(details.tabId);
+  const tab = CachedTabs[details.tabId];
 
   if (!tab.frames[details.frameId]) tab.addFrame(details.frameId, details.parentFrameId);
   const frame = tab.frames[details.frameId];
 
-  if (details.parentFrameId !== frame.parent) {
-    frame.parent = details.parentFrameId;
+  if (details.parentFrameId !== frame.parentId) {
+    frame.parentId = details.parentFrameId;
   }
 
   return frame;
@@ -439,10 +449,10 @@ function isSubtitles(ext) {
 
 async function scrapeCaptionsTags(frame) {
   return new Promise((resolve, reject) => {
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'scrape_captions',
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, (sub) => {
       BackgroundUtils.checkMessageError('scrape_captions');
       resolve(sub);
@@ -452,10 +462,10 @@ async function scrapeCaptionsTags(frame) {
 
 async function getVideoSize(frame) {
   return new Promise((resolve, reject) => {
-    chrome.tabs.sendMessage(frame.tab.tab, {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'get_video_size',
     }, {
-      frameId: frame.frame,
+      frameId: frame.frameId,
     }, (size) => {
       BackgroundUtils.checkMessageError('get_video_size');
       resolve(size);
@@ -505,26 +515,54 @@ async function openPlayer(frame) {
 
   frame.playerOpening = true;
 
-  return chrome.tabs.sendMessage(frame.tab.tab, {
+  return chrome.tabs.sendMessage(frame.tab.tabId, {
     type: 'player',
-    url: playerURL + '?frame_id=' + frame.frame,
+    url: PlayerURL + '?frame_id=' + frame.frameId,
   }, {
-    frameId: frame.frame,
+    frameId: frame.frameId,
   }, (response) => {
     if (response === 'no_video') {
       frame.playerOpening = false;
     }
   });
 }
+
+function sendSourcesToMainFramePlayers(frame) {
+  // query all tabs
+  chrome.tabs.query({}, (tabs) => {
+    // for each tab
+    for (let i = 0; i < tabs.length; i++) {
+      const tab = CachedTabs[tabs[i].id];
+      if (!tab) continue;
+      // if the tab is a faststream tab
+      if (tab.url.substring(0, PlayerURL.length) === PlayerURL && tab.frames?.[0]?.isFastStream) {
+        const fastStreamFrame = tab.frames[0];
+        if (fastStreamFrame.ready) {
+          // send the source to the tab
+          chrome.tabs.sendMessage(tab.tabId, {
+            type: 'sources',
+            subtitles: frame.subtitles,
+            sources: frame.sources,
+            autoSetSource: false,
+          }, ()=>{
+            BackgroundUtils.checkMessageError('sources');
+          });
+        }
+      }
+    }
+  });
+}
+
 let currentTimeout = null;
 async function onSourceRecieved(details, frame, mode) {
-  if (((frame.url && URLUtils.is_url_yt(frame.url)) || (frame.tab.url && URLUtils.is_url_yt(frame.tab.url))) && mode !== PlayerModes.ACCELERATED_YT) {
+  if ((URLUtils.is_url_yt(frame.url) || URLUtils.is_url_yt(frame.tab.url)) && mode !== PlayerModes.ACCELERATED_YT) {
     return;
   }
+
   const url = details.url;
   if (getSourceFromURL(frame, url)) return;
 
-  addSource(frame, url, mode, frame.requests[details.requestId]);
+  addSource(frame, url, mode, frame.requestHeaders[details.requestId]);
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
       sub.forEach((s) => {
@@ -548,14 +586,16 @@ async function onSourceRecieved(details, frame, mode) {
     }, mode === PlayerModes.ACCELERATED_MP4 ? 1500 : 200);
   }
 
-  if (logging) console.log('Found source', details, frame);
+  sendSourcesToMainFramePlayers(frame);
+
+  if (Logging) console.log('Found source', details, frame);
 
   return;
 }
 
 async function openPlayersWithSources(tabid) {
-  if (!tabs[tabid]) return;
-  const tab = tabs[tabid];
+  if (!CachedTabs[tabid]) return;
+  const tab = CachedTabs[tabid];
 
   let framesWithSources = [];
   for (const i in tab.frames) {
@@ -594,13 +634,13 @@ webRequestPerms2.push('extraHeaders');
 
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   const frame = getOrCreateFrame(details);
-  frame.requests[details.requestId] = details.requestHeaders;
+  frame.requestHeaders[details.requestId] = details.requestHeaders;
 }, {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
 function frameHasPlayer(frame) {
-  return frame.isFastStream || frame.url.substring(0, playerURL.length) === playerURL;
+  return frame.isFastStream || frame.url.substring(0, PlayerURL.length) === PlayerURL;
 }
 
 chrome.webRequest.onHeadersReceived.addListener(
@@ -611,7 +651,7 @@ chrome.webRequest.onHeadersReceived.addListener(
       if (frameHasPlayer(frame)) return;
 
       if (isSubtitles(ext)) {
-        return handleSubtitles(url, frame, frame.requests[details.requestId]);
+        return handleSubtitles(url, frame, frame.requestHeaders[details.requestId]);
       }
       let mode = URLUtils.getModeFromExtension(ext);
       if (!mode) {
@@ -639,23 +679,24 @@ chrome.webRequest.onErrorOccurred.addListener(deleteHeaderCache, {
 
 function deleteHeaderCache(details) {
   const frame = getOrCreateFrame(details);
-  delete frame.requests[details.requestId];
+  delete frame.requestHeaders[details.requestId];
 }
 
 chrome.tabs.onRemoved.addListener((tabid, removed) => {
-  delete tabs[tabid];
+  delete CachedTabs[tabid];
 });
 
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
-  if (tabs[tabid]) {
+  if (CachedTabs[tabid]) {
     if (changeInfo.url) {
       const url = new URL(changeInfo.url);
-      if (tabs[tabid].hostname && tabs[tabid].hostname !== url.hostname) {
-        tabs[tabid].analyzerData = undefined;
+      if (CachedTabs[tabid].hostname && CachedTabs[tabid].hostname !== url.hostname) {
+        CachedTabs[tabid].analyzerData = undefined;
       }
-      tabs[tabid].hostname = url.hostname;
+      CachedTabs[tabid].url = changeInfo.url;
+      CachedTabs[tabid].hostname = url.hostname;
 
-      const urlIsInAutoList = autoEnableList.some((regex) => {
+      const urlIsInAutoList = AutoEnableList.some((regex) => {
         try {
           if (typeof regex === 'string') {
             return changeInfo.url.substring(0, regex.length) === regex;
@@ -668,22 +709,22 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         return false;
       });
 
-      if (urlIsInAutoList && !tabs[tabid].regexMatched) {
-        tabs[tabid].regexMatched = true;
-        tabs[tabid].isOn = true;
+      if (urlIsInAutoList && !CachedTabs[tabid].regexMatched) {
+        CachedTabs[tabid].regexMatched = true;
+        CachedTabs[tabid].isOn = true;
         openPlayersWithSources(tab.id);
-      } else if (!urlIsInAutoList && tabs[tabid].regexMatched) {
-        tabs[tabid].isOn = false;
-        tabs[tabid].regexMatched = false;
+      } else if (!urlIsInAutoList && CachedTabs[tabid].regexMatched) {
+        CachedTabs[tabid].isOn = false;
+        CachedTabs[tabid].regexMatched = false;
       }
     }
     if (changeInfo.status === 'complete') {
-      tabs[tabid].complete = true;
+      CachedTabs[tabid].complete = true;
     } else if (changeInfo.status === 'loading') {
-      tabs[tabid].complete = false;
+      CachedTabs[tabid].complete = false;
     }
 
-    updateTabIcon(tabs[tabid], true);
+    updateTabIcon(CachedTabs[tabid], true);
   }
 });
 
@@ -694,4 +735,4 @@ setInterval(async ()=>{
   await pingContentScript();
 }, 10e3);
 
-console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
+console.log('\n %c %c %cFast%cStream %c-%c ' + ExtensionVersion + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
