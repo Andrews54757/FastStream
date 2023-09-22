@@ -1,4 +1,5 @@
 // SPLICER:CENSORYT:REMOVE_FILE
+import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
@@ -95,7 +96,7 @@ export default class YTPlayer extends DashPlayer {
     });
     this.oldSource = source;
     const uri = 'data:application/dash+xml;charset=utf-8;base64,' + btoa(manifest);
-    this.source = new VideoSource(uri, source.headers, source.type);
+    this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
     this.source.identifier = 'yt-' + identifier;
     await super.setSource(this.source);
 
