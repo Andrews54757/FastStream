@@ -96,12 +96,17 @@ export class WebUtils {
   }
 
   static setupDropdown(itemListElement, text, container, call) {
-    container.addEventListener('click', (e) => {
+    container.addEventListener('mouseleave', (e) => {
+      container.blur();
+    });
+
+    function shiftSelection(indexAmount) {
       for (let j = 0; j < itemListElement.children.length; j++) {
         const element = itemListElement.children[j];
         if (element.dataset.val == container.dataset.val) {
           element.style.backgroundColor = '';
-          const nextElement = (j < itemListElement.children.length - 1) ? itemListElement.children[j + 1] : itemListElement.children[0];
+          const newIndex = (j + indexAmount + itemListElement.children.length) % itemListElement.children.length;
+          const nextElement = itemListElement.children[newIndex];
           nextElement.style.backgroundColor = 'rgb(20,20,20)';
           text.children[0].textContent = nextElement.textContent;
           container.dataset.val = nextElement.dataset.val;
@@ -109,45 +114,25 @@ export class WebUtils {
           break;
         }
       }
+    }
+
+    container.addEventListener('click', (e) => {
+      shiftSelection(1);
       e.stopPropagation();
-    });
-    container.addEventListener('mouseleave', (e) => {
-      container.blur();
     });
 
     container.addEventListener('keydown', (e) => {
       if (e.key == 'ArrowDown' ) {
-        for (let j = 0; j < itemListElement.children.length; j++) {
-          const element = itemListElement.children[j];
-          if (element.dataset.val == container.dataset.val) {
-            element.style.backgroundColor = '';
-            const nextElement = (j < itemListElement.children.length - 1) ? itemListElement.children[j + 1] : itemListElement.children[0];
-            nextElement.style.backgroundColor = 'rgb(20,20,20)';
-            text.children[0].textContent = nextElement.textContent;
-            container.dataset.val = nextElement.dataset.val;
-            if (call) call(container.dataset.val);
-            break;
-          }
-        }
+        shiftSelection(1);
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key == 'ArrowUp') {
-        for (let j = 0; j < itemListElement.children.length; j++) {
-          const element = itemListElement.children[j];
-          if (element.dataset.val == container.dataset.val) {
-            element.style.backgroundColor = '';
-            const nextElement = (j > 0) ? itemListElement.children[j - 1] : itemListElement.children[itemListElement.children.length - 1];
-            nextElement.style.backgroundColor = 'rgb(20,20,20)';
-            text.children[0].textContent = nextElement.textContent;
-            container.dataset.val = nextElement.dataset.val;
-            if (call) call(container.dataset.val);
-            break;
-          }
-        }
+        shiftSelection(-1);
         e.preventDefault();
         e.stopPropagation();
       }
     });
+
     for (let i = 0; i < itemListElement.children.length; i++) {
       ((i) => {
         const el = itemListElement.children[i];
@@ -170,13 +155,14 @@ export class WebUtils {
     }
   }
 
-  static createDropdown(defaultChoice, title, items, call) {
+  static createDropdown(defaultChoice, title, items, call, editableCallback = null) {
     const create = this.create;
     const container = create('div', ``, 'dropdown');
 
     const text = create('div', ``);
     text.appendChild(document.createTextNode(`${title}: `));
-    const span = create('span', `color: rgb(200,200,200)`);
+    const span = create('span', `color: rgb(200,200,200)`, 'dropdown_text');
+    span.contentEditable = editableCallback != null;
     span.textContent = items[defaultChoice];
     text.appendChild(span);
     text.appendChild(document.createTextNode(' ˅'));
@@ -199,6 +185,30 @@ export class WebUtils {
     }
     container.appendChild(itemListElement);
     this.setupDropdown(itemListElement, text, container, call);
+
+    if (editableCallback) {
+      span.style.cursor = 'text';
+      span.addEventListener('input', (e) => {
+        const value = span.textContent;
+        for (let i = 0; i < itemListElement.children.length; i++) {
+          const element = itemListElement.children[i];
+          if (element.dataset.val == container.dataset.val) {
+            element.textContent = value;
+            break;
+          }
+        }
+        editableCallback(container.dataset.val, value);
+        e.stopPropagation();
+      });
+
+      span.addEventListener('click', (e) => {
+        e.stopPropagation();
+      });
+
+      span.addEventListener('keydown', (e) => {
+        e.stopPropagation();
+      });
+    }
     return container;
   }
 }

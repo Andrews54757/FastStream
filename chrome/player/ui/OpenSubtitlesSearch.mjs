@@ -68,7 +68,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
     this.subui.search = searchInput;
 
-    const searchBtn = WebUtils.create('div', 'Search', 'subtitle-search-btn');
+    const searchBtn = WebUtils.create('div', 'Search', 'textbutton subtitle-search-btn');
     searchBtn.textContent = 'Search';
     WebUtils.setupTabIndex(searchBtn);
     this.subui.searchContainer.appendChild(searchBtn);

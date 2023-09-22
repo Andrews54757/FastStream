@@ -11,6 +11,7 @@ import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
 import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
 import {PlayerLoader} from './players/PlayerLoader.mjs';
 import {DOMElements} from './ui/DOMElements.mjs';
+import {AudioConfigManager} from './ui/AudioConfigManager.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -52,6 +53,7 @@ export class FastStreamClient extends EventEmitter {
     this.sourcesBrowser = new SourcesBrowser(this);
     this.videoAnalyzer = new VideoAnalyzer(this);
     this.subtitleSyncer = new SubtitleSyncer(this);
+    this.audioConfigManager = new AudioConfigManager(this);
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateIntroOutroBar();
     });
@@ -314,8 +316,10 @@ export class FastStreamClient extends EventEmitter {
     this.audioGain = this.audioContext.createGain();
     this.audioSource.connect(this.audioGain);
     this.audioGain.connect(this.audioContext.destination);
-
     this.updateVolume();
+
+    this.audioConfigManager.setupNodes();
+
     this.player.playbackRate = this.persistent.playbackRate;
 
     this.setSeekSave(false);

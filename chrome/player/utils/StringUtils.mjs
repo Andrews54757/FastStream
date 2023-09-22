@@ -102,4 +102,12 @@ export class StringUtils {
 
     return (hours ? (hours + ':') : '') + strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
   }
+
+  static formatFrequency(freq) {
+    if (freq > 1000) {
+      return (freq / 1000).toFixed(1) + 'k';
+    } else {
+      return freq.toFixed(0);
+    }
+  }
 }

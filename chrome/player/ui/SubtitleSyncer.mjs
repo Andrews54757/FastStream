@@ -259,7 +259,7 @@ export class SubtitleSyncer extends EventEmitter {
       const el = WebUtils.create('canvas', '', 'timeline_vod_canvas');
       el.style.left = canvIndex * 10 / this.video.duration * 100 + '%';
       el.style.width = 10 / this.video.duration * 100 + '%';
-      el.height = 40;
+      el.height = 22 * window.devicePixelRatio;
       this.ui.timelineVOD.appendChild(el);
 
       this.canvasElements.push({
@@ -271,7 +271,7 @@ export class SubtitleSyncer extends EventEmitter {
     }
 
     this.canvasElements.forEach((el) => {
-      const newWidth = el.element.clientWidth * 2;
+      const newWidth = el.element.clientWidth * window.devicePixelRatio;
       if (el.cachedWidth === newWidth || newWidth === 0) return;
       el.cachedWidth = newWidth;
       const index = el.index;

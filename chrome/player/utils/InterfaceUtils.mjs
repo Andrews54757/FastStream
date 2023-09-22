@@ -5,5 +5,6 @@ export class InterfaceUtils {
     DOMElements.optionsContainer.style.display = 'none';
     DOMElements.subuiContainer.style.display = 'none';
     DOMElements.linkuiContainer.style.display = 'none';
+    DOMElements.audioConfigContainer.style.display = 'none';
   }
 }

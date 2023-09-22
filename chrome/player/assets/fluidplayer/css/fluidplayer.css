@@ -576,6 +576,7 @@
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
@@ -600,6 +601,7 @@
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:before,
@@ -660,6 +662,10 @@
     background-position: -196px -18px;
 }
 
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:before {
+    background-position: -305px -56px;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:before {
     background-position: -124px -56px;
 }
@@ -707,6 +713,7 @@
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:hover:before,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:hover:before,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:hover:before,
@@ -835,8 +842,8 @@
 .add_icon_clickthrough {
     color: #F2C94C;
     line-height: 18px;
-    text-overflow: ellipsis;
     max-width: 100%;
+    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
     display: inline-block;
@@ -856,6 +863,7 @@
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
@@ -873,6 +881,7 @@
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
@@ -1190,16 +1199,17 @@ body {
     z-index: 2;
 }
 
-.marker_container > div {
+.marker_container>div {
     border-radius: 1px;
     position: absolute;
     transform: translate(-50%, 0);
 }
 
-.marker_container > div.seek_marker {
+.marker_container>div.seek_marker {
     top: 0px;
     width: 0px;
-    height: 0px;;
+    height: 0px;
+    ;
     border-top: 3px solid #54f4ff;
     border-left: 2px solid transparent;
     border-right: 2px solid transparent;
@@ -1215,7 +1225,7 @@ body {
 }
 
 
-.marker_container > div.unseek_marker {
+.marker_container>div.unseek_marker {
     border-top: 3px solid #F4FF54;
 }
 
@@ -1467,23 +1477,24 @@ body {
     text-align: left;
 }
 
-.subtitle-search-btn {
+.textbutton {
+    display: inline-block;
     cursor: pointer;
     padding: 2px 10px;
     font-size: 15px;
-    display: inline-block;
-    width: 60px;
-    height: 25px;
+    height: 27px;
     text-align: center;
     line-height: 25px;
     border-radius: 4px;
     background-color: rgb(20, 20, 20);
-    border: 1px solid rgb(20, 20, 20);
 }
 
-.subtitle-search-btn:hover {
+.subtitle-search-btn {
+    width: 60px;
+}
+
+.textbutton:hover {
     background-color: rgb(30, 30, 30);
-    border: 1px solid rgb(30, 30, 30);
 }
 
 .subtitle-results {
@@ -1958,45 +1969,45 @@ body {
 
 
 .tooltip {
-	position: relative;
+    position: relative;
 }
 
 
 .tooltip .tooltiptext {
-	visibility: hidden;
-	background-color: rgb(200, 200, 200);
-	color: black;
-	text-align: center;
-	padding: 2px 0;
-	border-radius: 3px;
-	position: absolute;
-	z-index: 1;
+    visibility: hidden;
+    background-color: rgb(200, 200, 200);
+    color: black;
+    text-align: center;
+    padding: 2px 0;
+    border-radius: 3px;
+    position: absolute;
+    z-index: 1;
 
-	width: 50px;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -25px;
+    width: 50px;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -25px;
     margin-bottom: 5px;
     font-size: 12px;
 }
 
 .tooltip:hover .tooltiptext {
-	visibility: visible;
+    visibility: visible;
 }
 
 .tooltip .tooltiptext::after {
-	content: " ";
-	position: absolute;
-	top: 100%;
-	left: 50%;
-	margin-left: -5px;
-	border-width: 5px;
-	border-style: solid;
-	border-color: rgb(200, 200, 200) transparent transparent transparent;
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgb(200, 200, 200) transparent transparent transparent;
 }
 
 .volume_block:focus .tooltip .tooltiptext {
-	visibility: visible;
+    visibility: visible;
 }
 
 .options_frame {
@@ -2014,4 +2025,139 @@ body {
     margin: auto;
     left: auto;
     right: auto;
+}
+
+.profile_manager {
+    display: flex;
+}
+
+.profile_selector {
+    font-size: 14px;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 4px;
+    margin-bottom: 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1 1 auto;
+}
+
+.delete_button,
+.save_button,
+.load_button {
+    margin-left: 5px;
+}
+
+.delete_button:hover {
+    background-color: rgb(100, 0, 0);
+}
+
+.delete_button {
+    background-color: rgb(120, 0, 0);
+}
+
+.dropdown_text {
+    display: inline-block;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+}
+
+.dropdown_text:focus {
+    outline: 1px solid rgba(255, 255, 255, 0.5);
+    padding: 0px 5px;
+}
+
+.equalizer_container {
+    width: 100%;
+    height: 600px;
+}
+
+.equalizer {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: black;
+    overflow: hidden;
+    border-radius: 3px;
+}
+
+.equalizer canvas {
+    position: absolute;
+    z-index: 2;
+    top: 30px;
+    left: 30px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
+}
+
+.equalizer .equalizer_frequency_axis {
+    position: absolute;
+    z-index: 1;
+    left: 30px;
+    top: 0px;
+    bottom: 0px;
+    right: 30px;
+}
+
+.equalizer .equalizer_decibel_axis {
+    position: absolute;
+    z-index: 1;
+    top: 30px;
+    bottom: 30px;
+    left: 0px;
+    right: 0px;
+}
+
+.equalizer .eq_tick_marker {
+    position: absolute;
+}
+
+.equalizer_frequency_axis .eq_tick_marker {
+    width: 1px;
+    top: 30px;
+    bottom: 30px;
+}
+.equalizer_frequency_axis .eq_tick_marker.major_tick {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.equalizer_frequency_axis .eq_tick_marker .tick_label {
+    position: absolute;
+    bottom: -20px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, 0%);
+}
+
+.equalizer_frequency_axis .eq_tick_marker.minor_tick {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+.equalizer_decibel_axis .eq_tick_marker {
+    left: 30px;
+    right: 30px;
+    height: 1px;
+}
+
+.equalizer_decibel_axis .eq_tick_marker.major_tick {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.equalizer_decibel_axis .eq_tick_marker.zero_tick {
+    background-color: rgba(100, 255, 255, 0.3);
+}
+
+.equalizer_decibel_axis .eq_tick_marker .tick_label {
+    position: absolute;
+    top: 0px;
+    left: -5px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-100%, -50%);
+}
+
+.equalizer_decibel_axis .eq_tick_marker.minor_tick {
+    background-color: rgba(255, 255, 255, 0.2);
 }
