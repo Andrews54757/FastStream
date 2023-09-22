@@ -986,9 +986,10 @@ export class InterfaceController {
     const shiftTime = (timeBarX) => {
       const totalWidth = DOMElements.progressContainer.clientWidth;
       if (totalWidth) {
-        this.client.currentTime = this.persistent.duration * timeBarX / totalWidth;
+        const newTime = this.persistent.duration * timeBarX / totalWidth;
+        this.client.currentTime = newTime;
+        this.client.updateTime(newTime);
       }
-      this.updateProgress();
     };
 
     const onProgressbarMouseMove = (event) => {
