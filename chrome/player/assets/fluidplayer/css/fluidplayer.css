@@ -978,12 +978,12 @@ body {
     border-radius: 3px;
     color: rgba(255, 255, 255, 0.9);
     transform: translate(-50%, 0%);
-    bottom: 13px;
+    bottom: 16px;
 }
 
 .fluid_controls_progress_container .seek_preview_tip {
     position: absolute;
-    bottom: 0px;
+    bottom: 3px;
 }
 
 .fluid_controls_progress_container .seek_preview_tip>div {
