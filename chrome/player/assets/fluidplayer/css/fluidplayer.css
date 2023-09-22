@@ -1074,6 +1074,30 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
 }
 
+
+.spinner {
+    background-image: url("../static/fluid-spinner.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 24px;
+    height: 24px;
+    opacity: 0.8;
+}
+
+.seek_preview_video .spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+}
+
+.seek_preview_video.loading .spinner {
+    visibility: visible;
+}
+
+
+
 .buffering_spinner {
     display: inline-block;
     vertical-align: top;
@@ -1084,12 +1108,6 @@ body {
 }
 
 .buffering_spinner>.spinner {
-    background-image: url("../static/fluid-spinner.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    width: 24px;
-    height: 24px;
-    opacity: 0.8;
     float: left;
     margin-right: 4px;
 }

@@ -10,6 +10,7 @@ import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
 import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
 import {PlayerLoader} from './players/PlayerLoader.mjs';
+import {DOMElements} from './ui/DOMElements.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -192,11 +193,25 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  hidePreview() {
+    if (this.previewPlayer) {
+      this.previewPlayer.getVideo().style.opacity = 0;
+      DOMElements.seekPreviewVideo.classList.add('loading');
+    }
+  }
+
+  showPreview() {
+    if (this.previewPlayer) {
+      this.previewPlayer.getVideo().style.opacity = 1;
+      DOMElements.seekPreviewVideo.classList.remove('loading');
+    }
+  }
+
   updatePreview() {
     if (!this.previewPlayer) return;
 
     if (this.previewPlayer.getVideo().readyState > 1) {
-      this.previewPlayer.getVideo().style.opacity = 1;
+      this.showPreview();
       return;
     }
 
@@ -212,9 +227,9 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (shouldShowPreview) {
-      this.previewPlayer.getVideo().style.opacity = 1;
+      this.showPreview();
     } else {
-      this.previewPlayer.getVideo().style.opacity = 0;
+      this.hidePreview();
     }
   }
 

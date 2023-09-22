@@ -31,6 +31,12 @@ export class InterfaceController {
   reset() {
     DOMElements.videoContainer.replaceChildren();
     DOMElements.seekPreviewVideo.replaceChildren();
+
+    const spinner = document.createElement('div');
+    spinner.classList.add('spinner');
+    DOMElements.seekPreviewVideo.appendChild(spinner);
+    DOMElements.seekPreviewVideo.classList.remove('loading');
+
     DOMElements.seekPreviewVideo.style.display = 'none';
     DOMElements.progressLoadedContainer.replaceChildren();
     DOMElements.downloadStatus.textContent = '';
