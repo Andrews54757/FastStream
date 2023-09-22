@@ -975,7 +975,7 @@ body {
     font-size: 14px;
     text-align: center;
     padding: 1px 10px;
-    border-radius: 2px;
+    border-radius: 3px;
     color: rgba(255, 255, 255, 0.9);
     transform: translate(-50%, 0%);
     bottom: 13px;
@@ -1007,6 +1007,10 @@ body {
     transform: translate(-50%, 0%);
     border: 1px solid rgba(200, 200, 200, 0.2);
     height: 70px;
+    background-color: black;
+    background-clip: padding-box;
+    overflow: hidden;
+    border-radius: 3px;
 }
 
 .fluid_controls_progress_container .seek_preview .seek_preview_video video {
