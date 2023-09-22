@@ -196,7 +196,10 @@ export class FastStreamClient extends EventEmitter {
   hidePreview() {
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.opacity = 0;
-      DOMElements.seekPreviewVideo.classList.add('loading');
+      clearTimeout(this.previewPlayerLoadingTimeout);
+      this.previewPlayerLoadingTimeout = setTimeout(() => {
+        DOMElements.seekPreviewVideo.classList.add('loading');
+      }, 200);
     }
   }
 
@@ -204,6 +207,7 @@ export class FastStreamClient extends EventEmitter {
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.opacity = 1;
       DOMElements.seekPreviewVideo.classList.remove('loading');
+      clearTimeout(this.previewPlayerLoadingTimeout);
     }
   }
 
