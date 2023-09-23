@@ -2252,6 +2252,7 @@ body {
     height: 300px;
     background-color: black;
     border-radius: 3px;
+    max-width: 550px;
 }
 
 .mixer .mixer_title {
