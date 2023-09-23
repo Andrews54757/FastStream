@@ -8,35 +8,69 @@ import {DOMElements} from './DOMElements.mjs';
 export class AudioEQNode {
   constructor(type, frequency, gain, q) {
     this.type = type;
-    this.frequency = frequency;
-    this.gain = gain;
+    this.frequency = parseFloat(frequency);
+    this.gain = parseFloat(gain);
     this.q = q;
+  }
+
+  static fromObj(obj) {
+    return new AudioEQNode(obj.type, obj.frequency, obj.gain, obj.q);
+  }
+
+  toObj() {
+    return {
+      type: this.type,
+      frequency: this.frequency,
+      gain: this.gain,
+      q: this.q,
+    };
+  }
+}
+
+export class AudioChannelControl {
+  constructor(channelId, gain, muted, solo) {
+    this.id = parseInt(channelId);
+    this.gain = parseFloat(gain);
+    this.muted = muted;
+    this.solo = solo;
+  }
+
+  static fromObj(obj) {
+    return new AudioChannelControl(obj.id, obj.gain, obj.muted, obj.solo);
+  }
+
+  toObj() {
+    return {
+      id: this.id,
+      gain: this.gain,
+      muted: this.muted,
+      solo: this.solo,
+    };
   }
 }
 
 export class AudioProfile {
   constructor(id) {
-    this.id = id;
+    this.id = parseInt(id);
     this.equalizerNodes = [];
+    this.mixerChannels = [];
     this.label = `Profile ${id}`;
   }
 
   static fromObj(obj) {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
-    profile.equalizerNodes = obj.equalizerNodes.map((node) => {
-      return new AudioEQNode(node.type, node.frequency, node.gain, node.q);
-    });
+    profile.equalizerNodes = obj.equalizerNodes?.map((nodeObj) => {
+      return AudioEQNode.fromObj(nodeObj);
+    }) || [];
+    profile.mixerChannels = obj.mixerChannels?.map((channelObj) => {
+      return AudioChannelControl.fromObj(channelObj);
+    }) || [];
     return profile;
   }
 
   copy() {
-    const profile = new AudioProfile(this.id);
-    profile.label = this.label;
-    profile.equalizerNodes = this.equalizerNodes.map((node) => {
-      return new AudioEQNode(node.type, node.frequency, node.gain, node.q);
-    });
-    return profile;
+    return AudioProfile.fromObj(this.toObj());
   }
 
   toObj() {
@@ -44,12 +78,10 @@ export class AudioProfile {
       id: this.id,
       label: this.label,
       equalizerNodes: this.equalizerNodes.map((node) => {
-        return {
-          type: node.type,
-          frequency: node.frequency,
-          gain: node.gain,
-          q: node.q,
-        };
+        return node.toObj();
+      }),
+      mixerChannels: this.mixerChannels.map((channel) => {
+        return channel.toObj();
       }),
     };
   }
@@ -95,6 +127,7 @@ export class AudioConfigManager extends EventEmitter {
         this.updateProfileDropdown();
       }
       this.refreshEQNodes();
+      this.refreshMixer();
     });
   }
 
@@ -114,10 +147,6 @@ export class AudioConfigManager extends EventEmitter {
     while (this.profiles.find((profile) => profile.id === id)) {
       id++;
     }
-
-    // if (this.currentProfile && this.currentProfile.id === id) {
-    //   id++;
-    // }
 
     return id;
   }
@@ -518,6 +547,16 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.mixerText = WebUtils.create('div', null, 'dynamics_center_text');
     this.ui.mixerText.textContent = 'Audio mixer coming soon!';
     this.ui.mixer.appendChild(this.ui.mixerText);
+
+
+    this.ui.mixerContainer = WebUtils.create('div', null, 'mixer_container');
+    this.ui.mixer.appendChild(this.ui.mixerContainer);
+
+    this.ui.channels = WebUtils.create('div', null, 'channels');
+    this.ui.mixerContainer.appendChild(this.ui.channels);
+
+    this.ui.master = WebUtils.create('div', null, 'master');
+    this.ui.mixerContainer.appendChild(this.ui.master);
   }
 
   addEQNode(node) {
@@ -591,6 +630,7 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.renderEqualizerSpectrum();
+    this.renderMixerMeters();
   }
 
   startRenderLoop() {
@@ -740,16 +780,16 @@ export class AudioConfigManager extends EventEmitter {
       const mouseUp = (e) => {
         isDragging = false;
 
-        this.ui.equalizer.removeEventListener('mousemove', mouseMove);
-        this.ui.equalizer.removeEventListener('mouseup', mouseUp);
+        document.removeEventListener('mousemove', mouseMove);
+        document.removeEventListener('mouseup', mouseUp);
       };
 
       el.addEventListener('mousedown', (e) => {
         if (isDragging) return;
         isDragging = true;
         e.stopPropagation();
-        this.ui.equalizer.addEventListener('mousemove', mouseMove);
-        this.ui.equalizer.addEventListener('mouseup', mouseUp);
+        document.addEventListener('mousemove', mouseMove);
+        document.addEventListener('mouseup', mouseUp);
       });
 
       el.addEventListener('wheel', (e) => {
@@ -903,6 +943,77 @@ export class AudioConfigManager extends EventEmitter {
     this.equalizerCtx.fill();
   }
 
+  renderMixerMeters() {
+    if (!this.currentProfile) return;
+
+    const channels = this.currentProfile.mixerChannels;
+    channels.forEach((channel) => {
+      const analyzer = this.channelAnalyzers[channel.id];
+      const els = this.mixerChannelElements[channel.id];
+
+      if (!analyzer || !els) {
+        return;
+      }
+
+      const canvas = els.volumeMeter;
+      const ctx = els.volumeMeterCtx;
+
+      const width = canvas.clientWidth * window.devicePixelRatio;
+      const height = canvas.clientHeight * window.devicePixelRatio;
+      if (width === 0 || height === 0) return;
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      const volume = this.getVolume(analyzer);
+      const yScale = height;
+
+      const rectHeight = height / 50;
+      const volHeight = volume * yScale;
+
+      const rectCount = Math.ceil(volHeight / rectHeight);
+      const now = Date.now();
+
+      if (!els.peak || rectCount > els.peak) {
+        els.peak = rectCount;
+        els.peakTime = now;
+      }
+
+      for (let i = 0; i < rectCount; i++) {
+        const y = height - i * rectHeight;
+
+
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(0, y, width, rectHeight);
+
+        const color = `rgb(${Utils.clamp(i * 5, 0, 255)}, ${Utils.clamp(255 - i * 5, 0, 255)}, 0)`;
+        ctx.fillStyle = color;
+        ctx.fillRect(0, y + 1, width, rectHeight - 2);
+      }
+
+      const timeDiff = now - els.peakTime;
+
+      // Code snippet from https://github.com/kevincennis/Mix.js/blob/master/src/js/views/app.views.track.js
+      // MIT License
+      /**
+       * The MIT License (MIT)
+       * Copyright (c) 2014 Kevin Ennis
+       * https://github.com/kevincennis/Mix.js/blob/master/LICENSE
+       */
+      if ( timeDiff < 1000 && els.peak >= 1 ) {
+        // for first 650 ms, use full alpha, then fade out
+        const freshness = timeDiff < 650 ? 1 : 1 - ( ( timeDiff - 650 ) / 350 );
+        ctx.fillStyle = 'rgba(238,119,85,' + freshness + ')';
+        ctx.fillRect(0, height - els.peak * rectHeight - 1, width, 1);
+      } else {
+        els.peak = 0;
+        els.peakTime = now;
+      }
+    });
+  }
+
   setupEqualizerDecibelAxis() {
     this.ui.equalizerDecibelAxis.replaceChildren();
     const minDecibels = -20;
@@ -993,6 +1104,269 @@ export class AudioConfigManager extends EventEmitter {
     }
   }
 
+  getVolume(analyser) {
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    analyser.getByteFrequencyData(dataArray);
+
+    let sum = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      sum += dataArray[i];
+    }
+    return sum / bufferLength / 255;
+  }
+
+  dbToGain(db) {
+    return Math.pow(10, db / 20);
+  }
+
+  gainToDB(gain) {
+    return 20 * Math.log10(gain);
+  }
+
+  symmetricalLogScaleY(x, c) {
+    return Math.sign(x) * (Math.log10(Math.abs(x / c) + 1));
+  }
+
+  symmetricalLogScaleX(y, c) {
+    return Math.sign(y) * c * (Math.pow(10, Math.abs(y)) - 1);
+  }
+
+  mixerDBToPositionRatio(db) {
+    if (db <= -50) {
+      return 1;
+    }
+
+    const c = 40 / Math.log(10);
+    const maxY = this.symmetricalLogScaleY(10, c);
+    const minY = this.symmetricalLogScaleY(-50, c);
+    const y = this.symmetricalLogScaleY(db, c);
+    return Utils.clamp((maxY - y) / (maxY - minY), 0, 1);
+  }
+
+  mixerPositionRatioToDB(ratio) {
+    if (ratio >= 1) {
+      return -Infinity;
+    }
+
+    const c = 40 / Math.log(10);
+    const maxY = this.symmetricalLogScaleY(10, c);
+    const minY = this.symmetricalLogScaleY(-50, c);
+    const y = maxY - ratio * (maxY - minY);
+    return Utils.clamp(this.symmetricalLogScaleX(y, c), -50, 10);
+  }
+
+  setChannelGain(channel, gain) {
+    channel.gain = gain;
+    if (this.channelGains && this.channelGains[channel.id]) {
+      this.channelGains[channel.id].gain.value = gain;
+    }
+  }
+
+  createMixerElements() {
+    const els = {};
+
+    els.container = WebUtils.create('div', null, 'mixer_channel_container');
+
+    els.channelTitle = WebUtils.create('div', null, 'mixer_channel_title');
+    els.container.appendChild(els.channelTitle);
+
+    els.buttons = WebUtils.create('div', null, 'mixer_channel_buttons');
+    els.container.appendChild(els.buttons);
+
+    els.soloButton = WebUtils.create('div', null, 'mixer_channel_solo');
+    els.soloButton.textContent = 'S';
+    els.soloButton.title = 'Solo';
+    els.buttons.appendChild(els.soloButton);
+
+    els.muteButton = WebUtils.create('div', null, 'mixer_channel_mute');
+    els.muteButton.textContent = 'M';
+    els.muteButton.title = 'Mute';
+    els.buttons.appendChild(els.muteButton);
+
+    els.volume = WebUtils.create('div', null, 'mixer_channel_volume');
+    els.container.appendChild(els.volume);
+
+    els.volumeAxis = WebUtils.create('div', null, 'mixer_channel_volume_axis');
+    els.volume.appendChild(els.volumeAxis);
+
+    // Volume axis goes from +10 to -60 then -inf
+    for (let i = 0; i < 6; i++) {
+      const db = 10 - i * 10;
+      const el = WebUtils.create('div', null, 'mixer_channel_volume_tick');
+      el.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+      els.volumeAxis.appendChild(el);
+
+      const label = WebUtils.create('div', null, 'mixer_channel_volume_tick_label');
+      label.textContent = `${db > 0 ? '+' : ''}${db}`;
+      el.appendChild(label);
+    }
+
+    const el = WebUtils.create('div', null, 'mixer_channel_volume_tick');
+    el.style.top = `100%`;
+    els.volumeAxis.appendChild(el);
+
+    const label = WebUtils.create('div', null, 'mixer_channel_volume_tick_label');
+    label.textContent = `-∞`;
+    el.appendChild(label);
+
+
+    els.volumeTrack = WebUtils.create('div', null, 'mixer_channel_volume_track');
+    els.volume.appendChild(els.volumeTrack);
+
+    els.volumeMeter = WebUtils.create('canvas', null, 'mixer_channel_volume_meter');
+    els.volumeTrack.appendChild(els.volumeMeter);
+
+    els.volumeMeterCtx = els.volumeMeter.getContext('2d');
+
+    els.volumeHandle = WebUtils.create('div', null, 'mixer_channel_volume_handle');
+    els.volumeTrack.appendChild(els.volumeHandle);
+
+    return els;
+  }
+
+  createMixerChannel(channel) {
+    const channelNames = ['Left', 'Right', 'Left Surround', 'Right Surround', 'Center', 'Bass (LFE)', 'Master'];
+    const els = this.createMixerElements();
+    els.channelTitle.textContent = channelNames[channel.id];
+
+    els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(this.gainToDB(channel.gain)) * 100}%`;
+
+    if (channel.id === 6) { // master
+      els.soloButton.style.display = 'none';
+    }
+
+    const currentProfile = this.currentProfile;
+    const zeroPos = this.mixerDBToPositionRatio(0);
+    const mouseMove = (e) => {
+      const y = e.clientY - els.volumeTrack.getBoundingClientRect().top;
+      let newYPercent = Utils.clamp(y / els.volumeTrack.clientHeight * 100, 0, 100);
+
+      if (Math.abs(newYPercent / 100 - zeroPos) < 0.025) {
+        newYPercent = zeroPos * 100;
+      }
+
+      if (newYPercent >= 98) {
+        newYPercent = 100;
+      }
+
+      const db = this.mixerPositionRatioToDB(newYPercent / 100);
+      els.volumeHandle.style.top = `${newYPercent}%`;
+      this.setChannelGain(channel, this.dbToGain(db));
+    };
+
+    const mouseUp = (e) => {
+      document.removeEventListener('mousemove', mouseMove);
+      document.removeEventListener('mouseup', mouseUp);
+    };
+
+    els.volumeHandle.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+      document.addEventListener('mousemove', mouseMove);
+      document.addEventListener('mouseup', mouseUp);
+    });
+
+    els.volumeTrack.addEventListener('click', (e) => {
+      mouseMove(e);
+    });
+
+    els.volume.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      const ratio = parseFloat(els.volumeHandle.style.top) / 100;
+      const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
+      els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+      this.setChannelGain(channel, this.dbToGain(db));
+    });
+
+    els.volumeHandle.addEventListener('keydown', (e) => {
+      const ratio = parseFloat(els.volumeHandle.style.top) / 100;
+      if (e.key === 'ArrowUp') {
+        e.stopPropagation();
+        e.preventDefault();
+        const db = this.mixerPositionRatioToDB(ratio - 0.025);
+        els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+        this.setChannelGain(channel, this.dbToGain(db));
+      } else if (e.key === 'ArrowDown') {
+        e.stopPropagation();
+        e.preventDefault();
+
+        const db = this.mixerPositionRatioToDB(ratio + 0.025);
+        els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+        this.setChannelGain(channel, this.dbToGain(db));
+      }
+    });
+    els.volumeHandle.tabIndex = 0;
+
+    els.soloButton.addEventListener('click', (e) => {
+      if (!channel.solo) {
+        currentProfile.mixerChannels.forEach((channel) => {
+          const els = this.mixerChannelElements[channel.id];
+          channel.solo = false;
+          els.soloButton.classList.remove('active');
+        });
+      }
+
+      channel.solo = !channel.solo;
+      els.soloButton.classList.toggle('active', channel.solo);
+      this.updateMixerNodes();
+    });
+
+    els.muteButton.addEventListener('click', (e) => {
+      channel.muted = !channel.muted;
+      els.muteButton.classList.toggle('active', channel.mute);
+      this.updateMixerNodes();
+    });
+
+
+    return els;
+  }
+
+  refreshMixer() {
+    this.ui.mixerText.style.display = 'none';
+
+    this.ui.master.replaceChildren();
+    this.ui.channels.replaceChildren();
+    this.mixerChannelElements = [];
+
+    if (!this.currentProfile) return;
+    const mixerChannels = this.currentProfile.mixerChannels;
+
+    if (mixerChannels.length < 7) {
+      // add channels
+      for (let i = mixerChannels.length; i < 7; i++) {
+        mixerChannels.push(new AudioChannelControl(i, 1, false, false));
+      }
+    }
+
+    for (let i = 0; i < 6; i++) {
+      const channel = mixerChannels[i];
+      const els = this.createMixerChannel(channel);
+      this.ui.channels.appendChild(els.container);
+      this.mixerChannelElements.push(els);
+    }
+
+    const els = this.createMixerChannel(mixerChannels[6]);
+    this.ui.master.appendChild(els.container);
+    this.mixerChannelElements.push(els);
+
+    this.updateMixerNodes();
+  }
+
+  updateMixerNodes() {
+    if (!this.channelGains || !this.currentProfile) return;
+    const channels = this.currentProfile.mixerChannels;
+
+    const soloChannel = channels.find((channel) => channel.solo);
+
+    channels.forEach((channel, i) => {
+      if (soloChannel && channel !== soloChannel && channel.id !== 6) {
+        this.channelGains[channel.id].gain.value = 0;
+      } else {
+        this.channelGains[channel.id].gain.value = channel.muted ? 0 : channel.gain;
+      }
+    });
+  }
   setupNodes() {
     this.audioContext = this.client.audioContext;
     this.audioSource = this.client.audioSource;
@@ -1029,8 +1403,9 @@ export class AudioConfigManager extends EventEmitter {
       this.channelSplitter.connect(gain, i);
 
       const analyser = this.audioContext.createAnalyser();
-      analyser.fftSize = 64;
-      analyser.smoothingTimeConstant = 0.5;
+      analyser.fftSize = 32;
+
+      this.channelAnalyzers.push(analyser);
 
       gain.connect(analyser);
 
@@ -1039,9 +1414,22 @@ export class AudioConfigManager extends EventEmitter {
 
     this.finalGain = this.audioContext.createGain();
     this.channelMerger.connect(this.finalGain);
+
+    this.finalAnalyser = this.audioContext.createAnalyser();
+    this.finalAnalyser.fftSize = 32;
+    this.finalGain.connect(this.finalAnalyser);
+
+    this.channelGains.push(this.finalGain);
+    this.channelAnalyzers.push(this.finalAnalyser);
+
+    this.refreshMixer();
+
+    if (DOMElements.audioConfigContainer.style.display !== 'none') {
+      this.startRenderLoop();
+    }
   }
 
   getOutputNode() {
-    return this.finalGain;
+    return this.finalAnalyser;
   }
 }

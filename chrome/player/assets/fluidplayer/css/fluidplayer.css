@@ -1767,6 +1767,7 @@ body {
 ::-webkit-scrollbar {
     background-color: transparent;
     width: 2px;
+    height: 5px;
 }
 
 /* background of the scrollbar except button or resizer */
@@ -2269,4 +2270,144 @@ body {
     right: 0px;
     text-align: center;
     transform: translate(0%, -50%);
+}
+
+.mixer .mixer_container {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    bottom: 15px;
+    left: 15px;
+    right: 15px;
+    gap: 5px;
+}
+
+.mixer .master {
+
+}
+
+.mixer .channels {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 5px;
+}
+
+.mixer_channel_container {
+    position: relative;
+    min-width: 70px;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.mixer_channel_title {
+    position: absolute;
+    top: 15px;
+    left: 2px;
+    right: 2px;
+    text-align: center;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(0%, -50%);
+}
+
+.mixer_channel_buttons {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    right: 1px;
+    left: 1px;
+    gap: 1px;
+}
+
+.mixer_channel_mute,
+.mixer_channel_solo {
+    flex: 1 1 auto;
+    top: 0px;
+    right: 0px;
+    padding: 3px 5px;
+    font-size: 12px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(60, 60, 60, 0.6);
+}
+
+.mixer_channel_mute.active,
+.mixer_channel_solo.active {
+    color: rgba(255, 80, 80, 0.9);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.mixer_channel_volume {
+    position: absolute;
+    top: 75px;
+    left: 0px;
+    right: 0px;
+    bottom: 25px;
+}
+
+.mixer_channel_volume_axis {
+    position: absolute;
+    top: 1px;
+    left: 0px;
+    right: 0px;
+    bottom: 1px;
+}
+
+.mixer_channel_volume_tick {
+    border-radius: 1px;
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.6);
+    transform: translate(0%, -50%);
+}
+
+.mixer_channel_volume_tick_label {
+    position: absolute;
+    top: 0px;
+    left: -3px;
+    font-size: 6px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-100%, -50%);
+}
+
+.mixer_channel_volume_track {
+    cursor: pointer;
+    border-radius: 1px;
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 50%;
+    width: 8px;
+    transform: translate(-50%, 0%);
+    background-color: rgb(30, 30, 30);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.mixer_channel_volume_handle {
+    position: absolute;
+    background: linear-gradient(to top, hsl(214, 8%, 59%) 0%, hsl(214, 8%, 95%) 15%, hsl(214, 8%, 71%) 35%, hsl(214, 8%, 63%) 50%, hsl(214, 8%, 71%) 65%, hsl(214, 8%, 95%) 85%, hsl(214, 8%, 59%) 100%);
+    left: 50%;
+    width: 20px;
+    height: 40px;
+    border-radius: 4px;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+    cursor: grab;
+}
+
+.mixer_channel_volume_meter {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
 }
