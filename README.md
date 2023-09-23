@@ -18,6 +18,7 @@ Player features:
 - Helpful (remappable) keybinds such as: Right Alt to hide player, Z to undo seek, <> to skip 2 seconds.
 - Adjustable video brightness, contrast, saturation, hue, and more
 - Adjustable volume, up to 300% volume boost
+- Configurable audio dynamics: Has audio mixer, equalizer, and compressor tool built in
 
 Should you like binging shows, the player also comes equipped with a custom video analysis system that runs in the background to identify intro/outro sequences based on repetitive scenes. Once they have been identified, you can skip them easily by pressing S.
 
