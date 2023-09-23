@@ -100,6 +100,10 @@ export class WebUtils {
       container.blur();
     });
 
+    container.addEventListener('mouseenter', (e) => {
+      container.focus();
+    });
+
     function shiftSelection(indexAmount) {
       for (let j = 0; j < itemListElement.children.length; j++) {
         const element = itemListElement.children[j];

@@ -2077,9 +2077,9 @@ body {
     padding: 0px 5px;
 }
 
-.equalizer_container {
+.dynamics_container {
     width: 100%;
-    height: 600px;
+    overflow: auto;
 }
 
 .equalizer {
@@ -2207,4 +2207,39 @@ body {
     top: 50%;
     background-color: rgba(100, 255, 255, 0.25);
     border: 1px solid rgba(100, 255, 255, 0.5);
+}
+.equalizer .equalizer_title {
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    position: absolute;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.compressor {
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    height: 300px;
+    background-color: black;
+    border-radius: 3px;
+}
+
+.compressor .compressor_title {
+    top: 5px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    position: absolute;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.compressor canvas {
+    position: absolute;
+    z-index: 2;
+    top: 30px;
+    left: 30px;
+    width: calc(100% - 60px);
+    height: calc(100% - 60px);
 }

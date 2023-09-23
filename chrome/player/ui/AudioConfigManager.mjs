@@ -150,6 +150,11 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.updateProfileDropdown();
+
+    Array.from(this.ui.profileDropdown.children[1].children).find((el) =>
+      el.dataset.val === 'p' + this.profiles[Math.max(0, index - 1)].id,
+    ).click();
+
     this.saveProfilesToStorage();
   }
 
@@ -245,6 +250,7 @@ export class AudioConfigManager extends EventEmitter {
       }
       e.stopPropagation();
     });
+    WebUtils.setupTabIndex(DOMElements.audioConfigBtn);
 
     const closeBtn = DOMElements.audioConfigContainer.getElementsByClassName('close_button')[0];
     closeBtn.addEventListener('click', (e) => {
@@ -300,14 +306,18 @@ export class AudioConfigManager extends EventEmitter {
     WebUtils.setupTabIndex(this.ui.deleteButton);
 
 
-    this.ui.equalizerContainer = WebUtils.create('div', null, 'equalizer_container');
-    DOMElements.audioConfigContainer.appendChild(this.ui.equalizerContainer);
+    this.ui.dynamicsContainer = WebUtils.create('div', null, 'dynamics_container');
+    DOMElements.audioConfigContainer.appendChild(this.ui.dynamicsContainer);
 
     this.ui.equalizer = WebUtils.create('div', null, 'equalizer');
-    this.ui.equalizerContainer.appendChild(this.ui.equalizer);
+    this.ui.dynamicsContainer.appendChild(this.ui.equalizer);
+
+    const equalizerTitle = WebUtils.create('div', null, 'equalizer_title');
+    equalizerTitle.textContent = 'FastStream Audio Equalizer';
+    this.ui.equalizer.appendChild(equalizerTitle);
 
     this.ui.equalizerText = WebUtils.create('div', 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);');
-    this.ui.equalizerText.textContent = 'No audio! Please play a video to see the equalizer.';
+    this.ui.equalizerText.textContent = 'No audio! Please play a video to use the equalizer.';
     this.ui.equalizer.appendChild(this.ui.equalizerText);
 
     this.ui.spectrumCanvas = WebUtils.create('canvas', null, 'spectrum_canvas');
@@ -400,6 +410,18 @@ export class AudioConfigManager extends EventEmitter {
       this.ui.zeroLineNode.style.display = 'none';
       zeroLineNodeShowHide(e);
     });
+
+
+    this.ui.compressor = WebUtils.create('div', null, 'compressor');
+    this.ui.dynamicsContainer.appendChild(this.ui.compressor);
+
+    this.ui.compressorTitle = WebUtils.create('div', null, 'compressor_title');
+    this.ui.compressorTitle.textContent = 'FastStream Audio Compressor';
+    this.ui.compressor.appendChild(this.ui.compressorTitle);
+
+    this.ui.compressorText = WebUtils.create('div', 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);');
+    this.ui.compressorText.textContent = 'Audio compressor coming soon!';
+    this.ui.compressor.appendChild(this.ui.compressorText);
   }
 
   addEQNode(node) {
