@@ -631,7 +631,7 @@ export class AudioConfigManager extends EventEmitter {
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
 
-        this.spectrumCtx.fillStyle = `rgba(40, 40, 40, 0.5)`;
+        this.spectrumCtx.fillStyle = `rgba(40, 40, 40, ${Utils.clamp((yPost - yPre) / 10, 0, 1) * 0.5})`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
       }
       lastX = newX;
