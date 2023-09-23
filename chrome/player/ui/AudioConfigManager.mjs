@@ -82,6 +82,7 @@ export class AudioConfigManager extends EventEmitter {
 
       if (audioProfiles.length === 0) {
         this.newProfile();
+        this.setCurrentProfile(this.profiles[0]);
       } else {
         this.profiles = audioProfiles.map((profile) => {
           return AudioProfile.fromObj(profile);
@@ -102,7 +103,7 @@ export class AudioConfigManager extends EventEmitter {
     this.saveTimeout = setTimeout(() => {
       chrome.storage.local.set({
         audioProfiles: JSON.stringify(this.profiles.map((profile) => profile.toObj())),
-        currentAudioProfile: this.currentProfile.id,
+        currentAudioProfile: this.currentProfile?.id || this.profiles[0]?.id || 0,
       });
     }, 500);
   }
