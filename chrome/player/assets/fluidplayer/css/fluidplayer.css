@@ -2083,6 +2083,7 @@ body {
     overflow: auto;
     display: flex;
     flex-wrap: wrap;
+    gap: 10px;
 }
 
 .equalizer {
@@ -2211,6 +2212,7 @@ body {
     background-color: rgba(100, 255, 255, 0.25);
     border: 1px solid rgba(100, 255, 255, 0.5);
 }
+
 .equalizer .equalizer_title {
     top: 5px;
     left: 0px;
@@ -2222,7 +2224,6 @@ body {
 }
 
 .compressor {
-    margin-top: 10px;
     position: relative;
     width: 30%;
     min-width: 400px;
@@ -2243,8 +2244,6 @@ body {
 }
 
 .mixer {
-    margin-left: 10px;
-    margin-top: 10px;
     position: relative;
     min-width: 400px;
     flex: 1 1 auto;
