@@ -113,7 +113,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
             if (todo === done) loadondone();
 
             function loadondone() {
-              chrome.storage.sync.get('subtitlesSettings', (data) => {
+              chrome.storage.local.get('subtitlesSettings', (data) => {
                 let defLang = 'en';
                 if (data.subtitlesSettings) {
                   try {

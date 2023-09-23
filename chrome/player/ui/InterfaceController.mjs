@@ -888,13 +888,7 @@ export class InterfaceController {
   }
 
   getOffsetLeft(elem) {
-    let offsetLeft = 0;
-    do {
-      if (!isNaN(elem.offsetLeft)) {
-        offsetLeft += elem.offsetLeft;
-      }
-    } while (elem = elem.offsetParent);
-    return offsetLeft;
+    return elem.getBoundingClientRect().left;
   }
 
   muteToggle() {

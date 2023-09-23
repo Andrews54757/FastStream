@@ -28,7 +28,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
 
   saveSettings() {
     try {
-      chrome?.storage?.sync?.set({
+      chrome?.storage?.local?.set({
         subtitlesSettings: JSON.stringify(this.settings),
       });
     } catch (e) {
@@ -98,7 +98,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
 
   loadSettings() {
     try {
-      chrome.storage.sync.get('subtitlesSettings', (data) => {
+      chrome.storage.local.get('subtitlesSettings', (data) => {
         if (data.subtitlesSettings) {
           const settings = JSON.parse(data.subtitlesSettings);
           this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);

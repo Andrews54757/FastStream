@@ -1417,6 +1417,10 @@ body {
     display: block;
 }
 
+.dropdown > .items > div:hover {
+    background-color: rgb(40, 40, 40);
+}
+
 .dropdown:hover {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
@@ -1991,6 +1995,11 @@ body {
     font-size: 12px;
 }
 
+.equalizer_node .tooltiptext {
+    width: 200px;
+    margin-left: -100px;
+}
+
 .tooltip:hover .tooltiptext {
     visibility: visible;
 }
@@ -2078,7 +2087,6 @@ body {
     width: 100%;
     height: 300px;
     background-color: black;
-    overflow: hidden;
     border-radius: 3px;
 }
 
@@ -2158,6 +2166,45 @@ body {
     transform: translate(-100%, -50%);
 }
 
+.equalizer .zero_line_node {
+    cursor: pointer;
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(100, 255, 255, 0.25);
+    border: 1px solid rgba(100, 255, 255, 0.5);
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+}
+
+.equalizer .zero_line_node.highpass,
+.equalizer .zero_line_node.lowpass {
+    background-color: rgba(255, 201, 100, 0.25);
+    border: 1px solid rgba(255, 201, 100, 0.5)
+}
+
 .equalizer_decibel_axis .eq_tick_marker.minor_tick {
     background-color: rgba(255, 255, 255, 0.2);
+}
+
+.equalizer .equalizer_nodes {
+    position: absolute;
+    top: 30px;
+    bottom: 30px;
+    left: 30px;
+    right: 30px;
+    z-index: 3;
+}
+
+.equalizer .equalizer_nodes .equalizer_node {
+    cursor: grab;
+    position: absolute;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    background-color: rgba(100, 255, 255, 0.25);
+    border: 1px solid rgba(100, 255, 255, 0.5);
 }
