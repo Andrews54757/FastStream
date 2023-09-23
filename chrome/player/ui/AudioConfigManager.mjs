@@ -688,7 +688,7 @@ export class AudioConfigManager extends EventEmitter {
       const barWidth = Utils.clamp((x2 - x) * xScale / 2, 1, 5);
       // pre bar is gray
       if (yPost <= yPre) {
-        this.spectrumCtx.fillStyle = `rgb(0, 50, 255)`;
+        this.spectrumCtx.fillStyle = `rgba(0, 50, 255, 0.8)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
