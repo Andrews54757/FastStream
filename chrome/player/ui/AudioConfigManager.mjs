@@ -1270,14 +1270,15 @@ export class AudioConfigManager extends EventEmitter {
       mouseMove(e);
     });
 
-    els.volume.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      const delta = Math.sign(e.deltaY);
-      const ratio = parseFloat(els.volumeHandle.style.top) / 100;
-      const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
-      els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
-      this.setChannelGain(channel, this.dbToGain(db));
-    });
+    // els.volume.addEventListener('wheel', (e) => {
+    //   if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
+    //   e.preventDefault();
+    //   const delta = Math.sign(e.deltaY);
+    //   const ratio = parseFloat(els.volumeHandle.style.top) / 100;
+    //   const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
+    //   els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+    //   this.setChannelGain(channel, this.dbToGain(db));
+    // });
 
     els.volumeHandle.addEventListener('keydown', (e) => {
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
