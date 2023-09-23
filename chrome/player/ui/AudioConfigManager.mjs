@@ -980,7 +980,7 @@ export class AudioConfigManager extends EventEmitter {
       label.textContent = `${maxFreq}Hz`;
       lastTick.appendChild(label);
     } else {
-      lastTick.lastChild.textContent = `${StringUtils.formatFrequency(maxFreq)}`;
+      lastTick.lastChild.textContent = `${StringUtils.formatFrequency(maxFreq)}Hz`;
     }
   }
 
