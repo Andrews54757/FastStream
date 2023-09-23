@@ -316,7 +316,7 @@ export class AudioConfigManager extends EventEmitter {
     equalizerTitle.textContent = 'FastStream Audio Equalizer';
     this.ui.equalizer.appendChild(equalizerTitle);
 
-    this.ui.equalizerText = WebUtils.create('div', 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);');
+    this.ui.equalizerText = WebUtils.create('div', null, 'dynamics_center_text');
     this.ui.equalizerText.textContent = 'No audio! Please play a video to use the equalizer.';
     this.ui.equalizer.appendChild(this.ui.equalizerText);
 
@@ -419,9 +419,21 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.compressorTitle.textContent = 'FastStream Audio Compressor';
     this.ui.compressor.appendChild(this.ui.compressorTitle);
 
-    this.ui.compressorText = WebUtils.create('div', 'position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);');
+    this.ui.compressorText = WebUtils.create('div', null, 'dynamics_center_text');
     this.ui.compressorText.textContent = 'Audio compressor coming soon!';
     this.ui.compressor.appendChild(this.ui.compressorText);
+
+
+    this.ui.mixer = WebUtils.create('div', null, 'mixer');
+    this.ui.dynamicsContainer.appendChild(this.ui.mixer);
+
+    this.ui.mixerTitle = WebUtils.create('div', null, 'mixer_title');
+    this.ui.mixerTitle.textContent = 'FastStream Audio Mixer';
+    this.ui.mixer.appendChild(this.ui.mixerTitle);
+
+    this.ui.mixerText = WebUtils.create('div', null, 'dynamics_center_text');
+    this.ui.mixerText.textContent = 'Audio mixer coming soon!';
+    this.ui.mixer.appendChild(this.ui.mixerText);
   }
 
   addEQNode(node) {
