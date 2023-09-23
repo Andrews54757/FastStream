@@ -647,17 +647,17 @@ export class AudioConfigManager extends EventEmitter {
 
       const barWidth = Utils.clamp((x2 - x) * xScale / 2, 1, 5);
       // pre bar is gray
-      if (yPre >= yPost) {
-        this.spectrumCtx.fillStyle = `rgba(128, 128, 128, 0.8)`;
+      if (yPost <= yPre) {
+        this.spectrumCtx.fillStyle = `rgb(80, 80, 80)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
-
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
+        this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
+        this.spectrumCtx.fillStyle = `rgba(0, 0, 0, 0.25)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
       } else {
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
-
-        this.spectrumCtx.fillStyle = `rgba(40, 40, 40, ${Utils.clamp((yPost - yPre) / 10, 0, 1) * 0.5})`;
+        this.spectrumCtx.fillStyle = `rgba(0, 0, 0, 0.25)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
       }
       lastX = newX;
@@ -866,6 +866,8 @@ export class AudioConfigManager extends EventEmitter {
       }
     });
 
+    this.equalizerDbResponse = dbResponse;
+
     // draw lines
     this.equalizerCtx.clearRect(0, 0, width, height);
 
@@ -996,11 +998,9 @@ export class AudioConfigManager extends EventEmitter {
     this.audioSource = this.client.audioSource;
 
     this.preAnalyser = this.audioContext.createAnalyser();
-    this.preAnalyser.fftSize = 2048;
-    this.preAnalyser.smoothingTimeConstant = 0.5;
-
     this.postAnalyser = this.audioContext.createAnalyser();
-    this.postAnalyser.fftSize = 2048;
+
+    this.preAnalyser.smoothingTimeConstant = 0.5;
     this.postAnalyser.smoothingTimeConstant = 0.5;
     // this.analyser.minDecibels = -100;
     // this.analyser.maxDecibels = 0;
@@ -1014,9 +1014,34 @@ export class AudioConfigManager extends EventEmitter {
     this.setupEqualizerFrequencyAxis();
     this.setupEqualizerDecibelAxis();
     this.refreshEQNodes();
+
+    this.channelSplitter = this.audioContext.createChannelSplitter();
+    this.postAnalyser.connect(this.channelSplitter);
+
+    this.channelMerger = this.audioContext.createChannelMerger();
+
+    this.channelGains = [];
+    this.channelAnalyzers = [];
+    for (let i = 0; i < 6; i++) {
+      const gain = this.audioContext.createGain();
+      this.channelGains.push(gain);
+
+      this.channelSplitter.connect(gain, i);
+
+      const analyser = this.audioContext.createAnalyser();
+      analyser.fftSize = 64;
+      analyser.smoothingTimeConstant = 0.5;
+
+      gain.connect(analyser);
+
+      analyser.connect(this.channelMerger, 0, i);
+    }
+
+    this.finalGain = this.audioContext.createGain();
+    this.channelMerger.connect(this.finalGain);
   }
 
   getOutputNode() {
-    return this.postAnalyser;
+    return this.finalGain;
   }
 }

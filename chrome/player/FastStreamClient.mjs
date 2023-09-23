@@ -923,8 +923,8 @@ export class FastStreamClient extends EventEmitter {
 
   updateVolume() {
     const value = this.persistent.volume;
-    if (this.player) this.player.volume = Math.min(value, 1);
-    if (this.audioGain) this.audioGain.gain.value = Math.max(value, 1);
+    if (this.player) this.player.volume = 1;
+    if (this.audioGain) this.audioGain.gain.value = value;
     this.interfaceController.updateVolumeBar();
   }
 
