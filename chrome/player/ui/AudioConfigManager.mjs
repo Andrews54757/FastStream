@@ -187,6 +187,7 @@ export class AudioConfigManager extends EventEmitter {
     });
 
     optionsList['create'] = 'Create new profile';
+    optionsList['import'] = 'Import profiles from file';
 
     let id = defaultID !== null ? defaultID : (this.currentProfile?.id || 0);
     if (!this.profiles.find((profile) => profile.id === id)) {
@@ -194,14 +195,32 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.ui.profileDropdown = WebUtils.createDropdown('p' + id,
-        'Profile', optionsList, (val) => {
+        'Profile', optionsList, (val, prevVal) => {
           if (val === 'create') {
             this.newProfile();
-          } else {
-
+          } else if (val === 'import') {
+            this.updateProfileDropdown(parseInt(prevVal.substring(1)));
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.addEventListener('change', () => {
+              const file = input.files[0];
+              if (!file) return;
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                try {
+                  const obj = JSON.parse(e.target.result);
+                  this.loadProfileFile(obj);
+                } catch (e) {
+                  alert('Invalid profile file');
+                }
+              };
+              reader.readAsText(file);
+            });
+            input.click();
           }
         }, (key, displayName)=>{
-          if (key === 'create') {
+          if (key === 'create' || key === 'import') {
             return;
           }
 

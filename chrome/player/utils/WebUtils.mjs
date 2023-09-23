@@ -114,7 +114,7 @@ export class WebUtils {
           nextElement.style.backgroundColor = 'rgb(20,20,20)';
           text.children[0].textContent = nextElement.textContent;
           container.dataset.val = nextElement.dataset.val;
-          if (call) call(container.dataset.val);
+          if (call) call(container.dataset.val, element.dataset.val);
           break;
         }
       }
@@ -147,6 +147,7 @@ export class WebUtils {
 
         el.addEventListener('click', (e) => {
           text.children[0].textContent = el.textContent;
+          const prevValue = container.dataset.val;
           container.dataset.val = el.dataset.val;
 
           for (let j = 0; j < itemListElement.children.length; j++) {
@@ -157,7 +158,7 @@ export class WebUtils {
             }
           }
           e.stopPropagation();
-          if (call) call(container.dataset.val);
+          if (call) call(container.dataset.val, prevValue);
         });
       })(i);
     }
