@@ -65,6 +65,8 @@ export class FastStreamClient extends EventEmitter {
     this.pastSeeks = [];
     this.pastUnseeks = [];
     this.fragmentsStore = {};
+    this.audioContext = new AudioContext();
+    this.audioConfigManager.setupNodes();
     this.mainloop();
   }
 

@@ -68,7 +68,6 @@ export class AudioConfigManager extends EventEmitter {
     this.shouldRunRenderLoop = false;
 
     this.equalizerNodes = [];
-
     this.loadProfilesFromStorage();
   }
 
@@ -95,6 +94,7 @@ export class AudioConfigManager extends EventEmitter {
         }
         this.updateProfileDropdown();
       }
+      this.refreshEQNodes();
     });
   }
 
@@ -249,10 +249,12 @@ export class AudioConfigManager extends EventEmitter {
   openUI() {
     InterfaceUtils.closeWindows();
     DOMElements.audioConfigContainer.style.display = '';
+    this.startRenderLoop();
   }
 
   closeUI() {
     DOMElements.audioConfigContainer.style.display = 'none';
+    this.stopRenderLoop();
   }
 
   saveCurrentProfile() {
@@ -399,7 +401,7 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.equalizer.appendChild(equalizerTitle);
 
     this.ui.equalizerText = WebUtils.create('div', null, 'dynamics_center_text');
-    this.ui.equalizerText.textContent = 'No audio! Please play a video to use the equalizer.';
+    this.ui.equalizerText.textContent = 'No audio context!';
     this.ui.equalizer.appendChild(this.ui.equalizerText);
 
     this.ui.spectrumCanvas = WebUtils.create('canvas', null, 'spectrum_canvas');
@@ -524,6 +526,7 @@ export class AudioConfigManager extends EventEmitter {
   }
 
   refreshEQNodes() {
+    if (!this.currentProfile) return;
     try {
       this.preAnalyser.disconnect(this.postAnalyser);
     } catch (e) {
@@ -570,10 +573,6 @@ export class AudioConfigManager extends EventEmitter {
     return Utils.clamp(Math.pow(10, ratio * logFrequencyWidth + Math.log10(20)), 0, maxFreq);
   }
 
-  reset() {
-
-  }
-
   renderLoop() {
     if (!this.shouldRunRenderLoop) {
       this.renderLoopRunning = false;
@@ -583,6 +582,14 @@ export class AudioConfigManager extends EventEmitter {
         this.renderLoop();
       });
     }
+
+    if (this.ui.equalizer.clientWidth !== this.pastWidth) {
+      this.pastWidth = this.ui.equalizer.clientWidth;
+
+      // Rerender equalizer response when width changes
+      this.renderEqualizerResponse();
+    }
+
     this.renderEqualizerSpectrum();
   }
 
@@ -985,10 +992,6 @@ export class AudioConfigManager extends EventEmitter {
   }
 
   setupNodes() {
-    if (this.client.audioContext !== this.audioContext) {
-      this.reset();
-    }
-
     this.audioContext = this.client.audioContext;
     this.audioSource = this.client.audioSource;
 
@@ -1001,15 +1004,15 @@ export class AudioConfigManager extends EventEmitter {
     this.postAnalyser.smoothingTimeConstant = 0.5;
     // this.analyser.minDecibels = -100;
     // this.analyser.maxDecibels = 0;
+    if (this.audioSource) {
+      this.audioSource.connect(this.preAnalyser);
+    }
 
-    this.audioSource.connect(this.preAnalyser);
     this.preAnalyser.connect(this.postAnalyser);
     this.ui.equalizerText.style.display = 'none';
 
     this.setupEqualizerFrequencyAxis();
     this.setupEqualizerDecibelAxis();
-    this.startRenderLoop();
-
     this.refreshEQNodes();
   }
 
