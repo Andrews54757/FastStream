@@ -541,7 +541,7 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.dynamicsContainer.appendChild(this.ui.mixer);
 
     this.ui.mixerTitle = WebUtils.create('div', null, 'mixer_title');
-    this.ui.mixerTitle.textContent = 'Audio Mixer';
+    this.ui.mixerTitle.textContent = 'Audio Channel Mixer';
     this.ui.mixer.appendChild(this.ui.mixerTitle);
 
     this.ui.mixerText = WebUtils.create('div', null, 'dynamics_center_text');
