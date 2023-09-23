@@ -130,6 +130,25 @@ export class AudioConfigManager extends EventEmitter {
     Array.from(this.ui.profileDropdown.children[1].children).find((el) => el.dataset.val === 'p' + newID).click();
   }
 
+  loadProfileFile(obj) {
+    if (obj.type !== 'audioProfile') {
+      throw new Error('Invalid profile type');
+    }
+
+    obj.profiles.forEach((profileObj) => {
+      const profile = AudioProfile.fromObj(profileObj);
+      profile.id = this.getNextProfileID();
+
+      if (this.profiles.some((test) => test.label === profile.label)) {
+        profile.label = profile.label + ` (loaded from file on ${(new Date()).toDateString()})`;
+      }
+
+      this.profiles.push(profile);
+    });
+    this.updateProfileDropdown();
+    this.saveProfilesToStorage();
+  }
+
   addProfile(profile) {
     this.profiles.push(profile);
     this.updateProfileDropdown();
@@ -158,7 +177,7 @@ export class AudioConfigManager extends EventEmitter {
     this.saveProfilesToStorage();
   }
 
-  updateProfileDropdown() {
+  updateProfileDropdown(defaultID = null) {
     const oldDropdown = this.ui.profileDropdown;
 
     const optionsList = {};
@@ -169,7 +188,7 @@ export class AudioConfigManager extends EventEmitter {
 
     optionsList['create'] = 'Create new profile';
 
-    let id = (this.currentProfile?.id || 0);
+    let id = defaultID !== null ? defaultID : (this.currentProfile?.id || 0);
     if (!this.profiles.find((profile) => profile.id === id)) {
       id = this.profiles[0]?.id || 0;
     }
@@ -186,6 +205,12 @@ export class AudioConfigManager extends EventEmitter {
             return;
           }
 
+          displayName = displayName.replaceAll('\n', ' ').trim();
+
+          if (displayName.length === 0) {
+            displayName = 'Unnamed Profile';
+          }
+
           const profile = this.profiles.find((profile) => profile.id === parseInt(key.substring(1)));
           if (profile) {
             profile.label = displayName;
@@ -193,6 +218,11 @@ export class AudioConfigManager extends EventEmitter {
           }
         },
     );
+
+    this.ui.profileDropdown.children[0].children[0].addEventListener('blur', ()=>{
+      this.updateProfileDropdown(parseInt(this.ui.profileDropdown.dataset.val.substring(1)));
+    });
+
     this.ui.profileDropdown.classList.add('profile_selector');
     this.ui.profileManager.replaceChild(this.ui.profileDropdown, oldDropdown);
   }
@@ -288,6 +318,35 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.profileManager.appendChild(this.ui.saveButton);
     this.ui.saveButton.addEventListener('click', () => {
       this.saveCurrentProfile();
+    });
+    WebUtils.setupTabIndex(this.ui.saveButton);
+
+    // download button
+    this.ui.downloadButton = WebUtils.create('div', 'margin-left: 5px', 'textbutton download_button');
+    this.ui.downloadButton.textContent = 'Download Profile';
+    this.ui.profileManager.appendChild(this.ui.downloadButton);
+    this.ui.downloadButton.addEventListener('click', () => {
+      const profile = this.getDropdownProfile();
+      if (!profile) {
+        this.updateProfileDropdown();
+        return;
+      }
+
+      const data = {
+        type: 'audioProfile',
+        version: 1,
+        profiles: [],
+      };
+
+      const profileObj = profile.toObj();
+      delete profileObj.id;
+      data.profiles.push(profileObj);
+
+      const downloadBlob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(downloadBlob);
+      a.download = `${profile.label}.fsprofile.json`;
+      a.click();
     });
     WebUtils.setupTabIndex(this.ui.saveButton);
 

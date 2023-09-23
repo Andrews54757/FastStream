@@ -134,6 +134,10 @@ export class WebUtils {
         shiftSelection(-1);
         e.preventDefault();
         e.stopPropagation();
+      } else if (e.key == 'Enter') {
+        shiftSelection(1);
+        e.preventDefault();
+        e.stopPropagation();
       }
     });
 
@@ -203,6 +207,14 @@ export class WebUtils {
         }
         editableCallback(container.dataset.val, value);
         e.stopPropagation();
+      });
+
+      span.addEventListener('keydown', (e)=>{
+        if (e.key == 'Enter') {
+          span.blur();
+          e.stopPropagation();
+          e.preventDefault();
+        }
       });
 
       span.addEventListener('click', (e) => {

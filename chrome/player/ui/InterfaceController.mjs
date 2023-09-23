@@ -575,13 +575,21 @@ export class InterfaceController {
       'xml',
     ];
 
+
     let src = null;
     let mode = PlayerModes.DIRECT;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const ext = URLUtils.get_url_extension(file.name);
 
-      if (subtitleFormats.includes(ext)) {
+      if (ext === 'json') {
+        const fsprofile = await file.text();
+        const data = JSON.parse(fsprofile);
+
+        if (data?.type === 'audioProfile') {
+          this.client.audioConfigManager.loadProfileFile(data);
+        }
+      } else if (subtitleFormats.includes(ext)) {
         captions.push({
           url: window.URL.createObjectURL(file),
           name: file.name.substring(0, file.name.length - 4),
