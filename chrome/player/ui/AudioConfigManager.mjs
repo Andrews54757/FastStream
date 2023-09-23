@@ -246,9 +246,6 @@ export class AudioConfigManager extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
-    });
     const closeBtn = DOMElements.audioConfigContainer.getElementsByClassName('close_button')[0];
     closeBtn.addEventListener('click', (e) => {
       this.closeUI();
