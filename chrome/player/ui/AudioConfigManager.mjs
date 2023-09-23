@@ -648,16 +648,16 @@ export class AudioConfigManager extends EventEmitter {
       const barWidth = Utils.clamp((x2 - x) * xScale / 2, 1, 5);
       // pre bar is gray
       if (yPost <= yPre) {
-        this.spectrumCtx.fillStyle = `rgb(80, 80, 80)`;
+        this.spectrumCtx.fillStyle = `rgb(0, 50, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
-        this.spectrumCtx.fillStyle = `rgba(0, 0, 0, 0.25)`;
+        this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
       } else {
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
-        this.spectrumCtx.fillStyle = `rgba(0, 0, 0, 0.25)`;
+        this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
       }
       lastX = newX;
@@ -1000,8 +1000,8 @@ export class AudioConfigManager extends EventEmitter {
     this.preAnalyser = this.audioContext.createAnalyser();
     this.postAnalyser = this.audioContext.createAnalyser();
 
-    this.preAnalyser.smoothingTimeConstant = 0.5;
-    this.postAnalyser.smoothingTimeConstant = 0.5;
+    this.preAnalyser.smoothingTimeConstant = 0.6;
+    this.postAnalyser.smoothingTimeConstant = 0.6;
     // this.analyser.minDecibels = -100;
     // this.analyser.maxDecibels = 0;
     if (this.audioSource) {
