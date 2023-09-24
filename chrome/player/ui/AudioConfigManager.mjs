@@ -1619,7 +1619,7 @@ export class AudioConfigManager extends EventEmitter {
   }
 
   createMixerChannel(channel) {
-    const channelNames = ['Left', 'Right', 'Left Surround', 'Right Surround', 'Center', 'Bass (LFE)', 'Master'];
+    const channelNames = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround', 'Master'];
     const els = this.createMixerElements();
     els.channelTitle.textContent = channelNames[channel.id];
 
