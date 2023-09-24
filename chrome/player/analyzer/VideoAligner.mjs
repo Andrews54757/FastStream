@@ -412,7 +412,7 @@ export class VideoAligner extends EventEmitter {
       return null;
     }
 
-    if (obj.diff > 60 * 3) {
+    if (obj.diff > 60 * 2) {
       return null;
     }
 
