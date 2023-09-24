@@ -1417,7 +1417,7 @@ body {
     display: block;
 }
 
-.dropdown > .items > div:hover {
+.dropdown>.items>div:hover {
     background-color: rgb(40, 40, 40);
 }
 
@@ -2130,6 +2130,7 @@ body {
     top: 30px;
     bottom: 30px;
 }
+
 .equalizer_frequency_axis .eq_tick_marker.major_tick {
     background-color: rgba(255, 255, 255, 0.25);
 }
@@ -2223,26 +2224,6 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.compressor {
-    position: relative;
-    width: 30%;
-    min-width: 400px;
-    flex: 1 1 auto;
-    height: 300px;
-    background-color: black;
-    border-radius: 3px;
-}
-
-.compressor .compressor_title {
-    top: 5px;
-    left: 0px;
-    right: 0px;
-    text-align: center;
-    position: absolute;
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.8);
-}
-
 .mixer {
     position: relative;
     min-width: 400px;
@@ -2251,7 +2232,6 @@ body {
     height: 300px;
     background-color: black;
     border-radius: 3px;
-    max-width: 550px;
 }
 
 .mixer .mixer_title {
@@ -2282,12 +2262,8 @@ body {
     gap: 5px;
 }
 
-.mixer .master {
-
-}
-
 .mixer .channels {
-    flex: 1 1 auto;
+    flex: 6 1 auto;
     display: flex;
     flex-direction: row;
     overflow-x: auto;
@@ -2295,7 +2271,11 @@ body {
     gap: 5px;
 }
 
+.mixer .master {
+    flex: 1 1 auto;
+}
 .mixer_channel_container {
+    flex: 1 1 auto;
     position: relative;
     min-width: 70px;
     height: 100%;
@@ -2410,4 +2390,264 @@ body {
     left: 0px;
     width: 100%;
     height: 100%;
+}
+
+
+.compressor {
+    position: relative;
+    width: 30%;
+    min-width: 600px;
+    flex: 1 1 auto;
+    height: 300px;
+    background-color: black;
+    border-radius: 3px;
+}
+
+.compressor .compressor_title {
+    top: 5px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    position: absolute;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.compressor_container {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    gap: 10px;
+}
+
+.compressor_container .compressor_graph {
+    position: relative;
+    height: 270px;
+    width: 270px;
+    min-width: 270px;
+    border-radius: 3px;
+    box-sizing: border-box;
+}
+
+.compressor_graph .compressor_y_axis {
+    position: absolute;
+    top: 0px;
+    bottom: 30px;
+    left: 0px;
+    width: 30px;
+}
+
+.compressor_graph .compressor_x_axis {
+    position: absolute;
+    bottom: 0px;
+    left: 30px;
+    right: 0px;
+    height: 30px;
+}
+
+.compressor_graph .compressor_graph_container {
+    position: absolute;
+    top: 0px;
+    bottom: 30px;
+    left: 30px;
+    right: 0px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.compressor_graph .compressor_graph_container canvas {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+
+.compressor_container .compressor_controls {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    flex: 1 1 auto;
+    height: 100%;
+    border-radius: 3px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    margin-right: 15px;
+}
+
+.compressor_x_axis_tick {
+    position: absolute;
+    width: 1px;
+    transform: translate(-50%, 0%);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.compressor_x_axis_tick.major {
+    height: 5px;
+}
+
+.compressor_x_axis_tick.minor {
+    height: 3px;
+}
+
+.compressor_x_axis_tick .tick_label {
+    position: absolute;
+    top: 9px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, 0%);
+}
+
+
+.compressor_y_axis_tick {
+    position: absolute;
+    height: 1px;
+    right: 0px;
+    transform: translate(0%, -50%);
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.compressor_y_axis_tick.major {
+    width: 5px;
+}
+
+.compressor_y_axis_tick.minor {
+    width: 3px;
+}
+
+.compressor_y_axis_tick .tick_label {
+    position: absolute;
+    left: -4px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-100%, -50%);
+}
+
+.compressor_y_axis_tick.zero,
+.compressor_x_axis_tick.zero {
+    height: 0px;
+}
+
+
+.compressor_toggle {
+    flex: 1 1 auto;
+    top: 0px;
+    font-size: 12px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(220, 80, 80, 0.9);
+    width: 100%;
+    height: 30px;
+    line-height: 30px;;
+}
+
+.compressor_toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.compressor_toggle.enabled {
+    color: rgba(80, 220, 80, 0.9);
+}
+
+.knob_container {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    flex: 1 1 auto;
+}
+
+.knob_container .knob_name {
+    position: absolute;
+    top: 4px;
+    left: 0px;
+    right: 0px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.knob_knob_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.knob_knob {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    box-sizing: border-box;
+    background: -webkit-radial-gradient(center, ellipse, hsl(214, 8%, 87%) 0%, hsl(214, 8%, 60%) 100%)
+}
+
+.knob_bump {
+    position: absolute;
+    bottom: -7px;
+    width: 4px;
+    height: 25px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: rgb(80, 80, 80);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.knob_min_value_tick,
+.knob_max_value_tick {
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    border-radius: 1px;
+    background-color: rgba(255, 255, 255, 0.7);
+    top: calc(50% + 17px);
+}
+
+.knob_max_value_tick {
+    transform: rotate(-45deg);
+    left: calc(50% + 21px);
+}
+
+
+.knob_min_value_tick {
+    transform: rotate(45deg);
+    left: calc(50% - 22px);
+}
+
+.knob_min_value_label,
+.knob_max_value_label {
+    position: absolute;
+    font-size: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    transform: translate(-50%, -50%);
+}
+
+.knob_max_value_label {
+    left: calc(50% + 29px);
+    top: calc(50% + 30px);
+}
+
+.knob_min_value_label {
+    left: calc(50% - 29px);
+    top: calc(50% + 30px);
+}
+
+.knob_value {
+    position: absolute;
+    display: inline-block;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    bottom: 0px;
+    padding: 2px 5px;
+    left: 50%;
+    transform: translate(-50%, 0%);
+    white-space: nowrap;
 }

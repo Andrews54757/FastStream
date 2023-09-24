@@ -1,4 +1,5 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {Knob} from '../modules/knob.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
@@ -28,17 +29,18 @@ export class AudioEQNode {
 }
 
 export class AudioCompressionControl {
-  constructor(enabled, attack, knee, ratio, release, threshold) {
+  constructor(enabled, attack, knee, ratio, release, threshold, gain) {
     this.enabled = !!enabled;
     this.attack = parseFloat(attack);
     this.knee = parseFloat(knee);
     this.ratio = parseFloat(ratio);
     this.release = parseFloat(release);
     this.threshold = parseFloat(threshold);
+    this.gain = parseFloat(gain);
   }
 
   static fromObj(obj) {
-    return new AudioCompressionControl(obj.enabled, obj.attack, obj.knee, obj.ratio, obj.release, obj.threshold);
+    return new AudioCompressionControl(obj.enabled, obj.attack, obj.knee, obj.ratio, obj.release, obj.threshold, obj.gain);
   }
 
   toObj() {
@@ -49,6 +51,7 @@ export class AudioCompressionControl {
       ratio: this.ratio,
       release: this.release,
       threshold: this.threshold,
+      gain: this.gain,
     };
   }
 }
@@ -80,7 +83,7 @@ export class AudioProfile {
     this.id = parseInt(id);
     this.equalizerNodes = [];
     this.mixerChannels = [];
-    this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24);
+    this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24, 1);
     this.label = `Profile ${id}`;
   }
 
@@ -93,7 +96,11 @@ export class AudioProfile {
     profile.mixerChannels = obj.mixerChannels?.map((channelObj) => {
       return AudioChannelControl.fromObj(channelObj);
     }) || [];
-    profile.compressor = AudioCompressionControl.fromObj(obj.compressor || {});
+
+    if (obj.compressor) {
+      profile.compressor = AudioCompressionControl.fromObj(obj.compressor || {});
+    }
+
     return profile;
   }
 
@@ -157,6 +164,7 @@ export class AudioConfigManager extends EventEmitter {
       }
       this.refreshEQNodes();
       this.refreshMixer();
+      this.setupCompressorControls();
     });
   }
 
@@ -561,10 +569,6 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.compressorTitle.textContent = 'Audio Compressor';
     this.ui.compressor.appendChild(this.ui.compressorTitle);
 
-    this.ui.compressorText = WebUtils.create('div', null, 'dynamics_center_text');
-    this.ui.compressorText.textContent = 'Audio compressor coming soon!';
-    this.ui.compressor.appendChild(this.ui.compressorText);
-
     this.ui.compressorContainer = WebUtils.create('div', null, 'compressor_container');
     this.ui.compressor.appendChild(this.ui.compressorContainer);
 
@@ -577,16 +581,20 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.compressorXAxis = WebUtils.create('div', null, 'compressor_x_axis');
     this.ui.compressorGraph.appendChild(this.ui.compressorXAxis);
 
-    this.ui.compressorGraphActivity = WebUtils.create('div', null, 'compressor_graph_activity');
-    this.ui.compressorGraph.appendChild(this.ui.compressorGraphActivity);
+    this.setupCompressorAxis();
+
+    this.ui.compressorGraphContainer = WebUtils.create('div', null, 'compressor_graph_container');
+    this.ui.compressorGraph.appendChild(this.ui.compressorGraphContainer);
 
     this.ui.compressorGraphCanvas = WebUtils.create('canvas', null, 'compressor_graph_canvas');
-    this.ui.compressorGraphActivity.appendChild(this.ui.compressorGraphCanvas);
+    this.ui.compressorGraphContainer.appendChild(this.ui.compressorGraphCanvas);
 
     this.ui.compressorGraphCtx = this.ui.compressorGraphCanvas.getContext('2d');
 
     this.ui.compressorControls = WebUtils.create('div', null, 'compressor_controls');
     this.ui.compressorContainer.appendChild(this.ui.compressorControls);
+
+    this.setupCompressorControls();
 
     this.ui.mixer = WebUtils.create('div', null, 'mixer');
     this.ui.dynamicsContainer.appendChild(this.ui.mixer);
@@ -594,11 +602,6 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.mixerTitle = WebUtils.create('div', null, 'mixer_title');
     this.ui.mixerTitle.textContent = 'Audio Channel Mixer';
     this.ui.mixer.appendChild(this.ui.mixerTitle);
-
-    this.ui.mixerText = WebUtils.create('div', null, 'dynamics_center_text');
-    this.ui.mixerText.textContent = 'Audio mixer coming soon!';
-    this.ui.mixer.appendChild(this.ui.mixerText);
-
 
     this.ui.mixerContainer = WebUtils.create('div', null, 'mixer_container');
     this.ui.mixer.appendChild(this.ui.mixerContainer);
@@ -610,6 +613,341 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.mixerContainer.appendChild(this.ui.master);
   }
 
+  createKnob(name, minValue, maxValue, callback, units = '') {
+    const knobContainer = WebUtils.create('div', null, 'knob_container');
+    const knobName = WebUtils.create('div', null, 'knob_name');
+    knobName.textContent = name;
+    knobContainer.appendChild(knobName);
+
+    const knobMinValueTick = WebUtils.create('div', null, 'knob_min_value_tick');
+    knobContainer.appendChild(knobMinValueTick);
+
+    const knobMinValueLabel = WebUtils.create('div', null, 'knob_min_value_label');
+    knobMinValueLabel.textContent = minValue;
+    knobContainer.appendChild(knobMinValueLabel);
+
+    const knobMaxValueTick = WebUtils.create('div', null, 'knob_max_value_tick');
+    knobContainer.appendChild(knobMaxValueTick);
+
+    const knobMaxValueLabel = WebUtils.create('div', null, 'knob_max_value_label');
+    knobMaxValueLabel.textContent = maxValue;
+    knobContainer.appendChild(knobMaxValueLabel);
+
+    const knobKnobContainer = WebUtils.create('div', null, 'knob_knob_container');
+    knobContainer.appendChild(knobKnobContainer);
+
+    const knobKnob = WebUtils.create('div', null, 'knob_knob');
+    const knobBump = WebUtils.create('div', null, 'knob_bump');
+    knobKnob.appendChild(knobBump);
+    knobKnobContainer.appendChild(knobKnob);
+
+    const knobValue = WebUtils.create('div', null, 'knob_value');
+    knobContainer.appendChild(knobValue);
+    knobValue.contentEditable = true;
+
+    const decimals = Utils.clamp(3 - Math.ceil(Math.log10(maxValue - minValue)), 0, 3);
+
+    let shouldCall = false;
+    const knob = new Knob(knobKnob, (knob, indicator)=>{
+      knobKnob.style.transform = `rotate(-${indicator.angle}deg)`;
+      // dont update the value if the user is editing it
+      if (knobValue !== document.activeElement) {
+        knobValue.textContent = knob.val().toFixed(decimals) + ' ' + units;
+      }
+
+      if (shouldCall && callback) {
+        callback(knob.val());
+      }
+    });
+
+    knobValue.addEventListener('input', ()=>{
+      const val = parseFloat(knobValue.textContent.replace(units, ''));
+      if (isNaN(val)) {
+        return;
+      }
+      knob.val(val);
+    });
+
+    knobValue.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        knobValue.blur();
+      }
+    });
+
+    knobValue.addEventListener('blur', (e)=>{
+      const val = parseFloat(knobValue.textContent.replace(units, ''));
+      knob.val(val);
+    });
+
+    knob.options.indicatorAutoRotate = true;
+    knob.options.angleEnd = 315;
+    knob.options.angleStart = 45;
+    knob.options.valueMin = minValue;
+    knob.options.valueMax = maxValue;
+    knob.val(minValue);
+
+    setTimeout(()=>{
+      shouldCall = true;
+    }, 1);
+
+
+    const container = knobKnobContainer;
+    const rect = container.getBoundingClientRect();
+    knob.setPosition(rect.left, rect.top);
+    knob.setDimensions(50, 50);
+
+    const mouseMove = (e) => {
+      knob.doTouchMove([{
+        pageX: e.pageX,
+        pageY: e.pageY,
+      }], e.timeStamp);
+      e.preventDefault();
+    };
+
+    const mouseUp = (e) => {
+      knob.doTouchEnd(e.timeStamp);
+      document.removeEventListener('mousemove', mouseMove);
+      document.removeEventListener('mouseup', mouseUp);
+    };
+
+    container.addEventListener('mousedown', (e) =>{
+      const rect = container.getBoundingClientRect();
+      knob.setPosition(rect.left, rect.top);
+
+      knob.doTouchStart([{
+        pageX: e.pageX,
+        pageY: e.pageY,
+      }], e.timeStamp);
+
+      document.addEventListener('mousemove', mouseMove);
+      document.addEventListener('mouseup', mouseUp);
+    });
+
+    // Handle scroll
+    container.addEventListener('wheel', function(e) {
+      // reset the position in case knob moved
+      knob.setPosition(container.offsetLeft, container.offsetTop);
+
+      const delta = -e.wheelDelta;
+      knob.doMouseScroll(delta, e.timeStamp, e.pageX, e.pageY);
+
+      e.preventDefault();
+    });
+
+
+    return {
+      container: knobContainer,
+      knob: knob,
+    };
+  }
+
+  setupCompressorControls() {
+    this.ui.compressorControls.replaceChildren();
+
+    this.ui.compressorToggle = WebUtils.create('div', null, 'compressor_toggle');
+    this.ui.compressorControls.appendChild(this.ui.compressorToggle);
+
+    this.ui.compressorToggle.addEventListener('click', () => {
+      this.currentProfile.compressor.enabled = !this.currentProfile.compressor.enabled;
+      this.updateCompressor();
+    });
+
+    this.compressorKnobs = {};
+
+    this.compressorKnobs.threshold = this.createKnob('Threshold', -80, 0, (val) => {
+      if (this.currentProfile && val !== this.currentProfile.compressor.threshold) {
+        this.currentProfile.compressor.threshold = val;
+        this.updateCompressor();
+      }
+    }, 'dB');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.threshold.container);
+
+    this.compressorKnobs.knee = this.createKnob('Knee', 0, 40, (val) => {
+      if (this.currentProfile && val !== this.currentProfile.compressor.knee) {
+        this.currentProfile.compressor.knee = val;
+        this.updateCompressor();
+      }
+    }, 'dB');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.knee.container);
+
+    this.compressorKnobs.ratio = this.createKnob('Ratio', 1, 20, (val) => {
+      if (this.currentProfile && val !== this.currentProfile.compressor.ratio) {
+        this.currentProfile.compressor.ratio = val;
+        this.updateCompressor();
+      }
+    }, 'dB');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.ratio.container);
+
+    this.compressorKnobs.attack = this.createKnob('Attack', 0, 1, (val) => {
+      if (this.currentProfile && val !== this.currentProfile.compressor.attack) {
+        this.currentProfile.compressor.attack = val;
+        this.updateCompressor();
+      }
+    }, 's');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.attack.container);
+
+    this.compressorKnobs.release = this.createKnob('Release', 0, 1, (val) => {
+      if (this.currentProfile && val !== this.currentProfile.compressor.release) {
+        this.currentProfile.compressor.release = val;
+        this.updateCompressor();
+      }
+    }, 's');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.release.container);
+
+    this.compressorKnobs.gain = this.createKnob('Gain', 0, 20, (val) => {
+      if (this.currentProfile && this.dbToGain(val) !== this.currentProfile.compressor.gain) {
+        this.currentProfile.compressor.gain = this.dbToGain(val);
+        this.updateCompressor();
+      }
+    }, 'dB');
+    this.ui.compressorControls.appendChild(this.compressorKnobs.gain.container);
+
+    if (this.currentProfile) {
+      this.compressorKnobs.threshold.knob.val(this.currentProfile.compressor.threshold);
+      this.compressorKnobs.knee.knob.val(this.currentProfile.compressor.knee);
+      this.compressorKnobs.ratio.knob.val(this.currentProfile.compressor.ratio);
+      this.compressorKnobs.attack.knob.val(this.currentProfile.compressor.attack);
+      this.compressorKnobs.release.knob.val(this.currentProfile.compressor.release);
+      this.compressorKnobs.gain.knob.val(this.gainToDB(this.currentProfile.compressor.gain));
+    }
+
+    this.updateCompressor();
+  }
+  setupCompressorAxis() {
+    this.ui.compressorXAxis.replaceChildren();
+    this.ui.compressorYAxis.replaceChildren();
+
+    const maxDB = 0;
+    const minDB = -80;
+
+    for (let i = minDB; i <= maxDB; i += 10) {
+      const tick = WebUtils.create('div', null, 'compressor_x_axis_tick');
+      tick.style.left = `${(i - minDB) / (maxDB - minDB) * 100}%`;
+      this.ui.compressorXAxis.appendChild(tick);
+
+      if (i % 20 === 0) {
+        const label = WebUtils.create('div', null, 'tick_label');
+        label.textContent = `${i}`;
+        tick.classList.add('major');
+        tick.appendChild(label);
+      } else {
+        tick.classList.add('minor');
+      }
+
+      if (i === minDB || i === maxDB) {
+        tick.classList.add('zero');
+      }
+    }
+
+    for (let i = minDB; i <= maxDB; i += 10) {
+      const tick = WebUtils.create('div', null, 'compressor_y_axis_tick');
+      tick.style.top = `${(-i) / (maxDB - minDB) * 100}%`;
+      this.ui.compressorYAxis.appendChild(tick);
+
+      if (i % 20 === 0) {
+        const label = WebUtils.create('div', null, 'tick_label');
+        label.textContent = `${i}`;
+        tick.classList.add('major');
+        tick.appendChild(label);
+      } else {
+        tick.classList.add('minor');
+      }
+
+      if (i === minDB || i === maxDB) {
+        tick.classList.add('zero');
+      }
+    }
+  }
+
+  getCompressorNewDBfromOldDB(db) {
+    const compressor = this.currentProfile.compressor;
+
+    const threshold = compressor.threshold;
+    const ratio = compressor.ratio;
+    const slope = 1 / ratio;
+    const knee = compressor.knee;
+
+    if (db < threshold) { // no compression
+      return db;
+    } else if (db <= threshold + knee) { // soft knee
+      const diff = db - threshold;
+      return (slope - 1) * (diff * diff / 2) / knee + diff + threshold;
+    } else { // hard knee
+      const yOffset = (slope - 1) * (knee / 2) + knee + threshold;
+      return slope * (db - threshold - knee) + yOffset;
+    }
+  }
+
+  renderCompressorGraph() {
+    if (!this.currentProfile) return;
+
+    const width = this.ui.compressorGraphCanvas.clientWidth * window.devicePixelRatio;
+    const height = this.ui.compressorGraphCanvas.clientHeight * window.devicePixelRatio;
+
+    if (width === 0 || height === 0) return;
+
+    this.ui.compressorGraphCanvas.width = width;
+    this.ui.compressorGraphCanvas.height = height;
+
+    const ctx = this.ui.compressorGraphCtx;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // draw line
+    const minDB = -80;
+    const maxDB = 0;
+
+    ctx.beginPath();
+    ctx.strokeStyle = 'green';
+    ctx.lineWidth = 2;
+    for (let x = 0; x < width; x++) {
+      const db = minDB + (maxDB - minDB) * x / width;
+      const newDB = this.getCompressorNewDBfromOldDB(db);
+
+      const y = height - (newDB - minDB) * height / (maxDB - minDB);
+
+      if (x === 0) {
+        ctx.moveTo(x, y);
+      } else {
+        ctx.lineTo(x, y);
+      }
+    }
+    ctx.stroke();
+
+    // draw threshold line
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(230, 0, 0, 0.7)';
+    ctx.lineWidth = 1;
+    const threshold = this.currentProfile.compressor.threshold;
+    const x = (threshold - minDB) * width / (maxDB - minDB);
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, height);
+    ctx.stroke();
+
+    // draw knee line
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0, 200, 255, 0.7)';
+    ctx.lineWidth = 1;
+    const knee = this.currentProfile.compressor.knee;
+    const x2 = (threshold + knee - minDB) * width / (maxDB - minDB);
+    ctx.moveTo(x2, 0);
+    ctx.lineTo(x2, height);
+    ctx.stroke();
+
+
+    if (this.compressorNode) {
+      // reduction line
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(0, 200, 0, 0.7)';
+      ctx.lineWidth = 1;
+      const reduction = this.compressorNode.reduction;
+      const y = height - (reduction - minDB) * height / (maxDB - minDB);
+      ctx.moveTo(0, y);
+      ctx.lineTo(width, y);
+      ctx.stroke();
+    }
+  }
   addEQNode(node) {
     this.currentProfile.equalizerNodes.push(node);
     this.refreshEQNodes();
@@ -681,6 +1019,7 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.renderEqualizerSpectrum();
+    this.renderCompressorGraph();
     this.renderMixerMeters();
   }
 
@@ -1375,8 +1714,6 @@ export class AudioConfigManager extends EventEmitter {
   }
 
   refreshMixer() {
-    this.ui.mixerText.style.display = 'none';
-
     this.ui.master.replaceChildren();
     this.ui.channels.replaceChildren();
     this.mixerChannelElements = [];
@@ -1429,13 +1766,17 @@ export class AudioConfigManager extends EventEmitter {
     if (!this.currentProfile) return;
 
     const compressor = this.currentProfile.compressor;
+    this.ui.compressorToggle.textContent = compressor.enabled ? 'Compressor Enabled' : 'Compressor Disabled';
+    this.ui.compressorToggle.classList.toggle('enabled', compressor.enabled);
 
     if (compressor.enabled) {
       if (!this.compressorNode) {
         this.postAnalyser.disconnect(this.channelSplitter);
         this.compressorNode = this.audioContext.createDynamicsCompressor();
+        this.compressorGain = this.audioContext.createGain();
         this.postAnalyser.connect(this.compressorNode);
-        this.compressorNode.connect(this.channelSplitter);
+        this.compressorNode.connect(this.compressorGain);
+        this.compressorGain.connect(this.channelSplitter);
       }
 
       this.compressorNode.threshold.value = compressor.threshold;
@@ -1443,11 +1784,14 @@ export class AudioConfigManager extends EventEmitter {
       this.compressorNode.ratio.value = compressor.ratio;
       this.compressorNode.attack.value = compressor.attack;
       this.compressorNode.release.value = compressor.release;
+      this.compressorGain.gain.value = compressor.gain;
     } else {
       if (this.compressorNode) {
         this.postAnalyser.disconnect(this.compressorNode);
-        this.compressorNode.disconnect(this.channelSplitter);
+        this.compressorNode.disconnect(this.compressorGain);
         this.compressorNode = null;
+        this.compressorGain.disconnect(this.channelSplitter);
+        this.compressorGain = null;
         this.postAnalyser.connect(this.channelSplitter);
       }
     }
@@ -1509,6 +1853,7 @@ export class AudioConfigManager extends EventEmitter {
     this.channelAnalyzers.push(this.finalAnalyser);
 
     this.refreshMixer();
+    this.updateCompressor();
 
     if (DOMElements.audioConfigContainer.style.display !== 'none') {
       this.startRenderLoop();
