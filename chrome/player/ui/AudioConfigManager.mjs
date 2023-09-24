@@ -10,7 +10,7 @@ export class AudioEQNode {
     this.type = type;
     this.frequency = parseFloat(frequency);
     this.gain = parseFloat(gain);
-    this.q = q;
+    this.q = parseFloat(q);
   }
 
   static fromObj(obj) {
@@ -23,6 +23,32 @@ export class AudioEQNode {
       frequency: this.frequency,
       gain: this.gain,
       q: this.q,
+    };
+  }
+}
+
+export class AudioCompressionControl {
+  constructor(enabled, attack, knee, ratio, release, threshold) {
+    this.enabled = !!enabled;
+    this.attack = parseFloat(attack);
+    this.knee = parseFloat(knee);
+    this.ratio = parseFloat(ratio);
+    this.release = parseFloat(release);
+    this.threshold = parseFloat(threshold);
+  }
+
+  static fromObj(obj) {
+    return new AudioCompressionControl(obj.enabled, obj.attack, obj.knee, obj.ratio, obj.release, obj.threshold);
+  }
+
+  toObj() {
+    return {
+      enabled: this.enabled,
+      attack: this.attack,
+      knee: this.knee,
+      ratio: this.ratio,
+      release: this.release,
+      threshold: this.threshold,
     };
   }
 }
@@ -54,6 +80,7 @@ export class AudioProfile {
     this.id = parseInt(id);
     this.equalizerNodes = [];
     this.mixerChannels = [];
+    this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24);
     this.label = `Profile ${id}`;
   }
 
@@ -66,6 +93,7 @@ export class AudioProfile {
     profile.mixerChannels = obj.mixerChannels?.map((channelObj) => {
       return AudioChannelControl.fromObj(channelObj);
     }) || [];
+    profile.compressor = AudioCompressionControl.fromObj(obj.compressor || {});
     return profile;
   }
 
@@ -83,6 +111,7 @@ export class AudioProfile {
       mixerChannels: this.mixerChannels.map((channel) => {
         return channel.toObj();
       }),
+      compressor: this.compressor.toObj(),
     };
   }
 }
@@ -536,6 +565,28 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.compressorText.textContent = 'Audio compressor coming soon!';
     this.ui.compressor.appendChild(this.ui.compressorText);
 
+    this.ui.compressorContainer = WebUtils.create('div', null, 'compressor_container');
+    this.ui.compressor.appendChild(this.ui.compressorContainer);
+
+    this.ui.compressorGraph = WebUtils.create('div', null, 'compressor_graph');
+    this.ui.compressorContainer.appendChild(this.ui.compressorGraph);
+
+    this.ui.compressorYAxis = WebUtils.create('div', null, 'compressor_y_axis');
+    this.ui.compressorGraph.appendChild(this.ui.compressorYAxis);
+
+    this.ui.compressorXAxis = WebUtils.create('div', null, 'compressor_x_axis');
+    this.ui.compressorGraph.appendChild(this.ui.compressorXAxis);
+
+    this.ui.compressorGraphActivity = WebUtils.create('div', null, 'compressor_graph_activity');
+    this.ui.compressorGraph.appendChild(this.ui.compressorGraphActivity);
+
+    this.ui.compressorGraphCanvas = WebUtils.create('canvas', null, 'compressor_graph_canvas');
+    this.ui.compressorGraphActivity.appendChild(this.ui.compressorGraphCanvas);
+
+    this.ui.compressorGraphCtx = this.ui.compressorGraphCanvas.getContext('2d');
+
+    this.ui.compressorControls = WebUtils.create('div', null, 'compressor_controls');
+    this.ui.compressorContainer.appendChild(this.ui.compressorControls);
 
     this.ui.mixer = WebUtils.create('div', null, 'mixer');
     this.ui.dynamicsContainer.appendChild(this.ui.mixer);
@@ -1270,15 +1321,15 @@ export class AudioConfigManager extends EventEmitter {
       mouseMove(e);
     });
 
-    // els.volume.addEventListener('wheel', (e) => {
-    //   if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
-    //   e.preventDefault();
-    //   const delta = Math.sign(e.deltaY);
-    //   const ratio = parseFloat(els.volumeHandle.style.top) / 100;
-    //   const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
-    //   els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
-    //   this.setChannelGain(channel, this.dbToGain(db));
-    // });
+    els.volume.addEventListener('wheel', (e) => {
+      if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      const ratio = parseFloat(els.volumeHandle.style.top) / 100;
+      const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
+      els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
+      this.setChannelGain(channel, this.dbToGain(db));
+    });
 
     els.volumeHandle.addEventListener('keydown', (e) => {
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
@@ -1368,10 +1419,43 @@ export class AudioConfigManager extends EventEmitter {
       }
     });
   }
+
+  setupCompressor() {
+    this.ui.compressor.replaceChildren();
+    this.updateCompressor();
+  }
+
+  updateCompressor() {
+    if (!this.currentProfile) return;
+
+    const compressor = this.currentProfile.compressor;
+
+    if (compressor.enabled) {
+      if (!this.compressorNode) {
+        this.postAnalyser.disconnect(this.channelSplitter);
+        this.compressorNode = this.audioContext.createDynamicsCompressor();
+        this.postAnalyser.connect(this.compressorNode);
+        this.compressorNode.connect(this.channelSplitter);
+      }
+
+      this.compressorNode.threshold.value = compressor.threshold;
+      this.compressorNode.knee.value = compressor.knee;
+      this.compressorNode.ratio.value = compressor.ratio;
+      this.compressorNode.attack.value = compressor.attack;
+      this.compressorNode.release.value = compressor.release;
+    } else {
+      if (this.compressorNode) {
+        this.postAnalyser.disconnect(this.compressorNode);
+        this.compressorNode.disconnect(this.channelSplitter);
+        this.compressorNode = null;
+        this.postAnalyser.connect(this.channelSplitter);
+      }
+    }
+  }
+
   setupNodes() {
     this.audioContext = this.client.audioContext;
     this.audioSource = this.client.audioSource;
-
     this.preAnalyser = this.audioContext.createAnalyser();
     this.postAnalyser = this.audioContext.createAnalyser();
 
@@ -1391,6 +1475,7 @@ export class AudioConfigManager extends EventEmitter {
     this.refreshEQNodes();
 
     this.channelSplitter = this.audioContext.createChannelSplitter();
+    this.compressorNode = null;
     this.postAnalyser.connect(this.channelSplitter);
 
     this.channelMerger = this.audioContext.createChannelMerger();
