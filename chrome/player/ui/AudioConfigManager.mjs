@@ -1663,7 +1663,7 @@ export class AudioConfigManager extends EventEmitter {
       mouseMove(e);
     });
 
-    els.volume.addEventListener('wheel', (e) => {
+    els.volumeTrack.addEventListener('wheel', (e) => {
       if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
       e.preventDefault();
       const delta = Math.sign(e.deltaY);
