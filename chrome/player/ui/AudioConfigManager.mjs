@@ -927,14 +927,16 @@ export class AudioConfigManager extends EventEmitter {
     ctx.stroke();
 
     // draw knee line
-    ctx.beginPath();
-    ctx.strokeStyle = 'rgba(0, 200, 255, 0.7)';
-    ctx.lineWidth = 1;
     const knee = this.currentProfile.compressor.knee;
-    const x2 = (threshold + knee - minDB) * width / (maxDB - minDB);
-    ctx.moveTo(x2, 0);
-    ctx.lineTo(x2, height);
-    ctx.stroke();
+    if (knee > 0) {
+      ctx.beginPath();
+      ctx.strokeStyle = 'rgba(0, 200, 255, 0.7)';
+      ctx.lineWidth = 1;
+      const x2 = (threshold + knee - minDB) * width / (maxDB - minDB);
+      ctx.moveTo(x2, 0);
+      ctx.lineTo(x2, height);
+      ctx.stroke();
+    }
 
 
     if (this.compressorNode) {
