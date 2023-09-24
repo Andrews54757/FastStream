@@ -2092,6 +2092,7 @@ body {
     height: 300px;
     background-color: black;
     border-radius: 3px;
+    min-width: 560px;
 }
 
 .equalizer canvas {
@@ -2226,7 +2227,7 @@ body {
 
 .mixer {
     position: relative;
-    min-width: 400px;
+    min-width: 250px;
     flex: 1 1 auto;
     width: 30%;
     height: 300px;
