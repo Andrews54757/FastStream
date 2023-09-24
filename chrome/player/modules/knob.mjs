@@ -15,115 +15,6 @@ export const Knob = function(inputEl, callback) {
     throw new Error('No input element specified for knob.');
   }
 
-  /*
-    <input id="prog-knob"
-           type="range"
-           name="progressive-knob"
-           min="1" max="10"
-           data-angle-start="-400"
-           data-angle-end="360"
-           data-angle-value-ratio="0.1"
-           data-angle-slide-ratio="1"
-           data-gesture-spin-enabled="true"
-           data-gesture-slidex-enabled="true"
-           data-gesture-slidey-enabled="true"
-           data-gesture-scroll-enabled="true"
-           data-center-offset-x="0"
-           data-center-offset-y="0"
-           data-indicator-auto-rotate="false"
-           data-indicator-auto-position="false"
-           data-indicator-start-angle="0"
-           data-indicator-radius="0"
-           data-sprite-width="67"
-           data-sprite-height="67"
-           data-sprite-count="1"
-           data-sprite-direction="ccw"
-           data-sprite-start-angle="0"
-           data-sprite-separation-angle="3"
-           data-sprite-separation-gap="0"
-            />
-    */
-
-  // parse the attributes from the input element
-  const options = {};
-
-  if (inputEl.hasAttribute('min')) {
-    options.valueMin = parseFloat(inputEl.getAttribute('min'));
-  }
-  if (inputEl.hasAttribute('max')) {
-    options.valueMax = parseFloat(inputEl.getAttribute('max'));
-  }
-  if (inputEl.hasAttribute('value')) {
-    options.value = parseFloat(inputEl.getAttribute('value'));
-  }
-  if (inputEl.hasAttribute('data-angle-start')) {
-    options.angleStart = parseFloat(inputEl.getAttribute('data-angle-start'));
-  }
-  if (inputEl.hasAttribute('data-angle-end')) {
-    options.angleEnd = parseFloat(inputEl.getAttribute('data-angle-end'));
-  }
-  if (inputEl.hasAttribute('data-angle-value-ratio')) {
-    options.angleValueRatio = parseFloat(inputEl.getAttribute('data-angle-value-ratio'));
-  }
-  if (inputEl.hasAttribute('data-angle-slide-ratio')) {
-    options.angleSlideRatio = parseFloat(inputEl.getAttribute('data-angle-slide-ratio'));
-  }
-  if (inputEl.hasAttribute('data-angle-scroll-ratio')) {
-    options.angleScrollRatio = parseFloat(inputEl.getAttribute('data-angle-scroll-ratio'));
-  }
-  if (inputEl.hasAttribute('data-gesture-spin-enabled')) {
-    options.gestureSpinEnabled = parseBool(inputEl.getAttribute('data-gesture-spin-enabled'));
-  }
-  if (inputEl.hasAttribute('data-gesture-slidex-enabled')) {
-    options.gestureSlideXEnabled = parseBool(inputEl.getAttribute('data-gesture-slidex-enabled'));
-  }
-  if (inputEl.hasAttribute('data-gesture-slidey-enabled')) {
-    options.gestureSlideYEnabled = parseBool(inputEl.getAttribute('data-gesture-slidey-enabled'));
-  }
-  if (inputEl.hasAttribute('data-gesture-scroll-enabled')) {
-    options.gestureScrollEnabled = parseBool(inputEl.getAttribute('data-gesture-scroll-enabled'));
-  }
-  if (inputEl.hasAttribute('data-center-offset-x')) {
-    options.centerOffsetX = parseFloat(inputEl.getAttribute('data-center-offset-x'));
-  }
-  if (inputEl.hasAttribute('data-center-offset-y')) {
-    options.centerOffsetY = parseFloat(inputEl.getAttribute('data-center-offset-y'));
-  }
-  if (inputEl.hasAttribute('data-indicator-auto-rotate')) {
-    options.indicatorAutoRotate = parseBool(inputEl.getAttribute('data-indicator-auto-rotate'));
-  }
-  if (inputEl.hasAttribute('data-indicator-auto-position')) {
-    options.indicatorAutoPosition = parseBool(inputEl.getAttribute('data-indicator-auto-position'));
-  }
-  if (inputEl.hasAttribute('data-indicator-start-angle')) {
-    options.indicatorStartAngle = parseFloat(inputEl.getAttribute('data-indicator-start-angle'));
-  }
-  if (inputEl.hasAttribute('data-indicator-radius')) {
-    options.indicatorRadius = parseFloat(inputEl.getAttribute('data-indicator-radius'));
-  }
-  if (inputEl.hasAttribute('data-sprite-width')) {
-    options.spriteWidth = parseFloat(inputEl.getAttribute('data-sprite-width'));
-  }
-  if (inputEl.hasAttribute('data-sprite-height')) {
-    options.spriteHeight = parseFloat(inputEl.getAttribute('data-sprite-height'));
-  }
-  if (inputEl.hasAttribute('data-sprite-count')) {
-    options.spriteCount = parseInt(inputEl.getAttribute('data-sprite-count'), 10);
-  }
-  if (inputEl.hasAttribute('data-sprite-direction')) {
-    options.spriteDirection = parseDirection(inputEl.getAttribute('data-sprite-direction'));
-  }
-  if (inputEl.hasAttribute('data-sprite-start-angle')) {
-    options.spriteStartAngle = parseFloat(inputEl.getAttribute('data-sprite-start-angle'));
-  }
-  if (inputEl.hasAttribute('data-sprite-separation-angle')) {
-    options.spriteSeparationAngle = parseFloat(inputEl.getAttribute('data-sprite-separation-angle'));
-  }
-  if (inputEl.hasAttribute('data-sprite-separation-gap')) {
-    options.spriteSeparationGap = parseFloat(inputEl.getAttribute('data-sprite-separation-gap'));
-  }
-
-
   this.options = {
 
     /** Enable turning of the knob in a circular motion */
@@ -227,18 +118,6 @@ export const Knob = function(inputEl, callback) {
     spriteSeparationGap: 0,
 
   };
-
-  for (const key in options) {
-    if (this.options[key] !== undefined) {
-      this.options[key] = options[key];
-    }
-  }
-
-  if (this.options.valueMin > this.options.valueMax) {
-    throw new Error('valueMin must be less than valueMax');
-  }
-
-  this.val(this.options.value);
 };
 
 /*
@@ -246,35 +125,6 @@ export const Knob = function(inputEl, callback) {
     PRIVATE FUNCTIONS
   ---------------------------------------------------------------------------
   */
-
-/**
-   * Parse input to a boolean.
-   *
-   * @param boolStr {String} True or false
-   *
-   * @return {Boolean}
-   **/
-function parseBool(boolStr) {
-  return boolStr && boolStr.toLowerCase() == 'true';
-};
-
-/**
-   * Parse input to a turning direction.
-   *
-   * @param dirStr {String} Turning direction
-   *
-   * @return {String} 'cw' or 'ccw' (clockwise or counter-clockwise)
-   **/
-function parseDirection(dirStr) {
-  if (dirStr) {
-    dirStr = dirStr.toLowerCase();
-    if (dirStr == 'cw' || dirStr == 'ccw') {
-      return dirStr;
-    }
-  }
-  return undefined;
-};
-
 /**
    * Convenience function to map a variable from one coordinate space
    * to another.
