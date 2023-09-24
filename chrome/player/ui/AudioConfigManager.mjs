@@ -1666,6 +1666,7 @@ export class AudioConfigManager extends EventEmitter {
     els.volumeTrack.addEventListener('wheel', (e) => {
       if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
       e.preventDefault();
+      e.stopPropagation();
       const delta = Math.sign(e.deltaY);
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
       const db = this.mixerPositionRatioToDB(ratio - delta * 0.05);
