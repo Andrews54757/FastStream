@@ -439,7 +439,7 @@ export class AudioConfigManager extends EventEmitter {
       a.download = `${profile.label}.fsprofile.json`;
       a.click();
     });
-    WebUtils.setupTabIndex(this.ui.saveButton);
+    WebUtils.setupTabIndex(this.ui.downloadButton);
 
     // delete button
     this.ui.deleteButton = WebUtils.create('div', null, 'textbutton delete_button');
@@ -747,6 +747,7 @@ export class AudioConfigManager extends EventEmitter {
 
     this.ui.compressorToggle = WebUtils.create('div', null, 'compressor_toggle');
     this.ui.compressorControls.appendChild(this.ui.compressorToggle);
+    WebUtils.setupTabIndex(this.ui.compressorToggle);
 
     this.ui.compressorToggle.addEventListener('click', () => {
       this.currentProfile.compressor.enabled = !this.currentProfile.compressor.enabled;
@@ -1670,6 +1671,27 @@ export class AudioConfigManager extends EventEmitter {
       this.setChannelGain(channel, this.dbToGain(db));
     });
 
+    const toggleMute = () => {
+      channel.muted = !channel.muted;
+      els.muteButton.classList.toggle('active', channel.mute);
+      this.updateMixerNodes();
+    };
+
+    const toggleSolo = () => {
+      if (!channel.solo) {
+        currentProfile.mixerChannels.forEach((channel) => {
+          const els = this.mixerChannelElements[channel.id];
+          channel.solo = false;
+          els.soloButton.classList.remove('active');
+        });
+      }
+
+      channel.solo = !channel.solo;
+      els.soloButton.classList.toggle('active', channel.solo);
+      this.updateMixerNodes();
+    };
+
+
     els.volumeHandle.addEventListener('keydown', (e) => {
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
       if (e.key === 'ArrowUp') {
@@ -1685,29 +1707,23 @@ export class AudioConfigManager extends EventEmitter {
         const db = this.mixerPositionRatioToDB(ratio + 0.025);
         els.volumeHandle.style.top = `${this.mixerDBToPositionRatio(db) * 100}%`;
         this.setChannelGain(channel, this.dbToGain(db));
+      } else if (e.key === 'm') {
+        e.stopPropagation();
+        e.preventDefault();
+
+        toggleMute();
+      } else if (e.key === 's') {
+        e.stopPropagation();
+        e.preventDefault();
+
+        toggleSolo();
       }
     });
     els.volumeHandle.tabIndex = 0;
 
-    els.soloButton.addEventListener('click', (e) => {
-      if (!channel.solo) {
-        currentProfile.mixerChannels.forEach((channel) => {
-          const els = this.mixerChannelElements[channel.id];
-          channel.solo = false;
-          els.soloButton.classList.remove('active');
-        });
-      }
+    els.soloButton.addEventListener('click', toggleSolo);
 
-      channel.solo = !channel.solo;
-      els.soloButton.classList.toggle('active', channel.solo);
-      this.updateMixerNodes();
-    });
-
-    els.muteButton.addEventListener('click', (e) => {
-      channel.muted = !channel.muted;
-      els.muteButton.classList.toggle('active', channel.mute);
-      this.updateMixerNodes();
-    });
+    els.muteButton.addEventListener('click', toggleMute);
 
 
     return els;
