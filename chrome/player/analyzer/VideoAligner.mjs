@@ -401,10 +401,22 @@ export class VideoAligner extends EventEmitter {
 
   getMatch() {
     if (!this.found) return null;
-    return {
+    const obj = {
       startTime: this.clampTime(this.detectedStartTime),
       endTime: this.clampTime(this.detectedEndTime),
     };
+
+    obj.diff = obj.endTime - obj.startTime;
+
+    if (obj.diff <= 0) {
+      return null;
+    }
+
+    if (obj.diff > 60 * 3) {
+      return null;
+    }
+
+    return obj;
   }
 
   extractData(video) {
