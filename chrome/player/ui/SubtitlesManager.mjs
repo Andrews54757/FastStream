@@ -26,14 +26,14 @@ export class SubtitlesManager {
     this.setupUI();
   }
 
-  loadTrackAndActivateBest(subtitleTrack) {
+  loadTrackAndActivateBest(subtitleTrack, autoset = false) {
     const returnedTrack = this.addTrack(subtitleTrack);
     if (returnedTrack !== subtitleTrack) {
       return returnedTrack;
     }
 
     const defLang = this.settingsManager.getSettings()['default-lang'];
-    if (this.client.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.activeTracks.length === 0) {
+    if (autoset && this.client.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.activeTracks.length === 0) {
       this.activateTrack(subtitleTrack);
     }
 

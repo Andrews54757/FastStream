@@ -154,7 +154,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
                       const track = new SubtitleTrack(sub.label, sub.language);
                       try {
                         track.loadText(sub.data);
-                        window.fastStream.loadSubtitleTrack(track);
+                        window.fastStream.loadSubtitleTrack(track, request.autoSetSource);
                       } catch (e) {
                         console.error(e);
                       }

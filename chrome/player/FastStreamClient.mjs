@@ -172,8 +172,8 @@ export class FastStreamClient extends EventEmitter {
     this.subtitlesManager.clearTracks();
   }
 
-  loadSubtitleTrack(subtitleTrack) {
-    return this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack);
+  loadSubtitleTrack(subtitleTrack, autoset = false) {
+    return this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
   }
 
   updateDuration(duration) {
