@@ -1381,7 +1381,7 @@ export class AudioConfigManager extends EventEmitter {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
         ctx.fillRect(0, y, width, rectHeight);
 
-        const color = `rgb(${Utils.clamp(i * 5, 0, 255)}, ${Utils.clamp(255 - i * 5, 0, 255)}, 0)`;
+        const color = `rgb(${Utils.clamp(i * 8, 0, 255)}, ${Utils.clamp(255 - i * 8, 0, 255)}, 0)`;
         ctx.fillStyle = color;
         ctx.fillRect(0, y + 1, width, rectHeight - 2);
       }
