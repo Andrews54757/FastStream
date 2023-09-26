@@ -15,14 +15,14 @@ export class AudioEQNode {
   }
 
   static fromObj(obj) {
-    return new AudioEQNode(obj.type, obj.frequency, obj.gain, obj.q);
+    return new AudioEQNode(obj.type, obj.frequency, obj.gainDb === undefined ? obj.gain : obj.gainDb, obj.q);
   }
 
   toObj() {
     return {
       type: this.type,
       frequency: this.frequency,
-      gain: this.gain,
+      gainDb: this.gain,
       q: this.q,
     };
   }
@@ -65,12 +65,12 @@ export class AudioChannelControl {
   }
 
   static fromObj(obj) {
-    return new AudioChannelControl(obj.id, obj.gain, obj.muted, obj.solo);
+    return new AudioChannelControl(obj.id === 'master' ? 6 : obj.id, obj.gain, obj.muted, obj.solo);
   }
 
   toObj() {
     return {
-      id: this.id,
+      id: this.id === 6 ? 'master' : this.id,
       gain: this.gain,
       muted: this.muted,
       solo: this.solo,
