@@ -2219,6 +2219,10 @@ body {
     border: 1px solid rgba(100, 255, 255, 0.5);
 }
 
+.equalizer .equalizer_nodes .equalizer_node:hover {
+    outline: 1px solid rgba(255, 255, 255, 0.5);
+}
+
 .equalizer .equalizer_title {
     top: 5px;
     left: 0px;
