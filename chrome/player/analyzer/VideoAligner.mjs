@@ -9,6 +9,8 @@ const HEIGHT = 8;
 const HASH_BITS = WIDTH * HEIGHT / 2;
 const HASH_LENGTH = Math.ceil(HASH_BITS / 32);
 const ALIGN_CUTOFF = 12;
+const MAX_MATCH_LENGTH = 60 * 2;
+
 export class VideoAligner extends EventEmitter {
   constructor() {
     super();
@@ -262,13 +264,20 @@ export class VideoAligner extends EventEmitter {
             this.hasMemoryChanges = true;
           }
         }
+
         if (aligned.endB >= memoryEntry.matchStart && aligned.startB <= memoryEntry.matchEnd) {
-          matches.push({
+          const obj = {
             identifier,
             startTime: sequence[memoryEntry.matchStart].time + offsetStart,
             endTime: sequence[memoryEntry.matchEnd].time + offsetEnd,
             count: memoryEntry.matchEnd - memoryEntry.matchStart,
-          });
+          };
+
+          const diff = obj.endTime - obj.startTime;
+
+          if (diff > 0 && diff < MAX_MATCH_LENGTH) {
+            matches.push(obj);
+          }
         }
       };
     });
@@ -412,9 +421,9 @@ export class VideoAligner extends EventEmitter {
       return null;
     }
 
-    if (obj.diff > 60 * 2) {
-      return null;
-    }
+    // if (obj.diff > 60 * 2) {
+    //   return null;
+    // }
 
     return obj;
   }
