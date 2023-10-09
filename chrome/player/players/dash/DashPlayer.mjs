@@ -39,11 +39,9 @@ export default class DashPlayer extends EventEmitter {
       },
     });
 
-
     this.dash.on('needkey', (e) => {
-      this.client.failedToLoad('Failed to load! DRM not supported!');
+      this.emit(DefaultPlayerEvents.NEED_KEY);
     });
-
 
     let initAlready = false;
 

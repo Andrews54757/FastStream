@@ -72,6 +72,12 @@ export class HLSFragmentRequester {
         const key = await keyPromise;
         const decryptdata = frag.fs_oldcryptdata;
 
+        if (!decryptdata.iv || !key) {
+          console.error('missing decryptdata', decryptdata, key);
+          this.player.emit(DefaultPlayerEvents.NEED_KEY);
+          return response;
+        }
+
         response.data = await this.decrypter.decryptAES(response.data, decryptdata.iv.buffer, key);
 
         return response;

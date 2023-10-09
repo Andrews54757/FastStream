@@ -241,7 +241,6 @@ export default class HLSPlayer extends EventEmitter {
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
     });
 
-
     this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {
       this.trackUpdated(data.details, 0);
     });

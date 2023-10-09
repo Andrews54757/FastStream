@@ -119,4 +119,9 @@ export const DefaultPlayerEvents = {
    * Failed to load video
    */
   ERROR: 'error',
+
+  /**
+   * Fired when the player requests a key (DRM not supported)
+   */
+  NEED_KEY: 'needkey',
 };

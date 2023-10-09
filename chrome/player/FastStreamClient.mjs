@@ -675,6 +675,10 @@ export class FastStreamClient extends EventEmitter {
       this.failedToLoad('Failed to load video');
     });
 
+    this.context.on(DefaultPlayerEvents.NEED_KEY, (event) => {
+      this.failedToLoad('Failed to load! DRM not supported!');
+    });
+
     this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {
     });
 
