@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "FastStream",
+  "name": "FastStream Video Player",
   "description": "Stream without buffering, a great video player and download accelerator all in one.",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "author": "Andrew S",
   "options_ui": {
     "page": "options/options.html",
