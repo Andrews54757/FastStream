@@ -304,7 +304,7 @@ export class XHRLoader {
   loadtimeout() {
     console.warn(`timeout while loading ${this.entry.url}`);
 
-    if (this.stats.retry < this.config.maxRetry) {
+    if (this.stats.retry < this.config.maxRetry / 2) {
       this.retry();
       return;
     }
