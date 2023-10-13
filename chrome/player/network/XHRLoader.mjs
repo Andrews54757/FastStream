@@ -269,21 +269,7 @@ export class XHRLoader {
             console.warn(
                 `${status} while loading ${entry.url}, retrying in ${this.retryDelay}...`,
             );
-            // abort and reset internal state
-            this.abortInternal();
-            this.loader = null;
-            // schedule retry
-            self.clearTimeout(this.retryTimeout);
-            this.retryTimeout = self.setTimeout(
-                this.loadInternal.bind(this),
-                this.retryDelay,
-            );
-            // set exponential backoff
-            this.retryDelay = Math.min(
-                2 * this.retryDelay,
-                config.maxRetryDelay,
-            );
-            stats.retry++;
+            this.retry();
           }
         }
       } else {
@@ -297,8 +283,32 @@ export class XHRLoader {
     }
   }
 
+  retry() {
+    const {stats} = this;
+    this.abortInternal();
+    this.loader = null;
+    // schedule retry
+    self.clearTimeout(this.retryTimeout);
+    this.retryTimeout = self.setTimeout(
+        this.loadInternal.bind(this),
+        this.retryDelay,
+    );
+    // set exponential backoff
+    this.retryDelay = Math.min(
+        2 * this.retryDelay,
+        config.maxRetryDelay,
+    );
+    stats.retry++;
+  }
+
   loadtimeout() {
     console.warn(`timeout while loading ${this.entry.url}`);
+
+    if (this.stats.retry < this.config.maxRetry) {
+      this.retry();
+      return;
+    }
+
     this.callbacks?.forEach((callbacks) => {
       callbacks.onTimeout(this.stats, this.entry, this.loader);
     });
