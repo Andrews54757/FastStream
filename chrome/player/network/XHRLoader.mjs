@@ -299,10 +299,10 @@ export class XHRLoader {
 
   loadtimeout() {
     console.warn(`timeout while loading ${this.entry.url}`);
-    this.abortInternal();
     this.callbacks?.forEach((callbacks) => {
       callbacks.onTimeout(this.stats, this.entry, this.loader);
     });
+    this.abortInternal();
   }
 
   loadprogress(event) {
