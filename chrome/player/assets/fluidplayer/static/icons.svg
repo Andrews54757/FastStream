@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 48">
+    <g>
+        <use transform="translate(0,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(24,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(48,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(72,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(96,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(120,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(144,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(168,0)" href="#rect" width="24" height="24" />
+        <use transform="translate(192,0)" href="#rect" width="24" height="24" />
+       
+       
+        <use transform="translate(0,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(24,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(48,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(72,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(96,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(120,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(144,24)" href="#rect" width="24" height="24" />
+        <use transform="translate(168,24)" href="#rect" width="24" height="24" />
+              
+
+        <use transform="translate(0,0)" href="#play" width="24" height="24" />
+        <use transform="translate(24,0)" href="#pause" width="24" height="24" />
+    
+        <use transform="translate(48,0)" href="#speaker" width="24" height="24"/>
+        <use transform="translate(72,0)" href="#speaker-muted" width="24" height="24"/>
+        
+        <use transform="translate(96,0)" href="#fullscreen" width="24" height="24" />
+        <use transform="translate(120,0)" href="#fullscreen-out" width="24" height="24" />
+        
+        <use transform="translate(144,0)" href="#quality-hd" width="24" height="24" />
+        <use transform="translate(168,0)" href="#quality-sd" width="24" height="24" />
+        <use transform="translate(192,0)" href="#photo" width="24" height="24" />
+      
+        <use transform="translate(0,24)" href="#pip" width="24" height="24" />
+        <use transform="translate(24,24)" href="#link" style="color:#f2c94c" width="24" height="24" />
+        <use transform="translate(48,24)" href="#gear" width="24" height="24" />
+        <use transform="translate(72,24)" href="#timer" width="24" height="24" />
+        <use transform="translate(96,24)" href="#download" width="24" height="24" />
+       
+        <use transform="translate(120,24)" href="#hourglass" width="24" height="24"/>
+        <use transform="translate(144,24)" href="#soundwave" width="24" height="24"/>
+        <use transform="translate(168,24)" href="#captions" width="24" height="24"/>
+    </g>
+    <defs>
+        <symbol id="speaker" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(3.5,3.5)" d="m 0,5.5924 v 5.8152 H 3.7778 L 8.5,16.2537 V 0.7467 L 3.7778,5.5928 H 0 Z M 12.75,8.5 c 0,-1.7155 -0.9633,-3.1887 -2.3611,-3.9059 v 7.8021 C 11.7867,11.6887 12.75,10.2155 12.75,8.5 Z M 10.3889,0 v 1.9966 c 2.7294,0.83352 4.7222,3.431 4.7222,6.5034 0,3.0724 -1.9928,5.6699 -4.7222,6.5034 V 17 C 14.1761,16.118 17,12.6482 17,8.5 17,4.3518 14.1761,0.882 10.3889,0 Z"/>
+        </symbol>
+        <symbol id="speaker-muted" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(3.5,3.5)" d="m 12.75,8.5 c 0,-1.6717 -0.9633,-3.1072 -2.3611,-3.8061 V 6.7811 L 12.7028,9.095 C 12.7311,8.90611 12.75,8.70778 12.75,8.5 Z m 2.3611,0 c 0,0.88778 -0.1889,1.7189 -0.51,2.4933 l 1.4261,1.4261 C 16.6506,11.2483 17,9.9167 17,8.5 17,4.4578 14.1761,1.0767 10.3889,0.2172 V 2.1628 C 13.1183,2.97502 15.1111,5.5061 15.1111,8.5 Z M 1.1991,0 -3e-4,1.1994 4.4669,5.6666 H -3e-4 v 5.6666 h 3.7778 l 4.7222,4.7223 V 9.6993 l 4.0139,4.0139 c -0.6328,0.4911 -1.3411,0.8784 -2.125,1.1145 v 1.9455 c 1.3033,-0.2927 2.4839,-0.8972 3.485,-1.7094 l 1.9267,1.9361 1.1994,-1.1994 -8.5,-8.5 L 1.1991,-1e-4 Z m 7.3006,0.94444 -1.9739,1.9739 1.9739,1.9739 z" />
+        </symbol>
+        <symbol id="quality-hd" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" d="M 12.444,0 H 1.555 C 0.69166,0 -6e-4,0.7 -6e-4,1.5556 v 10.889 c 0,0.8556 0.69222,1.5556 1.5556,1.5556 h 10.889 c 0.8556,0 1.5556,-0.7 1.5556,-1.5556 V 1.5556 C 13.9996,0.70004 13.2996,0 12.444,0 Z M 6.2218,9.3333 H 5.0551 V 7.7777 H 3.4995 V 9.3333 H 2.3328 V 4.6666 H 3.4995 V 6.611 H 5.0551 V 4.6666 H 6.2218 Z M 7.7774,4.6666 h 3.1111 c 0.4278,0 0.7778,0.35 0.7778,0.77777 v 3.1111 c 0,0.42777 -0.35,0.77777 -0.7778,0.77777 H 7.7774 v -4.6667 z m 1.1667,3.5 h 1.5556 V 5.8333 H 8.9441 Z" />
+        </symbol>
+        <symbol id="quality-sd" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" d="M 12.444 0 H 1.555 C 0.6917 0 -0.0006 0.7 -0.0006 1.5556 V 12.4446 C -0.0006 13.3002 0.6916 14.0002 1.555 14.0002 H 12.444 C 13.2996 14.0002 13.9996 13.3002 13.9996 12.4446 V 1.5556 C 13.9996 0.7 13.2996 0 12.444 0 Z M 6.2218 9.3333 H 2.3328 V 8.226 H 5.136 V 7.403 H 2.3328 V 4.6667 H 6.228 V 5.599 H 3.336 V 6.408 H 6.228 Z M 7.7774 4.6666 H 10.8885 C 11.3163 4.6666 11.6663 5.0166 11.6663 5.4444 V 8.5555 C 11.6663 8.9833 11.3163 9.3333 10.8885 9.3333 H 7.7774 V 4.6666 Z M 8.9441 8.1666 H 10.4997 V 5.8333 H 8.9441 Z" />
+        </symbol>
+        <symbol id="play" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5.5,3.5)" d="M 0,0 V 17 L 13,8.5 Z" />
+        </symbol>
+        <symbol id="pause" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5.5,3.5)" d="M 0,17 H 4.3333 V 0 H 0 Z M 8.6667,0 V 17 H 13 V 0 Z" />
+        </symbol>
+        <symbol id="fullscreen-out" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" d="m 0,11 h 3 v 3 H 5 V 9 H 0 Z M 3,3 H 0 V 5 H 5 V 0 H 3 Z m 6,11 h 2 v -3 h 3 V 9 H 9 Z M 11,3 V 0 H 9 v 5 h 5 V 3 Z" />
+        </symbol>
+        <symbol id="link" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(4,7.5)" d="M 1.52,4.5 C 1.52,2.961 2.632,1.71 4,1.71 H 7.2 V 0 H 4 C 1.792,0 0,2.016 0,4.5 0,6.984 1.792,9 4,9 H 7.2 V 7.29 H 4 C 2.632,7.29 1.52,6.039 1.52,4.5 Z M 4.8,5.4 h 6.4 V 3.6 H 4.8 Z M 12,0 H 8.8 V 1.71 H 12 c 1.368,0 2.48,1.251 2.48,2.79 0,1.539 -1.112,2.79 -2.48,2.79 H 8.8 V 9 H 12 C 14.208,9 16,6.984 16,4.5 16,2.016 14.208,0 12,0 Z" />
+        </symbol>
+        <symbol id="fullscreen" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" d="M 2,9 H 0 v 5 H 5 V 12 H 2 Z M 0,5 H 2 V 2 H 5 V 0 H 0 Z m 12,7 H 9 v 2 h 5 V 9 H 12 Z M 9,0 v 2 h 3 v 3 h 2 V 0 Z" />
+        </symbol>
+        <symbol id="gear" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" d="M 12.348,7.686 C 12.3768,7.462 12.3984,7.238 12.3984,7 12.3984,6.762 12.3768,6.538 12.348,6.314 L 13.8664,5.159 C 14.0032,5.054 14.0391,4.865 13.9528,4.711 L 12.5135,2.289 C 12.4272,2.135 12.2329,2.079 12.0745,2.135 l -1.7919,0.7 C 9.90842,2.555 9.50543,2.324 9.0664,2.149 L 8.79294,0.294 C 8.77135,0.126 8.62022,0 8.44031,0 H 5.56171 C 5.38181,0 5.23068,0.126 5.20909,0.294 L 4.93563,2.149 C 4.49665,2.324 4.09365,2.562 3.71943,2.835 l -1.7919,-0.7 C 1.76201,2.072 1.5749,2.135 1.48855,2.289 l -1.4393,2.422 c -0.093553,0.154 -0.050374,0.343 0.086356,0.448 l 1.5184,1.155 C 1.625226,6.538 1.603636,6.769 1.603636,7 c 0,0.231 0.02159,0.462 0.05037,0.686 l -1.5184,1.155 c -0.13673,0.105 -0.17271,0.294 -0.086356,0.448 l 1.4393,2.422 c 0.08635,0.154 0.28066,0.21 0.43898,0.154 l 1.7919,-0.7 c 0.37421,0.28 0.77721,0.511 1.2162,0.686 l 0.27346,1.855 C 5.23068,13.874 5.38181,14 5.56171,14 h 2.8786 c 0.17991,0 0.33104,-0.126 0.35263,-0.294 L 9.0664,11.851 c 0.43898,-0.175 0.84197,-0.413 1.2162,-0.686 l 1.7919,0.7 c 0.1655,0.063 0.3527,0 0.439,-0.154 L 13.9528,9.289 C 14.0391,9.135 14.0032,8.946 13.8664,8.841 Z M 7.0011,9.45 C 5.6122,9.45 4.4824,8.351 4.4824,7 4.4824,5.649 5.6122,4.55 7.0011,4.55 8.39,4.55 9.5198,5.649 9.5198,7 9.5198,8.351 8.39,9.45 7.0011,9.45 Z" />
+        </symbol>
+        <symbol id="download" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(6,4.5)" d="M 12,5.2941 H 8.5714 V 0 H 3.4285 V 5.2941 H -1e-4 l 6,6.1765 6,-6.1765 z M 0,13.2353 V 15 h 12 v -1.7647 z" />
+        </symbol>
+        <symbol id="timer" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,4)" d="M 9.3333,0 H 4.6666 V 1.5238 H 9.3333 Z M 6.2222,9.9048 H 7.7778 V 5.3334 H 6.2222 Z M 12.4678,4.8686 13.5722,3.7867 C 13.2378,3.39813 12.8722,3.03241 12.4756,2.7124 L 11.3711,3.7943 C 10.1656,2.84953 8.6489,2.2857 7,2.2857 3.1344,2.2857 0,5.3562 0,9.1429 0,12.9295 3.1267,16 7,16 10.8733,16 14,12.9295 14,9.1429 14,7.5277 13.4244,6.0419 12.4678,4.8686 Z M 7,14.4762 C 3.99,14.4762 1.5556,12.0914 1.5556,9.1429 1.5556,6.1943 3.99,3.8096 7,3.8096 c 3.01,0 5.4444,2.3848 5.4444,5.3333 0,2.9485 -2.4344,5.3333 -5.4444,5.3333 z" />
+        </symbol>
+        <symbol id="hourglass" viewBox="0 0 24 24" stroke="currentColor">
+            <path transform="translate(8,6)" d="m 0 0 h 8 l -8 12 h 8 z" fill="none" stroke-width="2"/>
+        </symbol>
+        <symbol id="photo" viewBox="0 0 24 24" fill="currentColor">
+            <!-- Photo icon by Bitcoindesign in MIT License via SVG Repo -->
+            <path transform="translate(5,5)" fill-rule="evenodd" clip-rule="evenodd" d="M 1 0 C 0.4477 0 0 0.4477 0 1 V 13 C 0 13.5523 0.4477 14 1 14 H 13 C 13.5523 14 14 13.5523 14 13 V 1 C 14 0.4477 13.5523 0 13 0 H 1 Z M 4.5 6 C 5.3284 6 6 5.3284 6 4.5 C 6 3.6716 5.3284 3 4.5 3 C 3.6716 3 3 3.6716 3 4.5 C 3 5.3284 3.6716 6 4.5 6 Z M 2.4781 10.735 L 4.076 8.1784 C 4.2718 7.8651 4.7282 7.8651 4.924 8.1784 L 6.229 10.2664 L 8.3195 6.7285 C 8.5131 6.401 8.9869 6.401 9.1805 6.7285 L 11.5542 10.7456 C 11.7512 11.0789 11.5109 11.5 11.1238 11.5 H 6.3762 C 6.3273 11.5 6.2807 11.4933 6.2371 11.4809 C 6.1935 11.4933 6.1469 11.5 6.0979 11.5 H 2.9021 C 2.5094 11.5 2.27 11.068 2.4781 10.735 Z"/>
+        </symbol>
+        <symbol id="pip" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(4.5,4.8)" d="M 14.4039 0 A 0.798 0.7581 90 0 1 15.162 0.798 V 6.384 H 13.0792 V 2.1147 H 1.9881 V 12.2703 H 6.0648 V 14.364 H 0.7581 A 0.798 0.7581 90 0 1 0 13.566 V 0.798 A 0.798 0.7581 90 0 1 0.7581 0 H 14.4039 Z M 14.4039 7.98 A 0.798 0.7581 90 0 1 15.162 8.778 V 13.566 A 0.798 0.7581 90 0 1 14.4039 14.364 H 8.3391 A 0.798 0.7581 90 0 1 7.581 13.566 V 8.778 A 0.798 0.7581 90 0 1 8.3391 7.98 H 14.4039 Z"/>
+        </symbol>
+        <symbol id="captions" viewBox="0 0 24 24" fill="currentColor">
+            <path transform="translate(5,5)" style="stroke-width:1.00886583"
+            d="M 1.5547 0 C 0.6938 0 0 0.6937 0 1.5547 V 12.4453 C 0 13.3063 0.6938 14 1.5547 14 H 12.4453 C 13.3062 14 14 13.3063 14 12.4453 V 1.5547 C 14 0.6937 13.3062 0 12.4453 0 Z M 5.166 4.541 C 5.3952 4.541 5.6204 4.5618 5.8418 4.6035 C 6.0658 4.6426 6.2884 4.7025 6.5098 4.7832 V 5.9238 C 6.3197 5.7936 6.1283 5.6973 5.9355 5.6348 C 5.7454 5.5723 5.5475 5.541 5.3418 5.541 C 4.9512 5.541 4.6465 5.6556 4.4277 5.8848 C 4.2116 6.1113 4.1035 6.429 4.1035 6.8379 C 4.1035 7.2467 4.2116 7.5658 4.4277 7.7949 C 4.6465 8.0215 4.9512 8.1348 5.3418 8.1348 C 5.5605 8.1348 5.7676 8.1022 5.9629 8.0371 C 6.1608 7.972 6.3431 7.8756 6.5098 7.748 V 8.8926 C 6.291 8.9733 6.0684 9.0332 5.8418 9.0723 C 5.6178 9.1139 5.3926 9.1348 5.166 9.1348 C 4.3769 9.1348 3.7598 8.9329 3.3144 8.5293 C 2.8691 8.123 2.6465 7.5592 2.6465 6.8379 C 2.6465 6.1165 2.8691 5.554 3.3144 5.1504 C 3.7598 4.7441 4.3769 4.541 5.166 4.541 Z M 9.916 4.541 C 10.1452 4.541 10.3704 4.5618 10.5918 4.6035 C 10.8158 4.6426 11.0384 4.7025 11.2598 4.7832 V 5.9238 C 11.0697 5.7936 10.8783 5.6973 10.6855 5.6348 C 10.4954 5.5723 10.2975 5.541 10.0918 5.541 C 9.7012 5.541 9.3965 5.6556 9.1777 5.8848 C 8.9616 6.1113 8.8535 6.429 8.8535 6.8379 C 8.8535 7.2467 8.9616 7.5658 9.1777 7.7949 C 9.3965 8.0215 9.7012 8.1348 10.0918 8.1348 C 10.3105 8.1348 10.5176 8.1022 10.7129 8.0371 C 10.9108 7.972 11.0931 7.8756 11.2598 7.748 V 8.8926 C 11.041 8.9733 10.8184 9.0332 10.5918 9.0723 C 10.3678 9.1139 10.1426 9.1348 9.916 9.1348 C 9.1269 9.1348 8.5098 8.9329 8.0644 8.5293 C 7.6191 8.123 7.3965 7.5592 7.3965 6.8379 C 7.3965 6.1165 7.6191 5.554 8.0644 5.1504 C 8.5098 4.7441 9.1269 4.541 9.916 4.541 Z"/>
+        </symbol>
+        <symbol id="soundwave" viewBox="0 0 24 24" stroke="currentColor">
+            <!-- Soundwave icon by Software Mansion in MIT License via SVG Repo -->
+            <path transform="translate(5.9,5.5)" d="M 0 5.67 V 7.29 M 2.43 3.24 V 9.72 M 4.86 4.86 V 8.1 M 7.29 2.43 V 10.53 M 9.72 0 V 12.96 M 12.15 4.05 V 8.91 V 7.29" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </symbol>
+        <symbol id="rect" viewBox="0 0 24 24" stroke="currentColor">
+            <rect x="0" y="0" width="24" height="24" fill="none" stroke-width="0.1"></rect>
+        </symbol>
+    </defs>
+ </svg>

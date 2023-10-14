@@ -1,3 +1,11 @@
+body {
+    position: absolute;
+    inset: 0px;
+    margin: 0px;
+    overflow: hidden;
+    background-color: black;
+}
+
 .fluid_video_wrapper {
     animation: none;
     animation-delay: 0;
@@ -234,7 +242,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+    background: var(--controls-background);
     height: 53px;
     z-index: 3;
     transition: all 0.5s !important;
@@ -336,16 +344,7 @@
     top: 5px;
     width: 100%;
     height: 4px;
-    background-color: rgba(255, 255, 255, 0.25);
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_buffered {
-    position: absolute;
-    top: 5px;
-    width: 0;
-    height: 3px;
-    background-color: rgba(255, 255, 255, 0.5);
-    z-index: -1;
+    background-color: var(--progress-bar-background-color);
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress,
@@ -354,14 +353,13 @@
     height: 3px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container:hover .fluid_controls_progress,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container:hover .fluid_controls_buffered {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container:hover .fluid_controls_progress {
     margin-top: -1px;
     height: 5px;
 }
 
 .fluid_controls_currentprogress {
-    background-color: red;
+    background-color: var(--progress-bar-current-progress-color);
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container:hover .fluid_controls_progress .fluid_controls_currentprogress {
@@ -381,17 +379,8 @@
     height: 5px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_timeline_preview_container {
-    border: 1px solid #262626;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_timeline_preview_container,
-.fluid_timeline_preview_container_shadow {
-    bottom: 14px;
-}
-
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.fluid_slider .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
-    background-color: white;
+    background-color: var(--progress-bar-knob-color);
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.fluid_slider .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
@@ -460,19 +449,19 @@
     left: 5px;
     width: calc(100% - 13px);
     margin-top: 10px;
-    background-color: rgba(171, 172, 172, 0.68);
+    background-color: var(--volume-slider-background-color);
     z-index: 3;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume {
     float: left;
-    background-color: white;
+    background-color: var(--volume-slider-knob-color);
     height: 3px;
     position: absolute;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
-    background-color: white;
+    background-color: var(--volume-slider-knob-color);
     right: 0px;
 }
 
@@ -480,8 +469,6 @@
     right: -4px;
     z-index: 3;
 }
-
-
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress .fluid_controls_currentpos {
     width: 9px;
@@ -500,41 +487,15 @@
     cursor: pointer;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button.fluid_button_fullscreen,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button.fluid_button_fullscreen_exit {
-    float: right;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_screenshot {
-    font-size: 13px;
-    height: 24px;
-    line-height: 24px;
-    float: right;
-    cursor: pointer;
-    position: relative;
-    text-align: right;
-    user-select: none;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_title,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_title {
-    width: 80px;
-    overflow: hidden;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_list,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_video_playback_rates {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list {
     position: absolute;
     bottom: 25px;
     right: 3px;
     z-index: 888888;
     opacity: 99%;
-    background-color: rgba(70, 70, 70, .8);
+    background-color: var(--menu-background-color);
     border-radius: 3px;
-    color: #ffffff;
+    color: var(--menu-text-color);
     font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
     font-weight: normal;
@@ -544,194 +505,82 @@
     padding: 0;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_list .fluid_subtitle_list_item,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item {
     padding: 8px 15px 8px 15px;
     line-height: 15px;
+    border-top: var(--menu-border);
 }
+
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item:first-child {
+    border-top: none;
+}
+
 
 .fluid_video_source_list_item:hover,
 .fluid_video_source_list_item.candidate {
-    background-color: rgba(30, 30, 30, .8);
+    background-color: var(--menu-list-item-hover-background-color);
 }
 
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button.fluid_button_mute {
-    position: absolute;
+.fluid_controls_right .fluid_button {
+    float: right;
+    margin-left: 3px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button.fluid_button_mute {
-    left: -10px;
-}
-
-/* Button Icons */
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pause,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_back,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_volume,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_mute,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot {
+.fluid_button {
     display: inline-block;
-    text-align: left;
-    height: 24px;
-    width: 24px;
     position: relative;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pause:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_back:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_volume:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_mute:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot:before {
-    background: url('../static/fluid-icons.svg') no-repeat;
-    position: absolute;
-    height: 24px;
+.fluid_button svg {
+    color: var(--menu-text-color);
     width: 24px;
-    top: 2px;
-    content: "";
+    height: 24px;
     opacity: 0.8;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.2s;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play:before {
-    background-position: -15px -19px;
+.fluid_button_link svg {
+    color: var(--linkui-toggle-color);
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pause:before {
-    background-position: -15px -57px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_volume:before {
-    background-position: -52px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_mute:before {
-    background-position: -52px -57px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen:before {
-    background-position: -88px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit:before {
-    background-position: -88px -57px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source:before {
-    background-position: -159px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:before {
-    background-position: -159px -56px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source.hd:before {
-    background-position: -123px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:before {
-    background-position: -232px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:before {
-    background-position: -196px -18px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:before {
-    background-position: -305px -56px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:before {
-    background-position: -124px -56px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip:before {
-    background-position: -195px -56px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:before {
-    background-position: -267px -19px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:before {
-    background-position: -232px -56px;
-}
-
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot:before {
-    background-position: -267px -56px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_back:before {
-    background: url('../static/skip-backward.svg') no-repeat;
-    background-position: -2px -2px;
-}
-
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward:before {
-    background: url('../static/skip-forward.svg') no-repeat;
-    background-position: -2px -2px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_back {
-    margin-left: 5px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen_exit:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_fullscreen:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_mute:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_volume:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pause:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_play:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_back:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_skip_forward:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles:hover:before,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot:hover:before {
+.fluid_button svg:hover {
     opacity: 1;
 }
 
-.fp_title {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    color: #ffffff;
-    font-size: 15px;
-    font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
-    font-weight: normal;
-    white-space: nowrap;
+.fluid_control_mute .speaker-muted {
+    display: none;
+}
+
+.fluid_control_mute.muted .speaker-muted {
+    display: block;
+}
+
+.fluid_control_mute.muted .speaker {
+    display: none;
+}
+
+.fluid_control_fullscreen .fullscreen-out {
+    display: none;
+}
+
+.fluid_control_fullscreen.out .fullscreen-out {
+    display: block;
+}
+
+.fluid_control_fullscreen.out .fullscreen-in {
+    display: none;
+}
+
+.fluid_button_video_source .quality-hd {
+    display: none;
+}
+
+.fluid_button_video_source.hd .quality-hd {
+    display: block;
+}
+
+.fluid_button_video_source.hd .quality-sd {
+    display: none;
 }
 
 /* Pulse class and keyframe animation */
@@ -775,122 +624,6 @@
     }
 }
 
-.fluid_nonLinear_top,
-.fluid_nonLinear_middle,
-.fluid_nonLinear_bottom {
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    vertical-align: middle;
-    align-content: center;
-    border: 1px solid #777777;
-    position: absolute;
-    left: 50%;
-    margin-right: -50%;
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.fluid_nonLinear_top {
-    top: 20px;
-    transform: translate(-50%);
-}
-
-.fluid_nonLinear_middle {
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.fluid_nonLinear_bottom {
-    bottom: 50px;
-    transform: translate(-50%);
-}
-
-.fluid_vpaidNonLinear_top,
-.fluid_vpaidNonLinear_middle,
-.fluid_vpaidNonLinear_bottom {
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    vertical-align: middle;
-    align-content: center;
-    position: absolute;
-    display: flex;
-}
-
-.fluid_vpaidNonLinear_frame {
-    margin: auto;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-}
-
-.fluid_vpaidNonLinear_top {
-    top: 20px;
-}
-
-.fluid_vpaidNonLinear_middle {
-    top: 50%;
-}
-
-.fluid_vpaidNonLinear_bottom {
-    bottom: 50px;
-}
-
-.add_icon_clickthrough {
-    color: #F2C94C;
-    line-height: 18px;
-    max-width: 100%;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    display: inline-block;
-}
-
-.add_icon_clickthrough:before {
-    background: url('../static/fluid-icons.svg') no-repeat;
-    height: 18px;
-    width: 18px;
-    top: 30px;
-    padding: 3px 22px 0 0;
-    content: "";
-    background-position: -162px -57px;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles {
-    float: right;
-    padding-right: 5px;
-}
-
-.fluid_button.fluid_button_subtitles {
-    float: right;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_pip,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_playback_rate,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_video_source,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_download,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_soundwave,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_wand,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_link,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_settings,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_subtitles,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button.fluid_button_screenshot {
-    display: none;
-}
-
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_subtitles .fluid_subtitles_list,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_video_playback_rates {
     z-index: 888888 !important;
@@ -901,46 +634,6 @@
     padding: 9px 25px 9px 25px;
     line-height: 15px;
     text-align: center;
-}
-
-.fluid_theatre_mode {
-    position: fixed;
-    float: left;
-    top: 0;
-    z-index: 10;
-    box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.8);
-}
-
-.source_button_icon {
-    background: url('../static/fluid-icons.svg') no-repeat;
-    float: left;
-    cursor: pointer;
-    height: 18px;
-    width: 18px;
-    background-position: -164px -21px;
-}
-
-.subtitle_button_icon {
-    background: url('../static/fluid-icons.svg') no-repeat;
-    float: left;
-    cursor: pointer;
-    height: 18px;
-    width: 18px;
-    background-position: -164px -21px;
-    opacity: 0;
-}
-
-
-.subtitle_selected {
-    opacity: 1 !important;
-}
-
-body {
-    position: absolute;
-    inset: 0px;
-    margin: 0px;
-    overflow: hidden;
-    background-color: black;
 }
 
 .video-container {
@@ -956,7 +649,7 @@ body {
 }
 
 .mainplayer {
-    background-color: black;
+    background-color: var(--mainplayer-background-color);
     user-select: none;
     justify-content: center;
     display: flex;
@@ -969,23 +662,23 @@ body {
 }
 
 .fluid_video_sources_list {
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: var(--menu-border);
 }
 
 .fluid_video_source_list_item.source_active {
     font-weight: bold;
-    background-color: rgba(20, 20, 20, 0.8);
+    background-color: var(--menu-list-item-active-background-color);
 }
 
 .fluid_controls_progress_container .seek_preview {
     position: absolute;
-    background-color: rgba(20, 20, 20, 0.7);
+    background-color: var(--seek-preview-background-color);
     font-family: Arial;
     font-size: 14px;
     text-align: center;
     padding: 1px 10px;
     border-radius: 3px;
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--seek-preview-text-color);
     transform: translate(-50%, 0%);
     bottom: 16px;
 }
@@ -998,7 +691,7 @@ body {
 .fluid_controls_progress_container .seek_preview_tip>div {
     border-width: 5px;
     border-style: solid;
-    border-color: rgba(20, 20, 20, 0.7) transparent transparent;
+    border-color: var(--seek-preview-background-color) transparent transparent;
     width: 0px;
     left: calc(50% - 5px);
     position: absolute;
@@ -1006,7 +699,7 @@ body {
 }
 
 .fluid_controls_progress_container .seek_preview_tip.detached>div {
-    border-color: rgba(255, 255, 255, 0.9) transparent transparent;
+    border-color: var(--seek-preview-detached-tip-color) transparent transparent;
 }
 
 .fluid_controls_progress_container .seek_preview .seek_preview_video {
@@ -1049,32 +742,32 @@ body {
 }
 
 .progress_loaded_container>div.download-initiated {
-    background-color: rgba(100, 255, 100, 0.3);
+    background-color: var(--progress-download-initiated-color);
 }
 
 .progress_loaded_container>div.download-complete {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--progress-download-complete-color);
 }
 
 .progress_loaded_container>div.download-failed {
-    background-color: rgba(255, 100, 100, 1);
+    background-color: var(--progress-download-failed-color);
 }
 
-
 .subtitles_menu {
-
     border-top-right-radius: 3px;
     overflow-y: auto;
-    border: 1px solid rgba(255, 255, 255, .4);
+    border: var(--menu-border);
     border-top-left-radius: 3px;
     position: absolute;
     bottom: 25px;
-    background-color: rgba(70, 70, 70, .8);
+    background-color: var(--menu-background-color);
     width: 200px;
     max-height: 300px;
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 1000;
+    font-size: 13px;
+    line-height: 24px;
 }
 
 .downloadstatus {
@@ -1086,7 +779,6 @@ body {
     font-size: 13px;
     font-family: -apple-system, BlinkMacSystemFont, 'segoe ui', roboto, oxygen-sans, ubuntu, cantarell, 'helvetica neue', 'arial', sans-serif, 'apple color emoji', 'segoe ui emoji', 'segoe ui symbol';
 }
-
 
 .spinner {
     background-image: url("../static/fluid-spinner.svg");
@@ -1140,16 +832,16 @@ body {
     position: absolute;
     top: 3px;
     bottom: 0px;
-    background-color: rgb(222, 187, 0);
+    background-color: var(--intro-outro-bar-color);
 }
 
 
 .hide_button {
-    color: white;
+    color: var(--popbutton-text-color);
     position: absolute;
     bottom: 50px;
     left: 12px;
-    background-color: rgba(20, 20, 20, 0.7);
+    background-color: var(--popbutton-background-color);
     padding: 0px;
     font-family: Arial;
     font-size: 16px;
@@ -1166,16 +858,17 @@ body {
     width: auto;
     cursor: pointer;
     padding: 4px 10px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--popbutton-hover-background-color);
+    border: var(--popbutton-hover-border);
 }
 
 .skip_button {
-    color: white;
+    color: var(--popbutton-text-color);
     position: absolute;
     bottom: 50px;
     right: 12px;
-    background-color: rgba(20, 20, 20, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: var(--popbutton-background-color);
+    border: var(--popbutton-border);
     padding: 4px 10px;
     font-family: Arial;
     font-size: 16px;
@@ -1189,8 +882,8 @@ body {
 }
 
 .skip_button:hover {
-    background-color: rgba(20, 20, 20, 1);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    background-color: var(--popbutton-hover-background-color);
+    border: var(--popbutton-hover-border);
 }
 
 .marker_container {
@@ -1209,8 +902,7 @@ body {
     top: 0px;
     width: 0px;
     height: 0px;
-    ;
-    border-top: 3px solid #54f4ff;
+    border-top: 3px solid var(--seek-marker-undo-color);
     border-left: 2px solid transparent;
     border-right: 2px solid transparent;
 }
@@ -1224,20 +916,19 @@ body {
     display: block;
 }
 
-
 .marker_container>div.unseek_marker {
-    border-top: 3px solid #F4FF54;
+    border-top: 3px solid var(--seek-marker-redo-color);
 }
 
 .marker_container>div.analyzer_marker {
-    background-color: rgb(199, 199, 199);
+    background-color: var(--analyzer-marker-color);
     bottom: 0px;
     top: 3px;
     width: 2px;
 }
 
 .rate_menu {
-    background-color: rgba(70, 70, 70, 0.8);
+    background-color: var(--menu-background-color);
     overflow: hidden;
     position: absolute;
     bottom: 36px;
@@ -1261,10 +952,10 @@ body {
 .subtitles_options_back {
     position: absolute;
     border-radius: 5px;
-    color: black;
     cursor: pointer;
     padding: 0px 10px;
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--menu-textbutton-background-color);
+    color: var(--menu-textbutton-text-color);
     left: 5px;
     top: 5px;
 }
@@ -1278,8 +969,7 @@ body {
 }
 
 .subtitles_options_back:hover {
-    text-decoration: underline;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: var(--menu-textbutton-hover-background-color);
 }
 
 .subtitles_options .option {
@@ -1314,7 +1004,6 @@ body {
 .subtitles_options .option input:focus {
     outline: none;
     border: 1px solid rgba(255, 255, 255, 0.5);
-
 }
 
 .subtitles_test_button {
@@ -1322,14 +1011,15 @@ body {
     border-radius: 5px;
     cursor: pointer;
     padding: 0px 10px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: var(--menu-textbutton-background-color);
+    color: var(--menu-textbutton-text-color);
     width: 100px;
     text-align: center;
     margin-left: 40px;
 }
 
 .subtitles_test_button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--menu-textbutton-hover-background-color);
 }
 
 
@@ -1338,12 +1028,12 @@ body {
     position: absolute;
     width: 10px;
     height: 10px;
-    background-color: rgba(255, 0, 0, .5);
+    background-color: var(--close-button-color);
     border-radius: 50%;
 }
 
 .close_button:hover {
-    background-color: rgba(255, 0, 0, 1);
+    background-color: var(--close-button-hover-color);
 }
 
 .popwindow .close_button {
@@ -1354,7 +1044,7 @@ body {
 .popwindow {
     padding: 1px 20px;
     border-radius: 5px;
-    border: 1px solid rgba(0, 0, 0, .1);
+    border: var(--popwindow-border);
     position: absolute;
     display: flex;
     flex-direction: column;
@@ -1362,8 +1052,8 @@ body {
     bottom: 60px;
     left: 10%;
     right: 10%;
-    background-color: rgba(50, 50, 50, .9);
-    color: rgb(230, 230, 230, 0.8);
+    background-color: var(--popwindow-background-color);
+    color: var(--popwindow-text-color);
     z-index: 2;
     transition: bottom 0.5s;
     cursor: auto;
@@ -1383,10 +1073,10 @@ body {
     position: relative;
     cursor: pointer;
     user-select: none;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--popwindow-button-background-color);
     border-radius: 2px;
     display: inline-block;
-    color: rgb(98, 98, 98);
+    color: var(--popwindow-button-titletext-color);
     padding: 3px 10px;
 }
 
@@ -1401,9 +1091,9 @@ body {
 .dropdown>div>div {
     text-align: center;
     width: 100%;
-    color: rgb(200, 200, 200);
+    color: var(--popwindow-button-text-color);
     padding: 4px 0px;
-    background-color: rgb(30, 30, 30);
+    background-color: var(--popwindow-dropdown-item-background-color);
 }
 
 .dropdown .items {
@@ -1422,12 +1112,25 @@ body {
 }
 
 .dropdown>.items>div:hover {
-    background-color: rgb(40, 40, 40);
+    background-color: var(--popwindow-dropdown-item-hover-background-color);
 }
 
 .dropdown:hover {
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
+}
+
+.dropdown_text {
+    display: inline-block;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    color: var(--popwindow-button-text-color);
+}
+
+.dropdown_text:focus {
+    outline: var(--popwindow-dropdown-text-focus-outline);
+    padding: 0px 5px;
 }
 
 .subtitle-type-selector,
@@ -1446,21 +1149,20 @@ body {
     width: 160px;
 }
 
-
-
 .text_input {
-    color: white;
+    color: var(--popwindow-button-text-color);
     background-color: transparent;
     font-size: 15px;
     border-radius: 2px;
     padding: 2px 5px;
     height: 20px;
     outline: none;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: var(--popwindow-button-background-color);
+    border: 1px solid var(--popwindow-button-background-color);
 }
 
 .text_input:focus {
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--popwindow-textinput-focus-border-color);
 }
 
 .subtitle-episode-input,
@@ -1468,12 +1170,9 @@ body {
 .subtitle-language-input,
 .subtitle-year-input,
 .subtitle-search-input {
-    color: rgb(200, 200, 200);
     margin-right: 4px;
     width: 70px;
     text-align: center;
-    background-color: rgb(20, 20, 20);
-    border: 1px solid rgb(20, 20, 20);
     height: 25px;
     border-radius: 4px;
     margin-bottom: 5px;
@@ -1494,7 +1193,8 @@ body {
     text-align: center;
     line-height: 25px;
     border-radius: 4px;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--popwindow-button-background-color);
+    color: var(--popwindow-button-text-color);
 }
 
 .subtitle-search-btn {
@@ -1502,7 +1202,7 @@ body {
 }
 
 .textbutton:hover {
-    background-color: rgb(30, 30, 30);
+    background-color: var(--popwindow-button-hover-background-color);
 }
 
 .subtitle-results {
@@ -1529,7 +1229,8 @@ body {
     text-align: center;
     line-height: 25px;
     border-radius: 4px;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--popwindow-button-background-color);
+    color: var(--popwindow-button-text-color);
 }
 
 
@@ -1540,11 +1241,11 @@ body {
 
 .linkui-addnew-button:hover,
 .linkui-clear-button:hover {
-    background-color: rgb(30, 30, 30);
+    background-color: var(--popwindow-button-hover-background-color);
 }
 
 .linkui-sources-list {
-    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: var(--menu-border);
     margin-top: 15px;
     overflow-y: auto;
     flex: 1 1 auto;
@@ -1552,7 +1253,7 @@ body {
 
 .linkui-source {
     padding: 5px 0px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: var(--menu-border);
 }
 
 .linkui-source-url {
@@ -1582,33 +1283,34 @@ body {
     text-align: center;
     line-height: 25px;
     border-radius: 4px;
-    background-color: rgb(20, 20, 20);
+    background-color: var(--popwindow-button-background-color);
+    color: var(--popwindow-button-text-color);
     margin-right: 5px;
 }
 
 .linkui-source-headers-button:hover,
 .linkui-source-set-button:hover {
-    background-color: rgb(30, 30, 30);
+    background-color: var(--popwindow-button-hover-background-color);
 }
 
 .linkui-source-headers-button.active {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--popwindow-button-active-background-color);
 }
 
 .linkui-source-delete-button:hover {
-    background-color: rgb(100, 0, 0);
+    background-color: var(--source-delete-button-hover-color);
 }
 
 .linkui-source-delete-button {
-    background-color: rgb(120, 0, 0);
+    background-color: var(--source-delete-button-color);
 }
 
 .linkui-source.active>.linkui-source-url {
-    color: rgb(0, 160, 0);
+    color: var(--source-active-url-color);
 }
 
 .linkui-source.active>.linkui-source-set-button {
-    background-color: rgb(80, 80, 80);
+    background-color: var(--popwindow-button-active-background-color);
 }
 
 .linkui-source-headers {
@@ -1620,11 +1322,9 @@ body {
     overflow-y: auto;
 }
 
-
 .linkui-source-headers.invalid {
-    border: 1px solid rgb(200, 0, 0);
+    border: var(--source-headers-invalid-border);
 }
-
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_timeline_syncer {
     position: absolute;
@@ -1652,7 +1352,7 @@ body {
     top: 0px;
     bottom: 0px;
     width: 1px;
-    background-color: rgba(255, 80, 80, 0.9);
+    background-color: var(--timeline-current-position-color);
     left: 50%;
     transform: translate(-50%, 0%);
     border-radius: 1px;
@@ -1681,10 +1381,10 @@ body {
     position: absolute;
     box-sizing: border-box;
     height: 20px;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--timeline-cue-background-color);
     border-radius: 2px;
     font-size: 12px;
-    color: black;
+    color: var(--timeline-cue-text-color);
     padding: 0px 2px;
     line-height: 20px;
 }
@@ -1707,47 +1407,28 @@ body {
     position: absolute;
     width: 1px;
     height: 3px;
-    background-color: rgba(255, 255, 255, 0.6);
+    background-color: var(--timeline-tick-color);
     transform: translate(-50%, 0%);
 }
 
-
 .timeline_ticks .timeline_tick.major {
-    position: absolute;
-    width: 1px;
     height: 5px;
-    background-color: rgba(255, 255, 255, 0.6);
 }
 
 .timeline_ticks .timeline_tick.minute {
-    position: absolute;
-    width: 1px;
     height: 6px;
-    background-color: rgba(255, 255, 255, 0.8);
 }
 
-
 .timeline_ticks .timeline_tick.hour {
-    position: absolute;
-    width: 2px;
     height: 9px;
-    background-color: rgba(255, 100, 100, 0.9);
 }
 
 .timeline_ticks .timeline_tick .timeline_tick_label {
     position: absolute;
     top: 9px;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.6);
+    color: var(--timeline-tick-label-color);
     transform: translate(-50%, 0%);
-}
-
-.timeline_ticks .timeline_tick.hour .timeline_tick_label {
-    color: rgba(255, 100, 100, 0.9);
-}
-
-.timeline_ticks .timeline_tick.minute .timeline_tick_label {
-    color: rgba(255, 255, 255, 0.9);
 }
 
 .mainplayer {
@@ -1764,13 +1445,10 @@ body {
     height: 20px;
 }
 
-
-
-
 /* total width */
 ::-webkit-scrollbar {
     background-color: transparent;
-    width: 2px;
+    width: 5px;
     height: 5px;
 }
 
@@ -1782,7 +1460,7 @@ body {
 /* scrollbar itself */
 ::-webkit-scrollbar-thumb {
     background-color: #babac0;
-    border-radius: 1px;
+    border-radius: 2px;
     border: none;
 }
 
@@ -1800,12 +1478,17 @@ body {
     min-width: 15px;
     text-align: center;
     border-radius: 3px;
-    background-color: rgba(20, 20, 20, 0.7);
-    color: rgb(200, 200, 200);
+    background-color: var(--popwindow-button-background-color);
+    color: var(--popwindow-button-text-color);
+}
+
+.page-marker:hover {
+    background-color: var(--popwindow-button-hover-background-color);
 }
 
 .page-marker.selected {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: var(--popwindow-button-active-background-color);
+    cursor: text;
 }
 
 .subtitle-pages {
@@ -1817,58 +1500,44 @@ body {
 }
 
 .subtitle-result-container {
+    display: grid;
+    column-gap: 5px;
+    grid-template-columns: 50px 1fr 150px 50px;
     position: relative;
-    overflow-y: scroll;
     user-select: none;
     cursor: pointer;
     font-family: Arial;
     font-size: 15px;
     width: 100%;
-    height: 50px;
-    color: rgba(255, 255, 255, .8);
-    border-top: 1px solid rgba(255, 255, 255, 0.1)
+    border-top: var(--menu-border);
+    padding: 15px 0px;
 }
 
 .subtitle-result-lang {
-    position: absolute;
-    top: 50%;
-    transform: translate(0%, -50%);
-    left: 0px;
+    grid-column: 1;
     text-align: center;
-    width: 100px;
 }
 
 .subtitle-result-title {
-    position: absolute;
-    left: 100px;
-    width: calc(100% - 300px);
-    top: 50%;
-    padding: 0px 10px;
-    transform: translate(0%, -50%);
+    grid-column: 2;
 }
 
 .subtitle-result-user {
-    position: absolute;
-    right: 60px;
-    width: 100px;
-    top: 50%;
-    padding: 0px 10px;
-    transform: translate(0%, -50%);
+    grid-column: 3;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }
 
 .subtitle-result-rank {
-    position: absolute;
-    right: 0px;
-    width: 50px;
-    top: 50%;
-    transform: translate(0%, -50%);
+    grid-column: 4;
 }
 
 .subtitle-track-element {
     position: relative;
-    border-bottom: 1px solid rgba(255, 255, 255, .4);
+    border-bottom: var(--menu-border);
     padding: 3px 5px;
-    color: rgba(255, 255, 255, .8)
+    color: var(--menu-text-color);
 }
 
 .subtitle-resync-tool,
@@ -1907,14 +1576,14 @@ body {
 }
 
 .subtitle-download-tool {
-    right: 10px;
+    right: 15px;
 }
 
 .subtitle-remove-tool {
     right: 5px;
     width: 10px;
     height: 10px;
-    background-color: red;
+    background-color: var(--close-button-hover-color);
     border-radius: 50%;
 }
 
@@ -1922,7 +1591,7 @@ body {
     right: 55px;
     width: 0px;
     height: 0px;
-    border-right: 8px solid white;
+    border-right: 8px solid var(--subtitle-tool-color);
     border-bottom: 8px solid transparent;
     border-top: 8px solid transparent;
 }
@@ -1931,7 +1600,7 @@ body {
     right: 40px;
     width: 0px;
     height: 0px;
-    border-left: 8px solid white;
+    border-left: 8px solid var(--subtitle-tool-color);
     border-bottom: 8px solid transparent;
     border-top: 8px solid transparent;
 }
@@ -1953,10 +1622,19 @@ body {
     line-height: 1em;
 }
 
+.rate-changer-list>div:hover {
+    background-color: var(--menu-list-item-hover-background-color);
+}
+
+.rate-changer-list>div.rate-selected {
+    background-color: var(--menu-list-item-active-background-color);
+}
+
+
 .subtitle-menu-option {
     padding: 3px 5px;
-    color: rgba(255, 255, 255, .8);
-    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    color: var(--menu-text-color);
+    border-top: var(--menu-border);
 }
 
 .subtitle-menu-option:nth-child(2) {
@@ -2068,18 +1746,6 @@ body {
 
 .delete_button {
     background-color: rgb(120, 0, 0);
-}
-
-.dropdown_text {
-    display: inline-block;
-    border: none;
-    outline: none;
-    border-radius: 3px;
-}
-
-.dropdown_text:focus {
-    outline: 1px solid rgba(255, 255, 255, 0.5);
-    padding: 0px 5px;
 }
 
 .dynamics_container {

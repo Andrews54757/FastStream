@@ -153,6 +153,8 @@ export class SubtitleSyncer extends EventEmitter {
     this.ui.timelineTicks.replaceChildren();
     this.ui.timelineVOD.replaceChildren();
     this.ui.timelineTrack.replaceChildren();
+
+    this.vadLineColor = window.getComputedStyle(document.body).getPropertyValue('--timeline-vad-line-color');
   }
 
   async start() {
@@ -286,7 +288,7 @@ export class SubtitleSyncer extends EventEmitter {
 
       // Draw line using buffer
       context.beginPath();
-      context.strokeStyle = '#fff';
+      context.strokeStyle = this.vadLineColor;
       let val = (startFrame > 0) ? (1 - this.buffer[startFrame - 1]) : 1;
       context.moveTo(0, val * el.element.height);
       for (let i = startFrame; i < endFrame; i++) {

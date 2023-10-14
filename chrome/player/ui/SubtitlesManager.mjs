@@ -280,6 +280,15 @@ export class SubtitlesManager {
         // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
         downloadTrack.title = 'Download subtitle file';
         downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
+
+        // svg use
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
+        svg.appendChild(use);
+        downloadTrack.appendChild(svg);
+
+
         trackElement.appendChild(downloadTrack);
 
         downloadTrack.addEventListener('click', (e) => {

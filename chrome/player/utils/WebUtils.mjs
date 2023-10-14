@@ -166,11 +166,11 @@ export class WebUtils {
 
   static createDropdown(defaultChoice, title, items, call, editableCallback = null) {
     const create = this.create;
-    const container = create('div', ``, 'dropdown');
+    const container = create('div', null, 'dropdown');
 
-    const text = create('div', ``);
+    const text = create('div');
     text.appendChild(document.createTextNode(`${title}: `));
-    const span = create('span', `color: rgb(200,200,200)`, 'dropdown_text');
+    const span = create('span', null, 'dropdown_text');
     span.contentEditable = editableCallback != null;
     span.textContent = items[defaultChoice];
     text.appendChild(span);

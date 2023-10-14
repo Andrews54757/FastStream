@@ -531,8 +531,7 @@ export class InterfaceController {
       })(i);
     }
 
-
-    els[this.playbackRate - 1].style.backgroundColor = 'rgba(0,0,0,0.3)';
+    els[this.playbackRate - 1].classList.add('rate-selected');
 
     this.playbackElements = els;
 
@@ -1086,10 +1085,10 @@ export class InterfaceController {
   updatePlaybackRate() {
     this.playbackRate = Math.round(this.persistent.playbackRate * 10);
     this.playbackElements.forEach((el) => {
-      el.style.backgroundColor = '';
+      el.classList.remove('rate-selected');
     });
 
-    this.playbackElements[this.playbackRate - 1].style.backgroundColor = 'rgba(0,0,0,0.3)';
+    this.playbackElements[this.playbackRate - 1].classList.add('rate-selected');
   }
 
   updateIntroOutroBar() {
@@ -1147,7 +1146,7 @@ export class InterfaceController {
       DOMElements.videoSource.style.display = 'none';
       return;
     } else {
-      DOMElements.videoSource.style.display = 'inline-block';
+      DOMElements.videoSource.style.display = '';
     }
 
     const currentLevel = this.client.previousLevel;
@@ -1206,9 +1205,9 @@ export class InterfaceController {
       this.persistent.muted = true;
     }
     if (this.persistent.muted) {
-      muteButtonTag.classList.replace('fluid_button_volume', 'fluid_button_mute');
+      muteButtonTag.classList.add('muted');
     } else {
-      muteButtonTag.classList.replace('fluid_button_mute', 'fluid_button_volume');
+      muteButtonTag.classList.remove('muted');
     }
 
     currentVolumeTag.style.width = (volume * 100) / 3 + '%';
@@ -1245,9 +1244,9 @@ export class InterfaceController {
   updateFullScreenButton() {
     const fullScreenButton = DOMElements.fullscreen;
     if (document.fullscreenElement) {
-      fullScreenButton.classList.replace('fluid_button_fullscreen', 'fluid_button_fullscreen_exit');
+      fullScreenButton.classList.add('out');
     } else {
-      fullScreenButton.classList.replace('fluid_button_fullscreen_exit', 'fluid_button_fullscreen');
+      fullScreenButton.classList.remove('out');
     }
   }
 
