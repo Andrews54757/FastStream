@@ -50,6 +50,7 @@ export const DOMElements = {
   markerContainer: document.querySelector('.mainplayer .marker_container'),
 
   rateMenu: document.querySelector('.mainplayer .rate_menu'),
+  rateMenuContainer: document.querySelector('.mainplayer .rate_menu_container'),
 
   settingsButton: document.querySelector('.mainplayer .fluid_button_settings'),
 

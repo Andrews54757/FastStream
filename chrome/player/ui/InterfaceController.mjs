@@ -490,25 +490,25 @@ export class InterfaceController {
     let clicked = false;
 
     DOMElements.playbackRate.addEventListener('focus', (e) => {
-      if (DOMElements.rateMenu.style.display == 'none') {
-        DOMElements.rateMenu.style.display = '';
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+      if (DOMElements.rateMenuContainer.style.display == 'none') {
+        DOMElements.rateMenuContainer.style.display = '';
+        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
       }
     });
 
     DOMElements.playbackRate.addEventListener('blur', (e) => {
       if (!clicked) {
-        DOMElements.rateMenu.style.display = 'none';
+        DOMElements.rateMenuContainer.style.display = 'none';
       }
     });
 
     DOMElements.playbackRate.addEventListener('click', (e) => {
       clicked = !clicked;
       if (!clicked) {
-        DOMElements.rateMenu.style.display = 'none';
+        DOMElements.rateMenuContainer.style.display = 'none';
       } else {
-        DOMElements.rateMenu.style.display = '';
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+        DOMElements.rateMenuContainer.style.display = '';
+        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
       }
       e.stopPropagation();
     });
@@ -538,19 +538,19 @@ export class InterfaceController {
     DOMElements.playbackRate.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {
         this.client.playbackRate = Math.min(3, (this.playbackRate + 1) / 10);
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'ArrowUp') {
         this.client.playbackRate = Math.max(0.1, (this.playbackRate - 1) / 10);
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 20.5 * 2;
+        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
         e.preventDefault();
         e.stopPropagation();
       }
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      DOMElements.rateMenu.style.display = 'none';
+      DOMElements.rateMenuContainer.style.display = 'none';
     });
   }
 
