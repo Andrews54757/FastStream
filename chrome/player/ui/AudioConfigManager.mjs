@@ -413,7 +413,7 @@ export class AudioConfigManager extends EventEmitter {
     WebUtils.setupTabIndex(this.ui.saveButton);
 
     // download button
-    this.ui.downloadButton = WebUtils.create('div', 'margin-left: 5px', 'textbutton download_button');
+    this.ui.downloadButton = WebUtils.create('div', null, 'textbutton download_button');
     this.ui.downloadButton.textContent = 'Download Profile';
     this.ui.profileManager.appendChild(this.ui.downloadButton);
     this.ui.downloadButton.addEventListener('click', () => {

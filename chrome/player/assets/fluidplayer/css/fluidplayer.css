@@ -1029,6 +1029,7 @@ body {
     border: var(--popwindow-border);
     position: absolute;
     display: flex;
+    gap: 5px;
     flex-direction: column;
     top: 20px;
     bottom: 60px;
@@ -1044,7 +1045,6 @@ body {
 .popwindow .title {
     font-size: 13px;
     text-align: center;
-    margin-bottom: 5px;
 }
 
 .expanded.controls_visible .popwindow {
@@ -1196,7 +1196,6 @@ body {
     font-size: 18px;
     display: block;
     text-align: center;
-    padding-bottom: 5px;
 }
 
 .linkui-addnew-button,
@@ -1228,7 +1227,7 @@ body {
 
 .linkui-sources-list {
     border-top: var(--menu-border);
-    margin-top: 15px;
+    margin-top: 10px;
     overflow-y: auto;
     flex: 1 1 auto;
 }
@@ -1478,7 +1477,7 @@ body {
 }
 
 .page-bar {
-    padding: 5px 0px;
+    padding-bottom: 5px;
 }
 
 .subtitle-result-container {
@@ -1743,6 +1742,8 @@ body {
 
 .profile_manager {
     display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
 }
 
 .profile_selector {
@@ -1750,16 +1751,9 @@ body {
     height: 25px;
     line-height: 25px;
     border-radius: 4px;
-    margin-bottom: 5px;
     text-overflow: ellipsis;
     white-space: nowrap;
     flex: 1 1 auto;
-}
-
-.delete_button,
-.save_button,
-.load_button {
-    margin-left: 5px;
 }
 
 .delete_button:hover {
