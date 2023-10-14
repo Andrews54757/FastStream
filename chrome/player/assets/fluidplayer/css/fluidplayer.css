@@ -1550,8 +1550,18 @@ body {
     cursor: pointer;
     top: 50%;
     transform: translate(0%, -50%);
-    opacity: 0.7 !important;
-    transition: opacity 0.2s !important;
+}
+
+.subtitle-remove-tool,
+.subtitle-shiftl-tool,
+.subtitle-shiftr-tool {
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.subtitle-resync-tool svg,
+.subtitle-download-tool svg {
+    color: var(--subtitle-tool-color);
 }
 
 .subtitle-track-element:hover .subtitle-resync-tool,
@@ -1559,20 +1569,17 @@ body {
 .subtitle-track-element:hover .subtitle-remove-tool,
 .subtitle-track-element:hover .subtitle-shiftl-tool,
 .subtitle-track-element:hover .subtitle-shiftr-tool {
-    display: block !important;
+    display: block;
 }
 
-
-.subtitle-resync-tool:hover,
-.subtitle-download-tool:hover,
 .subtitle-remove-tool:hover,
 .subtitle-shiftl-tool:hover,
 .subtitle-shiftr-tool:hover {
-    opacity: 0.9 !important;
+    opacity: 1
 }
 
 .subtitle-resync-tool {
-    right: 60px;
+    right: 63px;
 }
 
 .subtitle-download-tool {

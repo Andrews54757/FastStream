@@ -269,6 +269,12 @@ export class SubtitlesManager {
         resyncTool.title = 'Resync Tool';
         resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
         trackElement.appendChild(resyncTool);
+        // svg use
+        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#hourglass');
+        svg.appendChild(use);
+        resyncTool.appendChild(svg);
 
         resyncTool.addEventListener('click', (e) => {
           this.client.subtitleSyncer.toggleTrack(track);
@@ -282,11 +288,11 @@ export class SubtitlesManager {
         downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
 
         // svg use
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
-        svg.appendChild(use);
-        downloadTrack.appendChild(svg);
+        const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        const use2 = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+        use2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
+        svg2.appendChild(use2);
+        downloadTrack.appendChild(svg2);
 
 
         trackElement.appendChild(downloadTrack);
@@ -362,7 +368,7 @@ export class SubtitlesManager {
         });
 
 
-        trackElement.addEventListener('keydown', (e)=>{
+        trackElement.addEventListener('keydown', (e) => {
           const keybind = this.client.keybindManager.eventToKeybind(e);
           if (keybind === 'SubtrackDelete') {
             e.stopPropagation();
