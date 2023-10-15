@@ -53,7 +53,7 @@ export class SourcesBrowser {
     // SPLICER:CENSORYT:REMOVE_END
 
     const sourceMode = WebUtils.createDropdown(source.mode, 'Mode', modes, (val) => {
-      source.mode = parseInt(val);
+      source.mode = val;
       this.updateSources();
     });
     sourceMode.classList.add('linkui-source-mode');

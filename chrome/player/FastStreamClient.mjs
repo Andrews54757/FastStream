@@ -670,7 +670,7 @@ export class FastStreamClient extends EventEmitter {
     });
 
     this.context.on(DefaultPlayerEvents.ERROR, (event) => {
-      console.log('ERROR', event);
+      console.error('ERROR', event);
       this.failedToLoad('Failed to load video');
     });
 
