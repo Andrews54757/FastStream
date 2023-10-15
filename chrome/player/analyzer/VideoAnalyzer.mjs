@@ -395,7 +395,7 @@ export class VideoAnalyzer extends EventEmitter {
     const time = video.currentTime;
     if (time < this.options.introCutoff) {
       return this.introAligner.pushVideoFrame(video);
-    } else if (this.client.persistent.duration - this.options.outroCutoff < time) {
+    } else if (this.client.duration - this.options.outroCutoff < time) {
       return this.outroAligner.pushVideoFrame(video);
     }
     return false;
@@ -405,7 +405,6 @@ export class VideoAnalyzer extends EventEmitter {
     this.introAligner.calculate();
     this.outroAligner.calculate();
   }
-
 
   async setSource(source) {
     this.reset();

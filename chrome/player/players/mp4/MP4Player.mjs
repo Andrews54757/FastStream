@@ -43,6 +43,8 @@ export default class MP4Player extends EventEmitter {
     this.currentAudioTrack = this.isPreview ? -1 : 0;
 
     this.currentFragments = [];
+
+    this._duration = 0;
   }
 
 
@@ -65,6 +67,7 @@ export default class MP4Player extends EventEmitter {
       this.audioSourceBuffer = null;
     }
   }
+
   makeSourceBuffers() {
     const videoTrack = this.metaData.videoTracks[this.currentVideoTrack];
     if (videoTrack) {
@@ -112,6 +115,7 @@ export default class MP4Player extends EventEmitter {
       } else {
         throw new Error('Unknown track id');
       }
+      this.updateDuration();
     };
 
     if (videoTrack) {
@@ -183,9 +187,7 @@ export default class MP4Player extends EventEmitter {
   }
 
   onMetadataParsed(info) {
-    console.log('onMetadataParsed', info);
     this.metaData = info;
-    this.mediaSource.duration = this.duration;
 
     const max = Math.ceil(this.fileLength / FRAGMENT_SIZE);
     // for (let l = 0; l < info.videoTracks.length; l++) {
@@ -221,10 +223,8 @@ export default class MP4Player extends EventEmitter {
     }
 
     this.setFragmentTimes();
-
-
     this.emit(DefaultPlayerEvents.MANIFEST_PARSED, 0);
-    this.emit(DefaultPlayerEvents.DURATIONCHANGE);
+    this.updateDuration();
     this.setupHLS();
   }
 
@@ -557,6 +557,10 @@ export default class MP4Player extends EventEmitter {
   }
 
   get duration() {
+    return this._duration;
+  }
+
+  calculateDuration() {
     if (!this.metaData) return 0;
     const info = this.metaData;
     let duration = ((info.isFragmented ? info.fragment_duration : info.duration) || 0) / info.timescale;
@@ -566,6 +570,15 @@ export default class MP4Player extends EventEmitter {
       }, 0);
     }
     return duration;
+  }
+
+  updateDuration() {
+    const newDuration = this.calculateDuration();
+    if (newDuration !== this._duration) {
+      this._duration = newDuration;
+      this.mediaSource.duration = newDuration;
+      this.emit(DefaultPlayerEvents.DURATIONCHANGE);
+    }
   }
 
   getFragmentOffset(samples, time) {

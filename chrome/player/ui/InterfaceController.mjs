@@ -106,7 +106,6 @@ export class InterfaceController {
     this.updatePlayPauseButton();
     DOMElements.playPauseButtonBigCircle.style.display = '';
     DOMElements.playerContainer.classList.add('controls_visible');
-    this.persistent.duration = 0;
     this.updateToolVisibility();
   }
 
@@ -216,6 +215,7 @@ export class InterfaceController {
   }
 
   updateProgressBar(cache, results, additionalClass) {
+    const duration = this.client.duration;
     for (let i = cache.length; i < results.length; i++) {
       const entry = {
         start: -1,
@@ -238,12 +238,12 @@ export class InterfaceController {
       const entry = cache[i];
       if (entry.start !== result.start) {
         entry.start = result.start;
-        entry.element.style.left = Math.min(result.start / this.persistent.duration * 100, 100) + '%';
+        entry.element.style.left = Math.min(result.start / duration * 100, 100) + '%';
       }
 
       if (entry.width !== result.width) {
         entry.width = result.width;
-        entry.element.style.width = Math.min(result.width / this.persistent.duration * 100, 100) + '%';
+        entry.element.style.width = Math.min(result.width / duration * 100, 100) + '%';
       }
 
       const className = ([result.statusClass, additionalClass]).join(' ');
@@ -264,7 +264,7 @@ export class InterfaceController {
     };
   }
   updateFragmentsLoaded() {
-    if (!this.persistent.duration || !this.client.player) {
+    if (!this.client.duration || !this.client.player) {
       this.renderProgressBar(this.progressCache, []);
       this.renderProgressBar(this.progressCacheAudio, []);
       return;
@@ -684,7 +684,7 @@ export class InterfaceController {
   }
 
   durationChanged() {
-    const duration = this.persistent.duration;
+    const duration = this.client.duration;
     if (duration < 5 * 60 || this.client.subtitleSyncer.started) {
       this.runProgressLoop();
     } else {
@@ -836,9 +836,10 @@ export class InterfaceController {
   }
   updateMarkers() {
     const pastSeeks = this.client.pastSeeks;
+    const duration = this.client.duration;
     if (pastSeeks.length) {
       const time = pastSeeks[pastSeeks.length - 1];
-      this.seekMarker.style.left = (time / this.persistent.duration * 100) + '%';
+      this.seekMarker.style.left = (time / duration * 100) + '%';
       this.seekMarker.style.display = '';
     } else {
       this.seekMarker.style.display = 'none';
@@ -847,7 +848,7 @@ export class InterfaceController {
     const pastUnseeks = this.client.pastUnseeks;
     if (pastUnseeks.length) {
       const time = pastUnseeks[pastUnseeks.length - 1];
-      this.unseekMarker.style.left = (time / this.persistent.duration * 100) + '%';
+      this.unseekMarker.style.left = (time / duration * 100) + '%';
       this.unseekMarker.style.display = '';
     } else {
       this.unseekMarker.style.display = 'none';
@@ -855,7 +856,7 @@ export class InterfaceController {
 
     const analyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition(); ;
     if (analyzerMarkerPosition !== null) {
-      this.analyzerMarker.style.left = (analyzerMarkerPosition / this.persistent.duration * 100) + '%';
+      this.analyzerMarker.style.left = (analyzerMarkerPosition / duration * 100) + '%';
       this.analyzerMarker.style.display = '';
     } else {
       this.analyzerMarker.style.display = 'none';
@@ -964,7 +965,7 @@ export class InterfaceController {
     const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
     const totalWidth = DOMElements.progressContainer.clientWidth;
 
-    const time = this.persistent.duration * currentX / totalWidth;
+    const time = this.client.duration * currentX / totalWidth;
 
     DOMElements.seekPreviewText.textContent = StringUtils.formatTime(time);
 
@@ -1014,7 +1015,7 @@ export class InterfaceController {
     const shiftTime = (timeBarX) => {
       const totalWidth = DOMElements.progressContainer.clientWidth;
       if (totalWidth) {
-        const newTime = this.persistent.duration * timeBarX / totalWidth;
+        const newTime = this.client.duration * timeBarX / totalWidth;
         this.client.currentTime = newTime;
         this.client.updateTime(newTime);
       }
@@ -1123,21 +1124,22 @@ export class InterfaceController {
 
     const introMatch = this.client.videoAnalyzer.getIntro();
     const outroMatch = this.client.videoAnalyzer.getOutro();
+    const duration = this.client.duration;
 
     if (introMatch) {
-      introMatch.endTime = Math.min(introMatch.endTime, this.persistent.duration);
+      introMatch.endTime = Math.min(introMatch.endTime, duration);
       const introElement = document.createElement('div');
-      introElement.style.left = introMatch.startTime / this.persistent.duration * 100 + '%';
-      introElement.style.width = (introMatch.endTime - introMatch.startTime) / this.persistent.duration * 100 + '%';
+      introElement.style.left = introMatch.startTime / duration * 100 + '%';
+      introElement.style.width = (introMatch.endTime - introMatch.startTime) / duration * 100 + '%';
       DOMElements.introOutroContainer.appendChild(introElement);
     }
 
 
     if (outroMatch) {
-      outroMatch.endTime = Math.min(outroMatch.endTime, this.persistent.duration);
+      outroMatch.endTime = Math.min(outroMatch.endTime, duration);
       const outroElement = document.createElement('div');
-      outroElement.style.left = outroMatch.startTime / this.persistent.duration * 100 + '%';
-      outroElement.style.width = (outroMatch.endTime - outroMatch.startTime) / this.persistent.duration * 100 + '%';
+      outroElement.style.left = outroMatch.startTime / duration * 100 + '%';
+      outroElement.style.width = (outroMatch.endTime - outroMatch.startTime) / duration * 100 + '%';
       DOMElements.introOutroContainer.appendChild(outroElement);
     }
 
@@ -1241,8 +1243,9 @@ export class InterfaceController {
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
   }
   updateProgress() {
-    DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / this.persistent.duration, 0, 1) * 100 + '%';
-    DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(this.persistent.duration);
+    const duration = this.client.duration;
+    DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / duration, 0, 1) * 100 + '%';
+    DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(duration);
   }
 
   fullscreenToggle() {

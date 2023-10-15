@@ -41,7 +41,6 @@ export class FastStreamClient extends EventEmitter {
       volume: 1,
       muted: false,
       latestVolume: 1,
-      duration: 0,
       playbackRate: 1,
     };
 
@@ -176,8 +175,7 @@ export class FastStreamClient extends EventEmitter {
     return this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
   }
 
-  updateDuration(duration) {
-    this.persistent.duration = duration;
+  updateDuration() {
     this.interfaceController.durationChanged();
     this.updateHasDownloadSpace();
   }
@@ -657,7 +655,7 @@ export class FastStreamClient extends EventEmitter {
     });
 
     this.context.on(DefaultPlayerEvents.DURATIONCHANGE, (event) => {
-      this.updateDuration(this.duration);
+      this.updateDuration();
       this.interfaceController.updateFragmentsLoaded();
     });
 
