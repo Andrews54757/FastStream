@@ -261,8 +261,7 @@ export class FastStreamClient extends EventEmitter {
     if (!level) return;
 
     if (chrome?.extension?.inIncognitoContext) {
-      this.interfaceController.setDownloadStatus(``, -1);
-      this.interfaceController.setDownloadStatus(`Not enough space to predownload in incognito mode, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
+      this.interfaceController.setStatusMessage('info', `Not enough space to predownload in incognito mode, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 'warning', 5000);
       this.hasDownloadSpace = false;
     } else {
       if (level.bitrate && this.duration) {
@@ -275,9 +274,8 @@ export class FastStreamClient extends EventEmitter {
         this.hasDownloadSpace = true;
       }
 
-      this.interfaceController.setDownloadStatus(``, -1);
       if (!this.hasDownloadSpace) {
-        this.interfaceController.setDownloadStatus(`Not enough space to predownload, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 5000);
+        this.interfaceController.setStatusMessage('info', `Not enough space to predownload, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 'warning', 5000);
       }
     }
   }
@@ -441,6 +439,7 @@ export class FastStreamClient extends EventEmitter {
 
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
+    this.interfaceController.updateStatusMessage();
   }
 
   predownloadFragments() {

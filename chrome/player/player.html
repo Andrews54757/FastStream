@@ -24,36 +24,141 @@
         </div>
 
         <div class="fluid_controls_container fade_in">
-            
+
             <div class="skip_button" style="display: none;">Skip Intro</div>
 
-            <div class="fluid_controls_left">
-                <div title="Play or pause video" class="fluid_button fluid_button_play fluid_control_playpause">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#play"></use></svg>
-                </div>
-                <div class="volume_block">
-                    <div title="Mute audio" class="fluid_button fluid_control_mute">
-                        <svg class="speaker"><use href="assets/fluidplayer/static/icons.svg#speaker"></use></svg>
-                        <svg class="speaker-muted"><use href="assets/fluidplayer/static/icons.svg#speaker-muted"></use></svg>
+            <div class="fluid_controls_bottom_container">
+                <div class="fluid_controls_left">
+                    <div title="Play or pause video" class="fluid_button fluid_button_play fluid_control_playpause">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#play"></use>
+                        </svg>
                     </div>
-                    <div class="fluid_control_volume_container fluid_slider tooltip">
-                        <div class="fluid_control_volume">
-                            <div class="unity_volume_marker"></div>
-                            <div class="fluid_control_currentvolume" style="width: 100%">
-                                <div class="fluid_control_volume_currentpos">
-                                    <div class="tooltiptext current_volume_text">100%</div>
+                    <div class="volume_block">
+                        <div title="Mute audio" class="fluid_button fluid_control_mute">
+                            <svg class="speaker">
+                                <use href="assets/fluidplayer/static/icons.svg#speaker"></use>
+                            </svg>
+                            <svg class="speaker-muted">
+                                <use href="assets/fluidplayer/static/icons.svg#speaker-muted"></use>
+                            </svg>
+                        </div>
+                        <div class="fluid_control_volume_container fluid_slider tooltip">
+                            <div class="fluid_control_volume">
+                                <div class="unity_volume_marker"></div>
+                                <div class="fluid_control_currentvolume" style="width: 100%">
+                                    <div class="fluid_control_volume_currentpos">
+                                        <div class="tooltiptext current_volume_text">100%</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div name="Timestamp" class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00
+                    </div>
+
+                    <div class="status_message"></div>
+
+                    <div class="buffering_spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        Loading...
+                    </div>
                 </div>
-                <div name="Timestamp" class="fluid_control_duration fluid_fluid_control_duration">00:00 / 00:00</div>
+                <div class="fluid_controls_right">
+                    <div title="Toggle sources browser" class="fluid_button fluid_button_link"
+                        style="display: inline-block;">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#link"></use>
+                        </svg>
+                    </div>
+                    <div title="Toggle audio config window" class="fluid_button fluid_button_soundwave"
+                        style="display: inline-block;">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#soundwave"></use>
+                        </svg>
+                    </div>
+                    <div title="Toggle subtitles menu"
+                        class="fluid_button fluid_control_subtitles fluid_button_subtitles"
+                        style="display: inline-block;">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#captions"></use>
+                        </svg>
 
-                <div class="downloadstatus"></div>
+                        <div title="" class="subtitles_menu" style="display: none;">
+                            <div class="subtitles_view">
+                                <div class="subtitles_list">
 
-                <div class="buffering_spinner" style="display: none;">
-                    <div class="spinner"></div>
-                    Loading...
+                                </div>
+
+                            </div>
+                            <div class="subtitles_options" style="display: none;">
+                                <div class="subtitles_options_back">Back</div>
+                                <div class="subtitles_title">Subtitle Settings</div>
+                                <div class="subtitles_options_list">
+
+                                </div>
+                                <div class="subtitles_test_button">Test Subtitles</div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div title="Video quality" class="fluid_button fluid_control_video_source fluid_button_video_source"
+                        style="display: none;">
+                        <svg class="quality-sd">
+                            <use href="assets/fluidplayer/static/icons.svg#quality-sd"></use>
+                        </svg>
+                        <svg class="quality-hd">
+                            <use href="assets/fluidplayer/static/icons.svg#quality-hd"></use>
+                        </svg>
+
+                        <div class="fluid_video_sources_list" style="display: none;">
+                            <div class="fluid_video_source_list_item"><span
+                                    class="source_button_icon source_selected"></span>1080p</div>
+                            <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>720p
+                            </div>
+                            <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>480p
+                            </div>
+                        </div>
+                    </div>
+                    <div title="Playback rate" class="fluid_button fluid_button_playback_rate"
+                        style="display: inline-block;">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#timer"></use>
+                        </svg>
+                        <div class="rate_menu_container" style="display: none;">
+                            <div class="rate_menu">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div title="Settings" class="fluid_button fluid_button_settings" style="display: inline-block;">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#gear"></use>
+                        </svg>
+                    </div>
+                    <div title="Save video" class="fluid_button fluid_button_download main_download">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#download"></use>
+                        </svg>
+                    </div>
+                    <div title="Take screenshot" class="fluid_button fluid_button_screenshot">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#photo"></use>
+                        </svg>
+                    </div>
+                    <div title="Picture in Picture" class="fluid_button fluid_button_pip">
+                        <svg>
+                            <use href="assets/fluidplayer/static/icons.svg#pip"></use>
+                        </svg>
+                    </div>
+                    <div title="Fullscreen" class="fluid_button fluid_control_fullscreen">
+                        <svg class="fullscreen-in">
+                            <use href="assets/fluidplayer/static/icons.svg#fullscreen"></use>
+                        </svg>
+                        <svg class="fullscreen-out">
+                            <use href="assets/fluidplayer/static/icons.svg#fullscreen-out"></use>
+                        </svg>
+                    </div>
                 </div>
             </div>
             <div class="fluid_controls_progress_container fluid_slider">
@@ -84,81 +189,9 @@
                     <div></div>
                 </div>
             </div>
-            <div class="fluid_controls_right">
-                <div title="Fullscreen" class="fluid_button fluid_control_fullscreen">
-                    <svg class="fullscreen-in"><use href="assets/fluidplayer/static/icons.svg#fullscreen"></use></svg>
-                    <svg class="fullscreen-out"><use href="assets/fluidplayer/static/icons.svg#fullscreen-out"></use></svg>
-                </div>
-                <div title="Picture in Picture" class="fluid_button fluid_button_pip">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#pip"></use></svg>
-                </div>
-                <div title="Take screenshot" class="fluid_button fluid_button_screenshot">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#photo"></use></svg>
-                </div>
-                <div title="Save video" class="fluid_button fluid_button_download main_download">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#download"></use></svg>
-                </div>
-              
-                <div title="Video quality" class="fluid_button fluid_control_video_source fluid_button_video_source" style="display: none;">
-                    <svg class="quality-sd"><use href="assets/fluidplayer/static/icons.svg#quality-sd"></use></svg>
-                    <svg class="quality-hd"><use href="assets/fluidplayer/static/icons.svg#quality-hd"></use></svg>
-       
-                    <div class="fluid_video_sources_list" style="display: none;">
-                        <div class="fluid_video_source_list_item"><span
-                                class="source_button_icon source_selected"></span>1080p</div>
-                        <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>720p</div>
-                        <div class="fluid_video_source_list_item"><span class="source_button_icon "></span>480p</div>
-                    </div>
-                </div>
-                
-                <div title="Settings" class="fluid_button fluid_button_settings" style="display: inline-block;">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#gear"></use></svg>
-                </div>
-
-                <div title="Playback rate" class="fluid_button fluid_button_playback_rate" style="display: inline-block;">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#timer"></use></svg>
-                    <div class="rate_menu_container" style="display: none;">
-                        <div class="rate_menu">
-
-                        </div>
-                    </div>
-                </div>
-
-
-                <div title="Toggle subtitles menu" class="fluid_button fluid_control_subtitles fluid_button_subtitles" style="display: inline-block;">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#captions"></use></svg>
-              
-                    <div title="" class="subtitles_menu" style="display: none;">
-                        <div class="subtitles_view">
-                            <div class="subtitles_list">
-
-                            </div>
-
-                        </div>
-                        <div class="subtitles_options" style="display: none;">
-                            <div class="subtitles_options_back">Back</div>
-                            <div class="subtitles_title">Subtitle Settings</div>
-                            <div class="subtitles_options_list">
-
-                            </div>
-                            <div class="subtitles_test_button">Test Subtitles</div>
-                        </div>
-                    </div>
-
-                </div>
-                <div title="Toggle audio config window" class="fluid_button fluid_button_soundwave" style="display: inline-block;">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#soundwave"></use></svg>
-                </div>
-
-                <div title="Toggle sources browser" class="fluid_button fluid_button_link" style="display: inline-block;">
-                    <svg><use href="assets/fluidplayer/static/icons.svg#link"></use></svg>
-                </div>
-
-            </div>
-
             <div class="fluid_controls_timeline_syncer">
-               
-           
+
+
             </div>
 
             <div class="hide_button" tabindex="0">Hide Controls</div>

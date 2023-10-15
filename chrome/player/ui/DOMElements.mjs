@@ -42,7 +42,7 @@ export const DOMElements = {
   subtitlesOptionsList: document.querySelector('.mainplayer .subtitles_options_list'),
   subtitlesOptionsTestButton: document.querySelector('.mainplayer .subtitles_test_button'),
 
-  downloadStatus: document.querySelector('.mainplayer .downloadstatus'),
+  statusMessage: document.querySelector('.mainplayer .status_message'),
   introOutroContainer: document.querySelector('.mainplayer .intro_outro_container'),
 
   skipButton: document.querySelector('.mainplayer .skip_button'),

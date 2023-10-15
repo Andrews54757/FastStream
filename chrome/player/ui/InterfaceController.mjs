@@ -26,8 +26,59 @@ export class InterfaceController {
 
     this.optionsWindow = new OptionsWindow();
 
+    this.statusMessages = new Map();
+    this.registerStatusLevel('welcome');
+    this.registerStatusLevel('download');
+    this.registerStatusLevel('info');
+    this.registerStatusLevel('error');
+    this.registerStatusLevel('save-video');
+    this.registerStatusLevel('save-screenshot');
+
     this.setupDOM();
   }
+
+  registerStatusLevel(key) {
+    const level = {
+      key,
+      message: '',
+      type: 'info',
+      expiry: 0,
+    };
+    this.statusMessages.set(key, level);
+  }
+  setStatusMessage(key, message, type, expiry) {
+    const level = this.statusMessages.get(key);
+    if (!level) {
+      throw new Error(`Unknown status level ${key}`);
+    }
+
+    level.message = message;
+    level.type = type || 'info';
+    level.expiry = expiry ? (Date.now() + expiry) : 0;
+    this.updateStatusMessage();
+  }
+
+  updateStatusMessage() {
+    let toDisplay = null;
+    this.statusMessages.forEach((level) => {
+      if (level.expiry && Date.now() > level.expiry) {
+        level.message = '';
+      }
+      if (level.message) {
+        toDisplay = level;
+      }
+    });
+
+    if (!toDisplay) {
+      DOMElements.statusMessage.style.display = 'none';
+      return;
+    }
+
+    DOMElements.statusMessage.style.display = '';
+    DOMElements.statusMessage.textContent = toDisplay.message;
+    DOMElements.statusMessage.className = `status_message ${toDisplay.type}`;
+  }
+
   reset() {
     DOMElements.videoContainer.replaceChildren();
     DOMElements.seekPreviewVideo.replaceChildren();
@@ -39,7 +90,6 @@ export class InterfaceController {
 
     DOMElements.seekPreviewVideo.style.display = 'none';
     DOMElements.progressLoadedContainer.replaceChildren();
-    DOMElements.downloadStatus.textContent = '';
     this.progressCache = [];
     this.progressCacheAudio = [];
     this.hasShownSkip = false;
@@ -60,7 +110,7 @@ export class InterfaceController {
 
   failedToLoad(reason) {
     this.failed = true;
-    DOMElements.downloadStatus.textContent = reason;
+    this.setStatusMessage('error', reason, 'error');
     this.setBuffering(false);
   }
   setBuffering(isBuffering) {
@@ -249,14 +299,10 @@ export class InterfaceController {
     let speed = this.lastSpeed; // bytes per second
     speed = Math.round(speed / 1000 / 1000 * 10) / 10; // MB per second
 
-    if (!this.makingDownload) {
-      if (percentDone < 100) {
-        this.setDownloadStatus(`${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`);
-      } else {
-        if (DOMElements.downloadStatus.textContent != 'Save complete') {
-          this.setDownloadStatus(`100% Downloaded`);
-        }
-      }
+    if (percentDone < 100) {
+      this.setStatusMessage('download', `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`, 'success');
+    } else {
+      this.setStatusMessage('download', `100% Downloaded`, 'success');
     }
   }
 
@@ -420,12 +466,7 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.settingsButton);
 
     const welcomeText = 'Welcome to FastStream v' + this.client.version + '!';
-    this.setDownloadStatus(welcomeText);
-    setTimeout(() => {
-      if (DOMElements.downloadStatus.textContent == welcomeText) {
-        this.setDownloadStatus('');
-      }
-    }, 3000);
+    this.setStatusMessage('welcome', welcomeText, 'info', 3000);
     this.setupRateChanger();
 
     this.seekMarker = document.createElement('div');
@@ -662,15 +703,6 @@ export class InterfaceController {
     this.shouldRunProgressLoop = false;
   }
 
-  setDownloadStatus(text, keepUntil = 0) {
-    if (this.failed) return;
-    if (keepUntil !== -1 && this.downloadStatusExpires && Date.now() < this.downloadStatusExpires) return;
-    if (keepUntil) {
-      this.downloadStatusExpires = Date.now() + keepUntil;
-    }
-    DOMElements.downloadStatus.textContent = text;
-  }
-
   async saveScreenshot() {
     if (!this.client.player) {
       alert('No video loaded!');
@@ -684,38 +716,34 @@ export class InterfaceController {
       return;
     }
 
-    this.setDownloadStatus(`Taking screenshot...`, Infinity);
+    this.setStatusMessage('save-screenshot', `Taking screenshot...`, 'info');
+    try {
+      const video = this.client.player.getVideo();
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      // const blob = await new Promise((resolve) => {
+      //   canvas.toBlob(resolve, 'image/png');
+      // });
 
-    const video = this.client.player.getVideo();
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx.imageSmoothingEnabled = false;
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    // const blob = await new Promise((resolve) => {
-    //   canvas.toBlob(resolve, 'image/png');
-    // });
+      const url = canvas.toDataURL('image/png'); // For some reason this is faster than async
+      // const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', name);
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
 
-    const url = canvas.toDataURL('image/png'); // For some reason this is faster than async
-
-    this.setDownloadStatus(``, -1);
-    this.setDownloadStatus(`Screenshot Saved!`, 1000);
-
-    // const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', name);
-    link.setAttribute('target', '_blank');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setTimeout(() => {
-      // URL.revokeObjectURL(url);
-      if (DOMElements.downloadStatus.textContent === 'Screenshot Saved!') {
-        this.setDownloadStatus('', -1);
-      }
-    }, 1000);
+      this.setStatusMessage('save-screenshot', `Screenshot saved!`, 'info', 1000);
+    } catch (e) {
+      console.error(e);
+      this.setStatusMessage('save-screenshot', `Failed to take screenshot!`, 'error', 2000);
+    }
   }
 
   async saveVideo() {
@@ -759,21 +787,20 @@ export class InterfaceController {
       this.reuseDownloadURL = isComplete;
       let result;
       this.makingDownload = true;
-      this.setDownloadStatus(`Making download...`);
+      this.setStatusMessage('save-video', `Making download...`, 'info');
       try {
         result = await player.getSaveBlob({
           onProgress: (progress) => {
-            this.setDownloadStatus(`Saving ${Math.round(progress * 100)}%`);
+            this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
           },
         });
       } catch (e) {
         console.error(e);
-        alert('Failed to save video!');
-        this.setDownloadStatus(`Save Failed`);
+        this.setStatusMessage('save-video', `Failed to save video!`, 'error', 2000);
         this.makingDownload = false;
         return;
       }
-      this.setDownloadStatus(`Save complete`);
+      this.setStatusMessage('save-video', `Save complete!`, 'info', 2000);
       this.makingDownload = false;
       if (this.downloadURL) {
         URL.revokeObjectURL(this.downloadURL);
@@ -791,10 +818,8 @@ export class InterfaceController {
           this.reuseDownloadURL = false;
         }
 
-        this.setDownloadStatus('');
-
         this.updateFragmentsLoaded();
-      }, 20000);
+      }, 10000);
     }
 
     this.downloadURL = url;
