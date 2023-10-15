@@ -254,6 +254,7 @@ body {
     right: 15px;
     height: 24px;
     display: flex;
+    white-space: nowrap;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .fluid_controls_container {
@@ -321,10 +322,11 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_left {
-   flex: auto 1 1;
+   flex: 1 1 auto;
+   min-width: 100px;
 }
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right {
-   flex: 0 1 1;
+   flex: none;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_left,
@@ -503,6 +505,7 @@ body {
     font-size: 16px;
     font-weight: normal;
     word-wrap: break-word;
+    white-space: normal;
     width: max-content;
     padding: 0;
     max-height: calc(100vh - 50px);
@@ -781,6 +784,8 @@ body {
     z-index: 1000;
     font-size: 16px;
     cursor: auto;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .status_message {
@@ -790,6 +795,10 @@ body {
     vertical-align: top;
     font-size: 15px;
     margin-left: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 0 1 auto;
+    min-width: 50px;
 }
 
 .status_message.success {
@@ -832,6 +841,7 @@ body {
     height: 24px;
     font-size: 13px;
     line-height: 22px;
+    min-width: 100px;
 }
 
 .buffering_spinner>.spinner {
