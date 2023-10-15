@@ -509,7 +509,7 @@ body {
     white-space: normal;
     width: max-content;
     padding: 0;
-    max-height: calc(100vh - 50px);
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
 }
 
@@ -786,7 +786,7 @@ body {
     background-color: var(--menu-background-color);
     color: var(--menu-text-color);
     width: 250px;
-    max-height: calc(100vh - 50px);
+    max-height: calc(100vh - 200px);
     overflow-y: auto;
     right: 0px;
     z-index: 1000;
