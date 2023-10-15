@@ -782,6 +782,7 @@ body {
     position: absolute;
     bottom: 34px;
     background-color: var(--menu-background-color);
+    color: var(--menu-text-color);
     width: 250px;
     max-height: calc(100vh - 50px);
     overflow-y: auto;
