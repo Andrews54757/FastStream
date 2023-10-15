@@ -1,6 +1,6 @@
 body {
     --mainplayer-background-color: black;
-    --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%);
+    --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.3) 30%, rgba(0, 0, 0, 0.6) 100%);
     --progress-bar-background-color: rgba(255, 255, 255, 0.25);
     --progress-bar-current-progress-color: red;
     --progress-bar-knob-color: white;
