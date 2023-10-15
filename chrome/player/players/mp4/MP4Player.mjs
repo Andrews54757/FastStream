@@ -183,13 +183,9 @@ export default class MP4Player extends EventEmitter {
   }
 
   onMetadataParsed(info) {
+    console.log('onMetadataParsed', info);
     this.metaData = info;
-
-    if (info.isFragmented) {
-      this.mediaSource.duration = info.fragment_duration / info.timescale;
-    } else {
-      this.mediaSource.duration = info.duration / info.timescale;
-    }
+    this.mediaSource.duration = this.duration;
 
     const max = Math.ceil(this.fileLength / FRAGMENT_SIZE);
     // for (let l = 0; l < info.videoTracks.length; l++) {
@@ -562,7 +558,14 @@ export default class MP4Player extends EventEmitter {
 
   get duration() {
     if (!this.metaData) return 0;
-    return this.metaData.duration / this.metaData.timescale;
+    const info = this.metaData;
+    let duration = ((info.isFragmented ? info.fragment_duration : info.duration) || 0) / info.timescale;
+    if (duration === 0 && info.isFragmented) {
+      duration = this.mp4box.moov.traks.reduce((acc, track) => {
+        return Math.max(acc, track.samples_duration / track.samples[0].timescale, 0);
+      }, 0);
+    }
+    return duration;
   }
 
   getFragmentOffset(samples, time) {
