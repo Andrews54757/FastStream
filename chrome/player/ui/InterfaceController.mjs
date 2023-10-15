@@ -4,6 +4,7 @@ import {Coloris} from '../modules/coloris.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
+import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -1240,7 +1241,7 @@ export class InterfaceController {
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
   }
   updateProgress() {
-    DOMElements.currentProgress.style.width = (this.persistent.currentTime / this.persistent.duration) * 100 + '%';
+    DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / this.persistent.duration, 0, 1) * 100 + '%';
     DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(this.persistent.duration);
   }
 
