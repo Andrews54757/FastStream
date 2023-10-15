@@ -497,7 +497,7 @@ body {
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_right .fluid_button_video_source .fluid_video_sources_list {
     position: absolute;
     right: 0px;
-    bottom: 30px;
+    bottom: 36px;
     z-index: 888888;
     opacity: 99%;
     background-color: var(--menu-background-color);
@@ -782,7 +782,7 @@ body {
     border: var(--menu-border);
     border-top-left-radius: 3px;
     position: absolute;
-    bottom: 30px;
+    bottom: 36px;
     background-color: var(--menu-background-color);
     color: var(--menu-text-color);
     width: 250px;
