@@ -76,6 +76,7 @@ export class InterfaceController {
 
     DOMElements.statusMessage.style.display = '';
     DOMElements.statusMessage.textContent = toDisplay.message;
+    DOMElements.statusMessage.title = toDisplay.message;
     DOMElements.statusMessage.className = `status_message ${toDisplay.type}`;
   }
 
@@ -1084,7 +1085,7 @@ export class InterfaceController {
     };
 
     const onVolumeBarMouseMove = (event) => {
-      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 5;
+      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 10;
       shiftVolume(currentX);
     };
 
@@ -1094,7 +1095,7 @@ export class InterfaceController {
       document.removeEventListener('mouseup', onVolumeBarMouseUp);
       document.removeEventListener('touchend', onVolumeBarMouseUp);
 
-      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 5;
+      const currentX = event.clientX - this.getOffsetLeft(DOMElements.volumeContainer) - 10;
 
       if (!isNaN(currentX)) {
         shiftVolume(currentX);
