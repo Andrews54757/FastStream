@@ -2397,7 +2397,7 @@ body {
         gap: 2px;
     }
 
-    .downloadstatus,
+    .status_message,
     .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_fluid_control_duration {
         font-size: 13px;
     }
