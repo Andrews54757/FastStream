@@ -77,7 +77,7 @@ export class SourcesBrowser {
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
-      if (sourceSetBtn.textContent != 'Play') return;
+      if (sourceSetBtn.textContent === 'Loading...') return;
       sourceSetBtn.textContent = 'Loading...';
       await this.client.setSource(source);
       this.updateSources();
