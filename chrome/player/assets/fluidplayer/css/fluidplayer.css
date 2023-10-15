@@ -532,6 +532,7 @@ body {
     position: relative;
     height: 24px;
     width: 24px;
+    padding: 2px;
     color: var(--menu-text-color);
 }
 
@@ -962,7 +963,7 @@ body {
 }
 
 .volume_block {
-    display: inline-block;
+    display: flex;
 }
 
 .subtitles_options {
