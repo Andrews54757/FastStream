@@ -1079,19 +1079,24 @@ export class AudioConfigManager extends EventEmitter {
       if (newX === lastX) continue;
 
       const barWidth = Utils.clamp((x2 - x) * xScale / 2, 1, 5);
-      // pre bar is gray
-      if (yPost <= yPre) {
+      const eqResponse = this.equalizerDbResponse?.[Math.min(Math.floor(x / logFrequencyWidth * this.equalizerDbResponse.length), this.equalizerDbResponse.length - 1)] || 0;
+      if (eqResponse < 0 && yPost < yPre) {
         this.spectrumCtx.fillStyle = `rgba(0, 50, 255, 0.8)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
         this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
-      } else {
+      } else if (eqResponse > 0 && yPost > yPre) {
         this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
         this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
+      } else {
+        this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
+        this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
+        this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
+        this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
       }
       lastX = newX;
     }
@@ -1824,8 +1829,8 @@ export class AudioConfigManager extends EventEmitter {
 
     this.preAnalyser.smoothingTimeConstant = 0.6;
     this.postAnalyser.smoothingTimeConstant = 0.6;
-    // this.analyser.minDecibels = -100;
-    // this.analyser.maxDecibels = 0;
+    this.preAnalyser.maxDecibels = -20;
+    this.postAnalyser.maxDecibels = -20;
     if (this.audioSource) {
       this.audioSource.connect(this.preAnalyser);
     }
@@ -1853,6 +1858,7 @@ export class AudioConfigManager extends EventEmitter {
 
       const analyser = this.audioContext.createAnalyser();
       analyser.fftSize = 32;
+      analyser.maxDecibels = -20;
 
       this.channelAnalyzers.push(analyser);
 
@@ -1866,6 +1872,7 @@ export class AudioConfigManager extends EventEmitter {
 
     this.finalAnalyser = this.audioContext.createAnalyser();
     this.finalAnalyser.fftSize = 32;
+    this.finalAnalyser.maxDecibels = -20;
     this.finalGain.connect(this.finalAnalyser);
 
     this.channelGains.push(this.finalGain);

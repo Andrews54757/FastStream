@@ -55,7 +55,7 @@ body {
     --timeline-vad-line-color:white;
     --subtitle-tool-color: white;
     --linkui-toggle-color: #f2c94c;
-    --soundwave-toggle-color: rgb(190, 36, 36);
+    --soundwave-toggle-color: rgb(4,217,255); /*  rgb(190, 36, 36); */
     --status-success-color: rgb(15, 238, 75);
     --status-error-color: rgb(203, 10, 10);
     --status-warning-color: rgb(255, 255, 0);

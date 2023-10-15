@@ -1307,10 +1307,10 @@ export class InterfaceController {
     const playButton = DOMElements.playPauseButton;
     const playButtonBig = DOMElements.playPauseButtonBig;
     if (this.persistent.playing) {
-      playButton.classList.replace('fluid_button_play', 'fluid_button_pause');
+      playButton.classList.add('playing');
       playButtonBig.classList.replace('fluid_initial_play_button', 'fluid_initial_pause_button');
     } else {
-      playButton.classList.replace('fluid_button_pause', 'fluid_button_play');
+      playButton.classList.remove('playing');
       playButtonBig.classList.replace('fluid_initial_pause_button', 'fluid_initial_play_button');
     }
   }

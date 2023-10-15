@@ -533,7 +533,7 @@ body {
     color: var(--menu-text-color);
     width: 24px;
     height: 24px;
-    opacity: 0.8;
+    opacity: 0.85;
     transition: opacity 0.2s;
     display: inline-block;
 }
@@ -583,6 +583,18 @@ body {
 }
 
 .fluid_button_video_source.hd .quality-sd {
+    display: none;
+}
+
+.fluid_control_playpause .pause {
+    display: none;
+}
+
+.fluid_control_playpause.playing .pause {
+    display: inline-block;
+}
+
+.fluid_control_playpause.playing .play {
     display: none;
 }
 
@@ -1549,7 +1561,7 @@ body {
 .subtitle-remove-tool,
 .subtitle-shiftl-tool,
 .subtitle-shiftr-tool {
-    opacity: 0.8;
+    opacity: 0.85;
     transition: opacity 0.2s;
 }
 
