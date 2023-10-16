@@ -108,7 +108,7 @@ export default class YTPlayer extends DashPlayer {
 
         const subTrack = new SubtitleTrack(label, language);
         await subTrack.loadURL(url);
-        this.client.loadSubtitleTrack(subTrack);
+        this.client.loadSubtitleTrack(subTrack, true);
       });
     }
   }
