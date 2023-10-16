@@ -34,9 +34,12 @@ export class URLUtils {
   }
 
   static getModeFromURL(url) {
+    // SPLICER:CENSORYT:REMOVE_START
     if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
       return PlayerModes.ACCELERATED_YT;
     }
+    // SPLICER:CENSORYT:REMOVE_END
+
     const ext = URLUtils.get_url_extension(url);
     return URLUtils.getModeFromExtension(ext) || PlayerModes.DIRECT;
   }
