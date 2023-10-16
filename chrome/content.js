@@ -1,6 +1,6 @@
-
-
+let lastPlayerNode = null;
 const iframeMap = new Map();
+const players = [];
 window.addEventListener('message', (e) => {
   if (typeof e.data !== 'object') {
     return;
@@ -121,12 +121,22 @@ chrome.runtime.onMessage.addListener(
             // replace element
 
             video.highest.parentElement.replaceChild(iframe, video.highest);
-
+            players.push({
+              iframe,
+              old: video.highest,
+            });
             console.log('replacing video with iframe');
             sendResponse('replace');
           }
         });
         return true;
+      } else if (request.type === 'remove_players') {
+        players.forEach((player) => {
+          player.iframe.parentElement.replaceChild(player.old, player.iframe);
+        });
+        players.length = 0;
+        lastPlayerNode = null;
+        sendResponse('ok');
       } else if (request.type === 'get_video_size') {
         getVideo().then((video) => {
           sendResponse(video ? video.size : 0);
@@ -305,19 +315,27 @@ function is_url_yt(urlStr) {
 function is_url_yt_watch(urlStr) {
   const url = new URL(urlStr);
   const pathname = url.pathname;
-  return pathname.startsWith('/watch') || pathname.startsWith('/embed');
+  return pathname.startsWith('/watch');
 }
 
-let lastPlayerNode = null;
+// eslint-disable-next-line camelcase
+function is_url_yt_embed(urlStr) {
+  const url = new URL(urlStr);
+  const pathname = url.pathname;
+  return pathname.startsWith('/embed');
+}
+
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
     let pnode = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
     if (!pnode) {
       pnode = document.querySelectorAll('body > #player')[0];
     }
-    if (pnode && is_url_yt_watch(window.location.href)) {
+    const isWatch = is_url_yt_watch(window.location.href);
+    const isEmbed = is_url_yt_embed(window.location.href);
+    if (pnode && (isWatch || isEmbed)) {
       const rect = pnode.getBoundingClientRect();
-      if (rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
+      if ((isEmbed || rect.x !== 0) && rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
         lastPlayerNode = pnode;
         chrome.runtime.sendMessage({
           type: 'yt_loaded',

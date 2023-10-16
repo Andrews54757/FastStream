@@ -159,7 +159,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === 'faststream') {
     if (Logging) console.log('Found FastStream window', frame);
     frame.isFastStream = true;
-    frame.playerOpening = false;
     frame.url = msg.url;
 
     if (frame.parentId === -2 && frame.frameId != msg.frameId) {
@@ -392,8 +391,10 @@ function addSource(frame, url, mode, headers) {
 function collectSources(frame, remove = false) {
   const subtitles = [];
   const sources = [];
+  const tab = frame.tab;
 
   let currentFrame = frame;
+  let removed = false;
   while (currentFrame) {
     for (let i = 0; i < currentFrame.subtitles.length; i++) {
       subtitles.push(currentFrame.subtitles[i]);
@@ -403,13 +404,16 @@ function collectSources(frame, remove = false) {
       sources.push(currentFrame.sources[i]);
     }
 
-    if (currentFrame === frame && remove) {
+    if (!removed && remove) {
+      if (currentFrame.sources.length !== 0) {
+        removed = true;
+      }
       currentFrame.sources.length = 0;
       currentFrame.subtitles.length = 0;
     }
 
     if (currentFrame.sources.length !== 0) break;
-    currentFrame = frame.tab.frames[currentFrame.parentId];
+    currentFrame = tab.frames[currentFrame.parentId];
   }
 
   return {subtitles, sources};
@@ -521,9 +525,7 @@ async function openPlayer(frame) {
   }, {
     frameId: frame.frameId,
   }, (response) => {
-    if (response === 'no_video') {
-      frame.playerOpening = false;
-    }
+    frame.playerOpening = false;
   });
 }
 
@@ -695,6 +697,14 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
       }
       CachedTabs[tabid].url = changeInfo.url;
       CachedTabs[tabid].hostname = url.hostname;
+
+      chrome.tabs.sendMessage(tabid, {
+        type: 'remove_players',
+      }, {
+        frameId: 0,
+      }, () => {
+        BackgroundUtils.checkMessageError('remove_players');
+      });
 
       const urlIsInAutoList = AutoEnableList.some((regex) => {
         try {
