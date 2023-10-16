@@ -51,7 +51,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
           // SPLICER:CENSORYT:REMOVE_END
 
           if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
-            autoPlaySource = sources.reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+            autoPlaySource = Array.from(sources).reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
           }
 
           if (window.fastStream.source || !request.autoSetSource) {
