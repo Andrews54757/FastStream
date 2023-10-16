@@ -43,6 +43,11 @@ export class SourcesBrowser {
     sourceContainer.appendChild(sourceURL);
 
     const modes = {};
+
+    if (source.mode === PlayerModes.AUTO) {
+      modes[PlayerModes.AUTO] = 'Auto Detect';
+    }
+
     modes[PlayerModes.DIRECT] = 'Direct';
     modes[PlayerModes.ACCELERATED_MP4] = 'Accelerated MP4';
     modes[PlayerModes.ACCELERATED_HLS] = 'Accelerated HLS';
@@ -58,6 +63,18 @@ export class SourcesBrowser {
     });
     sourceMode.classList.add('linkui-source-mode');
     sourceContainer.appendChild(sourceMode);
+
+    sourceURL.addEventListener('change', (e) => {
+      if (source.mode === PlayerModes.AUTO) {
+        try {
+          const mode = URLUtils.getModeFromURL(sourceURL.value);
+          Array.from(sourceMode.children[1].children).find((el) => el.dataset.val === mode)?.click();
+          Array.from(sourceMode.children[1].children).find((el) => el.dataset.val === PlayerModes.AUTO)?.remove();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    });
 
     const sourceHeadersBtn = WebUtils.create('div', null, 'linkui-source-headers-button');
     sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
@@ -206,7 +223,7 @@ export class SourcesBrowser {
 
 
     this.linkui.addNewButton.addEventListener('click', (e) => {
-      this.addSource(new VideoSource('', null, PlayerModes.DIRECT), true);
+      this.addSource(new VideoSource('', null, PlayerModes.AUTO), true);
     });
 
 

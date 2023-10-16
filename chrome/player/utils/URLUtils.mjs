@@ -33,6 +33,14 @@ export class URLUtils {
     return ModesMap.get(ext);
   }
 
+  static getModeFromURL(url) {
+    if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
+      return PlayerModes.ACCELERATED_YT;
+    }
+    const ext = URLUtils.get_url_extension(url);
+    return URLUtils.getModeFromExtension(ext) || PlayerModes.DIRECT;
+  }
+
 
   static validateHeadersString(str) {
     const lines = str.split('\n');
