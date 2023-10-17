@@ -1,4 +1,3 @@
-// SPLICER:CENSORYT:REMOVE_FILE
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
@@ -118,12 +117,25 @@ export default class YTPlayer extends DashPlayer {
   }
 
   canSave() {
+    let censorYTDownload = true;
+    // SPLICER:CENSORYT:REMOVE_START
+    censorYTDownload = false;
+    // SPLICER:CENSORYT:REMOVE_END
+    if (censorYTDownload) {
+      return {
+        cantSave: true,
+        canSave: false,
+        isComplete: true,
+      };
+    }
+
     return {
       canSave: !!this.videoInfo,
       isComplete: !!this.videoInfo,
     };
   }
 
+  // SPLICER:CENSORYT:REMOVE_START
   async getSaveBlob(options) {
     const stream = await this.videoInfo.download({
       type: 'video+audio',
@@ -137,4 +149,5 @@ export default class YTPlayer extends DashPlayer {
       blob: blob,
     };
   }
+  // SPLICER:CENSORYT:REMOVE_START
 }

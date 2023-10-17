@@ -1,4 +1,3 @@
-// SPLICER:CENSORYT:REMOVE_FILE
 /* eslint-disable */
 // Minified to reduce loading time (https://minify-js.com/)
 /* LuanRT/YouTube.js */

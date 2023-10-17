@@ -238,7 +238,6 @@ function getParentElementsWithSameBounds(element) {
 
 
 async function getVideo() {
-  // SPLICER:CENSORYT:REMOVE_START
   if (is_url_yt(window.location.href)) {
     let ytplayer = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
     if (!ytplayer) {
@@ -257,7 +256,6 @@ async function getVideo() {
       };
     }
   }
-  // SPLICER:CENSORYT:REMOVE_END
 
   const videos = Array.from(querySelectorAllIncludingShadows('video'));
 
@@ -300,7 +298,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-// SPLICER:CENSORYT:REMOVE_START
 // eslint-disable-next-line camelcase
 function is_url_yt(urlStr) {
   const url = new URL(urlStr);
@@ -346,5 +343,3 @@ if (is_url_yt(window.location.href)) {
   });
   observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
 }
-// SPLICER:CENSORYT:REMOVE_END
-

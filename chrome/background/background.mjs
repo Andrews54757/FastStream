@@ -225,12 +225,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }, ()=>{
       BackgroundUtils.checkMessageError('init');
     });
-
-    // SPLICER:CENSORYT:REMOVE_START
   } else if (msg.type === 'yt_loaded') {
     frame.url = msg.url;
     checkYTURL(frame);
-    // SPLICER:CENSORYT:REMOVE_END
   } else if (msg.type === 'ready') {
     if (Logging) console.log('Ready');
     frame.ready = true;
@@ -244,7 +241,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   sendResponse('ok');
 });
 
-// SPLICER:CENSORYT:REMOVE_START
 function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
@@ -260,7 +256,6 @@ function checkYTURL(frame) {
     }, frame, PlayerModes.ACCELERATED_YT);
   }
 }
-// SPLICER:CENSORYT:REMOVE_END
 
 function getMediaNameFromTab(tab) {
   if (!tab || tab.url === PlayerURL) return;
