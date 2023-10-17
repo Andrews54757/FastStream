@@ -85,8 +85,7 @@
             </h2>
 
             <p>
-                In order for the extension to function, it needs to be able to access all websites. This is because
-                FastStream needs to be able to intercept video streams and replace them with its own player.</p>
+                In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality.</p>
             </p>
 
             <p>
@@ -108,16 +107,34 @@
             <p>FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:</p>
             <ul>
                 <li>
-                    Identifying the largest visible video element to replace with the player.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/content.js#L68-L117" target="_blank">content.js L68-L117</a>
+                    Identify the largest visible video element to replace with the player.
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/content.js#L80-L132" target="_blank">content.js L80-L132</a>
                 </li>
                 <li>
-                    Enabling fullscreen permissions when the player is injected into a frame.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/content.js#L26-L35" target="_blank">content.js L26-L35</a>
+                    Enable fullscreen permissions when the player is injected into a frame.
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/content.js#L28-L46" target="_blank">content.js L28-L46</a>
                 </li>
                 <li>
-                    Scraping subtitle &lt;track&gt; elements from the page.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/content.js#L43-L67" target="_blank">content.js L43-L67</a>
+                    Scrape subtitle &lt;track&gt; elements from the page.
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/content.js#L55-L79" target="_blank">content.js L55-L79</a>
+                </li>
+            </ul>
+
+            <h4>Access the webRequest API <span class="permstatus" data-perm="webRequest"></span></h4>
+            <p>FastStream needs to be able to intercept HTTP requests to video sources in order to:</p>
+            <ul>
+                <li>
+                    Identify video sources
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/background/background.mjs#L648-L671" target="_blank">background.mjs L648-L671</a>
+                </li>
+            </ul>
+
+            <h4>Access the declarativeNetRequest API <span class="permstatus" data-perm="declarativeNetRequest"></span></h4>
+            <p>FastStream needs to be able to modify HTTP headers of select requests in order to:</p>
+            <ul>
+                <li>
+                    Override headers for video sources
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/background/NetRequestRuleManager.mjs#L64-L82" target="_blank">NetRequestRuleManager.mjs L64-L82</a>
                 </li>
             </ul>
 
@@ -126,11 +143,7 @@
             <ul>
                 <li>
                     General extension options.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L431-L485" target="_blank">background.mjs L431-L485</a>
-                </li>
-                <li>
-                    Subtitle settings.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/player/ui/SubtitlesSettingsManager.mjs#L99-L114" target="_blank">SubtitlesSettingsManager.mjs L99-L114</a>
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/background/background.mjs#L299-L333" target="_blank">background.mjs L299-L333</a>
                 </li>
             </ul>
 
@@ -139,34 +152,7 @@
             <ul>
                 <li>
                     Sending sources to players from the background script.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L540-L570" target="_blank">background.mjs L540-L570</a>
-                </li>
-                <li>
-                    Initializing players with options and analyzer data.
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L315-L342" target="_blank">background.mjs L315-L342</a>
-                </li>
-            </ul>
-
-            <h4>Access the webRequest API <span class="permstatus" data-perm="webRequest"></span></h4>
-            <p>FastStream needs to be able to intercept HTTP requests to video sources in order to play them with the FastStream player</p>
-            <ul>
-                <li>
-                    Obtaining video sources
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L718-L741" target="_blank">background.mjs L718-L741</a>
-                </li>
-                <li>
-                    Obtaining header information from video sources
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L707-L712" target="_blank">background.mjs L707-L612</a>
-                </li>
-            </ul>
-
-
-            <h4>Access the declarativeNetRequest API <span class="permstatus" data-perm="declarativeNetRequest"></span></h4>
-            <p>FastStream needs to be able to modify HTTP headers of certain requests in order to communicate with web servers</p>
-            <ul>
-                <li>
-                    Video source header override
-                    <br><a href="https://github.com/Andrews54757/FastStream/blob/090eaac934c3bf57464b36dfd42208e239a1bf7a/chrome/background.mjs#L141-L169" target="_blank">background.mjs L141-L169</a>
+                    <br><a href="https://github.com/Andrews54757/FastStream/blob/e465862c22219a1ffea4acc0cd2859a227e80a8b/chrome/background/background.mjs#L422-L435" target="_blank">background.mjs L422-L435</a>
                 </li>
             </ul>
         </div>
