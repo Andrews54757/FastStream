@@ -117,22 +117,20 @@ export default class YTPlayer extends DashPlayer {
   }
 
   canSave() {
-    let censorYTDownload = true;
-    // SPLICER:CENSORYT:REMOVE_START
-    censorYTDownload = false;
-    // SPLICER:CENSORYT:REMOVE_END
-    if (censorYTDownload) {
+    if (false) { // SPLICER:CENSORYT:REMOVE_LINE
       return {
         cantSave: true,
         canSave: false,
         isComplete: true,
       };
-    }
+    } // SPLICER:CENSORYT:REMOVE_LINE
 
+    // SPLICER:CENSORYT:REMOVE_START
     return {
       canSave: !!this.videoInfo,
       isComplete: !!this.videoInfo,
     };
+    // SPLICER:CENSORYT:REMOVE_END
   }
 
   // SPLICER:CENSORYT:REMOVE_START
