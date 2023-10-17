@@ -156,23 +156,28 @@ export class KeybindManager extends EventEmitter {
   }
 
   eventToKeybind(e) {
+    return this.eventToKeybinds(e)[0];
+  }
+
+  eventToKeybinds(e) {
     const keyString = this.getKeyString(e);
-    let keybind = null;
+    const results = [];
     for (const [key, value] of this.keybindMap.entries()) {
       if (value === keyString) {
-        keybind = key;
-        break;
+        results.push(key);
       }
     }
-    return keybind;
+    return results;
   }
 
   onKeyDown(e) {
-    const keybind = this.eventToKeybind(e);
+    const keybinds = this.eventToKeybinds(e);
 
-    if (keybind) {
-      this.emit('keybind', keybind, e);
-      this.emit(keybind, e);
+    if (keybinds.length !== 0) {
+      this.emit('keybind', keybinds, e);
+      keybinds.forEach((keybind) => {
+        this.emit(keybind, e);
+      });
       e.preventDefault();
     }
   }
