@@ -41,6 +41,7 @@ export class FastStreamArchiveUtils {
         responseType: entry.responseType,
         storeRaw: entry.storeRaw,
 
+        stats: entry.stats,
         responseURL: entry.responseURL,
         responseHeaders: entry.responseHeaders,
       }));
@@ -91,6 +92,7 @@ export class FastStreamArchiveUtils {
         storeRaw: entryHeader.storeRaw,
       });
 
+      entry.stats = entryHeader.stats;
       entry.status = DownloadStatus.DOWNLOAD_COMPLETE;
       entry.responseURL = entryHeader.responseURL;
       entry.responseHeaders = entryHeader.responseHeaders;
