@@ -135,17 +135,22 @@ export default class YTPlayer extends DashPlayer {
 
   // SPLICER:CENSORYT:REMOVE_START
   async getSaveBlob(options) {
-    const stream = await this.videoInfo.download({
-      type: 'video+audio',
-      quality: 'best',
-      format: 'mp4',
-    });
+    try {
+      return await super.getSaveBlob(options);
+    } catch (e) {
+      console.warn(e);
+      const stream = await this.videoInfo.download({
+        type: 'video+audio',
+        quality: 'best',
+        format: 'mp4',
+      });
 
-    const blob = await (new Response(stream)).blob();
-    return {
-      extension: 'mp4',
-      blob: blob,
-    };
+      const blob = await (new Response(stream)).blob();
+      return {
+        extension: 'mp4',
+        blob: blob,
+      };
+    }
   }
   // SPLICER:CENSORYT:REMOVE_END
 }

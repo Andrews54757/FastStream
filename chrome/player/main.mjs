@@ -79,11 +79,11 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
                 todo++;
                 const headers = sub.headers || [];
                 const customHeaderCommands = headers.filter((header) => {
-                  return header.name === 'Origin' || header.name === 'Referer';
+                  return header.name.toLowerCase() === 'origin' || header.name.toLowerCase() === 'referer';
                 }).map((header) => {
                   return {
                     operation: 'set',
-                    header: header.name,
+                    header: header.name.toLowerCase(),
                     value: header.value,
                   };
                 });
@@ -93,7 +93,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
                   url: sub.source,
                   commands: customHeaderCommands,
                 }).then(() => {
-                  RequestUtils.simpleRequest(sub.source, (err, req, body) => {
+                  RequestUtils.requestSimple(sub.source, (err, req, body) => {
                     if (!err && body) {
                       sub.data = body;
                     }

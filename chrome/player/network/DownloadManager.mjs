@@ -20,6 +20,23 @@ export class DownloadManager {
     this.failed = 0;
   }
 
+  getCompletedEntries() {
+    const entries = [];
+    this.storage.forEach((entry) => {
+      if (entry.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+        entries.push(entry);
+      }
+    });
+    return entries;
+  }
+
+  setEntries(entries) {
+    entries.forEach((entry) => {
+      const identifier = this.getIdentifier(entry);
+      this.storage.set(identifier, entry);
+    });
+  }
+
   canGetFile(details) {
     const key = this.getIdentifier(details);
     const storedEntry = this.storage.get(key);
@@ -223,7 +240,11 @@ export class DownloadManager {
 
   reset() {
     this.abortAll();
-    this.clearStorage();
+
+    if (!this.dontClearStorage) {
+      this.clearStorage();
+    }
+
     this.testing = true;
     this.downloaders = [];
     this.speedTestBuffer = [];
@@ -234,6 +255,10 @@ export class DownloadManager {
     this.failed = 0;
 
     this.downloaders.push(new StandardDownloader(this));
+  }
+
+  resetOverride(value) {
+    this.dontClearStorage = value;
   }
 
   clearStorage() {

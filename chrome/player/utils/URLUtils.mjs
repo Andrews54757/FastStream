@@ -63,12 +63,11 @@ export class URLUtils {
     return true;
   }
 
-
   static objToHeadersString(obj) {
     let str = '';
     for (const name in obj) {
       if (Object.hasOwn(obj, name)) {
-        str += `${name}: ${obj[name]}\n`;
+        str += `${name.toLowerCase()}: ${obj[name]}\n`;
       }
     }
     return str;
@@ -81,7 +80,7 @@ export class URLUtils {
       const line = lines[i];
       const split = line.split(':');
       if (split.length > 1) {
-        obj[split[0].trim()] = split.slice(1).join(':').trim();
+        obj[split[0].trim().toLowerCase()] = split.slice(1).join(':').trim();
       }
     }
     return obj;

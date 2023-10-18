@@ -1,17 +1,17 @@
 import {PlayerModes} from './enums/PlayerModes.mjs';
 
 const headerWhitelist = [
-  'Origin',
-  'Referer',
-  'Authorization',
-  'Cache-Control',
-  'Cookie',
-  'Proxy-Authorization',
+  'origin',
+  'referer',
+  'authorization',
+  'cache-control',
+  'cookie',
+  'proxy-authorization',
 ];
 
 const redirectHeaders = [
-  'Origin',
-  'Referer',
+  'origin',
+  'referer',
 ];
 
 
@@ -37,6 +37,7 @@ export class VideoSource {
     }
 
     this.headers = this.filterHeaders(this.headers);
+    this.defaultLevelInfo = null;
   }
 
   fromFile(file) {
@@ -56,14 +57,14 @@ export class VideoSource {
   filterHeaders(headers) {
     const filteredHeaders = {};
     for (const key in headers) {
-      if (!headerWhitelist.includes(key)) {
+      if (!headerWhitelist.includes(key.toLowerCase())) {
         continue;
       }
 
-      if (redirectHeaders.includes(key)) {
-        filteredHeaders['x-faststream-setheader-' + key] = headers[key];
+      if (redirectHeaders.includes(key.toLowerCase())) {
+        filteredHeaders['x-faststream-setheader-' + key.toLowerCase()] = headers[key];
       } else {
-        filteredHeaders[key] = headers[key];
+        filteredHeaders[key.toLowerCase()] = headers[key];
       }
     }
     return filteredHeaders;
@@ -94,6 +95,7 @@ export class VideoSource {
   copy() {
     const newsource = new VideoSource(this.url, {}, this.mode);
     newsource.identifier = this.identifier;
+    newsource.defaultLevelInfo = this.defaultLevelInfo;
     newsource.headers = {...this.headers};
     return newsource;
   }

@@ -622,16 +622,24 @@ export class FastStreamClient extends EventEmitter {
 
   bindPlayer(player) {
     this.context = player.createContext();
-
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
+      const source = player.getSource();
       console.log('MANIFEST_PARSED', maxLevel, maxAudioLevel);
       if (maxLevel !== undefined) {
-        this.currentLevel = maxLevel;
+        if (source.defaultLevelInfo?.level !== undefined) {
+          this.currentLevel = source.defaultLevelInfo.level;
+        } else {
+          this.currentLevel = maxLevel;
+        }
       } else {
         console.warn('No recommended level found');
       }
       if (maxAudioLevel !== undefined) {
-        this.currentAudioLevel = maxAudioLevel;
+        if (source.defaultLevelInfo?.audio !== undefined) {
+          this.currentAudioLevel = source.defaultLevelInfo.audio;
+        } else {
+          this.currentAudioLevel = maxAudioLevel;
+        }
       }
 
       this.player.load();

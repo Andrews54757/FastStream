@@ -2,6 +2,8 @@ import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
+import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
+import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
@@ -617,9 +619,8 @@ export class InterfaceController {
       'xml',
     ];
 
-
-    let src = null;
-    let mode = PlayerModes.DIRECT;
+    let newSource = null;
+    let newEntries = null;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       const ext = URLUtils.get_url_extension(file.name);
@@ -637,21 +638,49 @@ export class InterfaceController {
           name: file.name.substring(0, file.name.length - 4),
         });
       } else if (audioFormats.includes(ext)) {
-        src = file;
-        mode = PlayerModes.DIRECT;
+        newSource = new VideoSource(window.URL.createObjectURL(file), {}, PlayerModes.DIRECT);
       } else if (URLUtils.getModeFromExtension(ext)) {
-        src = file;
-        mode = URLUtils.getModeFromExtension(ext);
-
+        let mode = URLUtils.getModeFromExtension(ext);
         if (mode === PlayerModes.ACCELERATED_MP4) {
           mode = PlayerModes.DIRECT;
+        }
+        newSource = new VideoSource(window.URL.createObjectURL(file), {}, mode);
+      } else if (ext === 'fsa') {
+        const buffer = await RequestUtils.httpGetLarge(window.URL.createObjectURL(file));
+        try {
+          const {source, entries, currentLevel, currentAudioLevel} = await FastStreamArchiveUtils.parseFSA(buffer, (progress)=>{
+            this.setStatusMessage('download', `Loading archive... ${Math.round(progress * 100)}%`, 'info');
+          });
+
+          newEntries = entries;
+
+          newSource = new VideoSource(source.url, null, source.mode);
+          newSource.identifier = source.identifier;
+          newSource.headers = source.headers;
+          newSource.defaultLevelInfo = {
+            level: currentLevel,
+            audioLevel: currentAudioLevel,
+          };
+
+          this.setStatusMessage('download', `Loaded archive!`, 'info', 2000);
+        } catch (e) {
+          console.error(e);
+          this.setStatusMessage('download', `Failed to load archive!`, 'error', 2000);
         }
       }
     }
 
-    if (src) {
-      const source = new VideoSource(src, {}, mode);
-      await this.client.addSource(source, true);
+    if (newSource) {
+      if (newEntries) {
+        this.client.downloadManager.resetOverride(true);
+        this.client.downloadManager.setEntries(newEntries);
+      }
+
+      await this.client.addSource(newSource, true);
+
+      if (newEntries) {
+        this.client.downloadManager.resetOverride(false);
+      }
     }
 
     (await Promise.all(captions.map(async (file) => {
@@ -748,7 +777,7 @@ export class InterfaceController {
     }
   }
 
-  async saveVideo() {
+  async saveVideo(e) {
     if (!this.client.player) {
       alert('No video loaded!');
       return;
@@ -782,6 +811,11 @@ export class InterfaceController {
       return;
     }
 
+    if (e.shiftKey) {
+      this.dumpBuffer(name);
+      return;
+    }
+
     let url;
     if (this.reuseDownloadURL && this.downloadURL && isComplete) {
       url = this.downloadURL;
@@ -800,6 +834,10 @@ export class InterfaceController {
         console.error(e);
         this.setStatusMessage('save-video', `Failed to save video!`, 'error', 2000);
         this.makingDownload = false;
+
+        if (confirm('Failed to save video!\nWould you like to archive the player\'s buffer storage instead?\n- Drag and drop archive file on player to load it')) {
+          this.dumpBuffer(name);
+        }
         return;
       }
       this.setStatusMessage('save-video', `Save complete!`, 'info', 2000);
@@ -834,6 +872,26 @@ export class InterfaceController {
     link.click();
     document.body.removeChild(link);
   }
+
+  async dumpBuffer(name) {
+    const entries = this.client.downloadManager.getCompletedEntries();
+    const archiveBlob = await FastStreamArchiveUtils.writeFSABlob(this.client.player, entries, (progress)=>{
+      this.setStatusMessage('save-video', `Archiving ${Math.round(progress * 100)}%`, 'info');
+    });
+
+    const url = URL.createObjectURL(archiveBlob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', name + '.fsa');
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    this.setStatusMessage('save-video', `Archive saved!`, 'info', 2000);
+  }
+
   updateMarkers() {
     const pastSeeks = this.client.pastSeeks;
     const duration = this.client.duration;

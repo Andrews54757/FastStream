@@ -175,7 +175,7 @@ export class SubtitlesManager {
       const url = prompt('Enter URL');
 
       if (url) {
-        RequestUtils.simpleRequest(url, (err, req, body) => {
+        RequestUtils.requestSimple(url, (err, req, body) => {
           if (body) {
             const track = new SubtitleTrack('URL Track', null);
             track.loadText(body);

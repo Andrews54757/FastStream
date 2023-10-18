@@ -1,3 +1,6 @@
+import {LargeBuffer} from '../modules/LargeBuffer.mjs';
+import {URLUtils} from './URLUtils.mjs';
+
 export class RequestUtils {
   static request(options) {
     return new Promise(async (resolve, reject) => {
@@ -71,48 +74,79 @@ export class RequestUtils {
     });
   }
 
-  static simpleRequest(...args) {
-    const url = args[0];
-    let post = undefined;
-    let callback;
-    let bust = false;
-
-    if (args[2]) { // post
-      post = args[1];
-      callback = args[2];
-      bust = args[3];
-    } else {
-      callback = args[1];
-      bust = args[2];
-    }
-    try {
-      const xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); // IE support
-      xhr.open(post ? 'POST' : 'GET', url + (bust ? ('?' + Date.now()) : ''));
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4) {
-          if (xhr.status === 200) {
-            callback(undefined, xhr, xhr.responseText);
-          } else {
-            callback(true, xhr, false);
-          }
-        }
+  static async requestSimple(details, callback) {
+    if (typeof details === 'string') {
+      details = {
+        url: details,
       };
-      if (post) {
-        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-        const toPost = [];
-        for (const i in post) {
-          if (Object.hasOwn(post, i)) {
-            toPost.push(encodeURIComponent(i) + '=' + encodeURIComponent(post[i]));
-          }
-        }
-
-        post = toPost.join('&');
-      }
-
-      xhr.send(post);
-    } catch (e) {
-      callback(e);
     }
+    // use request()
+    let xhr;
+    try {
+      xhr = await this.request(details);
+    } catch (e) {
+      console.warn(e);
+      callback(e, xhr, false);
+      return;
+    }
+
+    // check error
+    if (xhr.status !== 200 && xhr.status !== 206) {
+      callback(true, xhr, false);
+      return;
+    }
+
+    // success
+    callback(undefined, xhr, xhr.responseText);
+  }
+
+  static async httpGetLarge(source) {
+    const fragSize = 1e9 / 2;
+    const buffer = new LargeBuffer();
+
+    const headersXHR = await this.request({
+      url: source,
+      responseType: 'arraybuffer',
+      range: {
+        start: 0,
+        end: 1,
+      },
+    });
+
+    if (headersXHR.status !== 200 && headersXHR.status !== 206) {
+      throw new Error('Bad status code');
+    }
+
+    const headers = URLUtils.headersStringToObj(headersXHR.getAllResponseHeaders());
+    const range = headers['content-range'];
+    if (!range) {
+      throw new Error('No content-range header');
+    }
+
+    const s = range.split('/');
+    const contentLength = parseInt(s[1]);
+    if (!contentLength) {
+      throw new Error('No content length');
+    }
+
+    const fragCount = Math.ceil(contentLength / fragSize);
+    await Promise.all((new Array(fragCount)).fill(0).map(async (_, i) => {
+      const start = i * fragSize;
+      const end = Math.min(i * fragSize + fragSize - 1, contentLength - 1);
+      const xhr = await this.request({
+        url: source,
+        responseType: 'arraybuffer',
+        range: {
+          start,
+          end,
+        },
+      });
+      if (xhr.status !== 200 && xhr.status !== 206) {
+        throw new Error('Bad status code');
+      }
+      buffer.append(xhr.response, i);
+    }));
+
+    return buffer;
   }
 }

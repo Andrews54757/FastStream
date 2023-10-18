@@ -2,7 +2,6 @@ import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {Hls} from '../hls.mjs';
-
 const {ExpGolomb, Mp4Sample} = Hls.Muxers;
 
 export class DASH2MP4 extends EventEmitter {
@@ -99,56 +98,59 @@ export class DASH2MP4 extends EventEmitter {
       videoInitSegment.fileStart = 0;
       file.appendBuffer(videoInitSegment);
       file.flush();
+      if (file.moov) {
+        const trak = file.moov.traks[0];
+        const timescale = trak.mdia.mdhd.timescale;
+        this.videoTrack = {
+          type: 'video',
+          id: 1,
+          timescale: timescale,
+          duration: videoDuration,
+          width: trak.tkhd.width >> 16,
+          height: trak.tkhd.height >> 16,
+          pixelRatio: [1, 1],
+          sps: [],
+          pps: [],
+          // segmentCodec: null,
+          // codec: null,
+          // config: null,
+          // channelCount: null,
+          // sampleRate: null,
+          samples: [],
+          chunks: [],
+          use64Offsets: false,
+          nextChunkId: 1,
+          elst: [],
+          trexs: file.moov?.mvex?.trexs || [],
+        };
 
-      const trak = file.moov.traks[0];
-      const timescale = trak.mdia.mdhd.timescale;
-      this.videoTrack = {
-        type: 'video',
-        id: 1,
-        timescale: timescale,
-        duration: videoDuration,
-        width: trak.tkhd.width >> 16,
-        height: trak.tkhd.height >> 16,
-        pixelRatio: [1, 1],
-        sps: [],
-        pps: [],
-        // segmentCodec: null,
-        // codec: null,
-        // config: null,
-        // channelCount: null,
-        // sampleRate: null,
-        samples: [],
-        chunks: [],
-        use64Offsets: false,
-        nextChunkId: 1,
-        elst: [],
-        trexs: file.moov?.mvex?.trexs || [],
-      };
+        const avcC = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'avc1').avcC;
+        avcC.PPS.forEach((pps) => {
+          this.videoTrack.pps.push(pps.nalu);
+        });
+        avcC.SPS.forEach((sps) => {
+          this.videoTrack.sps.push(sps.nalu);
+        });
+        const sps = this.videoTrack.sps[0];
+        const expGolombDecoder = new ExpGolomb(sps);
+        const config = expGolombDecoder.readSPS();
 
-      const avcC = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'avc1').avcC;
-      avcC.PPS.forEach((pps) => {
-        this.videoTrack.pps.push(pps.nalu);
-      });
-      avcC.SPS.forEach((sps) => {
-        this.videoTrack.sps.push(sps.nalu);
-      });
-      const sps = this.videoTrack.sps[0];
-      const expGolombDecoder = new ExpGolomb(sps);
-      const config = expGolombDecoder.readSPS();
-
-      this.videoTrack.pixelRatio = config.pixelRatio;
-      this.videoTrack.width = config.width;
-      this.videoTrack.height = config.height;
-      const codecarray = sps.subarray(1, 4);
-      let codecstring = 'avc1.';
-      for (let i = 0; i < 3; i++) {
-        let h = codecarray[i].toString(16);
-        if (h.length < 2) {
-          h = '0' + h;
+        this.videoTrack.pixelRatio = config.pixelRatio;
+        this.videoTrack.width = config.width;
+        this.videoTrack.height = config.height;
+        const codecarray = sps.subarray(1, 4);
+        let codecstring = 'avc1.';
+        for (let i = 0; i < 3; i++) {
+          let h = codecarray[i].toString(16);
+          if (h.length < 2) {
+            h = '0' + h;
+          }
+          codecstring += h;
         }
-        codecstring += h;
+        this.videoTrack.codec = codecstring;
+      } else {
+        throw new Error('Video is not an mp4!');
       }
-      this.videoTrack.codec = codecstring;
     }
 
     if (audioDuration) {
@@ -156,26 +158,30 @@ export class DASH2MP4 extends EventEmitter {
       audioInitSegment.fileStart = 0;
       file.appendBuffer(audioInitSegment);
       file.flush();
-      const trak = file.moov.traks[0];
-      const timescale = trak.mdia.mdhd.timescale;
-      const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'mp4a');
-      this.audioTrack = {
-        type: 'audio',
-        id: 2,
-        timescale: timescale,
-        duration: audioDuration,
-        segmentCodec: null,
-        codec: mp4a.getCodec(),
-        esds: mp4a.esds.data,
-        channelCount: mp4a.channel_count,
-        sampleRate: mp4a.samplerate,
-        samples: [],
-        chunks: [],
-        use64Offsets: false,
-        nextChunkId: 1,
-        elst: [],
-        trexs: file.moov?.mvex?.trexs || [],
-      };
+      if (file.moov) {
+        const trak = file.moov.traks[0];
+        const timescale = trak.mdia.mdhd.timescale;
+        const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'mp4a');
+        this.audioTrack = {
+          type: 'audio',
+          id: 2,
+          timescale: timescale,
+          duration: audioDuration,
+          segmentCodec: null,
+          codec: mp4a.getCodec(),
+          esds: mp4a.esds.data,
+          channelCount: mp4a.channel_count,
+          sampleRate: mp4a.samplerate,
+          samples: [],
+          chunks: [],
+          use64Offsets: false,
+          nextChunkId: 1,
+          elst: [],
+          trexs: file.moov?.mvex?.trexs || [],
+        };
+      } else {
+        throw new Error('Audio is not an mp4!');
+      }
     }
 
     this.prevFrag = null;
