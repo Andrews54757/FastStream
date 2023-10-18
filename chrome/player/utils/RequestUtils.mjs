@@ -101,8 +101,7 @@ export class RequestUtils {
   }
 
   static async httpGetLarge(source) {
-    const fragSize = 1e9 / 2;
-    const buffer = new LargeBuffer();
+    const fragSize = 1e9 / 4;
 
     const headersXHR = await this.request({
       url: source,
@@ -130,7 +129,11 @@ export class RequestUtils {
     }
 
     const fragCount = Math.ceil(contentLength / fragSize);
-    await Promise.all((new Array(fragCount)).fill(0).map(async (_, i) => {
+    const buffer = new LargeBuffer(contentLength, fragCount);
+    await buffer.initialize(async (i) => {
+      if (i >= fragCount) {
+        throw new Error('Fragment index ' + i + ' out of range');
+      }
       const start = i * fragSize;
       const end = Math.min(i * fragSize + fragSize - 1, contentLength - 1);
       const xhr = await this.request({
@@ -144,8 +147,8 @@ export class RequestUtils {
       if (xhr.status !== 200 && xhr.status !== 206) {
         throw new Error('Bad status code');
       }
-      buffer.append(xhr.response, i);
-    }));
+      return new Uint8Array(xhr.response);
+    });
 
     return buffer;
   }

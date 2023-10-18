@@ -1,68 +1,93 @@
 export class LargeBuffer {
-  constructor() {
-    this.buffers = [];
-    this.reset();
-  }
-  reset() {
-    this.buffers.length = 0;
+  constructor(byteLength, bufferLength) {
+    this.byteLength = byteLength;
+    this.bufferLength = bufferLength;
+    this.currentBuffer = null;
+    this.nextPreloadedBuffer = null;
     this.offset = 0;
     this.index = 0;
     this.bufferIndex = 0;
-    this.byteLength = 0;
   }
-  getViews(length) {
+
+  async initialize(getBufferFn) {
+    this.getBuffer = getBufferFn;
+    this.nextPreloadedBuffer = this.getBuffer(this.bufferIndex);
+    return this.nextBuffer();
+  }
+
+  async nextBuffer() {
+    this.index = 0;
+    this.bufferIndex++;
+    const preloaded = this.nextPreloadedBuffer;
+    if (this.bufferIndex < this.bufferLength) {
+      this.nextPreloadedBuffer = this.getBuffer(this.bufferIndex);
+    }
+    this.currentBuffer = await preloaded;
+  }
+
+  async getViews(length) {
     const views = [];
     this.offset += length;
+    if (this.offset > this.byteLength) {
+      throw new Error('Index ' + this.offset + ' out of range');
+    }
+
     while (length > 0) {
-      if (this.index >= this.buffers[this.bufferIndex].byteLength) {
-        this.index = 0;
-        this.buffers[this.bufferIndex] = null;
-        this.bufferIndex++;
+      if (this.index >= this.currentBuffer.byteLength) {
+        await this.nextBuffer();
       }
 
-      if (!this.buffers[this.bufferIndex]) {
-        throw new Error('Index ' + this.index + ' out of range');
+      if (!this.currentBuffer) {
+        throw new Error('Buffer ' + this.bufferIndex + ' not found');
       }
-      // console.log(this.buffers[this.bufferIndex])
 
-      const newlen = Math.min(this.buffers[this.bufferIndex].byteLength - this.index, length);
-      views.push(new DataView(this.buffers[this.bufferIndex].buffer, this.index, newlen));
+      const newlen = Math.min(this.currentBuffer.byteLength - this.index, length);
+      views.push(new DataView(this.currentBuffer.buffer, this.index, newlen));
 
       this.index += newlen;
       length = length - newlen;
     }
     return views;
   }
-  uint8() {
-    if (this.index >= this.buffers[this.bufferIndex].byteLength) {
-      this.index = 0;
-      this.buffers[this.bufferIndex] = null;
-      this.bufferIndex++;
-    }
-    if (!this.buffers[this.bufferIndex]) {
-      throw new Error('Index ' + this.index + ' out of range');
-    }
-    this.offset++;
-    return this.buffers[this.bufferIndex][this.index++];
-  }
-  uint16() {
-    return (this.uint8() << 8) | this.uint8();
-  }
-  uint32() {
-    return ((this.uint8() << 24) | (this.uint8() << 16) | (this.uint8() << 8) | this.uint8()) >>> 0;
-  }
 
-  read(size) {
-    const uint8 = new Uint8Array(size);
-    for (let i = 0; i < size; i++) {
-      uint8[i] = this.uint8();
+  async read(length) {
+    const uint8 = new Uint8Array(length);
+    let offset = 0;
+    this.offset += length;
+    if (this.offset > this.byteLength) {
+      throw new Error('Index ' + this.offset + ' out of range');
     }
+
+    while (length > 0) {
+      if (this.index >= this.currentBuffer.byteLength) {
+        await this.nextBuffer();
+      }
+
+      if (!this.currentBuffer) {
+        throw new Error('Buffer ' + this.bufferIndex + ' not found');
+      }
+
+      const newlen = Math.min(this.currentBuffer.byteLength - this.index, length);
+      for (let i = 0; i < newlen; i++) {
+        uint8[offset++] = this.currentBuffer[this.index++];
+      }
+      length = length - newlen;
+    }
+
     return uint8;
   }
 
-  append(buffer, index) {
-    this.byteLength += buffer.byteLength;
-    if (index === undefined) index = this.buffers.length;
-    this.buffers[index] = new Uint8Array(buffer);
+  async uint8() {
+    return (await this.read(1))[0];
+  }
+
+  async uint16() {
+    const arr = await this.read(2);
+    return (arr[0] << 8) | arr[1];
+  }
+
+  async uint32() {
+    const arr = await this.read(4);
+    return (arr[0] << 24) | (arr[1] << 16) | (arr[2] << 8) | arr[3];
   }
 }
