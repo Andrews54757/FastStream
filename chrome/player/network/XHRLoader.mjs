@@ -51,6 +51,7 @@ export class XHRLoader {
   /** Abort any loading in progress. */
   abort() {
     if (this.callbacks !== null) {
+      this.callbacks = null;
       this.abortInternal();
     }
   };
@@ -65,7 +66,6 @@ export class XHRLoader {
 
   abortInternal() {
     const loader = this.loader;
-    this.callbacks = null;
     self.clearTimeout(this.requestTimeout);
     self.clearTimeout(this.retryTimeout);
     if (loader) {
@@ -276,11 +276,11 @@ export class XHRLoader {
         this.loadInternal.bind(this),
         this.retryDelay,
     );
-    // set exponential backoff
-    this.retryDelay = Math.min(
-        2 * this.retryDelay,
-        config.maxRetryDelay,
-    );
+    // // set exponential backoff
+    // this.retryDelay = Math.min(
+    //     2 * this.retryDelay,
+    //     config.maxRetryDelay,
+    // );
     stats.retry++;
   }
 

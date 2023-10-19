@@ -26,6 +26,7 @@ export class FastStreamClient extends EventEmitter {
       bufferBehind: 20,
       freeFragments: true,
       downloadAll: false,
+      freeUnusedChannels: true,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -87,6 +88,7 @@ export class FastStreamClient extends EventEmitter {
         });
       }
     }
+    this.interfaceController.updateFragmentsLoaded();
   }
 
   destroy() {
@@ -100,6 +102,7 @@ export class FastStreamClient extends EventEmitter {
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
     this.options.downloadAll = options.downloadAll;
+    this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
 
     this.options.videoBrightness = options.videoBrightness;
@@ -867,31 +870,15 @@ export class FastStreamClient extends EventEmitter {
     }
     this.videoAnalyzer.setLevel(value);
 
-    if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
+    if (this.options.freeUnusedChannels && value !== previousLevel && this.fragmentsStore[previousLevel]) {
       this.fragmentsStore[previousLevel].forEach((fragment, i) => {
         if (i === -1) return;
         this.freeFragment(fragment);
       });
     }
 
-    const currentLevel = this.currentLevel;
-    const currentAudioLevel = this.currentAudioLevel;
-
-    // Reset all fragments to waiting in case some have failed.
-    if (this.fragmentsStore[currentLevel]) {
-      this.fragmentsStore[currentLevel].forEach((fragment, i) => {
-        if (i === -1) return;
-        fragment.status = DownloadStatus.WAITING;
-      });
-    }
-
-    if (this.fragmentsStore[currentAudioLevel]) {
-      this.fragmentsStore[currentAudioLevel].forEach((fragment, i) => {
-        if (i === -1) return;
-        fragment.status = DownloadStatus.WAITING;
-      });
-    }
-
+    // Reset failed fragments
+    this.resetFailed();
     this.updateQualityLevels();
   }
 

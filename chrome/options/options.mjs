@@ -7,6 +7,7 @@ const analyzeVideos = document.getElementById('analyzevideos');
 const playStreamURLs = document.getElementById('playstreamurls');
 const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
+const freeUnusedChannels = document.getElementById('freeunusedchannels');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
 const autoSub = document.getElementById('autosub');
@@ -23,6 +24,7 @@ async function loadOptions(newOptions) {
   options = JSON.parse(newOptions) || {};
 
   downloadAll.checked = !!options.downloadAll;
+  freeUnusedChannels.checked = !!options.freeUnusedChannels;
   analyzeVideos.checked = !!options.analyzeVideos;
   playStreamURLs.checked = !!options.playStreamURLs;
   playMP4URLs.checked = !!options.playMP4URLs;
@@ -170,6 +172,11 @@ analyzeVideos.addEventListener('change', () => {
 
 downloadAll.addEventListener('change', () => {
   options.downloadAll = downloadAll.checked;
+  optionChanged();
+});
+
+freeUnusedChannels.addEventListener('change', () => {
+  options.freeUnusedChannels = freeUnusedChannels.checked;
   optionChanged();
 });
 

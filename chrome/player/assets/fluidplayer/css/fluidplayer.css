@@ -820,6 +820,25 @@ body {
     color: var(--status-warning-color);
 }
 
+.reset_failed {
+    color: var(--status-error-color);
+    display: inline-block;
+    height: 24px;
+    line-height: 22px;
+    vertical-align: top;
+    font-size: 13px;
+    margin-left: 2px;
+    flex: 0 1 auto;
+    padding: 0px 3px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reset_failed:focus,
+.reset_failed:hover {
+    outline: 1px solid var(--status-error-color);
+}
+
 
 .spinner {
     background-image: url("../static/fluid-spinner.svg");

@@ -5,6 +5,7 @@ export const DefaultOptions = {
   playStreamURLs: true,
   analyzeVideos: true,
   downloadAll: true,
+  freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
   autoEnableURLs: [],
   keybinds: DefaultKeybinds,

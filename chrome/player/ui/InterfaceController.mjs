@@ -116,6 +116,7 @@ export class InterfaceController {
     this.setStatusMessage('error', reason, 'error');
     this.setBuffering(false);
   }
+
   setBuffering(isBuffering) {
     if (this.failed) {
       isBuffering = false;
@@ -154,6 +155,7 @@ export class InterfaceController {
     let i = 0;
     let total = 0;
     let loaded = 0;
+    let failed = 0;
     let currentTime = -1;
     const results = [];
     while (i < fragments.length) {
@@ -192,6 +194,7 @@ export class InterfaceController {
         loaded++;
         entry.statusClass = 'download-complete';
       } else if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
+        failed++;
         entry.statusClass = 'download-failed';
       }
 
@@ -205,6 +208,8 @@ export class InterfaceController {
         total++;
         if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
           loaded++;
+        } else if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
+          failed++;
         }
       }
 
@@ -212,7 +217,7 @@ export class InterfaceController {
       entry.width = end - start;
     }
     return {
-      results, total, loaded,
+      results, total, loaded, failed,
     };
   }
 
@@ -256,13 +261,14 @@ export class InterfaceController {
     }
   }
   renderProgressBar(cache, fragments, additionalClass = null) {
-    const {results, total, loaded} = this.collectProgressbarData(fragments);
+    const {results, total, loaded, failed} = this.collectProgressbarData(fragments);
 
     this.updateProgressBar(cache, results, additionalClass);
 
     return {
       total,
       loaded,
+      failed,
     };
   }
   updateFragmentsLoaded() {
@@ -280,17 +286,20 @@ export class InterfaceController {
 
     let total = 0;
     let loaded = 0;
+    let failed = 0;
 
     if (fragments) {
       const result = this.renderProgressBar(this.progressCache, fragments, audioFragments ? 'download-video' : null);
       total += result.total;
       loaded += result.loaded;
+      failed += result.failed;
     }
 
     if (audioFragments) {
       const result = this.renderProgressBar(this.progressCacheAudio, audioFragments, fragments ? 'download-audio' : null);
       total += result.total;
       loaded += result.loaded;
+      failed += result.failed;
     }
 
     if (total === 0) {
@@ -306,7 +315,14 @@ export class InterfaceController {
     if (percentDone < 100) {
       this.setStatusMessage('download', `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`, 'success');
     } else {
-      this.setStatusMessage('download', `100% Downloaded`, 'success');
+      this.setStatusMessage('download', `100% Buffered`, 'success');
+    }
+
+    if (failed > 0) {
+      DOMElements.resetFailed.style.display = '';
+      DOMElements.resetFailed.textContent = `${failed} Fragment${failed === 1 ? '' : 's'} Failed! Click to Retry.`;
+    } else {
+      DOMElements.resetFailed.style.display = 'none';
     }
   }
 
@@ -439,6 +455,12 @@ export class InterfaceController {
     });
 
     WebUtils.setupTabIndex(DOMElements.hideButton);
+
+    DOMElements.resetFailed.addEventListener('click', (e) => {
+      this.client.resetFailed();
+      e.stopPropagation();
+    });
+    WebUtils.setupTabIndex(DOMElements.resetFailed);
 
     DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
 
@@ -649,7 +671,7 @@ export class InterfaceController {
         const buffer = await RequestUtils.httpGetLarge(window.URL.createObjectURL(file));
         try {
           const {source, entries, currentLevel, currentAudioLevel} = await FastStreamArchiveUtils.parseFSA(buffer, (progress)=>{
-            this.setStatusMessage('download', `Loading archive... ${Math.round(progress * 100)}%`, 'info');
+            this.setStatusMessage('save-video', `Loading archive... ${Math.round(progress * 100)}%`, 'info');
           });
 
           newEntries = entries;
@@ -662,10 +684,10 @@ export class InterfaceController {
             audioLevel: currentAudioLevel,
           };
 
-          this.setStatusMessage('download', `Loaded archive!`, 'info', 2000);
+          this.setStatusMessage('save-video', `Loaded archive!`, 'info', 2000);
         } catch (e) {
           console.error(e);
-          this.setStatusMessage('download', `Failed to load archive!`, 'error', 2000);
+          this.setStatusMessage('save-video', `Failed to load archive!`, 'error', 2000);
         }
       }
     }
@@ -676,7 +698,11 @@ export class InterfaceController {
         this.client.downloadManager.setEntries(newEntries);
       }
 
-      await this.client.addSource(newSource, true);
+      try {
+        await this.client.addSource(newSource, true);
+      } catch (e) {
+        console.error(e);
+      }
 
       if (newEntries) {
         this.client.downloadManager.resetOverride(false);
