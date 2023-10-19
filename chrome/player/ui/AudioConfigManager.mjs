@@ -359,9 +359,9 @@ export class AudioConfigManager extends EventEmitter {
       e.stopPropagation();
     });
 
-    // DOMElements.playerContainer.addEventListener('click', (e) => {
-    //   this.closeUI();
-    // });
+    DOMElements.playerContainer.addEventListener('click', (e) => {
+      this.closeUI();
+    });
 
     DOMElements.audioConfigBtn.addEventListener('click', (e) => {
       if (DOMElements.audioConfigContainer.style.display === 'none') {

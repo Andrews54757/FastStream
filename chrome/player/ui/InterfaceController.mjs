@@ -511,6 +511,10 @@ export class InterfaceController {
     DOMElements.markerContainer.appendChild(this.analyzerMarker);
     this.analyzerMarker.style.display = 'none';
 
+    DOMElements.controlsContainer.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+
     // eslint-disable-next-line new-cap
     Coloris({
       theme: 'pill',
