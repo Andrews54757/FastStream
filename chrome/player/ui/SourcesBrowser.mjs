@@ -11,6 +11,7 @@ export class SourcesBrowser {
 
     this.sources = [];
     this.setupUI();
+    this.addSource(new VideoSource('', null, PlayerModes.AUTO), true);
   }
 
   addSource(source, force = false) {
@@ -146,12 +147,19 @@ export class SourcesBrowser {
   }
 
   updateSources() {
-    if (this.sources.length == 0) {
-      this.linkui.sourcesFound.textContent = 'No Sources Found';
-    } else if (this.sources.length == 1) {
-      this.linkui.sourcesFound.textContent = '1 Source Found';
+    let sourceLen = 0;
+    this.sources.forEach((source) => {
+      if (source.url) {
+        sourceLen++;
+      }
+    });
+
+    if (sourceLen == 0) {
+      this.linkui.sourcesFound.textContent = 'No Sources Listed';
+    } else if (sourceLen == 1) {
+      this.linkui.sourcesFound.textContent = '1 Source Listed';
     } else {
-      this.linkui.sourcesFound.textContent = this.sources.length + ' Sources Found';
+      this.linkui.sourcesFound.textContent = sourceLen + ' Sources Listed';
     }
     this.sources.forEach((source) => {
       if (this.client.source && this.client.source.equals(source)) {
