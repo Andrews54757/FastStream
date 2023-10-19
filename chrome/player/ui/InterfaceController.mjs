@@ -766,7 +766,7 @@ export class InterfaceController {
       return;
     }
 
-    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + StringUtils.formatTime(this.client.currentTime) + '.png';
+    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + StringUtils.formatTime(this.client.currentTime);
     const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
@@ -790,7 +790,7 @@ export class InterfaceController {
       // const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.setAttribute('href', url);
-      link.setAttribute('download', name);
+      link.setAttribute('download', name + '.png');
       link.setAttribute('target', '_blank');
       document.body.appendChild(link);
       link.click();
