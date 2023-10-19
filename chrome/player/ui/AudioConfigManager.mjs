@@ -1149,18 +1149,26 @@ export class AudioConfigManager extends EventEmitter {
     const typesThatUseQ = ['lowpass', 'highpass', 'bandpass', 'peaking', 'notch'];
 
     function nodeToString(node) {
-      let str = `${StringUtils.formatFrequency(node.frequency.value)}Hz ${node.type}`;
-
+      const header = `${node.type.charAt(0).toUpperCase() + node.type.substring(1)} node at ${StringUtils.formatFrequency(node.frequency.value)}Hz`;
+      const lines = [header];
+      const description = [];
+      const instructions = ['Double click to change type'];
 
       if (typesThatUseGain.includes(node.type)) {
-        str += ` ${node.gain.value.toFixed(1)}dB`;
+        description.push(`Gain: ${node.gain.value.toFixed(1)}dB`);
       }
 
       if (typesThatUseQ.includes(node.type)) {
-        str += ` Q=${node.Q.value.toFixed(3)}`;
+        description.push(`Q: ${node.Q.value.toFixed(3)}`);
+        instructions.push('Scroll to change Q');
       }
 
-      return str;
+      if (description.length > 0) {
+        lines.push(description.join(' '));
+      }
+
+      lines.push(instructions.join('\r\n'));
+      return lines.join('\r\n');
     }
 
     const sampleRate = this.preAnalyser.context.sampleRate;
@@ -1171,7 +1179,6 @@ export class AudioConfigManager extends EventEmitter {
       const gainDb = Utils.clamp(node.gain.value, -20, 20) / 40;
 
       const tooltipText = WebUtils.create('div', null, 'tooltiptext');
-      tooltipText.textContent = nodeToString(node);
       el.appendChild(tooltipText);
 
       el.style.left = `${frequencyPercent * 100}%`;
@@ -1180,6 +1187,28 @@ export class AudioConfigManager extends EventEmitter {
       this.ui.equalizerNodes.appendChild(el);
 
       let isDragging = false;
+
+      const updateTooltip = (x, y) => {
+        if (y < 40) {
+          tooltipText.classList.add('down');
+        } else {
+          tooltipText.classList.remove('down');
+        }
+
+        if (x < 80) {
+          tooltipText.classList.add('right');
+        } else {
+          tooltipText.classList.remove('right');
+        }
+
+        if (x > this.ui.equalizerNodes.clientWidth - 80) {
+          tooltipText.classList.add('left');
+        } else {
+          tooltipText.classList.remove('left');
+        }
+
+        tooltipText.textContent = nodeToString(node);
+      };
 
       const mouseMove = (e) => {
         if (!isDragging) return;
@@ -1193,7 +1222,6 @@ export class AudioConfigManager extends EventEmitter {
         const frequency = this.ratioToFrequency(newXPercent / 100);
         const newDB = Utils.clamp(-newYPercent + 50, -50, 50) / 100 * 40;
 
-
         el.style.left = `${newXPercent}%`;
         node.frequency.value = frequency;
         this.currentProfile.equalizerNodes[i].frequency = frequency;
@@ -1205,7 +1233,7 @@ export class AudioConfigManager extends EventEmitter {
         } else {
           el.style.top = '50%';
         }
-        tooltipText.textContent = nodeToString(node);
+        updateTooltip(x, y);
         this.renderEqualizerResponse();
       };
 
@@ -1297,6 +1325,9 @@ export class AudioConfigManager extends EventEmitter {
       });
 
       el.addEventListener('mouseenter', (e) => {
+        const x = e.clientX - this.ui.equalizerNodes.getBoundingClientRect().left;
+        const y = e.clientY - this.ui.equalizerNodes.getBoundingClientRect().top;
+        updateTooltip(x, y);
         el.focus();
       });
 
