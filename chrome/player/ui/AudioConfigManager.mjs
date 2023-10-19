@@ -359,9 +359,9 @@ export class AudioConfigManager extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
-    });
+    // DOMElements.playerContainer.addEventListener('click', (e) => {
+    //   this.closeUI();
+    // });
 
     DOMElements.audioConfigBtn.addEventListener('click', (e) => {
       if (DOMElements.audioConfigContainer.style.display === 'none') {
@@ -1068,7 +1068,21 @@ export class AudioConfigManager extends EventEmitter {
     const yScale = height / 255;
 
     let lastX = -1;
+    let currentSum = 0;
+    const windowSizeHalf = 7;
+    for (let i = 0; i < windowSizeHalf && i < bufferLength; i++) {
+      currentSum += dataArrayPost[i];
+    }
+
     for (let i = 0; i < bufferLength; i++) {
+      if (i + windowSizeHalf < bufferLength) {
+        currentSum += dataArrayPost[i + windowSizeHalf];
+      }
+
+      if (i - windowSizeHalf - 1 >= 0) {
+        currentSum -= dataArrayPost[i - windowSizeHalf - 1];
+      }
+
       const x = Math.log10((i+1) * frequencyWidth / bufferLength, 1) - Math.log10(20);
       const x2 = Math.log10((i+2) * frequencyWidth / bufferLength, 1) - Math.log10(20);
       if (x < 0) continue;
@@ -1078,26 +1092,46 @@ export class AudioConfigManager extends EventEmitter {
       const newX = Math.floor(x * xScale);
       if (newX === lastX) continue;
 
+      const windowSize = Utils.clamp(i + windowSizeHalf, 0, bufferLength) - Utils.clamp(i - windowSizeHalf, 0, bufferLength) + 1;
+      const average = currentSum / windowSize;
+
       const barWidth = Utils.clamp((x2 - x) * xScale / 2, 1, 5);
       const eqResponse = this.equalizerDbResponse?.[Math.min(Math.floor(x / logFrequencyWidth * this.equalizerDbResponse.length), this.equalizerDbResponse.length - 1)] || 0;
+      const peakN = Utils.clamp(Math.max((yPost - average) * 2, 0) + yPost, 0, 255);
+      const color = `rgb(${peakN}, ${255 - peakN}, 255)`;
       if (eqResponse < 0 && yPost < yPre) {
         this.spectrumCtx.fillStyle = `rgba(0, 50, 255, 0.8)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
-        this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
+        this.spectrumCtx.fillStyle = color;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
         this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
       } else if (eqResponse > 0 && yPost > yPre) {
-        this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
+        this.spectrumCtx.fillStyle = color;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
         this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPre * yScale, barWidth, yPre * yScale);
       } else {
-        this.spectrumCtx.fillStyle = `rgb(${yPost}, ${255 - yPost}, 255)`;
+        this.spectrumCtx.fillStyle = color;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
         this.spectrumCtx.fillStyle = `rgba(0, 100, 180, 0.5)`;
         this.spectrumCtx.fillRect(newX, height - yPost * yScale, barWidth, yPost * yScale);
       }
+      // // draw average fill color red
+      // this.spectrumCtx.fillStyle = `rgb(255, 255, 0)`;
+      // this.spectrumCtx.fillRect(newX, height - average * yScale, barWidth, 2);
+
+      // if (yPost > this.spectrumMaximums[i] || this.spectrumMaximumsFreshness[i] > 140) {
+      //   this.spectrumMaximums[i] = yPost;
+      //   this.spectrumMaximumsFreshness[i] = 0;
+      // } else {
+      //   this.spectrumMaximumsFreshness[i] += 1;
+      // }
+      // const timeDiff = this.spectrumMaximumsFreshness[i];
+      // const freshness = timeDiff < 100 ? 1 : 1 - ( ( timeDiff - 100 ) / (140 - 100) );
+      // this.spectrumCtx.fillStyle = `rgba(238, 119, 85, ${freshness})`;
+      // this.spectrumCtx.fillRect(newX, height - this.spectrumMaximums[i] * yScale, barWidth, 2);
+
       lastX = newX;
     }
   }
@@ -1826,6 +1860,9 @@ export class AudioConfigManager extends EventEmitter {
     this.audioSource = this.client.audioSource;
     this.preAnalyser = this.audioContext.createAnalyser();
     this.postAnalyser = this.audioContext.createAnalyser();
+
+    this.spectrumMaximums = new Uint8Array(this.postAnalyser.frequencyBinCount);
+    this.spectrumMaximumsFreshness = new Uint8Array(this.postAnalyser.frequencyBinCount);
 
     this.preAnalyser.smoothingTimeConstant = 0.6;
     this.postAnalyser.smoothingTimeConstant = 0.6;
