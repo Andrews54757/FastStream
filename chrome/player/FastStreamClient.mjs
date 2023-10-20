@@ -3,15 +3,15 @@ import {KeybindManager} from './ui/KeybindManager.mjs';
 import {DownloadManager} from './network/DownloadManager.mjs';
 import {DefaultPlayerEvents} from './enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from './enums/DownloadStatus.mjs';
-import {SubtitlesManager} from './ui/SubtitlesManager.mjs';
+import {SubtitlesManager} from './ui/subtitles/SubtitlesManager.mjs';
 import {VideoAnalyzer} from './analyzer/VideoAnalyzer.mjs';
 import {AnalyzerEvents} from './enums/AnalyzerEvents.mjs';
 import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
-import {SubtitleSyncer} from './ui/SubtitleSyncer.mjs';
+import {SubtitleSyncer} from './ui/subtitles/SubtitleSyncer.mjs';
 import {PlayerLoader} from './players/PlayerLoader.mjs';
 import {DOMElements} from './ui/DOMElements.mjs';
-import {AudioConfigManager} from './ui/AudioConfigManager.mjs';
+import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
 
 
 export class FastStreamClient extends EventEmitter {

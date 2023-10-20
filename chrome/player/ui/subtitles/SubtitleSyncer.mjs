@@ -1,8 +1,8 @@
-import {EventEmitter} from '../modules/eventemitter.mjs';
-import {WebVTT} from '../modules/vtt.mjs';
-import {DOMElements} from './DOMElements.mjs';
-import {WebUtils} from '../utils/WebUtils.mjs';
-import {StringUtils} from '../utils/StringUtils.mjs';
+import {EventEmitter} from '../../modules/eventemitter.mjs';
+import {WebVTT} from '../../modules/vtt.mjs';
+import {DOMElements} from '../DOMElements.mjs';
+import {WebUtils} from '../../utils/WebUtils.mjs';
+import {StringUtils} from '../../utils/StringUtils.mjs';
 
 export class SubtitleSyncer extends EventEmitter {
   constructor(client) {
@@ -175,7 +175,7 @@ export class SubtitleSyncer extends EventEmitter {
       }
     }
 
-    const {VadJS} = await import('../modules/vad/vad.mjs');
+    const {VadJS} = await import('../../modules/vad/vad.mjs');
     this.audioNodeVAD = await VadJS.AudioNodeVAD.new(this.audioContext, this.options);
     this.audioNodeVAD.receive(this.audioSource);
     this.audioNodeVAD.start();

@@ -1,10 +1,10 @@
-import {WebVTT} from '../modules/vtt.mjs';
-import {SubtitleTrack} from '../SubtitleTrack.mjs';
-import {RequestUtils} from '../utils/RequestUtils.mjs';
-import {SubtitleUtils} from '../utils/SubtitleUtils.mjs';
-import {Utils} from '../utils/Utils.mjs';
-import {WebUtils} from '../utils/WebUtils.mjs';
-import {DOMElements} from './DOMElements.mjs';
+import {WebVTT} from '../../modules/vtt.mjs';
+import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {RequestUtils} from '../../utils/RequestUtils.mjs';
+import {SubtitleUtils} from '../../utils/SubtitleUtils.mjs';
+import {Utils} from '../../utils/Utils.mjs';
+import {WebUtils} from '../../utils/WebUtils.mjs';
+import {DOMElements} from '../DOMElements.mjs';
 import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSearch.mjs';
 import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
 

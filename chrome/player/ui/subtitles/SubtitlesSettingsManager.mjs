@@ -1,8 +1,8 @@
-import {Coloris} from '../modules/coloris.mjs';
-import {DefaultSubtitlesSettings} from '../../options/defaults/DefaultSubtitlesSettings.mjs';
-import {EventEmitter} from '../modules/eventemitter.mjs';
-import {DOMElements} from './DOMElements.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {Coloris} from '../../modules/coloris.mjs';
+import {DefaultSubtitlesSettings} from '../../../options/defaults/DefaultSubtitlesSettings.mjs';
+import {EventEmitter} from '../../modules/eventemitter.mjs';
+import {DOMElements} from '../DOMElements.mjs';
+import {Utils} from '../../utils/Utils.mjs';
 
 const COLOR_SETTINGS = ['color', 'background'];
 

@@ -1,9 +1,9 @@
-import {SubtitleTrack} from '../SubtitleTrack.mjs';
-import {EventEmitter} from '../modules/eventemitter.mjs';
-import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
-import {RequestUtils} from '../utils/RequestUtils.mjs';
-import {WebUtils} from '../utils/WebUtils.mjs';
-import {DOMElements} from './DOMElements.mjs';
+import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {EventEmitter} from '../../modules/eventemitter.mjs';
+import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
+import {RequestUtils} from '../../utils/RequestUtils.mjs';
+import {WebUtils} from '../../utils/WebUtils.mjs';
+import {DOMElements} from '../DOMElements.mjs';
 
 const API_KEY = 'jolY3ZCVYguxFxl8CkIKl52zpHJT2eTw';
 
