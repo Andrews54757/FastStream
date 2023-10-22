@@ -1,6 +1,7 @@
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 
 const ModesMap = new Map();
+ModesMap.set('webm', PlayerModes.DIRECT);
 ModesMap.set('mp4', PlayerModes.ACCELERATED_MP4);
 ModesMap.set('m3u8', PlayerModes.ACCELERATED_HLS);
 ModesMap.set('m3u8v1', PlayerModes.ACCELERATED_HLS);
