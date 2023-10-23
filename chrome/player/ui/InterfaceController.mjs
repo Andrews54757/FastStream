@@ -770,7 +770,7 @@ export class InterfaceController {
       return;
     }
 
-    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '-' + StringUtils.formatTime(this.client.currentTime);
+    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '@' + StringUtils.formatTime(this.client.currentTime);
     const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
