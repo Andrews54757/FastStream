@@ -26,6 +26,7 @@ export class AudioCompressor {
   setCompressionConfig(config) {
     this.compressorConfig = config;
     this.setupCompressorControls();
+    this.updateCompressor();
   }
 
   setupUI() {
