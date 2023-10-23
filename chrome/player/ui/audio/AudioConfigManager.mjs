@@ -53,13 +53,14 @@ export class AudioConfigManager extends EventEmitter {
   }
 
   saveProfilesToStorage() {
-    clearTimeout(this.saveTimeout);
-    this.saveTimeout = setTimeout(() => {
+    return new Promise((resolve, reject) => {
       chrome.storage.local.set({
         audioProfiles: JSON.stringify(this.profiles.map((profile) => profile.toObj())),
         currentAudioProfile: this.currentProfile?.id || this.profiles[0]?.id || 0,
+      }, ()=>{
+        resolve();
       });
-    }, 500);
+    });
   }
 
   getNextProfileID() {
@@ -127,7 +128,7 @@ export class AudioConfigManager extends EventEmitter {
       el.dataset.val === 'p' + this.profiles[Math.max(0, index - 1)].id,
     ).click();
 
-    this.saveProfilesToStorage();
+    return this.saveProfilesToStorage();
   }
 
   updateProfileDropdown(defaultID = null) {
@@ -226,7 +227,7 @@ export class AudioConfigManager extends EventEmitter {
     if (index !== -1) this.profiles.splice(index, 1, newProfile);
 
     this.updateProfileDropdown();
-    this.saveProfilesToStorage();
+    return this.saveProfilesToStorage();
   }
 
   getDropdownProfile() {
@@ -278,6 +279,7 @@ export class AudioConfigManager extends EventEmitter {
     // load button
     this.ui.loadButton = WebUtils.create('div', null, 'textbutton load_button');
     this.ui.loadButton.textContent = 'Load Profile';
+    let loadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.loadButton);
     this.ui.loadButton.addEventListener('click', () => {
       const profile = this.getDropdownProfile();
@@ -286,6 +288,11 @@ export class AudioConfigManager extends EventEmitter {
         return;
       }
       this.setCurrentProfile(profile);
+      this.ui.loadButton.textContent = 'Loaded Profile!';
+      clearTimeout(loadTimeout);
+      loadTimeout = setTimeout(() => {
+        this.ui.loadButton.textContent = 'Load Profile';
+      }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.loadButton);
 
@@ -293,14 +300,22 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.saveButton = WebUtils.create('div', null, 'textbutton save_button');
     this.ui.saveButton.textContent = 'Save Profile';
     this.ui.profileManager.appendChild(this.ui.saveButton);
-    this.ui.saveButton.addEventListener('click', () => {
-      this.saveCurrentProfile();
+    let saveTimeout = null;
+    this.ui.saveButton.addEventListener('click', async () => {
+      this.ui.saveButton.textContent = 'Saving...';
+      await this.saveCurrentProfile();
+      this.ui.saveButton.textContent = 'Saved Profile!';
+      clearTimeout(saveTimeout);
+      saveTimeout = setTimeout(() => {
+        this.ui.saveButton.textContent = 'Save Profile';
+      }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.saveButton);
 
     // download button
     this.ui.downloadButton = WebUtils.create('div', null, 'textbutton download_button');
     this.ui.downloadButton.textContent = 'Download Profile';
+    let downloadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.downloadButton);
     this.ui.downloadButton.addEventListener('click', () => {
       const profile = this.getDropdownProfile();
@@ -324,6 +339,11 @@ export class AudioConfigManager extends EventEmitter {
       a.href = URL.createObjectURL(downloadBlob);
       a.download = `${profile.label}.fsprofile.json`;
       a.click();
+      this.ui.downloadButton.textContent = 'Downloaded!';
+      clearTimeout(downloadTimeout);
+      downloadTimeout = setTimeout(() => {
+        this.ui.downloadButton.textContent = 'Download Profile';
+      }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.downloadButton);
 
@@ -331,13 +351,22 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.deleteButton = WebUtils.create('div', null, 'textbutton delete_button');
     this.ui.deleteButton.textContent = 'Delete';
     this.ui.profileManager.appendChild(this.ui.deleteButton);
-    this.ui.deleteButton.addEventListener('click', () => {
+
+    const deleteTimeout = null;
+    this.ui.deleteButton.addEventListener('click', async () => {
       const profile = this.getDropdownProfile();
       if (!profile) {
         this.updateProfileDropdown();
         return;
       }
-      this.deleteProfile(profile);
+
+      this.ui.deleteButton.textContent = 'Deleting...';
+      await this.deleteProfile(profile);
+      this.ui.deleteButton.textContent = 'Deleted!';
+      clearTimeout(deleteTimeout);
+      setTimeout(() => {
+        this.ui.deleteButton.textContent = 'Delete';
+      }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.deleteButton);
 
