@@ -83,23 +83,32 @@
             font-style: italic;
         }
 
+        #keybindslist {
+            margin-top: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
         .keybind-container {
-            line-height: 18px;
-            padding: 2px;
+            display: grid;
+            align-items: center;
+            grid-template-columns: 1fr 1fr;
+            font-size: 14px;
         }
 
         .keybind-name {
             display: inline-block;
+            grid-column: 1;
         }
 
         .keybind-input {
-            float: right;
-            width: 50%;
-            height: 18px;
             cursor: pointer;
             border: 1px solid black;
             border-radius: 3px;
             text-align: center;
+            grid-column: 2;
+            padding: 2px 5px;
         }
 
         .keybind-input:focus {

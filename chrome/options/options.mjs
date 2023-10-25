@@ -105,13 +105,14 @@ function createKeybindElement(keybind) {
 
   const keybindNameElement = document.createElement('div');
   keybindNameElement.classList.add('keybind-name');
-  keybindNameElement.textContent = keybind;
+  const keybindName = keybind.replace(/([A-Z])/g, ' $1').trim();
+  keybindNameElement.textContent = keybindName;
   containerElement.appendChild(keybindNameElement);
 
   const keybindInput = document.createElement('div');
   keybindInput.classList.add('keybind-input');
   keybindInput.tabIndex = 0;
-  keybindInput.name = keybind;
+  keybindInput.name = keybindName;
   keybindInput.textContent = options.keybinds[keybind];
 
   keybindInput.addEventListener('keydown', (e) => {
