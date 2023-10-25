@@ -145,6 +145,13 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
+document.addEventListener('fullscreenchange', ()=>{
+  chrome.runtime.sendMessage({
+    type: 'fullscreen_change',
+    fullscreen: document.fullscreenElement ? true : false,
+  });
+});
+
 function httpRequest( ...args ) {
   const url = args[0];
   let post = undefined;

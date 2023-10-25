@@ -153,9 +153,28 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frameId: frame.frameId,
     }, {
       frameId: frame.parentId,
-    }, () => {
+    }, (response) => {
       BackgroundUtils.checkMessageError('fullscreen');
+      sendResponse(response);
     });
+    return true;
+  } else if (msg.type ==='fullscreen_change') {
+    // send to children
+    for (const i in tab.frames) {
+      if (Object.hasOwn(tab.frames, i)) {
+        const frame = tab.frames[i];
+        if (frame.parentId === sender.frameId) {
+          chrome.tabs.sendMessage(frame.tab.tabId, {
+            type: 'fullscreen_change',
+            fullscreen: msg.fullscreen,
+          }, {
+            frameId: frame.frameId,
+          }, ()=>{
+            BackgroundUtils.checkMessageError('fullscreen_change');
+          });
+        }
+      }
+    }
   } else if (msg.type === 'faststream') {
     if (Logging) console.log('Found FastStream window', frame);
     frame.isFastStream = true;

@@ -1344,24 +1344,29 @@ export class InterfaceController {
         } else if (document.exitFullscreen) {
           document.exitFullscreen();
         }
+
+        this.updateFullScreenButton();
       } else {
         if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
           chrome.runtime.sendMessage({
             type: 'fullscreen',
+          }, (response)=>{
+            this.setFullscreenStatus(response === 'enter');
           });
         }
       }
     } catch (e) {
       console.log('Fullscreen not supported', e);
     }
-
-    this.persistent.fullscreen = document.fullscreen;
-    this.updateFullScreenButton();
   }
 
   updateFullScreenButton() {
+    this.setFullscreenStatus(document.fullscreenElement);
+  }
+
+  setFullscreenStatus(status) {
     const fullScreenButton = DOMElements.fullscreen;
-    if (document.fullscreenElement) {
+    if (status) {
       fullScreenButton.classList.add('out');
     } else {
       fullScreenButton.classList.remove('out');

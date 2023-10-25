@@ -43,10 +43,6 @@
             margin-top: 20px;
         }
 
-        h1:first-child {
-            margin-top: 0;
-        }
-
         p {
             margin-bottom: 15px;
         }
@@ -129,7 +125,7 @@
             border: 1px solid blue;
         }
 
-        #resetdefault {
+        button {
             background-color: rgba(255, 255, 255, 0.4);
             border: 1px solid rgba(0, 0, 0, 0.4);
             border-radius: 3px;
@@ -137,7 +133,7 @@
             padding: 2px 5px;
         }
 
-        #resetdefault:hover {
+        button:hover {
             color: rgb(0, 0, 255);
             border: 1px solid rgb(0, 0, 255);
         }
@@ -187,11 +183,32 @@
             width: 50px;
         }
 
+        #ratebox {
+            display: none;
+            border-radius: 5px;
+            border: 1px solid blue;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Video Options</h1>
+    <div id="ratebox">
+        <h1 style="margin-top: 0px">Enjoy FastStream? Leave a review!</h1>
+        <p>FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know
+            where to improve. Please feel free tell us:</p>
+        <ul>
+            <li>How you use it</li>
+            <li>Any bugs you encounter</li>
+            <li>Feature requests</li>
+        </ul>
+        <p>We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.</p>
+        <button id="rate">OK I'll review FastStream</button>
+        <button id="norate">I don't want to review :(</button>
+    </div>
+
+    <h1 style="margin-top: 0px">Video Options</h1>
     <p>Applies CSS filters to the video. Doesn't work with picture-in-picture.</p>
 
     <datalist id="snap-hundred">

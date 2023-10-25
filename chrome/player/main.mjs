@@ -28,6 +28,8 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
           if (name) {
             if (window.fastStream) window.fastStream.setMediaName(name);
           }
+        } else if (request.type === 'fullscreen_change' && window.fastStream) {
+          window.fastStream.interfaceController.setFullscreenStatus(request.fullscreen);
         } else if (request.type === 'sources' && window.fastStream) {
           console.log('Recieved sources', request.sources, request.subtitles);
           let subs = request.subtitles;

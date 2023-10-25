@@ -211,3 +211,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     loadOptions(request.options);
   }
 });
+
+const ratebox = document.getElementById('ratebox');
+document.getElementById('rate').addEventListener('click', (e) => {
+  chrome.storage.local.set({
+    rateus: 'yes',
+  });
+  ratebox.style.display = 'none';
+
+  let url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
+
+  // SPLICER:FIREFOX:REMOVE_START
+  url = 'https://chrome.google.com/webstore/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
+  // SPLICER:FIREFOX:REMOVE_END
+
+  chrome.tabs.create({
+    url,
+  });
+});
+
+document.getElementById('norate').addEventListener('click', (e) => {
+  chrome.storage.local.set({
+    rateus: 'no',
+  });
+  ratebox.style.display = 'none';
+});
+
+chrome.storage.local.get('rateus', (result) => {
+  if (!result || !result.rateus) {
+    ratebox.style.display = 'block';
+  }
+});
