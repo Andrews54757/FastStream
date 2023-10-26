@@ -366,13 +366,19 @@ export default class MP4Player extends EventEmitter {
         throw new Error('No next fragment');
       }
 
+      if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
+        if (len === 1) {
+          this.emit(DefaultPlayerEvents.ERROR, 'Failed first fragment');
+          this.running = false;
+          throw new Error('First fragment failed to load!');
+        }
+        break;
+      }
+
       if (i !== currentFragment.sn && frag.start > this.video.currentTime + this.options.maxBufferLength) {
         break;
       }
 
-      if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
-        break;
-      }
 
       if (!this.currentFragments.includes(frag)) {
         const loader = this.loader = this.fragmentRequester.requestFragment(frag, {
@@ -406,15 +412,11 @@ export default class MP4Player extends EventEmitter {
             if (this.loader === loader) {
               this.loader = null;
             }
-
-            if (len === 1) {
-              this.emit(DefaultPlayerEvents.ERROR, 'Failed first fragment');
-            }
           },
           onAbort: (entry) => {
             if (this.loader === loader) {
               this.loader = null;
-            } else return;
+            }
           },
 
         });
