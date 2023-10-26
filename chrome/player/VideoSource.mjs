@@ -1,12 +1,19 @@
 import {PlayerModes} from './enums/PlayerModes.mjs';
 
-const headerWhitelist = [
-  'origin',
-  'referer',
-  'authorization',
+const headerBlacklist = [
+  'accept',
+  'accept-charset',
+  'accept-encoding',
+  'accept-language',
   'cache-control',
-  'cookie',
-  'proxy-authorization',
+  'pragma',
+  'sec-ch-ua',
+  'sec-ch-ua-mobile',
+  'sec-ch-ua-platform',
+  'sec-fetch-dest',
+  'sec-fetch-mode',
+  'sec-fetch-site',
+  'user-agent',
 ];
 
 const redirectHeaders = [
@@ -57,7 +64,7 @@ export class VideoSource {
   filterHeaders(headers) {
     const filteredHeaders = {};
     for (const key in headers) {
-      if (!headerWhitelist.includes(key.toLowerCase())) {
+      if (headerBlacklist.includes(key.toLowerCase())) {
         continue;
       }
 
