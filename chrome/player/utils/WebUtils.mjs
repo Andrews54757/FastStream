@@ -9,7 +9,7 @@ export class WebUtils {
   static setupTabIndex(element) {
     element.tabIndex = 0;
     element.addEventListener('keydown', (e) => {
-      if (e.key == 'Enter') {
+      if (e.key === 'Enter') {
         element.click();
         e.stopPropagation();
       }
@@ -107,7 +107,7 @@ export class WebUtils {
     function shiftSelection(indexAmount) {
       for (let j = 0; j < itemListElement.children.length; j++) {
         const element = itemListElement.children[j];
-        if (element.dataset.val == container.dataset.val) {
+        if (element.dataset.val === container.dataset.val) {
           element.style.backgroundColor = '';
           const newIndex = (j + indexAmount + itemListElement.children.length) % itemListElement.children.length;
           const nextElement = itemListElement.children[newIndex];
@@ -126,15 +126,15 @@ export class WebUtils {
     });
 
     container.addEventListener('keydown', (e) => {
-      if (e.key == 'ArrowDown' ) {
+      if (e.key === 'ArrowDown' ) {
         shiftSelection(1);
         e.preventDefault();
         e.stopPropagation();
-      } else if (e.key == 'ArrowUp') {
+      } else if (e.key === 'ArrowUp') {
         shiftSelection(-1);
         e.preventDefault();
         e.stopPropagation();
-      } else if (e.key == 'Enter') {
+      } else if (e.key === 'Enter') {
         shiftSelection(1);
         e.preventDefault();
         e.stopPropagation();
@@ -151,7 +151,7 @@ export class WebUtils {
           container.dataset.val = el.dataset.val;
 
           for (let j = 0; j < itemListElement.children.length; j++) {
-            if (j == i) {
+            if (j === i) {
               itemListElement.children[j].style.backgroundColor = 'rgb(20,20,20)';
             } else {
               itemListElement.children[j].style.backgroundColor = '';
@@ -186,7 +186,7 @@ export class WebUtils {
         div.dataset.val = name;
         div.textContent = items[name];
 
-        if (defaultChoice == name) {
+        if (defaultChoice === name) {
           div.style.backgroundColor = 'rgb(20,20,20)';
         }
         itemListElement.appendChild(div);
@@ -201,7 +201,7 @@ export class WebUtils {
         const value = span.textContent;
         for (let i = 0; i < itemListElement.children.length; i++) {
           const element = itemListElement.children[i];
-          if (element.dataset.val == container.dataset.val) {
+          if (element.dataset.val === container.dataset.val) {
             element.textContent = value;
             break;
           }
@@ -211,7 +211,7 @@ export class WebUtils {
       });
 
       span.addEventListener('keydown', (e)=>{
-        if (e.key == 'Enter') {
+        if (e.key === 'Enter') {
           span.blur();
           e.stopPropagation();
           e.preventDefault();

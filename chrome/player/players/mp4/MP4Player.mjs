@@ -199,7 +199,7 @@ export default class MP4Player extends EventEmitter {
       }
     }
     const trak = this.mp4box.moov.traks.find((trak) => {
-      return trak.tkhd.track_id == info.videoTracks[l].id;
+      return trak.tkhd.track_id === info.videoTracks[l].id;
     });
     const samples = trak.samples;
     this.videoTracks.push({
@@ -212,7 +212,7 @@ export default class MP4Player extends EventEmitter {
 
     for (let l = 0; l < info.audioTracks.length; l++) {
       const trak = this.mp4box.moov.traks.find((trak) => {
-        return trak.tkhd.track_id == info.audioTracks[l].id;
+        return trak.tkhd.track_id === info.audioTracks[l].id;
       });
       const samples = trak.samples;
       this.audioTracks.push({

@@ -11,17 +11,17 @@ let OPTIONS = null;
 if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
-        if (request.type == 'init') {
+        if (request.type === 'init') {
           if (window.parent !== window) {
             window.parent.postMessage({
               type: 'frame',
               id: request.frameId,
             }, '*');
           }
-        } else if (request.type == 'options') {
+        } else if (request.type === 'options') {
           OPTIONS = JSON.parse(request.options);
           if (window.fastStream) window.fastStream.setOptions(OPTIONS);
-        } if (request.type == 'analyzerData') {
+        } if (request.type === 'analyzerData') {
           window.fastStream.loadAnalyzerData(request.data);
         } else if (request.type === 'media_name') {
           const name = request.name;

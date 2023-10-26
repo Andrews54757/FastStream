@@ -561,7 +561,7 @@ export class InterfaceController {
     let clicked = false;
 
     DOMElements.playbackRate.addEventListener('focus', (e) => {
-      if (DOMElements.rateMenuContainer.style.display == 'none') {
+      if (DOMElements.rateMenuContainer.style.display === 'none') {
         DOMElements.rateMenuContainer.style.display = '';
         speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
       }
@@ -981,7 +981,7 @@ export class InterfaceController {
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && DOMElements.playPauseButtonBigCircle.style.display == 'none') {
+      if (!this.focusingControls && !this.mouseOverControls && DOMElements.playPauseButtonBigCircle.style.display === 'none') {
         this.hideControlBar();
       }
     }, time || 2000);
@@ -990,7 +990,7 @@ export class InterfaceController {
   hideControlBarOnAction(cooldown) {
     if (!this.mouseOverControls && !this.focusingControls) {
       this.mouseActivityCooldown = Date.now() + (cooldown || 500);
-      if (DOMElements.playPauseButtonBigCircle.style.display == 'none') {
+      if (DOMElements.playPauseButtonBigCircle.style.display === 'none') {
         this.hideControlBar();
       }
     }

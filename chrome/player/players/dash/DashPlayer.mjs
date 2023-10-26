@@ -128,7 +128,7 @@ export default class DashPlayer extends EventEmitter {
         }
       });
 
-      if (this.currentTime == 0 && this.video.readyState < 2) {
+      if (this.currentTime === 0 && this.video.readyState < 2) {
         this.currentTime = segments[0].startTime;
       }
     }
@@ -222,7 +222,7 @@ export default class DashPlayer extends EventEmitter {
 
 
   get levels() {
-    const processor = this.dash.getStreamController().getActiveStream().getProcessors().find((o) => o.getType() == 'video');
+    const processor = this.dash.getStreamController().getActiveStream().getProcessors().find((o) => o.getType() === 'video');
     if (!processor) {
       return new Map();
     }

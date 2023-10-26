@@ -78,7 +78,7 @@ export class SourcesBrowser {
     sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
     sourceHeadersBtn.name = 'Toggle header override input';
     sourceHeadersBtn.addEventListener('click', (e) => {
-      if (headersInput.style.display == 'none') {
+      if (headersInput.style.display === 'none') {
         headersInput.style.display = '';
         sourceHeadersBtn.classList.add('active');
       } else {
@@ -106,7 +106,7 @@ export class SourcesBrowser {
     sourceDeleteBtn.addEventListener('click', (e) => {
       sourceContainer.remove();
       const ind = this.sources.indexOf(source);
-      if (ind == -1) return;
+      if (ind === -1) return;
       this.sources.splice(ind, 1);
       this.updateSources();
     });
@@ -154,9 +154,9 @@ export class SourcesBrowser {
       }
     });
 
-    if (sourceLen == 0) {
+    if (sourceLen === 0) {
       this.linkui.sourcesFound.textContent = 'No Sources Listed';
-    } else if (sourceLen == 1) {
+    } else if (sourceLen === 1) {
       this.linkui.sourcesFound.textContent = '1 Source Listed';
     } else {
       this.linkui.sourcesFound.textContent = sourceLen + ' Sources Listed';
@@ -183,7 +183,7 @@ export class SourcesBrowser {
 
   setupUI() {
     DOMElements.linkButton.addEventListener('click', (e) => {
-      if (DOMElements.linkuiContainer.style.display == 'none') {
+      if (DOMElements.linkuiContainer.style.display === 'none') {
         this.openUI();
       } else {
         this.closeUI();

@@ -120,7 +120,7 @@ export class VideoAnalyzer extends EventEmitter {
     this.introAligner.setRange(introStart, introEnd);
     this.outroAligner.setRange(outroStart, outroEnd);
 
-    if (this.outroStatus !== AnalyzerStatus.RUNNING && this.introStatus == AnalyzerStatus.IDLE && introEnd - introStart > 30) {
+    if (this.outroStatus !== AnalyzerStatus.RUNNING && this.introStatus === AnalyzerStatus.IDLE && introEnd - introStart > 30) {
       if (this.shouldLoadPlayer(introStart, introEnd)) {
         console.log('[VideoAnalyzer] Running intro finder in background', introStart, introEnd);
         this.introStatus = AnalyzerStatus.RUNNING;
@@ -141,7 +141,7 @@ export class VideoAnalyzer extends EventEmitter {
       }
     }
 
-    if (this.introStatus !== AnalyzerStatus.RUNNING && this.outroStatus == AnalyzerStatus.IDLE && outroEnd - outroStart > 30) {
+    if (this.introStatus !== AnalyzerStatus.RUNNING && this.outroStatus === AnalyzerStatus.IDLE && outroEnd - outroStart > 30) {
       if (this.shouldLoadPlayer(outroStart, outroEnd)) {
         console.log('[VideoAnalyzer] Running outro finder in background', outroStart, outroEnd);
         this.outroStatus = AnalyzerStatus.RUNNING;

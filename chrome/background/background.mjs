@@ -224,7 +224,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (Logging) console.log('Analyzer data', msg.data);
     tab.analyzerData = msg.data;
   } else if (msg.type === 'iframe_controls') {
-    frame.frame_referer = msg.mode == PlayerModes.IFRAME ? msg.referer : null;
+    frame.frame_referer = msg.mode === PlayerModes.IFRAME ? msg.referer : null;
     if (Logging) console.log('Iframe-controls', frame.frame_referer);
   } else if (msg.type === 'iframe') {
     frame.url = msg.url;
@@ -462,7 +462,7 @@ function getOrCreateFrame(details) {
   return frame;
 }
 function isSubtitles(ext) {
-  return ext == 'vtt' || ext == 'srt';
+  return ext ==='vtt' || ext === 'srt';
 }
 
 async function scrapeCaptionsTags(frame) {
@@ -583,7 +583,7 @@ async function onSourceRecieved(details, frame, mode) {
     if (sub) {
       sub.forEach((s) => {
         if (frame.subtitles.every((ss, i) => {
-          if (s.source == ss.source) {
+          if (s.source === ss.source) {
             frame.subtitles[i] = s;
             return false;
           }

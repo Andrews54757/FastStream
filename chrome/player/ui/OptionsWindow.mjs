@@ -40,7 +40,7 @@ export class OptionsWindow {
   }
 
   toggleUI() {
-    if (DOMElements.optionsContainer.style.display == 'none') {
+    if (DOMElements.optionsContainer.style.display === 'none') {
       this.openUI();
     } else {
       this.closeUI();

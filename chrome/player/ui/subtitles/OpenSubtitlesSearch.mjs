@@ -90,7 +90,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
           'movie': 'Movie',
           'episode': 'Episode',
         }, (val) => {
-          if (val == 'episode') {
+          if (val === 'episode') {
             seasonInput.style.display = '';
             episodeInput.style.display = '';
           } else {
@@ -143,7 +143,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
 
     const searchOnEnter = (e) => {
-      if (e.key == 'Enter') {
+      if (e.key === 'Enter') {
         e.stopPropagation();
         this.subui.search.blur();
         this.queryOpenSubtitles({
@@ -387,7 +387,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
           }
         } catch (e) {
           console.log(e);
-          if (DOMElements.subuiContainer.style.display == 'none') return;
+          if (DOMElements.subuiContainer.style.display === 'none') return;
           item.downloading = false;
           alert(`OpenSubtitles download failed! Their servers are probably down!`);
           if (confirm('Would you like to open the OpenSubtitles website to download the subtitle file manually?')) {

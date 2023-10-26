@@ -103,7 +103,7 @@ export class SubtitlesManager {
 
   setupUI() {
     DOMElements.subtitles.addEventListener('click', (e) => {
-      if (DOMElements.subtitlesMenu.style.display == 'none') {
+      if (DOMElements.subtitlesMenu.style.display === 'none') {
         DOMElements.subtitlesMenu.style.display = '';
       } else {
         DOMElements.subtitlesMenu.style.display = 'none';
@@ -147,7 +147,6 @@ export class SubtitlesManager {
       const reader = new FileReader();
       reader.onload = () => {
         const dt = reader.result;
-        //   if (ext == ".srt") dt = srt2webvtt(dt);
         const track = new SubtitleTrack(name, null);
         track.loadText(dt);
 

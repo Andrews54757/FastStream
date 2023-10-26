@@ -49,12 +49,12 @@ export class URLUtils {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const split = line.split(':');
-      if (line.trim() == '') continue;
+      if (line.trim() === '') continue;
 
       if (split.length > 1) {
         const name = split[0].trim();
         const value = split.slice(1).join(':').trim();
-        if (name.length == 0 || value.length == 0) {
+        if (name.length === 0 || value.length === 0) {
           return false;
         }
       } else {

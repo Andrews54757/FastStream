@@ -12,7 +12,7 @@ window.addEventListener('message', (e) => {
     case 'frame':
       const iframes = querySelectorAllIncludingShadows('iframe');
       for (let i = 0; i < iframes.length; i++) {
-        if (iframes[i].contentWindow == src) {
+        if (iframes[i].contentWindow === src) {
           iframeMap.set(dt.id, iframes[i]);
           break;
         }
@@ -44,7 +44,7 @@ chrome.runtime.onMessage.addListener(
           });
         }
         return true;
-      } else if (request.type == 'init') {
+      } else if (request.type === 'init') {
         if (window.parent !== window) {
           window.parent.postMessage({
             type: 'frame',
@@ -52,13 +52,13 @@ chrome.runtime.onMessage.addListener(
           }, '*');
         }
         sendResponse('ok');
-      } else if (request.type == 'scrape_captions') {
+      } else if (request.type === 'scrape_captions') {
         const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;
         const tracks = [];
         for (let i = 0; i < trackElements.length; i++) {
           const track = trackElements[i];
-          if (track.src && track.kind == 'captions') {
+          if (track.src && track.kind === 'captions') {
             const source = track.src;
             httpRequest(source, (err, req, body) => {
               done++;
@@ -70,14 +70,14 @@ chrome.runtime.onMessage.addListener(
                   language: track.srclang,
                 });
               }
-              if (done == tracks.length) sendResponse(tracks);
+              if (done === tracks.length) sendResponse(tracks);
             });
           }
         }
-        if (done == tracks.length) sendResponse(tracks);
+        if (done === tracks.length) sendResponse(tracks);
 
         return true;
-      } else if (request.type == 'player') {
+      } else if (request.type === 'player') {
         getVideo().then((video) => {
           if (!video && !request.force) {
             console.log('no video found');
@@ -170,7 +170,7 @@ function httpRequest( ...args ) {
     const xhr = new XMLHttpRequest();
     xhr.open(post ? 'POST' : 'GET', url + (bust ? ('?' + Date.now()) : ''));
     xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4) {
+      if (xhr.readyState === 4) {
         if (xhr.status === 200) {
           callback(undefined, xhr, xhr.responseText);
         } else {

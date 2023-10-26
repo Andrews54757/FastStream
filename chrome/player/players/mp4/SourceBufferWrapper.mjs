@@ -47,10 +47,10 @@ export class SourceBufferWrapper extends EventEmitter {
     if (this.toDo.length) {
       const current = this.toDo[0];
 
-      if (current.type == 'append') {
+      if (current.type === 'append') {
         this.sourceBuffer.appendBuffer(current.buffer);
         current.resolve();
-      } else if (current.type == 'remove') {
+      } else if (current.type === 'remove') {
         try {
           this.sourceBuffer.remove(current.start, current.end);
           current.resolve();

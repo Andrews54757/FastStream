@@ -10,7 +10,7 @@ export class StandardDownloader {
   }
 
   canHandle(details) {
-    return this.loader == null;
+    return this.loader === null;
   }
 
   getSpeed() {
