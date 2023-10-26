@@ -272,7 +272,7 @@ export class InterfaceController {
     };
   }
   updateFragmentsLoaded() {
-    if (!this.client.duration || !this.client.player) {
+    if (!this.client.player) {
       this.renderProgressBar(this.progressCache, []);
       this.renderProgressBar(this.progressCacheAudio, []);
       return;
