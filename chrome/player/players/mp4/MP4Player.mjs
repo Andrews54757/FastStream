@@ -369,6 +369,9 @@ export default class MP4Player extends EventEmitter {
         break;
       }
 
+      if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
+        break;
+      }
 
       if (!this.currentFragments.includes(frag)) {
         const loader = this.loader = this.fragmentRequester.requestFragment(frag, {
