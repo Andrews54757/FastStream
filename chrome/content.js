@@ -91,34 +91,14 @@ chrome.runtime.onMessage.addListener(
             sendResponse('redirect');
           } else {
             // copy styles
-            const styles = window.getComputedStyle(video.highest);
-            const rect = video.highest.getBoundingClientRect();
-
             const iframe = document.createElement('iframe');
             iframe.src = request.url;
-            iframe.setAttribute('style', video.highest.getAttribute('style'));
-            iframe.classList = video.highest.classList;
-
-            const width = (rect.width || 100) + 'px';
-            const height = (rect.height || 100) + 'px';
-
-            iframe.style.setProperty('width', width, 'important');
-            iframe.style.setProperty('height', height, 'important');
-
-
-            iframe.style.position = styles.position;
-            iframe.id = video.highest.id;
-            // iframe.style.top = styles.top;
-            // iframe.style.left = styles.left;
-            iframe.style.zIndex = styles.zIndex;
-            iframe.style.border = styles.border;
-            iframe.style.borderRadius = styles.borderRadius;
-            iframe.style.boxShadow = styles.boxShadow;
-            // iframe.style.margin = styles.margin;
-            // iframe.style.padding = styles.padding;
+            updateIframeStyle(video.highest, iframe);
 
             iframe.allowFullscreen = true;
+
             // replace element
+            pauseAllWithin(video.highest);
 
             video.highest.parentElement.replaceChild(iframe, video.highest);
             players.push({
@@ -151,6 +131,52 @@ document.addEventListener('fullscreenchange', ()=>{
     fullscreen: document.fullscreenElement ? true : false,
   });
 });
+
+window.addEventListener('resize', ()=>{
+  updatePlayerStyles();
+});
+
+function updatePlayerStyles() {
+  players.forEach((player) => {
+    const parent = player.iframe.parentElement;
+    player.iframe.style.display = 'none';
+    parent.insertBefore(player.old, player.iframe);
+    updateIframeStyle(player.old, player.iframe);
+    parent.removeChild(player.old);
+  });
+}
+
+function pauseAllWithin(element) {
+  const videos = querySelectorAllIncludingShadows('video', element);
+  videos.forEach((video) => {
+    try {
+      video.pause();
+    } catch (e) {
+      console.error(e);
+    }
+  });
+}
+function updateIframeStyle(old, iframe) {
+  const styles = window.getComputedStyle(old);
+  const rect = old.getBoundingClientRect();
+
+  iframe.setAttribute('style', old.getAttribute('style'));
+  iframe.classList = old.classList;
+
+  const width = (rect.width || 100) + 'px';
+  const height = (rect.height || 100) + 'px';
+
+  iframe.style.setProperty('width', width, 'important');
+  iframe.style.setProperty('height', height, 'important');
+
+
+  iframe.style.position = styles.position;
+  iframe.id = old.id;
+  iframe.style.zIndex = styles.zIndex;
+  iframe.style.border = styles.border;
+  iframe.style.borderRadius = styles.borderRadius;
+  iframe.style.boxShadow = styles.boxShadow;
+}
 
 function httpRequest( ...args ) {
   const url = args[0];
@@ -197,13 +223,13 @@ function httpRequest( ...args ) {
   }
 }
 
-function querySelectorAllIncludingShadows(tagName, currentElement = document.body, results = []) {
-  Array.from(currentElement.querySelectorAll(tagName)).forEach((el) => results.push(el));
+function querySelectorAllIncludingShadows(query, currentElement = document.body, results = []) {
+  Array.from(currentElement.querySelectorAll(query)).forEach((el) => results.push(el));
 
   const allElements = currentElement.querySelectorAll('*');
   Array.from(allElements).forEach((el) => {
     if (el.shadowRoot) {
-      querySelectorAllIncludingShadows(tagName, el.shadowRoot, results);
+      querySelectorAllIncludingShadows(query, el.shadowRoot, results);
     }
   });
 
