@@ -1,9 +1,10 @@
+import {EnvUtils} from '../../player/utils/EnvUtils.mjs';
 import {DefaultKeybinds} from './DefaultKeybinds.mjs';
 
 export const DefaultOptions = {
   playMP4URLs: false,
   playStreamURLs: true,
-  analyzeVideos: true,
+  analyzeVideos: EnvUtils.hasComputationalResources(),
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
