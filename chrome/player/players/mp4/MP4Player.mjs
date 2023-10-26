@@ -165,6 +165,7 @@ export default class MP4Player extends EventEmitter {
       this.mp4box.onError = (error) => {
         console.error('onError', error);
         this.running = false;
+        this.emit(DefaultPlayerEvents.ERROR, error);
       };
 
       this.mediaSource = new MediaSource();
@@ -404,7 +405,11 @@ export default class MP4Player extends EventEmitter {
           onFail: (entry) => {
             if (this.loader === loader) {
               this.loader = null;
-            } else return;
+            }
+
+            if (len === 1) {
+              this.emit(DefaultPlayerEvents.ERROR, 'Failed first fragment');
+            }
           },
           onAbort: (entry) => {
             if (this.loader === loader) {
