@@ -308,7 +308,13 @@ export class InterfaceController {
 
     const percentDone = Math.round((loaded / total) * 1000) / 10;
 
-    this.lastSpeed = (this.client.downloadManager.getSpeed() * 0.1 + this.lastSpeed * 0.9) || 0;
+    const newSpeed = this.client.downloadManager.getSpeed();
+    if (newSpeed > 0 && this.lastSpeed > 0) {
+      this.lastSpeed = (newSpeed * 0.1 + this.lastSpeed * 0.9) || 0;
+    } else {
+      this.lastSpeed = 0;
+    }
+
     let speed = this.lastSpeed; // bytes per second
     speed = Math.round(speed / 1000 / 1000 * 10) / 10; // MB per second
 

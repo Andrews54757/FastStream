@@ -15,6 +15,9 @@ export class StandardDownloader {
 
   getSpeed() {
     if (!this.stats) return 0;
+
+    if (this.stats.lastUpdate < Date.now() - 1000) return 0;
+
     const dt = (this.stats.loading.end - this.stats.loading.start) / 1000;
     return this.stats.loaded / dt;
   }
@@ -28,7 +31,6 @@ export class StandardDownloader {
 
     entry.downloader = this;
     entry.status = DownloadStatus.DOWNLOAD_INITIATED;
-
 
     const defaultConfig = {
       timeout: 20000,
@@ -65,6 +67,7 @@ export class StandardDownloader {
 
   updateSpeed(stats) {
     this.stats = stats;
+    stats.lastUpdate = Date.now();
   }
 
   async onSuccess(response, stats, entry, xhr) {
