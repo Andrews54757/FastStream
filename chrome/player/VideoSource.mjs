@@ -15,6 +15,8 @@ const headerBlacklist = [
   'sec-fetch-site',
   'user-agent',
   'range',
+  'host',
+  'connection',
 ];
 
 const redirectHeaders = [
