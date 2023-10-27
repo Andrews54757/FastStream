@@ -312,7 +312,7 @@ export class InterfaceController {
     if (newSpeed > 0 && this.lastSpeed > 0) {
       this.lastSpeed = (newSpeed * 0.1 + this.lastSpeed * 0.9) || 0;
     } else {
-      this.lastSpeed = 0;
+      this.lastSpeed = newSpeed;
     }
 
     let speed = this.lastSpeed; // bytes per second
