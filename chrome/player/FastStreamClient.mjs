@@ -268,9 +268,6 @@ export class FastStreamClient extends EventEmitter {
       if (level.bitrate && this.duration) {
         const storageAvailable = (this.storageAvailable * 8) * 0.6;
         this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
-        const bufferable = storageAvailable / level.bitrate;
-        this.options.bufferBehind = Math.round(Math.min(20, bufferable / 2));
-        this.options.bufferAhead = Math.round(bufferable - this.options.bufferBehind);
       } else {
         this.hasDownloadSpace = true;
       }
