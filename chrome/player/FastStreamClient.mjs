@@ -20,6 +20,7 @@ export class FastStreamClient extends EventEmitter {
     this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : '#.#.#';
 
     this.options = {
+      throttleSpeed: 150 * 1000 * 1000, // 150 MB/s
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 120,
@@ -442,6 +443,14 @@ export class FastStreamClient extends EventEmitter {
     let nextDownload = this.getNextToDownload();
     let hasDownloaded = false;
     let index = 0;
+
+    const speed = this.downloadManager.getSpeed();
+
+    // throttle download speed so blob can catch up
+    if (speed > this.options.throttleSpeed) {
+      return false;
+    }
+
     while (nextDownload) {
       if (nextDownload.canFree() && !this.shouldDownloadAll()) {
         if (nextDownload.start > this.persistent.currentTime + this.options.bufferAhead) {
