@@ -2,11 +2,13 @@ import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {Hls} from '../hls.mjs';
+import {FSBlob} from '../fsblob.mjs';
 const {ExpGolomb, Mp4Sample} = Hls.Muxers;
 
 export class DASH2MP4 extends EventEmitter {
   constructor() {
     super();
+    this.blobManager = new FSBlob();
   }
 
   arrayEquals(a, b) {
@@ -52,7 +54,7 @@ export class DASH2MP4 extends EventEmitter {
     const samplesList = mp4boxfile.getSampleList(moof, track.trexs)[0];
     const baseDecodeTime = traf.tfdt?.baseMediaDecodeTime || 0;
     const earliestPresentationTime = mp4boxfile.sidx ? mp4boxfile.sidx.earliest_presentation_time : baseDecodeTime;
-    const outputSamples = samplesList.samples.map((sample)=>{
+    const outputSamples = samplesList.samples.map((sample) => {
       return new Mp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
     });
 
@@ -83,7 +85,7 @@ export class DASH2MP4 extends EventEmitter {
     });
 
     mdats.forEach((mdat) => {
-      this.datas.push(blob.slice(mdat.start, mdat.start + mdat.size));
+      this.datas.push(this.blobManager.saveBlob(blob.slice(mdat.start, mdat.start + mdat.size)));
       this.datasOffset += mdat.size;
     });
   }
@@ -190,7 +192,7 @@ export class DASH2MP4 extends EventEmitter {
     this.datasOffset = 0;
   }
 
-  finalize() {
+  async finalize() {
     const tracks = [];
     const videoTrack = this.videoTrack;
     const audioTrack = this.audioTrack;
@@ -255,7 +257,11 @@ export class DASH2MP4 extends EventEmitter {
       initSeg = MP4.initSegment(tracks);
     }
 
-    return new Blob([initSeg, ...this.datas], {
+    const dataChunks = await Promise.all(this.datas.map((data) => {
+      return this.blobManager.getBlob(data);
+    }));
+
+    return new Blob([initSeg, ...dataChunks], {
       type: 'video/mp4',
     });
   }
@@ -271,7 +277,7 @@ export class DASH2MP4 extends EventEmitter {
       this.emit('progress', (i + 1) / fragDatas.length);
     }
 
-    const blob = this.finalize();
+    const blob = await this.finalize();
     this.destroy();
 
     return blob;
@@ -283,5 +289,10 @@ export class DASH2MP4 extends EventEmitter {
     this.prevFrag = null;
     this.datas = null;
     this.datasOffset = 0;
+
+    setTimeout(() => {
+      this.blobManager.close();
+      this.blobManager = null;
+    }, 120000);
   }
 }

@@ -1,4 +1,5 @@
 import {EventEmitter} from '../eventemitter.mjs';
+import {FSBlob} from '../fsblob.mjs';
 import {MP4} from './MP4Generator.mjs';
 import Transmuxer from './transmuxer.mjs';
 
@@ -6,6 +7,7 @@ import Transmuxer from './transmuxer.mjs';
 export class HLS2MP4 extends EventEmitter {
   constructor() {
     super();
+    this.blobManager = new FSBlob();
   }
 
   arrayEquals(a, b) {
@@ -78,7 +80,7 @@ export class HLS2MP4 extends EventEmitter {
       const blob = new Blob([result.video.data2], {
         type: 'video/mp4',
       });
-      this.datas.push(blob);
+      this.datas.push(this.blobManager.saveBlob(blob));
       this.datasOffset += result.video.data2.byteLength;
     }
 
@@ -107,7 +109,7 @@ export class HLS2MP4 extends EventEmitter {
       const blob = new Blob([result.audio.data2], {
         type: 'video/mp4',
       });
-      this.datas.push(blob);
+      this.datas.push(this.blobManager.saveBlob(blob));
       this.datasOffset += result.audio.data2.byteLength;
     }
   }
@@ -148,7 +150,7 @@ export class HLS2MP4 extends EventEmitter {
       const blob = new Blob([result.audio.data2], {
         type: 'video/mp4',
       });
-      this.datas.push(blob);
+      this.datas.push(this.blobManager.saveBlob(blob));
       this.datasOffset += result.audio.data2.byteLength;
     }
   }
@@ -187,7 +189,7 @@ export class HLS2MP4 extends EventEmitter {
     this.datasOffset = 0;
   }
 
-  finalize() {
+  async finalize() {
     const tracks = [];
     const videoTrack = this.videoTrack;
     const audioTrack = this.audioTrack;
@@ -249,7 +251,11 @@ export class HLS2MP4 extends EventEmitter {
       initSeg = MP4.initSegment(tracks);
     }
 
-    return new Blob([initSeg, ...this.datas], {
+    const dataChunks = await Promise.all(this.datas.map((data) => {
+      return this.blobManager.getBlob(data);
+    }));
+
+    return new Blob([initSeg, ...dataChunks], {
       type: 'video/mp4',
     });
   }
@@ -265,7 +271,7 @@ export class HLS2MP4 extends EventEmitter {
       this.emit('progress', (i + 1) / fragDatas.length);
     }
 
-    const blob = this.finalize();
+    const blob = await this.finalize();
     this.destroy();
 
     return blob;
@@ -281,5 +287,10 @@ export class HLS2MP4 extends EventEmitter {
     this.prevFrag = null;
     this.datas = null;
     this.datasOffset = 0;
+
+    setTimeout(() => {
+      this.blobManager.close();
+      this.blobManager = null;
+    }, 120000);
   }
 }

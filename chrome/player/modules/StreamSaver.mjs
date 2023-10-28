@@ -1,3 +1,5 @@
+import {FSBlob} from './fsblob.mjs';
+
 /* ! streamsaver. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
 export const streamSaver = {
   createWriteStream,
@@ -38,16 +40,15 @@ function makeIframe(src) {
 }
 
 function createWriteStreamBlob(filename, opts, size) {
-  const chunks = [];
+  const blobManager = new FSBlob();
+  const blobs = [];
   return new WritableStream({
     write(chunk) {
-      if (!(chunk instanceof Uint8Array)) {
-        throw new TypeError('Can only write Uint8Arrays');
-      }
-      chunks.push(chunk);
+      blobs.push(blobManager.createBlob(chunk));
     },
-    close() {
-      const blob = new Blob(chunks, {type: 'application/octet-stream; charset=utf-8'});
+    async close() {
+      const chunks = await Promise.all(blobs.map((blob) => blobManager.getBlob(blob)));
+      const blob = new Blob(chunks, {type: 'application/octet-stream'});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -56,6 +57,10 @@ function createWriteStreamBlob(filename, opts, size) {
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+
+      setTimeout(() => {
+        blobManager.close();
+      }, 120000);
     },
     abort() {
       chunks = [];
@@ -88,7 +93,7 @@ function createWriteStream(filename, options, size) {
   const response = {
     filename: filename,
     headers: {
-      'Content-Type': 'application/octet-stream; charset=utf-8',
+      'Content-Type': 'application/octet-stream',
       'Content-Disposition': 'attachment; filename*=UTF-8\'\'' + filename,
     },
   };
@@ -133,4 +138,3 @@ function createWriteStream(filename, options, size) {
   });
   return ts.writable;
 }
-

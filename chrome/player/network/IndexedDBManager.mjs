@@ -1,16 +1,21 @@
+const closeQueue = [];
+
+
 export class IndexedDBManager {
   constructor() {
-    setInterval(()=>{
-      this.keepAlive();
-    }, 1000);
   }
 
   async setup() {
     await this.close();
     this.prune();
 
+    this.aliveInterval = setInterval(()=>{
+      this.keepAlive();
+    }, 1000);
+
     this.dbName = 'faststream-temp-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
     this.db = await this.requestDB(this.dbName);
+    closeQueue.push(this);
 
     return this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('metadata');
@@ -20,11 +25,17 @@ export class IndexedDBManager {
   }
 
   async close() {
+    clearInterval(this.aliveInterval);
     if (this.db) {
       this.db.close();
       this.db = null;
 
       await this.deleteDB(this.dbName);
+
+      const index = closeQueue.indexOf(this);
+      if (index !== -1) {
+        closeQueue.splice(index, 1);
+      }
     }
   }
 
@@ -162,3 +173,9 @@ export class IndexedDBManager {
     });
   }
 }
+
+window.addEventListener('beforeunload', async ()=>{
+  await Promise.all(closeQueue.map((manager)=>{
+    return manager.close();
+  }));
+});
