@@ -119,7 +119,7 @@ async function onClicked(tab) {
         }
       }
     } else {
-      chrome.tabs.reload(tab.id);
+      chrome.tabs.remove(tab.id);
     }
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
@@ -745,10 +745,6 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         CachedTabs[tabid].frames = {};
       }
 
-      if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
-        CachedTabs[tabid].isOn = true;
-      }
-
       CachedTabs[tabid].url = changeInfo.url;
       CachedTabs[tabid].hostname = url.hostname;
 
@@ -773,7 +769,11 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         return false;
       });
 
-      if (urlIsInAutoList && !CachedTabs[tabid].regexMatched) {
+
+      if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
+        CachedTabs[tabid].isOn = true;
+        CachedTabs[tabid].regexMatched = true;
+      } else if (urlIsInAutoList && !CachedTabs[tabid].regexMatched) {
         CachedTabs[tabid].regexMatched = true;
         CachedTabs[tabid].isOn = true;
         openPlayersWithSources(tab.id);
