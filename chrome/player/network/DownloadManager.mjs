@@ -282,7 +282,7 @@ export class DownloadManager {
       await this.clearStorage();
     }
 
-    this.downloaders.push(new StandardDownloader(this));
+    this.downloaders?.push(new StandardDownloader(this));
   }
 
   async setup() {

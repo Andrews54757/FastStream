@@ -11,11 +11,12 @@ export class IndexedDBManager {
 
     this.dbName = 'faststream-temp-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
     this.db = await this.requestDB(this.dbName);
-    const transaction = this.db.transaction('metadata', 'readwrite');
-    const metaDataStore = transaction.objectStore('metadata');
-    metaDataStore.put(Date.now(), 'creation_time');
-    metaDataStore.put(Date.now(), 'updated_time');
-    transaction.commit();
+
+    return this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
+      const metaDataStore = transaction.objectStore('metadata');
+      metaDataStore.put(Date.now(), 'creation_time');
+      metaDataStore.put(Date.now(), 'updated_time');
+    });
   }
 
   async close() {
@@ -48,7 +49,7 @@ export class IndexedDBManager {
           const db = await this.requestDB(database.name);
           // check if stale
           const updatedTime = await this.getValue(db, 'metadata', 'updated_time');
-          if (Date.now() - updatedTime > 5000) {
+          if (!updatedTime || Date.now() - updatedTime > 5000) {
             db.close();
             await this.deleteDB(database.name);
             console.log('Pruned', database.name);
@@ -62,7 +63,7 @@ export class IndexedDBManager {
 
   async requestDB(dbName) {
     const request = window.indexedDB.open(dbName, 3);
-    request.onupgradeneeded = function(event) {
+    request.onupgradeneeded = async (event) => {
       const db = event.target.result;
       db.createObjectStore('metadata');
       db.createObjectStore('files');
@@ -76,22 +77,26 @@ export class IndexedDBManager {
   }
 
   async deleteDB(dbName) {
-    await this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
+    try {
+      await this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
+    } catch (e) {
+      console.error(e);
+    }
     if (!window.indexedDB.databases) {
-      const databases = await this.getDatabases();
+      const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
       localStorage.setItem('fs_temp_databases', JSON.stringify(databases.filter((name)=>name !== dbName)));
     }
   }
 
   async getValue(db, storeName, key) {
-    return this.transact(storeName, 'readonly', (transaction)=>{
+    return this.transact(db, storeName, 'readonly', (transaction)=>{
       const metaDataStore = transaction.objectStore(storeName);
       return this.wrapRequest(metaDataStore.get(key));
     });
   }
 
   async clearStorage() {
-    return this.transact('files', 'readwrite', (transaction)=>{
+    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('files');
       return this.wrapRequest(metaDataStore.clear());
     });
@@ -102,14 +107,14 @@ export class IndexedDBManager {
   }
 
   async setFile(identifier, data) {
-    return this.transact('files', 'readwrite', (transaction)=>{
+    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('files');
       return this.wrapRequest(metaDataStore.put(data, identifier));
     });
   }
 
   async deleteFile(identifier) {
-    return this.transact('files', 'readwrite', (transaction)=>{
+    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('files');
       return this.wrapRequest(metaDataStore.delete(identifier));
     });
@@ -117,16 +122,16 @@ export class IndexedDBManager {
 
   keepAlive() {
     if (this.db) {
-      this.transact('metadata', 'readwrite', (transaction)=>{
+      this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
         const metaDataStore = transaction.objectStore('metadata');
         metaDataStore.put(Date.now(), 'updated_time');
       });
     }
   }
 
-  transact(storeName, mode, callback) {
+  transact(db, storeName, mode, callback) {
     return new Promise(async (resolve, reject)=>{
-      const transaction = this.db.transaction(storeName, mode);
+      const transaction = db.transaction(storeName, mode);
       let result = Promise.resolve(null);
       transaction.onerror = (event) => {
         reject(event);
