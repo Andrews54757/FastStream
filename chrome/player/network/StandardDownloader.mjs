@@ -16,7 +16,7 @@ export class StandardDownloader {
   getSpeed() {
     if (!this.stats) return 0;
 
-    const now = Date.now();
+    const now = performance.now();
     if (this.stats.lastUpdate < now - 1000) return 0;
 
     const dt = (now - this.stats.loading.start) / 1000;
@@ -68,7 +68,7 @@ export class StandardDownloader {
 
   updateSpeed(stats) {
     this.stats = stats;
-    stats.lastUpdate = Date.now();
+    stats.lastUpdate = performance.now();
   }
 
   async onSuccess(response, stats, entry, xhr) {

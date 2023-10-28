@@ -1,6 +1,7 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
+import {streamSaver} from '../modules/StreamSaver.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
 import {RequestUtils} from '../utils/RequestUtils.mjs';
@@ -826,7 +827,7 @@ export class InterfaceController {
 
     const player = this.client.player;
 
-    const {canSave, isComplete} = player.canSave();
+    const {canSave, isComplete, canStream} = player.canSave();
 
     if (!canSave) {
       alert('Download is not supported for this video!');
@@ -853,6 +854,11 @@ export class InterfaceController {
     }
 
     let url;
+    let filestream;
+    if (canStream) {
+      filestream = streamSaver.createWriteStream(name + '.mp4');
+    }
+
     if (this.reuseDownloadURL && this.downloadURL && isComplete) {
       url = this.downloadURL;
     } else {
@@ -865,6 +871,7 @@ export class InterfaceController {
           onProgress: (progress) => {
             this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
           },
+          filestream,
         });
       } catch (e) {
         console.error(e);
@@ -882,8 +889,10 @@ export class InterfaceController {
         URL.revokeObjectURL(this.downloadURL);
         this.downloadURL = null;
       }
-      url = URL.createObjectURL(result.blob);
-      this.downloadExtension = result.extension;
+
+      if (!canStream) {
+        url = URL.createObjectURL(result.blob);
+      }
 
       setTimeout(() => {
         if (this.downloadURL !== url) return;
@@ -893,37 +902,28 @@ export class InterfaceController {
           this.downloadURL = null;
           this.reuseDownloadURL = false;
         }
-
-        this.updateFragmentsLoaded();
       }, 10000);
     }
 
-    this.downloadURL = url;
+    if (!canStream) {
+      this.downloadURL = url;
 
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', name + '.' + this.downloadExtension);
-    link.setAttribute('target', '_blank');
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', name + '.mp4');
+      link.setAttribute('target', '_blank');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 
   async dumpBuffer(name) {
     const entries = this.client.downloadManager.getCompletedEntries();
-    const archiveBlob = await FastStreamArchiveUtils.writeFSABlob(this.client.player, entries, (progress)=>{
+    const filestream = streamSaver.createWriteStream(name + '.fsa');
+    await FastStreamArchiveUtils.writeFSAToStream(filestream, this.client.player, entries, (progress)=>{
       this.setStatusMessage('save-video', `Archiving ${Math.round(progress * 100)}%`, 'info');
     });
-
-    const url = URL.createObjectURL(archiveBlob);
-    const link = document.createElement('a');
-    link.setAttribute('href', url);
-    link.setAttribute('download', name + '.fsa');
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
 
     this.setStatusMessage('save-video', `Archive saved!`, 'info', 2000);
   }

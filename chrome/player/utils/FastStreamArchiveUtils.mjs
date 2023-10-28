@@ -3,8 +3,8 @@ import {DownloadEntry} from '../network/DownloadEntry.mjs';
 import {Utils} from './Utils.mjs';
 
 export class FastStreamArchiveUtils {
-  static async writeFSABlob(player, entries, progressCallback) {
-    const finalParts = [];
+  static async writeFSAToStream(filestream, player, entries, progressCallback) {
+    const writer = filestream.getWriter();
     const sourceObj = {};
     if (player) {
       const source = player.getSource();
@@ -27,7 +27,8 @@ export class FastStreamArchiveUtils {
     for (let i = 0; i < header.byteLength; i++) {
       headerView.setUint8(i + 4, header[i]);
     }
-    finalParts.push(headerPart);
+
+    await writer.write(new Uint8Array(headerPart));
 
     for (let i = 0; i < entries.length; i++) {
       const entry = entries[i];
@@ -35,10 +36,16 @@ export class FastStreamArchiveUtils {
         throw new Error('Entry is not complete!');
       }
 
-      let data = entry.getData();
-      if (entry.storeRaw && typeof data === 'string') {
-        data = (new TextEncoder().encode(data)).buffer;
+      let data = null;
+      if (entry.storeRaw) {
+        data = entry.getData();
+        if (typeof data === 'string') {
+          data = (new TextEncoder().encode(data)).buffer;
+        }
+      } else {
+        data = await entry.getDataFromBlob('arraybuffer');
       }
+
       const dataSize = entry.storeRaw ? data.byteLength : data.size;
       const newHeaders = {};
       const headersWhitelist = ['content-range'];
@@ -68,17 +75,16 @@ export class FastStreamArchiveUtils {
         entryHeaderView.setUint8(i + 4, entryHeader[i]);
       }
 
-      finalParts.push(entryHeaderPart);
-      finalParts.push(data);
+      await writer.write(new Uint8Array(entryHeaderPart));
+      await writer.write(new Uint8Array(data));
+
 
       if (progressCallback) {
         progressCallback(i / entries.length);
       }
     }
 
-    return new Blob(finalParts, {
-      type: 'application/octet-stream',
-    });
+    writer.close();
   }
 
   static async parseFSA(largeBuffer, progressCallback, downloadManager) {
