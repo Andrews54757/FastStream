@@ -92,7 +92,9 @@ async function onClicked(tab) {
     return;
   }
 
-  if (tab.url && tab.url !== 'about:newtab' && tab.url !== 'chrome://newtab/') {
+  console.log('Clicked', tab);
+  const emptyTabURLS = ['about:blank', 'about:home', 'about:newtab', 'about:privatebrowsing', 'chrome://newtab/'];
+  if (tab.url && !emptyTabURLS.includes(tab.url)) {
     CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
 
     updateTabIcon(CachedTabs[tab.id]);
