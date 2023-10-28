@@ -100,6 +100,10 @@ chrome.runtime.onMessage.addListener(
             // replace element
             pauseAllWithin(video.highest);
 
+            setTimeout(() => {
+              pauseAllWithin(video.highest);
+            }, 5000);
+
             video.highest.parentElement.replaceChild(iframe, video.highest);
             players.push({
               iframe,

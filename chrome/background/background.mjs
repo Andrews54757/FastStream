@@ -100,6 +100,22 @@ async function onClicked(tab) {
     updateTabIcon(CachedTabs[tab.id]);
     if (CachedTabs[tab.id].isOn) {
       openPlayersWithSources(tab.id);
+    } else {
+      let hasPlayer = false;
+      for (const i in CachedTabs[tab.id].frames) {
+        if (Object.hasOwn(CachedTabs[tab.id].frames, i)) {
+          const frame = CachedTabs[tab.id].frames[i];
+          if (frame && frameHasPlayer(frame)) {
+            hasPlayer = true;
+            break;
+          }
+        }
+      }
+
+      if (hasPlayer) {
+        CachedTabs[tab.id].frames = {};
+        chrome.tabs.reload(tab.id);
+      }
     }
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
@@ -710,6 +726,7 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
       const url = new URL(changeInfo.url);
       if (CachedTabs[tabid].hostname && CachedTabs[tabid].hostname !== url.hostname) {
         CachedTabs[tabid].analyzerData = undefined;
+        CachedTabs[tabid].frames = {};
       }
       CachedTabs[tabid].url = changeInfo.url;
       CachedTabs[tabid].hostname = url.hostname;
