@@ -95,27 +95,31 @@ async function onClicked(tab) {
 
   const emptyTabURLS = ['about:blank', 'about:home', 'about:newtab', 'about:privatebrowsing', 'chrome://newtab/'];
   if (tab.url && !emptyTabURLS.includes(tab.url)) {
-    CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
+    if (tab.url.substring(0, PlayerURL.length) !== PlayerURL) {
+      CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
 
-    updateTabIcon(CachedTabs[tab.id]);
-    if (CachedTabs[tab.id].isOn) {
-      openPlayersWithSources(tab.id);
-    } else {
-      let hasPlayer = false;
-      for (const i in CachedTabs[tab.id].frames) {
-        if (Object.hasOwn(CachedTabs[tab.id].frames, i)) {
-          const frame = CachedTabs[tab.id].frames[i];
-          if (frame && frameHasPlayer(frame)) {
-            hasPlayer = true;
-            break;
+      updateTabIcon(CachedTabs[tab.id]);
+      if (CachedTabs[tab.id].isOn) {
+        openPlayersWithSources(tab.id);
+      } else {
+        let hasPlayer = false;
+        for (const i in CachedTabs[tab.id].frames) {
+          if (Object.hasOwn(CachedTabs[tab.id].frames, i)) {
+            const frame = CachedTabs[tab.id].frames[i];
+            if (frame && frameHasPlayer(frame)) {
+              hasPlayer = true;
+              break;
+            }
           }
         }
-      }
 
-      if (hasPlayer) {
-        CachedTabs[tab.id].frames = {};
-        chrome.tabs.reload(tab.id);
+        if (hasPlayer) {
+          CachedTabs[tab.id].frames = {};
+          chrome.tabs.reload(tab.id);
+        }
       }
+    } else {
+      chrome.tabs.reload(tab.id);
     }
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
@@ -740,6 +744,11 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         CachedTabs[tabid].analyzerData = undefined;
         CachedTabs[tabid].frames = {};
       }
+
+      if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
+        CachedTabs[tabid].isOn = true;
+      }
+
       CachedTabs[tabid].url = changeInfo.url;
       CachedTabs[tabid].hostname = url.hostname;
 
