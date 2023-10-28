@@ -253,6 +253,18 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.isFastStream = false;
       frame.playerOpening = false;
     }
+
+    if (frame.frameId === 0) {
+      // clear all other frames
+      for (const i in tab.frames) {
+        if (Object.hasOwn(tab.frames, i)) {
+          const frame = tab.frames[i];
+          if (!frame || frame.frameId !== 0) {
+            delete tab.frames[i];
+          }
+        }
+      }
+    }
   } else if (msg.type === 'loaded') {
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'init',
