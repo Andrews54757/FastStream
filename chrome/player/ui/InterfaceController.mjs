@@ -545,6 +545,7 @@ export class InterfaceController {
     DOMElements.pip.style.display = (this.client.player && document.pictureInPictureEnabled) ? 'inline-block' : 'none';
     DOMElements.download.style.display = (this.client.player && !this.client.player.canSave().cantSave) ? 'inline-block' : 'none';
     DOMElements.screenshot.style.display = this.client.player ? 'inline-block' : 'none';
+    DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
   }
 
   pipToggle() {

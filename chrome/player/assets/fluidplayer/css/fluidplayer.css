@@ -2437,6 +2437,12 @@ body {
     white-space: nowrap;
 }
 
+.playinfo {
+    color: var(--menu-text-color);
+    padding: 5px 10px;
+    text-align: center;
+    font-size: 14px;
+}
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     .fluid_button {
