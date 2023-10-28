@@ -91,8 +91,12 @@ function createWriteStream(filename, options, size) {
     if (evt.data.download) {
       makeIframe(evt.data.download);
     } else if (evt.data.abort) {
-      chunks = [];
       channel.port1.postMessage('abort'); // send back so controller is aborted
+      channel.port1.onmessage = null;
+      channel.port1.close();
+      channel.port2.close();
+      channel = null;
+    } else if (evt.data.close) {
       channel.port1.onmessage = null;
       channel.port1.close();
       channel.port2.close();
