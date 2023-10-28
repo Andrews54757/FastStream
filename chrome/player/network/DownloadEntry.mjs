@@ -144,12 +144,12 @@ export class DownloadEntry {
     });
   }
 
-  getData() {
-    return this.data;
+  async getData() {
+    return typeof this.data === 'function' ? await this.data() : this.data;
   }
 
   async getDataFromBlob(type) {
-    const blob = this.data instanceof Blob ? this.data : await this.data();
+    const blob = await this.getData();
     const reader = new FileReader();
 
     type = type || this.responseType;

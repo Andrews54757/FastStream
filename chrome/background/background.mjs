@@ -773,17 +773,14 @@ const map = new Map();
 // This should be called once per download
 // Each event has a dataChannel that the data will be piped through
 self.onmessage = (event) => {
-  console.log('onmessage', event);
-
   const data = event.data;
-  const downloadUrl = self.registration.scope + Date.now() + Math.floor(Math.random() * 1000000) + '/' + data.filename;
+  const downloadUrl = self.registration.scope + 'temp/' + Date.now() + Math.floor(Math.random() * 1000000) + '/' + data.filename;
   const port = event.ports[0];
   const metadata = new Array(2); // [stream, data]
 
   metadata[1] = data;
   map.set(downloadUrl, metadata);
   port.onmessage = (evt) => {
-    console.log('port.onmessage', evt);
     port.onmessage = null;
     metadata[0] = evt.data.readableStream;
     port.postMessage({download: downloadUrl});
@@ -825,8 +822,6 @@ self.onfetch = (event) => {
   }
 
   event.respondWith(new Response(stream, {headers: responseHeaders}));
-
-  console.log('Download started', url, stream, data);
 };
 
 console.log('\n %c %c %cFast%cStream %c-%c ' + ExtensionVersion + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');

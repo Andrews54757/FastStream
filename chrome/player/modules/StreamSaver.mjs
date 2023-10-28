@@ -87,7 +87,6 @@ function createWriteStream(filename, options, size) {
 
 
   channel.port1.onmessage = (evt) => {
-    console.log(evt);
     // Service worker sent us a link that we should open.
     if (evt.data.download) {
       makeIframe(evt.data.download);

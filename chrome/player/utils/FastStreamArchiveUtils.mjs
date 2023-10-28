@@ -38,7 +38,7 @@ export class FastStreamArchiveUtils {
 
       let data = null;
       if (entry.storeRaw) {
-        data = entry.getData();
+        data = await entry.getData();
         if (typeof data === 'string') {
           data = (new TextEncoder().encode(data)).buffer;
         }

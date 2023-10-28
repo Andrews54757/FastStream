@@ -44,7 +44,7 @@ export class DownloadManager {
     if (!this.indexedDBManager || entry.status !== DownloadStatus.DOWNLOAD_COMPLETE || entry.storeRaw) return;
 
     const identifier = this.getIdentifier(entry);
-    const data = entry.getData();
+    const data = entry.data;
 
     await this.indexedDBManager.setFile(identifier, data);
 

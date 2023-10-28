@@ -47,7 +47,8 @@
     {
       "resources": [
         "player/player.html",
-        "options/options.html"
+        "options/options.html",
+        "temp/*"
       ],
       "matches": [
         "<all_urls>"

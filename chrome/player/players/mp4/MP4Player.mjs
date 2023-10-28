@@ -2,7 +2,6 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {EmitterCancel, EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {MP4Box} from '../../modules/mp4box.mjs';
-import {BlobManager} from '../../utils/BlobManager.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {MP4Fragment} from './MP4Fragment.mjs';
@@ -677,15 +676,17 @@ export default class MP4Player extends EventEmitter {
 
     return {
       canSave: true,
+      canStream: true,
       isComplete: !incomplete,
     };
   }
 
   async getSaveBlob(options) {
+    const filestream = options.filestream;
+    const writer = filestream.getWriter();
     const frags = this.client.getFragments(this.currentVideoTrack);
-    const emptyTemplate = BlobManager.createBlob([new ArrayBuffer(FRAGMENT_SIZE)], 'application/octet-stream');
+    const emptyTemplate = new Uint8Array(FRAGMENT_SIZE);
 
-    const files = [];
     let lastFrag = 0;
     for (let i = frags.length - 1; i >= 0; i--) {
       const frag = frags[i];
@@ -694,23 +695,26 @@ export default class MP4Player extends EventEmitter {
         break;
       }
     }
+
     for (let i = 0; i < lastFrag; i++) {
       const frag = frags[i];
       if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
         const entry = this.client.downloadManager.getEntry(frag.getContext());
-        if (entry.getData()) {
-          files.push(entry.getData());
-        } else {
-          throw new Error('No data for fragment');
-        }
+        await writer.write(new Uint8Array(await entry.getDataFromBlob()));
       } else {
-        files.push(emptyTemplate);
+        await writer.write(emptyTemplate);
+      }
+
+      if (options.onProgress) {
+        options.onProgress(i / lastFrag);
       }
     }
 
+    writer.close();
+
     return {
       extension: 'mp4',
-      blob: BlobManager.createBlob(files, 'video/mp4'),
+      blob: null,
     };
   }
 
