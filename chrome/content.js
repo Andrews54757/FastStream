@@ -167,8 +167,8 @@ function updateIframeStyle(old, iframe) {
   iframe.setAttribute('style', old.getAttribute('style'));
   iframe.classList = old.classList;
 
-  const width = (rect.width || 100) + 'px';
-  const height = (rect.height || 100) + 'px';
+  const width = Math.max(rect.width, 100) + 'px';
+  const height = Math.max(rect.height, 100) + 'px';
 
   iframe.style.setProperty('width', width, 'important');
   iframe.style.setProperty('height', height, 'important');
