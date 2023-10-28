@@ -27,8 +27,20 @@ export class IndexedDBManager {
     }
   }
 
+  async getDatabases() {
+    if (window.indexedDB.databases) {
+      return window.indexedDB.databases();
+    } else {
+      return JSON.parse(localStorage.getItem('fs_temp_databases') || '[]').map((name)=>{
+        return {
+          name: name,
+        };
+      });
+    }
+  }
+
   async prune() {
-    const databases = await window.indexedDB.databases();
+    const databases = await this.getDatabases();
 
     return Promise.all(databases.map(async (database)=>{
       if (database.name.startsWith('faststream-temp-')) {
@@ -54,12 +66,21 @@ export class IndexedDBManager {
       const db = event.target.result;
       db.createObjectStore('metadata');
       db.createObjectStore('files');
+      if (!window.indexedDB.databases) {
+        const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
+        databases.push(dbName);
+        localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
+      }
     };
     return this.wrapRequest(request, 5000);
   }
 
   async deleteDB(dbName) {
-    return this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
+    await this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
+    if (!window.indexedDB.databases) {
+      const databases = await this.getDatabases();
+      localStorage.setItem('fs_temp_databases', JSON.stringify(databases.filter((name)=>name !== dbName)));
+    }
   }
 
   async getValue(db, storeName, key) {
