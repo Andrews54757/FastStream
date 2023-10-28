@@ -134,9 +134,9 @@ export default class YTPlayer extends DashPlayer {
   }
 
   // SPLICER:CENSORYT:REMOVE_START
-  async getSaveBlob(options) {
+  async saveVideo(options) {
     try {
-      return await super.getSaveBlob(options);
+      return await super.saveVideo(options);
     } catch (e) {
       console.warn(e);
       const stream = await this.videoInfo.download({

@@ -328,7 +328,7 @@ export default class DashPlayer extends EventEmitter {
     };
   }
 
-  async getSaveBlob(options) {
+  async saveVideo(options) {
     let frags = [];
     const fragments = this.client.getFragments(this.currentLevel) || [];
     const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];

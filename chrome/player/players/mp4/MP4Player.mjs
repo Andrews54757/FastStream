@@ -681,7 +681,7 @@ export default class MP4Player extends EventEmitter {
     };
   }
 
-  async getSaveBlob(options) {
+  async saveVideo(options) {
     const filestream = options.filestream;
     const writer = filestream.getWriter();
     const frags = this.client.getFragments(this.currentVideoTrack);

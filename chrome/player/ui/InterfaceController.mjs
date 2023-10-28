@@ -867,7 +867,7 @@ export class InterfaceController {
       this.makingDownload = true;
       this.setStatusMessage('save-video', `Making download...`, 'info');
       try {
-        result = await player.getSaveBlob({
+        result = await player.saveVideo({
           onProgress: (progress) => {
             this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
           },

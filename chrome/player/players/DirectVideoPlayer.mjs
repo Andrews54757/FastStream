@@ -104,7 +104,7 @@ export default class DirectVideoPlayer extends EventEmitter {
     };
   }
 
-  async getSaveBlob(options) {
+  async saveVideo(options) {
 
 
   }

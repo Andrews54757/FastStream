@@ -3,6 +3,8 @@ export const streamSaver = {
   createWriteStream,
 };
 
+const useBlobFallback = navigator.serviceWorker === undefined;
+
 function getServiceWorker() {
   return navigator.serviceWorker.getRegistration('./').then((swReg) => {
     const swRegTmp = swReg.installing || swReg.waiting;
@@ -17,7 +19,7 @@ function getServiceWorker() {
       });
     });
   });
-}
+};
 
 function makeIframe(src) {
   if (!src) throw new Error('meh');
@@ -35,6 +37,32 @@ function makeIframe(src) {
   return iframe;
 }
 
+function createWriteStreamBlob(filename, opts, size) {
+  const chunks = [];
+  return new WritableStream({
+    write(chunk) {
+      if (!(chunk instanceof Uint8Array)) {
+        throw new TypeError('Can only write Uint8Arrays');
+      }
+      chunks.push(chunk);
+    },
+    close() {
+      const blob = new Blob(chunks, {type: 'application/octet-stream; charset=utf-8'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    },
+    abort() {
+      chunks = [];
+    },
+  }, opts.writableStrategy);
+}
+
 /**
      * @param  {string} filename filename that should be used
      * @param  {object} options  [description]
@@ -42,17 +70,13 @@ function makeIframe(src) {
      * @return {WritableStream<Uint8Array>}
      */
 function createWriteStream(filename, options, size) {
-  let opts = {
-    size: null,
-    pathname: null,
-    writableStrategy: undefined,
-    readableStrategy: undefined,
-  };
+  const opts = options || {};
+  if (useBlobFallback) {
+    return createWriteStreamBlob(filename, opts, size);
+  }
 
   let channel = null;
   let ts = null;
-
-  opts = options || {};
 
   channel = new MessageChannel();
 
