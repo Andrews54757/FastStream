@@ -1,4 +1,4 @@
-import {FSBlob} from './fsblob.mjs';
+import {FSBlob} from './FSBlob.mjs';
 
 /* ! streamsaver. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
 export const streamSaver = {

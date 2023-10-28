@@ -1,5 +1,5 @@
 import {EventEmitter} from '../eventemitter.mjs';
-import {FSBlob} from '../fsblob.mjs';
+import {FSBlob} from '../FSBlob.mjs';
 import {MP4} from './MP4Generator.mjs';
 import Transmuxer from './transmuxer.mjs';
 

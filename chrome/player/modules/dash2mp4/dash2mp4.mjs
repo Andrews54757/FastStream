@@ -2,7 +2,7 @@ import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {Hls} from '../hls.mjs';
-import {FSBlob} from '../fsblob.mjs';
+import {FSBlob} from '../FSBlob.mjs';
 const {ExpGolomb, Mp4Sample} = Hls.Muxers;
 
 export class DASH2MP4 extends EventEmitter {
