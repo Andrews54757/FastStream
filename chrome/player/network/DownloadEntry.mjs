@@ -1,5 +1,6 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {BlobManager} from '../utils/BlobManager.mjs';
+import {Utils} from '../utils/Utils.mjs';
 
 export class DownloadEntry {
   constructor(details) {
@@ -19,10 +20,12 @@ export class DownloadEntry {
     this.preProcessor = details.preProcessor;
 
     this.data = null;
+    this.dataSize = 0;
     this.responseHeaders = null;
 
     this.downloader = null;
     this.watchers = [];
+    this.transferFile = null;
 
     this.responseURL = null;
   }
@@ -57,12 +60,14 @@ export class DownloadEntry {
   cleanup() {
     this.preProcessor = null;
     this.downloader = null;
+    this.transferFile = null;
     this.watchers.length = 0;
   }
 
   destroy() {
     this.cleanup();
   }
+
   async onSuccess(response, stats, entry, xhr) {
     if (!this.downloader) {
       console.log('DownloadEntry.onSuccess called after abort');
@@ -89,14 +94,27 @@ export class DownloadEntry {
 
     this.status = DownloadStatus.DOWNLOAD_COMPLETE;
     const mimeType = this.responseType === 'arraybuffer' ? 'application/octet-stream' : 'text/plain';
-    this.data = this.storeRaw ? response.data : BlobManager.createBlob([response.data], mimeType);
+
+    const data = this.storeRaw ? response.data : BlobManager.createBlob([response.data], mimeType);
+    this.dataSize = Utils.getDataByteSize(data);
+
+    this.data = data;
+
     this.stats = stats;
     this.responseURL = response.url;
 
     this.watchers.forEach((watcher) => {
       watcher.callbacks.onSuccess(this, xhr);
     });
+
+    if (this.transferFile) {
+      this.transferFile(this);
+    }
     this.cleanup();
+  }
+
+  setTransferFunction(transferFile) {
+    this.transferFile = transferFile;
   }
 
   onFail(stats, entry, xhr) {
@@ -130,8 +148,8 @@ export class DownloadEntry {
     return this.data;
   }
 
-  getDataFromBlob(type) {
-    const blob = this.data;
+  async getDataFromBlob(type) {
+    const blob = this.data instanceof Blob ? this.data : await this.data();
     const reader = new FileReader();
 
     type = type || this.responseType;
@@ -152,16 +170,7 @@ export class DownloadEntry {
     });
   }
 
-
   getDataSize() {
-    if (this.data) {
-      if (this.storeRaw) {
-        if (typeof this.data === 'string') return this.data.length * 2;
-        else if (this.data instanceof ArrayBuffer) return this.data.byteLength;
-        return 0;
-      }
-      return this.data.size;
-    }
-    return 0;
+    return this.dataSize;
   }
 }

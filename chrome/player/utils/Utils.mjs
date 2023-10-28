@@ -41,4 +41,11 @@ export class Utils {
   static clamp(value, min, max) {
     return Math.min(Math.max(value, min), max);
   }
+
+  static getDataByteSize(data) {
+    if (typeof data === 'string') return data.length * 2;
+    if (data instanceof ArrayBuffer) return data.byteLength;
+    if (data instanceof Blob) return data.size;
+    return 0;
+  }
 }

@@ -181,57 +181,62 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
   }, 10000);
 }
 
-if (!window.fastStream) {
-  window.fastStream = new FastStreamClient();
-}
-if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
+async function setup() {
+  if (!window.fastStream) {
+    window.fastStream = new FastStreamClient();
+    await window.fastStream.setup();
+  }
+  if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
 
-const urlParams = new URLSearchParams(window.location.search);
-const myParam = urlParams.get('frame_id');
+  const urlParams = new URLSearchParams(window.location.search);
+  const myParam = urlParams.get('frame_id');
 
-if (typeof chrome !== 'undefined') {
-  chrome?.runtime?.sendMessage({
-    type: 'faststream',
-    url: window.location.href,
-    isExt: true,
-    frameId: parseInt(myParam) || 0,
-  }).then((data) => {
-    chrome.runtime.sendMessage({
-      type: 'ready',
+  if (typeof chrome !== 'undefined') {
+    chrome?.runtime?.sendMessage({
+      type: 'faststream',
+      url: window.location.href,
+      isExt: true,
+      frameId: parseInt(myParam) || 0,
+    }).then((data) => {
+      chrome.runtime.sendMessage({
+        type: 'ready',
+      });
     });
+  }
+
+  const version = window.fastStream.version;
+  console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
+
+
+  window.addEventListener('beforeunload', () => {
+    if (window.fastStream) {
+      window.fastStream.destroy();
+      delete window.fastStream;
+    }
   });
-}
 
-const version = window.fastStream.version;
-console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
+  if (window.location.hash) {
+    const url = window.location.hash.substring(1);
+    const ext = URLUtils.get_url_extension(url);
+    let mode = PlayerModes.DIRECT;
 
+    if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
+      mode = PlayerModes.ACCELERATED_YT;
+    }
 
-window.addEventListener('beforeunload', () => {
-  if (window.fastStream) {
-    window.fastStream.destroy();
-    delete window.fastStream;
-  }
-});
+    if (mode === PlayerModes.DIRECT && URLUtils.getModeFromExtension(ext)) {
+      mode = URLUtils.getModeFromExtension(ext);
+    }
 
-if (window.location.hash) {
-  const url = window.location.hash.substring(1);
-  const ext = URLUtils.get_url_extension(url);
-  let mode = PlayerModes.DIRECT;
+    if (url.startsWith('file://') && mode === PlayerModes.ACCELERATED_MP4) {
+      mode = PlayerModes.DIRECT;
+    }
 
-  if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
-    mode = PlayerModes.ACCELERATED_YT;
-  }
-
-  if (mode === PlayerModes.DIRECT && URLUtils.getModeFromExtension(ext)) {
-    mode = URLUtils.getModeFromExtension(ext);
-  }
-
-  if (url.startsWith('file://') && mode === PlayerModes.ACCELERATED_MP4) {
-    mode = PlayerModes.DIRECT;
-  }
-
-  window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
+    window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
     // console.log('play');
     // window.fastStream.play();
-  });
+    });
+  }
 }
+
+setup();

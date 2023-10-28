@@ -16,9 +16,10 @@ export class StandardDownloader {
   getSpeed() {
     if (!this.stats) return 0;
 
-    if (this.stats.lastUpdate < Date.now() - 1000) return 0;
+    const now = Date.now();
+    if (this.stats.lastUpdate < now - 1000) return 0;
 
-    const dt = (this.stats.loading.end - this.stats.loading.start) / 1000;
+    const dt = (now - this.stats.loading.start) / 1000;
     return this.stats.loaded / dt;
   }
 

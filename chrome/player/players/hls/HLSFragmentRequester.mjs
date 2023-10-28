@@ -43,7 +43,7 @@ export class HLSFragmentRequester {
       keyPromise = new Promise((resolve, reject) => {
         this.player.getClient().downloadManager.getFile(toGet, {
           onSuccess: (entry) => {
-            resolve(entry.data);
+            resolve(entry.getData());
           },
           onFail: (err) => {
             console.log('failed to get key', err);

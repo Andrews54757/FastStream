@@ -12,4 +12,8 @@ export class EnvUtils {
 
     return true;
   }
+
+  static isChrome() {
+    return navigator.userAgent.indexOf('Chrome') !== -1;
+  }
 }

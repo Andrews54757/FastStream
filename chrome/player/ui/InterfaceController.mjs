@@ -682,7 +682,7 @@ export class InterfaceController {
         try {
           const {source, entries, currentLevel, currentAudioLevel} = await FastStreamArchiveUtils.parseFSA(buffer, (progress)=>{
             this.setStatusMessage('save-video', `Loading archive... ${Math.round(progress * 100)}%`, 'info');
-          });
+          }, this.client.downloadManager);
 
           newEntries = entries;
 

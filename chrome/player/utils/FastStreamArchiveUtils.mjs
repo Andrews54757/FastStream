@@ -1,5 +1,6 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {DownloadEntry} from '../network/DownloadEntry.mjs';
+import {Utils} from './Utils.mjs';
 
 export class FastStreamArchiveUtils {
   static async writeFSABlob(player, entries, progressCallback) {
@@ -80,7 +81,7 @@ export class FastStreamArchiveUtils {
     });
   }
 
-  static async parseFSA(largeBuffer, progressCallback) {
+  static async parseFSA(largeBuffer, progressCallback, downloadManager) {
     const entries = [];
 
     const headerSize = await largeBuffer.uint32();
@@ -114,6 +115,12 @@ export class FastStreamArchiveUtils {
         entry.data = new Blob(await largeBuffer.getViews(dataSize), {
           type: mimeType,
         });
+      }
+
+      entry.dataSize = Utils.getDataByteSize(entry.data);
+
+      if (downloadManager) {
+        downloadManager.archiveEntryData(entry);
       }
 
       entries.push(entry);

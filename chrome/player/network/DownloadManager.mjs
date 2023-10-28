@@ -1,5 +1,7 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {DownloadEntry} from './DownloadEntry.mjs';
+import {IndexedDBManager} from './IndexedDBManager.mjs';
 import {StandardDownloader} from './StandardDownloader.mjs';
 
 export class DownloadManager {
@@ -18,6 +20,8 @@ export class DownloadManager {
     this.lastSpeed = 0;
 
     this.failed = 0;
+
+    this.indexedDBManager = null;
   }
 
   getCompletedEntries() {
@@ -32,9 +36,33 @@ export class DownloadManager {
 
   setEntries(entries) {
     entries.forEach((entry) => {
-      const identifier = this.getIdentifier(entry);
-      this.storage.set(identifier, entry);
+      this.setEntry(entry);
     });
+  }
+
+  async archiveEntryData(entry) {
+    if (!this.indexedDBManager || entry.status !== DownloadStatus.DOWNLOAD_COMPLETE || entry.storeRaw) return;
+
+    const identifier = this.getIdentifier(entry);
+    const data = entry.getData();
+
+    await this.indexedDBManager.setFile(identifier, data);
+
+    entry.data = () => {
+      return this.indexedDBManager.getFile(identifier);
+    };
+  }
+
+  setEntry(entry) {
+    const identifier = this.getIdentifier(entry);
+
+    if (entry.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+      this.archiveEntryData(entry);
+    } else {
+      entry.setTransferFunction(this.archiveEntryData.bind(this));
+    }
+
+    this.storage.set(identifier, entry);
   }
 
   canGetFile(details) {
@@ -65,6 +93,7 @@ export class DownloadManager {
     if (storedEntry) {
       storedEntry.destroy();
       this.storage.delete(key);
+      this.indexedDBManager?.deleteFile(key);
     }
   }
 
@@ -74,6 +103,8 @@ export class DownloadManager {
     });
     this.downloaders = null;
     this.storage = null;
+    this.indexedDBManager?.close();
+    this.indexedDBManager = null;
   }
 
   getFile(details, callbacks) {
@@ -81,14 +112,9 @@ export class DownloadManager {
     let storedEntry = this.storage.get(key);
     //  console.log("get file", key, storedEntry)
 
-    if (!storedEntry) {
+    if (!storedEntry || storedEntry.status === DownloadStatus.DOWNLOAD_FAILED) {
       storedEntry = new DownloadEntry(details);
-      this.storage.set(key, storedEntry);
-    }
-
-    if (storedEntry.status === DownloadStatus.DOWNLOAD_FAILED) {
-      storedEntry = new DownloadEntry(details);
-      this.storage.set(key, storedEntry);
+      this.setEntry(storedEntry);
     }
 
     if (storedEntry.status === DownloadStatus.DOWNLOAD_COMPLETE) {
@@ -240,12 +266,8 @@ export class DownloadManager {
     return url + '::' + rangeStart + '-' + rangeEnd + '::' + responseType;
   }
 
-  reset() {
+  async reset() {
     this.abortAll();
-
-    if (!this.dontClearStorage) {
-      this.clearStorage();
-    }
 
     this.testing = true;
     this.downloaders = [];
@@ -256,15 +278,28 @@ export class DownloadManager {
 
     this.failed = 0;
 
+    if (!this.dontClearStorage) {
+      await this.clearStorage();
+    }
+
     this.downloaders.push(new StandardDownloader(this));
+  }
+
+  async setup() {
+    // Chrome can move blobs to file storage, so we don't need to use IndexedDB
+    if (!EnvUtils.isChrome()) {
+      this.indexedDBManager = new IndexedDBManager();
+      await this.indexedDBManager.setup();
+    }
   }
 
   resetOverride(value) {
     this.dontClearStorage = value;
   }
 
-  clearStorage() {
+  async clearStorage() {
     this.storage.clear();
+    await this.indexedDBManager?.clearStorage();
   }
 
   abortAll() {

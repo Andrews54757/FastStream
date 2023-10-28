@@ -20,7 +20,7 @@ export class FastStreamClient extends EventEmitter {
     this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : '#.#.#';
 
     this.options = {
-      throttleSpeed: 150 * 1000 * 1000, // 150 MB/s
+      throttleSpeed: 300 * 1000 * 1000, // 300 MB/s
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 120,
@@ -69,6 +69,10 @@ export class FastStreamClient extends EventEmitter {
     this.audioContext = new AudioContext();
     this.audioConfigManager.setupNodes();
     this.mainloop();
+  }
+
+  async setup() {
+    await this.downloadManager.setup();
   }
 
   shouldDownloadAll() {
@@ -293,7 +297,7 @@ export class FastStreamClient extends EventEmitter {
     source = source.copy();
 
     console.log('setSource', source);
-    this.resetPlayer();
+    await this.resetPlayer();
     this.source = source;
 
     const estimate = await navigator.storage.estimate();
@@ -553,7 +557,8 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.failedToLoad(reason);
   }
 
-  resetPlayer() {
+  async resetPlayer() {
+    const promises = [];
     this.lastTime = 0;
 
     this.fragmentsStore = {};
@@ -599,7 +604,7 @@ export class FastStreamClient extends EventEmitter {
       this.audioGain = null;
     }
 
-    this.downloadManager.reset();
+    promises.push(this.downloadManager.reset());
     this.interfaceController.reset();
     this.subtitlesManager.clearTracks();
 
@@ -609,20 +614,13 @@ export class FastStreamClient extends EventEmitter {
     this.hasDownloadSpace = false;
     this.previousLevel = -1;
     this.previousAudioLevel = -1;
+
+    await Promise.all(promises);
   }
 
   setMediaName(name) {
     this.mediaName = name;
     this.subtitlesManager.mediaNameSet();
-  }
-
-  debugstuff() {
-    const res = [];
-    this.fragmentsStore[this.currentLevel].forEach((fragment) => {
-      const entry = this.downloadManager.getEntry(fragment.getContext());
-      res.push(entry.data.size);
-    });
-    console.log(res.join('\n'));
   }
 
   bindPlayer(player) {
