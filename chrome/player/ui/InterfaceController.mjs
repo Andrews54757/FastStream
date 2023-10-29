@@ -1103,7 +1103,6 @@ export class InterfaceController {
     this.client.setSeekSave(false);
 
     DOMElements.progressContainer.classList.add('freeze');
-    DOMElements.playPauseButtonBigCircle.style.display = 'none';
     // we need an initial position for touchstart events, as mouse up has no offset x for iOS
     let initialPosition = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
 
