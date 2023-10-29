@@ -119,7 +119,7 @@ async function onClicked(tab) {
         }
       }
     } else {
-      chrome.tabs.remove(tab.id);
+      // chrome.tabs.remove(tab.id);
     }
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
