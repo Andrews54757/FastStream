@@ -172,7 +172,7 @@ function updateIframeStyle(old, iframe) {
 
   iframe.style.setProperty('width', width, 'important');
   iframe.style.setProperty('height', height, 'important');
-
+  iframe.style.setProperty('padding', '0px', 'important');
 
   iframe.style.position = styles.position;
   iframe.id = old.id;
