@@ -25,8 +25,8 @@ export class LargeBuffer {
     this.currentBuffer = await preloaded;
   }
 
-  async getViews(length) {
-    const views = [];
+  async getParts(length) {
+    const parts = [];
     this.offset += length;
     if (this.offset > this.byteLength) {
       throw new Error('Index ' + this.offset + ' out of range');
@@ -42,36 +42,22 @@ export class LargeBuffer {
       }
 
       const newlen = Math.min(this.currentBuffer.byteLength - this.index, length);
-      views.push(new DataView(this.currentBuffer.buffer, this.index, newlen));
+      parts.push(this.currentBuffer.subarray(this.index, this.index + newlen));
 
       this.index += newlen;
       length = length - newlen;
     }
-    return views;
+    return parts;
   }
 
   async read(length) {
     const uint8 = new Uint8Array(length);
+    const parts = await this.getParts(length);
     let offset = 0;
-    this.offset += length;
-    if (this.offset > this.byteLength) {
-      throw new Error('Index ' + this.offset + ' out of range');
-    }
 
-    while (length > 0) {
-      if (this.index >= this.currentBuffer.byteLength) {
-        await this.nextBuffer();
-      }
-
-      if (!this.currentBuffer) {
-        throw new Error('Buffer ' + this.bufferIndex + ' not found');
-      }
-
-      const newlen = Math.min(this.currentBuffer.byteLength - this.index, length);
-      for (let i = 0; i < newlen; i++) {
-        uint8[offset++] = this.currentBuffer[this.index++];
-      }
-      length = length - newlen;
+    for (let i = 0; i < parts.length; i++) {
+      uint8.set(parts[i], offset);
+      offset += parts[i].byteLength;
     }
 
     return uint8;

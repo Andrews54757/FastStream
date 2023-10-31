@@ -46,7 +46,7 @@ export class FastStreamArchiveUtils {
         data = await entry.getDataFromBlob('arraybuffer');
       }
 
-      const dataSize = entry.storeRaw ? data.byteLength : data.size;
+      const dataSize = data.byteLength;
       const newHeaders = {};
       const headersWhitelist = ['content-range'];
       for (const header in entry.responseHeaders) {
@@ -118,7 +118,7 @@ export class FastStreamArchiveUtils {
         }
       } else {
         const mimeType = entry.responseType === 'arraybuffer' ? 'application/octet-stream' : 'text/plain';
-        entry.data = new Blob(await largeBuffer.getViews(dataSize), {
+        entry.data = new Blob(await largeBuffer.getParts(dataSize), {
           type: mimeType,
         });
       }
