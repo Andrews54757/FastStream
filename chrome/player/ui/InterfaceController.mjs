@@ -307,7 +307,7 @@ export class InterfaceController {
       return;
     }
 
-    const percentDone = Math.round((loaded / total) * 1000) / 10;
+    const percentDone = Math.floor((loaded / total) * 1000) / 10;
 
     const newSpeed = this.client.downloadManager.getSpeed();
     if (newSpeed > 0 && this.lastSpeed > 0) {
@@ -319,7 +319,7 @@ export class InterfaceController {
     let speed = this.lastSpeed; // bytes per second
     speed = Math.round(speed / 1000 / 1000 * 10) / 10; // MB per second
 
-    if (percentDone < 100) {
+    if (loaded < total) {
       this.setStatusMessage('download', `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`, 'success');
     } else {
       this.setStatusMessage('download', `100% Buffered`, 'success');
