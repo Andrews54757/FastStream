@@ -11377,7 +11377,7 @@ class TSDemuxer {
         while (i < len && array[i++] !== 0) {
           // noop
         }
-        state = 1;
+        state = array[i - 1] === 0 ? 1 : 0;
         continue;
       } else if (state === 1) {
         state = array[i++] === 0 ? 2 : 0;
