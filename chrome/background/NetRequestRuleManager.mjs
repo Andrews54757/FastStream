@@ -7,6 +7,7 @@ export class RuleEntry {
 
 export class RuleManager {
   constructor() {
+    this.idStart = 10 + Math.floor(Math.random() * 1000) * 1000;
     this.rules = [];
     this.isLoopRunning = false;
     this.dumpRules();
@@ -90,7 +91,7 @@ export class RuleManager {
   }
 
   getNextID() {
-    let nextRuleID = 10;
+    let nextRuleID = this.idStart;
     for (let i = 0; i < this.rules.length; i++) {
       const rule = this.rules[i];
       if (rule.id === nextRuleID) {
