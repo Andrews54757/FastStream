@@ -119,7 +119,6 @@ export class DownloadManager {
 
     if (storedEntry.status === DownloadStatus.DOWNLOAD_COMPLETE) {
       callbacks.onSuccess(storedEntry);
-      this.client.predownloadFragments();
       return {
         entry: storedEntry,
         abort: () => {

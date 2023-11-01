@@ -868,12 +868,15 @@ export class InterfaceController {
       this.makingDownload = true;
       this.setStatusMessage('save-video', `Making download...`, 'info');
       try {
+        const start = performance.now();
         result = await player.saveVideo({
           onProgress: (progress) => {
             this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
           },
           filestream,
         });
+        const end = performance.now();
+        console.log('Save took ' + (end - start) / 1000 + 's');
       } catch (e) {
         console.error(e);
         this.setStatusMessage('save-video', `Failed to save video!`, 'error', 2000);
