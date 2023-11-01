@@ -120,7 +120,7 @@ export function HLSLoaderFactory(player) {
             }
           },
 
-        }, this.config);
+        }, this.config, 1000);
       } catch (e) {
         console.error(e);
       }

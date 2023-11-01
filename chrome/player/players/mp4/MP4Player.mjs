@@ -418,7 +418,7 @@ export default class MP4Player extends EventEmitter {
             }
           },
 
-        });
+        }, 1000);
         return;
       }
     }

@@ -6,7 +6,7 @@ export class DashFragmentRequester {
     this.player = player;
   }
 
-  requestFragment(fragment, callbacks, config) {
+  requestFragment(fragment, callbacks, config, priority) {
     const context = fragment.getContext();
     config = config || {};
 
@@ -54,7 +54,7 @@ export class DashFragmentRequester {
         this.player.emit(DefaultPlayerEvents.FRAGMENT_UPDATE, fragment);
         if (callbacks.onAbort) callbacks.onAbort(entry);
       },
-    });
+    }, priority);
 
     return loader;
   }

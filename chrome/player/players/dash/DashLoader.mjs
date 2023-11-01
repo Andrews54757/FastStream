@@ -56,7 +56,7 @@ export function DASHLoaderFactory(player) {
             httpRequest.onAbort(entry);
           },
 
-        });
+        }, 1000);
       } catch (e) {
         console.error(e);
       }

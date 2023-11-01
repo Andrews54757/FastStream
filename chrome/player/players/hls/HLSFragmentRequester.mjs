@@ -12,7 +12,7 @@ export class HLSFragmentRequester {
     this.decrypter.destroy();
   }
 
-  requestFragment(fragment, callbacks, config) {
+  requestFragment(fragment, callbacks, config, priority) {
     const context = fragment.getContext();
     config = config || {};
 
@@ -115,7 +115,7 @@ export class HLSFragmentRequester {
         fragment.status = DownloadStatus.WAITING;
         this.player.emit(DefaultPlayerEvents.FRAGMENT_UPDATE, fragment);
       },
-    });
+    }, priority);
 
     return loader;
   }

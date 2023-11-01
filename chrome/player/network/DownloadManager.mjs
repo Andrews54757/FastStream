@@ -107,7 +107,8 @@ export class DownloadManager {
     this.indexedDBManager = null;
   }
 
-  getFile(details, callbacks) {
+  getFile(details, callbacks, priority) {
+    priority = priority || 0;
     const key = this.getIdentifier(details);
     let storedEntry = this.storage.get(key);
     //  console.log("get file", key, storedEntry)
@@ -139,8 +140,29 @@ export class DownloadManager {
 
     storedEntry.addWatcher(watcher);
 
+    if (storedEntry.status === DownloadStatus.ENQUEUED && storedEntry.priority < priority) {
+      // remove from queue
+      storedEntry.status = DownloadStatus.WAITING;
+      const ind = this.queue.indexOf(storedEntry);
+      if (ind !== -1) {
+        this.queue.splice(ind, 1);
+      }
+    }
+
     if (storedEntry.status === DownloadStatus.WAITING) {
-      this.queue.push(storedEntry);
+      storedEntry.priority = priority;
+
+      if (priority === 0) { // lowest priority
+        this.queue.push(storedEntry);
+      } else {
+        // append to end of priority queue
+        let ind = this.queue.length;
+        while (ind > 0 && this.queue[ind - 1].priority < priority) {
+          ind--;
+        }
+        this.queue.splice(ind, 0, storedEntry);
+      }
+
       storedEntry.status = DownloadStatus.ENQUEUED;
       this.queueNext();
     }
