@@ -11371,13 +11371,16 @@ class TSDemuxer {
       state = 0;
       i = 1;
     }
-    while (i < len) {
+    l1: while (i < len) {
       // optimization. state 0 and 1 are the predominant case. let's handle them outside of the switch/case
       if (state === 0) {
-        while (i < len && array[i++] !== 0) {
+        while (array[i++] !== 0) {
+          if (i === len) {
+            break l1;
+          }
           // noop
         }
-        state = array[i - 1] === 0 ? 1 : 0;
+        state = 1;
         continue;
       } else if (state === 1) {
         state = array[i++] === 0 ? 2 : 0;
