@@ -32,7 +32,7 @@ export class DASH2MP4 extends EventEmitter {
   async pushFragment(track, fragData) {
     const entry = await fragData.getEntry();
     const blob = await entry.getData();
-    const data = await BlobManager.getDataFromBlob(blob);
+    const data = await BlobManager.getDataFromBlob(blob, 'arraybuffer');
     data.fileStart = 0;
     const mp4boxfile = MP4Box.createFile(false);
     mp4boxfile.onError = function(e) {

@@ -24,7 +24,6 @@ export class BlobManager {
   static async getDataFromBlob(blob, type) {
     const reader = new FileReader();
 
-    type = type || 'arraybuffer';
     if (type === 'arraybuffer') {
       reader.readAsArrayBuffer(blob);
     } else {
