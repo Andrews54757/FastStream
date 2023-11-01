@@ -3,6 +3,7 @@ import {MP4Box} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {Hls} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
+import {BlobManager} from '../../utils/BlobManager.mjs';
 const {ExpGolomb, Mp4Sample} = Hls.Muxers;
 
 export class DASH2MP4 extends EventEmitter {
@@ -29,8 +30,9 @@ export class DASH2MP4 extends EventEmitter {
   }
 
   async pushFragment(track, fragData) {
-    const blob = await fragData.entry.getData();
-    const data = await fragData.entry.getDataFromBlob();
+    const entry = await fragData.getEntry();
+    const blob = await entry.getData();
+    const data = await BlobManager.getDataFromBlob(blob);
     data.fileStart = 0;
     const mp4boxfile = MP4Box.createFile(false);
     mp4boxfile.onError = function(e) {
@@ -265,17 +267,17 @@ export class DASH2MP4 extends EventEmitter {
       type: 'video/mp4',
     });
   }
-  async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, fragDatas) {
+  async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, zippedFragments) {
     this.setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment);
 
     let lastProgress = 0;
-    for (let i = 0; i < fragDatas.length; i++) {
-      if (fragDatas[i].type === 0) {
-        await this.pushFragment(this.videoTrack, fragDatas[i]);
+    for (let i = 0; i < zippedFragments.length; i++) {
+      if (zippedFragments[i].track === 0) {
+        await this.pushFragment(this.videoTrack, zippedFragments[i]);
       } else {
-        await this.pushFragment(this.audioTrack, fragDatas[i]);
+        await this.pushFragment(this.audioTrack, zippedFragments[i]);
       }
-      const newProgress = Math.floor((i + 1) / fragDatas.length * 100);
+      const newProgress = Math.floor((i + 1) / zippedFragments.length * 100);
       if (newProgress !== lastProgress) {
         lastProgress = newProgress;
         this.emit('progress', newProgress / 100);

@@ -170,17 +170,18 @@ export default class DashPlayer extends EventEmitter {
 
 
   downloadFragment(fragment) {
-    this.fragmentRequester.requestFragment(fragment, {
-      onProgress: (e) => {
+    return new Promise((resolve, reject) => {
+      this.fragmentRequester.requestFragment(fragment, {
+        onProgress: (e) => {
 
-      },
-      onSuccess: (e) => {
-
-      },
-      onFail: (e) => {
-
-      },
-
+        },
+        onSuccess: (e) => {
+          resolve();
+        },
+        onFail: (e) => {
+          reject(new Error('Failed to download fragment'));
+        },
+      });
     });
   }
 
@@ -329,52 +330,24 @@ export default class DashPlayer extends EventEmitter {
   }
 
   async saveVideo(options) {
-    let frags = [];
     const fragments = this.client.getFragments(this.currentLevel) || [];
     const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
 
-    let fragIndex = 0;
-    let audioFragIndex = 0;
+    let zippedFragments = Utils.zipTimedFragments([fragments, audioFragments]);
 
-    for (let i = 0; i < fragments.length + audioFragments.length; i++) {
-      const frag = fragments[fragIndex];
-      const audioFrag = audioFragments[audioFragIndex];
-
-      if (frag && audioFrag) {
-        if (frag.start < audioFrag.start) {
-          frags.push({
-            type: 0,
-            fragment: frag,
-            entry: this.client.downloadManager.getEntry(frag.getContext()),
-          });
-          fragIndex++;
-        } else {
-          frags.push({
-            type: 1,
-            fragment: audioFrag,
-            entry: this.client.downloadManager.getEntry(audioFrag.getContext()),
-          });
-          audioFragIndex++;
-        }
-      } else if (frag) {
-        frags.push({
-          type: 0,
-          fragment: frag,
-          entry: this.client.downloadManager.getEntry(frag.getContext()),
-        });
-        fragIndex++;
-      } else if (audioFrag) {
-        frags.push({
-          type: 1,
-          fragment: audioFrag,
-          entry: this.client.downloadManager.getEntry(audioFrag.getContext()),
-        });
-        audioFragIndex++;
-      }
+    if (options.partialSave) {
+      zippedFragments = zippedFragments.filter((data) => {
+        return data.fragment.status === DownloadStatus.DOWNLOAD_COMPLETE;
+      });
     }
 
-    frags = frags.filter((frag) => {
-      return frag.fragment.status === DownloadStatus.DOWNLOAD_COMPLETE;
+    zippedFragments.forEach((data) => {
+      data.getEntry = async () => {
+        if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+          await this.downloadFragment(data.fragment);
+        }
+        return this.client.downloadManager.getEntry(data.fragment.getContext());
+      };
     });
 
     const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
@@ -399,7 +372,7 @@ export default class DashPlayer extends EventEmitter {
       }
     });
 
-    const blob = await dash2mp4.convert(videoDuration, videoInitSegmentData, audioDuration, audioInitSegmentData, frags);
+    const blob = await dash2mp4.convert(videoDuration, videoInitSegmentData, audioDuration, audioInitSegmentData, zippedFragments);
 
     return {
       extension: 'mp4',

@@ -126,10 +126,7 @@ export default class YTPlayer extends DashPlayer {
     } // SPLICER:CENSORYT:REMOVE_LINE
 
     // SPLICER:CENSORYT:REMOVE_START
-    return {
-      canSave: !!this.videoInfo,
-      isComplete: !!this.videoInfo,
-    };
+    return super.canSave();
     // SPLICER:CENSORYT:REMOVE_END
   }
 

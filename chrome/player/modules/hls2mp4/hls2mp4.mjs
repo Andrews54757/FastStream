@@ -27,7 +27,9 @@ export class HLS2MP4 extends EventEmitter {
     return true;
   }
 
-  async pushFragment(fragData, data) {
+  async pushFragment(fragData) {
+    const entry = await fragData.getEntry();
+    const data = await entry.getDataFromBlob();
     const fragment = fragData.fragment;
     const isDiscontinuity = !this.prevFrag || fragment.sn !== this.prevFrag.fragment.sn + 1 || fragment.cc !== this.prevFrag.fragment.cc;
 
@@ -113,7 +115,9 @@ export class HLS2MP4 extends EventEmitter {
     }
   }
 
-  async pushFragmentAudio(fragData, data) {
+  async pushFragmentAudio(fragData) {
+    const entry = await fragData.getEntry();
+    const data = await entry.getDataFromBlob();
     const fragment = fragData.fragment;
     const isDiscontinuity = !this.prevFragAudio || fragment.sn !== this.prevFragAudio.fragment.sn + 1 || fragment.cc !== this.prevFragAudio.fragment.cc;
 
@@ -257,23 +261,17 @@ export class HLS2MP4 extends EventEmitter {
       type: 'video/mp4',
     });
   }
-  async convert(level, levelInitData, audioLevel, audioInitData, fragDatas) {
+  async convert(level, levelInitData, audioLevel, audioInitData, zippedFragments) {
     this.setup(level, levelInitData, audioLevel, audioInitData);
 
-    let dataPromise = fragDatas[0]?.entry.getDataFromBlob();
-
     let lastProgress = 0;
-    for (let i = 0; i < fragDatas.length; i++) {
-      const next = fragDatas[i + 1]?.entry.getDataFromBlob();
-      const data = await dataPromise;
-      dataPromise = next;
-
-      if (fragDatas[i].type === 0) {
-        await this.pushFragment(fragDatas[i], data);
+    for (let i = 0; i < zippedFragments.length; i++) {
+      if (zippedFragments[i].track === 0) {
+        await this.pushFragment(zippedFragments[i]);
       } else {
-        await this.pushFragmentAudio(fragDatas[i], data);
+        await this.pushFragmentAudio(zippedFragments[i]);
       }
-      const newProgress = Math.floor((i + 1) / fragDatas.length * 100);
+      const newProgress = Math.floor((i + 1) / zippedFragments.length * 100);
       if (newProgress !== lastProgress) {
         lastProgress = newProgress;
         this.emit('progress', newProgress / 100);

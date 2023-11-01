@@ -425,18 +425,18 @@ export default class MP4Player extends EventEmitter {
   }
 
   downloadFragment(fragment) {
-    this.fragmentRequester.requestFragment(fragment, {
-      onSuccess: (entry, data) => {
+    return new Promise((resolve, reject) => {
+      this.fragmentRequester.requestFragment(fragment, {
+        onSuccess: (entry, data) => {
+          resolve();
+        },
+        onProgress: (stats, context, data, xhr) => {
 
-      },
-      onProgress: (stats, context, data, xhr) => {
-
-      },
-      onFail: (entry) => {
-      },
-      onAbort: (entry) => {
-      },
-
+        },
+        onFail: (entry) => {
+          reject(new Error('Failed to download fragment'));
+        },
+      });
     });
   }
 
@@ -688,16 +688,23 @@ export default class MP4Player extends EventEmitter {
     const emptyTemplate = new Uint8Array(FRAGMENT_SIZE);
 
     let lastFrag = 0;
-    for (let i = frags.length - 1; i >= 0; i--) {
-      const frag = frags[i];
-      if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-        lastFrag = i + 1;
-        break;
+    if (options.partialSave) {
+      for (let i = frags.length - 1; i >= 0; i--) {
+        const frag = frags[i];
+        if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+          lastFrag = i + 1;
+          break;
+        }
       }
+    } else {
+      lastFrag = frags.length;
     }
 
     for (let i = 0; i < lastFrag; i++) {
       const frag = frags[i];
+      if (!options.partialSave) {
+        await this.downloadFragment(frag);
+      }
       if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
         const entry = this.client.downloadManager.getEntry(frag.getContext());
         await writer.write(new Uint8Array(await entry.getDataFromBlob()));

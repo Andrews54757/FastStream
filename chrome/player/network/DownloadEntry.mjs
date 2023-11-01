@@ -149,25 +149,8 @@ export class DownloadEntry {
   }
 
   async getDataFromBlob(type) {
-    const blob = await this.getData();
-    const reader = new FileReader();
-
     type = type || this.responseType;
-    if (type === 'arraybuffer') {
-      reader.readAsArrayBuffer(blob);
-    } else {
-      reader.readAsText(blob);
-    }
-
-    return new Promise((resolve, reject) => {
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-
-      reader.onerror = () => {
-        reject(reader.error);
-      };
-    });
+    return BlobManager.getDataFromBlob(await this.getData(), type);
   }
 
   getDataSize() {

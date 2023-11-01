@@ -21,6 +21,27 @@ export class BlobManager {
     return new Blob(data, {type: mimeType});
   }
 
+  static async getDataFromBlob(blob, type) {
+    const reader = new FileReader();
+
+    type = type || 'arraybuffer';
+    if (type === 'arraybuffer') {
+      reader.readAsArrayBuffer(blob);
+    } else {
+      reader.readAsText(blob);
+    }
+
+    return new Promise((resolve, reject) => {
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+
+      reader.onerror = () => {
+        reject(reader.error);
+      };
+    });
+  }
+
   createBlobURL(name, blob) {
     if (!this.blobUrlStore[name]) {
       throw new Error('BlobManager: ' + name + ' is not defined in schema');

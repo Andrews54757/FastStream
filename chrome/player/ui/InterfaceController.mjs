@@ -835,8 +835,16 @@ export class InterfaceController {
       return;
     }
 
-    if (!isComplete) {
+    const doPartial = e.altKey;
+    if (doPartial && !isComplete) {
       const res = confirm('Video has not finished downloading yet! Are you sure you want to save it?');
+      if (!res) {
+        return;
+      }
+    }
+
+    if (!doPartial && !isComplete && chrome?.extension?.inIncognitoContext) {
+      const res = confirm('Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?');
       if (!res) {
         return;
       }
@@ -874,6 +882,7 @@ export class InterfaceController {
             this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
           },
           filestream,
+          partialSave: doPartial,
         });
         const end = performance.now();
         console.log('Save took ' + (end - start) / 1000 + 's');
