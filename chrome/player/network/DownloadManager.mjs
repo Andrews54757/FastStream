@@ -152,21 +152,16 @@ export class DownloadManager {
     if (storedEntry.status === DownloadStatus.WAITING) {
       storedEntry.priority = priority;
 
-      if (priority === 0) { // lowest priority
-        this.queue.push(storedEntry);
-      } else {
-        // append to end of priority queue
-        let ind = this.queue.length;
-        while (ind > 0 && this.queue[ind - 1].priority < priority) {
-          ind--;
-        }
-        this.queue.splice(ind, 0, storedEntry);
+      // append to end of priority queue
+      let ind = this.queue.length;
+      while (ind > 0 && this.queue[ind - 1].priority < priority) {
+        ind--;
       }
+      this.queue.splice(ind, 0, storedEntry);
 
       storedEntry.status = DownloadStatus.ENQUEUED;
       this.queueNext();
     }
-
 
     return watcher;
   }

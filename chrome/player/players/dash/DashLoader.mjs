@@ -55,8 +55,7 @@ export function DASHLoaderFactory(player) {
           onAbort: (entry) => {
             httpRequest.onAbort(entry);
           },
-
-        }, 1000);
+        }, null, 1000);
       } catch (e) {
         console.error(e);
       }

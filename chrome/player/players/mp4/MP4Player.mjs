@@ -418,13 +418,13 @@ export default class MP4Player extends EventEmitter {
             }
           },
 
-        }, 1000);
+        }, null, 1000);
         return;
       }
     }
   }
 
-  downloadFragment(fragment) {
+  downloadFragment(fragment, priority) {
     return new Promise((resolve, reject) => {
       this.fragmentRequester.requestFragment(fragment, {
         onSuccess: (entry, data) => {
@@ -436,7 +436,7 @@ export default class MP4Player extends EventEmitter {
         onFail: (entry) => {
           reject(new Error('Failed to download fragment'));
         },
-      });
+      }, null, priority);
     });
   }
 
@@ -703,7 +703,7 @@ export default class MP4Player extends EventEmitter {
     for (let i = 0; i < lastFrag; i++) {
       const frag = frags[i];
       if (!options.partialSave) {
-        await this.downloadFragment(frag);
+        await this.downloadFragment(frag, -1);
       }
       if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
         const entry = this.client.downloadManager.getEntry(frag.getContext());

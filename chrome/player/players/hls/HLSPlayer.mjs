@@ -119,7 +119,7 @@ export default class HLSPlayer extends EventEmitter {
     zippedFragments.forEach((data) => {
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-          await this.downloadFragment(data.fragment);
+          await this.downloadFragment(data.fragment, -1);
         }
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
@@ -279,7 +279,7 @@ export default class HLSPlayer extends EventEmitter {
     return this.source;
   }
 
-  downloadFragment(fragment) {
+  downloadFragment(fragment, priority) {
     return new Promise((resolve, reject) => {
       this.fragmentRequester.requestFragment(fragment, {
         onProgress: (e) => {
@@ -291,7 +291,7 @@ export default class HLSPlayer extends EventEmitter {
         onFail: (e) => {
           reject(new Error('Failed to download fragment'));
         },
-      });
+      }, null, priority);
     });
   }
 
