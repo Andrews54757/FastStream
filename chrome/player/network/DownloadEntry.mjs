@@ -5,7 +5,7 @@ import {Utils} from '../utils/Utils.mjs';
 export class DownloadEntry {
   constructor(details) {
     this.status = DownloadStatus.WAITING;
-
+    this.priority = 0;
 
     this.url = details.url;
     this.rangeStart = details.rangeStart;
