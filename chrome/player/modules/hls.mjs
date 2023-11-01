@@ -11372,18 +11372,20 @@ class TSDemuxer {
       i = 1;
     }
     while (i < len) {
-      value = array[i++];
       // optimization. state 0 and 1 are the predominant case. let's handle them outside of the switch/case
-      if (!state) {
-        state = value ? 0 : 1;
+      if (state === 0) {
+        while (i < len && array[i++] !== 0) {
+          // noop
+        }
+        state = 1;
+        continue;
+      } else if (state === 1) {
+        state = array[i++] === 0 ? 2 : 0;
         continue;
       }
-      if (state === 1) {
-        state = value ? 0 : 2;
-        continue;
-      }
+      value = array[i++];
       // here we have state either equal to 2 or 3
-      if (!value) {
+      if (value === 0) {
         state = 3;
       } else if (value === 1) {
         if (lastUnitStart >= 0) {
