@@ -27,8 +27,7 @@ export class HLS2MP4 extends EventEmitter {
     return true;
   }
 
-  async pushFragment(fragData) {
-    const data = await fragData.entry.getDataFromBlob();
+  async pushFragment(fragData, data) {
     const fragment = fragData.fragment;
     const isDiscontinuity = !this.prevFrag || fragment.sn !== this.prevFrag.fragment.sn + 1 || fragment.cc !== this.prevFrag.fragment.cc;
 
@@ -114,8 +113,7 @@ export class HLS2MP4 extends EventEmitter {
     }
   }
 
-  async pushFragmentAudio(fragData) {
-    const data = await fragData.entry.getDataFromBlob();
+  async pushFragmentAudio(fragData, data) {
     const fragment = fragData.fragment;
     const isDiscontinuity = !this.prevFragAudio || fragment.sn !== this.prevFragAudio.fragment.sn + 1 || fragment.cc !== this.prevFragAudio.fragment.cc;
 
@@ -262,13 +260,24 @@ export class HLS2MP4 extends EventEmitter {
   async convert(level, levelInitData, audioLevel, audioInitData, fragDatas) {
     this.setup(level, levelInitData, audioLevel, audioInitData);
 
+    let dataPromise = fragDatas[0]?.entry.getDataFromBlob();
+
+    let lastProgress = 0;
     for (let i = 0; i < fragDatas.length; i++) {
+      const next = fragDatas[i + 1]?.entry.getDataFromBlob();
+      const data = await dataPromise;
+      dataPromise = next;
+
       if (fragDatas[i].type === 0) {
-        await this.pushFragment(fragDatas[i]);
+        await this.pushFragment(fragDatas[i], data);
       } else {
-        await this.pushFragmentAudio(fragDatas[i]);
+        await this.pushFragmentAudio(fragDatas[i], data);
       }
-      this.emit('progress', (i + 1) / fragDatas.length);
+      const newProgress = Math.floor((i + 1) / fragDatas.length * 100);
+      if (newProgress !== lastProgress) {
+        lastProgress = newProgress;
+        this.emit('progress', newProgress / 100);
+      }
     }
 
     const blob = await this.finalize();

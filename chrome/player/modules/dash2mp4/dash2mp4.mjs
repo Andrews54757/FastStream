@@ -268,13 +268,18 @@ export class DASH2MP4 extends EventEmitter {
   async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, fragDatas) {
     this.setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment);
 
+    let lastProgress = 0;
     for (let i = 0; i < fragDatas.length; i++) {
       if (fragDatas[i].type === 0) {
         await this.pushFragment(this.videoTrack, fragDatas[i]);
       } else {
         await this.pushFragment(this.audioTrack, fragDatas[i]);
       }
-      this.emit('progress', (i + 1) / fragDatas.length);
+      const newProgress = Math.floor((i + 1) / fragDatas.length * 100);
+      if (newProgress !== lastProgress) {
+        lastProgress = newProgress;
+        this.emit('progress', newProgress / 100);
+      }
     }
 
     const blob = await this.finalize();
