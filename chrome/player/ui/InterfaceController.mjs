@@ -35,18 +35,20 @@ export class InterfaceController {
     this.registerStatusLevel('download');
     this.registerStatusLevel('info');
     this.registerStatusLevel('error');
-    this.registerStatusLevel('save-video');
-    this.registerStatusLevel('save-screenshot');
+    this.registerStatusLevel('save-video', 1);
+    this.registerStatusLevel('save-screenshot', 1);
 
     this.setupDOM();
   }
 
-  registerStatusLevel(key) {
+  registerStatusLevel(key, channel) {
     const level = {
       key,
       message: '',
       type: 'info',
       expiry: 0,
+      channel: channel || 0,
+      maxWidth: 0,
     };
     this.statusMessages.set(key, level);
   }
@@ -63,25 +65,59 @@ export class InterfaceController {
   }
 
   updateStatusMessage() {
-    let toDisplay = null;
+    const elements = DOMElements.statusMessages;
+    const toDisplayList = new Array(elements.length).fill(null);
     this.statusMessages.forEach((level) => {
       if (level.expiry && Date.now() > level.expiry) {
         level.message = '';
       }
       if (level.message) {
-        toDisplay = level;
+        toDisplayList[level.channel] = level;
       }
     });
 
-    if (!toDisplay) {
-      DOMElements.statusMessage.style.display = 'none';
-      return;
-    }
+    let displayCount = 0;
+    toDisplayList.forEach((toDisplay, index) => {
+      const element = elements[index];
+      if (!toDisplay) {
+        element.style.display = 'none';
+        return;
+      }
 
-    DOMElements.statusMessage.style.display = '';
-    DOMElements.statusMessage.textContent = toDisplay.message;
-    DOMElements.statusMessage.title = toDisplay.message;
-    DOMElements.statusMessage.className = `status_message ${toDisplay.type}`;
+      displayCount++;
+
+      element.style.width = '';
+      element.style.display = '';
+      element.textContent = toDisplay.message;
+      element.title = toDisplay.message;
+      element.className = `status_message ${toDisplay.type}`;
+    });
+
+    if (displayCount > 1) {
+      // Fix the widths of the earlier status messages
+      let lastFound = false;
+      for (let i = toDisplayList.length - 1; i >= 0; i--) {
+        const toDisplay = toDisplayList[i];
+        if (!toDisplay) {
+          continue;
+        }
+
+        if (!lastFound) {
+          lastFound = true;
+          continue;
+        }
+
+        const element = elements[i];
+        const width = element.offsetWidth + 5;
+
+        toDisplay.maxWidth = Math.max(toDisplay.maxWidth, width);
+        element.style.width = toDisplay.maxWidth + 'px';
+      }
+    } else {
+      this.statusMessages.forEach((level) => {
+        level.maxWidth = 0;
+      });
+    }
   }
 
   reset() {
