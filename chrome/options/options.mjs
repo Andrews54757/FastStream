@@ -26,6 +26,7 @@ if (!EnvUtils.isExtension()) {
   playStreamURLs.disabled = true;
   playMP4URLs.disabled = true;
   autoSub.disabled = true;
+  autoEnableURLSInput.disabled = true;
 }
 
 async function loadOptions(newOptions) {

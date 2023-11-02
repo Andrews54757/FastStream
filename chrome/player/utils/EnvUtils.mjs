@@ -22,7 +22,7 @@ export class EnvUtils {
   }
 
   static getVersion() {
-    return this.isExtension() ? chrome.runtime.getManifest().version : '0.0.0';
+    return this.isExtension() ? chrome.runtime.getManifest().version : '1.0.0.web';
   }
 
   static isIncognito() {
