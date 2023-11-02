@@ -54,7 +54,9 @@ export class SourcesBrowser {
     modes[PlayerModes.ACCELERATED_MP4] = 'Accelerated MP4';
     modes[PlayerModes.ACCELERATED_HLS] = 'Accelerated HLS';
     modes[PlayerModes.ACCELERATED_DASH] = 'Accelerated DASH';
-    modes[PlayerModes.ACCELERATED_YT] = 'Accelerated Youtube';
+    if (EnvUtils.isExtension()) {
+      modes[PlayerModes.ACCELERATED_YT] = 'Accelerated Youtube';
+    }
 
     const sourceMode = WebUtils.createDropdown(source.mode, 'Mode', modes, (val) => {
       source.mode = val;

@@ -1,4 +1,5 @@
 import {PlayerModes} from '../enums/PlayerModes.mjs';
+import {EnvUtils} from './EnvUtils.mjs';
 
 const ModesMap = new Map();
 ModesMap.set('webm', PlayerModes.DIRECT);
@@ -35,7 +36,7 @@ export class URLUtils {
   }
 
   static getModeFromURL(url) {
-    if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
+    if (EnvUtils.isExtension() && URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
       return PlayerModes.ACCELERATED_YT;
     }
 
