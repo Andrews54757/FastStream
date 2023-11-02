@@ -1,4 +1,5 @@
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
+import {EnvUtils} from '../player/utils/EnvUtils.mjs';
 import {Utils} from '../player/utils/Utils.mjs';
 import {WebUtils} from '../player/utils/WebUtils.mjs';
 
@@ -200,7 +201,7 @@ autoEnableURLSInput.addEventListener('input', (e) => {
 });
 
 function optionChanged() {
-  if (chrome?.runtime) {
+  if (EnvUtils.isExtension()) {
     chrome?.runtime?.sendMessage({
       type: 'options',
       options: JSON.stringify(Options),
@@ -213,7 +214,7 @@ function optionChanged() {
     localStorage.setItem('options', JSON.stringify(Options));
   }
 }
-if (chrome?.storage?.local) {
+if (EnvUtils.isExtension()) {
 // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === 'options') {

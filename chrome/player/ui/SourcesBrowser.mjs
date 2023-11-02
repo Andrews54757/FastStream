@@ -1,5 +1,6 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
@@ -78,7 +79,7 @@ export class SourcesBrowser {
     sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
     sourceHeadersBtn.name = 'Toggle header override input';
 
-    if (chrome?.extension) {
+    if (EnvUtils.isExtension()) {
       sourceHeadersBtn.addEventListener('click', (e) => {
         if (headersInput.style.display === 'none') {
           headersInput.style.display = '';

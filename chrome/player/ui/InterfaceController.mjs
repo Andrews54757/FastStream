@@ -3,6 +3,7 @@ import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
 import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
@@ -533,7 +534,7 @@ export class InterfaceController {
     });
 
     // if not extension context then use iframe messager
-    if (!chrome?.extension) {
+    if (!EnvUtils.isExtension()) {
       window.addEventListener('message', (e) => {
         if (e.data?.type === 'options') {
           this.client.setOptions(JSON.parse(e.data.options));
@@ -824,7 +825,7 @@ export class InterfaceController {
     }
 
     const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '@' + StringUtils.formatTime(this.client.currentTime);
-    const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
+    const name = EnvUtils.isIncognito() ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
       return;
@@ -888,7 +889,7 @@ export class InterfaceController {
       }
     }
 
-    if (!doPartial && !isComplete && chrome?.extension?.inIncognitoContext) {
+    if (!doPartial && !isComplete && EnvUtils.isIncognito()) {
       const res = confirm('Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?');
       if (!res) {
         return;
@@ -896,7 +897,7 @@ export class InterfaceController {
     }
 
     const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_');
-    const name = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the file', suggestedName);
+    const name = EnvUtils.isIncognito() ? suggestedName : prompt('Enter a name for the file', suggestedName);
 
     if (!name) {
       return;
@@ -1410,7 +1411,7 @@ export class InterfaceController {
 
         this.updateFullScreenButton();
       } else {
-        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+        if (EnvUtils.isExtension()) {
           chrome.runtime.sendMessage({
             type: 'fullscreen',
           }, (response)=>{

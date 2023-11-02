@@ -16,4 +16,16 @@ export class EnvUtils {
   static isChrome() {
     return navigator.userAgent.indexOf('Chrome') !== -1;
   }
+
+  static isExtension() {
+    return !!chrome?.extension;
+  }
+
+  static getVersion() {
+    return this.isExtension() ? chrome.runtime.getManifest().version : '0.0.0';
+  }
+
+  static isIncognito() {
+    return this.isExtension() ? chrome.extension.inIncognitoContext : false;
+  }
 }

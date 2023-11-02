@@ -1,4 +1,5 @@
 import {LargeBuffer} from '../modules/LargeBuffer.mjs';
+import {EnvUtils} from './EnvUtils.mjs';
 import {URLUtils} from './URLUtils.mjs';
 
 export class RequestUtils {
@@ -60,7 +61,7 @@ export class RequestUtils {
       }
 
       if (options.header_commands) {
-        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+        if (EnvUtils.isExtension()) {
           await chrome.runtime.sendMessage({
             type: 'header_commands',
             url: options.url,

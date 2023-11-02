@@ -12,12 +12,13 @@ import {SubtitleSyncer} from './ui/subtitles/SubtitleSyncer.mjs';
 import {PlayerLoader} from './players/PlayerLoader.mjs';
 import {DOMElements} from './ui/DOMElements.mjs';
 import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
+import {EnvUtils} from './utils/EnvUtils.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
   constructor() {
     super();
-    this.version = (typeof chrome !== undefined && chrome.runtime) ? chrome.runtime.getManifest().version : '#.#.#';
+    this.version = EnvUtils.getVersion();
 
     this.options = {
       throttleSpeed: 300 * 1000 * 1000, // 300 MB/s
@@ -264,7 +265,7 @@ export class FastStreamClient extends EventEmitter {
 
     if (!level) return;
 
-    if (chrome?.extension?.inIncognitoContext) {
+    if (EnvUtils.isIncognito()) {
       this.interfaceController.setStatusMessage('info', `Not enough space to predownload in incognito mode, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 'warning', 5000);
       this.hasDownloadSpace = false;
     } else {

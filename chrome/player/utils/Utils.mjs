@@ -1,9 +1,10 @@
 import {DefaultOptions} from '../../options/defaults/DefaultOptions.mjs';
+import {EnvUtils} from './EnvUtils.mjs';
 
 export class Utils {
   static async getOptionsFromStorage() {
     const optionsStr = await (new Promise((resolve, reject) => {
-      if (chrome?.storage?.local) {
+      if (EnvUtils.isExtension()) {
         chrome.storage.local.get({
           options: '{}',
         }, (results) => {
@@ -103,8 +104,8 @@ export class Utils {
 
   static getConfig(key) {
     return new Promise((resolve, reject)=> {
-      if (chrome?.storage?.local) {
-        chrome?.storage?.local?.get(key, (result) => {
+      if (EnvUtils.isExtension()) {
+        chrome.storage.local.get(key, (result) => {
           resolve(result[key]);
         });
       } else {
@@ -115,8 +116,8 @@ export class Utils {
 
   static setConfig(key, value) {
     return new Promise((resolve, reject)=> {
-      if (chrome?.storage?.local) {
-        chrome?.storage?.local?.set({[key]: value}, () => {
+      if (EnvUtils.isExtension()) {
+        chrome.storage.local.set({[key]: value}, () => {
           resolve();
         });
       } else {

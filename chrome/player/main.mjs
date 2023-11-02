@@ -2,6 +2,7 @@
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
 import {SubtitleTrack} from './SubtitleTrack.mjs';
+import {EnvUtils} from './utils/EnvUtils.mjs';
 import {RequestUtils} from './utils/RequestUtils.mjs';
 import {URLUtils} from './utils/URLUtils.mjs';
 import {Utils} from './utils/Utils.mjs';
@@ -9,7 +10,7 @@ import {VideoSource} from './VideoSource.mjs';
 
 
 let OPTIONS = null;
-if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
         if (request.type === 'init') {
@@ -236,7 +237,7 @@ async function setup() {
     });
   }
 
-  if (!chrome?.runtime?.onMessage) {
+  if (!EnvUtils.isExtension()) {
     window.fastStream.setOptions(await Utils.getOptionsFromStorage());
   }
 }

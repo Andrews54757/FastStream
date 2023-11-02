@@ -1,3 +1,4 @@
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 
 export class XHRLoader {
@@ -116,7 +117,7 @@ export class XHRLoader {
         }
 
         if (customHeaderCommands.length) {
-          if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+          if (EnvUtils.isExtension()) {
             await chrome.runtime.sendMessage({
               type: 'header_commands',
               url: entry.url,

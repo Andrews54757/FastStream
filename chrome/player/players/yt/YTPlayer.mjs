@@ -1,6 +1,7 @@
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
 
@@ -65,7 +66,7 @@ export default class YTPlayer extends DashPlayer {
           header: 'x-client-data',
         });
 
-        if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+        if (EnvUtils.isExtension()) {
           await chrome.runtime.sendMessage({
             type: 'header_commands',
             url: url,

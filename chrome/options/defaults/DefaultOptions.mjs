@@ -3,8 +3,8 @@ import {DefaultKeybinds} from './DefaultKeybinds.mjs';
 
 export const DefaultOptions = {
   playMP4URLs: false,
-  playStreamURLs: true,
-  analyzeVideos: EnvUtils.hasComputationalResources(),
+  playStreamURLs: EnvUtils.isExtension(),
+  analyzeVideos: EnvUtils.isExtension() && EnvUtils.hasComputationalResources(),
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,

@@ -3,6 +3,7 @@ import {DefaultPlayerEvents} from '../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {VideoAligner} from './VideoAligner.mjs';
 
 
@@ -74,7 +75,7 @@ export class VideoAnalyzer extends EventEmitter {
     }
     this.lastAnalyzerSave = now;
 
-    if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessage) {
+    if (EnvUtils.isExtension()) {
       this.introAligner.unsetChangesFlag();
       this.outroAligner.unsetChangesFlag();
       chrome.runtime.sendMessage({
