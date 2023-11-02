@@ -1,4 +1,3 @@
-import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
 import {PlayerModes} from '../player/enums/PlayerModes.mjs';
 import {StringUtils} from '../player/utils/StringUtils.mjs';
 import {URLUtils} from '../player/utils/URLUtils.mjs';
@@ -144,7 +143,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   if (msg.type === 'options') {
-    loadOptions(msg.options);
+    loadOptions(JSON.parse(msg.options));
     sendResponse('ok');
     return;
   }
@@ -345,10 +344,8 @@ function getMediaNameFromTab(tab) {
 }
 
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await BackgroundUtils.getOptionsFromStorage();
-  newOptions = JSON.parse(newOptions) || {};
-
-  Options = Utils.mergeOptions(DefaultOptions, newOptions);
+  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  Options = newOptions;
 
   chrome.storage.local.set({
     options: JSON.stringify(Options),

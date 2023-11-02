@@ -77,15 +77,21 @@ export class SourcesBrowser {
     const sourceHeadersBtn = WebUtils.create('div', null, 'linkui-source-headers-button');
     sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
     sourceHeadersBtn.name = 'Toggle header override input';
-    sourceHeadersBtn.addEventListener('click', (e) => {
-      if (headersInput.style.display === 'none') {
-        headersInput.style.display = '';
-        sourceHeadersBtn.classList.add('active');
-      } else {
-        headersInput.style.display = 'none';
-        sourceHeadersBtn.classList.remove('active');
-      }
-    });
+
+    if (chrome?.extension) {
+      sourceHeadersBtn.addEventListener('click', (e) => {
+        if (headersInput.style.display === 'none') {
+          headersInput.style.display = '';
+          sourceHeadersBtn.classList.add('active');
+        } else {
+          headersInput.style.display = 'none';
+          sourceHeadersBtn.classList.remove('active');
+        }
+      });
+    } else {
+      sourceHeadersBtn.textContent = 'Header Override (Extension Only)';
+    }
+
     WebUtils.setupTabIndex(sourceHeadersBtn);
     sourceContainer.appendChild(sourceHeadersBtn);
 

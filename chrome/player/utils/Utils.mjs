@@ -1,4 +1,22 @@
+import {DefaultOptions} from '../../options/defaults/DefaultOptions.mjs';
+
 export class Utils {
+  static async getOptionsFromStorage() {
+    const optionsStr = await (new Promise((resolve, reject) => {
+      if (chrome?.storage?.local) {
+        chrome.storage.local.get({
+          options: '{}',
+        }, (results) => {
+          resolve(results.options);
+        });
+      } else {
+        resolve(localStorage.getItem('options') || '{}');
+      }
+    }));
+    const options = JSON.parse(optionsStr);
+    return this.mergeOptions(DefaultOptions, options);
+  }
+
   static mergeOptions(defaultOptions, newOptions) {
     const options = {};
     for (const prop in defaultOptions) {
@@ -81,5 +99,30 @@ export class Utils {
     }
 
     return zippedFragments;
+  }
+
+  static getConfig(key) {
+    return new Promise((resolve, reject)=> {
+      if (chrome?.storage?.local) {
+        chrome?.storage?.local?.get(key, (result) => {
+          resolve(result[key]);
+        });
+      } else {
+        resolve(localStorage.getItem(key));
+      }
+    });
+  }
+
+  static setConfig(key, value) {
+    return new Promise((resolve, reject)=> {
+      if (chrome?.storage?.local) {
+        chrome?.storage?.local?.set({[key]: value}, () => {
+          resolve();
+        });
+      } else {
+        localStorage.setItem(key, value);
+        resolve();
+      }
+    });
   }
 }

@@ -1,5 +1,6 @@
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
+import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {AudioChannelMixer} from './AudioChannelMixer.mjs';
@@ -26,41 +27,33 @@ export class AudioConfigManager extends EventEmitter {
     this.loadProfilesFromStorage();
   }
 
-  loadProfilesFromStorage() {
-    chrome.storage.local.get({
-      audioProfiles: '[]',
-      currentAudioProfile: -1,
-    }, (data) => {
-      const audioProfiles = JSON.parse(data.audioProfiles) || [];
-      const currentAudioProfileID = data.currentAudioProfile || -1;
+  async loadProfilesFromStorage() {
+    const audioProfilesStr = await Utils.getConfig('audioProfiles') || '[]';
+    const currentAudioProfileStr = await Utils.getConfig('currentAudioProfile') || '-1';
 
-      if (audioProfiles.length === 0) {
-        this.newProfile();
-        this.setCurrentProfile(this.profiles[0]);
+    const audioProfiles = JSON.parse(audioProfilesStr);
+    const currentAudioProfileID = parseInt(currentAudioProfileStr);
+
+    if (audioProfiles.length === 0) {
+      this.newProfile();
+      this.setCurrentProfile(this.profiles[0]);
+    } else {
+      this.profiles = audioProfiles.map((profile) => {
+        return AudioProfile.fromObj(profile);
+      });
+      const currentProfile = this.profiles.find((profile) => profile.id === currentAudioProfileID);
+      if (currentProfile) {
+        this.setCurrentProfile(currentProfile);
       } else {
-        this.profiles = audioProfiles.map((profile) => {
-          return AudioProfile.fromObj(profile);
-        });
-        const currentProfile = this.profiles.find((profile) => profile.id === currentAudioProfileID);
-        if (currentProfile) {
-          this.setCurrentProfile(currentProfile);
-        } else {
-          this.setCurrentProfile(this.profiles[0]);
-        }
-        this.updateProfileDropdown();
+        this.setCurrentProfile(this.profiles[0]);
       }
-    });
+      this.updateProfileDropdown();
+    }
   }
 
-  saveProfilesToStorage() {
-    return new Promise((resolve, reject) => {
-      chrome.storage.local.set({
-        audioProfiles: JSON.stringify(this.profiles.map((profile) => profile.toObj())),
-        currentAudioProfile: this.currentProfile?.id || this.profiles[0]?.id || 0,
-      }, ()=>{
-        resolve();
-      });
-    });
+  async saveProfilesToStorage() {
+    await Utils.setConfig('audioProfiles', JSON.stringify(this.profiles.map((profile) => profile.toObj())));
+    await Utils.setConfig('currentAudioProfile', this.currentProfile ? this.currentProfile.id : (this.profiles[0]?.id || 0));
   }
 
   getNextProfileID() {

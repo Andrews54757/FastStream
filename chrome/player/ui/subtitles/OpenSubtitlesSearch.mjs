@@ -252,7 +252,11 @@ export class OpenSubtitlesSearch extends EventEmitter {
       }
     } catch (e) {
       console.log(e);
-      container.textContent = 'OpenSubtitles is down!';
+      if (!chrome?.extension) {
+        container.textContent = 'Cannot set proper headers! Install the extension to use this feature!';
+      } else {
+        container.textContent = 'OpenSubtitles is down!';
+      }
       return;
     }
 

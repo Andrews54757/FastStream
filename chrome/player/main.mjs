@@ -4,6 +4,7 @@ import {FastStreamClient} from './FastStreamClient.mjs';
 import {SubtitleTrack} from './SubtitleTrack.mjs';
 import {RequestUtils} from './utils/RequestUtils.mjs';
 import {URLUtils} from './utils/URLUtils.mjs';
+import {Utils} from './utils/Utils.mjs';
 import {VideoSource} from './VideoSource.mjs';
 
 
@@ -66,7 +67,7 @@ if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.sendMessag
 
           if (autoPlaySource) {
             window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
-              // window.fastStream.play();
+            // window.fastStream.play();
             });
 
             window.fastStream.clearSubtitles();
@@ -191,18 +192,16 @@ async function setup() {
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get('frame_id');
 
-  if (typeof chrome !== 'undefined') {
-    chrome?.runtime?.sendMessage({
-      type: 'faststream',
-      url: window.location.href,
-      isExt: true,
-      frameId: parseInt(myParam) || 0,
-    }).then((data) => {
-      chrome.runtime.sendMessage({
-        type: 'ready',
-      });
+  chrome?.runtime?.sendMessage({
+    type: 'faststream',
+    url: window.location.href,
+    isExt: true,
+    frameId: parseInt(myParam) || 0,
+  }).then((data) => {
+    chrome.runtime.sendMessage({
+      type: 'ready',
     });
-  }
+  });
 
   const version = window.fastStream.version;
   console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');
@@ -233,9 +232,12 @@ async function setup() {
     }
 
     window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
-    // console.log('play');
-    // window.fastStream.play();
+
     });
+  }
+
+  if (!chrome?.runtime?.onMessage) {
+    window.fastStream.setOptions(await Utils.getOptionsFromStorage());
   }
 }
 

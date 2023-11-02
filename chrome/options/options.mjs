@@ -1,8 +1,8 @@
-import {BackgroundUtils} from '../background/BackgroundUtils.mjs';
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
+import {Utils} from '../player/utils/Utils.mjs';
 import {WebUtils} from '../player/utils/WebUtils.mjs';
 
-let options = {};
+let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
 const playStreamURLs = document.getElementById('playstreamurls');
 const playMP4URLs = document.getElementById('playmp4urls');
@@ -20,19 +20,19 @@ autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/exa
 loadOptions();
 
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await BackgroundUtils.getOptionsFromStorage();
-  options = JSON.parse(newOptions) || {};
+  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  Options = newOptions;
 
-  downloadAll.checked = !!options.downloadAll;
-  freeUnusedChannels.checked = !!options.freeUnusedChannels;
-  analyzeVideos.checked = !!options.analyzeVideos;
-  playStreamURLs.checked = !!options.playStreamURLs;
-  playMP4URLs.checked = !!options.playMP4URLs;
-  autosub.checked = !!options.autoEnableBestSubtitles;
-  if (options.keybinds) {
+  downloadAll.checked = !!Options.downloadAll;
+  freeUnusedChannels.checked = !!Options.freeUnusedChannels;
+  analyzeVideos.checked = !!Options.analyzeVideos;
+  playStreamURLs.checked = !!Options.playStreamURLs;
+  playMP4URLs.checked = !!Options.playMP4URLs;
+  autosub.checked = !!Options.autoEnableBestSubtitles;
+  if (Options.keybinds) {
     keybindsList.replaceChildren();
-    for (const keybind in options.keybinds) {
-      if (Object.hasOwn(options.keybinds, keybind)) {
+    for (const keybind in Options.keybinds) {
+      if (Object.hasOwn(Options.keybinds, keybind)) {
         createKeybindElement(keybind);
       }
     }
@@ -44,12 +44,12 @@ async function loadOptions(newOptions) {
     const unit = option.dataset.unit || '%';
     const unitMultiplier = parseInt(option.dataset.multiplier || 100);
     const optionKey = option.dataset.option;
-    const val = Math.round(options[optionKey] * unitMultiplier);
+    const val = Math.round(Options[optionKey] * unitMultiplier);
     rangeInput.value = val;
     numberInput.value = val + unit;
   });
 
-  autoEnableURLSInput.value = options.autoEnableURLs.join('\n');
+  autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
 }
 
 function getKeyString(e) {
@@ -83,13 +83,13 @@ document.querySelectorAll('.video-option').forEach((option) => {
 
   function numberInputChanged() {
     rangeInput.value = parseInt(numberInput.value.replace(unit, '')) || 0;
-    options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    Options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
     optionChanged();
   }
 
   function rangeInputChanged() {
     numberInput.value = rangeInput.value + unit;
-    options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    Options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
     optionChanged();
   }
 
@@ -113,13 +113,13 @@ function createKeybindElement(keybind) {
   keybindInput.classList.add('keybind-input');
   keybindInput.tabIndex = 0;
   keybindInput.name = keybindName;
-  keybindInput.textContent = options.keybinds[keybind];
+  keybindInput.textContent = Options.keybinds[keybind];
 
   keybindInput.addEventListener('keydown', (e) => {
     if (e.key === 'Tab') {
       return;
     } else if (e.key === 'Escape') {
-      keybindInput.textContent = options.keybinds[keybind] = 'None';
+      keybindInput.textContent = Options.keybinds[keybind] = 'None';
       optionChanged();
       keybindInput.blur();
       return;
@@ -127,7 +127,7 @@ function createKeybindElement(keybind) {
     e.stopPropagation();
     e.preventDefault();
     keybindInput.textContent = getKeyString(e);
-    options.keybinds[keybind] = keybindInput.textContent;
+    Options.keybinds[keybind] = keybindInput.textContent;
     optionChanged();
   });
 
@@ -141,7 +141,7 @@ function createKeybindElement(keybind) {
   });
 
   keybindInput.addEventListener('blur', (e) => {
-    keybindInput.textContent = options.keybinds[keybind];
+    keybindInput.textContent = Options.keybinds[keybind];
   });
 
   containerElement.appendChild(keybindInput);
@@ -149,43 +149,43 @@ function createKeybindElement(keybind) {
   keybindsList.appendChild(containerElement);
 }
 
-document.getElementById('welcome').href = chrome.runtime.getURL('welcome.html');
+document.getElementById('welcome').href = chrome?.runtime?.getURL('welcome.html') || './../welcome.html';
 
 playMP4URLs.addEventListener('change', () => {
-  options.playMP4URLs = playMP4URLs.checked;
+  Options.playMP4URLs = playMP4URLs.checked;
   optionChanged();
 });
 
 autosub.addEventListener('change', () => {
-  options.autoEnableBestSubtitles = autoSub.checked;
+  Options.autoEnableBestSubtitles = autoSub.checked;
   optionChanged();
 });
 
 playStreamURLs.addEventListener('change', () => {
-  options.playStreamURLs = playStreamURLs.checked;
+  Options.playStreamURLs = playStreamURLs.checked;
   optionChanged();
 });
 
 analyzeVideos.addEventListener('change', () => {
-  options.analyzeVideos = analyzeVideos.checked;
+  Options.analyzeVideos = analyzeVideos.checked;
   optionChanged();
 });
 
 downloadAll.addEventListener('change', () => {
-  options.downloadAll = downloadAll.checked;
+  Options.downloadAll = downloadAll.checked;
   optionChanged();
 });
 
 freeUnusedChannels.addEventListener('change', () => {
-  options.freeUnusedChannels = freeUnusedChannels.checked;
+  Options.freeUnusedChannels = freeUnusedChannels.checked;
   optionChanged();
 });
 
 document.getElementById('resetdefault').addEventListener('click', () => {
-  options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
+  Options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
   keybindsList.replaceChildren();
-  for (const keybind in options.keybinds) {
-    if (Object.hasOwn(options.keybinds, keybind)) {
+  for (const keybind in Options.keybinds) {
+    if (Object.hasOwn(Options.keybinds, keybind)) {
       createKeybindElement(keybind);
     }
   }
@@ -195,51 +195,60 @@ document.getElementById('resetdefault').addEventListener('click', () => {
 WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('input', (e) => {
-  options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
   optionChanged();
 });
 
 function optionChanged() {
-  chrome.runtime.sendMessage({
-    type: 'options',
-    options: JSON.stringify(options),
+  if (chrome?.runtime) {
+    chrome?.runtime?.sendMessage({
+      type: 'options',
+      options: JSON.stringify(Options),
+    });
+  } else {
+    window.postMessage({
+      type: 'options',
+      options: JSON.stringify(Options),
+    }, '*');
+    localStorage.setItem('options', JSON.stringify(Options));
+  }
+}
+if (chrome?.storage?.local) {
+// Load options on options event
+  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (request.type === 'options') {
+      loadOptions(JSON.parse(request.options));
+    }
+  });
+
+  const ratebox = document.getElementById('ratebox');
+  document.getElementById('rate').addEventListener('click', (e) => {
+    chrome?.storage?.local?.set({
+      rateus: 'yes',
+    });
+    ratebox.style.display = 'none';
+
+    let url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
+
+    // SPLICER:FIREFOX:REMOVE_START
+    url = 'https://chrome.google.com/webstore/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
+    // SPLICER:FIREFOX:REMOVE_END
+
+    chrome?.tabs?.create({
+      url,
+    });
+  });
+
+  document.getElementById('norate').addEventListener('click', (e) => {
+    chrome.storage.local.set({
+      rateus: 'no',
+    });
+    ratebox.style.display = 'none';
+  });
+
+  chrome.storage.local.get('rateus', (result) => {
+    if (!result || !result.rateus) {
+      ratebox.style.display = 'block';
+    }
   });
 }
-
-// Load options on options event
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'options') {
-    loadOptions(request.options);
-  }
-});
-
-const ratebox = document.getElementById('ratebox');
-document.getElementById('rate').addEventListener('click', (e) => {
-  chrome.storage.local.set({
-    rateus: 'yes',
-  });
-  ratebox.style.display = 'none';
-
-  let url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
-
-  // SPLICER:FIREFOX:REMOVE_START
-  url = 'https://chrome.google.com/webstore/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
-  // SPLICER:FIREFOX:REMOVE_END
-
-  chrome.tabs.create({
-    url,
-  });
-});
-
-document.getElementById('norate').addEventListener('click', (e) => {
-  chrome.storage.local.set({
-    rateus: 'no',
-  });
-  ratebox.style.display = 'none';
-});
-
-chrome.storage.local.get('rateus', (result) => {
-  if (!result || !result.rateus) {
-    ratebox.style.display = 'block';
-  }
-});

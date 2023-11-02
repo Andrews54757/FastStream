@@ -532,6 +532,15 @@ export class InterfaceController {
       e.stopPropagation();
     });
 
+    // if not extension context then use iframe messager
+    if (!chrome?.extension) {
+      window.addEventListener('message', (e) => {
+        if (e.data?.type === 'options') {
+          this.client.setOptions(JSON.parse(e.data.options));
+        }
+      });
+    }
+
     WebUtils.setupTabIndex(DOMElements.settingsButton);
 
     const welcomeText = 'Welcome to FastStream v' + this.client.version + '!';

@@ -28,9 +28,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
 
   saveSettings() {
     try {
-      chrome?.storage?.local?.set({
-        subtitlesSettings: JSON.stringify(this.settings),
-      });
+      return Utils.setConfig('subtitlesSettings', JSON.stringify(this.settings));
     } catch (e) {
       console.error(e);
     }
@@ -96,16 +94,15 @@ export class SubtitlesSettingsManager extends EventEmitter {
     }
   }
 
-  loadSettings() {
+  async loadSettings() {
     try {
-      chrome.storage.local.get('subtitlesSettings', (data) => {
-        if (data.subtitlesSettings) {
-          const settings = JSON.parse(data.subtitlesSettings);
-          this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);
-        }
-        this.updateSettingsUI();
-        this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
-      });
+      const settingsStr = await Utils.getConfig('subtitlesSettings');
+      if (settingsStr) {
+        const settings = JSON.parse(settingsStr);
+        this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);
+      }
+      this.updateSettingsUI();
+      this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
     } catch (e) {
       console.error(e);
       this.updateSettingsUI();
