@@ -20,6 +20,14 @@ autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/exa
 
 loadOptions();
 
+
+if (!EnvUtils.isExtension()) {
+  analyzeVideos.disabled = true;
+  playStreamURLs.disabled = true;
+  playMP4URLs.disabled = true;
+  autoSub.disabled = true;
+}
+
 async function loadOptions(newOptions) {
   newOptions = newOptions || await Utils.getOptionsFromStorage();
   Options = newOptions;
@@ -29,7 +37,7 @@ async function loadOptions(newOptions) {
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
-  autosub.checked = !!Options.autoEnableBestSubtitles;
+  autoSub.checked = !!Options.autoEnableBestSubtitles;
   if (Options.keybinds) {
     keybindsList.replaceChildren();
     for (const keybind in Options.keybinds) {
@@ -157,7 +165,7 @@ playMP4URLs.addEventListener('change', () => {
   optionChanged();
 });
 
-autosub.addEventListener('change', () => {
+autoSub.addEventListener('change', () => {
   Options.autoEnableBestSubtitles = autoSub.checked;
   optionChanged();
 });
