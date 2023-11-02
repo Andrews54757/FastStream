@@ -65,12 +65,12 @@ export class DownloadEntry {
   }
 
   destroy() {
-    this.cleanup();
+    this.abort();
   }
 
   async onSuccess(response, stats, entry, xhr) {
     if (!this.downloader) {
-      console.log('DownloadEntry.onSuccess called after abort');
+      console.error('DownloadEntry.onSuccess called after abort');
     }
 
     this.responseHeaders = response.headers;
