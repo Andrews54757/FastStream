@@ -70,34 +70,18 @@ export class Utils {
 
   static zipTimedFragments(tracks) {
     const zippedFragments = [];
-    const indexes = tracks.map(() => 0);
-    const len = tracks.reduce((acc, fragments) => acc + fragments.length, 0);
-
-    for (let i = 0; i < len; i++) {
-      let min = Infinity;
-      let minIndex = -1;
-
-      for (let j = 0; j < tracks.length; j++) {
-        const index = indexes[j];
-        if (index >= tracks[j].length) continue;
-
-        const fragment = tracks[j][index];
-
-        if (fragment && fragment.start < min) {
-          min = fragment.start;
-          minIndex = j;
-        }
-      }
-
-      if (minIndex === -1) break;
-
-      const fragment = tracks[minIndex][indexes[minIndex]];
-      indexes[minIndex]++;
-      zippedFragments.push({
-        track: minIndex,
-        fragment,
+    tracks.forEach((fragments, track) => {
+      fragments.forEach((fragment) => {
+        zippedFragments.push({
+          track,
+          fragment,
+        });
       });
-    }
+    });
+
+    zippedFragments.sort((a, b) => {
+      return a.fragment.start - b.fragment.start;
+    });
 
     return zippedFragments;
   }
