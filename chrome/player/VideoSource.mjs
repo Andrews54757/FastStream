@@ -17,6 +17,7 @@ const headerBlacklist = [
   'range',
   'host',
   'connection',
+  'dnt',
 ];
 
 const redirectHeaders = [
