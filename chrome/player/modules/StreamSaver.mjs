@@ -1,3 +1,4 @@
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {FSBlob} from './FSBlob.mjs';
 
 /* ! streamsaver. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
@@ -5,7 +6,7 @@ export const streamSaver = {
   createWriteStream,
 };
 
-const useBlobFallback = navigator.serviceWorker === undefined;
+const useBlobFallback = !EnvUtils.isExtension() || navigator.serviceWorker === undefined;
 
 function getServiceWorker() {
   return navigator.serviceWorker.getRegistration('./').then((swReg) => {
