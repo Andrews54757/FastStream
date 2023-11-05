@@ -62,7 +62,6 @@ export class XHRLoader {
     this.callbacks = null;
     this.abortInternal();
     this.loader = null;
-    this.config = null;
   }
 
   abortInternal() {
