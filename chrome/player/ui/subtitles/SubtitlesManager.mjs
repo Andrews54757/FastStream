@@ -101,17 +101,35 @@ export class SubtitlesManager {
     this.activateTrack(this.addTrack(track));
   }
 
-  setupUI() {
-    DOMElements.subtitles.addEventListener('click', (e) => {
-      if (DOMElements.subtitlesMenu.style.display === 'none') {
-        DOMElements.subtitlesMenu.style.display = '';
-      } else {
-        DOMElements.subtitlesMenu.style.display = 'none';
-      }
+  onCaptionsButtonInteract(e) {
+    if (e.shiftKey) {
+      this.openSubtitlesSearch.toggleUI();
       e.stopPropagation();
+      return;
+    }
+
+    if (DOMElements.subtitlesMenu.style.display === 'none') {
+      DOMElements.subtitlesMenu.style.display = '';
+    } else {
+      DOMElements.subtitlesMenu.style.display = 'none';
+    }
+    e.stopPropagation();
+  }
+
+  setupUI() {
+    DOMElements.subtitles.addEventListener('click', this.onCaptionsButtonInteract.bind(this));
+    DOMElements.subtitles.tabIndex = 0;
+
+    DOMElements.subtitles.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        DOMElements.subtitlesMenu.style.display = 'none';
+        e.stopPropagation();
+        e.preventDefault();
+      } else if (e.key === 'Enter') {
+        this.onCaptionsButtonInteract(e);
+      }
     });
 
-    WebUtils.setupTabIndex(DOMElements.subtitles);
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
       DOMElements.subtitlesMenu.style.display = 'none';
@@ -192,7 +210,7 @@ export class SubtitlesManager {
     internetbutton.classList.add('subtitle-menu-option');
     WebUtils.setupTabIndex(internetbutton);
     internetbutton.addEventListener('click', (e) => {
-      this.openSubtitlesSearch.openUI();
+      this.openSubtitlesSearch.toggleUI();
     });
     DOMElements.subtitlesView.appendChild(internetbutton);
 

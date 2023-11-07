@@ -29,6 +29,14 @@ export class OpenSubtitlesSearch extends EventEmitter {
     DOMElements.subuiContainer.style.display = 'none';
   }
 
+  toggleUI() {
+    if (DOMElements.subuiContainer.style.display === 'none') {
+      this.openUI();
+    } else {
+      this.closeUI();
+    }
+  }
+
   setupUI() {
     DOMElements.subuiContainer.addEventListener('click', (e) => {
       e.stopPropagation();
