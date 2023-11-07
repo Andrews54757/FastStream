@@ -110,4 +110,67 @@ export class StringUtils {
       return freq.toFixed(0);
     }
   }
+
+  static getSpeedValue(speedStr) {
+    // regex
+    const float = parseFloat(speedStr);
+    const unit = speedStr.replace(float, '').trim();
+
+    // Unit can be MB/s, Mb/s, MB/hr, mb/ms, etc.
+    const match = unit.match(/([a-zA-Z]+)\/?([a-zA-Z]+)?/);
+    const unit1 = match?.[1];
+    const unit2 = match?.[2];
+
+    let multiplier = 1;
+
+    // Convert to bytes/s
+    if (unit1) {
+      const sci = ['b', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y'];
+      const split = unit1.split('');
+      if (sci.includes(split[0].toLowerCase())) {
+        multiplier *= 1000 ** sci.indexOf(split[0].toLowerCase());
+      } else {
+      // MB default
+        multiplier *= 1000 ** 2;
+      }
+
+      if (split[split.length - 1] === 'b') {
+        multiplier /= 8;
+      }
+    } else {
+      // MB default
+      multiplier *= 1000 ** 2;
+    }
+
+    if (unit2) {
+      const timeUnits = ['s', 'm', 'h'];
+      const split = unit2.split('');
+      if (timeUnits.includes(split[0].toLowerCase())) {
+        multiplier /= 60 ** timeUnits.indexOf(split[0].toLowerCase());
+      }
+    }
+    return float * multiplier;
+  }
+
+  static getSpeedString(speed) {
+    let unit = 'B/s';
+    let value = speed;
+    if (speed > 1000) {
+      unit = 'KB/s';
+      value = speed / 1000;
+    }
+    if (speed > 1000000) {
+      unit = 'MB/s';
+      value = speed / 1000000;
+    }
+    if (speed > 1000000000) {
+      unit = 'GB/s';
+      value = speed / 1000000000;
+    }
+    if (speed > 1000000000000) {
+      unit = 'TB/s';
+      value = speed / 1000000000000;
+    }
+    return Math.round(value) + ' ' + unit;
+  }
 }

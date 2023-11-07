@@ -21,7 +21,7 @@ export class FastStreamClient extends EventEmitter {
     this.version = EnvUtils.getVersion();
 
     this.options = {
-      throttleSpeed: 300 * 1000 * 1000, // 300 MB/s
+      maxSpeed: 300 * 1000 * 1000, // 300 MB/s
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 120,
@@ -110,6 +110,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.downloadAll = options.downloadAll;
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
+    this.options.maxSpeed = options.maxSpeed;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;
@@ -452,7 +453,7 @@ export class FastStreamClient extends EventEmitter {
     const speed = this.downloadManager.getSpeed();
 
     // throttle download speed so blob can catch up
-    if (speed > this.options.throttleSpeed) {
+    if (speed > this.options.maxSpeed) {
       return false;
     }
 

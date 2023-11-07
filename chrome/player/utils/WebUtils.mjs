@@ -228,4 +228,14 @@ export class WebUtils {
     }
     return container;
   }
+
+  static getKeyString(e) {
+    const metaPressed = e.metaKey && e.key !== 'Meta';
+    const ctrlPressed = e.ctrlKey && e.key !== 'Control';
+    const altPressed = e.altKey && e.key !== 'Alt';
+    const shiftPressed = e.shiftKey && e.key !== 'Shift';
+    const key = e.key === ' ' ? 'Space' : e.code;
+
+    return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
+  }
 }

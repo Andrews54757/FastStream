@@ -199,6 +199,21 @@
             padding: 10px;
             margin-bottom: 20px;
         }
+
+        .option.grid {
+            display: grid;
+            grid-template-columns: 1fr 150px;
+            align-items: center;
+        }
+
+        .option.grid .label {
+            grid-column: 1;
+        }
+
+        .option.grid .number {
+            grid-column: 2;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -305,6 +320,13 @@
         <div class="label">
             Use player to play MP4 videos when opening video URLs (.mp4)
         </div>
+    </div>
+
+    <div class="option grid">
+        <div class="label">
+            Target download speed of player during video playback
+        </div>
+        <input class="number" type="text" id="maxspeed" name="Target download speed of player during video playback"></input>
     </div>
 
     <h1>Keybinds</h1>

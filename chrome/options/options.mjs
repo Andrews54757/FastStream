@@ -1,5 +1,6 @@
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
 import {EnvUtils} from '../player/utils/EnvUtils.mjs';
+import {StringUtils} from '../player/utils/StringUtils.mjs';
 import {Utils} from '../player/utils/Utils.mjs';
 import {WebUtils} from '../player/utils/WebUtils.mjs';
 
@@ -12,6 +13,7 @@ const freeUnusedChannels = document.getElementById('freeunusedchannels');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
 const autoSub = document.getElementById('autosub');
+const maxSpeed = document.getElementById('maxspeed');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -39,6 +41,8 @@ async function loadOptions(newOptions) {
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
+  maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
+
   if (Options.keybinds) {
     keybindsList.replaceChildren();
     for (const keybind in Options.keybinds) {
@@ -60,16 +64,6 @@ async function loadOptions(newOptions) {
   });
 
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
-}
-
-function getKeyString(e) {
-  const metaPressed = e.metaKey && e.key !== 'Meta';
-  const ctrlPressed = e.ctrlKey && e.key !== 'Control';
-  const altPressed = e.altKey && e.key !== 'Alt';
-  const shiftPressed = e.shiftKey && e.key !== 'Shift';
-  const key = e.code;
-
-  return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
 }
 
 document.querySelectorAll('.option').forEach((option) => {
@@ -136,7 +130,7 @@ function createKeybindElement(keybind) {
     }
     e.stopPropagation();
     e.preventDefault();
-    keybindInput.textContent = getKeyString(e);
+    keybindInput.textContent = WebUtils.getKeyString(e);
     Options.keybinds[keybind] = keybindInput.textContent;
     optionChanged();
   });
@@ -188,6 +182,13 @@ downloadAll.addEventListener('change', () => {
 
 freeUnusedChannels.addEventListener('change', () => {
   Options.freeUnusedChannels = freeUnusedChannels.checked;
+  optionChanged();
+});
+
+maxSpeed.addEventListener('change', () => {
+  // parse value, number unit/s
+  Options.maxSpeed = StringUtils.getSpeedValue(maxSpeed.value);
+  maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
   optionChanged();
 });
 

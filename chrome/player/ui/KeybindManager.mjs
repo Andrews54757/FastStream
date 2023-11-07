@@ -1,5 +1,6 @@
 import {DefaultKeybinds} from '../../options/defaults/DefaultKeybinds.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
 export class KeybindManager extends EventEmitter {
@@ -145,22 +146,13 @@ export class KeybindManager extends EventEmitter {
       }
     }
   }
-  getKeyString(e) {
-    const metaPressed = e.metaKey && e.key !== 'Meta';
-    const ctrlPressed = e.ctrlKey && e.key !== 'Control';
-    const altPressed = e.altKey && e.key !== 'Alt';
-    const shiftPressed = e.shiftKey && e.key !== 'Shift';
-    const key = e.key === ' ' ? 'Space' : e.code;
-
-    return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
-  }
 
   eventToKeybind(e) {
     return this.eventToKeybinds(e)[0];
   }
 
   eventToKeybinds(e) {
-    const keyString = this.getKeyString(e);
+    const keyString = WebUtils.getKeyString(e);
     const results = [];
     for (const [key, value] of this.keybindMap.entries()) {
       if (value === keyString) {

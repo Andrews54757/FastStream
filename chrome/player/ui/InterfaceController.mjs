@@ -348,7 +348,7 @@ export class InterfaceController {
 
     const newSpeed = this.client.downloadManager.getSpeed();
     if (newSpeed > 0 && this.lastSpeed > 0) {
-      this.lastSpeed = (newSpeed * 0.1 + this.lastSpeed * 0.9) || 0;
+      this.lastSpeed = (newSpeed * 0.05 + this.lastSpeed * 0.95) || 0;
     } else {
       this.lastSpeed = newSpeed;
     }

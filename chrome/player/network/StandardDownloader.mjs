@@ -1,8 +1,10 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
+import {SpeedTracker} from './SpeedTracker.mjs';
 import {XHRLoader} from './XHRLoader.mjs';
 
 export class StandardDownloader {
   constructor(manager) {
+    this.speedTracker = new SpeedTracker();
     this.manager = manager;
     this.loader = null;
     this.entry = null;
@@ -14,13 +16,7 @@ export class StandardDownloader {
   }
 
   getSpeed() {
-    if (!this.stats) return 0;
-
-    const now = performance.now();
-    if (this.stats.lastUpdate < now - 1000) return 0;
-
-    const dt = (now - this.stats.loading.start) / 1000;
-    return this.stats.loaded / dt;
+    return this.speedTracker.getSpeed();
   }
 
   run(entry) {
@@ -69,6 +65,7 @@ export class StandardDownloader {
   updateSpeed(stats) {
     this.stats = stats;
     stats.lastUpdate = performance.now();
+    this.speedTracker.update(stats.loaded, stats.loading.start, stats.lastUpdate);
   }
 
   async onSuccess(response, stats, entry, xhr) {

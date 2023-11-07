@@ -17,4 +17,5 @@ export const DefaultOptions = {
   videoSepia: 0,
   videoInvert: 0,
   videoHueRotate: 0,
+  maxSpeed: 300 * 1000 * 1000,
 };
