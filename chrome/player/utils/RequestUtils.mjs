@@ -87,18 +87,19 @@ export class RequestUtils {
       xhr = await this.request(details);
     } catch (e) {
       console.warn(e);
-      callback(e, xhr, false);
-      return;
+      if (callback) callback(e, xhr, false);
+      return xhr;
     }
 
     // check error
     if (xhr.status !== 200 && xhr.status !== 206) {
-      callback(true, xhr, false);
-      return;
+      if (callback) callback(true, xhr, false);
+      return xhr;
     }
 
     // success
-    callback(undefined, xhr, xhr.responseText);
+    if (callback) callback(undefined, xhr, xhr.responseText);
+    return xhr;
   }
 
   static async httpGetLarge(source) {

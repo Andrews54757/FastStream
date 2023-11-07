@@ -33,141 +33,8 @@ if (EnvUtils.isExtension()) {
         } else if (request.type === 'fullscreen_change' && window.fastStream) {
           window.fastStream.interfaceController.setFullscreenStatus(request.fullscreen);
         } else if (request.type === 'sources' && window.fastStream) {
-          console.log('Recieved sources', request.sources, request.subtitles);
-          let subs = request.subtitles;
-          const sources = request.sources;
-
-          if (sources.length === 0) {
-            sendResponse('no_sources');
-            return;
-          }
-
-          let autoPlaySource = sources[0];
-
-          sources.find((s) => {
-            if (s.mode === PlayerModes.ACCELERATED_YT) {
-              autoPlaySource = s;
-              return true;
-            }
-            return false;
-          });
-
-          if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
-            autoPlaySource = sources.slice(0).reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
-          }
-
-          if (window.fastStream.source || !request.autoSetSource) {
-            autoPlaySource = null;
-          }
-
-          sources.forEach((s) => {
-            if (s !== autoPlaySource) {
-              window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
-            }
-          });
-
-          if (autoPlaySource) {
-            window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
-            // window.fastStream.play();
-            });
-
-            window.fastStream.clearSubtitles();
-          }
-
-          if (subs) {
-            subs = subs.filter((sub) => sub);
-            let todo = 1;
-            let done = 0;
-            subs.forEach((sub) => {
-              if (!sub.data && sub.source) {
-                todo++;
-                const headers = sub.headers || [];
-                const customHeaderCommands = headers.filter((header) => {
-                  return header.name.toLowerCase() === 'origin' || header.name.toLowerCase() === 'referer';
-                }).map((header) => {
-                  return {
-                    operation: 'set',
-                    header: header.name.toLowerCase(),
-                    value: header.value,
-                  };
-                });
-
-                chrome.runtime.sendMessage({
-                  type: 'header_commands',
-                  url: sub.source,
-                  commands: customHeaderCommands,
-                }).then(() => {
-                  RequestUtils.requestSimple(sub.source, (err, req, body) => {
-                    if (!err && body) {
-                      sub.data = body;
-                    }
-                    if (err) {
-                      console.warn(err);
-                    }
-
-                    done++;
-                    if (todo === done) loadondone();
-                  });
-                });
-              }
-            });
-            todo = todo - 1;
-            if (todo === done) loadondone();
-
-            function loadondone() {
-              chrome.storage.local.get('subtitlesSettings', (data) => {
-                let defLang = 'en';
-                if (data.subtitlesSettings) {
-                  try {
-                    const settings = JSON.parse(data.subtitlesSettings);
-                    if (settings['default-lang']) {
-                      defLang = settings['default-lang'];
-                    }
-                  } catch (e) {
-                    console.log(e);
-                  }
-                }
-
-                subs = subs.filter((sub) => sub.data);
-
-                let done = 0;
-                const todo = subs.length;
-                subs.forEach((sub) => {
-                  chrome.i18n.detectLanguage(sub.data, (result) => {
-                    const lang = result.languages.find((lang) => lang.language === defLang);
-                    const score = lang ? lang.percentage : 0;
-                    sub.score = score;
-
-                    if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
-                      sub.language = result.languages[0].language;
-                    }
-                    done++;
-                    if (todo === done) sendSubs();
-                  });
-                });
-
-                function sendSubs() {
-                  subs.sort((a, b) => {
-                    return b.score - a.score;
-                  });
-
-                  try {
-                    subs.forEach((sub, i) => {
-                      const track = new SubtitleTrack(sub.label, sub.language);
-                      try {
-                        track.loadText(sub.data);
-                        window.fastStream.loadSubtitleTrack(track, request.autoSetSource);
-                      } catch (e) {
-                        console.error(e);
-                      }
-                    });
-                  } catch (e) {
-                    console.error(e);
-                  }
-                }
-              });
-            }
-          }
+          recieveSources(request, sendResponse);
+          return true;
         } else {
           sendResponse('unknown');
           return;
@@ -181,6 +48,138 @@ if (EnvUtils.isExtension()) {
       type: 'ping',
     });
   }, 10000);
+}
+
+async function recieveSources(request, sendResponse) {
+  console.log('Recieved sources', request.sources, request.subtitles);
+  let subs = request.subtitles;
+  const sources = request.sources;
+
+  if (sources.length === 0) {
+    sendResponse('no_sources');
+    return;
+  }
+
+  let autoPlaySource = sources[0];
+
+  sources.find((s) => {
+    if (s.mode === PlayerModes.ACCELERATED_YT) {
+      autoPlaySource = s;
+      return true;
+    }
+    return false;
+  });
+
+  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
+    autoPlaySource = sources.slice(0).reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+  }
+
+  if (window.fastStream.source || !request.autoSetSource) {
+    autoPlaySource = null;
+  }
+
+  sources.forEach((s) => {
+    if (s !== autoPlaySource) {
+      window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
+    }
+  });
+
+  if (autoPlaySource) {
+    window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
+      // window.fastStream.play();
+    });
+
+    window.fastStream.clearSubtitles();
+  }
+
+  if (subs) {
+    subs = await loadSubtitles(subs);
+    subs = await sortSubtitles(subs);
+
+    try {
+      subs.forEach((sub, i) => {
+        const track = new SubtitleTrack(sub.label, sub.language);
+        try {
+          track.loadText(sub.data);
+          window.fastStream.loadSubtitleTrack(track, request.autoSetSource);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  sendResponse('sources_recieved');
+}
+
+async function loadSubtitles(subs) {
+  await Promise.all(subs.map(async (sub) => {
+    if (sub && !sub.data && sub.source) {
+      const headers = sub.headers || [];
+      const customHeaderCommands = headers.filter((header) => {
+        return header.name.toLowerCase() === 'origin' || header.name.toLowerCase() === 'referer';
+      }).map((header) => {
+        return {
+          operation: 'set',
+          header: header.name.toLowerCase(),
+          value: header.value,
+        };
+      });
+
+      await chrome.runtime.sendMessage({
+        type: 'header_commands',
+        url: sub.source,
+        commands: customHeaderCommands,
+      });
+      const xhr = await RequestUtils.requestSimple(sub.source);
+      const body = xhr.responseText;
+      if ((xhr.status === 200 || xhr.status === 206) && body) {
+        sub.data = body;
+      }
+    }
+  }));
+  return subs.filter((sub) => sub.data);
+}
+
+async function sortSubtitles(subs) {
+  if (!chrome?.i18n?.detectLanguage) {
+    return subs;
+  }
+
+  let defLang = 'en';
+  const subtitlesSettings = await Utils.getConfig('subtitlesSettings');
+  try {
+    const settings = JSON.parse(subtitlesSettings);
+    if (settings['default-lang']) {
+      defLang = settings['default-lang'];
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  await Promise.all(subs.map((sub) => {
+    return new Promise((resolve, reject)=>{
+      chrome.i18n.detectLanguage(sub.data, (result) => {
+        const lang = result.languages.find((lang) => lang.language === defLang);
+        const score = lang ? lang.percentage : 0;
+        sub.score = score;
+
+        if (!sub.language && result.languages.length > 0 && result.languages[0].percentage > 50) {
+          sub.language = result.languages[0].language;
+        }
+
+        resolve();
+      });
+    });
+  }));
+
+  subs.sort((a, b) => {
+    return b.score - a.score;
+  });
+
+  return subs;
 }
 
 async function setup() {
@@ -239,6 +238,15 @@ async function setup() {
 
   if (!EnvUtils.isExtension()) {
     window.fastStream.setOptions(await Utils.getOptionsFromStorage());
+
+    // if not extension context then use iframe messager
+    window.addEventListener('message', (e) => {
+      if (e.data?.type === 'options') {
+        window.fastStream.setOptions(JSON.parse(e.data.options));
+      } else if (e.data?.type === 'sources') {
+        recieveSources(e.data, () => {});
+      }
+    });
   }
 }
 
