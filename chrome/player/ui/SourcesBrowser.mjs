@@ -128,7 +128,7 @@ export class SourcesBrowser {
     headersInput.setAttribute('autocorrect', 'off');
     headersInput.setAttribute('spellcheck', false);
     headersInput.name = 'Header override input';
-    headersInput.placeholder = 'Headers (1 entry per line)\nHeader Name: Header Value\nHeader2 Name: Header2 Value';
+    headersInput.placeholder = 'Header-Name: Header Value\nHeader2-Name: Header2 Value';
     headersInput.value = URLUtils.objToHeadersString(source.headers);
     headersInput.addEventListener('input', (e) => {
       if (URLUtils.validateHeadersString(headersInput.value)) {
