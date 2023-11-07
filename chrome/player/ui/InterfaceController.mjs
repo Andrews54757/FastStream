@@ -937,7 +937,7 @@ export class InterfaceController {
         this.setStatusMessage('save-video', `Failed to save video!`, 'error', 2000);
         this.makingDownload = false;
 
-        if (confirm('Failed to save video!\nWould you like to archive the player\'s buffer storage instead?\n- Drag and drop archive file on player to load it')) {
+        if (confirm('Failed to save video!\nWould you like to archive the player\'s buffer storage instead?\n- Drag and drop archive files on the player to load it')) {
           this.dumpBuffer(name);
         }
         return;
