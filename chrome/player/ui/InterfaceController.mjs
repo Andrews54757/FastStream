@@ -398,10 +398,10 @@ export class InterfaceController {
       this.hideControlBarOnAction();
       this.playPauseToggle();
     });
-    DOMElements.progressBarContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
-    DOMElements.progressBarContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
-    DOMElements.progressBarContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
-    DOMElements.progressBarContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
+    DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
+    DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
+    DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
+    DOMElements.progressContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
 
     DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.fullscreen);
@@ -1105,8 +1105,8 @@ export class InterfaceController {
 
 
   onProgressbarMouseMove(event) {
-    const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressBarContainer), 0), DOMElements.progressBarContainer.clientWidth);
-    const totalWidth = DOMElements.progressBarContainer.clientWidth;
+    const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
+    const totalWidth = DOMElements.progressContainer.clientWidth;
 
     const time = this.client.duration * currentX / totalWidth;
 
@@ -1152,10 +1152,10 @@ export class InterfaceController {
 
     DOMElements.progressContainer.classList.add('freeze');
     // we need an initial position for touchstart events, as mouse up has no offset x for iOS
-    let initialPosition = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressBarContainer), 0), DOMElements.progressBarContainer.clientWidth);
+    let initialPosition = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
 
     const shiftTime = (timeBarX) => {
-      const totalWidth = DOMElements.progressBarContainer.clientWidth;
+      const totalWidth = DOMElements.progressContainer.clientWidth;
       if (totalWidth) {
         const newTime = this.client.duration * timeBarX / totalWidth;
         this.client.currentTime = newTime;
@@ -1164,7 +1164,7 @@ export class InterfaceController {
     };
 
     const onProgressbarMouseMove = (event) => {
-      const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressBarContainer), 0), DOMElements.progressBarContainer.clientWidth);
+      const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
       initialPosition = NaN; // mouse up will fire after the move, we don't want to trigger the initial position in the event of iOS
       shiftTime(currentX);
     };
@@ -1180,7 +1180,7 @@ export class InterfaceController {
         this.hidePreview();
       }
 
-      let clickedX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressBarContainer), 0), DOMElements.progressBarContainer.clientWidth);
+      let clickedX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
 
       if (isNaN(clickedX) && !isNaN(initialPosition)) {
         clickedX = initialPosition;
