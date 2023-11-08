@@ -6,6 +6,7 @@ export const DOMElements = {
   playPauseButtonBig: document.querySelector('.mainplayer .fluid_control_playpause_big'),
   playPauseButtonBigCircle: document.querySelector('.mainplayer .fluid_control_playpause_big_circle'),
   progressContainer: document.querySelector('.mainplayer .fluid_controls_progress_container'),
+  progressBarContainer: document.querySelector('.mainplayer .fluid_controls_progress_container .fluid_controls_progress'),
   currentProgress: document.querySelector('.mainplayer .fluid_controls_currentprogress'),
   fullscreen: document.querySelector('.mainplayer .fluid_control_fullscreen'),
   subtitles: document.querySelector('.mainplayer .fluid_control_subtitles'),
