@@ -706,11 +706,13 @@ body {
     color: var(--seek-preview-text-color);
     transform: translate(-50%, 0%);
     bottom: 16px;
+    pointer-events: none;
 }
 
 .fluid_controls_progress_container .seek_preview_tip {
     position: absolute;
     bottom: 3px;
+    pointer-events: none;
 }
 
 .fluid_controls_progress_container .seek_preview_tip>div {
