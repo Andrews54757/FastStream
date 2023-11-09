@@ -281,10 +281,7 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    let ytplayer = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
-    if (!ytplayer) {
-      ytplayer = document.querySelectorAll('body > #player')[0];
-    }
+    const ytplayer = document.querySelectorAll('body #player')[0];
     if (ytplayer) {
       const visibleRatio = await isVisible(ytplayer);
       const rect = ytplayer.getBoundingClientRect();
@@ -366,10 +363,7 @@ function is_url_yt_embed(urlStr) {
 
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
-    let pnode = document.querySelectorAll('#ytd-player.ytd-watch-flexy > #container > div')[0];
-    if (!pnode) {
-      pnode = document.querySelectorAll('body > #player')[0];
-    }
+    const pnode = document.querySelectorAll('body #player')[0];
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
     if (pnode && (isWatch || isEmbed)) {
