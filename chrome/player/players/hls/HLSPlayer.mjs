@@ -212,6 +212,9 @@ export default class HLSPlayer extends EventEmitter {
         }
       });
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
+
+      this.hls.subtitleDisplay = false;
+      this.hls.subtitleTrack = -1;
     });
 
     this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {

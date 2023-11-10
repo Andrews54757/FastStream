@@ -18,6 +18,7 @@ const headerBlacklist = [
   'host',
   'connection',
   'dnt',
+  'cookie',
 ];
 
 const redirectHeaders = [
