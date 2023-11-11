@@ -390,13 +390,15 @@ export class InterfaceController {
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.playPauseButton);
 
-    DOMElements.playPauseButtonBigCircle.addEventListener('click', () => {
+    DOMElements.playPauseButtonBigCircle.addEventListener('click', (e) => {
       this.hideControlBarOnAction();
       this.playPauseToggle();
+      e.stopPropagation();
     });
-    DOMElements.videoContainer.addEventListener('dblclick', () => {
+    DOMElements.videoContainer.addEventListener('dblclick', (e) => {
       this.hideControlBarOnAction();
       this.playPauseToggle();
+      e.stopPropagation();
     });
     DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
@@ -493,6 +495,8 @@ export class InterfaceController {
       if (this.isBigPlayButtonVisible()) {
         this.playPauseToggle();
       }
+      this.focusingControls = false;
+      this.mouseOverControls = false;
       this.hideControlBarOnAction();
     });
     DOMElements.hideButton.addEventListener('click', () => {
