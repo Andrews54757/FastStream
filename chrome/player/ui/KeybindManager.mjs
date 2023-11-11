@@ -53,25 +53,25 @@ export class KeybindManager extends EventEmitter {
 
     this.on('SeekForward', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += 2;
+      this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
     });
 
     this.on('SeekBackward', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -2;
+      this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
     });
 
     this.on('SeekForwardSmall', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += 0.2;
+      this.client.currentTime += this.client.options.seekStepSize / 10;
       this.client.setSeekSave(true);
     });
 
     this.on('SeekBackwardSmall', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -0.2;
+      this.client.currentTime += -this.client.options.seekStepSize / 10;
       this.client.setSeekSave(true);
     });
 
@@ -86,13 +86,13 @@ export class KeybindManager extends EventEmitter {
 
     this.on('SeekForwardLarge', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += 10;
+      this.client.currentTime += this.client.options.seekStepSize * 5;
       this.client.setSeekSave(true);
     });
 
     this.on('SeekBackwardLarge', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -10;
+      this.client.currentTime += -this.client.options.seekStepSize * 5;
       this.client.setSeekSave(true);
     });
 

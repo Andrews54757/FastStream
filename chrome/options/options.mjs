@@ -14,6 +14,7 @@ const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
+const seekStepSize = document.getElementById('seekstepsize');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -42,6 +43,7 @@ async function loadOptions(newOptions) {
   playMP4URLs.checked = !!Options.playMP4URLs;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
+  seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
 
   if (Options.keybinds) {
     keybindsList.replaceChildren();
@@ -189,6 +191,11 @@ maxSpeed.addEventListener('change', () => {
   // parse value, number unit/s
   Options.maxSpeed = StringUtils.getSpeedValue(maxSpeed.value);
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
+  optionChanged();
+});
+
+seekStepSize.addEventListener('change', () => {
+  Options.seekStepSize = parseFloat(seekStepSize.value);
   optionChanged();
 });
 

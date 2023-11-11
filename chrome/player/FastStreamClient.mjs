@@ -36,6 +36,7 @@ export class FastStreamClient extends EventEmitter {
       videoSepia: 0,
       videoInvert: 0,
       videoHueRotate: 0,
+      seekStepSize: 0.2,
     };
     this.persistent = {
       playing: false,
@@ -111,6 +112,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
     this.options.maxSpeed = options.maxSpeed;
+    this.options.seekStepSize = options.seekStepSize;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;

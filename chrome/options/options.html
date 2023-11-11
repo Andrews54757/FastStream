@@ -149,8 +149,6 @@
 
         .option {
             display: flex;
-            padding: 3px 0px;
-            width: 100%;
             align-items: center;
             cursor: pointer;
         }
@@ -291,30 +289,52 @@
             Predownload entire video in the background if possible
         </div>
     </div>
+
+    <div class="option grid" style="margin-left: 20px">
+        <div class="label">
+            Target download speed of predownloader
+        </div>
+        <input class="number" type="text" id="maxspeed" name="Target download speed of predownloader"></input>
+    </div>
+
+    <br>
+
     <div class="option">
         <input type="checkbox" id="freeunusedchannels" name="Free unused channel buffers when switching quality levels">
         <div class="label">
             Free unused channel buffers when switching quality levels
         </div>
     </div>
+
+    <br>
+
     <div class="option">
         <input type="checkbox" id="analyzevideos" name="Find intros and outros">
         <div class="label">
             Automatically analyze sequential videos for intros/outros<br>(turn off if you have CPU performance issues)
         </div>
     </div>
+
+    <br>
+
     <div class="option">
         <input type="checkbox" id="autosub" name="Automatically enable best subtitles">
         <div class="label">
             Automatically enable best found subtitle track<br>(Change default language in subtitle settings)
         </div>
     </div>
+
+    <br>
+
     <div class="option">
         <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player">
         <div class="label">
             Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)
         </div>
     </div>
+
+    <br>
+
     <div class="option">
         <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player">
         <div class="label">
@@ -322,11 +342,13 @@
         </div>
     </div>
 
+    <br>
+
     <div class="option grid">
         <div class="label">
-            Target download speed of player during video playback
+            Seek keybind base step size (seconds)
         </div>
-        <input class="number" type="text" id="maxspeed" name="Target download speed of player during video playback"></input>
+        <input class="number" type="number" id="seekstepsize" name="Size of seeks using seek keybind"></input>
     </div>
 
     <h1>Keybinds</h1>

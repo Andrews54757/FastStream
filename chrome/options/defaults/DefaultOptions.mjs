@@ -18,4 +18,5 @@ export const DefaultOptions = {
   videoInvert: 0,
   videoHueRotate: 0,
   maxSpeed: 300 * 1000 * 1000,
+  seekStepSize: 2,
 };
