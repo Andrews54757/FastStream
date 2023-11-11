@@ -490,6 +490,9 @@ export class InterfaceController {
       this.queueControlsHide();
     });
     DOMElements.videoContainer.addEventListener('click', () => {
+      if (this.isBigPlayButtonVisible()) {
+        this.playPauseToggle();
+      }
       this.hideControlBarOnAction();
     });
     DOMElements.hideButton.addEventListener('click', () => {
@@ -1036,7 +1039,7 @@ export class InterfaceController {
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && DOMElements.playPauseButtonBigCircle.style.display === 'none') {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible()) {
         this.hideControlBar();
       }
     }, time || 2000);
@@ -1045,10 +1048,18 @@ export class InterfaceController {
   hideControlBarOnAction(cooldown) {
     if (!this.mouseOverControls && !this.focusingControls) {
       this.mouseActivityCooldown = Date.now() + (cooldown || 500);
-      if (DOMElements.playPauseButtonBigCircle.style.display === 'none') {
+      if (!this.isBigPlayButtonVisible()) {
         this.hideControlBar();
       }
     }
+  }
+
+  hideBigPlayButton() {
+    DOMElements.playPauseButtonBigCircle.style.display = 'none';
+  }
+
+  isBigPlayButtonVisible() {
+    return DOMElements.playPauseButtonBigCircle.style.display !== 'none';
   }
 
   hideControlBar() {
@@ -1438,7 +1449,7 @@ export class InterfaceController {
   play() {
     const previousValue = this.persistent.playing;
     this.persistent.playing = true;
-    DOMElements.playPauseButtonBigCircle.style.display = 'none';
+    this.hideBigPlayButton();
     this.updatePlayPauseButton();
     if (!previousValue) {
       this.playPauseAnimation();
