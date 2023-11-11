@@ -198,20 +198,43 @@
             margin-bottom: 20px;
         }
 
-        .option.grid {
+        .option.grid1 {
             display: grid;
+            gap: 5px;
+            grid-template-columns: 20px 1fr;
+            align-items: center;
+        }
+
+        .option.grid1 .label {
+            grid-column: 2;
+        }
+
+        .option.grid1 input {
+            grid-column: 1;
+            text-align: center;
+        }
+
+        .option.grid2 {
+            display: grid;
+            gap: 5px;
             grid-template-columns: 1fr 150px;
             align-items: center;
         }
 
-        .option.grid .label {
+        .option.grid2 .label {
             grid-column: 1;
         }
 
-        .option.grid .number {
+        .option.grid2 .number {
             grid-column: 2;
             text-align: center;
         }
+
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+
     </style>
 </head>
 
@@ -225,7 +248,8 @@
             <li>Any bugs you encounter</li>
             <li>Feature requests</li>
         </ul>
-        <p>We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.</p>
+        <p>We also take accessibility very seriously. If you need accommodations that are lacking in the current
+            version, please make a request and we will work on it ASAP.</p>
         <button id="rate">OK I'll review FastStream</button>
         <button id="norate">I don't want to review :(</button>
     </div>
@@ -283,14 +307,14 @@
     </div>
 
     <h1>General Options</h1>
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="downloadall" name="Predownload video in background">
         <div class="label">
             Predownload entire video in the background if possible
         </div>
     </div>
 
-    <div class="option grid" style="margin-left: 20px">
+    <div class="option grid2" style="margin-left: 25px">
         <div class="label">
             Target download speed of predownloader
         </div>
@@ -299,7 +323,7 @@
 
     <br>
 
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="freeunusedchannels" name="Free unused channel buffers when switching quality levels">
         <div class="label">
             Free unused channel buffers when switching quality levels
@@ -308,7 +332,7 @@
 
     <br>
 
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="analyzevideos" name="Find intros and outros">
         <div class="label">
             Automatically analyze sequential videos for intros/outros<br>(turn off if you have CPU performance issues)
@@ -317,7 +341,7 @@
 
     <br>
 
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="autosub" name="Automatically enable best subtitles">
         <div class="label">
             Automatically enable best found subtitle track<br>(Change default language in subtitle settings)
@@ -326,7 +350,7 @@
 
     <br>
 
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player">
         <div class="label">
             Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)
@@ -335,7 +359,7 @@
 
     <br>
 
-    <div class="option">
+    <div class="option grid1">
         <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player">
         <div class="label">
             Use player to play MP4 videos when opening video URLs (.mp4)
@@ -344,7 +368,7 @@
 
     <br>
 
-    <div class="option grid">
+    <div class="option grid2">
         <div class="label">
             Seek keybind base step size (seconds)
         </div>
