@@ -105,19 +105,13 @@ async function recieveSources(request, sendResponse) {
     autoPlaySource = null;
   }
 
-  sources.forEach((s) => {
-    if (s !== autoPlaySource) {
-      window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), false);
-    }
-  });
-
   if (autoPlaySource) {
-    window.fastStream.addSource(new VideoSource(autoPlaySource.url, autoPlaySource.headers, autoPlaySource.mode), true).then(() => {
-      // window.fastStream.play();
-    });
-
     window.fastStream.clearSubtitles();
   }
+
+  sources.forEach((s) => {
+    window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), s === autoPlaySource);
+  });
 
   if (subs) {
     subs = await loadSubtitles(subs);
