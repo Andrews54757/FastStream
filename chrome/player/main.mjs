@@ -70,8 +70,9 @@ async function recieveSources(request, sendResponse) {
     return false;
   });
 
-  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
-    autoPlaySource = sources.slice(0).reverse().find((s) => s.mode === PlayerModes.ACCELERATED_MP4);
+  // Play the last source if it is mp4 or yt
+  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4 || autoPlaySource.mode === PlayerModes.ACCELERATED_YT) {
+    autoPlaySource = sources.slice(0).reverse().find((s) => s.mode === autoPlaySource.mode);
   }
 
   if (window.fastStream.source || !request.autoSetSource) {
