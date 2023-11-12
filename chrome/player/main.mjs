@@ -73,6 +73,14 @@ async function recieveSources(request, sendResponse) {
       return curr;
     }
 
+    // If result isn't using streaming technologies, try to find one that does
+    if (result.mode !== PlayerModes.ACCELERATED_YT && result.mode !== PlayerModes.ACCELERATED_DASH && result.mode !== PlayerModes.ACCELERATED_HLS) {
+      // Favor HLS and DASH streams
+      if (curr.mode === PlayerModes.ACCELERATED_HLS || curr.mode === PlayerModes.ACCELERATED_DASH) {
+        return curr;
+      }
+    }
+
     return result;
   }, sources[0]);
 
