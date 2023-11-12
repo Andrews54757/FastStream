@@ -60,19 +60,37 @@ async function recieveSources(request, sendResponse) {
     return;
   }
 
-  let autoPlaySource = sources[0];
-
-  sources.find((s) => {
-    if (s.mode === PlayerModes.ACCELERATED_YT) {
-      autoPlaySource = s;
-      return true;
+  // Sources are ordered by time, so we can just choose the first one and it will be the oldest.
+  // But we also want to minimize depth
+  let autoPlaySource = sources.reduce((result, curr) => {
+    // Choose lower depth
+    if (result.depth > curr.depth) {
+      return curr;
     }
-    return false;
-  });
 
-  // Play the last source if it is mp4 or yt
-  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4 || autoPlaySource.mode === PlayerModes.ACCELERATED_YT) {
-    autoPlaySource = sources.slice(0).reverse().find((s) => s.mode === autoPlaySource.mode);
+    // Always choose the newest yt source if it exists
+    if (curr.mode === PlayerModes.ACCELERATED_YT) {
+      return curr;
+    }
+
+    return result;
+  }, sources[0]);
+
+  // Play the newest source at lowest depth if it is mp4
+  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
+    const mp4SourceCandidates = sources.filter((item) => item !== autoPlaySource).sort((a, b) => {
+      // Lower depth is better
+      if (a.depth !== b.depth) {
+        return a.depth - b.depth;
+      }
+
+      // Newer is better
+      return b.time - a.time;
+    });
+
+    if (mp4SourceCandidates.length > 0) {
+      autoPlaySource = mp4SourceCandidates[0];
+    }
   }
 
   if (window.fastStream.source || !request.autoSetSource) {

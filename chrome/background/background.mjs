@@ -417,6 +417,7 @@ function handleSubtitles(url, frame, headers) {
     source: url,
     headers: headers,
     label: u.split('.')[0],
+    time: Date.now(),
   });
 
   sendSourcesToMainFramePlayers(frame);
@@ -431,6 +432,7 @@ function getSourceFromURL(frame, url) {
 function addSource(frame, url, mode, headers) {
   frame.sources.push({
     url, mode, headers,
+    time: Date.now(),
   });
 }
 
@@ -441,13 +443,20 @@ function collectSources(frame, remove = false) {
 
   let currentFrame = frame;
   let removed = false;
+  let depth = 0;
   while (currentFrame) {
     for (let i = 0; i < currentFrame.subtitles.length; i++) {
-      subtitles.push(currentFrame.subtitles[i]);
+      subtitles.push({
+        ...currentFrame.subtitles[i],
+        depth,
+      });
     }
 
     for (let i = 0; i < currentFrame.sources.length; i++) {
-      sources.push(currentFrame.sources[i]);
+      sources.push({
+        ...currentFrame.sources[i],
+        depth,
+      });
     }
 
     if (!removed && remove) {
@@ -460,7 +469,17 @@ function collectSources(frame, remove = false) {
 
     if (currentFrame.sources.length !== 0) break;
     currentFrame = tab.frames[currentFrame.parentId];
+    depth++;
   }
+
+  // Sort by time, oldest first
+  subtitles.sort((a, b) => {
+    return a.time - b.time;
+  });
+
+  sources.sort((a, b) => {
+    return a.time - b.time;
+  });
 
   return {subtitles, sources};
 }
