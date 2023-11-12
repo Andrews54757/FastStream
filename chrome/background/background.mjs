@@ -473,10 +473,6 @@ function collectSources(frame, remove = false) {
   }
 
   // Sort by time, oldest first
-  subtitles.sort((a, b) => {
-    return a.time - b.time;
-  });
-
   sources.sort((a, b) => {
     return a.time - b.time;
   });
