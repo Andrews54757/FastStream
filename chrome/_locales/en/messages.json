@@ -317,5 +317,17 @@
     },
     "player_quality_current": {
         "message": "(current)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Not enough space to predownload in incognito mode, will buffer $1s"
+    },
+    "player_buffer_storage_warning": {
+        "message": "Not enough space to predownload, will buffer $1s"
+    },
+    "player_error_drm": {
+        "message": "Failed to load! DRM is not supported!"
+    },
+    "player_error_load": {
+        "message": "Failed to load video!"
     }
 }
