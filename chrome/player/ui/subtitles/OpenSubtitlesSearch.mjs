@@ -1,4 +1,5 @@
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {Localize} from '../../modules/Localize.mjs';
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {RequestUtils} from '../../utils/RequestUtils.mjs';
@@ -70,33 +71,33 @@ export class OpenSubtitlesSearch extends EventEmitter {
     DOMElements.subuiContainer.appendChild(this.subui.searchContainer);
 
     const searchInput = WebUtils.create('input', null, 'text_input');
-    searchInput.placeholder = 'Search by title, filename, etc...';
+    searchInput.placeholder = Localize.getMessage('player_opensubtitles_search_placeholder');
     searchInput.classList.add('subtitle-search-input');
     this.subui.searchContainer.appendChild(searchInput);
 
     this.subui.search = searchInput;
 
-    const searchBtn = WebUtils.create('div', 'Search', 'textbutton subtitle-search-btn');
-    searchBtn.textContent = 'Search';
+    const searchBtn = WebUtils.create('div', null, 'textbutton subtitle-search-btn');
+    searchBtn.textContent = Localize.getMessage('player_opensubtitles_searchbtn');
     WebUtils.setupTabIndex(searchBtn);
     this.subui.searchContainer.appendChild(searchBtn);
 
 
     const seasonInput = WebUtils.create('input', null, 'text_input');
-    seasonInput.placeholder = 'Season #';
+    seasonInput.placeholder = Localize.getMessage('player_opensubtitles_seasonnum');
     seasonInput.classList.add('subtitle-season-input');
     seasonInput.style.display = 'none';
 
     const episodeInput = WebUtils.create('input', null, 'text_input');
-    episodeInput.placeholder = 'Episode #';
+    episodeInput.placeholder = Localize.getMessage('player_opensubtitles_episodenum');
     episodeInput.classList.add('subtitle-episode-input');
     episodeInput.style.display = 'none';
 
     const typeSelector = WebUtils.createDropdown('all',
         'Type', {
-          'all': 'All',
-          'movie': 'Movie',
-          'episode': 'Episode',
+          'all': Localize.getMessage('player_opensubtitles_type_all'),
+          'movie': Localize.getMessage('player_opensubtitles_type_movie'),
+          'episode': Localize.getMessage('player_opensubtitles_type_episode'),
         }, (val) => {
           if (val === 'episode') {
             seasonInput.style.display = '';
@@ -116,23 +117,23 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
 
     const languageInput = WebUtils.create('input', null, 'text_input');
-    languageInput.placeholder = 'Language';
+    languageInput.placeholder = Localize.getMessage('player_opensubtitles_language');
     languageInput.classList.add('subtitle-language-input');
     this.subui.searchContainer.appendChild(languageInput);
     this.subui.languageInput = languageInput;
 
     const yearInput = WebUtils.create('input', null, 'text_input');
-    yearInput.placeholder = 'Year';
+    yearInput.placeholder = Localize.getMessage('player_opensubtitles_year');
     yearInput.classList.add('subtitle-year-input');
     this.subui.searchContainer.appendChild(yearInput);
 
 
     const sortSelector = WebUtils.createDropdown('download_count',
-        'Sort By', {
-          'download_count': 'Downloads',
-          'upload_date': 'Upload Date',
-          'rating': 'Rating',
-          'votes': 'Votes',
+        Localize.getMessage('player_opensubtitles_sortby'), {
+          'download_count': Localize.getMessage('player_opensubtitles_sortby_downloads'),
+          'upload_date': Localize.getMessage('player_opensubtitles_sortby_date'),
+          'rating': Localize.getMessage('player_opensubtitles_sortby_rating'),
+          'votes': Localize.getMessage('player_opensubtitles_sortby_votes'),
         },
     );
     sortSelector.classList.add('subtitle-sort-selector');
@@ -140,9 +141,9 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
 
     const sortDirectionSelector = WebUtils.createDropdown('desc',
-        'Sort', {
-          'desc': 'Descending',
-          'asc': 'Ascending',
+        Localize.getMessage('player_opensubtitles_sort'), {
+          'desc': Localize.getMessage('player_opensubtitles_sort_desc'),
+          'asc': Localize.getMessage('player_opensubtitles_sort_asc'),
         },
     );
 
@@ -211,7 +212,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       languages: '' + query.language,
       year: '' + query.year,
       order_by: '' + query.sortBy,
-      sort_direction: '' + query.sortDirection,
+      order_direction: '' + query.sortDirection,
       page: '' + query.page,
     };
 
@@ -231,9 +232,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
     this.subui.results.replaceChildren();
     const container = document.createElement('div');
-    container.textContent = 'Searching...';
+    container.textContent = Localize.getMessage('player_opensubtitles_searching');
     this.subui.results.appendChild(container);
-
 
     let response;
     try {
@@ -255,15 +255,15 @@ export class OpenSubtitlesSearch extends EventEmitter {
       })).response;
 
       if (response.errors) {
-        container.textContent = 'Error: ' + response.errors.join(', ');
+        container.textContent = Localize.getMessage('player_opensubtitles_error', [response.errors.join(', ')]);
         return;
       }
     } catch (e) {
       console.log(e);
       if (!chrome?.extension) {
-        container.textContent = 'Cannot set proper headers! Install the extension to use this feature!';
+        container.textContent = Localize.getMessage('player_opensubtitles_disabled');
       } else {
-        container.textContent = 'OpenSubtitles is down!';
+        container.textContent = Localize.getMessage('player_opensubtitles_error_down');
       }
       return;
     }
@@ -274,7 +274,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
     if (response.data.length === 0) {
       const container = document.createElement('div');
-      container.textContent = 'No results found';
+      container.textContent = Localize.getMessage('player_opensubtitles_noresults');
       this.subui.results.appendChild(container);
       return;
     }
@@ -361,8 +361,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
             if (!data.link && data.remaining <= 0) {
               item.downloading = false;
-              alert(`OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in ` + data.reset_time);
-              if (confirm('Would you like to open the OpenSubtitles website to download the subtitle file manually?')) {
+              alert(Localize.getMessage('player_opensubtitles_quota', [data.reset_time]));
+              if (confirm(Localize.getMessage('player_opensubtitles_askopen'))) {
                 window.open(item.attributes.url);
               }
               return;
@@ -401,8 +401,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
           console.log(e);
           if (DOMElements.subuiContainer.style.display === 'none') return;
           item.downloading = false;
-          alert(`OpenSubtitles download failed! Their servers are probably down!`);
-          if (confirm('Would you like to open the OpenSubtitles website to download the subtitle file manually?')) {
+          alert(Localize.getMessage('player_opensubtitles_down_alert'));
+          if (confirm(Localize.getMessage('player_opensubtitles_askopen'))) {
             window.open(item.attributes.url);
           }
           return;

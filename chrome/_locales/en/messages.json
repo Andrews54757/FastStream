@@ -207,6 +207,81 @@
     "player_opensubtitles_closebtn_label": {
         "message": "Close OpenSubtitles search window"
     },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Search by title, filename, etc..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "Search"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "Season #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "Episode #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "All"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "Movie"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "Episode"
+    },
+    "player_opensubtitles_language": {
+        "message": "Language"
+    },
+    "player_opensubtitles_year": {
+        "message": "Year"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Sort By"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "Downloads"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "Upload Date"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "Rating"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "Votes"
+    },
+    "player_opensubtitles_sort": {
+        "message": "Sort"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Descending"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Ascending"
+    },
+    "player_opensubtitles_searching": {
+        "message": "Searching..."
+    },
+    "player_opensubtitles_error": {
+        "message": "Error: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Cannot set proper headers! Install the extension to use this feature!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles is down!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles download failed! Their servers are probably down!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "No results found!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Would you like to open the OpenSubtitles website to download the subtitle file manually?"
+    },
     "player_subtitlesmenu_toggle_label": {
         "message": "Toggle subtitles menu"
     },
