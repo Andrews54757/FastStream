@@ -1,4 +1,6 @@
-window.getI18nMessage = chrome.i18n.getMessage;
+import {Localize} from './player/modules/Localize.mjs';
+
+window.getI18nMessage = Localize.getMessage;
 
 document.querySelectorAll('[data-i18n]').forEach((elem) => {
   elem.innerText = window.getI18nMessage(elem.dataset.i18n);
