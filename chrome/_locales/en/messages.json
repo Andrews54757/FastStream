@@ -7,6 +7,63 @@
     },
     "extension_toggle_label": {
         "message": "Toggle FastStream"
+    },
+    "welcome_page_title": {
+        "message": "Welcome to FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "Usage"
+    },
+    "welcome_page_usage_content0": {
+        "message": "There are four ways to use FastStream"
+    },
+    "welcome_page_usage_content1": {
+        "message": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream"
+    },
+    "welcome_page_usage_content2": {
+        "message": "You can go to a new tab, and press the extension icon to go to the player."
+    },
+    "welcome_page_usage_content3": {
+        "message": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Keep the player open in a new tab and it will collect sources as you browse elsewhere."
+    },
+    "welcome_page_usage_end": {
+        "message": "Once you got the video player open, hover over the left side of the video to open the sidebar (search/playlist)."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "Default Keyboard Controls"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "You can change these keybinds in extension settings"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "arrow keys - 1 second seek forward/back"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "keys - 10 second seek forward/back"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "key - Undo seek"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "arrow keys - 10% volume up/down"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- Full screen"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Add/decrease concurrent requests"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Force retry key - use this to re-attempt failed downloads"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Skip intro/outro if applicable"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- Hide/show player"
     }
-
+    
 }
