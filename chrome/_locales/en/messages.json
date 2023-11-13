@@ -245,7 +245,77 @@
     },
     "player_fullscreen_label": {
         "message": "Fullscreen"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 Fragment Failed! Click to retry."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 Fragments Failed! Click to retry."
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% Buffered"
+    },
+    "player_welcometext": {
+        "message": "Welcome to FastStream v$1!"
+    },
+    "player_nosource_alert": {
+        "message": "No source is loaded!"
+    },
+    "player_archive_loading": {
+        "message": "Loading archive... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "Loaded archive!"
+    },
+    "player_archive_fail": {
+        "message": "Failed to load archive!"
+    },
+    "player_filename_prompt": {
+        "message": "Enter a name for the file"
+    },
+    "player_screenshot_saving": {
+        "message": "Taking screenshot..."
+    },
+    "player_screenshot_saved": {
+        "message": "Screenshot saved!"
+    },
+    "player_screenshot_fail": {
+        "message": "Failed to take screenshot!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Already making save!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Saving is not supported for this video!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "Video has not finished downloading yet! Are you sure you want to save it?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?"
+    },
+    "player_savevideo_start": {
+        "message": "Making save..."
+    },
+    "player_savevideo_progress": {
+        "message": "Saving $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "Failed to save video!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it"
+    },
+    "player_savevideo_complete": {
+        "message": "Save complete!"
+    },
+    "player_archiver_progress": {
+        "message": "Archiving $1"
+    },
+    "player_archiver_saved": {
+        "message": "Archive saved!"
+    },
+    "player_quality_current": {
+        "message": "(current)"
     }
-  
-    
 }
