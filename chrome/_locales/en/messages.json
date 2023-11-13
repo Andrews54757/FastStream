@@ -329,5 +329,71 @@
     },
     "player_error_load": {
         "message": "Failed to load video!"
+    },
+    "player_source_autodetect": {
+        "message": "Auto Detect"
+    },
+    "player_source_direct": {
+        "message": "Direct"
+    },
+    "player_source_accelmp4": {
+        "message": "Accelerated MP4"
+    },
+    "player_source_accelhls": {
+        "message": "Accelerated HLS"
+    },
+    "player_source_acceldash": {
+        "message": "Accelerated DASH"
+    },
+    "player_source_accelyt": {
+        "message": "Accelerated YouTube"
+    },
+    "player_source_mode": {
+        "message": "Mode"
+    },
+    "player_source_url_placeholder": {
+        "message": "Source URL"
+    },
+    "player_source_headerbtn": {
+        "message": "Header Override ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Toggle header override input"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Header Override (Extension Only)"
+    },
+    "player_source_playbtn": {
+        "message": "Play"
+    },
+    "player_source_playbtn_playing": {
+        "message": "Playing"
+    },
+    "player_source_playbtn_loading": {
+        "message": "Loading..."
+    },
+    "player_source_deletebtn": {
+        "message": "Delete"
+    },
+    "player_source_headers_label": {
+        "message": "Header override input"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
+    },
+    "player_source_nonelisted": {
+        "message": "No Sources Listed"
+    },
+    "player_source_onelisted": {
+        "message": "1 Source Listed"
+    },
+    "player_source_multilisted": {
+        "message": "$1 Sources Listed"
+    },
+    "player_source_addbtn": {
+        "message": "Add Source"
+    },
+    "player_source_clearbtn": {
+        "message": "Clear Sources"
     }
 }

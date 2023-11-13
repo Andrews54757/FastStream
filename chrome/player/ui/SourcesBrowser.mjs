@@ -1,5 +1,6 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
+import {Localize} from '../modules/Localize.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
@@ -37,7 +38,7 @@ export class SourcesBrowser {
 
     const sourceURL = WebUtils.create('input', null, 'text_input linkui-source-url');
     sourceURL.value = source.url;
-    sourceURL.placeholder = 'Source URL';
+    sourceURL.placeholder = Localize.getMessage('player_source_url_placeholder');
     sourceURL.addEventListener('input', (e) => {
       source.url = sourceURL.value;
       this.updateSources();
@@ -47,21 +48,22 @@ export class SourcesBrowser {
     const modes = {};
 
     if (source.mode === PlayerModes.AUTO) {
-      modes[PlayerModes.AUTO] = 'Auto Detect';
+      modes[PlayerModes.AUTO] = Localize.getMessage('player_source_autodetect');
     }
 
-    modes[PlayerModes.DIRECT] = 'Direct';
-    modes[PlayerModes.ACCELERATED_MP4] = 'Accelerated MP4';
-    modes[PlayerModes.ACCELERATED_HLS] = 'Accelerated HLS';
-    modes[PlayerModes.ACCELERATED_DASH] = 'Accelerated DASH';
+    modes[PlayerModes.DIRECT] = Localize.getMessage('player_source_direct');
+    modes[PlayerModes.ACCELERATED_MP4] = Localize.getMessage('player_source_accelmp4');
+    modes[PlayerModes.ACCELERATED_HLS] = Localize.getMessage('player_source_accelhls');
+    modes[PlayerModes.ACCELERATED_DASH] = Localize.getMessage('player_source_acceldash');
     if (EnvUtils.isExtension()) {
-      modes[PlayerModes.ACCELERATED_YT] = 'Accelerated Youtube';
+      modes[PlayerModes.ACCELERATED_YT] = Localize.getMessage('player_source_accelyt');
     }
 
-    const sourceMode = WebUtils.createDropdown(source.mode, 'Mode', modes, (val) => {
+    const sourceMode = WebUtils.createDropdown(source.mode, Localize.getMessage('player_source_mode'), modes, (val) => {
       source.mode = val;
       this.updateSources();
     });
+
     sourceMode.classList.add('linkui-source-mode');
     sourceContainer.appendChild(sourceMode);
 
@@ -78,8 +80,8 @@ export class SourcesBrowser {
     });
 
     const sourceHeadersBtn = WebUtils.create('div', null, 'linkui-source-headers-button');
-    sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
-    sourceHeadersBtn.name = 'Toggle header override input';
+    sourceHeadersBtn.textContent = Localize.getMessage('player_source_headerbtn', [Object.keys(source.headers).length]);
+    sourceHeadersBtn.title = Localize.getMessage('player_source_headerbtn_label');
 
     if (EnvUtils.isExtension()) {
       sourceHeadersBtn.addEventListener('click', (e) => {
@@ -92,7 +94,7 @@ export class SourcesBrowser {
         }
       });
     } else {
-      sourceHeadersBtn.textContent = 'Header Override (Extension Only)';
+      sourceHeadersBtn.textContent = Localize.getMessage('player_source_headerbtn_disabled');
     }
 
     WebUtils.setupTabIndex(sourceHeadersBtn);
@@ -101,8 +103,9 @@ export class SourcesBrowser {
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
-      if (sourceSetBtn.textContent === 'Loading...') return;
-      sourceSetBtn.textContent = 'Loading...';
+      if (sourceSetBtn.classList.contains('loading')) return;
+      sourceSetBtn.classList.add('loading');
+      sourceSetBtn.textContent = Localize.getMessage('player_source_playbtn_loading');
       await this.client.setSource(source);
       this.updateSources();
       this.client.play();
@@ -111,7 +114,7 @@ export class SourcesBrowser {
     sourceContainer.appendChild(sourceSetBtn);
 
     const sourceDeleteBtn = WebUtils.create('div', null, 'linkui-source-delete-button');
-    sourceDeleteBtn.textContent = 'Delete';
+    sourceDeleteBtn.textContent = Localize.getMessage('player_source_deletebtn');
     sourceDeleteBtn.addEventListener('click', (e) => {
       sourceContainer.remove();
       const ind = this.sources.indexOf(source);
@@ -127,8 +130,8 @@ export class SourcesBrowser {
     headersInput.setAttribute('autocomplete', 'off');
     headersInput.setAttribute('autocorrect', 'off');
     headersInput.setAttribute('spellcheck', false);
-    headersInput.name = 'Header override input';
-    headersInput.placeholder = 'Header-Name: Header Value\nHeader2-Name: Header2 Value';
+    headersInput.name = Localize.getMessage('player_source_headers_label');
+    headersInput.placeholder = Localize.getMessage('player_source_headers_placeholder');
     headersInput.value = URLUtils.objToHeadersString(source.headers);
     headersInput.addEventListener('input', (e) => {
       if (URLUtils.validateHeadersString(headersInput.value)) {
@@ -138,7 +141,7 @@ export class SourcesBrowser {
       }
 
       source.headers = URLUtils.headersStringToObj(headersInput.value);
-      sourceHeadersBtn.textContent = 'Header Override (' + Object.keys(source.headers).length + ')';
+      sourceHeadersBtn.textContent = Localize.getMessage('player_source_headerbtn', [Object.keys(source.headers).length]);
       this.updateSources();
     });
 
@@ -164,19 +167,20 @@ export class SourcesBrowser {
     });
 
     if (sourceLen === 0) {
-      this.linkui.sourcesFound.textContent = 'No Sources Listed';
+      this.linkui.sourcesFound.textContent = Localize.getMessage('player_source_nonelisted');
     } else if (sourceLen === 1) {
-      this.linkui.sourcesFound.textContent = '1 Source Listed';
+      this.linkui.sourcesFound.textContent = Localize.getMessage('player_source_onelisted');
     } else {
-      this.linkui.sourcesFound.textContent = sourceLen + ' Sources Listed';
+      this.linkui.sourcesFound.textContent = Localize.getMessage('player_source_multilisted', [sourceLen]);
     }
     this.sources.forEach((source) => {
+      source.sourceBrowserElements.setBtn.classList.remove('loading');
       if (this.client.source && this.client.source.equals(source)) {
         source.sourceBrowserElements.container.classList.add('active');
-        source.sourceBrowserElements.setBtn.textContent = 'Playing';
+        source.sourceBrowserElements.setBtn.textContent = Localize.getMessage('player_source_playbtn_playing');
       } else {
         source.sourceBrowserElements.container.classList.remove('active');
-        source.sourceBrowserElements.setBtn.textContent = 'Play';
+        source.sourceBrowserElements.setBtn.textContent = Localize.getMessage('player_source_playbtn');
       }
     });
   }
@@ -227,11 +231,11 @@ export class SourcesBrowser {
     this.linkui = {};
 
     this.linkui.sourcesFound = WebUtils.create('div', null, 'linkui-sources-found');
-    this.linkui.sourcesFound.textContent = 'No Sources Found';
+    this.linkui.sourcesFound.textContent = Localize.getMessage('player_source_nonelisted');
     DOMElements.linkuiContainer.appendChild(this.linkui.sourcesFound);
 
     this.linkui.addNewButton = WebUtils.create('div', null, 'linkui-addnew-button');
-    this.linkui.addNewButton.textContent = 'Add Source';
+    this.linkui.addNewButton.textContent = Localize.getMessage('player_source_addbtn');
     WebUtils.setupTabIndex(this.linkui.addNewButton);
     DOMElements.linkuiContainer.appendChild(this.linkui.addNewButton);
 
@@ -242,7 +246,7 @@ export class SourcesBrowser {
 
 
     this.linkui.clearButton = WebUtils.create('div', null, 'linkui-clear-button');
-    this.linkui.clearButton.textContent = 'Clear Sources';
+    this.linkui.clearButton.textContent = Localize.getMessage('player_source_clearbtn');
     WebUtils.setupTabIndex(this.linkui.clearButton);
     DOMElements.linkuiContainer.appendChild(this.linkui.clearButton);
 
