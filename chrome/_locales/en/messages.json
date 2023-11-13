@@ -602,5 +602,113 @@
     },
     "audioeq_qscroll": {
         "message": "Scroll to change Q"
+    },
+    "options_title": {
+        "message": "FastStream Options"
+    },
+    "options_promo_header": {
+        "message": "Enjoy FastStream? Leave a review!"
+    },
+    "options_promo_body": {
+        "message": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:"
+    },
+    "options_promo_l1": {
+        "message": "How you use it"
+    },
+    "options_promo_l2": {
+        "message": "Any bugs you encounter"
+    },
+    "options_promo_l3": {
+        "message": "Feature requests"
+    },
+    "options_promo_end": {
+        "message": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP."
+    },
+    "options_promo_rate": {
+        "message": "OK I'll review FastStream"
+    },
+    "options_promo_norate": {
+        "message": "I don't want to review :("
+    },
+    "options_video_header": {
+        "message": "Video Options"
+    },
+    "options_video_body": {
+        "message": "Applies CSS filters to the video. Doesn't work with picture-in-picture."
+    },
+    "options_video_brightness": {
+        "message": "Brightness"
+    },
+    "options_video_contrast": {
+        "message": "Contrast"
+    },
+    "options_video_saturation": {
+        "message": "Saturation"
+    },
+    "options_video_grayscale": {
+        "message": "Grayscale"
+    },
+    "options_video_sepia": {
+        "message": "Sepia"
+    },
+    "options_video_invert": {
+        "message": "Invert"
+    },
+    "options_video_hue": {
+        "message": "Hue Rotate"
+    },
+    "options_general_header": {
+        "message": "General Options"
+    },
+    "options_general_predownload": {
+        "message": "Predownload entire video in the background if possible"
+    },
+    "options_general_targetspeed": {
+        "message": "Target download speed of predownloader"
+    },
+    "options_general_freeunused": {
+        "message": "Free unused channel buffers when switching quality levels"
+    },
+    "options_general_analyze": {
+        "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
+    },
+    "options_general_autosub": {
+        "message": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)"
+    },
+    "options_general_stream": {
+        "message": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)"
+    },
+    "options_general_mp4": {
+        "message": "Use player to play MP4 videos when opening video URLs (.mp4)"
+    },
+    "options_general_seekstep": {
+        "message": "Seek keybind base step size (seconds)"
+    },
+    "options_keybinds_header": {
+        "message": "Keyboard Shortcuts"
+    },
+    "options_keybinds_body": {
+        "message": "Keybinds are only active when the player is focused."
+    },
+    "options_keybinds_reset": {
+        "message": "Reset to Defaults"
+    },
+    "options_autourl_header": {
+        "message": "Auto-enable URLs"
+    },
+    "options_autourl_body": {
+        "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line."
+    },
+    "options_autourl_hint": {
+        "message": "Hint: Test regex on"
+    },
+    "options_help_header": {
+        "message": "Help"
+    },
+    "options_help_welcome": {
+        "message": "Welcome Page"
+    },
+    "options_help_issues": {
+        "message": "Issue Tracker"
     }
 }

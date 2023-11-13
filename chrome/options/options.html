@@ -2,395 +2,143 @@
 <html>
 
 <head>
-    <title>FastStream Options</title>
+    <title data-i18n="options_title"></title>
     <meta charset="UTF-8">
-    <style>
-        body {
-            padding: 15px;
-            font-family: sans-serif;
-            user-select: none;
-            font-size: 14px;
-            min-width: 450px;
-        }
-
-
-        /* total width */
-        ::-webkit-scrollbar {
-            background-color: transparent;
-            width: 4px;
-        }
-
-        /* background of the scrollbar except button or resizer */
-        ::-webkit-scrollbar-track {
-            background-color: transparent;
-        }
-
-        /* scrollbar itself */
-        ::-webkit-scrollbar-thumb {
-            background-color: rgb(100, 100, 100);
-            border-radius: 2px;
-            border: none;
-        }
-
-        /* set button(top and bottom of the scrollbar) */
-        ::-webkit-scrollbar-button {
-            display: none;
-        }
-
-        h1 {
-            font-size: 1.2em;
-            font-weight: bold;
-            margin-bottom: 10px;
-            margin-top: 20px;
-        }
-
-        p {
-            margin-bottom: 15px;
-        }
-
-        #submitter {
-            background-color: #222;
-            float: right;
-            width: 100px;
-            margin: 15px 0 15px 0;
-            border-radius: 6px;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 1.2em;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-
-        #submitter:hover {
-            background-color: #aaa;
-        }
-
-        h2 {
-            clear: both;
-            font-size: 1em;
-            font-weight: bold;
-        }
-
-        #format {
-            margin-right: 10px;
-            margin-bottom: 8px;
-            width: 500px;
-        }
-
-        p.hint {
-            opacity: .7;
-            font-style: italic;
-        }
-
-        #keybindslist {
-            margin-top: 5px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .keybind-container {
-            display: grid;
-            align-items: center;
-            grid-template-columns: 1fr 1fr;
-            font-size: 14px;
-        }
-
-        .keybind-name {
-            display: inline-block;
-            grid-column: 1;
-        }
-
-        .keybind-input {
-            cursor: pointer;
-            border: 1px solid black;
-            border-radius: 3px;
-            text-align: center;
-            grid-column: 2;
-            padding: 2px 5px;
-        }
-
-        .keybind-input:focus {
-            border: 1px solid blue;
-            color: rgb(0, 0, 255);
-        }
-
-        #autoEnableURLs {
-            color: black;
-            background-color: transparent;
-            font-size: 12px;
-            border-radius: 3px;
-            padding: 2px 5px;
-            height: 20px;
-            outline: none;
-            border: 1px solid black;
-            width: 100%;
-            height: 150px;
-            resize: none;
-        }
-
-        #autoEnableURLs:focus {
-            border: 1px solid blue;
-        }
-
-        button {
-            background-color: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(0, 0, 0, 0.4);
-            border-radius: 3px;
-            cursor: pointer;
-            padding: 2px 5px;
-        }
-
-        button:hover {
-            color: rgb(0, 0, 255);
-            border: 1px solid rgb(0, 0, 255);
-        }
-
-        .option {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .option input {
-            position: relative;
-        }
-
-        .option .label {
-            position: relative;
-            display: inline-block;
-            margin-left: 5px;
-        }
-
-        .video-option {
-            display: flex;
-            padding: 4px 0px;
-            width: 100%;
-            max-width: 500px;
-            align-items: center;
-        }
-
-        .video-option input {
-            position: relative;
-            margin: 0 5px;
-        }
-
-        .video-option .label {
-            position: relative;
-            width: 130px;
-        }
-
-        .video-option .range {
-            width: 100%;
-        }
-
-        .video-option .number {
-            text-align: center;
-            width: 50px;
-        }
-
-        #ratebox {
-            display: none;
-            border-radius: 5px;
-            border: 1px solid blue;
-            padding: 10px;
-            margin-bottom: 20px;
-        }
-
-        .option.grid1 {
-            display: grid;
-            gap: 5px;
-            grid-template-columns: 20px 1fr;
-            align-items: center;
-        }
-
-        .option.grid1 .label {
-            grid-column: 2;
-        }
-
-        .option.grid1 input {
-            grid-column: 1;
-            text-align: center;
-        }
-
-        .option.grid2 {
-            display: grid;
-            gap: 5px;
-            grid-template-columns: 1fr 150px;
-            align-items: center;
-        }
-
-        .option.grid2 .label {
-            grid-column: 1;
-        }
-
-        .option.grid2 .number {
-            grid-column: 2;
-            text-align: center;
-        }
-
-        input[type="checkbox"] {
-            width: 16px;
-            height: 16px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="options.css">
 </head>
 
 <body>
     <div id="ratebox">
-        <h1 style="margin-top: 0px">Enjoy FastStream? Leave a review!</h1>
-        <p>FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know
-            where to improve. Please feel free tell us:</p>
+        <h1 style="margin-top: 0px" data-i18n="options_promo_header"></h1>
+        <p data-i18n="options_promo_body"></p>
         <ul>
-            <li>How you use it</li>
-            <li>Any bugs you encounter</li>
-            <li>Feature requests</li>
+            <li data-i18n="options_promo_l1"></li>
+            <li data-i18n="options_promo_l2"></li>
+            <li data-i18n="options_promo_l3"></li>
         </ul>
-        <p>We also take accessibility very seriously. If you need accommodations that are lacking in the current
-            version, please make a request and we will work on it ASAP.</p>
-        <button id="rate">OK I'll review FastStream</button>
-        <button id="norate">I don't want to review :(</button>
+        <p data-i18n="options_promo_end"></p>
+        <button id="rate" data-i18n="options_promo_rate"></button>
+        <button id="norate" data-i18n="options_promo_norate"></button>
     </div>
 
-    <h1 style="margin-top: 0px">Video Options</h1>
-    <p>Applies CSS filters to the video. Doesn't work with picture-in-picture.</p>
-
+    <h1 style="margin-top: 0px" data-i18n="options_video_header"></h1>
+    <p data-i18n="options_video_body"></p>
     <datalist id="snap-hundred">
         <option value="100">
     </datalist>
 
     <div class="video-option" data-option="videoBrightness">
-        <div class="label">Brightness</div>
+        <div class="label" data-i18n="options_video_brightness"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
     </div>
 
 
     <div class="video-option" data-option="videoContrast">
-        <div class="label">Contrast</div>
+        <div class="label" data-i18n="options_video_contrast"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
     </div>
 
 
     <div class="video-option" data-option="videoSaturation">
-        <div class="label">Saturation</div>
+        <div class="label" data-i18n="options_video_saturation"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"></input>
     </div>
 
 
     <div class="video-option" data-option="videoGrayscale">
-        <div class="label">Grayscale</div>
+        <div class="label" data-i18n="options_video_grayscale"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
     </div>
 
     <div class="video-option" data-option="videoSepia">
-        <div class="label">Sepia</div>
+        <div class="label" data-i18n="options_video_sepia"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
     </div>
 
     <div class="video-option" data-option="videoInvert">
-        <div class="label">Invert</div>
+        <div class="label" data-i18n="options_video_invert"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="100" value="0" step="1"></input>
     </div>
 
     <div class="video-option" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
-        <div class="label">Hue Rotate</div>
+        <div class="label" data-i18n="options_video_hue"></div>
         <input class="number" type="text"></input>
         <input class="range" type="range" min="0" max="360" value="0" step="1"></input>
     </div>
 
-    <h1>General Options</h1>
+    <h1 data-i18n="options_general_header"></h1>
     <div class="option grid1">
-        <input type="checkbox" id="downloadall" name="Predownload video in background">
-        <div class="label">
-            Predownload entire video in the background if possible
-        </div>
+        <input type="checkbox" id="downloadall">
+        <div class="label" data-i18n="options_general_predownload"></div>
     </div>
 
     <div class="option grid2" style="margin-left: 25px">
-        <div class="label">
-            Target download speed of predownloader
-        </div>
-        <input class="number" type="text" id="maxspeed" name="Target download speed of predownloader"></input>
+        <div class="label" data-i18n="options_general_targetspeed"></div>
+        <input class="number" type="text" id="maxspeed"></input>
     </div>
 
     <br>
 
     <div class="option grid1">
-        <input type="checkbox" id="freeunusedchannels" name="Free unused channel buffers when switching quality levels">
-        <div class="label">
-            Free unused channel buffers when switching quality levels
-        </div>
+        <input type="checkbox" id="freeunusedchannels">
+        <div class="label" data-i18n="options_general_freeunused"></div>
     </div>
 
     <br>
 
     <div class="option grid1">
-        <input type="checkbox" id="analyzevideos" name="Find intros and outros">
-        <div class="label">
-            Automatically analyze sequential videos for intros/outros<br>(turn off if you have CPU performance issues)
-        </div>
+        <input type="checkbox" id="analyzevideos">
+        <div class="label" data-i18n="options_general_analyze"></div>
     </div>
 
     <br>
 
     <div class="option grid1">
-        <input type="checkbox" id="autosub" name="Automatically enable best subtitles">
-        <div class="label">
-            Automatically enable best found subtitle track<br>(Change default language in subtitle settings)
-        </div>
+        <input type="checkbox" id="autosub">
+        <div class="label" data-i18n="options_general_autosub"></div>
     </div>
 
     <br>
 
     <div class="option grid1">
-        <input type="checkbox" id="playstreamurls" name="Open HLS/DASH urls with player">
-        <div class="label">
-            Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)
-        </div>
+        <input type="checkbox" id="playstreamurls">
+        <div class="label" data-i18n="options_general_stream"></div>
     </div>
 
     <br>
 
     <div class="option grid1">
-        <input type="checkbox" id="playmp4urls" name="Open MP4 urls with player">
-        <div class="label">
-            Use player to play MP4 videos when opening video URLs (.mp4)
-        </div>
+        <input type="checkbox" id="playmp4urls">
+        <div class="label" data-i18n="options_general_mp4"></div>
     </div>
 
     <br>
 
     <div class="option grid2">
-        <div class="label">
-            Seek keybind base step size (seconds)
-        </div>
-        <input class="number" type="number" id="seekstepsize" name="Size of seeks using seek keybind"></input>
+        <div class="label" data-i18n="options_general_seekstep"></div>
+        <input class="number" type="number" id="seekstepsize"></input>
     </div>
 
-    <h1>Keybinds</h1>
-    <p>Keybinds are only active when the player is focused.</p>
-    <button id="resetdefault">Reset to Defaults</button>
+    <h1 data-i18n="options_keybinds_header"></h1>
+    <p data-i18n="options_keybinds_body"></p>
+    <button id="resetdefault" data-i18n="options_keybinds_reset"></button>
     <div id="keybindslist"></div>
 
-    <h1>Auto-enable URLs</h1>
-    <p>Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line,
-        pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line.<br>Hint:
-        Test regex on <a target="_blank" rel="noopener noreferrer" href="https://regex101.com/">Regex101</a></p>
+    <h1 data-i18n="options_autourl_header"></h1>
+    <p data-i18n="options_autourl_body"></p>
+    <p><span data-i18n="options_autourl_hint"></span> <a target="_blank" rel="noopener noreferrer" href="https://regex101.com/">Regex101</a></p>
     <textarea id="autoEnableURLs"></textarea>
 
-    <h1>Help</h1>
-    <a href="#" id="welcome" target="_blank">Welcome Page</a><br><br>
-    <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank">Issue Tracker</a>
+    <h1 data-i18n="options_help_header"></h1>
+    <a href="#" id="welcome" target="_blank" data-i18n="options_help_welcome"></a><br><br>
+    <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank" data-i18n="options_help_issues"></a>
+    <script src='../i18n.js'></script>
+    <script src='options.mjs' type="module"></script>
 </body>
-<script src='options.mjs' type="module"></script>
-
 </html>
