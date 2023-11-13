@@ -1,6 +1,7 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
+import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
@@ -359,12 +360,12 @@ export class InterfaceController {
     if (loaded < total) {
       this.setStatusMessage('download', `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`, 'success');
     } else {
-      this.setStatusMessage('download', `100% Buffered`, 'success');
+      this.setStatusMessage('download', Localize.getMessage('player_fragment_allbuffered'), 'success');
     }
 
     if (failed > 0) {
       DOMElements.resetFailed.style.display = '';
-      DOMElements.resetFailed.textContent = `${failed} Fragment${failed === 1 ? '' : 's'} Failed! Click to Retry.`;
+      DOMElements.resetFailed.textContent = Localize.getMessage(failed === 1 ? 'player_fragment_failed_singular' : 'player_fragment_failed_plural', [failed]);
     } else {
       DOMElements.resetFailed.style.display = 'none';
     }
@@ -541,7 +542,7 @@ export class InterfaceController {
     });
     WebUtils.setupTabIndex(DOMElements.settingsButton);
 
-    const welcomeText = 'Welcome to FastStream v' + this.client.version + '!';
+    const welcomeText = Localize.getMessage('player_welcometext', [this.client.version]);
     this.setStatusMessage('welcome', welcomeText, 'info', 3000);
     this.setupRateChanger();
 
@@ -596,7 +597,7 @@ export class InterfaceController {
       document.exitPictureInPicture();
     } else {
       if (!this.client.player) {
-        alert('No video loaded!');
+        alert(Localize.getMessage('player_nosource_alert'));
         return;
       }
       this.client.player.getVideo().requestPictureInPicture();
@@ -726,7 +727,7 @@ export class InterfaceController {
         const buffer = await RequestUtils.httpGetLarge(window.URL.createObjectURL(file));
         try {
           const {source, entries, currentLevel, currentAudioLevel} = await FastStreamArchiveUtils.parseFSA(buffer, (progress)=>{
-            this.setStatusMessage('save-video', `Loading archive... ${Math.round(progress * 100)}%`, 'info');
+            this.setStatusMessage('save-video', Localize.getMessage('player_archive_loading', [Math.floor(progress * 100)]), 'info');
           }, this.client.downloadManager);
 
           newEntries = entries;
@@ -739,10 +740,10 @@ export class InterfaceController {
             audioLevel: currentAudioLevel,
           };
 
-          this.setStatusMessage('save-video', `Loaded archive!`, 'info', 2000);
+          this.setStatusMessage('save-video', Localize.getMessage('player_archive_loaded'), 'info', 2000);
         } catch (e) {
           console.error(e);
-          this.setStatusMessage('save-video', `Failed to load archive!`, 'error', 2000);
+          this.setStatusMessage('save-video', Localize.getMessage('player_archive_fail'), 'error', 2000);
         }
       }
     }
@@ -817,18 +818,18 @@ export class InterfaceController {
 
   async saveScreenshot() {
     if (!this.client.player) {
-      alert('No video loaded!');
+      alert(Localize.getMessage('player_nosource_alert'));
       return;
     }
 
     const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '@' + StringUtils.formatTime(this.client.currentTime);
-    const name = EnvUtils.isIncognito() ? suggestedName : prompt('Enter a name for the file', suggestedName);
+    const name = EnvUtils.isIncognito() ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
     if (!name) {
       return;
     }
 
-    this.setStatusMessage('save-screenshot', `Taking screenshot...`, 'info');
+    this.setStatusMessage('save-screenshot', Localize.getMessage('player_screenshot_saving'), 'info');
     try {
       const video = this.client.player.getVideo();
       const canvas = document.createElement('canvas');
@@ -851,21 +852,21 @@ export class InterfaceController {
       link.click();
       document.body.removeChild(link);
 
-      this.setStatusMessage('save-screenshot', `Screenshot saved!`, 'info', 1000);
+      this.setStatusMessage('save-screenshot', Localize.getMessage('player_screenshot_saved'), 'info', 1000);
     } catch (e) {
       console.error(e);
-      this.setStatusMessage('save-screenshot', `Failed to take screenshot!`, 'error', 2000);
+      this.setStatusMessage('save-screenshot', Localize.getMessage('player_screenshot_fail'), 'error', 2000);
     }
   }
 
   async saveVideo(e) {
     if (!this.client.player) {
-      alert('No video loaded!');
+      alert(Localize.getMessage('player_nosource_alert'));
       return;
     }
 
     if (this.makingDownload) {
-      alert('Already making download!');
+      alert(Localize.getMessage('player_savevideo_inprogress_alert'));
       return;
     }
 
@@ -874,27 +875,27 @@ export class InterfaceController {
     const {canSave, isComplete, canStream} = player.canSave();
 
     if (!canSave) {
-      alert('Download is not supported for this video!');
+      alert(Localize.getMessage('player_savevideo_unsupported'));
       return;
     }
 
     const doPartial = e.altKey;
     if (doPartial && !isComplete) {
-      const res = confirm('Video has not finished downloading yet! Are you sure you want to save it?');
+      const res = confirm(Localize.getMessage('player_savevideo_partial_confirm'));
       if (!res) {
         return;
       }
     }
 
     if (!doPartial && !isComplete && EnvUtils.isIncognito()) {
-      const res = confirm('Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?');
+      const res = confirm(Localize.getMessage('player_savevideo_incognito_confirm'));
       if (!res) {
         return;
       }
     }
 
     const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_');
-    const name = EnvUtils.isIncognito() ? suggestedName : prompt('Enter a name for the file', suggestedName);
+    const name = EnvUtils.isIncognito() ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
     if (!name) {
       return;
@@ -917,12 +918,12 @@ export class InterfaceController {
       this.reuseDownloadURL = isComplete;
       let result;
       this.makingDownload = true;
-      this.setStatusMessage('save-video', `Making download...`, 'info');
+      this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_start'), 'info');
       try {
         const start = performance.now();
         result = await player.saveVideo({
           onProgress: (progress) => {
-            this.setStatusMessage('save-video', `Saving ${Math.round(progress * 100)}%`, 'info');
+            this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_progress', [Math.floor(progress * 100)]), 'info');
           },
           filestream,
           partialSave: doPartial,
@@ -931,15 +932,15 @@ export class InterfaceController {
         console.log('Save took ' + (end - start) / 1000 + 's');
       } catch (e) {
         console.error(e);
-        this.setStatusMessage('save-video', `Failed to save video!`, 'error', 2000);
+        this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_fail'), 'error', 2000);
         this.makingDownload = false;
 
-        if (confirm('Failed to save video!\nWould you like to archive the player\'s buffer storage instead?\n- Drag and drop archive files on the player to load it')) {
+        if (confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
           this.dumpBuffer(name);
         }
         return;
       }
-      this.setStatusMessage('save-video', `Save complete!`, 'info', 2000);
+      this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_complete'), 'info', 2000);
       this.makingDownload = false;
       if (this.downloadURL) {
         URL.revokeObjectURL(this.downloadURL);
@@ -978,10 +979,10 @@ export class InterfaceController {
     const entries = this.client.downloadManager.getCompletedEntries();
     const filestream = streamSaver.createWriteStream(name + '.fsa');
     await FastStreamArchiveUtils.writeFSAToStream(filestream, this.client.player, entries, (progress)=>{
-      this.setStatusMessage('save-video', `Archiving ${Math.round(progress * 100)}%`, 'info');
+      this.setStatusMessage('save-video', Localize.getMessage('player_archiver_progress', [Math.floor(progress * 100)]), 'info');
     });
 
-    this.setStatusMessage('save-video', `Archive saved!`, 'info', 2000);
+    this.setStatusMessage('save-video', Localize.getMessage('player_archiver_saved'), 'info', 2000);
   }
 
   updateMarkers() {
@@ -1304,11 +1305,11 @@ export class InterfaceController {
     const time = this.client.currentTime;
     if (introMatch && time >= introMatch.startTime && time < introMatch.endTime) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = 'Skip Intro';
+      DOMElements.skipButton.textContent = Localize.getMessage('player_skipintro');
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else if (outroMatch && time >= outroMatch.startTime && time < outroMatch.endTime) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = 'Skip Outro';
+      DOMElements.skipButton.textContent = Localize.getMessage('player_skipoutro');
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else {
       DOMElements.progressContainer.classList.remove('skip_freeze');
@@ -1357,7 +1358,7 @@ export class InterfaceController {
       const text = document.createElement('span');
       const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
 
-      text.textContent = (i === currentLevel) ? label + ' (current)' : label;
+      text.textContent = (i === currentLevel) ? label + ' ' + Localize.getMessage('player_quality_current') : label;
       //   levelelement.appendChild(icon);
       levelelement.appendChild(text);
 
@@ -1443,6 +1444,8 @@ export class InterfaceController {
   }
 
   playPauseToggle() {
+    if (!this.client.player) return;
+
     if (!this.persistent.playing) {
       this.client.play();
     } else {

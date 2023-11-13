@@ -13,6 +13,7 @@ import {PlayerLoader} from './players/PlayerLoader.mjs';
 import {DOMElements} from './ui/DOMElements.mjs';
 import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
+import {Localize} from './modules/Localize.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -269,7 +270,7 @@ export class FastStreamClient extends EventEmitter {
     if (!level) return;
 
     if (EnvUtils.isIncognito()) {
-      this.interfaceController.setStatusMessage('info', `Not enough space to predownload in incognito mode, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 'warning', 5000);
+      this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_incognito_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
       this.hasDownloadSpace = false;
     } else {
       if (level.bitrate && this.duration) {
@@ -280,7 +281,7 @@ export class FastStreamClient extends EventEmitter {
       }
 
       if (!this.hasDownloadSpace) {
-        this.interfaceController.setStatusMessage('info', `Not enough space to predownload, will buffer ${this.options.bufferBehind + this.options.bufferAhead}s`, 'warning', 5000);
+        this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
       }
     }
   }
@@ -684,11 +685,11 @@ export class FastStreamClient extends EventEmitter {
 
     this.context.on(DefaultPlayerEvents.ERROR, (event) => {
       console.error('ERROR', event);
-      this.failedToLoad('Failed to load video');
+      this.failedToLoad(Localize.getMessage('player_error_load'));
     });
 
     this.context.on(DefaultPlayerEvents.NEED_KEY, (event) => {
-      this.failedToLoad('Failed to load! DRM not supported!');
+      this.failedToLoad(Localize.getMessage('player_error_drm'));
     });
 
     this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {
@@ -793,6 +794,9 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async play() {
+    if (!this.player) {
+      throw new Error('No source is loaded!');
+    }
     await this.player.play();
     this.interfaceController.play();
     if (this.audioContext && this.audioContext.state === 'suspended') {

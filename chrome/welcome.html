@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>FastStream</title>
+    <title data-i18n="welcome_page_title"></title>
     <meta charset="utf-8" />
     <link rel="shortcut icon" type="image/png" href="./icon128.png" />
     <style>
@@ -59,52 +59,49 @@
 
     <div id="container">
 
-        <div id="welcome" class="box">Welcome to FastStream</div>
+        <div id="welcome" class="box" data-i18n="welcome_page_title"></div>
 
         <div class="box" style="margin-top: 20px">
-            <h2 id="usage">Usage</h2>
+            <h2 id="usage" data-i18n="welcome_page_usage_header"></h2>
 
-            <p>There are four ways to use FastStream</p>
+            <p data-i18n="welcome_page_usage_content0"></p>
 
             <ol>
-                <li>
-                    You can go to a website with a video stream, and turn faststream on by clicking on the icon.
-                    Play the stream and the client will be auto-replaced with faststream
-                </li>
-                <li>You can go to a new tab, and press the extension icon to go to the player.</li>
-                <li>If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it</li>
-                <li>Keep the player open in a new tab and it will collect sources as you browse elsewhere</li>
+                <li data-i18n="welcome_page_usage_content1"></li>
+                <li data-i18n="welcome_page_usage_content2"></li>
+                <li data-i18n="welcome_page_usage_content3"></li>
+                <li data-i18n="welcome_page_usage_content4"></li>
             </ol>
 
-            <p>Once you got the video player open, hover over the left side of the video to open the sidebar
-                (search/playlist).</p>
+            <p data-i18n="welcome_page_usage_end"></p>
 
-            <h3 id="keyboardcontrols">Default Keyboard Controls</h3>
-            <p>You can change these keybinds in extension settings</p>
+            <h3 id="keyboardcontrols" data-i18n="welcome_page_keybinds_header"></h3>
+            <p data-i18n="welcome_page_keybinds_content0"></p>
             <ul>
-                <li><code>Left/Right</code> arrow keys - 1 second seek forward/back</li>
+                <li><code>Left/Right</code> <span data-i18n="welcome_page_keybinds_content1"></span></li>
 
-                <li><code>&lt;&gt;</code> keys - 10 second seek forward/back</li>
+                <li><code>&lt;/&gt;</code> <span data-i18n="welcome_page_keybinds_content2"></span></li>
 
-                <li><code>z</code> key - Undo seek</li>
+                <li><code>z</code> <span data-i18n="welcome_page_keybinds_content3"></span></li>
 
-                <li><code>Up/Down</code> arrow keys - 10% volume up/down</li>
+                <li><code>Up/Down</code> <span data-i18n="welcome_page_keybinds_content4"></span></li>
 
-                <li><code>f</code> - Full screen</li>
+                <li><code>f</code> <span data-i18n="welcome_page_keybinds_content5"></span></li>
 
-                <li><code>+/-</code> - Add/decrease concurrent requests.</li>
+                <li><code>+/-</code> <span data-i18n="welcome_page_keybinds_content6"></span></li>
 
-                <li><code>~</code> - Force retry key - use this to re-attempt failed downloads</li>
+                <li><code>~</code> <span data-i18n="welcome_page_keybinds_content7"></span></li>
 
-                <li><code>s</code> - Skip intro/outro if applicable</li>
+                <li><code>s</code> <span data-i18n="welcome_page_keybinds_content8"></span></li>
 
-                <li><code>Right Alt</code> - Hide/show player</li>
+                <li><code>Right Alt</code> <span data-i18n="welcome_page_keybinds_content9"></span></li>
             </ul>
 
         </div>
         <div class="center" style="font-size: 8px;color: rgba(255, 255, 255, 0.4)">Copyright © 2017-2023 Andrew S
             (Andrews54757@gmail.com)</div>
     </div>
+    <script src="./i18n.mjs" charset="UTF-8" type="module"></script>
 </body>
 
 </html>

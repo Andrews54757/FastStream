@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -84,7 +85,7 @@ export class AudioConfigManager extends EventEmitter {
       profile.id = this.getNextProfileID();
 
       if (this.profiles.some((test) => test.label === profile.label)) {
-        profile.label = profile.label + ` (loaded from file on ${(new Date()).toDateString()})`;
+        profile.label = profile.label + ' ' + Localize.getMessage('player_audioconfig_duplicate_profile', [(new Date()).toDateString()]);
       }
 
       this.profiles.push(profile);
@@ -133,8 +134,8 @@ export class AudioConfigManager extends EventEmitter {
       optionsList['p' + profile.id] = profile.label;
     });
 
-    optionsList['create'] = 'Create new profile';
-    optionsList['import'] = 'Import profiles from file';
+    optionsList['create'] = Localize.getMessage('player_audioconfig_create_profile');
+    optionsList['import'] = Localize.getMessage('player_audioconfig_import_profile');
 
     let id = defaultID !== null ? defaultID : (this.currentProfile?.id || 0);
     if (!this.profiles.find((profile) => profile.id === id)) {
@@ -142,7 +143,7 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.ui.profileDropdown = WebUtils.createDropdown('p' + id,
-        'Profile', optionsList, (val, prevVal) => {
+        Localize.getMessage('player_audioconfig_profile'), optionsList, (val, prevVal) => {
           if (val === 'create') {
             this.newProfile();
           } else if (val === 'import') {
@@ -159,7 +160,7 @@ export class AudioConfigManager extends EventEmitter {
                   const obj = JSON.parse(e.target.result);
                   this.loadProfileFile(obj);
                 } catch (e) {
-                  alert('Invalid profile file');
+                  alert(Localize.getMessage('player_audioconfig_import_invalid'));
                 }
               };
               reader.readAsText(file);
@@ -174,7 +175,7 @@ export class AudioConfigManager extends EventEmitter {
           displayName = displayName.replaceAll('\n', ' ').trim();
 
           if (displayName.length === 0) {
-            displayName = 'Unnamed Profile';
+            displayName = Localize.getMessage('player_audioconfig_profile_unnamed');
           }
 
           const profile = this.profiles.find((profile) => profile.id === parseInt(key.substring(1)));
@@ -208,7 +209,7 @@ export class AudioConfigManager extends EventEmitter {
     const profile = this.getDropdownProfile();
     if (!profile) {
       this.updateProfileDropdown();
-      alert('Couldn\'t save profile');
+      console.error('Couldn\'t save profile');
       return;
     }
 
@@ -271,7 +272,7 @@ export class AudioConfigManager extends EventEmitter {
 
     // load button
     this.ui.loadButton = WebUtils.create('div', null, 'textbutton load_button');
-    this.ui.loadButton.textContent = 'Load Profile';
+    this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
     let loadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.loadButton);
     this.ui.loadButton.addEventListener('click', () => {
@@ -281,33 +282,33 @@ export class AudioConfigManager extends EventEmitter {
         return;
       }
       this.setCurrentProfile(profile);
-      this.ui.loadButton.textContent = 'Loaded Profile!';
+      this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_loaded');
       clearTimeout(loadTimeout);
       loadTimeout = setTimeout(() => {
-        this.ui.loadButton.textContent = 'Load Profile';
+        this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
       }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.loadButton);
 
     // save button
     this.ui.saveButton = WebUtils.create('div', null, 'textbutton save_button');
-    this.ui.saveButton.textContent = 'Save Profile';
+    this.ui.saveButton.textContent = Localize.getMessage('player_audioconfig_profile_save');
     this.ui.profileManager.appendChild(this.ui.saveButton);
     let saveTimeout = null;
     this.ui.saveButton.addEventListener('click', async () => {
-      this.ui.saveButton.textContent = 'Saving...';
+      this.ui.saveButton.textContent = Localize.getMessage('player_audioconfig_profile_saving');
       await this.saveCurrentProfile();
-      this.ui.saveButton.textContent = 'Saved Profile!';
+      this.ui.saveButton.textContent = Localize.getMessage('player_audioconfig_profile_saved');
       clearTimeout(saveTimeout);
       saveTimeout = setTimeout(() => {
-        this.ui.saveButton.textContent = 'Save Profile';
+        this.ui.saveButton.textContent = Localize.getMessage('player_audioconfig_profile_save');
       }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.saveButton);
 
     // download button
     this.ui.downloadButton = WebUtils.create('div', null, 'textbutton download_button');
-    this.ui.downloadButton.textContent = 'Download Profile';
+    this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_download');
     let downloadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.downloadButton);
     this.ui.downloadButton.addEventListener('click', () => {
@@ -332,17 +333,17 @@ export class AudioConfigManager extends EventEmitter {
       a.href = URL.createObjectURL(downloadBlob);
       a.download = `${profile.label}.fsprofile.json`;
       a.click();
-      this.ui.downloadButton.textContent = 'Downloaded!';
+      this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_downloaded');
       clearTimeout(downloadTimeout);
       downloadTimeout = setTimeout(() => {
-        this.ui.downloadButton.textContent = 'Download Profile';
+        this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_download');
       }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.downloadButton);
 
     // delete button
     this.ui.deleteButton = WebUtils.create('div', null, 'textbutton delete_button');
-    this.ui.deleteButton.textContent = 'Delete';
+    this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_delete');
     this.ui.profileManager.appendChild(this.ui.deleteButton);
 
     const deleteTimeout = null;
@@ -353,12 +354,12 @@ export class AudioConfigManager extends EventEmitter {
         return;
       }
 
-      this.ui.deleteButton.textContent = 'Deleting...';
+      this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleting');
       await this.deleteProfile(profile);
-      this.ui.deleteButton.textContent = 'Deleted!';
+      this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleted');
       clearTimeout(deleteTimeout);
       setTimeout(() => {
-        this.ui.deleteButton.textContent = 'Delete';
+        this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_delete');
       }, 1000);
     });
     WebUtils.setupTabIndex(this.ui.deleteButton);

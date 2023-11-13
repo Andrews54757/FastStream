@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {WebVTT} from '../../modules/vtt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {RequestUtils} from '../../utils/RequestUtils.mjs';
@@ -138,10 +139,10 @@ export class SubtitlesManager {
     DOMElements.subtitlesOptionsTestButton.addEventListener('click', (e) => {
       this.isTestSubtitleActive = !this.isTestSubtitleActive;
       if (this.isTestSubtitleActive) {
-        DOMElements.subtitlesOptionsTestButton.textContent = 'Stop Testing';
+        DOMElements.subtitlesOptionsTestButton.textContent = Localize.getMessage('player_subtitlesmenu_testbtn_stop');
         DOMElements.playerContainer.style.backgroundImage = 'linear-gradient(to right, black, white)';
       } else {
-        DOMElements.subtitlesOptionsTestButton.textContent = 'Test Subtitles';
+        DOMElements.subtitlesOptionsTestButton.textContent = Localize.getMessage('player_subtitlesmenu_testbtn');
         DOMElements.playerContainer.style.backgroundImage = '';
       }
 
@@ -177,7 +178,7 @@ export class SubtitlesManager {
     const filebutton = document.createElement('div');
     filebutton.classList.add('subtitle-menu-option');
     WebUtils.setupTabIndex(filebutton);
-    filebutton.textContent = 'Upload File';
+    filebutton.textContent = Localize.getMessage('player_subtitlesmenu_uploadbtn');
 
     filebutton.addEventListener('click', (e) => {
       filechooser.click();
@@ -186,10 +187,10 @@ export class SubtitlesManager {
 
     const urlbutton = document.createElement('div');
     urlbutton.classList.add('subtitle-menu-option');
-    urlbutton.textContent = 'From URL';
+    urlbutton.textContent = Localize.getMessage('player_subtitlesmenu_urlbtn');
     WebUtils.setupTabIndex(urlbutton);
     urlbutton.addEventListener('click', (e) => {
-      const url = prompt('Enter URL');
+      const url = prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'));
 
       if (url) {
         RequestUtils.requestSimple(url, (err, req, body) => {
@@ -206,7 +207,7 @@ export class SubtitlesManager {
     DOMElements.subtitlesView.appendChild(urlbutton);
 
     const internetbutton = document.createElement('div');
-    internetbutton.textContent = 'Search OpenSubtitles';
+    internetbutton.textContent = Localize.getMessage('player_subtitlesmenu_searchbtn');
     internetbutton.classList.add('subtitle-menu-option');
     WebUtils.setupTabIndex(internetbutton);
     internetbutton.addEventListener('click', (e) => {
@@ -215,7 +216,7 @@ export class SubtitlesManager {
     DOMElements.subtitlesView.appendChild(internetbutton);
 
     const clearbutton = document.createElement('div');
-    clearbutton.textContent = 'Clear Subtitles';
+    clearbutton.textContent = Localize.getMessage('player_subtitlesmenu_clearbtn');
     WebUtils.setupTabIndex(clearbutton);
     clearbutton.classList.add('subtitle-menu-option');
 
@@ -226,7 +227,7 @@ export class SubtitlesManager {
 
     const optionsbutton = document.createElement('div');
     optionsbutton.classList.add('subtitle-menu-option');
-    optionsbutton.textContent = 'Subtitle Settings';
+    optionsbutton.textContent = Localize.getMessage('player_subtitlesmenu_settingsbtn');
     WebUtils.setupTabIndex(optionsbutton);
 
     optionsbutton.addEventListener('click', (e) => {
@@ -283,7 +284,7 @@ export class SubtitlesManager {
         WebUtils.setupTabIndex(trackElement);
 
         const resyncTool = document.createElement('div');
-        resyncTool.title = 'Resync Tool';
+        resyncTool.title = Localize.getMessage('player_subtitlesmenu_resynctool_label');
         resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
         trackElement.appendChild(resyncTool);
         // svg use
@@ -301,7 +302,7 @@ export class SubtitlesManager {
 
         const downloadTrack = document.createElement('div');
         // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
-        downloadTrack.title = 'Download subtitle file';
+        downloadTrack.title = Localize.getMessage('player_subtitlesmenu_savetool_label');
         downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
 
         // svg use
@@ -317,7 +318,7 @@ export class SubtitlesManager {
         downloadTrack.addEventListener('click', (e) => {
           e.stopPropagation();
           const suggestedName = name.replaceAll(' ', '_');
-          const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt('Enter a name for the subtitle download file', suggestedName);
+          const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
           if (!dlname) {
             return;
@@ -342,7 +343,7 @@ export class SubtitlesManager {
 
         const removeTrack = document.createElement('div');
         removeTrack.classList.add('subtitle-remove-tool');
-        removeTrack.title = 'Remove subtitle track';
+        removeTrack.title = Localize.getMessage('player_subtitlesmenu_removetool_label');
         trackElement.appendChild(removeTrack);
 
         removeTrack.addEventListener('click', (e) => {
@@ -353,7 +354,7 @@ export class SubtitlesManager {
 
         const shiftLTrack = document.createElement('div');
         shiftLTrack.classList.add('subtitle-shiftl-tool');
-        shiftLTrack.title = 'Shift subtitles -0.2s';
+        shiftLTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['-0.2']);
         trackElement.appendChild(shiftLTrack);
 
         shiftLTrack.addEventListener('click', (e) => {
@@ -365,7 +366,7 @@ export class SubtitlesManager {
 
         const shiftRTrack = document.createElement('div');
         shiftRTrack.classList.add('subtitle-shiftr-tool');
-        shiftRTrack.title = 'Shift subtitles +0.2s';
+        shiftRTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['+0.2']);
         trackElement.appendChild(shiftRTrack);
 
         shiftRTrack.addEventListener('click', (e) => {
@@ -428,7 +429,7 @@ export class SubtitlesManager {
       this.applyStyles(trackContainer);
 
       const cue = document.createElement('div');
-      cue.textContent = 'This is a test subtitle';
+      cue.textContent = Localize.getMessage('player_testsubtitle');
       trackContainer.appendChild(cue);
 
       const wrapper = document.createElement('div');

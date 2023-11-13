@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {Knob} from '../../modules/knob.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -34,7 +35,7 @@ export class AudioCompressor {
     this.ui.compressor = WebUtils.create('div', null, 'compressor');
 
     this.ui.compressorTitle = WebUtils.create('div', null, 'compressor_title');
-    this.ui.compressorTitle.textContent = 'Audio Compressor';
+    this.ui.compressorTitle.textContent = Localize.getMessage('audiocompressor_title');
     this.ui.compressor.appendChild(this.ui.compressorTitle);
 
     this.ui.compressorContainer = WebUtils.create('div', null, 'compressor_container');
@@ -74,7 +75,7 @@ export class AudioCompressor {
     if (!this.compressorConfig) return;
 
     const compressor = this.compressorConfig;
-    this.ui.compressorToggle.textContent = compressor.enabled ? 'Compressor Enabled' : 'Compressor Disabled';
+    this.ui.compressorToggle.textContent = compressor.enabled ? Localize.getMessage('audiocompressor_enabled') : Localize.getMessage('audiocompressor_disabled');
     this.ui.compressorToggle.classList.toggle('enabled', compressor.enabled);
 
     if (compressor.enabled) {
@@ -255,7 +256,7 @@ export class AudioCompressor {
 
     this.compressorKnobs = {};
 
-    this.compressorKnobs.threshold = this.createKnob('Threshold', -80, 0, (val) => {
+    this.compressorKnobs.threshold = this.createKnob(Localize.getMessage('audiocompressor_threshold'), -80, 0, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.threshold) {
         this.compressorConfig.threshold = val;
         this.updateCompressor();
@@ -263,7 +264,7 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.threshold.container);
 
-    this.compressorKnobs.knee = this.createKnob('Knee', 0, 40, (val) => {
+    this.compressorKnobs.knee = this.createKnob(Localize.getMessage('audiocompressor_knee'), 0, 40, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.knee) {
         this.compressorConfig.knee = val;
         this.updateCompressor();
@@ -271,7 +272,7 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.knee.container);
 
-    this.compressorKnobs.ratio = this.createKnob('Ratio', 1, 20, (val) => {
+    this.compressorKnobs.ratio = this.createKnob(Localize.getMessage('audiocompressor_ratio'), 1, 20, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.ratio) {
         this.compressorConfig.ratio = val;
         this.updateCompressor();
@@ -279,7 +280,7 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.ratio.container);
 
-    this.compressorKnobs.attack = this.createKnob('Attack', 0, 1, (val) => {
+    this.compressorKnobs.attack = this.createKnob(Localize.getMessage('audiocompressor_attack'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.attack) {
         this.compressorConfig.attack = val;
         this.updateCompressor();
@@ -287,7 +288,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.attack.container);
 
-    this.compressorKnobs.release = this.createKnob('Release', 0, 1, (val) => {
+    this.compressorKnobs.release = this.createKnob(Localize.getMessage('audiocompressor_release'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.release) {
         this.compressorConfig.release = val;
         this.updateCompressor();
@@ -295,7 +296,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.release.container);
 
-    this.compressorKnobs.gain = this.createKnob('Gain', 0, 20, (val) => {
+    this.compressorKnobs.gain = this.createKnob(Localize.getMessage('audiocompressor_gain'), 0, 20, (val) => {
       if (this.compressorConfig && AudioUtils.dbToGain(val) !== this.compressorConfig.gain) {
         this.compressorConfig.gain = AudioUtils.dbToGain(val);
         this.updateCompressor();

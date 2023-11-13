@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "FastStream Video Player",
-  "description": "Stream without buffering, a great video player and download accelerator all in one.",
+  "default_locale": "en",
+  "name": "__MSG_extension_name__",
+  "description": "__MSG_extension_description__",
   "version": "1.1.20",
   "author": "Andrew S",
   "options_ui": {
@@ -15,7 +16,7 @@
   },
   "action": {
     "default_icon": "icon128.png",
-    "default_title": "Toggle FastStream"
+    "default_title": "__MSG_extension_toggle_label__"
   },
   "background": {
     "service_worker": "background/background.mjs",
