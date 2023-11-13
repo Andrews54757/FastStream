@@ -211,7 +211,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       languages: '' + query.language,
       year: '' + query.year,
       order_by: '' + query.sortBy,
-      sort_direction: '' + query.sortDirection,
+      order_direction: '' + query.sortDirection,
       page: '' + query.page,
     };
 
