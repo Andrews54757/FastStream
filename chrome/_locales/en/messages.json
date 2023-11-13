@@ -219,6 +219,42 @@
     "player_subtitlesmenu_testbtn": {
         "message": "Test Subtitles"
     },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "Stop Testing"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "Upload File"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "From URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "Enter URL"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "Search OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "Clear Subtitles"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "Subtitle Settings"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Resync Tool"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "Save subtitle file"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "Remove subtitle track"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Shift subtitles $1s"
+    },
+    "player_testsubtitle": {
+        "message": "This is a test subtitle"
+    },
     "player_qualitymenu_label": {
         "message": "Video quality"
     },
