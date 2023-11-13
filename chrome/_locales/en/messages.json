@@ -1,0 +1,12 @@
+{
+    "extension_name": {
+        "message": "FastStream Video Player"
+    },
+    "extension_description": {
+        "message": "Stream without buffering, a great video player and download accelerator all in one."
+    },
+    "extension_toggle_label": {
+        "message": "Toggle FastStream"
+    }
+
+}
