@@ -1,6 +1,7 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
+import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
@@ -1304,11 +1305,11 @@ export class InterfaceController {
     const time = this.client.currentTime;
     if (introMatch && time >= introMatch.startTime && time < introMatch.endTime) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = 'Skip Intro';
+      DOMElements.skipButton.textContent = Localize.getMessage('player_skipintro');
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else if (outroMatch && time >= outroMatch.startTime && time < outroMatch.endTime) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = 'Skip Outro';
+      DOMElements.skipButton.textContent = Localize.getMessage('player_skipoutro');
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else {
       DOMElements.progressContainer.classList.remove('skip_freeze');
@@ -1443,6 +1444,8 @@ export class InterfaceController {
   }
 
   playPauseToggle() {
+    if (!this.client.player) return;
+
     if (!this.persistent.playing) {
       this.client.play();
     } else {

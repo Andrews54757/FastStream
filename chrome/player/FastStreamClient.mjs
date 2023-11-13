@@ -793,6 +793,9 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async play() {
+    if (!this.player) {
+      throw new Error('No source is loaded!');
+    }
     await this.player.play();
     this.interfaceController.play();
     if (this.audioContext && this.audioContext.state === 'suspended') {

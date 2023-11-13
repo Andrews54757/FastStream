@@ -149,6 +149,103 @@
     },
     "perms_page_notgranted": {
         "message": "Not Granted, click to grant"
+    },
+    "player_skipintro": {
+        "message": "Skip Intro"
+    },
+    "player_skipoutro": {
+        "message": "Skip Outro"
+    },
+    "player_hidecontrols": {
+        "message": "Hide Controls"
+    },
+    "player_loading": {
+        "message": "Loading..."
+    },
+    "player_nosource_header": {
+        "message": "No source is loaded!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Drag and drop a video file to play it."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "Click"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "to load sources detected from other tabs."
+    },
+    "player_playpause_label": {
+        "message": "Play or pause video"
+    },
+    "player_mute_label": {
+        "message": "Mute audio"
+    },
+    "player_timestamp_label": {
+        "message": "Timestamp"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "Sources Browser"
+    },
+    "player_sourcesbrowser_toggle_label": {
+        "message": "Toggle sources browser"
+    },
+    "player_sourcesbrowser_closebtn_label": {
+        "message": "Close sources browser"
+    },
+    "player_audioconfig_title": {
+        "message": "Audio Configuration"
+    },
+    "player_audioconfig_toggle_label": {
+        "message": "Toggle audio config window"
+    },
+    "player_audioconfig_toggle_closebtn_label": {
+        "message": "Close audio config window"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles Search"
+    },
+    "player_opensubtitles_closebtn_label": {
+        "message": "Close OpenSubtitles search window"
+    },
+    "player_subtitlesmenu_toggle_label": {
+        "message": "Toggle subtitles menu"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "Back"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "Subtitle Settings"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "Test Subtitles"
+    },
+    "player_qualitymenu_label": {
+        "message": "Video quality"
+    },
+    "player_playbackrate_label": {
+        "message": "Playback rate"
+    },
+    "player_settings_title": {
+        "message": "FastStream Settings"
+    },
+    "player_settings_closebtn_label": {
+        "message": "Close settings window"
+    },
+    "player_settings_label": {
+        "message": "Settings"
+    },
+    "player_savevideo_label": {
+        "message": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer."
+    },
+    "player_screenshot_label": {
+        "message": "Take screenshot"
+    },
+    "player_pip_label": {
+        "message": "Picture in picture"
+    },
+    "player_fullscreen_label": {
+        "message": "Fullscreen"
     }
+  
     
 }
