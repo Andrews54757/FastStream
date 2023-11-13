@@ -554,5 +554,53 @@
     },
     "player_audioconfig_profile_deleted": {
         "message": "Deleted!"
+    },
+    "audiomixer_title": {
+        "message": "Audio Channel Mixer"
+    },
+    "audiomixer_solo_label": {
+        "message": "Solo"
+    },
+    "audiomixer_mute_label": {
+        "message": "Mute"
+    },
+    "audiocompressor_title": {
+        "message": "Audio Compressor"
+    },
+    "audiocompressor_enabled": {
+        "message": "Compressor Enabled"
+    },
+    "audiocompressor_disabled": {
+        "message": "Compressor Disabled"
+    },
+    "audiocompressor_threshold": {
+        "message": "Threshold"
+    },
+    "audiocompressor_knee": {
+        "message": "Knee"
+    },
+    "audiocompressor_ratio": {
+        "message": "Ratio"
+    },
+    "audiocompressor_attack": {
+        "message": "Attack"
+    },
+    "audiocompressor_release": {
+        "message": "Release"
+    },
+    "audiocompressor_gain": {
+        "message": "Gain"
+    },
+    "audioeq_title": {
+        "message": "Audio Equalizer"
+    },
+    "audioeq_instructions": {
+        "message": "Double click to change type"
+    },
+    "audioeq_gain": {
+        "message": "Gain: $1dB"
+    },
+    "audioeq_qscroll": {
+        "message": "Scroll to change Q"
     }
 }

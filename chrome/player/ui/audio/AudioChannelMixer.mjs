@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
@@ -38,7 +39,7 @@ export class AudioChannelMixer {
     this.ui.mixer = WebUtils.create('div', null, 'mixer');
 
     this.ui.mixerTitle = WebUtils.create('div', null, 'mixer_title');
-    this.ui.mixerTitle.textContent = 'Audio Channel Mixer';
+    this.ui.mixerTitle.textContent = Localize.getMessage('audiomixer_title');
     this.ui.mixer.appendChild(this.ui.mixerTitle);
 
     this.ui.mixerContainer = WebUtils.create('div', null, 'mixer_container');
@@ -143,12 +144,12 @@ export class AudioChannelMixer {
 
     els.soloButton = WebUtils.create('div', null, 'mixer_channel_solo');
     els.soloButton.textContent = 'S';
-    els.soloButton.title = 'Solo';
+    els.soloButton.title = Localize.getMessage('audiomixer_solo_label');
     els.buttons.appendChild(els.soloButton);
 
     els.muteButton = WebUtils.create('div', null, 'mixer_channel_mute');
     els.muteButton.textContent = 'M';
-    els.muteButton.title = 'Mute';
+    els.muteButton.title = Localize.getMessage('audiomixer_mute_label');
     els.buttons.appendChild(els.muteButton);
 
     els.volume = WebUtils.create('div', null, 'mixer_channel_volume');

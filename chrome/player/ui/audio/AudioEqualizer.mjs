@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {StringUtils} from '../../utils/StringUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
@@ -38,12 +39,8 @@ export class AudioEqualizer {
     this.ui.equalizer = WebUtils.create('div', null, 'equalizer');
 
     const equalizerTitle = WebUtils.create('div', null, 'equalizer_title');
-    equalizerTitle.textContent = 'Audio Equalizer';
+    equalizerTitle.textContent = Localize.getMessage('audioeq_title');
     this.ui.equalizer.appendChild(equalizerTitle);
-
-    this.ui.equalizerText = WebUtils.create('div', null, 'dynamics_center_text');
-    this.ui.equalizerText.textContent = 'No audio context!';
-    this.ui.equalizer.appendChild(this.ui.equalizerText);
 
     this.ui.spectrumCanvas = WebUtils.create('canvas', null, 'spectrum_canvas');
     this.ui.equalizer.appendChild(this.ui.spectrumCanvas);
@@ -301,18 +298,18 @@ export class AudioEqualizer {
     const typesThatUseQ = ['lowpass', 'highpass', 'bandpass', 'peaking', 'notch'];
 
     function nodeToString(node) {
-      const header = `${node.type.charAt(0).toUpperCase() + node.type.substring(1)} node at ${StringUtils.formatFrequency(node.frequency.value)}Hz`;
+      const header = `${node.type.charAt(0).toUpperCase() + node.type.substring(1)} @${StringUtils.formatFrequency(node.frequency.value)}Hz`;
       const lines = [header];
       const description = [];
-      const instructions = ['Double click to change type'];
+      const instructions = [Localize.getMessage('audioeq_instructions')];
 
       if (typesThatUseGain.includes(node.type)) {
-        description.push(`Gain: ${node.gain.value.toFixed(1)}dB`);
+        description.push(Localize.getMessage('audioeq_gain', [node.gain.value.toFixed(1)]));
       }
 
       if (typesThatUseQ.includes(node.type)) {
         description.push(`Q: ${node.Q.value.toFixed(3)}`);
-        instructions.push('Scroll to change Q');
+        instructions.push(Localize.getMessage('audioeq_qscroll'));
       }
 
       if (description.length > 0) {
@@ -667,7 +664,6 @@ export class AudioEqualizer {
     this.preAnalyzer.maxDecibels = -20;
     this.postAnalyzer.maxDecibels = -20;
     this.preAnalyzer.connect(this.postAnalyzer);
-    this.ui.equalizerText.style.display = 'none';
 
     this.setupEqualizerFrequencyAxis();
     this.setupEqualizerDecibelAxis();
