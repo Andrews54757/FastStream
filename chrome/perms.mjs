@@ -12,11 +12,11 @@ async function updatePerms() {
     if (hasPerms) {
       el.classList.add('has-perms');
       el.classList.remove('no-perms');
-      el.textContent = 'Granted';
+      el.textContent = window.getI18nMessage('perms_page_granted');
     } else {
       el.classList.remove('no-perms');
       el.classList.add('no-perms');
-      el.textContent = 'Not Granted, click to grant';
+      el.textContent = window.getI18nMessage('perms_page_notgranted');
       el.addEventListener('click', () => {
         if (el.dataset.perm === 'all-urls') {
           chrome.permissions.request({

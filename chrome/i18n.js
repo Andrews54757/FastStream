@@ -1,3 +1,5 @@
+window.getI18nMessage = chrome.i18n.getMessage;
+
 document.querySelectorAll('[data-i18n]').forEach((elem) => {
-  elem.innerText = chrome.i18n.getMessage(elem.dataset.i18n);
+  elem.innerText = window.getI18nMessage(elem.dataset.i18n);
 });
