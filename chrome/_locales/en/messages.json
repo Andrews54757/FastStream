@@ -506,5 +506,53 @@
     },
     "player_source_clearbtn": {
         "message": "Clear Sources"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(loaded from file on $1)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "Create new profile"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "Import profiles from file"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "Invalid profile file"
+    },
+    "player_audioconfig_profile": {
+        "message": "Profile"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Unnamed Profile"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "Load Profile"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "Loaded Profile!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "Save Profile"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "Saving..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "Saved Profile!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "Download Profile"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "Downloaded!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "Delete"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "Deleting..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "Deleted!"
     }
 }
