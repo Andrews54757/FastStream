@@ -1014,6 +1014,7 @@ body {
 }
 
 .subtitles_title {
+    flex: 1 1 auto;
     text-align: center;
     font-size: 16px;
 }
