@@ -996,7 +996,6 @@ body {
 }
 
 .subtitles_options_back {
-    align-self: center;
     border-radius: 5px;
     cursor: pointer;
     padding: 3px 10px;
@@ -1007,6 +1006,7 @@ body {
 .subtitles_options_header {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 5px 5px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     gap: 5px;
