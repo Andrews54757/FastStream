@@ -1059,9 +1059,9 @@ body {
     padding: 5px 10px;
     background-color: var(--menu-textbutton-background-color);
     color: var(--menu-textbutton-text-color);
-    width: 100px;
+    min-width: 120px;
+    max-width: 200px;
     text-align: center;
-    margin-left: 60px;
 }
 
 .subtitles_test_button:hover {
