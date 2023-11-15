@@ -1077,8 +1077,8 @@ body {
 .close_button {
     cursor: pointer;
     position: absolute;
-    width: 10px;
-    height: 10px;
+    width: 14px;
+    height: 14px;
     background-color: var(--close-button-color);
     border-radius: 50%;
 }
