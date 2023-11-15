@@ -1184,7 +1184,7 @@ body {
 .subtitle-sort-direction-selector {
     margin-right: 4px;
     font-size: 14px;
-    width: 120px;
+    min-width: 120px;
     height: 25px;
     line-height: 25px;
     border-radius: 4px;
@@ -1192,7 +1192,7 @@ body {
 }
 
 .subtitle-sort-selector {
-    width: 160px;
+    min-width: 160px;
 }
 
 .text_input {
@@ -1309,7 +1309,7 @@ body {
 
 .linkui-source-mode {
     font-size: 12px;
-    width: 180px;
+    min-width: 180px;
     line-height: 25px;
     height: 25px;
     padding: 2px 5px;
