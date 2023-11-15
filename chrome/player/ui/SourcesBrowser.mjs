@@ -211,6 +211,10 @@ export class SourcesBrowser {
     });
 
     DOMElements.linkuiContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeUI();
+        e.preventDefault();
+      }
       e.stopPropagation();
     });
 

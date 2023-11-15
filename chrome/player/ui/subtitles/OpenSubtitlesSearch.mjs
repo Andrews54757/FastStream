@@ -47,6 +47,10 @@ export class OpenSubtitlesSearch extends EventEmitter {
     });
 
     DOMElements.subuiContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeUI();
+        e.preventDefault();
+      }
       e.stopPropagation();
     });
 

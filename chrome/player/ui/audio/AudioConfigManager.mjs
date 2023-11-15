@@ -234,6 +234,10 @@ export class AudioConfigManager extends EventEmitter {
     });
 
     DOMElements.audioConfigContainer.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.closeUI();
+        e.preventDefault();
+      }
       e.stopPropagation();
     });
 
