@@ -996,22 +996,26 @@ body {
 }
 
 .subtitles_options_back {
-    position: absolute;
+    align-self: center;
     border-radius: 5px;
     cursor: pointer;
     padding: 3px 10px;
     background-color: var(--menu-textbutton-background-color);
     color: var(--menu-textbutton-text-color);
-    left: 2px;
-    top: 2px;
+}
+
+.subtitles_options_header {
+    display: flex;
+    justify-content: center;
+    padding: 5px 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 5px;
+    margin-bottom: 5px;
 }
 
 .subtitles_title {
-    text-align: right;
+    text-align: center;
     font-size: 16px;
-    padding: 5px 30px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 10px;
 }
 
 .subtitles_options_back:hover {
