@@ -86,7 +86,9 @@ async function recieveSources(request, sendResponse) {
   if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
     const mp4SourceCandidates = sources.filter((item) => {
       return item !== autoPlaySource && item.mode === PlayerModes.ACCELERATED_MP4;
-    }).sort((a, b) => {
+    });
+
+    mp4SourceCandidates.sort((a, b) => {
       // Lower depth is better
       if (a.depth !== b.depth) {
         return a.depth - b.depth;

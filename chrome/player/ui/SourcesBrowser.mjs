@@ -22,7 +22,7 @@ export class SourcesBrowser {
       return existing;
     }
 
-    this.sources.unshift(source);
+    this.sources.push(source);
 
     this.setupSourceListing(source);
     this.updateSources();
