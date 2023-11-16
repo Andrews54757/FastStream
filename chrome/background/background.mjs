@@ -725,6 +725,10 @@ chrome.webRequest.onHeadersReceived.addListener(
         }
       }
 
+      if (details.statusCode >= 400 && details.statusCode < 600) {
+        return; // Client or server error. Ignore it
+      }
+
       onSourceRecieved(details, frame, mode);
     }, {
       urls: ['<all_urls>'],
