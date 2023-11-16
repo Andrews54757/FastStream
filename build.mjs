@@ -9,6 +9,7 @@ const builtDir = path.resolve(__dirname, 'built');
 const chromeSourceDir = path.resolve(__dirname, 'chrome');
 const chromeBuildDir = path.resolve(__dirname, 'build_chrome_dist');
 const firefoxBuildDir = path.resolve(__dirname, 'build_firefox_libre');
+const webBuildDir = path.resolve(__dirname, 'built/web');
 const licenseText = fs.readFileSync(path.resolve(__dirname, 'LICENSE.md'), 'utf8');
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'));
 
@@ -18,6 +19,7 @@ glob(builtDir + '/*.zip').forEach((file) => {
 });
 
 removeBuildDirs();
+deleteDirectoryRecursively(webBuildDir);
 
 function removeBuildDirs() {
   deleteDirectoryRecursively(chromeBuildDir);
@@ -155,6 +157,22 @@ function splice(fileText, target, relativePath) {
         inSplicerRemove = false;
         console.log(`[Splicer-${target}] Removing lines ${i - removedLines}-${i + 1}`, relativePath);
         continue;
+      } else if (command === 'INSERT_LOCALE') {
+        const localePath = path.join(chromeSourceDir, '_locales/en/messages.json');
+        const messages = JSON.parse(fs.readFileSync(localePath, 'utf8'));
+        const translationMap = {};
+        Object.keys(messages).forEach((key) => {
+          translationMap[key] = messages[key].message;
+        });
+
+        const localeText = JSON.stringify(translationMap, null, 2);
+        newLines.push(localeText.substring(1, localeText.length - 1).trim());
+        console.log(`[Splicer-${target}] Inserting locale`, relativePath);
+        continue;
+      } else if (command === 'INSERT_VERSION') {
+        newLines.push(`version = '${packageJson.version}';`);
+        console.log(`[Splicer-${target}] Inserting version`, relativePath);
+        continue;
       }
     }
 
@@ -178,13 +196,21 @@ function splice(fileText, target, relativePath) {
   return newLines.join('\n');
 }
 
-function spliceAndCopy(sourceDir, buildDir, spliceTargets = []) {
+function spliceAndCopy(sourceDir, buildDir, spliceTargets = [], excludeFiles = []) {
   glob(sourceDir + '/**')
       .forEach((file) => {
         const fileExtension = path.extname(file);
         const relativePath = path.relative(sourceDir, file);
         const targetPath = path.resolve(buildDir, relativePath);
         const fileText = fs.readFileSync(file, 'utf8');
+
+        // See if exclude files shares a prefix with the file
+        for (let i = 0; i < excludeFiles.length; i++) {
+          const excludeFile = excludeFiles[i];
+          if (relativePath.startsWith(excludeFile)) {
+            return;
+          }
+        }
 
         if (fileExtension === '.mjs' || fileExtension === '.js') {
           let spliced = fileText;
@@ -244,7 +270,6 @@ async function buildChromeLibre() {
   return finalPath;
 }
 
-
 async function buildFirefoxLibre() {
   spliceAndCopy(chromeSourceDir, firefoxBuildDir, ['FIREFOX']);
   insertLicense(firefoxBuildDir);
@@ -282,6 +307,24 @@ async function buildFirefoxLibre() {
 }
 
 
+async function buildWeb() {
+  spliceAndCopy(chromeSourceDir, webBuildDir, ['WEB'], [
+    'manifest.json',
+    'content.js',
+    'background',
+    '_locales',
+    'perms.html',
+    'perms.mjs',
+    'welcome.html',
+    'icon2_128.png',
+    'icon16.png',
+    'icon48.png',
+  ]);
+
+
+  insertLicense(webBuildDir);
+}
+
 async function runAll() {
   // update manifest version
   const manifestPath = path.join(chromeSourceDir, 'manifest.json');
@@ -290,7 +333,7 @@ async function runAll() {
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
   console.log(`Building version ${manifest.version}`);
 
-  await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre()]);
+  await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre(), buildWeb()]);
   removeBuildDirs();
 }
 

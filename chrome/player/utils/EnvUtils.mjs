@@ -22,7 +22,12 @@ export class EnvUtils {
   }
 
   static getVersion() {
-    return this.isExtension() ? chrome.runtime.getManifest().version : '1.0.0.web';
+    // eslint-disable-next-line prefer-const
+    let version = '1.0.0.web';
+
+    // SPLICER:WEB:INSERT_VERSION
+
+    return this.isExtension() ? chrome.runtime.getManifest().version : version;
   }
 
   static isIncognito() {
