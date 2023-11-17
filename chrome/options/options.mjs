@@ -249,7 +249,7 @@ if (EnvUtils.isExtension()) {
     let url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
 
     // SPLICER:FIREFOX:REMOVE_START
-    url = 'https://chrome.google.com/webstore/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
+    url = 'https://chromewebstore.google.com/u/1/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
     // SPLICER:FIREFOX:REMOVE_END
 
     chrome?.tabs?.create({
