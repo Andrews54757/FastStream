@@ -40,7 +40,7 @@ It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addo
 
 ## Manual Installation For Chrome
 
-The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions to interface with other Google products, such as Youtube (anti-trust anybody?). To get the latest updates, and restricted features, please do the following steps:
+The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). To get the latest updates, and restricted features, please do the following steps:
 
 1. Go to `chrome://extensions`
 2. Turn on developer mode
