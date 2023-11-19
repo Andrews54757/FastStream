@@ -69,7 +69,7 @@ export default class YTPlayer extends DashPlayer {
         if (EnvUtils.isExtension()) {
           await chrome.runtime.sendMessage({
             type: 'header_commands',
-            url: url,
+            url: url.toString(),
             commands: customHeaderCommands,
           });
         }
