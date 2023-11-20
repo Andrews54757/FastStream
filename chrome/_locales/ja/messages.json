@@ -1,0 +1,714 @@
+{
+    "extension_name": {
+        "message": "FastStream Video Player"
+    },
+    "extension_description": {
+        "message": "Stream without buffering, a great video player and download accelerator all in one."
+    },
+    "extension_toggle_label": {
+        "message": "FastStreamに切り替え"
+    },
+    "welcome_page_title": {
+        "message": "FastStreamへようこそ"
+    },
+    "welcome_page_usage_header": {
+        "message": "Usage"
+    },
+    "welcome_page_usage_content0": {
+        "message": "There are four ways to use FastStream"
+    },
+    "welcome_page_usage_content1": {
+        "message": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream"
+    },
+    "welcome_page_usage_content2": {
+        "message": "You can go to a new tab, and press the extension icon to go to the player."
+    },
+    "welcome_page_usage_content3": {
+        "message": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Keep the player open in a new tab and it will collect sources as you browse elsewhere."
+    },
+    "welcome_page_usage_end": {
+        "message": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "デフォルトのキーボードコントロール"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "You can change these keybinds in extension settings"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "arrow keys - 1 second seek forward/back"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "keys - 10 second seek forward/back"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "key - Undo seek"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "arrow keys - 10% volume up/down"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- フルスクリーン"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Add/decrease concurrent requests"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Force retry key - use this to re-attempt failed downloads"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Skip intro/outro if applicable"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- プレーヤーを表示/非表示"
+    },
+    "perms_page_title": {
+        "message": "FastStreamの権限"
+    },
+    "perms_page_about_header": {
+        "message": "About the Permissions Required by FastStream"
+    },
+    "perms_page_about_content0": {
+        "message": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to."
+    },
+    "perms_page_about_content2": {
+        "message": "Don't trust me? FastStream has its source available on"
+    },
+    "perms_page_about_content3": {
+        "message": "You can look through the code yourself, or manually install your very own custom build by following the instructions."
+    },
+    "perms_page_breakdown_header": {
+        "message": "Breakdown of Permissions"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "Here is a breakdown of the permissions FastStream requires, and why it needs them."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "Be able to access and modify all websites"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "Identify the largest visible video element to replace with the player."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "Enable fullscreen permissions when the player is injected into a frame."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "Scrape subtitle <track> elements from the page."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "Access the webRequest API"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream needs to be able to intercept HTTP requests to video sources in order to:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "Identify video sources"
+    },
+
+    "perms_page_breakdown_perm3h": {
+        "message": "Access the declarativeNetRequest API"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream needs to be able to modify HTTP headers of select requests in order to:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "Override headers for video sources."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "Store data on your browser"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream needs to be able to store data in your browser so that it can remember your settings."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "General extension options."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "Access the tabs API"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream needs to be able to send messages between players and content scripts in each tab."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "Sending sources to players from the background script."
+    },
+    "perms_page_granted": {
+        "message": "Granted"
+    },
+    "perms_page_notgranted": {
+        "message": "Not Granted, click to grant"
+    },
+    "player_skipintro": {
+        "message": "イントロをスキップ"
+    },
+    "player_skipoutro": {
+        "message": "アウトロをスキップ"
+    },
+    "player_hidecontrols": {
+        "message": "コントロールを隠す"
+    },
+    "player_loading": {
+        "message": "読み込み中..."
+    },
+    "player_nosource_header": {
+        "message": "No source is loaded!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Drag and drop a video file to play it."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "クリック"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "to load sources detected from other tabs."
+    },
+    "player_playpause_label": {
+        "message": "Play or pause video"
+    },
+    "player_mute_label": {
+        "message": "オーディオをミュート"
+    },
+    "player_timestamp_label": {
+        "message": "タイムスタンプ"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "ソースの参照"
+    },
+    "player_sourcesbrowser_toggle_label": {
+        "message": "ソースの参照に切り替え"
+    },
+    "player_sourcesbrowser_closebtn_label": {
+        "message": "ソースの参照を閉じる"
+    },
+    "player_audioconfig_title": {
+        "message": "オーディオの設定"
+    },
+    "player_audioconfig_toggle_label": {
+        "message": "オーディオ設定ウィンドウに切り替え"
+    },
+    "player_audioconfig_toggle_closebtn_label": {
+        "message": "オーディオ設定ウィンドウを閉じる"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitlesを検索"
+    },
+    "player_opensubtitles_closebtn_label": {
+        "message": "OpenSubtitles検索ウィンドウを閉じる"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Search by title, filename, etc..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "検索"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "シーズン #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "エピソード #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "すべて"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "映画"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "エピソード"
+    },
+    "player_opensubtitles_language": {
+        "message": "言語"
+    },
+    "player_opensubtitles_year": {
+        "message": "年号"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Sort By"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "ダウンロード"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "アップロード日時"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "評価"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "投票"
+    },
+    "player_opensubtitles_sort": {
+        "message": "ソート"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Descending"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Ascending"
+    },
+    "player_opensubtitles_searching": {
+        "message": "検索中..."
+    },
+    "player_opensubtitles_error": {
+        "message": "エラー: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Cannot set proper headers! Install the extension to use this feature!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitlesはダウンしています!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles download failed! Their servers are probably down!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "No results found!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Would you like to open the OpenSubtitles website to download the subtitle file manually?"
+    },
+    "player_subtitlesmenu_toggle_label": {
+        "message": "字幕メニューに切り替え"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "戻る"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "字幕の設定"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "字幕をテスト"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "テストを停止"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "ファイルをアップロード"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "From URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "Enter URL"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "OpenSubtitlesを検索"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "字幕をクリア"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "字幕の設定"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Resync Tool"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "字幕ファイルを保存"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "字幕トラックを削除"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Shift subtitles $1s"
+    },
+    "player_testsubtitle": {
+        "message": "これはテストの字幕です"
+    },
+    "player_qualitymenu_label": {
+        "message": "動画の品質"
+    },
+    "player_playbackrate_label": {
+        "message": "Playback rate"
+    },
+    "player_settings_title": {
+        "message": "FastStreamの設定"
+    },
+    "player_settings_closebtn_label": {
+        "message": "設定ウィンドウを閉じる"
+    },
+    "player_settings_label": {
+        "message": "設定"
+    },
+    "player_savevideo_label": {
+        "message": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer."
+    },
+    "player_screenshot_label": {
+        "message": "Take screenshot"
+    },
+    "player_pip_label": {
+        "message": "ピクチャーインピクチャー (PiP)"
+    },
+    "player_fullscreen_label": {
+        "message": "フルスクリーン"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 Fragment Failed! Click to retry."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 Fragments Failed! Click to retry."
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% Buffered"
+    },
+    "player_welcometext": {
+        "message": "FastStream v$1へようこそ!"
+    },
+    "player_nosource_alert": {
+        "message": "No source is loaded!"
+    },
+    "player_archive_loading": {
+        "message": "$1%のアーカイブを読み込み中..."
+    },
+    "player_archive_loaded": {
+        "message": "Loaded archive!"
+    },
+    "player_archive_fail": {
+        "message": "Failed to load archive!"
+    },
+    "player_filename_prompt": {
+        "message": "Enter a name for the file"
+    },
+    "player_screenshot_saving": {
+        "message": "Taking screenshot..."
+    },
+    "player_screenshot_saved": {
+        "message": "スクリーンショットを保存しました!"
+    },
+    "player_screenshot_fail": {
+        "message": "Failed to take screenshot!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Already making save!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Saving is not supported for this video!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "Video has not finished downloading yet! Are you sure you want to save it?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?"
+    },
+    "player_savevideo_start": {
+        "message": "Making save..."
+    },
+    "player_savevideo_progress": {
+        "message": "$1% を保存中"
+    },
+    "player_savevideo_fail": {
+        "message": "Failed to save video!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it"
+    },
+    "player_savevideo_complete": {
+        "message": "保存が完了しました!"
+    },
+    "player_archiver_progress": {
+        "message": "$1 をアーカイブ中"
+    },
+    "player_archiver_saved": {
+        "message": "アーカイブを保存しました!"
+    },
+    "player_quality_current": {
+        "message": "(現在)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Not enough space to predownload in incognito mode, will buffer $1s"
+    },
+    "player_buffer_storage_warning": {
+        "message": "Not enough space to predownload, will buffer $1s"
+    },
+    "player_error_drm": {
+        "message": "読み込みに失敗しました! DRMには対応していません!"
+    },
+    "player_error_load": {
+        "message": "動画の読み込みに失敗しました!"
+    },
+    "player_source_autodetect": {
+        "message": "自動検出"
+    },
+    "player_source_direct": {
+        "message": "Direct"
+    },
+    "player_source_accelmp4": {
+        "message": "Accelerated MP4"
+    },
+    "player_source_accelhls": {
+        "message": "Accelerated HLS"
+    },
+    "player_source_acceldash": {
+        "message": "Accelerated DASH"
+    },
+    "player_source_accelyt": {
+        "message": "Accelerated YouTube"
+    },
+    "player_source_mode": {
+        "message": "モード"
+    },
+    "player_source_url_placeholder": {
+        "message": "ソースURL"
+    },
+    "player_source_headerbtn": {
+        "message": "Header Override ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Toggle header override input"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Header Override (拡張機能のみ)"
+    },
+    "player_source_playbtn": {
+        "message": "再生"
+    },
+    "player_source_playbtn_playing": {
+        "message": "再生中"
+    },
+    "player_source_playbtn_loading": {
+        "message": "読み込み中..."
+    },
+    "player_source_deletebtn": {
+        "message": "削除"
+    },
+    "player_source_headers_label": {
+        "message": "Header override input"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
+    },
+    "player_source_nonelisted": {
+        "message": "No Sources Listed"
+    },
+    "player_source_onelisted": {
+        "message": "1 Source Listed"
+    },
+    "player_source_multilisted": {
+        "message": "$1 Sources Listed"
+    },
+    "player_source_addbtn": {
+        "message": "ソースを追加"
+    },
+    "player_source_clearbtn": {
+        "message": "ソースをクリア"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(loaded from file on $1)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "新規プロファイルを作成"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "ファイルからプロファイルをインポート"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "Invalid profile file"
+    },
+    "player_audioconfig_profile": {
+        "message": "プロファイル"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Unnamed Profile"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "プロファイルを読み込む"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "プロファイルを読み込みました!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "プロファイルを保存"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "保存中..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "プロファイルを保存しました!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "プロファイルをダウンロード"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "ダウンロードしました!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "削除"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "削除中..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "削除しました!"
+    },
+    "audiomixer_title": {
+        "message": "オーディオチャンネルミキサー"
+    },
+    "audiomixer_solo_label": {
+        "message": "ソロ"
+    },
+    "audiomixer_mute_label": {
+        "message": "ミュート"
+    },
+    "audiocompressor_title": {
+        "message": "オーディオコンプレッサー"
+    },
+    "audiocompressor_enabled": {
+        "message": "コンプレッサー有効"
+    },
+    "audiocompressor_disabled": {
+        "message": "コンプレッサー無効"
+    },
+    "audiocompressor_threshold": {
+        "message": "Threshold"
+    },
+    "audiocompressor_knee": {
+        "message": "Knee"
+    },
+    "audiocompressor_ratio": {
+        "message": "Ratio"
+    },
+    "audiocompressor_attack": {
+        "message": "Attack"
+    },
+    "audiocompressor_release": {
+        "message": "リリース"
+    },
+    "audiocompressor_gain": {
+        "message": "ゲイン"
+    },
+    "audioeq_title": {
+        "message": "オーディオイコライザー"
+    },
+    "audioeq_instructions": {
+        "message": "ダブルクリックでタイプを変更"
+    },
+    "audioeq_gain": {
+        "message": "ゲイン: $1dB"
+    },
+    "audioeq_qscroll": {
+        "message": "Scroll to change Q"
+    },
+    "options_title": {
+        "message": "FastStreamのオプション"
+    },
+    "options_promo_header": {
+        "message": "Enjoy FastStream? Leave a review!"
+    },
+    "options_promo_body": {
+        "message": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:"
+    },
+    "options_promo_l1": {
+        "message": "How you use it"
+    },
+    "options_promo_l2": {
+        "message": "Any bugs you encounter"
+    },
+    "options_promo_l3": {
+        "message": "機能のリクエスト"
+    },
+    "options_promo_end": {
+        "message": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP."
+    },
+    "options_promo_rate": {
+        "message": "OK I'll review FastStream"
+    },
+    "options_promo_norate": {
+        "message": "I don't want to review :("
+    },
+    "options_video_header": {
+        "message": "動画のオプション"
+    },
+    "options_video_body": {
+        "message": "Applies CSS filters to the video. Doesn't work with picture-in-picture."
+    },
+    "options_video_brightness": {
+        "message": "明るさ"
+    },
+    "options_video_contrast": {
+        "message": "コントラスト"
+    },
+    "options_video_saturation": {
+        "message": "Saturation"
+    },
+    "options_video_grayscale": {
+        "message": "グレースケール"
+    },
+    "options_video_sepia": {
+        "message": "セピア"
+    },
+    "options_video_invert": {
+        "message": "Invert"
+    },
+    "options_video_hue": {
+        "message": "Hue Rotate"
+    },
+    "options_general_header": {
+        "message": "一般設定"
+    },
+    "options_general_predownload": {
+        "message": "Predownload entire video in the background if possible"
+    },
+    "options_general_targetspeed": {
+        "message": "Target download speed of predownloader"
+    },
+    "options_general_freeunused": {
+        "message": "Free unused channel buffers when switching quality levels"
+    },
+    "options_general_analyze": {
+        "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
+    },
+    "options_general_autosub": {
+        "message": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)"
+    },
+    "options_general_stream": {
+        "message": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)"
+    },
+    "options_general_mp4": {
+        "message": "Use player to play MP4 videos when opening video URLs (.mp4)"
+    },
+    "options_general_seekstep": {
+        "message": "Seek keybind base step size (seconds)"
+    },
+    "options_keybinds_header": {
+        "message": "キーボードショートカット"
+    },
+    "options_keybinds_body": {
+        "message": "Keybinds are only active when the player is focused."
+    },
+    "options_keybinds_reset": {
+        "message": "デフォルトにリセット"
+    },
+    "options_autourl_header": {
+        "message": "URLを自動で有効"
+    },
+    "options_autourl_body": {
+        "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line."
+    },
+    "options_autourl_hint": {
+        "message": "ヒント: テストregexをON"
+    },
+    "options_help_header": {
+        "message": "ヘルプ"
+    },
+    "options_help_welcome": {
+        "message": "ようこそのページ"
+    },
+    "options_help_issues": {
+        "message": "Issue Tracker"
+    }
+}
