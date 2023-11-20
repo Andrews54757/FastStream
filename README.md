@@ -38,6 +38,12 @@ You can find the extension on the [Chrome extension store](https://chrome.google
 
 It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/faststream/)
 
+## Demo
+
+See the player in action without installing the extension! Tested in Chrome, Firefox, and Safari. Note: Some features (OpenSubtitles/header override) are not available without installation.
+
+[Web Version + Big Buck Bunny](https://andrews54757.github.io/FastStream/built/web/player/player.html#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
+
 ## Manual Installation For Chrome
 
 The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). To get the latest updates, and restricted features, please do the following steps:
