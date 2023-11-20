@@ -111,6 +111,33 @@ export default class YTPlayer extends DashPlayer {
         this.client.loadSubtitleTrack(subTrack, true);
       });
     }
+
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'sponsor_block',
+        action: 'getSkipSegments',
+        videoId: identifier,
+      }, (segments)=>{
+        if (segments) {
+          this.skipSegments = segments.map((segment) => {
+            return {
+              startTime: segment.segment[0],
+              endTime: segment.segment[1],
+              class: 'sponsor_block_' + segment.category,
+              label: 'Skip ' + segment.category,
+              UUID: segment.UUID,
+              onSkip: () => {
+
+              },
+            };
+          });
+        }
+      });
+    }
+  }
+
+  getSkipSegments() {
+    return this.skipSegments || [];
   }
 
   getSource() {

@@ -6,6 +6,7 @@ import {Utils} from '../player/utils/Utils.mjs';
 import {BackgroundUtils} from './BackgroundUtils.mjs';
 import {TabHolder} from './Containers.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
+import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 
 let Options = {};
@@ -15,6 +16,14 @@ const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
 const PlayerURL = chrome.runtime.getURL('player/player.html');
 const CachedTabs = {};
+
+const sponsorBlockBackend = new SponsorBlockIntegration();
+sponsorBlockBackend.setup();
+try {
+  sponsorBlockBackend.setup(self);
+} catch (e) {
+  console.error(e);
+}
 
 chrome.runtime.onInstalled.addListener((object) => {
   chrome.storage.local.get('welcome', (result) => {
@@ -161,7 +170,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
 
-  if (msg.type === 'header_commands') {
+  if (msg.type === 'sponsor_block') {
+    return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
+  } else if (msg.type === 'header_commands') {
     if (msg.commands.length) {
       ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
         if (Logging) console.log('Added rule', msg, rule);

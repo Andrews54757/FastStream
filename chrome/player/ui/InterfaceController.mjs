@@ -1014,16 +1014,12 @@ export class InterfaceController {
     }
   }
   skipIntroOutro() {
-    const introMatch = this.client.videoAnalyzer.getIntro();
-    const outroMatch = this.client.videoAnalyzer.getOutro();
-    const time = this.client.currentTime;
-    if (introMatch && time >= introMatch.startTime && time < introMatch.endTime) {
-      this.client.currentTime = introMatch.endTime;
-    } else if (outroMatch && time >= outroMatch.startTime && time < outroMatch.endTime) {
-      this.client.currentTime = outroMatch.endTime;
+    if (DOMElements.skipButton.dataset.skipTo) {
+      this.client.currentTime = parseFloat(DOMElements.skipButton.dataset.skipTo);
     }
     this.hideControlBarOnAction();
   }
+
   onControlsMouseEnter() {
     this.showControlBar();
     this.mouseOverControls = true;
@@ -1284,32 +1280,52 @@ export class InterfaceController {
     const outroMatch = this.client.videoAnalyzer.getOutro();
     const duration = this.client.duration;
 
-    if (introMatch) {
-      introMatch.endTime = Math.min(introMatch.endTime, duration);
-      const introElement = document.createElement('div');
-      introElement.style.left = introMatch.startTime / duration * 100 + '%';
-      introElement.style.width = (introMatch.endTime - introMatch.startTime) / duration * 100 + '%';
-      DOMElements.introOutroContainer.appendChild(introElement);
-    }
+    const skipSegments = [];
 
+    if (introMatch) {
+      skipSegments.push({
+        startTime: Utils.clamp(introMatch.startTime, 0, duration),
+        endTime: Utils.clamp(introMatch.endTime, 0, duration),
+        class: 'intro',
+        label: Localize.getMessage('player_skipintro'),
+      });
+    }
 
     if (outroMatch) {
-      outroMatch.endTime = Math.min(outroMatch.endTime, duration);
-      const outroElement = document.createElement('div');
-      outroElement.style.left = outroMatch.startTime / duration * 100 + '%';
-      outroElement.style.width = (outroMatch.endTime - outroMatch.startTime) / duration * 100 + '%';
-      DOMElements.introOutroContainer.appendChild(outroElement);
+      skipSegments.push({
+        startTime: Utils.clamp(outroMatch.startTime, 0, duration),
+        endTime: Utils.clamp(outroMatch.endTime, 0, duration),
+        class: 'outro',
+        label: Localize.getMessage('player_skipoutro'),
+      });
     }
 
+    if (this.client.player?.getSkipSegments) {
+      this.client.player.getSkipSegments().forEach((segment) => {
+        skipSegments.push({
+          ...segment,
+          startTime: Utils.clamp(segment.startTime, 0, duration),
+          endTime: Utils.clamp(segment.endTime, 0, duration),
+        });
+      });
+    }
+
+    skipSegments.forEach((segment) => {
+      const segmentElement = document.createElement('div');
+      segmentElement.classList.add('skip_segment');
+      segmentElement.classList.add(segment.class);
+      segmentElement.style.left = segment.startTime / duration * 100 + '%';
+      segmentElement.style.width = (segment.endTime - segment.startTime) / duration * 100 + '%';
+      DOMElements.introOutroContainer.appendChild(segmentElement);
+    });
 
     const time = this.client.currentTime;
-    if (introMatch && time >= introMatch.startTime && time < introMatch.endTime) {
+    const currentSegment = skipSegments.find((segment) => time >= segment.startTime && time < segment.endTime);
+
+    if (currentSegment) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = Localize.getMessage('player_skipintro');
-      DOMElements.progressContainer.classList.add('skip_freeze');
-    } else if (outroMatch && time >= outroMatch.startTime && time < outroMatch.endTime) {
-      DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = Localize.getMessage('player_skipoutro');
+      DOMElements.skipButton.dataset.skipTo = currentSegment.endTime;
+      DOMElements.skipButton.textContent = currentSegment.label;
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else {
       DOMElements.progressContainer.classList.remove('skip_freeze');
@@ -1326,6 +1342,7 @@ export class InterfaceController {
       }
     }
   }
+
   updateQualityLevels() {
     const levels = this.client.levels;
 
