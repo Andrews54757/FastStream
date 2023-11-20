@@ -6,10 +6,10 @@
         "message": "Stream without buffering, a great video player and download accelerator all in one."
     },
     "extension_toggle_label": {
-        "message": "FastStreamに切り替え"
+        "message": "FastStream に切り替え"
     },
     "welcome_page_title": {
-        "message": "FastStreamへようこそ"
+        "message": "FastStream へようこそ"
     },
     "welcome_page_usage_header": {
         "message": "Usage"
@@ -66,7 +66,7 @@
         "message": "- プレーヤーを表示/非表示"
     },
     "perms_page_title": {
-        "message": "FastStreamの権限"
+        "message": "FastStream の権限"
     },
     "perms_page_about_header": {
         "message": "About the Permissions Required by FastStream"
@@ -175,10 +175,10 @@
         "message": "to load sources detected from other tabs."
     },
     "player_playpause_label": {
-        "message": "Play or pause video"
+        "message": "動画を再生/一時停止"
     },
     "player_mute_label": {
-        "message": "オーディオをミュート"
+        "message": "オーディオを消音"
     },
     "player_timestamp_label": {
         "message": "タイムスタンプ"
@@ -202,10 +202,10 @@
         "message": "オーディオ設定ウィンドウを閉じる"
     },
     "player_opensubtitles_title": {
-        "message": "OpenSubtitlesを検索"
+        "message": "OpenSubtitles を検索"
     },
     "player_opensubtitles_closebtn_label": {
-        "message": "OpenSubtitles検索ウィンドウを閉じる"
+        "message": "OpenSubtitles 検索ウィンドウを閉じる"
     },
     "player_opensubtitles_search_placeholder": {
         "message": "Search by title, filename, etc..."
@@ -235,7 +235,7 @@
         "message": "年号"
     },
     "player_opensubtitles_sortby": {
-        "message": "Sort By"
+        "message": "ソート順"
     },
     "player_opensubtitles_sortby_downloads": {
         "message": "ダウンロード"
@@ -268,7 +268,7 @@
         "message": "Cannot set proper headers! Install the extension to use this feature!"
     },
     "player_opensubtitles_error_down": {
-        "message": "OpenSubtitlesはダウンしています!"
+        "message": "OpenSubtitles はダウンしています!"
     },
     "player_opensubtitles_down_alert": {
         "message": "OpenSubtitles download failed! Their servers are probably down!"
@@ -307,7 +307,7 @@
         "message": "Enter URL"
     },
     "player_subtitlesmenu_searchbtn": {
-        "message": "OpenSubtitlesを検索"
+        "message": "OpenSubtitles を検索"
     },
     "player_subtitlesmenu_clearbtn": {
         "message": "字幕をクリア"
@@ -316,7 +316,7 @@
         "message": "字幕の設定"
     },
     "player_subtitlesmenu_resynctool_label": {
-        "message": "Resync Tool"
+        "message": "再同期ツール"
     },
     "player_subtitlesmenu_savetool_label": {
         "message": "字幕ファイルを保存"
@@ -367,7 +367,7 @@
         "message": "100% Buffered"
     },
     "player_welcometext": {
-        "message": "FastStream v$1へようこそ!"
+        "message": "FastStream v$1 へようこそ!"
     },
     "player_nosource_alert": {
         "message": "No source is loaded!"
@@ -445,7 +445,7 @@
         "message": "自動検出"
     },
     "player_source_direct": {
-        "message": "Direct"
+        "message": ""ダイレクト
     },
     "player_source_accelmp4": {
         "message": "Accelerated MP4"
@@ -463,16 +463,16 @@
         "message": "モード"
     },
     "player_source_url_placeholder": {
-        "message": "ソースURL"
+        "message": "ソースの URL"
     },
     "player_source_headerbtn": {
-        "message": "Header Override ($1)"
+        "message": "ヘッダーを上書き ($1)"
     },
     "player_source_headerbtn_label": {
         "message": "Toggle header override input"
     },
     "player_source_headerbtn_disabled": {
-        "message": "Header Override (拡張機能のみ)"
+        "message": "ヘッダーを上書き (拡張機能のみ)"
     },
     "player_source_playbtn": {
         "message": "再生"
@@ -562,7 +562,7 @@
         "message": "ソロ"
     },
     "audiomixer_mute_label": {
-        "message": "ミュート"
+        "message": "消音"
     },
     "audiocompressor_title": {
         "message": "オーディオコンプレッサー"
@@ -604,7 +604,7 @@
         "message": "Scroll to change Q"
     },
     "options_title": {
-        "message": "FastStreamのオプション"
+        "message": "FastStream のオプション"
     },
     "options_promo_header": {
         "message": "Enjoy FastStream? Leave a review!"
@@ -694,13 +694,13 @@
         "message": "デフォルトにリセット"
     },
     "options_autourl_header": {
-        "message": "URLを自動で有効"
+        "message": "URL を自動で有効"
     },
     "options_autourl_body": {
         "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line."
     },
     "options_autourl_hint": {
-        "message": "ヒント: テストregexをON"
+        "message": "ヒント: テスト regex を ON"
     },
     "options_help_header": {
         "message": "ヘルプ"
