@@ -127,7 +127,11 @@ export default class YTPlayer extends DashPlayer {
               label: 'Skip ' + segment.category,
               UUID: segment.UUID,
               onSkip: () => {
-
+                chrome.runtime.sendMessage({
+                  type: 'sponsor_block',
+                  action: 'segmentSkipped',
+                  UUID: segment.UUID,
+                });
               },
             };
           });

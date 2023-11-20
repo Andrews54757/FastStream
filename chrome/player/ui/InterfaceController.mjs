@@ -1014,9 +1014,16 @@ export class InterfaceController {
     }
   }
   skipIntroOutro() {
-    if (DOMElements.skipButton.dataset.skipTo) {
-      this.client.currentTime = parseFloat(DOMElements.skipButton.dataset.skipTo);
+    if (!this.skipSegments) return;
+
+    const time = this.client.currentTime;
+    const currentSegment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
+    this.client.currentTime = currentSegment.endTime;
+
+    if (currentSegment.onSkip) {
+      currentSegment.onSkip();
     }
+
     this.hideControlBarOnAction();
   }
 
@@ -1319,12 +1326,13 @@ export class InterfaceController {
       DOMElements.introOutroContainer.appendChild(segmentElement);
     });
 
+    this.skipSegments = skipSegments;
+
     const time = this.client.currentTime;
     const currentSegment = skipSegments.find((segment) => time >= segment.startTime && time < segment.endTime);
 
     if (currentSegment) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.dataset.skipTo = currentSegment.endTime;
       DOMElements.skipButton.textContent = currentSegment.label;
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else {
