@@ -1768,6 +1768,8 @@ body {
     font-size: 12px;
 
     white-space: pre-line;
+
+    user-select: none;
 }
 
 .equalizer_node .tooltiptext {
