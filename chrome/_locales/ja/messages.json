@@ -373,7 +373,7 @@
         "message": "No source is loaded!"
     },
     "player_archive_loading": {
-        "message": "$1%のアーカイブを読み込み中..."
+        "message": "$1% のアーカイブを読み込み中..."
     },
     "player_archive_loaded": {
         "message": "Loaded archive!"
@@ -445,7 +445,7 @@
         "message": "自動検出"
     },
     "player_source_direct": {
-        "message": ""ダイレクト
+        "message": "ダイレクト"
     },
     "player_source_accelmp4": {
         "message": "Accelerated MP4"
