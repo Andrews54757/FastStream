@@ -167,7 +167,7 @@ async function loadSubtitles(subs) {
 }
 
 async function sortSubtitles(subs) {
-  if (!chrome?.i18n?.detectLanguage) {
+  if (!EnvUtils.isExtension() || !chrome?.i18n?.detectLanguage) {
     return subs;
   }
 
@@ -215,16 +215,18 @@ async function setup() {
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get('frame_id');
 
-  chrome?.runtime?.sendMessage({
-    type: 'faststream',
-    url: window.location.href,
-    isExt: true,
-    frameId: parseInt(myParam) || 0,
-  }).then((data) => {
-    chrome.runtime.sendMessage({
-      type: 'ready',
+  if (EnvUtils.isExtension()) {
+    chrome?.runtime?.sendMessage({
+      type: 'faststream',
+      url: window.location.href,
+      isExt: true,
+      frameId: parseInt(myParam) || 0,
+    }).then((data) => {
+      chrome.runtime.sendMessage({
+        type: 'ready',
+      });
     });
-  });
+  }
 
   const version = window.fastStream.version;
   console.log('\n %c %c %cFast%cStream %c-%c ' + version + ' %c By Andrews54757 \n', 'background: url(https://user-images.githubusercontent.com/13282284/57593160-3a4fb080-7508-11e9-9507-33d45c4f9e41.png) no-repeat; background-size: 16px 16px; padding: 2px 6px; margin-right: 4px', 'background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: rgb(200,200,200); background: rgb(50,50,50); padding:5px 0;', 'color: #afbc2a; background: rgb(50,50,50); padding:5px 0;', 'color: black; background: #e9e9e9; padding:5px 0;');

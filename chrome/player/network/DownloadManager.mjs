@@ -303,7 +303,7 @@ export class DownloadManager {
 
   async setup() {
     // Chrome can move blobs to file storage, so we don't need to use IndexedDB
-    if (!EnvUtils.isChrome()) {
+    if (!EnvUtils.isChrome() && IndexedDBManager.isSupported()) {
       this.indexedDBManager = new IndexedDBManager();
       await this.indexedDBManager.setup();
     }

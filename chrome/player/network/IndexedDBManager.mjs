@@ -5,6 +5,10 @@ export class IndexedDBManager {
   constructor() {
   }
 
+  static isSupported() {
+    return window.indexedDB !== undefined;
+  }
+
   async setup() {
     await this.close();
     this.prune();
@@ -107,6 +111,7 @@ export class IndexedDBManager {
   }
 
   async clearStorage() {
+    if (!this.db) return;
     return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('files');
       return this.wrapRequest(metaDataStore.clear());
