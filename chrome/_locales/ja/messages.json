@@ -12,55 +12,55 @@
         "message": "FastStream へようこそ"
     },
     "welcome_page_usage_header": {
-        "message": "Usage"
+        "message": "使用方法"
     },
     "welcome_page_usage_content0": {
-        "message": "There are four ways to use FastStream"
+        "message": "FastStream の使用方法は 4 つあります"
     },
     "welcome_page_usage_content1": {
-        "message": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream"
+        "message": "動画のある Web サイトを開いてアイコンをクリックで FastStream を ON にする事ができます。動画を再生するとクライアントは自動的に FastStream に置き換わります。"
     },
     "welcome_page_usage_content2": {
-        "message": "You can go to a new tab, and press the extension icon to go to the player."
+        "message": "新しいタブを開いて拡張機能のアイコンをクリックでプレーヤーを開く事ができます。"
     },
     "welcome_page_usage_content3": {
-        "message": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it."
+        "message": "オプションを有効化している場合に、mp4/mpd/m3u8 の URL にアクセスする事でプレーヤーが再生をします。"
     },
     "welcome_page_usage_content4": {
-        "message": "Keep the player open in a new tab and it will collect sources as you browse elsewhere."
+        "message": "新しいタブでプレーヤーを開いておく事で、他の場所を参照してソースを取得します。"
     },
     "welcome_page_usage_end": {
-        "message": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions."
+        "message": "FastStream をインストールしていただき感謝します! 問題やご提案がありましたらお知らせください。"
     },
     "welcome_page_keybinds_header": {
         "message": "デフォルトのキーボードコントロール"
     },
     "welcome_page_keybinds_content0": {
-        "message": "You can change these keybinds in extension settings"
+        "message": "これらのキーバインドは拡張機能の設定で変更できます"
     },
     "welcome_page_keybinds_content1": {
-        "message": "arrow keys - 1 second seek forward/back"
+        "message": "矢印キー - 前後の 1 秒間隔のシーク"
     },
     "welcome_page_keybinds_content2": {
-        "message": "keys - 10 second seek forward/back"
+        "message": "キー - 前後の 10 秒間隔のシーク"
     },
     "welcome_page_keybinds_content3": {
-        "message": "key - Undo seek"
+        "message": "キー - シークを戻す"
     },
     "welcome_page_keybinds_content4": {
-        "message": "arrow keys - 10% volume up/down"
+        "message": "矢印キー - 10% の音量を上下"
     },
     "welcome_page_keybinds_content5": {
         "message": "- フルスクリーン"
     },
     "welcome_page_keybinds_content6": {
-        "message": "- Add/decrease concurrent requests"
+        "message": "- 同時リクエストの増減"
     },
     "welcome_page_keybinds_content7": {
-        "message": "- Force retry key - use this to re-attempt failed downloads"
+        "message": "- 強制再試行キー - これを使用する事で失敗をしたダウンロードを再試行します"
     },
     "welcome_page_keybinds_content8": {
-        "message": "- Skip intro/outro if applicable"
+        "message": "- 該当時にイントロ/アウトロをスキップ"
     },
     "welcome_page_keybinds_content9": {
         "message": "- プレーヤーを表示/非表示"
@@ -69,46 +69,46 @@
         "message": "FastStream の権限"
     },
     "perms_page_about_header": {
-        "message": "About the Permissions Required by FastStream"
+        "message": "FastStream に必要な権限について"
     },
     "perms_page_about_content0": {
-        "message": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality."
+        "message": "拡張機能を動作させるには特定の権限を許可する必要があります。これらの権限は基本的な機能のみで使用されます。"
     },
     "perms_page_about_content1": {
-        "message": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to."
+        "message": "FastStream はユーザーからデータの収集、追跡、サーバーにデータの送信は一切しません。データを送信するサーバーもありません。"
     },
     "perms_page_about_content2": {
-        "message": "Don't trust me? FastStream has its source available on"
+        "message": "信用ができませんか? FastStream のソースは次の場所で入手ができます。"
     },
     "perms_page_about_content3": {
-        "message": "You can look through the code yourself, or manually install your very own custom build by following the instructions."
+        "message": "自分でコードを確認する事もできますし、指示に従って自分だけのカスタムビルドを手動でインストールする事もできます。"
     },
     "perms_page_breakdown_header": {
-        "message": "Breakdown of Permissions"
+        "message": "権限の内訳"
     },
     "perms_page_breakdown_content0": {
-        "message": "Here is a breakdown of the permissions FastStream requires, and why it needs them."
+        "message": "FastStream が必要とする権限とその理由を説明します。"
     },
     "perms_page_breakdown_content1": {
-        "message": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance."
+        "message": "注: リンクされた例では古いバージョンのコードが参照されている場合がありますが、要点は全体的に同じであるはずです。リストはすべてを網羅している訳ではなく、項目の重要度の順で並べられています。"
     },
     "perms_page_breakdown_perm1h": {
-        "message": "Be able to access and modify all websites"
+        "message": "すべての Web サイトにアクセスをして変更できる事"
     },
     "perms_page_breakdown_perm1d": {
-        "message": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:"
+        "message": "FastStream はプレーヤーを Web サイトに直接挿入ができるようにするため、すべての Web サイトにアクセスできるようにする必要があります。次の目的でアクセスをした Web サイトにコンテンツスクリプトを挿入します:"
     },
     "perms_page_breakdown_perm1r1": {
-        "message": "Identify the largest visible video element to replace with the player."
+        "message": "プレーヤーの置き換え、表示されている最大の動画の要素を特定。"
     },
     "perms_page_breakdown_perm1r2": {
-        "message": "Enable fullscreen permissions when the player is injected into a frame."
+        "message": "プレーヤーがフレームに挿入されるときに全画面の権限を有効化。"
     },
     "perms_page_breakdown_perm1r3": {
-        "message": "Scrape subtitle <track> elements from the page."
+        "message": "字幕の <track> 要素をページから削除。"
     },
     "perms_page_breakdown_perm2h": {
-        "message": "Access the webRequest API"
+        "message": "webRequest API にアクセス"
     },
     "perms_page_breakdown_perm2d": {
         "message": "FastStream needs to be able to intercept HTTP requests to video sources in order to:"
@@ -574,16 +574,16 @@
         "message": "コンプレッサー無効"
     },
     "audiocompressor_threshold": {
-        "message": "Threshold"
+        "message": "スレッショルド"
     },
     "audiocompressor_knee": {
-        "message": "Knee"
+        "message": "ニー"
     },
     "audiocompressor_ratio": {
-        "message": "Ratio"
+        "message": "レシオ"
     },
     "audiocompressor_attack": {
-        "message": "Attack"
+        "message": "アタック"
     },
     "audiocompressor_release": {
         "message": "リリース"
@@ -607,34 +607,34 @@
         "message": "FastStream のオプション"
     },
     "options_promo_header": {
-        "message": "Enjoy FastStream? Leave a review!"
+        "message": "FastStream にご満足いただけましたか? 評価をお願いします!"
     },
     "options_promo_body": {
-        "message": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:"
+        "message": "FastStream はボランティアによって維持されている趣味なプロジェクトです。改善すべき事を知るためにフィードバックをいただければ幸いです。お気軽にお申し付けください:"
     },
     "options_promo_l1": {
-        "message": "How you use it"
+        "message": "使用方法"
     },
     "options_promo_l2": {
-        "message": "Any bugs you encounter"
+        "message": "バグに遭遇した場合"
     },
     "options_promo_l3": {
         "message": "機能のリクエスト"
     },
     "options_promo_end": {
-        "message": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP."
+        "message": "私たちはアクセシビリティについても非常に重視をしています。現在のバージョンに不足している機能があった場合は、リクエストをしてください。できるだけ早く対応をします。"
     },
     "options_promo_rate": {
-        "message": "OK I'll review FastStream"
+        "message": "OK、FastStream を評価する"
     },
     "options_promo_norate": {
-        "message": "I don't want to review :("
+        "message": "評価しない :("
     },
     "options_video_header": {
         "message": "動画のオプション"
     },
     "options_video_body": {
-        "message": "Applies CSS filters to the video. Doesn't work with picture-in-picture."
+        "message": "動画に CSS フィルタを適用します。ピクチャーインピクチャー (PiP) では動作しません。"
     },
     "options_video_brightness": {
         "message": "明るさ"
@@ -643,7 +643,7 @@
         "message": "コントラスト"
     },
     "options_video_saturation": {
-        "message": "Saturation"
+        "message": "彩度"
     },
     "options_video_grayscale": {
         "message": "グレースケール"
@@ -652,10 +652,10 @@
         "message": "セピア"
     },
     "options_video_invert": {
-        "message": "Invert"
+        "message": "反転"
     },
     "options_video_hue": {
-        "message": "Hue Rotate"
+        "message": "色相の回転"
     },
     "options_general_header": {
         "message": "一般設定"
@@ -700,7 +700,7 @@
         "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line."
     },
     "options_autourl_hint": {
-        "message": "ヒント: テスト regex を ON"
+        "message": "ヒント: 正規表現のテストができます"
     },
     "options_help_header": {
         "message": "ヘルプ"
@@ -709,6 +709,6 @@
         "message": "ようこそのページ"
     },
     "options_help_issues": {
-        "message": "Issue Tracker"
+        "message": "Issue トラッカー"
     }
 }
