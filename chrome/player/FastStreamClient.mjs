@@ -59,7 +59,7 @@ export class FastStreamClient extends EventEmitter {
     this.subtitleSyncer = new SubtitleSyncer(this);
     this.audioConfigManager = new AudioConfigManager(this);
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
-      this.interfaceController.updateIntroOutroBar();
+      this.interfaceController.updateSkipSegments();
     });
     this.interfaceController.updateVolumeBar();
 
@@ -198,7 +198,7 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updateProgress();
     this.subtitlesManager.renderSubtitles();
     this.subtitleSyncer.onVideoTimeUpdate();
-    this.interfaceController.updateIntroOutroBar();
+    this.interfaceController.updateSkipSegments();
   }
 
   seekPreview(time) {

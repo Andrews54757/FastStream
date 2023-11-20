@@ -123,7 +123,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('SkipIntroOutro', (e) => {
-      this.client.interfaceController.skipIntroOutro();
+      this.client.interfaceController.skipSegment();
     });
 
     this.on('SubtrackShiftRight', (e) => {

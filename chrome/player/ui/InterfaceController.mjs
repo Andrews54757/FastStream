@@ -514,7 +514,7 @@ export class InterfaceController {
     });
     WebUtils.setupTabIndex(DOMElements.resetFailed);
 
-    DOMElements.skipButton.addEventListener('click', this.skipIntroOutro.bind(this));
+    DOMElements.skipButton.addEventListener('click', this.skipSegment.bind(this));
 
     DOMElements.download.addEventListener('click', this.saveVideo.bind(this));
     WebUtils.setupTabIndex(DOMElements.download);
@@ -1013,7 +1013,7 @@ export class InterfaceController {
       this.analyzerMarker.style.display = 'none';
     }
   }
-  skipIntroOutro() {
+  skipSegment() {
     if (!this.skipSegments) return;
 
     const time = this.client.currentTime;
@@ -1280,8 +1280,8 @@ export class InterfaceController {
     this.playbackElements[this.playbackRate - 1].classList.add('rate-selected');
   }
 
-  updateIntroOutroBar() {
-    DOMElements.introOutroContainer.replaceChildren();
+  updateSkipSegments() {
+    DOMElements.skipSegmentsContainer.replaceChildren();
 
     const introMatch = this.client.videoAnalyzer.getIntro();
     const outroMatch = this.client.videoAnalyzer.getOutro();
@@ -1323,7 +1323,7 @@ export class InterfaceController {
       segmentElement.classList.add(segment.class);
       segmentElement.style.left = segment.startTime / duration * 100 + '%';
       segmentElement.style.width = (segment.endTime - segment.startTime) / duration * 100 + '%';
-      DOMElements.introOutroContainer.appendChild(segmentElement);
+      DOMElements.skipSegmentsContainer.appendChild(segmentElement);
     });
 
     this.skipSegments = skipSegments;
@@ -1344,6 +1344,10 @@ export class InterfaceController {
     if (DOMElements.skipButton.style.display !== 'none') {
       if (!this.hasShownSkip) {
         this.hasShownSkip = true;
+
+        if (currentSegment.autoSkip) {
+          this.skipSegment();
+        }
 
         this.showControlBar();
         this.queueControlsHide(5000);
