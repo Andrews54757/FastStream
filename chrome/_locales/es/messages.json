@@ -105,7 +105,7 @@
         "message": "Habilitar permisos de pantalla completa cuando el reproductor se inyecta en un marco."
     },
     "perms_page_breakdown_perm1r3": {
-        "message": "Raspa los subtítulos <track> elementos de la página."
+        "message": "Extraer los subtítulos <track> elementos de la página."
     },
     "perms_page_breakdown_perm2h": {
         "message": "Accede a la API de webRequest"
@@ -357,10 +357,10 @@
         "message": "Pantalla completa"
     },
     "player_fragment_failed_singular": {
-        "message": "¡$1 Fragmento falló! Haz clic para reintentar."
+        "message": "¡$1 fragmento falló! Haz clic para reintentar."
     },
     "player_fragment_failed_plural": {
-        "message": "¡$1 Fragmentos Fallidos! Haz clic para reintentar."
+        "message": "¡$1 fragmentos fallidos! Haz clic para reintentar."
     },
     "player_fragment_allbuffered": {
         "message": "100% en Buffer"
