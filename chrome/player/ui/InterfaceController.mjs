@@ -388,6 +388,12 @@ export class InterfaceController {
       }
     });
 
+    DOMElements.volumeBlock.addEventListener('wheel', (e) => {
+      this.client.volume = Math.max(0, Math.min(3, this.client.volume + e.deltaY * 0.01));
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.playPauseButton);
 
