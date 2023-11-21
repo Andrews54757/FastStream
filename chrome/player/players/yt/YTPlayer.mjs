@@ -1,3 +1,4 @@
+import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
@@ -81,6 +82,8 @@ export default class YTPlayer extends DashPlayer {
           headers: newHeaders,
         });
       },
+    }).catch((e)=>{
+      this.emit(DefaultPlayerEvents.ERROR, e, 'Youtube is not supported in incognito mode!');
     });
 
     const url = new URL(source.url);

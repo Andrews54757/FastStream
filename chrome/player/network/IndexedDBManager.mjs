@@ -1,3 +1,5 @@
+import {EnvUtils} from '../utils/EnvUtils.mjs';
+
 const closeQueue = [];
 
 
@@ -6,7 +8,7 @@ export class IndexedDBManager {
   }
 
   static isSupported() {
-    return window.indexedDB !== undefined;
+    return window.indexedDB !== undefined && !EnvUtils.isIncognito();
   }
 
   async setup() {
@@ -88,6 +90,7 @@ export class IndexedDBManager {
         localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
       }
     };
+
     return this.wrapRequest(request, 5000);
   }
 
@@ -150,6 +153,7 @@ export class IndexedDBManager {
       const transaction = db.transaction(storeName, mode);
       let result = Promise.resolve(null);
       transaction.onerror = (event) => {
+        console.error(event);
         reject(event);
       };
 
@@ -165,6 +169,7 @@ export class IndexedDBManager {
   wrapRequest(request, timeout) {
     return new Promise((resolve, reject)=>{
       request.onerror = (event) => {
+        console.error(event);
         reject(event);
       };
       request.onsuccess = (event) => {

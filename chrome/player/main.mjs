@@ -275,4 +275,6 @@ async function setup() {
   }
 }
 
-setup();
+setup().catch((e)=>{
+  console.error(e);
+});

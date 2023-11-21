@@ -691,9 +691,9 @@ export class FastStreamClient extends EventEmitter {
       this.pause();
     });
 
-    this.context.on(DefaultPlayerEvents.ERROR, (event) => {
+    this.context.on(DefaultPlayerEvents.ERROR, (event, msg) => {
       console.error('ERROR', event);
-      this.failedToLoad(Localize.getMessage('player_error_load'));
+      this.failedToLoad(msg || Localize.getMessage('player_error_load'));
     });
 
     this.context.on(DefaultPlayerEvents.NEED_KEY, (event) => {
