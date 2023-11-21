@@ -13,7 +13,7 @@ export default class YTPlayer extends DashPlayer {
 
   async setSource(source) {
     const youtube = await Innertube.create({
-      cache: new UniversalCache(),
+      cache: !EnvUtils.isIncognito() ? new UniversalCache() : undefined,
       fetch: async (input, init) => {
         // url
         const url = typeof input === 'string' ?
