@@ -305,7 +305,13 @@ export class DownloadManager {
     // Chrome can move blobs to file storage, so we don't need to use IndexedDB
     if (!EnvUtils.isChrome() && IndexedDBManager.isSupported()) {
       this.indexedDBManager = new IndexedDBManager();
-      await this.indexedDBManager.setup();
+      try {
+        await this.indexedDBManager.setup();
+      } catch (e) {
+        // IndexedDB is not supported
+        console.warn(e);
+        this.indexedDBManager = null;
+      }
     }
   }
 

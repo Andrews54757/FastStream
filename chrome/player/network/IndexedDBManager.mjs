@@ -1,14 +1,11 @@
-import {EnvUtils} from '../utils/EnvUtils.mjs';
-
 const closeQueue = [];
-
 
 export class IndexedDBManager {
   constructor() {
   }
 
   static isSupported() {
-    return window.indexedDB !== undefined && !EnvUtils.isIncognito();
+    return window.indexedDB !== undefined;
   }
 
   async setup() {
