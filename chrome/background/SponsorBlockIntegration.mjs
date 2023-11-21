@@ -8,10 +8,14 @@ export class SponsorBlockIntegration {
   }
 
   setup() {
-    chrome.runtime.onMessageExternal.addListener(this.onMessageExternal.bind(this));
-    setTimeout(()=>{ // Wait for SponsorBlock to load
-      chrome.runtime.sendMessage(SponsorBlockID, {type: 'hello', name: 'FastStream'});
-    }, 2000);
+    // chrome.runtime.onMessageExternal.addListener(this.onMessageExternal.bind(this));
+    // setTimeout(()=>{ // Wait for SponsorBlock to load
+    //   chrome.runtime.sendMessage(SponsorBlockID, {
+    //     type: 'hello',
+    //     name: 'FastStream',
+    //     version: EnvUtils.getVersion(),
+    //   });
+    // }, 2000);
   }
 
   onMessageExternal(request, sender, sendResponse) {
@@ -21,6 +25,8 @@ export class SponsorBlockIntegration {
   }
 
   onPlayerMessage(msg, sendResponse) {
+    return; // TODO: Integrate with forked version in future
+
     if (msg.action === 'getSkipSegments') {
       this.getSkipSegments(msg.videoID).then((segments) => {
         sendResponse(segments);

@@ -1294,7 +1294,7 @@ export class InterfaceController {
         startTime: Utils.clamp(introMatch.startTime, 0, duration),
         endTime: Utils.clamp(introMatch.endTime, 0, duration),
         class: 'intro',
-        label: Localize.getMessage('player_skipintro'),
+        skipText: Localize.getMessage('player_skipintro'),
       });
     }
 
@@ -1303,7 +1303,7 @@ export class InterfaceController {
         startTime: Utils.clamp(outroMatch.startTime, 0, duration),
         endTime: Utils.clamp(outroMatch.endTime, 0, duration),
         class: 'outro',
-        label: Localize.getMessage('player_skipoutro'),
+        skipText: Localize.getMessage('player_skipoutro'),
       });
     }
 
@@ -1333,8 +1333,9 @@ export class InterfaceController {
 
     if (currentSegment) {
       DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = currentSegment.label;
+      DOMElements.skipButton.textContent = currentSegment.skipText;
       DOMElements.progressContainer.classList.add('skip_freeze');
+      currentSegment.classList.add('active');
     } else {
       DOMElements.progressContainer.classList.remove('skip_freeze');
       DOMElements.skipButton.style.display = 'none';

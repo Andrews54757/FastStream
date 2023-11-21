@@ -32,7 +32,7 @@ Notes:
 - This player is still a work-in-progress. Please report any bugs to the Github issue tracker here: https://github.com/Andrews54757/FastStream/issues
 - This extension does not collect telemetry of any kind. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
 
-## Installation
+## Installation For Chrome and Firefox
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
 
@@ -46,7 +46,7 @@ See the player in action without installing the extension! Tested in Chrome, Fir
 
 ## Manual Installation For Chrome
 
-The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). To get restricted features, please do the following steps:
+The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:
 
 1. Go to `chrome://extensions`
 2. Turn on developer mode
