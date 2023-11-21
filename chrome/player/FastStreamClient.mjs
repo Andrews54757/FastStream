@@ -22,6 +22,7 @@ export class FastStreamClient extends EventEmitter {
     this.version = EnvUtils.getVersion();
 
     this.options = {
+      autoPlay: false,
       maxSpeed: 300 * 1000 * 1000, // 300 MB/s
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
@@ -315,6 +316,9 @@ export class FastStreamClient extends EventEmitter {
 
     await this.player.setSource(source);
     this.interfaceController.addVideo(this.player.getVideo());
+    if (this.options.autoPlay) {
+      this.player.getVideo().autoplay = true;
+    }
 
     this.audioContext = new AudioContext();
     this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
@@ -348,6 +352,10 @@ export class FastStreamClient extends EventEmitter {
 
     this.updateCSSFilters();
     this.interfaceController.updateToolVisibility();
+
+    if (this.options.autoPlay) {
+      this.play();
+    }
   }
 
 

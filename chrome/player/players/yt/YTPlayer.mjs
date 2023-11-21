@@ -124,7 +124,7 @@ export default class YTPlayer extends DashPlayer {
               startTime: segment.segment[0],
               endTime: segment.segment[1],
               class: 'sponsor_block_' + segment.category,
-              label: 'Skip ' + segment.category,
+              skipText: 'Skip ' + segment.category,
               autoSkip: !!segment.autoSkip,
               onSkip: () => {
                 chrome.runtime.sendMessage({

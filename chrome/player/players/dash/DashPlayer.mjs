@@ -40,6 +40,27 @@ export default class DashPlayer extends EventEmitter {
       },
     });
 
+    this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
+      console.log('STREAM_INITIALIZED', navigator.language || 'en');
+      const lang = navigator.language || 'en';
+      this.dash.setInitialMediaSettingsFor('video', {
+        lang,
+      });
+
+      this.dash.setInitialMediaSettingsFor('audio', {
+        lang,
+      });
+
+      const track = this.audioTracks.find((track) => {
+        const subsetLength = Math.min(track.lang.length, lang.length);
+        return track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
+      });
+
+      if (track) {
+        this.dash.setCurrentTrack(track);
+      }
+    });
+
     this.dash.on('needkey', (e) => {
       this.emit(DefaultPlayerEvents.NEED_KEY);
     });
@@ -274,6 +295,10 @@ export default class DashPlayer extends EventEmitter {
 
   get duration() {
     return this.video.duration;
+  }
+
+  get audioTracks() {
+    return this.dash.getTracksFor('audio');
   }
 
 
