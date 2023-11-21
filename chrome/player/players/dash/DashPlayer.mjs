@@ -35,6 +35,7 @@ export default class DashPlayer extends EventEmitter {
           bufferToKeep: 10,
           bufferTimeAtTopQuality: 10,
           bufferTimeAtTopQualityLongForm: 10,
+          bufferPruningInterval: 1,
 
         },
       },
