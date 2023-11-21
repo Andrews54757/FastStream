@@ -181,14 +181,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return true;
     }
   } else if (msg.type === 'fullscreen') {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'fullscreen',
-      frameId: frame.frameId,
-    }, {
-      frameId: frame.parentId,
-    }, (response) => {
-      BackgroundUtils.checkMessageError('fullscreen');
-      sendResponse(response);
+    handleFullScreenRequest(frame).then((result) => {
+      sendResponse(result);
     });
     return true;
   } else if (msg.type ==='fullscreen_change') {
@@ -216,16 +210,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (frame.parentId === -2 && frame.frameId != msg.frameId) {
       frame.parentId = msg.frameId;
     }
-
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'init',
-      frameId: frame.frameId,
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('init');
-    });
-
 
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'media_name',
@@ -267,6 +251,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.sources.length = 0;
       frame.isFastStream = false;
       frame.playerOpening = false;
+      frame.hasSentFrameId = false;
     }
 
     if (frame.frameId === 0) {
@@ -304,6 +289,38 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   sendResponse('ok');
 });
+
+async function handleFullScreenRequest(frame) {
+  const needsToSendFrameId = !frame.hasSentFrameId;
+  if (needsToSendFrameId) {
+    frame.hasSentFrameId = true;
+    await (new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(frame.tab.tabId, {
+        type: 'sendFrameId',
+        frameId: frame.frameId,
+      }, {
+        frameId: frame.frameId,
+      }, ()=>{
+        BackgroundUtils.checkMessageError('sendFrameId');
+        setTimeout(()=>{
+          resolve();
+        }, 100);
+      });
+    }));
+  }
+
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: 'fullscreen',
+      frameId: frame.frameId,
+    }, {
+      frameId: frame.parentId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('fullscreen');
+      resolve(response);
+    });
+  });
+}
 
 function checkYTURL(frame) {
   const url = frame.url;

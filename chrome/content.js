@@ -44,14 +44,6 @@ chrome.runtime.onMessage.addListener(
           });
         }
         return true;
-      } else if (request.type === 'init') {
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'frame',
-            id: request.frameId,
-          }, '*');
-        }
-        sendResponse('ok');
       } else if (request.type === 'scrape_captions') {
         const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;
