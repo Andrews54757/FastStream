@@ -51,13 +51,22 @@ export default class DashPlayer extends EventEmitter {
         lang,
       });
 
-      const track = this.audioTracks.find((track) => {
+      const vtrack = this.videoTracks.find((track) => {
         const subsetLength = Math.min(track.lang.length, lang.length);
-        return track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
+        return subsetLength !== 0 && track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
       });
 
-      if (track) {
-        this.dash.setCurrentTrack(track);
+      if (vtrack) {
+        this.dash.setCurrentTrack(vtrack);
+      }
+
+      const atrack = this.audioTracks.find((track) => {
+        const subsetLength = Math.min(track.lang.length, lang.length);
+        return subsetLength !== 0 && track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
+      });
+
+      if (atrack) {
+        this.dash.setCurrentTrack(atrack);
       }
     });
 
@@ -86,24 +95,16 @@ export default class DashPlayer extends EventEmitter {
     };
 
     this.dash.on('initialInit', (a) => {
-      a.streamProcessors.forEach((processor) => {
-        const mediaInfo = processor.getMediaInfo();
-        mediaInfo.representations.forEach((rep) => {
-          rep.processor = processor;
-          this.extractFragments(rep);
-        });
-      });
+      this.extractAllFragments();
       initialize();
     });
 
     this.dash.on('dataUpdateCompleted', (a) => {
-      const processors = this.dash.getStreamController().getActiveStream().getProcessors();
-      processors.forEach((processor) => {
-        const mediaInfo = processor.getMediaInfo();
-        mediaInfo.representations.forEach((rep) => {
-          this.extractFragments(rep);
-        });
-      });
+      this.extractAllFragments();
+    });
+
+    this.dash.on('currentTrackChanged', (a)=>{
+      this.extractAllFragments();
     });
 
     // for (let eventName in dashjs.Protection.events) {
@@ -116,6 +117,17 @@ export default class DashPlayer extends EventEmitter {
     // }
     // eslint-disable-next-line new-cap
     this.dash.extend('XHRLoader', DASHLoaderFactory(this), false);
+  }
+
+  extractAllFragments() {
+    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    processors.forEach((processor) => {
+      const mediaInfo = processor.getMediaInfo();
+      mediaInfo.representations.forEach((rep) => {
+        rep.processor = processor;
+        this.extractFragments(rep);
+      });
+    });
   }
 
   extractFragments(rep) {
@@ -155,7 +167,6 @@ export default class DashPlayer extends EventEmitter {
       }
     }
   }
-
 
   getLevelIdentifier(streamIndex, mediaIndex, repIndex) {
     return streamIndex + ':' + mediaIndex + ':' + repIndex;
@@ -243,7 +254,6 @@ export default class DashPlayer extends EventEmitter {
     return this.video.paused;
   }
 
-
   get levels() {
     const processor = this.dash.getStreamController().getActiveStream().getProcessors().find((o) => o.getType() === 'video');
     if (!processor) {
@@ -274,7 +284,16 @@ export default class DashPlayer extends EventEmitter {
   set currentLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      this.dash.setQualityFor('video', parseInt(this.getLevelIndexes(value).repIndex));
+      const tracks = this.dash.getTracksFor('video');
+      const {mediaIndex, repIndex} = this.getLevelIndexes(value);
+      const track = tracks.find((track) => {
+        return track.index === mediaIndex;
+      });
+      if (!track) {
+        console.warn('Could not find video track', value);
+      }
+      this.dash.setCurrentTrack(track);
+      this.dash.setQualityFor('video', repIndex);
     } catch (e) {
       console.warn(e);
     }
@@ -290,7 +309,16 @@ export default class DashPlayer extends EventEmitter {
 
   set currentAudioLevel(value) {
     if (typeof value !== 'string') return;
-    this.dash.setQualityFor('audio', parseInt(this.getLevelIndexes(value).repIndex));
+    const tracks = this.dash.getTracksFor('audio');
+    const {mediaIndex, repIndex} = this.getLevelIndexes(value);
+    const track = tracks.find((track) => {
+      return track.index === mediaIndex;
+    });
+    if (!track) {
+      console.warn('Could not find audio track', value);
+    }
+    this.dash.setCurrentTrack(track);
+    this.dash.setQualityFor('audio', repIndex);
   }
 
   get duration() {
@@ -301,6 +329,9 @@ export default class DashPlayer extends EventEmitter {
     return this.dash.getTracksFor('audio');
   }
 
+  get videoTracks() {
+    return this.dash.getTracksFor('video');
+  }
 
   get currentFragment() {
     const frags = this.client.getFragments(this.currentLevel);
