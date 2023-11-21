@@ -83,7 +83,7 @@ export default class YTPlayer extends DashPlayer {
         });
       },
     }).catch((e)=>{
-      this.emit(DefaultPlayerEvents.ERROR, e, 'Youtube is not supported in incognito mode!');
+      this.emit(DefaultPlayerEvents.ERROR, e);
     });
 
     const url = new URL(source.url);
