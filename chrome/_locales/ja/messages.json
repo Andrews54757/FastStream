@@ -111,44 +111,44 @@
         "message": "webRequest API にアクセス"
     },
     "perms_page_breakdown_perm2d": {
-        "message": "FastStream needs to be able to intercept HTTP requests to video sources in order to:"
+        "message": "FastStream は動画ソースへの HTTP リクエストをインターセプトを可能にする必要があります:"
     },
     "perms_page_breakdown_perm2r1": {
-        "message": "Identify video sources"
+        "message": "動画のソースを特定"
     },
 
     "perms_page_breakdown_perm3h": {
-        "message": "Access the declarativeNetRequest API"
+        "message": "declarativeNetRequest API へのアクセス"
     },
     "perms_page_breakdown_perm3d": {
-        "message": "FastStream needs to be able to modify HTTP headers of select requests in order to:"
+        "message": "FastStream は選択されたリクエストの HTTP ヘッダーを変更できるようにする必要があります:"
     },
     "perms_page_breakdown_perm3r1": {
-        "message": "Override headers for video sources."
+        "message": "動画ソースのヘッダーを上書き。"
     },
     "perms_page_breakdown_perm4h": {
-        "message": "Store data on your browser"
+        "message": "ブラウザー上にデータを保存"
     },
     "perms_page_breakdown_perm4d": {
-        "message": "FastStream needs to be able to store data in your browser so that it can remember your settings."
+        "message": "FastStream は、ユーザーの設定を記憶できるようにするためブラウザーにデータを保存可能にする必要があります。"
     },
     "perms_page_breakdown_perm4r1": {
-        "message": "General extension options."
+        "message": "拡張機能の一般オプション。"
     },
     "perms_page_breakdown_perm5h": {
-        "message": "Access the tabs API"
+        "message": "Tabs API にアクセス"
     },
     "perms_page_breakdown_perm5d": {
-        "message": "FastStream needs to be able to send messages between players and content scripts in each tab."
+        "message": "FastStream は、各タブ上のプレーヤーとコンテンツスクリプト間でメッセージを送信可能にする必要があります。"
     },
     "perms_page_breakdown_perm5r1": {
-        "message": "Sending sources to players from the background script."
+        "message": "バックグラウンドスクリプトからプレーヤーにソースを送信"
     },
     "perms_page_granted": {
-        "message": "Granted"
+        "message": "許可"
     },
     "perms_page_notgranted": {
-        "message": "Not Granted, click to grant"
+        "message": "許可がされていません、クリックで許可をします"
     },
     "player_skipintro": {
         "message": "イントロをスキップ"
@@ -163,16 +163,16 @@
         "message": "読み込み中..."
     },
     "player_nosource_header": {
-        "message": "No source is loaded!"
+        "message": "ソースは読み込まれていません!"
     },
     "player_nosource_instruction1": {
-        "message": "Drag and drop a video file to play it."
+        "message": "動画ファイルをドラッグ&ドロップで再生できます。"
     },
     "player_nosource_instruction2p1": {
         "message": "クリック"
     },
     "player_nosource_instruction2p2": {
-        "message": "to load sources detected from other tabs."
+        "message": "他のタブから検出されたソースを読み込み。"
     },
     "player_playpause_label": {
         "message": "動画を再生/一時停止"
@@ -208,7 +208,7 @@
         "message": "OpenSubtitles 検索ウィンドウを閉じる"
     },
     "player_opensubtitles_search_placeholder": {
-        "message": "Search by title, filename, etc..."
+        "message": "タイトル、ファイル名などで検索..."
     },
     "player_opensubtitles_searchbtn": {
         "message": "検索"
@@ -253,10 +253,10 @@
         "message": "ソート"
     },
     "player_opensubtitles_sort_desc": {
-        "message": "Descending"
+        "message": "下り順"
     },
     "player_opensubtitles_sort_asc": {
-        "message": "Ascending"
+        "message": "上り順"
     },
     "player_opensubtitles_searching": {
         "message": "検索中..."
@@ -265,22 +265,22 @@
         "message": "エラー: $1"
     },
     "player_opensubtitles_disabled": {
-        "message": "Cannot set proper headers! Install the extension to use this feature!"
+        "message": "適切なヘッダーを設定できません! この機能を使用するには拡張機能をインストールしてください!"
     },
     "player_opensubtitles_error_down": {
         "message": "OpenSubtitles はダウンしています!"
     },
     "player_opensubtitles_down_alert": {
-        "message": "OpenSubtitles download failed! Their servers are probably down!"
+        "message": "OpenSubtitles のダウンロードに失敗しました! サーバーがダウンしているかもしれません!"
     },
     "player_opensubtitles_noresults": {
-        "message": "No results found!"
+        "message": "結果が見つかりません!"
     },
     "player_opensubtitles_quota": {
-        "message": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1"
+        "message": "OpenSubtitles は字幕のダウンロードを制限します! ダウンロードの残り回数がありません! クォータは、 $1 でリセットされます。"
     },
     "player_opensubtitles_askopen": {
-        "message": "Would you like to open the OpenSubtitles website to download the subtitle file manually?"
+        "message": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?"
     },
     "player_subtitlesmenu_toggle_label": {
         "message": "字幕メニューに切り替え"
@@ -301,10 +301,10 @@
         "message": "ファイルをアップロード"
     },
     "player_subtitlesmenu_urlbtn": {
-        "message": "From URL"
+        "message": "URL から"
     },
     "player_subtitlesmenu_urlprompt": {
-        "message": "Enter URL"
+        "message": "URL を入力"
     },
     "player_subtitlesmenu_searchbtn": {
         "message": "OpenSubtitles を検索"
@@ -325,7 +325,7 @@
         "message": "字幕トラックを削除"
     },
     "player_subtitlesmenu_shifttool_label": {
-        "message": "Shift subtitles $1s"
+        "message": "$1 の字幕をシフト"
     },
     "player_testsubtitle": {
         "message": "これはテストの字幕です"
@@ -334,10 +334,10 @@
         "message": "動画の品質"
     },
     "player_playbackrate_label": {
-        "message": "Playback rate"
+        "message": "再生速度"
     },
     "player_settings_title": {
-        "message": "FastStreamの設定"
+        "message": "FastStream の設定"
     },
     "player_settings_closebtn_label": {
         "message": "設定ウィンドウを閉じる"
@@ -346,10 +346,10 @@
         "message": "設定"
     },
     "player_savevideo_label": {
-        "message": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer."
+        "message": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。"
     },
     "player_screenshot_label": {
-        "message": "Take screenshot"
+        "message": "スクリーンショットを撮る"
     },
     "player_pip_label": {
         "message": "ピクチャーインピクチャー (PiP)"
@@ -358,64 +358,64 @@
         "message": "フルスクリーン"
     },
     "player_fragment_failed_singular": {
-        "message": "$1 Fragment Failed! Click to retry."
+        "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },
     "player_fragment_failed_plural": {
-        "message": "$1 Fragments Failed! Click to retry."
+        "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },
     "player_fragment_allbuffered": {
-        "message": "100% Buffered"
+        "message": "100% バッファー済み"
     },
     "player_welcometext": {
         "message": "FastStream v$1 へようこそ!"
     },
     "player_nosource_alert": {
-        "message": "No source is loaded!"
+        "message": "ソースは読み込まれていません!"
     },
     "player_archive_loading": {
         "message": "$1% のアーカイブを読み込み中..."
     },
     "player_archive_loaded": {
-        "message": "Loaded archive!"
+        "message": "アーカイブを読み込みました!"
     },
     "player_archive_fail": {
-        "message": "Failed to load archive!"
+        "message": "アーカイブの読み込みに失敗しました!"
     },
     "player_filename_prompt": {
-        "message": "Enter a name for the file"
+        "message": "ファイル名を入力"
     },
     "player_screenshot_saving": {
-        "message": "Taking screenshot..."
+        "message": "スクリーンショットを撮る..."
     },
     "player_screenshot_saved": {
         "message": "スクリーンショットを保存しました!"
     },
     "player_screenshot_fail": {
-        "message": "Failed to take screenshot!"
+        "message": "スクリーンショットの撮影に失敗しました!"
     },
     "player_savevideo_inprogress_alert": {
-        "message": "Already making save!"
+        "message": "すでに保存済みです!"
     },
     "player_savevideo_unsupported": {
-        "message": "Saving is not supported for this video!"
+        "message": "この動画は保存に対応していません!"
     },
     "player_savevideo_partial_confirm": {
-        "message": "Video has not finished downloading yet! Are you sure you want to save it?"
+        "message": "動画のダウンロードが完了していません! 本当に保存をしますか?"
     },
     "player_savevideo_incognito_confirm": {
-        "message": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?"
+        "message": "シークレットモードでは、RAM を使用して動画をバッファーします。コンピューターに動画全体を保存するのに必要なメモリがない可能性があります。\n続行してもよろしいですか?"
     },
     "player_savevideo_start": {
-        "message": "Making save..."
+        "message": "保存中..."
     },
     "player_savevideo_progress": {
         "message": "$1% を保存中"
     },
     "player_savevideo_fail": {
-        "message": "Failed to save video!"
+        "message": "動画の保存に失敗しました!"
     },
     "player_savevideo_failed_ask_archive": {
-        "message": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it"
+        "message": "動画の保存に失敗しました!\n代わりにプレーヤーのバッファーストレージをアーカイブしますか?\n- アーカイブファイルをプレーヤーにドラッグ&ドロップで読み込みます"
     },
     "player_savevideo_complete": {
         "message": "保存が完了しました!"
@@ -430,13 +430,13 @@
         "message": "(現在)"
     },
     "player_buffer_incognito_warning": {
-        "message": "Not enough space to predownload in incognito mode, will buffer $1s"
+        "message": "シークレットモードでプリダウンロードに必要な空き容量がないため、$1 がバッファーされます"
     },
     "player_buffer_storage_warning": {
-        "message": "Not enough space to predownload, will buffer $1s"
+        "message": "プリダウンロードに必要な空き容量がないため、$1 がバッファーされます"
     },
     "player_error_drm": {
-        "message": "読み込みに失敗しました! DRMには対応していません!"
+        "message": "読み込みに失敗しました! DRM には対応していません!"
     },
     "player_error_load": {
         "message": "動画の読み込みに失敗しました!"
@@ -448,16 +448,16 @@
         "message": "ダイレクト"
     },
     "player_source_accelmp4": {
-        "message": "Accelerated MP4"
+        "message": "高速化された MP4"
     },
     "player_source_accelhls": {
-        "message": "Accelerated HLS"
+        "message": "高速化された HLS"
     },
     "player_source_acceldash": {
-        "message": "Accelerated DASH"
+        "message": "高速化された DASH"
     },
     "player_source_accelyt": {
-        "message": "Accelerated YouTube"
+        "message": "高速化された YouTube"
     },
     "player_source_mode": {
         "message": "モード"
@@ -469,7 +469,7 @@
         "message": "ヘッダーを上書き ($1)"
     },
     "player_source_headerbtn_label": {
-        "message": "Toggle header override input"
+        "message": "ヘッダー上書き入力へ切り替え"
     },
     "player_source_headerbtn_disabled": {
         "message": "ヘッダーを上書き (拡張機能のみ)"
@@ -487,19 +487,19 @@
         "message": "削除"
     },
     "player_source_headers_label": {
-        "message": "Header override input"
+        "message": "ヘッダーの上書き入力"
     },
     "player_source_headers_placeholder": {
-        "message": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
+        "message": "ヘッダー名: ヘッダーの値\nヘッダー2の名: ヘッダー2の値"
     },
     "player_source_nonelisted": {
-        "message": "No Sources Listed"
+        "message": "ソースの一覧がありません"
     },
     "player_source_onelisted": {
-        "message": "1 Source Listed"
+        "message": "1 件のソースの一覧"
     },
     "player_source_multilisted": {
-        "message": "$1 Sources Listed"
+        "message": "$1 件のソースの一覧"
     },
     "player_source_addbtn": {
         "message": "ソースを追加"
@@ -508,7 +508,7 @@
         "message": "ソースをクリア"
     },
     "player_audioconfig_duplicate_profile": {
-        "message": "(loaded from file on $1)"
+        "message": "($1 のファイルから読み込み済み)"
     },
     "player_audioconfig_create_profile": {
         "message": "新規プロファイルを作成"
@@ -517,13 +517,13 @@
         "message": "ファイルからプロファイルをインポート"
     },
     "player_audioconfig_import_invalid": {
-        "message": "Invalid profile file"
+        "message": "無効なプロファイルファイル"
     },
     "player_audioconfig_profile": {
         "message": "プロファイル"
     },
     "player_audioconfig_profile_unnamed": {
-        "message": "Unnamed Profile"
+        "message": "無題のプロファイル"
     },
     "player_audioconfig_profile_load": {
         "message": "プロファイルを読み込む"
@@ -601,7 +601,7 @@
         "message": "ゲイン: $1dB"
     },
     "audioeq_qscroll": {
-        "message": "Scroll to change Q"
+        "message": "スクロールで Q を変更"
     },
     "options_title": {
         "message": "FastStream のオプション"
@@ -661,34 +661,34 @@
         "message": "一般設定"
     },
     "options_general_predownload": {
-        "message": "Predownload entire video in the background if possible"
+        "message": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする"
     },
     "options_general_targetspeed": {
-        "message": "Target download speed of predownloader"
+        "message": "プリダウンローダーのターゲット速度"
     },
     "options_general_freeunused": {
-        "message": "Free unused channel buffers when switching quality levels"
+        "message": "品質レベル切り替え時に未使用のチャンネルバッファーを解放する"
     },
     "options_general_analyze": {
-        "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
+        "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },
     "options_general_autosub": {
-        "message": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)"
+        "message": "自動的に最適な字幕トラックを有効にする\n(字幕設定でデフォルトの言語を変更できます)"
     },
     "options_general_stream": {
-        "message": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)"
+        "message": "プレイリスト URL (.m3u8/.mpd) を開くときに HLS/DASH ストリームを再生するプレーヤーを使用する"
     },
     "options_general_mp4": {
-        "message": "Use player to play MP4 videos when opening video URLs (.mp4)"
+        "message": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する"
     },
     "options_general_seekstep": {
-        "message": "Seek keybind base step size (seconds)"
+        "message": "シークキーバインドのベースステップサイズ (秒)"
     },
     "options_keybinds_header": {
         "message": "キーボードショートカット"
     },
     "options_keybinds_body": {
-        "message": "Keybinds are only active when the player is focused."
+        "message": "キーバインドはプレーヤーをフォーカス時のみ有効です。"
     },
     "options_keybinds_reset": {
         "message": "デフォルトにリセット"
@@ -697,7 +697,7 @@
         "message": "URL を自動で有効"
     },
     "options_autourl_body": {
-        "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line."
+        "message": "これらの URL にアクセスすると自動的に拡張機能か有効になり離れると無効になります。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。"
     },
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
