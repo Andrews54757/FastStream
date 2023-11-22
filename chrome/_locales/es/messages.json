@@ -420,7 +420,7 @@
         "message": "¡Guardado completo!"
     },
     "player_archiver_progress": {
-        "message": "Archivando $1"
+        "message": "Archivando $1%"
     },
     "player_archiver_saved": {
         "message": "¡Archivo guardado!"

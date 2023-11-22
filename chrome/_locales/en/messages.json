@@ -421,7 +421,7 @@
         "message": "Save complete!"
     },
     "player_archiver_progress": {
-        "message": "Archiving $1"
+        "message": "Archiving $1%"
     },
     "player_archiver_saved": {
         "message": "Archive saved!"

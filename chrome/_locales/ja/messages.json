@@ -421,7 +421,7 @@
         "message": "保存が完了しました!"
     },
     "player_archiver_progress": {
-        "message": "$1 をアーカイブ中"
+        "message": "$1% をアーカイブ中"
     },
     "player_archiver_saved": {
         "message": "アーカイブを保存しました!"
