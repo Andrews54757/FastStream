@@ -6,7 +6,7 @@
         "message": "Stream without buffering, a great video player and download accelerator all in one."
     },
     "extension_toggle_label": {
-        "message": "FastStream に切り替え"
+        "message": "FastStream に切り替える"
     },
     "welcome_page_title": {
         "message": "FastStream へようこそ"
@@ -187,7 +187,7 @@
         "message": "ソースの参照"
     },
     "player_sourcesbrowser_toggle_label": {
-        "message": "ソースの参照に切り替え"
+        "message": "ソースの参照を開く"
     },
     "player_sourcesbrowser_closebtn_label": {
         "message": "ソースの参照を閉じる"
@@ -196,7 +196,7 @@
         "message": "オーディオの設定"
     },
     "player_audioconfig_toggle_label": {
-        "message": "オーディオ設定ウィンドウに切り替え"
+        "message": "オーディオ設定ウィンドウを開く"
     },
     "player_audioconfig_toggle_closebtn_label": {
         "message": "オーディオ設定ウィンドウを閉じる"
@@ -283,7 +283,7 @@
         "message": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?"
     },
     "player_subtitlesmenu_toggle_label": {
-        "message": "字幕メニューに切り替え"
+        "message": "字幕メニューを開く"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "戻る"
@@ -352,7 +352,7 @@
         "message": "スクリーンショットを撮る"
     },
     "player_pip_label": {
-        "message": "ピクチャーインピクチャー (PiP)"
+        "message": "ピクチャー イン ピクチャー (PiP)"
     },
     "player_fullscreen_label": {
         "message": "フルスクリーン"
@@ -634,7 +634,7 @@
         "message": "動画のオプション"
     },
     "options_video_body": {
-        "message": "動画に CSS フィルタを適用します。ピクチャーインピクチャー (PiP) では動作しません。"
+        "message": "動画に CSS フィルタを適用します。ピクチャー イン ピクチャー (PiP) では動作しません。"
     },
     "options_video_brightness": {
         "message": "明るさ"
@@ -673,7 +673,7 @@
         "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },
     "options_general_autosub": {
-        "message": "自動的に最適な字幕トラックを有効にする\n(字幕設定でデフォルトの言語を変更できます)"
+        "message": "自動的に最適な字幕トラックを有効化する\n(字幕設定でデフォルトの言語を変更できます)"
     },
     "options_general_stream": {
         "message": "プレイリスト URL (.m3u8/.mpd) を開くときに HLS/DASH ストリームを再生するプレーヤーを使用する"
