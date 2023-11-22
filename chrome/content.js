@@ -273,7 +273,7 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    const ytplayer = get_yt_video_element();
+    const ytplayer = lastPlayerNode;
     if (ytplayer) {
       const visibleRatio = await isVisible(ytplayer);
       const rect = ytplayer.getBoundingClientRect();
@@ -354,39 +354,43 @@ function is_url_yt_embed(urlStr) {
 }
 
 // eslint-disable-next-line camelcase
-function get_yt_video_element() {
+function get_yt_video_elements() {
   const queries = [
     'body #player',
     'body #player-full-bleed-container',
   ];
+  const elements = [];
   for (let i = 0; i < queries.length; i++) {
-    const ytplayer = document.querySelectorAll(queries[i])[0];
-    if (ytplayer) {
-      const style = window.getComputedStyle(ytplayer);
-      if (style.display === 'none') {
-        continue;
-      }
-
-      return ytplayer;
+    const ytplayer = document.querySelectorAll(queries[i]);
+    for (let j = 0; j < ytplayer.length; j++) {
+      elements.push(ytplayer[j]);
     }
   }
-  return null;
+  return elements;
 }
 
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
-    const pnode = get_yt_video_element();
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
-    if (pnode && (isWatch || isEmbed)) {
-      const rect = pnode.getBoundingClientRect();
-      if ((isEmbed || rect.x !== 0) && rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
-        lastPlayerNode = pnode;
-        chrome.runtime.sendMessage({
-          type: 'yt_loaded',
-          url: window.location.href,
-        });
+    if (isWatch || isEmbed) {
+      const pnodes = get_yt_video_elements();
+      if (pnodes.length === 0) {
+        return;
       }
+
+      pnodes.find((pnode) => {
+        const rect = pnode.getBoundingClientRect();
+        if ((isEmbed || rect.x !== 0 || pnode.id !== 'player') &&rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
+          lastPlayerNode = pnode;
+          chrome.runtime.sendMessage({
+            type: 'yt_loaded',
+            url: window.location.href,
+          });
+          return true;
+        }
+        return false;
+      });
     }
   });
   observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
