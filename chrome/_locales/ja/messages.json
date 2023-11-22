@@ -694,10 +694,10 @@
         "message": "デフォルトにリセット"
     },
     "options_autourl_header": {
-        "message": "URL を自動で有効"
+        "message": "URL で自動的に有効化"
     },
     "options_autourl_body": {
-        "message": "これらの URL にアクセスすると自動的に拡張機能か有効になり離れると無効になります。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。"
+        "message": "これらの URL にアクセスすると自動的に拡張機能が有効化され、離れる事で無効化されます。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。"
     },
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
@@ -709,6 +709,6 @@
         "message": "ようこそのページ"
     },
     "options_help_issues": {
-        "message": "Issue トラッカー"
+        "message": "Issue Tracker"
     }
 }
