@@ -14,7 +14,6 @@ import {DOMElements} from './ui/DOMElements.mjs';
 import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
 import {Localize} from './modules/Localize.mjs';
-import {PlayerModes} from './enums/PlayerModes.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -303,10 +302,7 @@ export class FastStreamClient extends EventEmitter {
   async setSource(source) {
     source = source.copy();
 
-    let autoPlay = this.options.autoPlay;
-    if (source.mode === PlayerModes.ACCELERATED_YT) {
-      autoPlay = true;
-    }
+    const autoPlay = this.options.autoPlay;
 
     console.log('setSource', source);
     await this.resetPlayer();
