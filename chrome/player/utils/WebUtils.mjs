@@ -214,15 +214,11 @@ export class WebUtils {
         if (e.key === 'Enter') {
           span.blur();
           e.stopPropagation();
-          e.preventDefault();
         }
+        e.preventDefault();
       });
 
       span.addEventListener('click', (e) => {
-        e.stopPropagation();
-      });
-
-      span.addEventListener('keydown', (e) => {
         e.stopPropagation();
       });
     }
