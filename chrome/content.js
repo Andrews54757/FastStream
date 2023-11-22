@@ -273,7 +273,7 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    const ytplayer = document.querySelectorAll('body #player')[0];
+    const ytplayer = get_yt_video_element();
     if (ytplayer) {
       const visibleRatio = await isVisible(ytplayer);
       const rect = ytplayer.getBoundingClientRect();
@@ -353,9 +353,29 @@ function is_url_yt_embed(urlStr) {
   return pathname.startsWith('/embed');
 }
 
+// eslint-disable-next-line camelcase
+function get_yt_video_element() {
+  const queries = [
+    'body #player',
+    'body #player-full-bleed-container',
+  ];
+  for (let i = 0; i < queries.length; i++) {
+    const ytplayer = document.querySelectorAll(queries[i])[0];
+    if (ytplayer) {
+      const style = window.getComputedStyle(ytplayer);
+      if (style.display === 'none') {
+        continue;
+      }
+
+      return ytplayer;
+    }
+  }
+  return null;
+}
+
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
-    const pnode = document.querySelectorAll('body #player')[0];
+    const pnode = get_yt_video_element();
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
     if (pnode && (isWatch || isEmbed)) {
