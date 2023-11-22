@@ -1,4 +1,4 @@
-let lastPlayerNode = null;
+const YTPlayerNodesList = [];
 const iframeMap = new Map();
 const players = [];
 window.addEventListener('message', (e) => {
@@ -44,14 +44,6 @@ chrome.runtime.onMessage.addListener(
           });
         }
         return true;
-      } else if (request.type === 'init') {
-        if (window.parent !== window) {
-          window.parent.postMessage({
-            type: 'frame',
-            id: request.frameId,
-          }, '*');
-        }
-        sendResponse('ok');
       } else if (request.type === 'scrape_captions') {
         const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;
@@ -119,7 +111,7 @@ chrome.runtime.onMessage.addListener(
           player.iframe.parentElement.replaceChild(player.old, player.iframe);
         });
         players.length = 0;
-        lastPlayerNode = null;
+        YTPlayerNodesList.length = 0;
         sendResponse('ok');
       } else if (request.type === 'get_video_size') {
         getVideo().then((video) => {
@@ -281,14 +273,13 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    const ytplayer = document.querySelectorAll('body #player')[0];
-    if (ytplayer) {
-      const visibleRatio = await isVisible(ytplayer);
-      const rect = ytplayer.getBoundingClientRect();
-      if (rect.width * rect.height * visibleRatio < 1000) {
-        return null;
-      }
+    const ytplayer = YTPlayerNodesList.reduceRight((result, current) => {
+      const resultSize = result ? result.clientWidth * result.clientHeight : 0;
+      const currentSize = current.clientWidth * current.clientHeight;
+      return (currentSize > resultSize) ? current : result;
+    }, null);
 
+    if (ytplayer) {
       return {
         size: ytplayer.clientWidth * ytplayer.clientHeight,
         highest: ytplayer,
@@ -361,20 +352,44 @@ function is_url_yt_embed(urlStr) {
   return pathname.startsWith('/embed');
 }
 
+// eslint-disable-next-line camelcase
+function get_yt_video_elements() {
+  const queries = [
+    'body #player',
+    'body #player-full-bleed-container',
+  ];
+  const elements = [];
+  for (let i = 0; i < queries.length; i++) {
+    const ytplayer = document.querySelectorAll(queries[i]);
+    for (let j = 0; j < ytplayer.length; j++) {
+      elements.push(ytplayer[j]);
+    }
+  }
+  return elements;
+}
+
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations)=> {
-    const pnode = document.querySelectorAll('body #player')[0];
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
-    if (pnode && (isWatch || isEmbed)) {
-      const rect = pnode.getBoundingClientRect();
-      if ((isEmbed || rect.x !== 0) && rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
-        lastPlayerNode = pnode;
-        chrome.runtime.sendMessage({
-          type: 'yt_loaded',
-          url: window.location.href,
-        });
+    if (isWatch || isEmbed) {
+      const playerNodes = get_yt_video_elements();
+      if (playerNodes.length === 0) {
+        return;
       }
+
+      playerNodes.find((playerNode) => {
+        const rect = playerNode.getBoundingClientRect();
+        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !YTPlayerNodesList.includes(playerNode)) {
+          YTPlayerNodesList.push(playerNode);
+          chrome.runtime.sendMessage({
+            type: 'yt_loaded',
+            url: window.location.href,
+          });
+          return true;
+        }
+        return false;
+      });
     }
   });
   observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});

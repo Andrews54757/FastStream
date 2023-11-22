@@ -10,6 +10,7 @@ export class FrameHolder {
     this.url = '';
     this.playerOpening = false;
     this.isFastStream = false;
+    this.hasSentFrameId = false;
     this.ready = false;
   }
 }

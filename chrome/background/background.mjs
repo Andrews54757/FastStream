@@ -6,6 +6,7 @@ import {Utils} from '../player/utils/Utils.mjs';
 import {BackgroundUtils} from './BackgroundUtils.mjs';
 import {TabHolder} from './Containers.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
+import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 
 let Options = {};
@@ -15,6 +16,14 @@ const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
 const PlayerURL = chrome.runtime.getURL('player/player.html');
 const CachedTabs = {};
+
+const sponsorBlockBackend = new SponsorBlockIntegration();
+sponsorBlockBackend.setup();
+try {
+  sponsorBlockBackend.setup(self);
+} catch (e) {
+  console.error(e);
+}
 
 chrome.runtime.onInstalled.addListener((object) => {
   chrome.storage.local.get('welcome', (result) => {
@@ -161,7 +170,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
 
-  if (msg.type === 'header_commands') {
+  if (msg.type === 'sponsor_block') {
+    return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
+  } else if (msg.type === 'header_commands') {
     if (msg.commands.length) {
       ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
         if (Logging) console.log('Added rule', msg, rule);
@@ -170,14 +181,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return true;
     }
   } else if (msg.type === 'fullscreen') {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'fullscreen',
-      frameId: frame.frameId,
-    }, {
-      frameId: frame.parentId,
-    }, (response) => {
-      BackgroundUtils.checkMessageError('fullscreen');
-      sendResponse(response);
+    handleFullScreenRequest(frame).then((result) => {
+      sendResponse(result);
     });
     return true;
   } else if (msg.type ==='fullscreen_change') {
@@ -205,16 +210,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (frame.parentId === -2 && frame.frameId != msg.frameId) {
       frame.parentId = msg.frameId;
     }
-
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'init',
-      frameId: frame.frameId,
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('init');
-    });
-
 
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'media_name',
@@ -256,6 +251,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.sources.length = 0;
       frame.isFastStream = false;
       frame.playerOpening = false;
+      frame.hasSentFrameId = false;
     }
 
     if (frame.frameId === 0) {
@@ -293,6 +289,38 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   sendResponse('ok');
 });
+
+async function handleFullScreenRequest(frame) {
+  const needsToSendFrameId = !frame.hasSentFrameId;
+  if (needsToSendFrameId) {
+    frame.hasSentFrameId = true;
+    await (new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(frame.tab.tabId, {
+        type: 'sendFrameId',
+        frameId: frame.frameId,
+      }, {
+        frameId: frame.frameId,
+      }, ()=>{
+        BackgroundUtils.checkMessageError('sendFrameId');
+        setTimeout(()=>{
+          resolve();
+        }, 100);
+      });
+    }));
+  }
+
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: 'fullscreen',
+      frameId: frame.frameId,
+    }, {
+      frameId: frame.parentId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('fullscreen');
+      resolve(response);
+    });
+  });
+}
 
 function checkYTURL(frame) {
   const url = frame.url;

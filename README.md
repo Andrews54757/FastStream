@@ -32,7 +32,7 @@ Notes:
 - This player is still a work-in-progress. Please report any bugs to the Github issue tracker here: https://github.com/Andrews54757/FastStream/issues
 - This extension does not collect telemetry of any kind. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
 
-## Installation
+## Installation For Chrome and Firefox
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
 
@@ -40,13 +40,13 @@ It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addo
 
 ## Demo
 
-See the player in action without installing the extension! Tested in Chrome, Firefox, and Safari. Note: Some features (OpenSubtitles/header override) are not available without installation. Additionally, audio configuration doesn't work in Safari.
+See the player in action without installing the extension! Tested in Chrome, Firefox, and Safari. Note: Some features (OpenSubtitles/header override) are not available without installation. Settings doesn't update live. Additionally, audio configuration doesn't work in Safari.
 
 [Web Version + Big Buck Bunny](https://andrews54757.github.io/FastStream/built/web/player/player.html#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
 ## Manual Installation For Chrome
 
-The chrome extension store version recieves updates slowly due to their review process. Additionally, their policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). To get the latest updates, and restricted features, please do the following steps:
+The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:
 
 1. Go to `chrome://extensions`
 2. Turn on developer mode
@@ -65,11 +65,12 @@ The extension is, by default, configured to work on Chrome. In order to create a
 
 You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
 
-## Disclaimer
+## Contributors
 
-(I'm not a lawyer, don't take this as legal advice but do pay attention)
+Many thanks to the contributors of this project.
 
-While it may be possible for FastStream to save videos from any website as long as there is no DRM, that doesn't mean you have the legal right to do so if you don't own the content. Please be mindful of how you use this tool. FastStream should not be used to infringe copyright.
+- Dael (dael_io): Fixed Spanish translations
+
 
 ## Technical Details
 
@@ -148,3 +149,8 @@ url_6/193039199_mp4_h264_aac_hq_7.m3u8
 url_8/193039199_mp4_h264_aac_fhd_7.m3u8
 ```
   
+## Disclaimer
+
+(I'm not a lawyer, don't take this as legal advice but do pay attention)
+
+While it may be possible for FastStream to save videos from any website as long as there is no DRM, that doesn't mean you have the legal right to do so if you don't own the content. Please be mindful of how you use this tool. FastStream should not be used to infringe copyright.

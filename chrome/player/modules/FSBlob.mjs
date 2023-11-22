@@ -6,28 +6,37 @@ const UseIndexedDB = !BrowserCanAutoOffloadBlobs && IndexedDBManager.isSupported
 
 export class FSBlob {
   constructor() {
+    this.blobStore = new Map();
+    this.blobStorePromises = new Map();
+
     if (UseIndexedDB) {
       this.indexedDBManager = new IndexedDBManager();
       this.setupPromise = this.indexedDBManager.setup();
-      this.blobStorePromises = new Map();
-    } else {
-      this.blobStore = new Map();
     }
 
     this.blobIndex = 0;
   }
 
   async saveBlobAsync(identifier, blob) {
-    await this.setupPromise;
+    try {
+      await this.setupPromise;
+    } catch (e) {
+      // IndexedDB is not supported
+      console.warn(e);
+      this.indexedDBManager = null;
+      this.blobStorePromises.clear();
+      return false;
+    }
+
     await this.indexedDBManager.setFile(identifier, blob);
+    this.blobStore.delete(identifier);
     return true;
   }
 
   _saveBlob(identifier, blob) {
-    if (UseIndexedDB ) {
+    this.blobStore.set(identifier, blob);
+    if (this.indexedDBManager) {
       this.blobStorePromises.set(identifier, this.saveBlobAsync(identifier, blob));
-    } else {
-      this.blobStore.set(identifier, blob);
     }
   }
 
@@ -45,12 +54,16 @@ export class FSBlob {
   }
 
   async getBlob(identifier) {
-    if (UseIndexedDB) {
-      await this.blobStorePromises.get(identifier);
-      return await this.indexedDBManager.getFile(identifier);
-    } else {
+    if (this.blobStore.has(identifier)) {
       return this.blobStore.get(identifier);
     }
+
+    if (this.blobStorePromises.has(identifier)) {
+      await this.blobStorePromises.get(identifier);
+      return await this.indexedDBManager.getFile(identifier);
+    }
+
+    return null;
   }
 
   close() {

@@ -1,3 +1,4 @@
+import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
@@ -12,7 +13,7 @@ export default class YTPlayer extends DashPlayer {
 
   async setSource(source) {
     const youtube = await Innertube.create({
-      cache: new UniversalCache(),
+      cache: !EnvUtils.isIncognito() ? new UniversalCache() : undefined,
       fetch: async (input, init) => {
         // url
         const url = typeof input === 'string' ?
@@ -81,6 +82,8 @@ export default class YTPlayer extends DashPlayer {
           headers: newHeaders,
         });
       },
+    }).catch((e)=>{
+      this.emit(DefaultPlayerEvents.ERROR, e);
     });
 
     const url = new URL(source.url);
@@ -111,6 +114,37 @@ export default class YTPlayer extends DashPlayer {
         this.client.loadSubtitleTrack(subTrack, true);
       });
     }
+
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'sponsor_block',
+        action: 'getSkipSegments',
+        videoId: identifier,
+      }, (segments)=>{
+        if (segments) {
+          this.skipSegments = segments.map((segment) => {
+            return {
+              startTime: segment.segment[0],
+              endTime: segment.segment[1],
+              class: 'sponsor_block_' + segment.category,
+              skipText: 'Skip ' + segment.category,
+              autoSkip: !!segment.autoSkip,
+              onSkip: () => {
+                chrome.runtime.sendMessage({
+                  type: 'sponsor_block',
+                  action: 'segmentSkipped',
+                  UUID: segment.UUID,
+                });
+              },
+            };
+          });
+        }
+      });
+    }
+  }
+
+  getSkipSegments() {
+    return this.skipSegments || [];
   }
 
   getSource() {
