@@ -9,7 +9,7 @@ The player currently supports:
 - MP4 videos
 - HLS streams
 - DASH streams
-- Youtube (experimental, download only supported on Chrome when manually installed)
+- Youtube (download not supported on Chrome unless manually installed)
 
 Player features:
 - OpenSubtitles support so you can search for subtitles directly from the player.
