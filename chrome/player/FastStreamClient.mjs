@@ -964,5 +964,17 @@ export class FastStreamClient extends EventEmitter {
   get currentVideo() {
     return this.player?.getVideo() || null;
   }
+
+  debugDemo() {
+    this.interfaceController.hideControlBar = ()=>{};
+
+    this.videoAnalyzer.introAligner.detectedStartTime = 0;
+    this.videoAnalyzer.introAligner.detectedEndTime = 30;
+    this.videoAnalyzer.introAligner.found = true;
+    this.videoAnalyzer.introAligner.emit('match', true);
+
+    this.currentTime = 6;
+    this.player.getVideo().style.objectFit = 'cover';
+  }
 }
 
