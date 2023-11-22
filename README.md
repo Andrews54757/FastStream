@@ -70,6 +70,7 @@ You can then install the extension temporarily on Firefox Developer Edition by g
 Many thanks to the contributors of this project.
 
 - Dael (dael_io): Fixed Spanish translations
+- reindex-ot: Japanese translations
 
 
 ## Technical Details
