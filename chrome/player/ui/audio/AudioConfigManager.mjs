@@ -237,8 +237,8 @@ export class AudioConfigManager extends EventEmitter {
       if (e.key === 'Escape') {
         this.closeUI();
         e.preventDefault();
+        e.stopPropagation();
       }
-      e.stopPropagation();
     });
 
     DOMElements.audioConfigContainer.addEventListener('keyup', (e) => {

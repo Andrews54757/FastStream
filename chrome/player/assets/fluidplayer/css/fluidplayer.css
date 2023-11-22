@@ -1109,6 +1109,7 @@ body {
     z-index: 2;
     transition: bottom 0.5s;
     cursor: auto;
+    outline: none;
 }
 
 .popwindow .title {

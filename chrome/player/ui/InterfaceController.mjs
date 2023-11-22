@@ -985,11 +985,16 @@ export class InterfaceController {
   async dumpBuffer(name) {
     const entries = this.client.downloadManager.getCompletedEntries();
     const filestream = streamSaver.createWriteStream(name + '.fsa');
-    await FastStreamArchiveUtils.writeFSAToStream(filestream, this.client.player, entries, (progress)=>{
-      this.setStatusMessage('save-video', Localize.getMessage('player_archiver_progress', [Math.floor(progress * 100)]), 'info');
-    });
+    try {
+      await FastStreamArchiveUtils.writeFSAToStream(filestream, this.client.player, entries, (progress)=>{
+        this.setStatusMessage('save-video', Localize.getMessage('player_archiver_progress', [Math.floor(progress * 100)]), 'info');
+      });
 
-    this.setStatusMessage('save-video', Localize.getMessage('player_archiver_saved'), 'info', 2000);
+      this.setStatusMessage('save-video', Localize.getMessage('player_archiver_saved'), 'info', 2000);
+    } catch (e) {
+      console.error(e);
+      this.setStatusMessage('save-video', 'Unreachable Error', 'error', 2000);
+    }
   }
 
   updateMarkers() {
