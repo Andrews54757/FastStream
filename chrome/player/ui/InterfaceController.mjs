@@ -137,6 +137,7 @@ export class InterfaceController {
     this.progressCacheAudio = [];
     this.hasShownSkip = false;
     this.failed = false;
+    this.setStatusMessage('error', null, 'error');
     this.reuseDownloadURL = false;
     if (this.downloadURL) {
       URL.revokeObjectURL(this.downloadURL);
