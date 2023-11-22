@@ -214,8 +214,8 @@ export class SourcesBrowser {
       if (e.key === 'Escape') {
         this.closeUI();
         e.preventDefault();
+        e.stopPropagation();
       }
-      e.stopPropagation();
     });
 
     DOMElements.linkuiContainer.addEventListener('keyup', (e) => {
