@@ -324,12 +324,16 @@ export class SubtitleSyncer extends EventEmitter {
     });
 
     this.visibleCues.forEach((cue) => {
+      if (cue.text.length === 0) return;
       if (this.trackElements.find((el) => el.cue === cue)) return;
 
       const el = WebUtils.create('div', '', 'timeline_track_cue');
       el.style.left = cue.startTime / this.video.duration * 100 + '%';
       el.style.width = (cue.endTime - cue.startTime) / this.video.duration * 100 + '%';
-      el.appendChild(WebVTT.convertCueToDOMTree(window, cue.text));
+      if (!cue.dom) {
+        cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
+      }
+      el.appendChild(cue.dom);
       el.title = cue.text;
       this.ui.timelineTrack.appendChild(el);
 
