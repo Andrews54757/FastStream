@@ -1,4 +1,4 @@
-let lastPlayerNode = null;
+const YTPlayerNodesList = [];
 const iframeMap = new Map();
 const players = [];
 window.addEventListener('message', (e) => {
@@ -111,7 +111,7 @@ chrome.runtime.onMessage.addListener(
           player.iframe.parentElement.replaceChild(player.old, player.iframe);
         });
         players.length = 0;
-        lastPlayerNode = null;
+        YTPlayerNodesList.length = 0;
         sendResponse('ok');
       } else if (request.type === 'get_video_size') {
         getVideo().then((video) => {
@@ -273,7 +273,12 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    const ytplayer = lastPlayerNode;
+    const ytplayer = YTPlayerNodesList.reduceRight((result, current) => {
+      const resultSize = result ? result.clientWidth * result.clientHeight : 0;
+      const currentSize = current.clientWidth * current.clientHeight;
+      return (currentSize > resultSize) ? current : result;
+    }, null);
+
     if (ytplayer) {
       return {
         size: ytplayer.clientWidth * ytplayer.clientHeight,
@@ -375,8 +380,8 @@ if (is_url_yt(window.location.href)) {
 
       playerNodes.find((playerNode) => {
         const rect = playerNode.getBoundingClientRect();
-        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && lastPlayerNode !== playerNode) {
-          lastPlayerNode = playerNode;
+        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !YTPlayerNodesList.includes(playerNode)) {
+          YTPlayerNodesList.push(playerNode);
           chrome.runtime.sendMessage({
             type: 'yt_loaded',
             url: window.location.href,
