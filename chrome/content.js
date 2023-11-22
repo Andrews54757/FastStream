@@ -275,12 +275,6 @@ async function getVideo() {
   if (is_url_yt(window.location.href)) {
     const ytplayer = lastPlayerNode;
     if (ytplayer) {
-      const visibleRatio = await isVisible(ytplayer);
-      const rect = ytplayer.getBoundingClientRect();
-      if (rect.width * rect.height * visibleRatio < 1000) {
-        return null;
-      }
-
       return {
         size: ytplayer.clientWidth * ytplayer.clientHeight,
         highest: ytplayer,
@@ -374,15 +368,15 @@ if (is_url_yt(window.location.href)) {
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
     if (isWatch || isEmbed) {
-      const pnodes = get_yt_video_elements();
-      if (pnodes.length === 0) {
+      const playerNodes = get_yt_video_elements();
+      if (playerNodes.length === 0) {
         return;
       }
 
-      pnodes.find((pnode) => {
-        const rect = pnode.getBoundingClientRect();
-        if ((isEmbed || rect.x !== 0 || pnode.id !== 'player') &&rect.width * rect.height > 0 && lastPlayerNode !== pnode) {
-          lastPlayerNode = pnode;
+      playerNodes.find((playerNode) => {
+        const rect = playerNode.getBoundingClientRect();
+        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && lastPlayerNode !== playerNode) {
+          lastPlayerNode = playerNode;
           chrome.runtime.sendMessage({
             type: 'yt_loaded',
             url: window.location.href,
