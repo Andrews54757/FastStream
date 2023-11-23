@@ -1,4 +1,6 @@
-# FastStream 2
+![logotext1](https://github.com/Andrews54757/FastStream/assets/13282284/cf344807-ff49-4db2-b806-4be5458fd767)
+
+# FastStream
 
 Tired of having to wait while videos buffer? This extension will replace videos on websites with a custom player that is designed to play with minimal buffering.
 
@@ -75,80 +77,7 @@ Many thanks to the contributors of this project.
 
 ## Technical Details
 
-### FastStream Archive Files (.fsa)
-
-In some select cases, it is not feasible to convert the contents of a buffer into an MP4 on the browser (not without ffmpeg). Moreover, the buffer's required metadata varies depending on the media type. For this reason, we propose a new file format to store arbitrary information with ultrafast writing/parsing speeds for the browser environment.
-
-#### Structure
-Using example stream `https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8`. Numerical values use Big Endian representation.
-
-- `00 00 01 00`:  4 byte header size (256)
-- `FSA Header`: JSON header encoded as utf8 (see below)
-```json
-{
-    "version": 1,
-    "number_of_entries": 66,
-    "source": {
-        "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-        "identifier": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-        "mode": "accelerated_hls",
-        "headers": {}
-    },
-    "currentLevel": "0:4",
-    "currentAudioLevel": "1:-1"
-}
-```
-
-This header is followed by the entries. Each entry has the following format:
-
-- `00 00 01 C8`: 4 byte entry header size (456)
-- JSON entry header encoded as utf8 (See below). Only whitelisted response headers are included (eg: content-range).
-```json
-{
-    "url": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    "responseType": "text",
-    "stats": {
-        "aborted": false,
-        "timedout": false,
-        "loaded": 752,
-        "total": 752,
-        "retry": 0,
-        "chunkCount": 0,
-        "bwEstimate": 0,
-        "loading": {
-            "start": 112.39999997615814,
-            "first": 115.79999995231628,
-            "end": 116
-        },
-        "parsing": {
-            "start": 1083.2000000476837,
-            "end": 0
-        },
-        "buffering": {
-            "start": 0,
-            "first": 0,
-            "end": 0
-        }
-    },
-    "responseURL": "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-    "responseHeaders": {},
-    "dataSize": 752
-}
-```
-- `Entry data`: `dataSize` bytes containing the data (example below)
-```m3u8
-#EXTM3U
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=2149280,CODECS="mp4a.40.2,avc1.64001f",RESOLUTION=1280x720,NAME="720"
-url_0/193039199_mp4_h264_aac_hd_7.m3u8
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=246440,CODECS="mp4a.40.5,avc1.42000d",RESOLUTION=320x184,NAME="240"
-url_2/193039199_mp4_h264_aac_ld_7.m3u8
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=460560,CODECS="mp4a.40.5,avc1.420016",RESOLUTION=512x288,NAME="380"
-url_4/193039199_mp4_h264_aac_7.m3u8
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=836280,CODECS="mp4a.40.2,avc1.64001f",RESOLUTION=848x480,NAME="480"
-url_6/193039199_mp4_h264_aac_hq_7.m3u8
-#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=6221600,CODECS="mp4a.40.2,avc1.640028",RESOLUTION=1920x1080,NAME="1080"
-url_8/193039199_mp4_h264_aac_fhd_7.m3u8
-```
+Please see the [wiki](https://github.com/Andrews54757/FastStream/wiki/Technical-Details) for more information on the technical details!
   
 ## Disclaimer
 
