@@ -621,7 +621,6 @@ export class FastStreamClient extends EventEmitter {
 
     promises.push(this.downloadManager.reset());
     this.interfaceController.reset();
-    this.subtitlesManager.clearTracks();
 
     this.persistent.buffering = false;
 
