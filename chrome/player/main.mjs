@@ -210,10 +210,14 @@ async function setup() {
     window.fastStream = new FastStreamClient();
     await window.fastStream.setup();
   }
-  if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
-  else if (EnvUtils.isExtension()) {
-    OPTIONS = await Utils.getOptionsFromStorage();
-    window.fastStream.setOptions(OPTIONS);
+
+  if (EnvUtils.isExtension()) {
+    try {
+      OPTIONS = await Utils.getOptionsFromStorage();
+      window.fastStream.setOptions(OPTIONS);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   const urlParams = new URLSearchParams(window.location.search);

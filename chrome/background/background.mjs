@@ -221,15 +221,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
 
     chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'options',
-      options: JSON.stringify(Options),
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('settings');
-    });
-
-    chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'analyzerData',
       data: tab.analyzerData,
     }, {
