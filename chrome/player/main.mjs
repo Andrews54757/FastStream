@@ -211,6 +211,10 @@ async function setup() {
     await window.fastStream.setup();
   }
   if (OPTIONS && window.fastStream) window.fastStream.setOptions(OPTIONS);
+  else if (EnvUtils.isExtension()) {
+    OPTIONS = await Utils.getOptionsFromStorage();
+    window.fastStream.setOptions(OPTIONS);
+  }
 
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get('frame_id');
