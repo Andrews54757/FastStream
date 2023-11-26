@@ -647,7 +647,7 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.playbackRate);
 
 
-    for (let i = 1; i <= 30; i += 1) {
+    for (let i = 1; i <= 80; i += 1) {
       ((i) => {
         const el = document.createElement('div');
         els.push(el);
@@ -667,7 +667,7 @@ export class InterfaceController {
 
     DOMElements.playbackRate.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowDown') {
-        this.client.playbackRate = Math.min(3, (this.playbackRate + 1) / 10);
+        this.client.playbackRate = Math.min(8, (this.playbackRate + 1) / 10);
         speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
         e.preventDefault();
         e.stopPropagation();
