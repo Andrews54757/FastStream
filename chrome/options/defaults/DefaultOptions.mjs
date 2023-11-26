@@ -19,4 +19,5 @@ export const DefaultOptions = {
   videoHueRotate: 0,
   maxSpeed: 300 * 1000 * 1000,
   seekStepSize: 2,
+  playbackRate: 1,
 };

@@ -684,6 +684,9 @@
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
     },
+    "options_general_playbackrate": {
+        "message": "Default playback rate"
+    },
     "options_keybinds_header": {
         "message": "Keyboard Shortcuts"
     },

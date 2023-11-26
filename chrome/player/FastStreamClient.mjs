@@ -39,6 +39,7 @@ export class FastStreamClient extends EventEmitter {
       videoInvert: 0,
       videoHueRotate: 0,
       seekStepSize: 0.2,
+      defaultPlaybackRate: 1,
     };
     this.persistent = {
       playing: false,
@@ -123,6 +124,12 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoSepia = options.videoSepia;
     this.options.videoInvert = options.videoInvert;
     this.options.videoHueRotate = options.videoHueRotate;
+
+    if (this.persistent.playbackRate === this.options.defaultPlaybackRate) {
+      this.playbackRate = options.playbackRate;
+    }
+    this.options.defaultPlaybackRate = options.playbackRate;
+
     this.updateCSSFilters();
 
     if (options.keybinds) {
