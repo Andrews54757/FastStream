@@ -10,6 +10,8 @@ export const DefaultKeybinds = {
   'SeekBackwardSmall': 'Shift+ArrowLeft',
   'SeekForwardLarge': 'Period',
   'SeekBackwardLarge': 'Comma',
+  'IncreasePlaybackRate': 'Shift+ArrowUp',
+  'DecreasePlaybackRate': 'Shift+ArrowDown',
   'UndoSeek': 'KeyZ',
   'RedoSeek': 'Shift+KeyZ',
   'ResetFailed': 'Backquote',

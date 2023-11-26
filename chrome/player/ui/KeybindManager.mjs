@@ -96,6 +96,14 @@ export class KeybindManager extends EventEmitter {
       this.client.setSeekSave(true);
     });
 
+    this.on('IncreasePlaybackRate', (e) => {
+      this.client.playbackRate = Math.min(this.client.playbackRate + 0.1, 8);
+    });
+
+    this.on('DecreasePlaybackRate', (e) => {
+      this.client.playbackRate = Math.max(this.client.playbackRate - 0.1, 0.1);
+    });
+
     this.on('UndoSeek', (e) => {
       this.client.undoSeek();
     });
