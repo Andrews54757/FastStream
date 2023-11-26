@@ -100,7 +100,10 @@ export default class YTPlayer extends DashPlayer {
         return url;
       });
       this.oldSource = source;
-      const uri = 'data:application/dash+xml;charset=utf-8;base64,' + btoa(manifest);
+      const blob = new Blob([manifest], {
+        type: 'application/dash+xml',
+      });
+      const uri = URL.createObjectURL(blob);
       this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
       this.source.identifier = 'yt-' + identifier;
     } catch (e) {
@@ -149,6 +152,13 @@ export default class YTPlayer extends DashPlayer {
         }
       });
     }
+  }
+
+  destroy() {
+    if (this.source) {
+      URL.revokeObjectURL(this.source.url);
+    }
+    super.destroy();
   }
 
   getSkipSegments() {
