@@ -86,21 +86,28 @@ export default class YTPlayer extends DashPlayer {
       this.emit(DefaultPlayerEvents.ERROR, e);
     });
 
-    const url = new URL(source.url);
-    let identifier = url.searchParams.get('v');
-    if (!identifier) {
-      identifier = url.pathname.split('/').pop();
+    try {
+      const url = new URL(source.url);
+      let identifier = url.searchParams.get('v');
+      if (!identifier) {
+        identifier = url.pathname.split('/').pop();
+      }
+      const videoInfo = await youtube.getInfo(identifier);
+      this.youtube = youtube;
+      this.videoInfo = videoInfo;
+      const manifest = await videoInfo.toDash((url) => {
+        return url;
+      });
+      this.oldSource = source;
+      const uri = 'data:application/dash+xml;charset=utf-8;base64,' + btoa(manifest);
+      this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
+      this.source.identifier = 'yt-' + identifier;
+    } catch (e) {
+      console.error(e);
+      this.emit(DefaultPlayerEvents.ERROR, e);
+      return;
     }
-    const videoInfo = await youtube.getInfo(identifier);
-    this.youtube = youtube;
-    this.videoInfo = videoInfo;
-    const manifest = await videoInfo.toDash((url) => {
-      return url;
-    });
-    this.oldSource = source;
-    const uri = 'data:application/dash+xml;charset=utf-8;base64,' + btoa(manifest);
-    this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
-    this.source.identifier = 'yt-' + identifier;
+
     await super.setSource(this.source);
 
     if (this.videoInfo.captions?.caption_tracks) {
