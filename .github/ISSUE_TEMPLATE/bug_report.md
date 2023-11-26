@@ -15,3 +15,6 @@ FastStream version. You can get the version by opening the player, it will displ
 
 **Platform**
 The browser you are using Chrome/Firefox/etc..
+
+**Steps to Reproduce**
+Please tell us how to reproduce the issue. A URL to a specific video is encouraged.
