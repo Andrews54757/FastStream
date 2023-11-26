@@ -110,11 +110,19 @@ export class SubtitlesManager {
     }
 
     if (DOMElements.subtitlesMenu.style.display === 'none') {
-      DOMElements.subtitlesMenu.style.display = '';
+      this.openUI();
     } else {
-      DOMElements.subtitlesMenu.style.display = 'none';
+      this.closeUI();
     }
     e.stopPropagation();
+  }
+
+  closeUI() {
+    DOMElements.subtitlesMenu.style.display = 'none';
+  }
+
+  openUI() {
+    DOMElements.subtitlesMenu.style.display = '';
   }
 
   setupUI() {
@@ -123,7 +131,7 @@ export class SubtitlesManager {
 
     DOMElements.subtitles.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        DOMElements.subtitlesMenu.style.display = 'none';
+        this.closeUI();
         e.stopPropagation();
         e.preventDefault();
       } else if (e.key === 'Enter') {
@@ -133,7 +141,7 @@ export class SubtitlesManager {
 
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      DOMElements.subtitlesMenu.style.display = 'none';
+      this.closeUI();
     });
 
     DOMElements.subtitlesOptionsTestButton.addEventListener('click', (e) => {
