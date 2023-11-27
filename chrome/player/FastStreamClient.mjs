@@ -973,6 +973,14 @@ export class FastStreamClient extends EventEmitter {
     return this.player?.getVideo() || null;
   }
 
+  get skipSegments() {
+    return this.player?.skipSegments || [];
+  }
+
+  get chapters() {
+    return this.player?.chapters || [];
+  }
+
   debugDemo() {
     this.interfaceController.hideControlBar = ()=>{};
 

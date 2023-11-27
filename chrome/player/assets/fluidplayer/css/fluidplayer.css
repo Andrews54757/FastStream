@@ -707,6 +707,7 @@ body {
     transform: translate(-50%, 0%);
     bottom: 16px;
     pointer-events: none;
+    white-space: nowrap;
 }
 
 .fluid_controls_progress_container .seek_preview_tip {
@@ -897,7 +898,13 @@ body {
     background-color: var(--intro-outro-bar-color);
 }
 
-
+.intro_outro_container > div.chapter {
+    background-color: rgb(0,0,0,0.3);
+    border-radius: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 2px;
+}
 .hide_button {
     color: var(--popbutton-text-color);
     position: absolute;
