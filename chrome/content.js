@@ -1,4 +1,5 @@
-const YTPlayerNodesList = [];
+let FoundYTPlayer = null;
+let OverridenYTKeys = false;
 const iframeMap = new Map();
 const players = [];
 window.addEventListener('message', (e) => {
@@ -70,6 +71,7 @@ chrome.runtime.onMessage.addListener(
 
         return true;
       } else if (request.type === 'player') {
+        const isYt = is_url_yt(window.location.href);
         getVideo().then((video) => {
           if (!video && !request.force) {
             console.log('no video found');
@@ -82,7 +84,7 @@ chrome.runtime.onMessage.addListener(
             console.log('redirecting to player');
             sendResponse('redirect');
           } else {
-            // copy styles
+          // copy styles
             const iframe = document.createElement('iframe');
             iframe.src = request.url;
             updateIframeStyle(video.highest, iframe);
@@ -92,26 +94,38 @@ chrome.runtime.onMessage.addListener(
             // replace element
             pauseAllWithin(video.highest);
 
-            setTimeout(() => {
-              pauseAllWithin(video.highest);
-            }, 5000);
+            if (isYt) {
+              video.highest.parentElement.insertBefore(iframe, video.highest);
+              video.highest.style.setProperty('display', 'none', 'important');
+            } else {
+              video.highest.parentElement.replaceChild(iframe, video.highest);
+            }
 
-            video.highest.parentElement.replaceChild(iframe, video.highest);
             players.push({
               iframe,
               old: video.highest,
+              isYt,
             });
             console.log('replacing video with iframe');
             sendResponse('replace');
           }
         });
+        OverridenYTKeys = true;
         return true;
       } else if (request.type === 'remove_players') {
         players.forEach((player) => {
-          player.iframe.parentElement.replaceChild(player.old, player.iframe);
+          if (player.isYt) {
+            player.old.style.display = '';
+            player.iframe.parentElement.removeChild(player.iframe);
+          } else {
+            player.iframe.parentElement.replaceChild(player.old, player.iframe);
+          }
+
+          removePauseListeners(player.old);
         });
         players.length = 0;
-        YTPlayerNodesList.length = 0;
+        FoundYTPlayer = null;
+        OverridenYTKeys = false;
         sendResponse('ok');
       } else if (request.type === 'get_video_size') {
         getVideo().then((video) => {
@@ -121,14 +135,14 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
-document.addEventListener('fullscreenchange', ()=>{
+document.addEventListener('fullscreenchange', () => {
   chrome.runtime.sendMessage({
     type: 'fullscreen_change',
     fullscreen: document.fullscreenElement ? true : false,
   });
 });
 
-window.addEventListener('resize', ()=>{
+window.addEventListener('resize', () => {
   updatePlayerStyles();
 });
 
@@ -136,10 +150,21 @@ function updatePlayerStyles() {
   players.forEach((player) => {
     const parent = player.iframe.parentElement;
     player.iframe.style.display = 'none';
-    parent.insertBefore(player.old, player.iframe);
-    updateIframeStyle(player.old, player.iframe);
-    parent.removeChild(player.old);
+    if (player.isYt) {
+      player.old.style.display = '';
+      updateIframeStyle(player.old, player.iframe);
+      player.old.style.setProperty('display', 'none', 'important');
+    } else {
+      parent.insertBefore(player.old, player.iframe);
+      updateIframeStyle(player.old, player.iframe);
+      parent.removeChild(player.old);
+    }
   });
+}
+
+function pauseOnPlay() {
+  // eslint-disable-next-line no-invalid-this
+  this.pause();
 }
 
 function pauseAllWithin(element) {
@@ -150,8 +175,18 @@ function pauseAllWithin(element) {
     } catch (e) {
       console.error(e);
     }
+
+    video.addEventListener('play', pauseOnPlay);
   });
 }
+
+function removePauseListeners(element) {
+  const videos = querySelectorAllIncludingShadows('video', element);
+  videos.forEach((video) => {
+    video.removeEventListener('play', pauseOnPlay);
+  });
+}
+
 function updateIframeStyle(old, iframe) {
   const styles = window.getComputedStyle(old);
   const rect = old.getBoundingClientRect();
@@ -179,7 +214,7 @@ function updateIframeStyle(old, iframe) {
   iframe.style.boxShadow = styles.boxShadow;
 }
 
-function httpRequest( ...args ) {
+function httpRequest(...args) {
   const url = args[0];
   let post = undefined;
   let callback;
@@ -273,11 +308,7 @@ function getParentElementsWithSameBounds(element) {
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
-    const ytplayer = YTPlayerNodesList.reduceRight((result, current) => {
-      const resultSize = result ? result.clientWidth * result.clientHeight : 0;
-      const currentSize = current.clientWidth * current.clientHeight;
-      return (currentSize > resultSize) ? current : result;
-    }, null);
+    const ytplayer = FoundYTPlayer;
 
     if (ytplayer) {
       return {
@@ -369,7 +400,7 @@ function get_yt_video_elements() {
 }
 
 if (is_url_yt(window.location.href)) {
-  const observer = new MutationObserver((mutations)=> {
+  const observer = new MutationObserver((mutations) => {
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
     if (isWatch || isEmbed) {
@@ -380,8 +411,8 @@ if (is_url_yt(window.location.href)) {
 
       playerNodes.find((playerNode) => {
         const rect = playerNode.getBoundingClientRect();
-        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !YTPlayerNodesList.includes(playerNode)) {
-          YTPlayerNodesList.push(playerNode);
+        if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !FoundYTPlayer) {
+          FoundYTPlayer = playerNode;
           chrome.runtime.sendMessage({
             type: 'yt_loaded',
             url: window.location.href,
@@ -393,4 +424,38 @@ if (is_url_yt(window.location.href)) {
     }
   });
   observer.observe(document, {attributes: false, childList: true, characterData: false, subtree: true});
+
+  const OverrideList = [
+    'Space', 'KeyP', // play/pause
+    'ArrowUp',
+    'ArrowDown',
+    'ArrowLeft', 'ArrowRight', // seek
+    'KeyF', // fullscreen
+    'KeyM', // mute
+    'KeyJ', 'KeyL', // seek
+    'Digit0', 'Digit1', 'Digit2', 'Digit3', 'Digit4', 'Digit5', 'Digit6', 'Digit7', 'Digit8', 'Digit9', // seek
+    'KeyC', // captions
+  ];
+
+  document.addEventListener('keydown', (e) => {
+    if (OverridenYTKeys && OverrideList.includes(e.code)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+
+  document.addEventListener('keyup', (e) => {
+    if (OverridenYTKeys && OverrideList.includes(e.code)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
+
+  document.addEventListener('keypress', (e) => {
+    if (OverridenYTKeys && OverrideList.includes(e.code)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }
+  }, true);
 }
+
