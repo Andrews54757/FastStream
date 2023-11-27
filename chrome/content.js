@@ -90,6 +90,7 @@ chrome.runtime.onMessage.addListener(
             updateIframeStyle(video.highest, iframe);
 
             iframe.allowFullscreen = true;
+            iframe.allow = 'autoplay; fullscreen; picture-in-picture';
 
             // replace element
             pauseAllWithin(video.highest);

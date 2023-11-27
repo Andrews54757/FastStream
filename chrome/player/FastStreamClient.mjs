@@ -308,6 +308,11 @@ export class FastStreamClient extends EventEmitter {
     return source;
   }
 
+  setAutoPlay(value) {
+    console.log('setAutoPlay', value);
+    this.options.autoPlay = value;
+  }
+
   async setSource(source) {
     source = source.copy();
 
@@ -327,9 +332,6 @@ export class FastStreamClient extends EventEmitter {
 
     await this.player.setSource(source);
     this.interfaceController.addVideo(this.player.getVideo());
-    if (autoPlay) {
-      this.player.getVideo().autoplay = true;
-    }
 
     this.audioContext = new AudioContext();
     this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
@@ -676,8 +678,12 @@ export class FastStreamClient extends EventEmitter {
 
     });
 
+    let autoPlayTriggered = false;
     this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
-
+      if (!autoPlayTriggered && this.options.autoPlay && this.persistent.playing === false) {
+        autoPlayTriggered = true;
+        this.play();
+      }
     });
 
     this.context.on(DefaultPlayerEvents.CANPLAYTHROUGH, (event) => {

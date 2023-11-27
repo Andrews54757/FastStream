@@ -14,7 +14,7 @@ if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
         if (request.type === 'keypress') {
-          if ( window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
+          if (window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
         } else if (request.type === 'sendFrameId') {
           if (window.parent !== window) {
             window.parent.postMessage({
@@ -111,6 +111,10 @@ async function recieveSources(request, sendResponse) {
 
   if (autoPlaySource) {
     window.fastStream.clearSubtitles();
+  }
+
+  if (autoPlaySource && autoPlaySource.mode === PlayerModes.ACCELERATED_YT && !URLUtils.is_url_yt_embed(autoPlaySource.url)) {
+    window.fastStream.setAutoPlay(true); // Enable autoplay for yt only. Not embeds.
   }
 
   sources.forEach((s) => {

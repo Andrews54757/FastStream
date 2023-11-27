@@ -12,19 +12,38 @@ ModesMap.set('mpd', PlayerModes.ACCELERATED_DASH);
 export class URLUtils {
   static is_url_yt(urlStr) {
     if (!urlStr) return false;
-    const url = new URL(urlStr);
-    const hostname = url.hostname;
-    if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
-      return true;
+    try {
+      const url = new URL(urlStr);
+      const hostname = url.hostname;
+      if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
+        return true;
+      }
+    } catch (e) {
+
     }
     return false;
   }
 
   static is_url_yt_watch(urlStr) {
     if (!urlStr) return false;
-    const url = new URL(urlStr);
-    const pathname = url.pathname;
-    return pathname.startsWith('/watch') || pathname.startsWith('/embed');
+    try {
+      const url = new URL(urlStr);
+      const pathname = url.pathname;
+      return pathname.startsWith('/watch') || pathname.startsWith('/embed');
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static is_url_yt_embed(urlStr) {
+    if (!urlStr) return false;
+    try {
+      const url = new URL(urlStr);
+      const pathname = url.pathname;
+      return pathname.startsWith('/embed');
+    } catch (e) {
+      return false;
+    }
   }
 
   static get_url_extension(url) {
