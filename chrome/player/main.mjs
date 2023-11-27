@@ -13,7 +13,9 @@ let OPTIONS = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
-        if (request.type === 'sendFrameId') {
+        if (request.type === 'keypress') {
+          if ( window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
+        } else if (request.type === 'sendFrameId') {
           if (window.parent !== window) {
             window.parent.postMessage({
               type: 'frame',

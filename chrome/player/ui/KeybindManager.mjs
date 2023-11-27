@@ -161,6 +161,10 @@ export class KeybindManager extends EventEmitter {
 
   eventToKeybinds(e) {
     const keyString = WebUtils.getKeyString(e);
+    return this.keyStringToKeybinds(keyString, e);
+  }
+
+  keyStringToKeybinds(keyString) {
     const results = [];
     for (const [key, value] of this.keybindMap.entries()) {
       if (value === keyString) {
@@ -170,14 +174,22 @@ export class KeybindManager extends EventEmitter {
     return results;
   }
 
-  onKeyDown(e) {
-    const keybinds = this.eventToKeybinds(e);
-
+  handleKeyString(keyString, e) {
+    const keybinds = this.keyStringToKeybinds(keyString);
     if (keybinds.length !== 0) {
-      this.emit('keybind', keybinds, e);
+      this.emit('keybind', keybinds);
       keybinds.forEach((keybind) => {
         this.emit(keybind, e);
       });
+      return true;
+    }
+    return false;
+  }
+
+  onKeyDown(e) {
+    const keyString = WebUtils.getKeyString(e);
+
+    if (this.handleKeyString(keyString)) {
       e.preventDefault();
     }
   }

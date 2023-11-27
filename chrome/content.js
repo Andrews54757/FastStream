@@ -399,6 +399,16 @@ function get_yt_video_elements() {
   return elements;
 }
 
+function getKeyString(e) {
+  const metaPressed = e.metaKey && e.key !== 'Meta';
+  const ctrlPressed = e.ctrlKey && e.key !== 'Control';
+  const altPressed = e.altKey && e.key !== 'Alt';
+  const shiftPressed = e.shiftKey && e.key !== 'Shift';
+  const key = e.key === ' ' ? 'Space' : e.code;
+
+  return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
+}
+
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations) => {
     const isWatch = is_url_yt_watch(window.location.href);
@@ -438,6 +448,11 @@ if (is_url_yt(window.location.href)) {
   ];
 
   document.addEventListener('keydown', (e) => {
+    chrome.runtime.sendMessage({
+      type: 'transmit_key',
+      key: getKeyString(e),
+    });
+
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();

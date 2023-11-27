@@ -170,7 +170,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
 
-  if (msg.type === 'sponsor_block') {
+  if (msg.type === 'transmit_key') {
+    // send to children
+    for (const i in tab.frames) {
+      if (Object.hasOwn(tab.frames, i)) {
+        const frame = tab.frames[i];
+        if (frame.parentId === sender.frameId) {
+          chrome.tabs.sendMessage(frame.tab.tabId, {
+            type: 'keypress',
+            key: msg.key,
+          }, {
+            frameId: frame.frameId,
+          }, ()=>{
+            BackgroundUtils.checkMessageError('keypress');
+          });
+        }
+      }
+    }
+  } else if (msg.type === 'sponsor_block') {
     return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
   } else if (msg.type === 'header_commands') {
     if (msg.commands.length) {
