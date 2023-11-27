@@ -122,7 +122,7 @@ function createKeybindElement(keybind) {
   const keybindInput = document.createElement('div');
   keybindInput.classList.add('keybind-input');
   keybindInput.tabIndex = 0;
-  keybindInput.name = keybindName;
+  keybindInput.title = keybindName;
   keybindInput.textContent = Options.keybinds[keybind];
 
   keybindInput.addEventListener('keydown', (e) => {
