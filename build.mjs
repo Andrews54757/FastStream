@@ -296,6 +296,7 @@ async function buildFirefoxLibre() {
 
   delete manifest.incognito;
   delete manifest.minimum_chrome_version;
+  delete manifest.key;
 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
