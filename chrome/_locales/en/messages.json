@@ -687,6 +687,9 @@
     "options_general_playbackrate": {
         "message": "Default playback rate"
     },
+    "options_general_clickpause": {
+        "message": "Single click toggles play/pause"
+    },
     "options_keybinds_header": {
         "message": "Keyboard Shortcuts"
     },

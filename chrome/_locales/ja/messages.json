@@ -687,6 +687,9 @@
     "options_general_playbackrate": {
         "message": "デフォルトの再生速度"
     },
+    "options_general_clickpause": {
+        "message": "シングルクリックで再生/一時停止を切り替えます"
+    },
     "options_keybinds_header": {
         "message": "キーボードショートカット"
     },

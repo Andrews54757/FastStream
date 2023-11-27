@@ -31,6 +31,7 @@ export class FastStreamClient extends EventEmitter {
       freeFragments: true,
       downloadAll: false,
       freeUnusedChannels: true,
+      clickToPause: false,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -114,6 +115,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.downloadAll = options.downloadAll;
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
+    this.options.clickToPause = options.clickToPause;
     this.options.maxSpeed = options.maxSpeed;
     this.options.seekStepSize = options.seekStepSize;
 

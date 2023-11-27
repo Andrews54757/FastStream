@@ -8,6 +8,7 @@ export const DefaultOptions = {
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
+  clickToPause: false,
   autoEnableURLs: [],
   keybinds: DefaultKeybinds,
   videoBrightness: 1,

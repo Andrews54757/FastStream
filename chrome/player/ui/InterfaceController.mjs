@@ -404,8 +404,11 @@ export class InterfaceController {
       e.stopPropagation();
     });
     DOMElements.videoContainer.addEventListener('dblclick', (e) => {
-      this.hideControlBarOnAction();
-      this.playPauseToggle();
+      if (!this.client.options.clickToPause) {
+        this.playPauseToggle();
+      } else {
+        this.hideControlBarOnAction();
+      }
       e.stopPropagation();
     });
     DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
@@ -502,7 +505,11 @@ export class InterfaceController {
     DOMElements.videoContainer.addEventListener('click', () => {
       if (this.isBigPlayButtonVisible()) {
         this.playPauseToggle();
+      } else if (this.client.options.clickToPause) {
+        this.playPauseToggle();
+        return;
       }
+
       this.focusingControls = false;
       this.mouseOverControls = false;
       this.hideControlBarOnAction();
