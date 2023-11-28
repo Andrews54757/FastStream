@@ -3,13 +3,14 @@ import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
 
 // SPLICER:CENSORYT:REMOVE_START
 import {AcornMachine} from '../../modules/acorn-machine.mjs';
-import {RequestUtils} from '../../utils/RequestUtils.mjs';
 // SPLICER:CENSORYT:REMOVE_END
+
 
 const CALCULATOR_URL = 'https://calculator-server-jw77.onrender.com';
 
