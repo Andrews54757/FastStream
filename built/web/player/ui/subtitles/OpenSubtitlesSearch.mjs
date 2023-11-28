@@ -217,7 +217,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       response = (await RequestUtils.request({
         usePlusForSpaces: true,
         responseType: 'json',
-        url: 'https://player-node.dkly.top/sub.php',
+        url: 'https://player-node.cheervision.co/sub.php',
         query: sortedQuery,
         headers: {
           'Api-Key': API_KEY,
