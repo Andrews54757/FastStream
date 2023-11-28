@@ -301,7 +301,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
           if (!link) {
             const data = (await RequestUtils.request({
               type: 'POST',
-              url: 'https://player-node.dkly.top/down.php',
+              url: 'https://player-node.cheervision.co/down.php',
               responseType: 'json',
               headers: {
                 'Api-Key': API_KEY,
