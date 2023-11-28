@@ -217,7 +217,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
       response = (await RequestUtils.request({
         usePlusForSpaces: true,
         responseType: 'json',
-        url: 'https://api.opensubtitles.com/api/v1/subtitles',
+        url: 'https://player-node.dkly.top/sub.php',
         query: sortedQuery,
         headers: {
           'Api-Key': API_KEY,
@@ -301,7 +301,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
           if (!link) {
             const data = (await RequestUtils.request({
               type: 'POST',
-              url: 'https://api.opensubtitles.com/api/v1/download',
+              url: 'https://player-node.dkly.top/down.php',
               responseType: 'json',
               headers: {
                 'Api-Key': API_KEY,
