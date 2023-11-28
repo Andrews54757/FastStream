@@ -188,10 +188,11 @@ export default class YTPlayer extends DashPlayer {
         }),
       }).then((xhr)=>{
         const response = xhr.response;
-        if (response.error) {
+        if (xhr.status !== 200 || response.error) {
           console.log(body);
           console.log(context);
-          throw new Error(response.error);
+          console.error(response?.error);
+          return '';
         }
 
         return xhr.response.result;
