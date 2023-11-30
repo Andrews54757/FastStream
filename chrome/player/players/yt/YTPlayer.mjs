@@ -211,19 +211,24 @@ export default class YTPlayer extends DashPlayer {
         videoId: identifier,
       }, (segments)=>{
         if (segments) {
+          console.log('Recieved Skip Segments', segments);
           this._skipSegments = segments.map((segment) => {
             return {
               startTime: segment.segment[0],
               endTime: segment.segment[1],
               class: 'sponsor_block_' + segment.category,
+              category: segment.category,
+              color: segment.color,
               skipText: 'Skip ' + segment.category,
               autoSkip: !!segment.autoSkip,
               onSkip: () => {
-                chrome.runtime.sendMessage({
-                  type: 'sponsor_block',
-                  action: 'segmentSkipped',
-                  UUID: segment.UUID,
-                });
+                if (segment.UUID) {
+                  chrome.runtime.sendMessage({
+                    type: 'sponsor_block',
+                    action: 'segmentSkipped',
+                    UUID: segment.UUID,
+                  });
+                }
               },
             };
           });

@@ -188,6 +188,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
     }
   } else if (msg.type === 'sponsor_block') {
+    if (msg.action === 'getSkipSegments') {
+      // send message to parent frame
+      chrome.tabs.sendMessage(frame.tab.tabId, {
+        type: 'scrape_sponsorblock',
+      }, {
+        frameId: frame.parentId,
+      }, (response) => {
+        if (response.error) {
+          console.error(response.error);
+          sendResponse(null);
+          return;
+        } else {
+          sendResponse(response.segments);
+        }
+      });
+      return true;
+    }
+
     return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
   } else if (msg.type === 'header_commands') {
     if (msg.commands.length) {

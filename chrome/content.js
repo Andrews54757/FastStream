@@ -45,6 +45,22 @@ chrome.runtime.onMessage.addListener(
           });
         }
         return true;
+      } else if (request.type === 'scrape_sponsorblock') {
+        if (!FoundYTPlayer) {
+          sendResponse({
+            error: 'no_player',
+          });
+          return;
+        }
+
+        try {
+          const segments = scrapeSponsorBlock();
+          sendResponse({segments});
+        } catch (e) {
+          console.error(e);
+          sendResponse({error: e.message});
+        }
+        return;
       } else if (request.type === 'scrape_captions') {
         const trackElements = querySelectorAllIncludingShadows('track');
         let done = 0;
@@ -306,6 +322,47 @@ function getParentElementsWithSameBounds(element) {
   return elements;
 }
 
+
+function scrapeSponsorBlock() {
+  const progressBar = document.querySelector('.ytp-progress-bar');
+  if (!progressBar) {
+    throw new Error('Could not find progress bar');
+  }
+
+  const max = parseFloat(progressBar.getAttribute('aria-valuemax'));
+  const min = parseFloat(progressBar.getAttribute('aria-valuemin'));
+  const duration = max - min;
+
+  if (isNaN(duration) || duration <= 0) {
+    throw new Error('Could not find duration');
+  }
+
+  const sponsorBlockSegments = document.querySelectorAll('#previewbar .previewbar');
+  const segments = [];
+
+  for (const segment of sponsorBlockSegments) {
+    const start = parseFloat(segment.style.left) / 100 * duration;
+    const end = parseFloat(segment.style.right) / 100 * duration;
+    let segDuration = 1;
+    if (end) {
+      segDuration = (duration - end) - start;
+    }
+
+    const startTime = start;
+    const endTime = start + segDuration;
+    const cateogy = segment.getAttribute('sponsorblock-category') || 'unknown';
+    const color = window.getComputedStyle(segment).backgroundColor;
+
+    segments.push({
+      segment: [startTime, endTime],
+      category: cateogy,
+      autoSkip: false,
+      color,
+    });
+  }
+
+  return segments;
+}
 
 async function getVideo() {
   if (is_url_yt(window.location.href)) {
