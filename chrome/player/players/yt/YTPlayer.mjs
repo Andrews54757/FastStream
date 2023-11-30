@@ -1,19 +1,30 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {Innertube, UniversalCache} from '../../modules/yt.mjs';
+import {Innertube} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
+
+// SPLICER:CENSORYT:REMOVE_START
+import {AcornMachine} from '../../modules/acorn-machine.mjs';
+// SPLICER:CENSORYT:REMOVE_END
+
+
+const CALCULATOR_URL = 'https://calculator-server-jw77.onrender.com';
 
 export default class YTPlayer extends DashPlayer {
   constructor(client, options) {
     super(client, options);
+    this.paramCache = new Map();
   }
 
   async setSource(source) {
     const youtube = await Innertube.create({
-      cache: !EnvUtils.isIncognito() ? new UniversalCache() : undefined,
+      evaluator: (body, context) => {
+        return this.fetchParams(body, context);
+      },
       fetch: async (input, init) => {
         // url
         const url = typeof input === 'string' ?
@@ -128,6 +139,68 @@ export default class YTPlayer extends DashPlayer {
 
     this.extractChapters();
     this.fetchSponsorBlock(identifier);
+  }
+
+  async fetchParams(body, context) {
+    const key = body + '|' + JSON.stringify(context);
+    const params = this.paramCache.get(key);
+    if (params) {
+      return await params;
+    }
+
+    let result = null;
+    let doLocal = false;
+
+    // // SPLICER:CENSORYT:REMOVE_START
+    doLocal = true;
+    try {
+      const machine = new AcornMachine(body.replaceAll(/\blet\b/g, 'var'), (machine, globalObject)=>{
+        for (const [key, value] of Object.entries(context)) {
+          machine.setProperty(globalObject, key, value);
+        }
+      });
+
+      let count = 0;
+      while (machine.step()) {
+        if (count++ > 50000) {
+          throw new Error('Halt!');
+        }
+      }
+      result = machine.value;
+    } catch (e) {
+      console.log(body, context);
+      console.error(e);
+      throw e;
+    }
+    // SPLICER:CENSORYT:REMOVE_END
+
+    // This will only run on Chrome, because Google likes to be special with their policies (anti-trust anyone?)
+    if (!doLocal) {
+      result = RequestUtils.request({
+        url: CALCULATOR_URL + '/eval',
+        type: 'POST',
+        responseType: 'json',
+        headers: {
+          'content-type': 'application/json',
+        },
+        data: JSON.stringify({
+          body,
+          globals: context,
+        }),
+      }).then((xhr)=>{
+        const response = xhr.response;
+        if (xhr.status !== 200 || response.error) {
+          console.log(body);
+          console.log(context);
+          console.error(response?.error);
+          return '';
+        }
+
+        return xhr.response.result;
+      });
+    }
+    this.paramCache.set(key, result);
+    return result;
   }
 
   fetchSponsorBlock(identifier) {
