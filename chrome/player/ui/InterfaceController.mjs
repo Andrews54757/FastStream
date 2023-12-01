@@ -27,6 +27,8 @@ export class InterfaceController {
     this.mouseActivityCooldown = 0;
     this.playbackRate = 10;
 
+    this.skipSegments = [];
+
     this.hasShownSkip = false;
     this.failed = false;
 
@@ -146,6 +148,7 @@ export class InterfaceController {
     DOMElements.progressLoadedContainer.replaceChildren();
     this.progressCache = [];
     this.progressCacheAudio = [];
+    this.skipSegments = [];
     this.hasShownSkip = false;
     this.failed = false;
     this.setStatusMessage('error', null, 'error');
@@ -1048,8 +1051,6 @@ export class InterfaceController {
     }
   }
   skipSegment() {
-    if (!this.skipSegments) return;
-
     const time = this.client.currentTime;
     const currentSegment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
     this.client.currentTime = currentSegment.endTime;
@@ -1163,14 +1164,23 @@ export class InterfaceController {
 
     const time = this.client.duration * currentX / totalWidth;
     const chapter = this.client.chapters.find((chapter) => chapter.startTime <= time && chapter.endTime >= time);
+    const segment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
 
     let text = '';
+    let offset = 25;
+
+    if (segment) {
+      text += segment.name + '\n';
+      offset += 25;
+    }
+
     if (chapter) {
       text += chapter.name + '\n';
-      DOMElements.seekPreviewVideo.style.bottom = '50px';
-    } else {
-      DOMElements.seekPreviewVideo.style.bottom = '';
+      offset += 25;
     }
+
+    DOMElements.seekPreviewVideo.style.bottom = offset + 'px';
+
     text += StringUtils.formatTime(time);
     DOMElements.seekPreviewText.innerText = text;
 
@@ -1341,6 +1351,7 @@ export class InterfaceController {
         startTime: Utils.clamp(introMatch.startTime, 0, duration),
         endTime: Utils.clamp(introMatch.endTime, 0, duration),
         class: 'intro',
+        name: 'Intro',
         skipText: Localize.getMessage('player_skipintro'),
       });
     }
@@ -1350,6 +1361,7 @@ export class InterfaceController {
         startTime: Utils.clamp(outroMatch.startTime, 0, duration),
         endTime: Utils.clamp(outroMatch.endTime, 0, duration),
         class: 'outro',
+        name: 'Outro',
         skipText: Localize.getMessage('player_skipoutro'),
       });
     }

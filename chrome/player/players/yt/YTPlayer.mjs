@@ -146,6 +146,7 @@ export default class YTPlayer extends DashPlayer {
               endTime: segment.segment[1],
               class: 'sponsor_block_' + segment.category,
               category: segment.category,
+              name: segment.category.charAt(0)?.toUpperCase() + segment.category.substring(1),
               color: segment.color,
               skipText: 'Skip ' + segment.category,
               autoSkip: !!segment.autoSkip,
