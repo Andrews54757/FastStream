@@ -138,6 +138,12 @@ chrome.runtime.onMessage.addListener(
             console.log('replacing video with iframe');
             sendResponse('replace');
           }
+
+          if (isYt) {
+            setTimeout(() => {
+              updatePlayerStyles();
+            }, 100);
+          }
         });
         OverridenYTKeys = true;
         return true;
@@ -183,10 +189,11 @@ function hideYT(player) {
 }
 
 function showYT(player) {
-  player.style.setProperty('position', '');
-  player.style.setProperty('top', '');
-  player.style.setProperty('left', '');
+  player.style.position = '';
+  player.style.top = '';
+  player.style.left = '';
 }
+
 // eslint-disable-next-line camelcase
 function get_yt_identifier(urlStr) {
   try {
