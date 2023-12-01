@@ -87,7 +87,7 @@ export default class DashPlayer extends EventEmitter {
       // Get best quality but within screen resolution
       this.levels.forEach((level, key) => {
         if (level.bitrate > max) {
-          if (level.width > window.innerWidth * window.devicePixelRatio * 2 || level.height > window.innerHeight * window.devicePixelRatio * 2) return;
+          if (level.width > window.innerWidth * window.devicePixelRatio || level.height > window.innerHeight * window.devicePixelRatio) return;
           max = level.bitrate;
           maxLevel = key;
         }
