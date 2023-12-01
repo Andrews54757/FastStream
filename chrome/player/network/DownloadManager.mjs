@@ -1,4 +1,5 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
+import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {DownloadEntry} from './DownloadEntry.mjs';
 import {IndexedDBManager} from './IndexedDBManager.mjs';
@@ -231,7 +232,8 @@ export class DownloadManager {
               this.speedTestBuffer = [];
 
               if (speed > this.lastSpeed) {
-                if (this.downloaders.length < 6) {
+                const maxDownloaders = (this.client?.source?.mode === PlayerModes.ACCELERATED_YT) ? 3 : 6;
+                if (this.downloaders.length < maxDownloaders) {
                   console.log('Adding downloader, speed: ' + speed);
                   this.downloaders.push(new StandardDownloader(this));
                   this.lastSpeed = speed;
