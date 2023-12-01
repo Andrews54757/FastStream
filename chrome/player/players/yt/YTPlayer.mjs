@@ -3,6 +3,7 @@ import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {URLUtils} from '../../utils/URLUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
 
