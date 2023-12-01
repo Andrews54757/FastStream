@@ -360,11 +360,19 @@ function isVisible(domElement) {
 
 function getParentElementsWithSameBounds(element) {
   const elements = [];
+  const tolerance = 4;
+
   while (element.parentElement) {
     const parent = element.parentElement;
     const rect = element.getBoundingClientRect();
     const parentRect = parent.getBoundingClientRect();
-    if (rect.top === parentRect.top && rect.left === parentRect.left && rect.right === parentRect.right && rect.bottom === parentRect.bottom) {
+    console.log(rect, parentRect);
+    if (
+      Math.abs(rect.x - parentRect.x) < tolerance &&
+      Math.abs(rect.y - parentRect.y) < tolerance &&
+      Math.abs(rect.width - parentRect.width) < tolerance &&
+      Math.abs(rect.height - parentRect.height) < tolerance
+    ) {
       elements.push(parent);
     } else {
       break;
