@@ -10,6 +10,18 @@ ModesMap.set('m3u', PlayerModes.ACCELERATED_HLS);
 ModesMap.set('mpd', PlayerModes.ACCELERATED_DASH);
 
 export class URLUtils {
+  static get_yt_identifier(urlStr) {
+    try {
+      const url = new URL(urlStr);
+      let identifier = url.searchParams.get('v');
+      if (!identifier) {
+        identifier = url.pathname.split('/').pop();
+      }
+      return identifier;
+    } catch (e) {
+      return '';
+    }
+  }
   static is_url_yt(urlStr) {
     if (!urlStr) return false;
     try {

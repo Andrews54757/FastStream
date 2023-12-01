@@ -788,6 +788,10 @@ export class FastStreamClient extends EventEmitter {
     this.context.on(DefaultPlayerEvents.FRAGMENT_UPDATE, () => {
       this.interfaceController.updateFragmentsLoaded();
     });
+
+    this.context.on(DefaultPlayerEvents.SKIP_SEGMENTS, () => {
+      this.interfaceController.updateSkipSegments();
+    });
   }
 
   bindPreviewPlayer(player) {

@@ -898,6 +898,10 @@ body {
     background-color: var(--intro-outro-bar-color);
 }
 
+.intro_outro_container > .skip_segment {
+    min-width: 3px;
+}
+
 .intro_outro_container > div.chapter {
     background-color: rgb(0,0,0,0.3);
     border-radius: 0px;

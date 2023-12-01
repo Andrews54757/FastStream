@@ -9,6 +9,7 @@ import DashPlayer from '../dash/DashPlayer.mjs';
 
 // SPLICER:CENSORYT:REMOVE_START
 import {AcornMachine} from '../../modules/acorn-machine.mjs';
+import {URLUtils} from '../../utils/URLUtils.mjs';
 // SPLICER:CENSORYT:REMOVE_END
 
 
@@ -97,10 +98,10 @@ export default class YTPlayer extends DashPlayer {
       this.emit(DefaultPlayerEvents.ERROR, e);
     });
 
-    const url = new URL(source.url);
-    let identifier = url.searchParams.get('v');
+    const identifier = URLUtils.get_yt_identifier(source.url);
     if (!identifier) {
-      identifier = url.pathname.split('/').pop();
+      this.emit(DefaultPlayerEvents.ERROR, new Error('Invalid YouTube URL'));
+      return;
     }
 
     try {
@@ -232,6 +233,8 @@ export default class YTPlayer extends DashPlayer {
               },
             };
           });
+
+          this.emit(DefaultPlayerEvents.SKIP_SEGMENTS);
         }
       });
     }

@@ -47,15 +47,27 @@ chrome.runtime.onMessage.addListener(
         return true;
       } else if (request.type === 'scrape_sponsorblock') {
         if (!FoundYTPlayer) {
+          console.error('no player found');
           sendResponse({
             error: 'no_player',
           });
           return;
         }
 
+        const playerID = get_yt_identifier(window.location.href);
+        if (playerID !== request.videoId) {
+          console.error('ID mismatch', playerID, request.videoId);
+          sendResponse({
+            error: 'id_mismatch',
+          });
+          return;
+        }
+
         try {
-          const segments = scrapeSponsorBlock();
-          sendResponse({segments});
+          scrapeSponsorBlock().then((segments) => {
+            sendResponse({segments});
+          });
+          return true;
         } catch (e) {
           console.error(e);
           sendResponse({error: e.message});
@@ -103,7 +115,7 @@ chrome.runtime.onMessage.addListener(
           // copy styles
             const iframe = document.createElement('iframe');
             iframe.src = request.url;
-            updateIframeStyle(video.highest, iframe);
+            updateIframeStyle(video.highest, iframe, isYt);
 
             iframe.allowFullscreen = true;
             iframe.allow = 'autoplay; fullscreen; picture-in-picture';
@@ -113,7 +125,7 @@ chrome.runtime.onMessage.addListener(
 
             if (isYt) {
               video.highest.parentElement.insertBefore(iframe, video.highest);
-              video.highest.style.setProperty('display', 'none', 'important');
+              hideYT(video.highest);
             } else {
               video.highest.parentElement.replaceChild(iframe, video.highest);
             }
@@ -132,7 +144,7 @@ chrome.runtime.onMessage.addListener(
       } else if (request.type === 'remove_players') {
         players.forEach((player) => {
           if (player.isYt) {
-            player.old.style.display = '';
+            showYT(player.old);
             player.iframe.parentElement.removeChild(player.iframe);
           } else {
             player.iframe.parentElement.replaceChild(player.old, player.iframe);
@@ -163,14 +175,40 @@ window.addEventListener('resize', () => {
   updatePlayerStyles();
 });
 
+
+function hideYT(player) {
+  player.style.setProperty('position', 'fixed', 'important');
+  player.style.setProperty('top', '-10000px', 'important');
+  player.style.setProperty('left', '-10000px', 'important');
+}
+
+function showYT(player) {
+  player.style.setProperty('position', '');
+  player.style.setProperty('top', '');
+  player.style.setProperty('left', '');
+}
+// eslint-disable-next-line camelcase
+function get_yt_identifier(urlStr) {
+  try {
+    const url = new URL(urlStr);
+    let identifier = url.searchParams.get('v');
+    if (!identifier) {
+      identifier = url.pathname.split('/').pop();
+    }
+    return identifier;
+  } catch (e) {
+    return '';
+  }
+}
+
 function updatePlayerStyles() {
   players.forEach((player) => {
     const parent = player.iframe.parentElement;
     player.iframe.style.display = 'none';
     if (player.isYt) {
-      player.old.style.display = '';
-      updateIframeStyle(player.old, player.iframe);
-      player.old.style.setProperty('display', 'none', 'important');
+      showYT(player.old);
+      updateIframeStyle(player.old, player.iframe, true);
+      hideYT(player.old);
     } else {
       parent.insertBefore(player.old, player.iframe);
       updateIframeStyle(player.old, player.iframe);
@@ -204,7 +242,7 @@ function removePauseListeners(element) {
   });
 }
 
-function updateIframeStyle(old, iframe) {
+function updateIframeStyle(old, iframe, isYt) {
   const styles = window.getComputedStyle(old);
   const rect = old.getBoundingClientRect();
 
@@ -323,7 +361,7 @@ function getParentElementsWithSameBounds(element) {
 }
 
 
-function scrapeSponsorBlock() {
+async function scrapeSponsorBlock() {
   const progressBar = document.querySelector('.ytp-progress-bar');
   if (!progressBar) {
     throw new Error('Could not find progress bar');
@@ -337,25 +375,58 @@ function scrapeSponsorBlock() {
     throw new Error('Could not find duration');
   }
 
+  const result = getSponsorSegments(duration);
+  if (result.length > 0) {
+    return result;
+  }
+  return new Promise((resolve, reject) => {
+    let debounceTimeout = null;
+    let timeoutTimeout = null;
+    const observer = new MutationObserver((mutations) => {
+      if (debounceTimeout) {
+        clearTimeout(debounceTimeout);
+      }
+      debounceTimeout = setTimeout(() => {
+        const segments = getSponsorSegments(duration);
+        if (segments.length > 0) {
+          clearTimeout(timeoutTimeout);
+          observer.disconnect();
+          resolve(segments);
+        }
+      }, 100);
+
+      timeoutTimeout = setTimeout(() => {
+        observer.disconnect();
+        reject(new Error('Timed out'));
+      }, 5000);
+    });
+    observer.observe(progressBar, {attributes: false, childList: true, characterData: false, subtree: true});
+  });
+}
+
+function getSponsorSegments(duration) {
   const sponsorBlockSegments = document.querySelectorAll('#previewbar .previewbar');
   const segments = [];
 
   for (const segment of sponsorBlockSegments) {
+    const category = segment.getAttribute('sponsorblock-category') || 'unknown';
+    if (category === 'chapter') {
+      continue;
+    }
     const start = parseFloat(segment.style.left) / 100 * duration;
     const end = parseFloat(segment.style.right) / 100 * duration;
     let segDuration = 1;
-    if (end) {
+    if (segment.style.right !== '') {
       segDuration = (duration - end) - start;
     }
 
     const startTime = start;
     const endTime = start + segDuration;
-    const cateogy = segment.getAttribute('sponsorblock-category') || 'unknown';
     const color = window.getComputedStyle(segment).backgroundColor;
 
     segments.push({
       segment: [startTime, endTime],
-      category: cateogy,
+      category: category,
       autoSkip: false,
       color,
     });

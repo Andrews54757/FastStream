@@ -124,4 +124,9 @@ export const DefaultPlayerEvents = {
    * Fired when the player requests a key (DRM not supported)
    */
   NEED_KEY: 'needkey',
+
+  /**
+   * Fired when the player has skip segments
+   */
+  SKIP_SEGMENTS: 'skipsegments',
 };

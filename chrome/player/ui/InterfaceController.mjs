@@ -830,6 +830,7 @@ export class InterfaceController {
       this.stopProgressLoop();
     }
     this.updateProgress();
+    this.updateSkipSegments();
   }
 
   runProgressLoop() {
@@ -1329,6 +1330,9 @@ export class InterfaceController {
     const introMatch = this.client.videoAnalyzer.getIntro();
     const outroMatch = this.client.videoAnalyzer.getOutro();
     const duration = this.client.duration;
+    if (!duration) {
+      return;
+    }
 
     const skipSegments = [];
 
@@ -1367,6 +1371,11 @@ export class InterfaceController {
       segmentElement.classList.add(segment.class);
       segmentElement.style.left = segment.startTime / duration * 100 + '%';
       segmentElement.style.width = (segment.endTime - segment.startTime) / duration * 100 + '%';
+
+      if (segment.color) {
+        segmentElement.style.backgroundColor = segment.color;
+      }
+
       DOMElements.skipSegmentsContainer.appendChild(segmentElement);
 
       if (!currentSegment && time >= segment.startTime && time < segment.endTime) {

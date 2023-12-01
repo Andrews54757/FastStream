@@ -192,11 +192,11 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       // send message to parent frame
       chrome.tabs.sendMessage(frame.tab.tabId, {
         type: 'scrape_sponsorblock',
+        videoId: msg.videoId,
       }, {
         frameId: frame.parentId,
       }, (response) => {
         if (response.error) {
-          console.error(response.error);
           sendResponse(null);
           return;
         } else {
