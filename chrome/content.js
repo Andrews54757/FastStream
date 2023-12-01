@@ -347,7 +347,6 @@ function querySelectorAllIncludingShadows(query, currentElement = document.body,
   return results;
 }
 
-
 function isVisible(domElement) {
   return new Promise((resolve) => {
     const o = new IntersectionObserver(([entry]) => {
@@ -366,7 +365,6 @@ function getParentElementsWithSameBounds(element) {
     const parent = element.parentElement;
     const rect = element.getBoundingClientRect();
     const parentRect = parent.getBoundingClientRect();
-    console.log(rect, parentRect);
     if (
       Math.abs(rect.x - parentRect.x) < tolerance &&
       Math.abs(rect.y - parentRect.y) < tolerance &&
