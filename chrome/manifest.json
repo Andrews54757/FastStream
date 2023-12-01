@@ -59,6 +59,6 @@
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
   },
-  "minimum_chrome_version": "114",
+  "minimum_chrome_version": "109",
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAny7rPqvlmH32Q5aHLTDHl+QfrXMaCMrHjiCb85iS+82Y9BTbczgbReB9mJs0kDLI0Nk2OHP0ivoCyMf4aEJPg8NQbxuNGQL6mwmLeiXPElEpEKmxsaXjzxuxe++dBwWwvG4hdUXz/gJPpRcINzKjeGOKMo4OmH2WtKZelbeayjkZVDcY/BjHZ3iiLH9y2iaoDuaq/2wc5B0rW1S5c7X63YuA6uRQdMddiQf9d+C6dNyQz0stM/O/nXfD8hczXjPOO8nUbKnPCeePqg7Q1kFUKIror4YFEfHhIIrdMarHO2pXFmZ46bqygQxsndWH2BwHng17qiVsIAmnA+lBCfkfwwIDAQAB"
 }
