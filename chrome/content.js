@@ -66,6 +66,9 @@ chrome.runtime.onMessage.addListener(
         try {
           scrapeSponsorBlock().then((segments) => {
             sendResponse({segments});
+          }).catch((e) => {
+            console.error(e);
+            sendResponse({error: e.message});
           });
           return true;
         } catch (e) {
@@ -139,10 +142,13 @@ chrome.runtime.onMessage.addListener(
             sendResponse('replace');
           }
 
+
           if (isYt) {
-            setTimeout(() => {
-              updatePlayerStyles();
-            }, 100);
+            for (let i = 1; i <= 10; i++) {
+              setTimeout(() => {
+                updatePlayerStyles();
+              }, i * 100);
+            }
           }
         });
         OverridenYTKeys = true;
@@ -184,8 +190,8 @@ window.addEventListener('resize', () => {
 
 function hideYT(player) {
   player.style.setProperty('position', 'fixed', 'important');
-  player.style.setProperty('top', '-10000px', 'important');
-  player.style.setProperty('left', '-10000px', 'important');
+  player.style.setProperty('top', '-100%', 'important');
+  player.style.setProperty('left', '-100%', 'important');
 }
 
 function showYT(player) {
