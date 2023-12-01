@@ -144,7 +144,7 @@ chrome.runtime.onMessage.addListener(
 
 
           if (isYt) {
-            for (let i = 1; i <= 10; i++) {
+            for (let i = 1; i <= 4; i++) {
               setTimeout(() => {
                 updatePlayerStyles();
               }, i * 100);
