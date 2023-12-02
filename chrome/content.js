@@ -187,22 +187,13 @@ window.addEventListener('resize', () => {
   updatePlayerStyles();
 });
 
-
 function hideYT(player) {
   player.style.setProperty('display', 'none', 'important');
-  // player.style.setProperty('position', 'fixed', 'important');
-  // player.style.setProperty('right', '-100%', 'important');
-  // player.style.setProperty('bottom', '-100%', 'important');
-  // document.getElementById('player-container-outer')?.style.setProperty('min-width', '1px', 'important');
   document.querySelector('.ytp-progress-bar')?.classList.add('vjs-progress-holder');
 }
 
 function showYT(player) {
   player.style.display = '';
-  // player.style.position = '';
-  // player.style.right = '';
-  // player.style.bottom = '';
-//  document.getElementById('player-container-outer')?.style.setProperty('min-width', '');
 }
 
 // eslint-disable-next-line camelcase
@@ -570,6 +561,17 @@ function getKeyString(e) {
   return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
 }
 
+function isActiveElementEditable() {
+  const activeElement = document.activeElement;
+  if (!activeElement) {
+    return false;
+  }
+  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) {
+    return true;
+  }
+  return false;
+}
+
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations) => {
     const isWatch = is_url_yt_watch(window.location.href);
@@ -610,6 +612,10 @@ if (is_url_yt(window.location.href)) {
   ];
 
   document.addEventListener('keydown', (e) => {
+    if (isActiveElementEditable()) {
+      return;
+    }
+
     chrome.runtime.sendMessage({
       type: 'transmit_key',
       key: getKeyString(e),
@@ -622,6 +628,10 @@ if (is_url_yt(window.location.href)) {
   }, true);
 
   document.addEventListener('keyup', (e) => {
+    if (isActiveElementEditable()) {
+      return;
+    }
+
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -629,6 +639,10 @@ if (is_url_yt(window.location.href)) {
   }, true);
 
   document.addEventListener('keypress', (e) => {
+    if (isActiveElementEditable()) {
+      return;
+    }
+
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
