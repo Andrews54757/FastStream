@@ -34,8 +34,10 @@ export class SubtitlesManager {
     }
 
     const defLang = this.settingsManager.getSettings()['default-lang'];
-    if (autoset && this.client.options.autoEnableBestSubtitles && subtitleTrack.language === defLang && this.activeTracks.length === 0) {
-      this.activateTrack(subtitleTrack);
+    if (autoset && this.activeTracks.length === 0 && this.client.options.autoEnableBestSubtitles) {
+      if (subtitleTrack.language && subtitleTrack.language.substring(0, defLang.length) === defLang) {
+        this.activateTrack(subtitleTrack);
+      }
     }
 
     return returnedTrack;
