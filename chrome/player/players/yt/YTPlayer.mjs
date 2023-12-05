@@ -20,14 +20,13 @@ export default class YTPlayer extends DashPlayer {
     }
 
     try {
-      let videoInfo = await this.getVideoInfo(identifier);
-      this.videoInfo = videoInfo;
+      this.videoInfo = await this.getVideoInfo(identifier);
 
-      if (videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
-        videoInfo = await this.getVideoInfo(identifier, true);
+      if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
+        this.videoInfo = await this.getVideoInfo(identifier, true);
       }
 
-      const manifest = await videoInfo.toDash((url) => {
+      const manifest = await this.videoInfo.toDash((url) => {
         return url;
       });
       this.oldSource = source;
@@ -133,7 +132,7 @@ export default class YTPlayer extends DashPlayer {
       clientType: tvMode ? ClientType.TV_EMBEDDED : ClientType.WEB,
     });
 
-    return tvMode ? youtube.getBasicInfo(identifier, 'TV_EMBEDDED') : youtube.getInfo(identifier);
+    return youtube.getInfo(identifier, tvMode ? 'TV_EMBEDDED' : 'WEB');
   }
 
   fetchSponsorBlock(identifier) {
