@@ -1,6 +1,6 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {Innertube, UniversalCache} from '../../modules/yt.mjs';
+import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
@@ -13,80 +13,6 @@ export default class YTPlayer extends DashPlayer {
   }
 
   async setSource(source) {
-    const youtube = await Innertube.create({
-      cache: !EnvUtils.isIncognito() ? new UniversalCache() : undefined,
-      fetch: async (input, init) => {
-        // url
-        const url = typeof input === 'string' ?
-                    new URL(input) :
-                    input instanceof URL ?
-                        input :
-                        new URL(input.url);
-
-        // transform the url for use with our proxy
-        // url.searchParams.set('__host', url.host);
-        // url.host = 'localhost:8080';
-        // url.protocol = 'http';
-
-        const headers = init?.headers ?
-                    new Headers(init.headers) :
-                    input instanceof Request ?
-                        input.headers :
-                        new Headers();
-
-        const redirectHeaders = [
-          'user-agent',
-          'origin',
-          'referer',
-        ];
-        // now serialize the headers
-        let headersArr = [...headers];
-        const customHeaderCommands = [];
-        headersArr = headersArr.filter((header) => {
-          const name = header[0];
-          const value = header[1];
-          if (redirectHeaders.includes(name.toLowerCase())) {
-            customHeaderCommands.push({
-              operation: 'set',
-              header: name,
-              value,
-            });
-            return false;
-          }
-          return true;
-        });
-        const newHeaders = new Headers(headersArr);
-        if (!customHeaderCommands.find((c) => c.header === 'origin')) {
-          customHeaderCommands.push({
-            operation: 'remove',
-            header: 'origin',
-          });
-        }
-
-        customHeaderCommands.push({
-          operation: 'remove',
-          header: 'x-client-data',
-        });
-
-        if (EnvUtils.isExtension()) {
-          await chrome.runtime.sendMessage({
-            type: 'header_commands',
-            url: url.toString(),
-            commands: customHeaderCommands,
-          });
-        }
-        // fetch the url
-        return fetch(input, init ? {
-          ...init,
-          headers: newHeaders,
-        } : {
-          headers: newHeaders,
-        });
-      },
-    }).catch((e)=>{
-      this.emit(DefaultPlayerEvents.ERROR, e);
-    });
-
     const identifier = URLUtils.get_yt_identifier(source.url);
     if (!identifier) {
       this.emit(DefaultPlayerEvents.ERROR, new Error('Invalid YouTube URL'));
@@ -94,9 +20,13 @@ export default class YTPlayer extends DashPlayer {
     }
 
     try {
-      const videoInfo = await youtube.getInfo(identifier);
-      this.youtube = youtube;
+      let videoInfo = await this.getVideoInfo(identifier);
       this.videoInfo = videoInfo;
+
+      if (videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
+        videoInfo = await this.getVideoInfo(identifier, true);
+      }
+
       const manifest = await videoInfo.toDash((url) => {
         return url;
       });
@@ -129,6 +59,81 @@ export default class YTPlayer extends DashPlayer {
 
     this.extractChapters();
     this.fetchSponsorBlock(identifier);
+  }
+
+  async youtubeFetch(input, init) {
+    // url
+    const url = typeof input === 'string' ?
+                  new URL(input) :
+                  input instanceof URL ?
+                      input :
+                      new URL(input.url);
+
+    const headers = init?.headers ?
+                  new Headers(init.headers) :
+                  input instanceof Request ?
+                      input.headers :
+                      new Headers();
+
+    const redirectHeaders = [
+      'user-agent',
+      'origin',
+      'referer',
+    ];
+      // now serialize the headers
+    let headersArr = [...headers];
+    const customHeaderCommands = [];
+    headersArr = headersArr.filter((header) => {
+      const name = header[0];
+      const value = header[1];
+      if (redirectHeaders.includes(name.toLowerCase())) {
+        customHeaderCommands.push({
+          operation: 'set',
+          header: name,
+          value,
+        });
+        return false;
+      }
+      return true;
+    });
+    const newHeaders = new Headers(headersArr);
+    if (!customHeaderCommands.find((c) => c.header === 'origin')) {
+      customHeaderCommands.push({
+        operation: 'remove',
+        header: 'origin',
+      });
+    }
+
+    customHeaderCommands.push({
+      operation: 'remove',
+      header: 'x-client-data',
+    });
+
+    if (EnvUtils.isExtension()) {
+      await chrome.runtime.sendMessage({
+        type: 'header_commands',
+        url: url.toString(),
+        commands: customHeaderCommands,
+      });
+    }
+    // fetch the url
+    return fetch(input, init ? {
+      ...init,
+      headers: newHeaders,
+    } : {
+      headers: newHeaders,
+    });
+  }
+
+  async getVideoInfo(identifier, tvMode = false) {
+    const cache = !EnvUtils.isIncognito() ? new UniversalCache() : undefined;
+    const youtube = await Innertube.create({
+      cache,
+      fetch: this.youtubeFetch.bind(this),
+      clientType: tvMode ? ClientType.TV_EMBEDDED : ClientType.WEB,
+    });
+
+    return tvMode ? youtube.getBasicInfo(identifier, 'TV_EMBEDDED') : youtube.getInfo(identifier);
   }
 
   fetchSponsorBlock(identifier) {

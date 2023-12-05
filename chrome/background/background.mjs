@@ -188,7 +188,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
     }
   } else if (msg.type === 'sponsor_block') {
-    if (msg.action === 'getSkipSegments') {
+    if (msg.action === 'getSkipSegments' && frame.frameId !== 0) {
       // send message to parent frame
       chrome.tabs.sendMessage(frame.tab.tabId, {
         type: 'scrape_sponsorblock',
