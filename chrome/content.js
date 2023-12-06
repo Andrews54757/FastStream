@@ -600,8 +600,6 @@ if (is_url_yt(window.location.href)) {
 
   const OverrideList = [
     'Space', 'KeyP', // play/pause
-    'ArrowUp',
-    'ArrowDown',
     'ArrowLeft', 'ArrowRight', // seek
     'KeyF', // fullscreen
     'KeyM', // mute
