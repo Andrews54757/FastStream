@@ -42,9 +42,9 @@ It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addo
 
 ## Demo
 
-See the player in action without installing the extension! Tested in Chrome, Firefox, and Safari. Note: Some features (OpenSubtitles/header override) are not available without installation. Settings doesn't update live. Additionally, audio configuration doesn't work in Safari.
+See the player in action without installing the extension! Tested in Chrome, Firefox, and Safari. Note: Some features (OpenSubtitles/header override) are not available without installation. Additionally, audio configuration doesn't work in Safari.
 
-[Web Version + Big Buck Bunny](https://andrews54757.github.io/FastStream/built/web/player/player.html#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
+[Web Version + Big Buck Bunny](https://faststream.online/player/player.html#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
 ## Manual Installation For Chrome
 

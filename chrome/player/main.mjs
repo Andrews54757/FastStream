@@ -280,6 +280,8 @@ async function setup() {
 
     // if not extension context then use iframe messager
     window.addEventListener('message', (e) => {
+      if (e.origin !== window.location.origin) return;
+
       if (e.data?.type === 'options') {
         window.fastStream.setOptions(JSON.parse(e.data.options));
       } else if (e.data?.type === 'sources') {
