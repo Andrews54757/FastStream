@@ -1,4 +1,4 @@
-import {Localize} from './player/modules/Localize.mjs';
+import {Localize} from './modules/Localize.mjs';
 
 window.getI18nMessage = Localize.getMessage;
 

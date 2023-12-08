@@ -14,7 +14,7 @@ let Options = {};
 const AutoEnableList = [];
 const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
-const PlayerURL = chrome.runtime.getURL('player/player.html');
+const PlayerURL = chrome.runtime.getURL('player/index.html');
 const CachedTabs = {};
 
 const sponsorBlockBackend = new SponsorBlockIntegration();

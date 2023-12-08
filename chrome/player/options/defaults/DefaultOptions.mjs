@@ -1,4 +1,4 @@
-import {EnvUtils} from '../../player/utils/EnvUtils.mjs';
+import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {DefaultKeybinds} from './DefaultKeybinds.mjs';
 
 export const DefaultOptions = {

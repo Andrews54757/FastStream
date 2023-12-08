@@ -6,7 +6,7 @@
   "version": "1.2.8",
   "author": "Andrew S",
   "options_ui": {
-    "page": "options/options.html",
+    "page": "player/options/index.html",
     "open_in_tab": false
   },
   "icons": {
@@ -47,8 +47,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "player/player.html",
-        "options/options.html",
+        "player/index.html",
+        "player/options/index.html",
         "temp/*"
       ],
       "matches": [

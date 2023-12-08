@@ -320,6 +320,7 @@ async function buildWeb() {
     'icon2_128.png',
     'icon16.png',
     'icon48.png',
+    'keyboard.png',
   ]);
 
 

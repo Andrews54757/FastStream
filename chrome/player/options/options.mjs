@@ -1,8 +1,8 @@
-import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
-import {EnvUtils} from '../player/utils/EnvUtils.mjs';
-import {StringUtils} from '../player/utils/StringUtils.mjs';
-import {Utils} from '../player/utils/Utils.mjs';
-import {WebUtils} from '../player/utils/WebUtils.mjs';
+import {DefaultKeybinds} from './defaults/DefaultKeybinds.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
+import {StringUtils} from '../utils/StringUtils.mjs';
+import {Utils} from '../utils/Utils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');

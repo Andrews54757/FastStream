@@ -1,4 +1,4 @@
-import {DefaultOptions} from '../../options/defaults/DefaultOptions.mjs';
+import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 
 export class Utils {

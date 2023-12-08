@@ -1,4 +1,4 @@
-import {DefaultKeybinds} from '../../options/defaults/DefaultKeybinds.mjs';
+import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
