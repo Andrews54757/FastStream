@@ -14,6 +14,7 @@ export default class HLSPlayer extends EventEmitter {
     super();
     this.client = client;
     this.isPreview = config?.isPreview || false;
+    this.qualityMultiplier = config?.qualityMultiplier || 1.1;
     this.source = null;
     this.fragmentRequester = new HLSFragmentRequester(this);
     this.video = document.createElement('video');
@@ -201,17 +202,8 @@ export default class HLSPlayer extends EventEmitter {
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      let max = -1;
-      let maxLevel = undefined;
-      // Get best quality but within screen resolution
-      this.levels.forEach((level, key) => {
-        if (level.bitrate > max) {
-          if (level.width > window.innerWidth * window.devicePixelRatio * 1.2 || level.height > window.innerHeight * window.devicePixelRatio * 1.2) return;
-          max = level.bitrate;
-          maxLevel = key;
-        }
-      });
-      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
+      const level = Utils.selectQuality(this.levels, this.qualityMultiplier);
+      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
 
       this.hls.subtitleDisplay = false;
       this.hls.subtitleTrack = -1;

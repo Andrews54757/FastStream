@@ -17,6 +17,8 @@ const maxSpeed = document.getElementById('maxspeed');
 const seekStepSize = document.getElementById('seekstepsize');
 const playbackRate = document.getElementById('playbackrate');
 const clickToPause = document.getElementById('clicktopause');
+const autoplayYoutube = document.getElementById('autoplayyt');
+const qualityMultiplier = document.getElementById('qualitymultiplier');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -45,9 +47,11 @@ async function loadOptions(newOptions) {
   playMP4URLs.checked = !!Options.playMP4URLs;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   clickToPause.checked = !!Options.clickToPause;
+  autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   playbackRate.value = Options.playbackRate;
+  qualityMultiplier.value = Options.qualityMultiplier;
 
   if (Options.keybinds) {
     keybindsList.replaceChildren();
@@ -191,6 +195,11 @@ freeUnusedChannels.addEventListener('change', () => {
   optionChanged();
 });
 
+autoplayYoutube.addEventListener('change', () => {
+  Options.autoplayYoutube = autoplayYoutube.checked;
+  optionChanged();
+});
+
 clickToPause.addEventListener('change', () => {
   Options.clickToPause = clickToPause.checked;
   optionChanged();
@@ -210,6 +219,11 @@ seekStepSize.addEventListener('change', () => {
 
 playbackRate.addEventListener('change', () => {
   Options.playbackRate = parseFloat(playbackRate.value) || 1;
+  optionChanged();
+});
+
+qualityMultiplier.addEventListener('change', () => {
+  Options.qualityMultiplier = Math.max(parseFloat(qualityMultiplier.value) || 1, 0.01);
   optionChanged();
 });
 

@@ -41,6 +41,7 @@ export class FastStreamClient extends EventEmitter {
       videoHueRotate: 0,
       seekStepSize: 0.2,
       defaultPlaybackRate: 1,
+      qualityMultiplier: 1,
     };
     this.persistent = {
       playing: false,
@@ -126,6 +127,8 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoSepia = options.videoSepia;
     this.options.videoInvert = options.videoInvert;
     this.options.videoHueRotate = options.videoHueRotate;
+
+    this.options.qualityMultiplier = options.qualityMultiplier;
 
     if (this.persistent.playbackRate === this.options.defaultPlaybackRate) {
       this.playbackRate = options.playbackRate;
@@ -325,7 +328,10 @@ export class FastStreamClient extends EventEmitter {
     const estimate = await navigator.storage.estimate();
     this.storageAvailable = estimate.quota - estimate.usage;
 
-    this.player = await this.playerLoader.createPlayer(source.mode, this);
+    this.player = await this.playerLoader.createPlayer(source.mode, this, {
+      qualityMultiplier: this.options.qualityMultiplier,
+    });
+
     await this.player.setup();
 
     this.bindPlayer(this.player);

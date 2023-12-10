@@ -690,6 +690,12 @@
     "options_general_clickpause": {
         "message": "シングルクリックで再生/一時停止を切り替えます"
     },
+    "options_general_autoplayyt": {
+        "message": "YouTube 動画の自動再生"
+    },
+    "options_general_quality": {
+        "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
+    },
     "options_keybinds_header": {
         "message": "キーボードショートカット"
     },

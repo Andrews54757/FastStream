@@ -690,6 +690,12 @@
     "options_general_clickpause": {
         "message": "Single click toggles play/pause"
     },
+    "options_general_autoplayyt": {
+        "message": "Autoplay YouTube videos"
+    },
+    "options_general_quality": {
+        "message": "Quality multiplier factor for quality selection algorithm (higher will choose higher quality)"
+    },
     "options_keybinds_header": {
         "message": "Keyboard Shortcuts"
     },

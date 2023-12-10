@@ -689,6 +689,12 @@
     "options_general_clickpause": {
         "message": "Un solo clic alterna reproducir/pausar"
     },
+    "options_general_autoplayyt": {
+        "message": "Reproducir automáticamente videos de YouTube incrustados"
+    },
+    "options_general_quality": {
+        "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
+    },
     "options_keybinds_header": {
         "message": "Atajos de Teclado"
     },

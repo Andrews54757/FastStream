@@ -110,4 +110,33 @@ export class Utils {
       }
     });
   }
+
+  static selectQuality(levels, qualityMultiplier) {
+    let max = -1;
+    let maxLevel = undefined;
+    let min = Number.MAX_SAFE_INTEGER;
+    let minLevel = undefined;
+    // Get best quality but within screen resolution
+    levels.forEach((level, key) => {
+      if (level.bitrate > max) {
+        if (level.width > window.innerWidth * window.devicePixelRatio * qualityMultiplier && level.height > window.innerHeight * window.devicePixelRatio * qualityMultiplier) {
+
+        } else {
+          max = level.bitrate;
+          maxLevel = key;
+        }
+      }
+
+      if (level.bitrate < min) {
+        min = level.bitrate;
+        minLevel = key;
+      }
+    });
+
+    if (maxLevel === undefined) {
+      maxLevel = minLevel;
+    }
+
+    return maxLevel;
+  }
 }

@@ -14,6 +14,7 @@ export default class DashPlayer extends EventEmitter {
     this.client = client;
     this.video = document.createElement('video');
     this.isPreview = options?.isPreview || false;
+    this.qualityMultiplier = options?.qualityMultiplier || 1.1;
 
     this.fragmentRequester = new DashFragmentRequester(this);
   }
@@ -81,18 +82,8 @@ export default class DashPlayer extends EventEmitter {
       if (initAlready) return;
       initAlready = true;
 
-      let max = -1;
-      let maxLevel = undefined;
-
-      // Get best quality but within screen resolution
-      this.levels.forEach((level, key) => {
-        if (level.bitrate > max) {
-          if (level.width > window.innerWidth * window.devicePixelRatio * 1.2 || level.height > window.innerHeight * window.devicePixelRatio * 1.2) return;
-          max = level.bitrate;
-          maxLevel = key;
-        }
-      });
-      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, maxLevel);
+      const level = Utils.selectQuality(this.levels, this.qualityMultiplier);
+      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
     };
 
     this.dash.on('initialInit', (a) => {

@@ -9,6 +9,7 @@ export const DefaultOptions = {
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
   clickToPause: false,
+  autoplayYoutube: true,
   autoEnableURLs: [],
   keybinds: DefaultKeybinds,
   videoBrightness: 1,
@@ -21,4 +22,5 @@ export const DefaultOptions = {
   maxSpeed: 300 * 1000 * 1000,
   seekStepSize: 2,
   playbackRate: 1,
+  qualityMultiplier: 1.1,
 };

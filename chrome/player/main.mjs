@@ -113,7 +113,11 @@ async function recieveSources(request, sendResponse) {
     window.fastStream.clearSubtitles();
   }
 
-  if (autoPlaySource && autoPlaySource.mode === PlayerModes.ACCELERATED_YT && !URLUtils.is_url_yt_embed(autoPlaySource.url)) {
+  if (
+    autoPlaySource &&autoPlaySource.mode === PlayerModes.ACCELERATED_YT &&
+    !URLUtils.is_url_yt_embed(autoPlaySource.url) &&
+    OPTIONS.autoplayYoutube
+  ) {
     window.fastStream.setAutoPlay(true); // Enable autoplay for yt only. Not embeds.
   }
 
