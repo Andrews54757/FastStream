@@ -686,6 +686,8 @@ export class FastStreamClient extends EventEmitter {
 
     let autoPlayTriggered = false;
     this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
+      this.player.playbackRate = this.persistent.playbackRate;
+
       if (!autoPlayTriggered && this.options.autoPlay && this.persistent.playing === false) {
         autoPlayTriggered = true;
         this.play();
