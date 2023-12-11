@@ -678,7 +678,6 @@ async function onSourceRecieved(details, frame, mode) {
 
   const url = details.url;
   if (getSourceFromURL(frame, url)) return;
-
   addSource(frame, url, mode, frame.requestHeaders[details.requestId]);
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
@@ -779,7 +778,7 @@ chrome.webRequest.onHeadersReceived.addListener(
         }
       }
 
-      if (details.statusCode >= 400 && details.statusCode < 600) {
+      if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
         return; // Client or server error. Ignore it
       }
 
