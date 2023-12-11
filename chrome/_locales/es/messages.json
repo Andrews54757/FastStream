@@ -695,6 +695,15 @@
     "options_general_quality": {
         "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
     },
+    "options_export_header": {
+        "message": "Importar\/Exportar Configuraciones"
+    },
+    "options_import": {
+        "message": "Importar Configuraciones Desde Archivo"
+    },
+    "options_export": {
+        "message": "Exportar Configuraciones a Archivo"
+    },
     "options_keybinds_header": {
         "message": "Atajos de Teclado"
     },

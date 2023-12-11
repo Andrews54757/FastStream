@@ -696,6 +696,15 @@
     "options_general_quality": {
         "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
     },
+    "options_export_header": {
+        "message": "設定のインポート/エクスポート"
+    },
+    "options_import": {
+        "message": "ファイルから設定をインポート"
+    },
+    "options_export": {
+        "message": "設定をファイルにエクスポート"
+    },
     "options_keybinds_header": {
         "message": "キーボードショートカット"
     },

@@ -696,6 +696,15 @@
     "options_general_quality": {
         "message": "Quality multiplier factor for quality selection algorithm (higher will choose higher quality)"
     },
+    "options_export_header": {
+        "message": "Import/Export Settings"
+    },
+    "options_import": {
+        "message": "Import Settings From File"
+    },
+    "options_export": {
+        "message": "Export Settings To File"
+    },
     "options_keybinds_header": {
         "message": "Keyboard Shortcuts"
     },

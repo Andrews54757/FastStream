@@ -3,6 +3,7 @@ import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
+import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -19,6 +20,8 @@ const playbackRate = document.getElementById('playbackrate');
 const clickToPause = document.getElementById('clicktopause');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const qualityMultiplier = document.getElementById('qualitymultiplier');
+const importButton = document.getElementById('import');
+const exportButton = document.getElementById('export');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -243,6 +246,38 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 autoEnableURLSInput.addEventListener('input', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
   optionChanged();
+});
+
+importButton.addEventListener('click', () => {
+  const picker = document.createElement('input');
+  picker.type = 'file';
+  picker.accept = '.json';
+  picker.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const text = e.target.result;
+      const newOptions = Utils.mergeOptions(DefaultOptions, JSON.parse(text));
+      loadOptions(newOptions);
+      optionChanged();
+    };
+    reader.readAsText(file);
+  });
+  document.body.appendChild(picker);
+  picker.click();
+  picker.remove();
+});
+
+exportButton.addEventListener('click', async () => {
+  const blob = new Blob([JSON.stringify(Options, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'faststream-options.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 });
 
 function optionChanged() {
