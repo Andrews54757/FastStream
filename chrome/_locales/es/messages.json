@@ -696,7 +696,7 @@
         "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
     },
     "options_export_header": {
-        "message": "Importar\/Exportar Configuraciones"
+        "message": "Importar/Exportar Configuraciones"
     },
     "options_import": {
         "message": "Importar Configuraciones Desde Archivo"
