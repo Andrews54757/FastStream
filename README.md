@@ -30,9 +30,11 @@ To use the player, simply:
 3. Drag and drop files to the player to begin playing. Navigate to a new tab and press the extension icon to go to the player.
 
 Notes:
+- Livestreams are not supported. They will not be supported in the near future.
 - This player will not function with DRM protected content. This is intended.
 - This player is still a work-in-progress. Please report any bugs to the Github issue tracker here: https://github.com/Andrews54757/FastStream/issues
 - This extension does not collect telemetry of any kind. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
+- We take accessibility seriously. If you need accommodations not available in the current version, please contact us and we will work on it ASAP.
 
 ## Installation For Chrome and Firefox
 
