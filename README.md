@@ -49,7 +49,6 @@ See the player in action without installing the extension! Tested in Chrome, Fir
 [Web Version + Big Buck Bunny](https://faststream.online/player/#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
 ## Manual Installation For Chrome
-
 The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:
 
 1. Go to `chrome://extensions`
@@ -59,15 +58,19 @@ The Chrome extension store policies do not allow extensions that can download vi
 ### THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. If you go this route, please make sure to check back often for updates because I will often fix bugs as I encounter them. FastStream will remind you in the settings page, but you will have to update it manually.
 
 ## Manual Installation For Firefox
+The extension is, by default, configured to work on Chrome. You can either use a prebuilt version from the [Releases page](https://github.com/Andrews54757/FastStream/releases) or build the extension yourself using the build instructions below.
 
-The extension is, by default, configured to work on Chrome. In order to create a firefox extension bundle, you need to build FastStream by following these steps:
+You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
+
+### THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. If you go this route, please make sure to check back often for updates because I will often fix bugs as I encounter them. FastStream will remind you in the settings page, but you will have to update it manually.
+
+## Build Instructions
+In order to create bundles for Chrome and Firefox, you need to build FastStream by following these steps:
 
 1. Install NodeJS and NPM
 2. Run `npm install --only=dev` to install dev dependencies
 3. Run `npm run build`
 4. Firefox bundle is available in the `built` directory
-
-You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
 
 ## Contributors
 
