@@ -541,10 +541,18 @@ function get_yt_video_elements() {
     'body #player',
     'body #player-full-bleed-container',
   ];
+
+  const classBlacklist = [
+    'skeleton',
+  ];
+
   const elements = [];
   for (let i = 0; i < queries.length; i++) {
     const ytplayer = document.querySelectorAll(queries[i]);
     for (let j = 0; j < ytplayer.length; j++) {
+      if (classBlacklist.some((c) => ytplayer[j].classList.contains(c))) {
+        continue;
+      }
       elements.push(ytplayer[j]);
     }
   }
