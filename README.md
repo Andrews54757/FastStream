@@ -62,7 +62,7 @@ The extension is, by default, configured to work on Chrome. You can either use a
 
 You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
 
-### THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. If you go this route, please make sure to check back often for updates because I will often fix bugs as I encounter them. FastStream will remind you in the settings page, but you will have to update it manually.
+### THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. See above.
 
 ## Build Instructions
 In order to create bundles for Chrome and Firefox, you need to build FastStream by following these steps:
