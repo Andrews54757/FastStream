@@ -60,4 +60,6 @@ body {
     --status-error-color: rgb(203, 10, 10);
     --status-warning-color: rgb(255, 255, 0);
     --subtitles-toggle-color: rgb(212, 169, 255);
+    --subtitles-track-enabled-color: rgb(0, 255, 0);
+    --subtitles-track-disabled-color: rgb(255, 0, 0);
 }

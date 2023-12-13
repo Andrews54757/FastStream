@@ -267,7 +267,7 @@ export class SubtitlesManager {
         const name = (track.language ? ('(' + track.language + ') ') : '') + (track.label || `Track ${i + 1}`);
 
         if (activeIndex !== -1) {
-          trackElement.style.color = 'rgba(0,255,0,.6)';
+          trackElement.style.color = 'var(--subtitles-track-enabled-color)';
 
           if (this.activeTracks.length > 1) {
             trackElement.textContent = (activeIndex + 1) + ': ' + name;
@@ -275,7 +275,7 @@ export class SubtitlesManager {
             trackElement.textContent = name;
           }
         } else {
-          trackElement.style.color = 'rgba(255,0,0,.7)';
+          trackElement.style.color = 'var(--subtitles-track-disabled-color)';
           trackElement.textContent = name;
         }
 
