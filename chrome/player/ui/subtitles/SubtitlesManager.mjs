@@ -17,6 +17,8 @@ export class SubtitlesManager {
     this.activeTracks = [];
     this.isTestSubtitleActive = false;
 
+    this.subtitleTrackElements = [];
+
     this.settingsManager = new SubtitlesSettingsManager();
     this.settingsManager.on(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.onSettingsChanged.bind(this));
     this.settingsManager.loadSettings();
@@ -254,169 +256,190 @@ export class SubtitlesManager {
     });
   }
 
-  updateTrackList() {
-    DOMElements.subtitlesList.replaceChildren();
+  createTrackEntryElements(i) {
+    const trackElement = document.createElement('div');
+    trackElement.classList.add('subtitle-track-element');
 
-    const tracks = this.tracks;
-    for (let i = 0; i < tracks.length; i++) {
-      ((i) => {
-        const track = tracks[i];
-        const trackElement = document.createElement('div');
-        trackElement.classList.add('subtitle-track-element');
+    trackElement.addEventListener('click', (e) => {
+      const track = this.tracks[i];
+      const ind = this.activeTracks.indexOf(track);
+      if (ind !== -1) {
+        this.deactivateTrack(track);
+      } else {
+        this.activateTrack(track);
+      }
+      e.stopPropagation();
+      e.preventDefault();
+    });
+
+    WebUtils.setupTabIndex(trackElement);
+
+    const trackName = document.createElement('div');
+    trackElement.appendChild(trackName);
+    trackName.classList.add('subtitle-track-name');
+
+    const resyncTool = document.createElement('div');
+    resyncTool.title = Localize.getMessage('player_subtitlesmenu_resynctool_label');
+    resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
+    trackElement.appendChild(resyncTool);
+    // svg use
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#hourglass');
+    svg.appendChild(use);
+    resyncTool.appendChild(svg);
+
+    resyncTool.addEventListener('click', (e) => {
+      this.client.subtitleSyncer.toggleTrack(this.tracks[i]);
+      e.stopPropagation();
+    }, true);
+
+    const downloadTrack = document.createElement('div');
+    downloadTrack.title = Localize.getMessage('player_subtitlesmenu_savetool_label');
+    downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
+
+    // svg use
+    const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const use2 = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
+    svg2.appendChild(use2);
+    downloadTrack.appendChild(svg2);
+
+    trackElement.appendChild(downloadTrack);
+
+    downloadTrack.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const suggestedName = trackElement.textContent.replaceAll(' ', '_');
+      const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
+
+      if (!dlname) {
+        return;
+      }
+
+      const srt = SubtitleUtils.cuesToSrt(this.tracks[i].cues);
+      const blob = new Blob([srt], {
+        type: 'text/plain',
+      });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = dlname + '.srt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, true);
+
+    const removeTrack = document.createElement('div');
+    removeTrack.classList.add('subtitle-remove-tool');
+    removeTrack.title = Localize.getMessage('player_subtitlesmenu_removetool_label');
+    trackElement.appendChild(removeTrack);
+
+    removeTrack.addEventListener('click', (e) => {
+      this.removeTrack(this.tracks[i]);
+      e.stopPropagation();
+    }, true);
+
+
+    const shiftLTrack = document.createElement('div');
+    shiftLTrack.classList.add('subtitle-shiftl-tool');
+    shiftLTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['-0.2']);
+    trackElement.appendChild(shiftLTrack);
+
+    shiftLTrack.addEventListener('click', (e) => {
+      this.tracks[i].shift(-0.2);
+      this.renderSubtitles();
+      this.client.subtitleSyncer.onVideoTimeUpdate();
+      e.stopPropagation();
+    }, true);
+
+    const shiftRTrack = document.createElement('div');
+    shiftRTrack.classList.add('subtitle-shiftr-tool');
+    shiftRTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['+0.2']);
+    trackElement.appendChild(shiftRTrack);
+
+    shiftRTrack.addEventListener('click', (e) => {
+      this.tracks[i].shift(0.2);
+      this.renderSubtitles();
+      this.client.subtitleSyncer.onVideoTimeUpdate();
+      e.stopPropagation();
+    }, true);
+
+
+    trackElement.addEventListener('mouseenter', () => {
+      trackElement.focus();
+    });
+
+    trackElement.addEventListener('mouseleave', () => {
+      trackElement.blur();
+    });
+
+
+    trackElement.addEventListener('keydown', (e) => {
+      const keybind = this.client.keybindManager.eventToKeybind(e);
+      if (keybind === 'SubtrackDelete') {
+        e.stopPropagation();
+        removeTrack.click();
+      } else if (keybind === 'SubtrackShiftRight') {
+        e.stopPropagation();
+        shiftRTrack.click();
+      } else if (keybind === 'SubtrackShiftLeft') {
+        e.stopPropagation();
+        shiftLTrack.click();
+      } else if (keybind === 'SubtrackDownload') {
+        e.stopPropagation();
+        downloadTrack.click();
+      } else if (keybind === 'SubtrackToggleResync') {
+        e.stopPropagation();
+        resyncTool.click();
+      }
+    });
+
+    return {
+      trackElement,
+      update: () => {
+        const track = this.tracks[i];
         const activeIndex = this.activeTracks.indexOf(track);
         const name = (track.language ? ('(' + track.language + ') ') : '') + (track.label || `Track ${i + 1}`);
-
         if (activeIndex !== -1) {
-          trackElement.style.color = 'var(--subtitles-track-enabled-color)';
+          trackElement.classList.add('subtitle-track-active');
 
           if (this.activeTracks.length > 1) {
-            trackElement.textContent = (activeIndex + 1) + ': ' + name;
+            trackName.textContent = (activeIndex + 1) + ': ' + name;
           } else {
-            trackElement.textContent = name;
+            trackName.textContent = name;
           }
         } else {
-          trackElement.style.color = 'var(--subtitles-track-disabled-color)';
-          trackElement.textContent = name;
+          trackElement.classList.remove('subtitle-track-active');
+          trackName.textContent = name;
         }
+      },
+    };
+  }
 
+  updateTrackList() {
+    const cachedElements = this.subtitleTrackElements;
+    const tracks = this.tracks;
 
-        trackElement.addEventListener('click', (e) => {
-          const ind = this.activeTracks.indexOf(track);
-          if (ind !== -1) {
-            this.deactivateTrack(track);
-          } else {
-            this.activateTrack(track);
-          }
-          e.stopPropagation();
-          e.preventDefault();
-        });
+    // Remove extra elements
+    for (let i = cachedElements.length - 1; i >= tracks.length; i--) {
+      const el = cachedElements[i];
+      el.trackElement.remove();
+      cachedElements.splice(i, 1);
+    }
 
-        WebUtils.setupTabIndex(trackElement);
+    // Add new elements
+    for (let i = cachedElements.length; i < tracks.length; i++) {
+      const elements = this.createTrackEntryElements(i);
+      cachedElements.push(elements);
+      DOMElements.subtitlesList.appendChild(elements.trackElement);
+    }
 
-        const resyncTool = document.createElement('div');
-        resyncTool.title = Localize.getMessage('player_subtitlesmenu_resynctool_label');
-        resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
-        trackElement.appendChild(resyncTool);
-        // svg use
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#hourglass');
-        svg.appendChild(use);
-        resyncTool.appendChild(svg);
-
-        resyncTool.addEventListener('click', (e) => {
-          this.client.subtitleSyncer.toggleTrack(track);
-          e.stopPropagation();
-        }, true);
-
-
-        const downloadTrack = document.createElement('div');
-        // border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid rgba(200,200,200,.4);
-        downloadTrack.title = Localize.getMessage('player_subtitlesmenu_savetool_label');
-        downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
-
-        // svg use
-        const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        const use2 = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-        use2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
-        svg2.appendChild(use2);
-        downloadTrack.appendChild(svg2);
-
-
-        trackElement.appendChild(downloadTrack);
-
-        downloadTrack.addEventListener('click', (e) => {
-          e.stopPropagation();
-          const suggestedName = name.replaceAll(' ', '_');
-          const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
-
-          if (!dlname) {
-            return;
-          }
-
-
-          const srt = SubtitleUtils.cuesToSrt(track.cues);
-          const blob = new Blob([srt], {
-            type: 'text/plain',
-          });
-          const url = window.URL.createObjectURL(blob);
-
-          const a = document.createElement('a');
-          a.style.display = 'none';
-          a.href = url;
-          a.download = dlname + '.srt';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        }, true);
-
-        const removeTrack = document.createElement('div');
-        removeTrack.classList.add('subtitle-remove-tool');
-        removeTrack.title = Localize.getMessage('player_subtitlesmenu_removetool_label');
-        trackElement.appendChild(removeTrack);
-
-        removeTrack.addEventListener('click', (e) => {
-          this.removeTrack(track);
-          e.stopPropagation();
-        }, true);
-
-
-        const shiftLTrack = document.createElement('div');
-        shiftLTrack.classList.add('subtitle-shiftl-tool');
-        shiftLTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['-0.2']);
-        trackElement.appendChild(shiftLTrack);
-
-        shiftLTrack.addEventListener('click', (e) => {
-          track.shift(-0.2);
-          this.renderSubtitles();
-          this.client.subtitleSyncer.onVideoTimeUpdate();
-          e.stopPropagation();
-        }, true);
-
-        const shiftRTrack = document.createElement('div');
-        shiftRTrack.classList.add('subtitle-shiftr-tool');
-        shiftRTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['+0.2']);
-        trackElement.appendChild(shiftRTrack);
-
-        shiftRTrack.addEventListener('click', (e) => {
-          track.shift(0.2);
-          this.renderSubtitles();
-          this.client.subtitleSyncer.onVideoTimeUpdate();
-          e.stopPropagation();
-        }, true);
-
-
-        trackElement.addEventListener('mouseenter', () => {
-          trackElement.focus();
-        });
-
-        trackElement.addEventListener('mouseleave', () => {
-          trackElement.blur();
-        });
-
-
-        trackElement.addEventListener('keydown', (e) => {
-          const keybind = this.client.keybindManager.eventToKeybind(e);
-          if (keybind === 'SubtrackDelete') {
-            e.stopPropagation();
-            removeTrack.click();
-          } else if (keybind === 'SubtrackShiftRight') {
-            e.stopPropagation();
-            shiftRTrack.click();
-          } else if (keybind === 'SubtrackShiftLeft') {
-            e.stopPropagation();
-            shiftLTrack.click();
-          } else if (keybind === 'SubtrackDownload') {
-            e.stopPropagation();
-            downloadTrack.click();
-          } else if (keybind === 'SubtrackToggleResync') {
-            e.stopPropagation();
-            resyncTool.click();
-          }
-        });
-        DOMElements.subtitlesList.appendChild(trackElement);
-      })(i);
+    // Update elements
+    for (let i = 0; i < tracks.length; i++) {
+      cachedElements[i].update();
     }
 
     this.renderSubtitles();
