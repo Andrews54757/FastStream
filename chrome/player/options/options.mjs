@@ -4,6 +4,9 @@ import {StringUtils} from '../utils/StringUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DefaultOptions} from './defaults/DefaultOptions.mjs';
+import {Localize} from '../modules/Localize.mjs';
+
+import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -333,4 +336,49 @@ if (EnvUtils.isExtension()) {
       ratebox.style.display = 'block';
     }
   });
+
+  // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
+  const updatebox = document.getElementById('updatebox');
+  const updatetext = document.getElementById('updatetext');
+
+  chrome.storage.local.get({
+    updateData: '{}',
+  }, async (result) => {
+    const data = result?.updateData ? JSON.parse(result.updateData) : {};
+    const now = Date.now();
+    if (!data.latestVersion || now - data.lastUpdateCheck > 1000 * 60 * 60 * 12) {
+      data.latestVersion = await UpdateChecker.getLatestVersion();
+      data.lastUpdateCheck = now;
+    }
+
+    chrome.storage.local.set({
+      updateData: JSON.stringify(data),
+    });
+
+    const currentVersion = EnvUtils.getVersion();
+    const latestVersion = data.latestVersion;
+    const ignoreVersion = data.ignoreVersion;
+    if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
+      updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
+      updatebox.style.display = 'block';
+    }
+  });
+
+  document.getElementById('update').addEventListener('click', (e) => {
+    chrome.tabs.create({
+      url: 'https://github.com/Andrews54757/FastStream',
+    });
+  });
+
+  document.getElementById('noupdate').addEventListener('click', (e) => {
+    updatebox.style.display = 'none';
+    chrome.storage.local.get('updateData', (result) => {
+      const data = result?.updateData ? JSON.parse(result.updateData) : {};
+      data.ignoreVersion = data.latestVersion;
+      chrome.storage.local.set({
+        updateData: JSON.stringify(data),
+      });
+    });
+  });
+  // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }

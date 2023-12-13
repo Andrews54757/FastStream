@@ -7,8 +7,9 @@ import webExt from 'web-ext';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const builtDir = path.resolve(__dirname, 'built');
 const chromeSourceDir = path.resolve(__dirname, 'chrome');
-const chromeBuildDir = path.resolve(__dirname, 'build_chrome_dist');
-const firefoxBuildDir = path.resolve(__dirname, 'build_firefox_libre');
+const chromeDistBuildDir = path.resolve(__dirname, 'build_chrome_dist');
+const firefoxLibreBuildDir = path.resolve(__dirname, 'build_firefox_libre');
+const firefoxDistBuildDir = path.resolve(__dirname, 'build_firefox_dist');
 const webBuildDir = path.resolve(__dirname, 'built/web');
 const licenseText = fs.readFileSync(path.resolve(__dirname, 'LICENSE.md'), 'utf8');
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'));
@@ -22,8 +23,9 @@ removeBuildDirs();
 deleteDirectoryRecursively(webBuildDir);
 
 function removeBuildDirs() {
-  deleteDirectoryRecursively(chromeBuildDir);
-  deleteDirectoryRecursively(firefoxBuildDir);
+  deleteDirectoryRecursively(chromeDistBuildDir);
+  deleteDirectoryRecursively(firefoxLibreBuildDir);
+  deleteDirectoryRecursively(firefoxDistBuildDir);
 }
 
 function deleteDirectoryRecursively(dirPath) {
@@ -249,9 +251,9 @@ function insertLicense(buildDir) {
 }
 
 async function buildChromeDist() {
-  spliceAndCopy(chromeSourceDir, chromeBuildDir, ['CENSORYT']);
-  insertLicense(chromeBuildDir);
-  const builtPath = await runWebExtBuild(chromeBuildDir, path.join(chromeBuildDir, 'dist'));
+  spliceAndCopy(chromeSourceDir, chromeDistBuildDir, ['CENSORYT', 'NO_UPDATE_CHECKER']);
+  insertLicense(chromeDistBuildDir);
+  const builtPath = await runWebExtBuild(chromeDistBuildDir, path.join(chromeDistBuildDir, 'dist'));
   const name = path.basename(builtPath);
   const finalPath = path.join(builtDir, 'chrome-dist-' + name);
   fs.renameSync(builtPath, finalPath);
@@ -260,7 +262,7 @@ async function buildChromeDist() {
 
 async function buildChromeLibre() {
   insertLicense(chromeSourceDir);
-  const builtPath = await runWebExtBuild(chromeSourceDir, path.join(chromeBuildDir, 'libre'));
+  const builtPath = await runWebExtBuild(chromeSourceDir, path.join(chromeDistBuildDir, 'libre'));
 
   fs.unlinkSync(path.join(chromeSourceDir, 'LICENSE.md'));
 
@@ -271,15 +273,10 @@ async function buildChromeLibre() {
 }
 
 async function buildFirefoxLibre() {
-  spliceAndCopy(chromeSourceDir, firefoxBuildDir, ['FIREFOX']);
-  insertLicense(firefoxBuildDir);
-  // const backgroundScriptPath = path.join(firefoxBuildDir, 'background/background.mjs');
-  // const newBackgroundScriptPath = path.join(firefoxBuildDir, 'background/background.js');
-  // const builtBackground = generateScriptWithAllImports(firefoxBuildDir, backgroundScriptPath);
-  // fs.writeFileSync(newBackgroundScriptPath, builtBackground);
-  // fs.unlinkSync(backgroundScriptPath);
+  spliceAndCopy(chromeSourceDir, firefoxLibreBuildDir, ['FIREFOX']);
+  insertLicense(firefoxLibreBuildDir);
 
-  const manifestPath = path.join(firefoxBuildDir, 'manifest.json');
+  const manifestPath = path.join(firefoxLibreBuildDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
   manifest.browser_specific_settings = {
@@ -300,7 +297,7 @@ async function buildFirefoxLibre() {
 
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
-  const builtPath = await runWebExtBuild(firefoxBuildDir, path.join(firefoxBuildDir, 'libre'));
+  const builtPath = await runWebExtBuild(firefoxLibreBuildDir, path.join(firefoxLibreBuildDir, 'libre'));
   const name = path.basename(builtPath);
   const finalPath = path.join(builtDir, 'firefox-libre-' + name);
   fs.renameSync(builtPath, finalPath);
@@ -308,8 +305,41 @@ async function buildFirefoxLibre() {
 }
 
 
+async function buildFirefoxDist() {
+  spliceAndCopy(chromeSourceDir, firefoxDistBuildDir, ['FIREFOX', 'NO_UPDATE_CHECKER']);
+  insertLicense(firefoxDistBuildDir);
+
+  const manifestPath = path.join(firefoxDistBuildDir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+  manifest.browser_specific_settings = {
+    gecko: {
+      id: 'faststream@andrews',
+      strict_min_version: '113.0',
+    },
+  };
+
+  manifest.background = {
+    scripts: ['background/background.mjs'],
+    type: 'module',
+  };
+
+  delete manifest.incognito;
+  delete manifest.minimum_chrome_version;
+  delete manifest.key;
+
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+  const builtPath = await runWebExtBuild(firefoxDistBuildDir, path.join(firefoxDistBuildDir, 'dist'));
+  const name = path.basename(builtPath);
+  const finalPath = path.join(builtDir, 'firefox-dist-' + name);
+  fs.renameSync(builtPath, finalPath);
+  return finalPath;
+}
+
+
 async function buildWeb() {
-  spliceAndCopy(chromeSourceDir, webBuildDir, ['WEB'], [
+  spliceAndCopy(chromeSourceDir, webBuildDir, ['WEB', 'NO_UPDATE_CHECKER'], [
     'manifest.json',
     'content.js',
     'background',
@@ -335,7 +365,7 @@ async function runAll() {
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
   console.log(`Building version ${manifest.version}`);
 
-  await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre(), buildWeb()]);
+  await Promise.all([buildChromeLibre(), buildChromeDist(), buildFirefoxLibre(), buildFirefoxDist(), buildWeb()]);
   removeBuildDirs();
 }
 

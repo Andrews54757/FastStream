@@ -629,6 +629,18 @@
     "options_promo_norate": {
         "message": "No quiero reseñar :("
     },
+    "options_update_header": {
+        "message": "¡Hay una actualización disponible!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 está disponible (versión actual v$2). ¿Te gustaría actualizar?"
+    },
+    "options_update_go": {
+        "message": "Llévame a Github"
+    },
+    "options_update_no": {
+        "message": "Ignorar esta actualización"
+    },
     "options_video_header": {
         "message": "Opciones de video"
     },

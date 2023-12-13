@@ -192,6 +192,14 @@ button:hover {
     margin-bottom: 20px;
 }
 
+#updatebox {
+    display: none;
+    border-radius: 5px;
+    border: 1px solid rgb(72, 186, 102);
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
 .option.grid1 {
     display: grid;
     gap: 5px;

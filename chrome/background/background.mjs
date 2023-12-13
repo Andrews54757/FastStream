@@ -873,7 +873,7 @@ const streamSaverBackend = new StreamSaverBackend();
 try {
   streamSaverBackend.setup(self);
 } catch (e) {
-  console.error(e);
+
 }
 
 if (EnvUtils.isChrome()) {

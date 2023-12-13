@@ -630,6 +630,18 @@
     "options_promo_norate": {
         "message": "評価しない :("
     },
+    "options_update_header": {
+        "message": "アップデートが利用可能です!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 が利用可能です (現在のバージョン v$2)。アップデートしますか?"
+    },
+    "options_update_go": {
+        "message": "GitHub に移動"
+    },
+    "options_update_no": {
+        "message": "このアップデートを無視"
+    },
     "options_video_header": {
         "message": "動画のオプション"
     },
