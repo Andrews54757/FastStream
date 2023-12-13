@@ -4,7 +4,7 @@ import {DownloadManager} from './network/DownloadManager.mjs';
 import {DefaultPlayerEvents} from './enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from './enums/DownloadStatus.mjs';
 import {SubtitlesManager} from './ui/subtitles/SubtitlesManager.mjs';
-import {VideoAnalyzer} from './analyzer/VideoAnalyzer.mjs';
+import {VideoAnalyzer} from './modules/analyzer/VideoAnalyzer.mjs';
 import {AnalyzerEvents} from './enums/AnalyzerEvents.mjs';
 import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';

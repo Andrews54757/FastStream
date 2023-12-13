@@ -1,7 +1,7 @@
-import {AnalyzerEvents} from '../enums/AnalyzerEvents.mjs';
-import {EventEmitter} from '../modules/eventemitter.mjs';
-import Pako from '../modules/pako.mjs';
-import {Utils} from '../utils/Utils.mjs';
+import {AnalyzerEvents} from '../../enums/AnalyzerEvents.mjs';
+import {EventEmitter} from '../eventemitter.mjs';
+import Pako from '../pako.mjs';
+import {Utils} from '../../utils/Utils.mjs';
 import {dHash} from './dHash.mjs';
 
 const WIDTH = 16;
