@@ -1603,6 +1603,10 @@ body {
     cursor: pointer;
 }
 
+.subtitle-track-element:hover {
+    outline: none;
+}
+
 .subtitle-track-name {
     color: var(--subtitles-track-disabled-color);
 }
