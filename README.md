@@ -72,6 +72,8 @@ In order to create bundles for Chrome and Firefox, you need to build FastStream 
 3. Run `npm run build`
 4. Firefox bundle is available in the `built` directory
 
+Files with `dist` in the name are for Chrome & Firefox's stores. Files with `libre` are for manual installation. The `dist` versions will have reduced featuresets to comply with store policies.
+
 ## Contributors
 
 Many thanks to the contributors of this project.
