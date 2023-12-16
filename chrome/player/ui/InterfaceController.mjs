@@ -1570,6 +1570,7 @@ export class InterfaceController {
         const trackElement = document.createElement('div');
         trackElement.classList.add('language_track');
         trackElement.textContent = Localize.getMessage('player_languagemenu_' + track.type);
+        trackElement.setAttribute('aria-label', Localize.getMessage('player_languagemenu_' + track.type) + ': ' + language);
         if (track.isActive) {
           trackElement.classList.add('active');
         }
