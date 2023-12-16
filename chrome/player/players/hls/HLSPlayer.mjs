@@ -248,6 +248,8 @@ export default class HLSPlayer extends EventEmitter {
         this.client.makeFragment(identifier, fragment.sn, new HLSFragment(fragment, start, end));
       }
     });
+
+    this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
   }
   getVideo() {
     return this.video;
@@ -372,6 +374,31 @@ export default class HLSPlayer extends EventEmitter {
       if (!frag) return false;
       return time >= frag.start && time < frag.end;
     });
+  }
+
+  get languageTracks() {
+    const seenLanguages = [];
+    return {
+      audio: this.hls.audioTracks.map((track, i) => {
+        return {
+          type: 'audio',
+          lang: track.lang,
+          index: i,
+          isActive: i === this.hls.audioTrack,
+        };
+      }).filter((track) => {
+        if (seenLanguages.includes(track.lang)) return false;
+        seenLanguages.push(track.lang);
+        return true;
+      }),
+      video: [],
+    };
+  }
+
+  setLanguageTrack(track) {
+    if (track.type === 'audio') {
+      this.hls.audioTrack = track.index;
+    }
   }
 
   get volume() {

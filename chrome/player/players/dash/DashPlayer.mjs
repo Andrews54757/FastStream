@@ -342,17 +342,6 @@ export default class DashPlayer extends EventEmitter {
     });
   }
 
-  getLevelsForTrack(track) {
-    return track.representations.map((rep) => {
-      return {
-        bitrate: rep.bandwidth,
-        height: rep.height,
-        width: rep.width,
-        key: this.getLevelIdentifier(track.streamInfo.index, track.index, rep.index),
-      };
-    });
-  }
-
   get audioTracks() {
     return this.filterLanguageTracks(this.dash.getTracksFor('audio'));
   }
