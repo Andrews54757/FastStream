@@ -333,6 +333,15 @@
     "player_qualitymenu_label": {
         "message": "動画の品質"
     },
+    "player_languagemenu_label": {
+        "message": "言語の選択"
+    },
+    "player_languagemenu_video": {
+        "message": "ビデオ"
+    },
+    "player_languagemenu_audio": {
+        "message": "オーディオ"
+    },
     "player_playbackrate_label": {
         "message": "再生速度"
     },

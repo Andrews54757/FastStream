@@ -332,6 +332,15 @@
     "player_qualitymenu_label": {
         "message": "Calidad de video"
     },
+    "player_languagemenu_label": {
+        "message": "Selección de idioma"
+    },
+    "player_languagemenu_video": {
+        "message": "Video"
+    },
+    "player_languagemenu_audio": {
+        "message": "Audio"
+    },
     "player_playbackrate_label": {
         "message": "Velocidad de reproducción"
     },

@@ -67,4 +67,7 @@ export const DOMElements = {
   audioConfigBtn: document.querySelector('.mainplayer .fluid_button_soundwave'),
   hideButton: document.querySelector('.mainplayer .hide_button'),
   playinfo: document.querySelector('.mainplayer .playinfo'),
+
+  languageButton: document.querySelector('.mainplayer .fluid_control_language'),
+  languageMenu: document.querySelector('.mainplayer .fluid_control_language .fluid_language_list'),
 };

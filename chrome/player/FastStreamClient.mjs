@@ -269,6 +269,7 @@ export class FastStreamClient extends EventEmitter {
 
   updateQualityLevels() {
     this.interfaceController.updateQualityLevels();
+    this.interfaceController.updateLanguageTracks();
     this.updateHasDownloadSpace();
   }
 
@@ -277,7 +278,7 @@ export class FastStreamClient extends EventEmitter {
     const levels = this.levels;
     if (!levels) return;
 
-    const currentLevel = this.previousLevel;
+    const currentLevel = this.currentLevel;
     const level = levels.get(currentLevel);
 
     if (!level) return;
@@ -470,6 +471,7 @@ export class FastStreamClient extends EventEmitter {
       }
     }
 
+    this.checkLevelChange();
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
     this.interfaceController.updateStatusMessage();
@@ -800,13 +802,17 @@ export class FastStreamClient extends EventEmitter {
     this.context.on(DefaultPlayerEvents.SKIP_SEGMENTS, () => {
       this.interfaceController.updateSkipSegments();
     });
+
+    this.context.on(DefaultPlayerEvents.LANGUAGE_TRACKS, (e) => {
+      this.interfaceController.updateLanguageTracks();
+    });
   }
 
   bindPreviewPlayer(player) {
     this.previewContext = player.createContext();
 
     this.previewContext.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.previousLevel;
+      player.currentLevel = this.currentLevel;
       player.load();
     });
 
@@ -906,39 +912,51 @@ export class FastStreamClient extends EventEmitter {
   }
 
   set currentLevel(value) {
-    const previousLevel = this.previousLevel;
-    this.previousLevel = value;
     this.player.currentLevel = value;
-    if (this.previewPlayer) {
-      this.previewPlayer.currentLevel = value;
-    }
-    this.videoAnalyzer.setLevel(value);
-
-    if (this.options.freeUnusedChannels && value !== previousLevel && this.fragmentsStore[previousLevel]) {
-      this.fragmentsStore[previousLevel].forEach((fragment, i) => {
-        if (i === -1) return;
-        this.freeFragment(fragment);
-      });
-    }
-
-    // Reset failed fragments
-    this.resetFailed();
-    this.updateQualityLevels();
+    this.checkLevelChange();
   }
 
   set currentAudioLevel(value) {
-    const previousLevel = this.previousAudioLevel;
-    this.previousAudioLevel = value;
     this.player.currentAudioLevel = value;
+    this.checkLevelChange();
+  }
 
-    if (value !== previousLevel && this.fragmentsStore[previousLevel]) {
-      this.fragmentsStore[previousLevel].forEach((fragment, i) => {
-        if (i === -1) return;
-        this.freeFragment(fragment);
-      });
+  checkLevelChange() {
+    const level = this.currentLevel;
+    const audioLevel = this.currentAudioLevel;
+
+    let hasChanged = false;
+
+    if (level !== this.previousLevel) {
+      if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousLevel]) {
+        this.fragmentsStore[this.previousLevel].forEach((fragment, i) => {
+          if (i === -1) return;
+          this.freeFragment(fragment);
+        });
+      }
+      if (this.previewPlayer) {
+        this.previewPlayer.currentLevel = level;
+      }
+      this.videoAnalyzer.setLevel(level);
+      this.previousLevel = level;
+      hasChanged = true;
     }
 
-    this.updateQualityLevels();
+    if (audioLevel !== this.previousAudioLevel) {
+      if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousAudioLevel]) {
+        this.fragmentsStore[this.previousAudioLevel].forEach((fragment, i) => {
+          if (i === -1) return;
+          this.freeFragment(fragment);
+        });
+      }
+      this.previousAudioLevel = audioLevel;
+      hasChanged = true;
+    }
+
+    if (hasChanged) {
+      this.resetFailed();
+      this.updateQualityLevels();
+    }
   }
 
   get fragments() {
@@ -997,6 +1015,17 @@ export class FastStreamClient extends EventEmitter {
 
   get chapters() {
     return this.player?.chapters || [];
+  }
+
+  get languageTracks() {
+    return this.player?.languageTracks || {
+      video: [],
+      audio: [],
+    };
+  }
+
+  setLanguageTrack(track) {
+    this.player.setLanguageTrack(track);
   }
 
   debugDemo() {

@@ -508,6 +508,82 @@ export class InterfaceController {
       }
     });
 
+    let languageClicked = false;
+    DOMElements.languageButton.addEventListener('click', (e) => {
+      languageClicked = ! languageClicked;
+      if (languageClicked) {
+        DOMElements.languageMenu.style.display = '';
+      } else {
+        DOMElements.languageMenu.style.display = 'none';
+      }
+      e.stopPropagation();
+    });
+    DOMElements.playerContainer.addEventListener('click', (e) => {
+      languageClicked = false;
+      DOMElements.languageMenu.style.display = 'none';
+    });
+
+    DOMElements.languageButton.tabIndex = 0;
+
+    DOMElements.languageButton.addEventListener('focus', ()=>{
+      DOMElements.languageMenu.style.display = '';
+    });
+
+    DOMElements.languageButton.addEventListener('blur', ()=>{
+      if (!languageClicked) {
+        DOMElements.languageMenu.style.display = 'none';
+      }
+      const candidates = Array.from(DOMElements.languageMenu.getElementsByClassName('language_track'));
+      let current = candidates.find((el) => el.classList.contains('candidate'));
+      if (!current) {
+        current = candidates.find((el) => el.classList.contains('active'));
+      }
+      if (!current) {
+        return;
+      }
+      current.classList.remove('candidate');
+    });
+    DOMElements.languageButton.addEventListener('keydown', (e) => {
+      const candidates = Array.from(DOMElements.languageMenu.getElementsByClassName('language_track'));
+      let current = candidates.find((el) => el.classList.contains('candidate'));
+      if (!current) {
+        current = candidates.find((el) => el.classList.contains('active'));
+      }
+      if (!current) {
+        return;
+      }
+
+      const index = candidates.indexOf(current);
+      if (e.key === 'ArrowDown') {
+        current.classList.remove('candidate');
+        if (index < candidates.length - 1) {
+          candidates[index + 1].classList.add('candidate');
+        } else {
+          candidates[0].classList.add('candidate');
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === 'ArrowUp') {
+        current.classList.remove('candidate');
+        if (index > 0) {
+          candidates[index - 1].classList.add('candidate');
+        } else {
+          candidates[candidates.length - 1].classList.add('candidate');
+        }
+        e.preventDefault();
+        e.stopPropagation();
+      } else if (e.key === 'Enter') {
+        current.click();
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    });
+
+    DOMElements.languageMenu.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
     DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
     DOMElements.controlsContainer.addEventListener('mouseenter', this.onControlsMouseEnter.bind(this));
     DOMElements.controlsContainer.addEventListener('mouseleave', this.onControlsMouseLeave.bind(this));
@@ -1440,6 +1516,79 @@ export class InterfaceController {
     });
   }
 
+  updateLanguageTracks() {
+    const tracks = this.client.languageTracks;
+    const videoTracks = tracks.video;
+    const audioTracks = tracks.audio;
+    if (videoTracks.length < 2 && audioTracks.length < 2) {
+      DOMElements.languageButton.style.display = 'none';
+      return;
+    } else {
+      DOMElements.languageButton.style.display = '';
+    }
+
+    DOMElements.languageMenu.replaceChildren();
+    const languages = [];
+    if (videoTracks.length > 1) {
+      videoTracks.forEach((track) => {
+        if (!languages.includes(track.lang)) {
+          languages.push(track.lang);
+        }
+      });
+    }
+
+    if (audioTracks.length > 1) {
+      audioTracks.forEach((track) => {
+        if (!languages.includes(track.lang)) {
+          languages.push(track.lang);
+        }
+      });
+    }
+
+    languages.sort();
+
+    const regionNames = new Intl.DisplayNames([
+      navigator.language,
+    ], {type: 'language'});
+
+    languages.forEach((language) => {
+      const languageElement = document.createElement('div');
+      languageElement.classList.add('language_container');
+      DOMElements.languageMenu.appendChild(languageElement);
+
+      const languageText = document.createElement('div');
+      languageText.classList.add('language_text');
+      try {
+        languageText.textContent = regionNames.of(language);
+      } catch (e) {
+        languageText.textContent = language || 'Unknown';
+      }
+      languageElement.appendChild(languageText);
+
+      const videoTrack = videoTracks.find((track) => track.lang === language);
+      const audioTrack = audioTracks.find((track) => track.lang === language);
+      ([videoTrack, audioTrack]).forEach((track) => {
+        if (!track) return;
+        const trackElement = document.createElement('div');
+        trackElement.classList.add('language_track');
+        trackElement.textContent = Localize.getMessage('player_languagemenu_' + track.type);
+        if (track.isActive) {
+          trackElement.classList.add('active');
+        }
+        languageElement.appendChild(trackElement);
+        languageElement.addEventListener('click', (e) => {
+          Array.from(DOMElements.languageMenu.getElementsByClassName('active')).forEach((element) => {
+            element.classList.remove('active');
+          });
+
+          trackElement.classList.add('active');
+          this.client.setLanguageTrack(track);
+          e.stopPropagation();
+        });
+      });
+    });
+  }
+
   updateQualityLevels() {
     const levels = this.client.levels;
 
@@ -1450,7 +1599,7 @@ export class InterfaceController {
       DOMElements.videoSource.style.display = '';
     }
 
-    const currentLevel = this.client.previousLevel;
+    const currentLevel = this.client.currentLevel;
 
     DOMElements.videoSourceList.replaceChildren();
     levels.forEach((level, i) => {
