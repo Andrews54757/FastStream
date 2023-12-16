@@ -485,20 +485,14 @@ export class InterfaceController {
       const index = candidates.indexOf(current);
       if (e.key === 'ArrowDown') {
         current.classList.remove('candidate');
-        if (index < candidates.length - 1) {
-          candidates[index + 1].classList.add('candidate');
-        } else {
-          candidates[0].classList.add('candidate');
-        }
+        const next = (index < candidates.length - 1) ? candidates[index + 1] : candidates[0];
+        next.classList.add('candidate');
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'ArrowUp') {
         current.classList.remove('candidate');
-        if (index > 0) {
-          candidates[index - 1].classList.add('candidate');
-        } else {
-          candidates[candidates.length - 1].classList.add('candidate');
-        }
+        const next = (index > 0) ? candidates[index - 1] : candidates[candidates.length - 1];
+        next.classList.add('candidate');
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'Enter') {
@@ -1630,7 +1624,6 @@ export class InterfaceController {
       const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
 
       text.textContent = (i === currentLevel) ? label + ' ' + Localize.getMessage('player_quality_current') : label;
-      //   levelelement.appendChild(icon);
       levelelement.appendChild(text);
 
       DOMElements.videoSourceList.appendChild(levelelement);
