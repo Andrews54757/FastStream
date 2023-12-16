@@ -526,31 +526,29 @@ body {
 }
 
 
-.fluid_button_language .fluid_language_list {
+.fluid_button_language .fluid_language_list .language_table {
     display: table;
-    background-color: transparent;
 }
 
-.fluid_button_language .fluid_language_list .language_container {
+.language_table .language_container {
     display: table-row;
 }
 
-.fluid_button_language .fluid_language_list .language_container > div {
+.language_table .language_container > div {
     border-top: var(--menu-border);
-    background-color: var(--menu-background-color);
 }
 
-.fluid_button_language .fluid_language_list .language_container:first-child > div {
+.language_table .language_container:first-child > div {
     border-top: none;
 }
 
-.fluid_button_language .fluid_language_list .language_container .language_text {
+.language_table .language_container .language_text {
     padding: 8px 10px;
     min-width: 80px;
     display: table-cell;
 }
 
-.fluid_button_language .fluid_language_list .language_container .language_track {
+.language_table .language_container .language_track {
     display: table-cell;
     padding: 8px 10px;
     border-left: var(--menu-border);

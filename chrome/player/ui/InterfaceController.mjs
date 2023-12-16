@@ -1528,6 +1528,10 @@ export class InterfaceController {
     }
 
     DOMElements.languageMenu.replaceChildren();
+    const languageTable = document.createElement('div');
+    languageTable.classList.add('language_table');
+    DOMElements.languageMenu.appendChild(languageTable);
+
     const languages = [];
     if (videoTracks.length > 1) {
       videoTracks.forEach((track) => {
@@ -1554,7 +1558,7 @@ export class InterfaceController {
     languages.forEach((language) => {
       const languageElement = document.createElement('div');
       languageElement.classList.add('language_container');
-      DOMElements.languageMenu.appendChild(languageElement);
+      languageTable.appendChild(languageElement);
 
       const languageText = document.createElement('div');
       languageText.classList.add('language_text');
