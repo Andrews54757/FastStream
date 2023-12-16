@@ -1611,7 +1611,11 @@ export class InterfaceController {
 
       levelelement.classList.add('fluid_video_source_list_item');
       levelelement.addEventListener('click', (e) => {
+        Array.from(DOMElements.videoSourceList.getElementsByClassName('source_active')).forEach((element) => {
+          element.classList.remove('source_active');
+        });
         this.client.currentLevel = i;
+        levelelement.classList.add('source_active');
         e.stopPropagation();
       });
 
