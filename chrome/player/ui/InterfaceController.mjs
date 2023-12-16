@@ -1082,7 +1082,7 @@ export class InterfaceController {
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible()) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.persistent.playing) {
         this.hideControlBar();
       }
     }, time || 2000);
@@ -1593,6 +1593,7 @@ export class InterfaceController {
     const previousValue = this.persistent.playing;
     this.persistent.playing = false;
     this.updatePlayPauseButton();
+    this.showControlBar();
     if (previousValue) {
       this.playPauseAnimation();
     }
