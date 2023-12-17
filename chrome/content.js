@@ -348,20 +348,40 @@ function isVisible(domElement) {
   });
 }
 
+function parentHasSimilarBounds(element) {
+  const parent = element.parentElement;
+  const rect = element.getBoundingClientRect();
+  const parentRect = parent.getBoundingClientRect();
+  const tolerance = 4;
+  if ( // First check
+    Math.abs(rect.x - parentRect.x) < tolerance &&
+    Math.abs(rect.y - parentRect.y) < tolerance &&
+    Math.abs(rect.width - parentRect.width) < tolerance &&
+    Math.abs(rect.height - parentRect.height) < tolerance
+  ) {
+    return true;
+  }
+
+  // Check if parent element is overflow hidden and child element can cover the parent element
+  const parentStyle = window.getComputedStyle(parent);
+  if (parentStyle.overflow === 'hidden') {
+    if (rect.x <= parentRect.x &&
+      rect.y <= parentRect.y &&
+      rect.x + rect.width >= parentRect.x + parentRect.width &&
+      rect.y + rect.height >= parentRect.y + parentRect.height) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 function getParentElementsWithSameBounds(element) {
   const elements = [];
-  const tolerance = 4;
 
   while (element.parentElement) {
     const parent = element.parentElement;
-    const rect = element.getBoundingClientRect();
-    const parentRect = parent.getBoundingClientRect();
-    if (
-      Math.abs(rect.x - parentRect.x) < tolerance &&
-      Math.abs(rect.y - parentRect.y) < tolerance &&
-      Math.abs(rect.width - parentRect.width) < tolerance &&
-      Math.abs(rect.height - parentRect.height) < tolerance
-    ) {
+    if (parentHasSimilarBounds(element)) {
       elements.push(parent);
     } else {
       break;
