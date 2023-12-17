@@ -41,6 +41,7 @@ export class InterfaceController {
     this.registerStatusLevel('error');
     this.registerStatusLevel('save-video', 1);
     this.registerStatusLevel('save-screenshot', 1);
+    this.registerStatusLevel('subtitles', 1);
     this.registerStatusLevel('chapter', 2);
 
     this.setupDOM();

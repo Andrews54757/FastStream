@@ -327,6 +327,9 @@
     "player_subtitlesmenu_shifttool_label": {
         "message": "$1 の字幕をシフト"
     },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "字幕を $1s シフト"
+    },
     "player_testsubtitle": {
         "message": "これはテストの字幕です"
     },

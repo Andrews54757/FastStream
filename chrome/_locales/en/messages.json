@@ -327,6 +327,9 @@
     "player_subtitlesmenu_shifttool_label": {
         "message": "Shift subtitles $1s"
     },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "Shifted subtitles $1s"
+    },
     "player_testsubtitle": {
         "message": "This is a test subtitle"
     },

@@ -352,6 +352,7 @@ export class SubtitlesManager {
       this.tracks[i].shift(-0.2);
       this.renderSubtitles();
       this.client.subtitleSyncer.onVideoTimeUpdate();
+      this.client.interfaceController.setStatusMessage('subtitles', Localize.getMessage('player_subtitlesmenu_shifttool_message', ['-0.2']), 'info', 700);
       e.stopPropagation();
     }, true);
 
@@ -364,6 +365,7 @@ export class SubtitlesManager {
       this.tracks[i].shift(0.2);
       this.renderSubtitles();
       this.client.subtitleSyncer.onVideoTimeUpdate();
+      this.client.interfaceController.setStatusMessage('subtitles', Localize.getMessage('player_subtitlesmenu_shifttool_message', ['+0.2']), 'info', 700);
       e.stopPropagation();
     }, true);
 
