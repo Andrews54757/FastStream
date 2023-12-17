@@ -1565,7 +1565,7 @@ export class InterfaceController {
 
       const videoTrack = videoTracks.find((track) => track.lang === language);
       const audioTrack = audioTracks.find((track) => track.lang === language);
-      ([videoTrack, audioTrack]).forEach((track) => {
+      const trackElements = ([videoTrack, audioTrack]).map((track) => {
         if (!track) return;
         const trackElement = document.createElement('div');
         trackElement.classList.add('language_track');
@@ -1575,7 +1575,7 @@ export class InterfaceController {
           trackElement.classList.add('active');
         }
         languageElement.appendChild(trackElement);
-        languageElement.addEventListener('click', (e) => {
+        trackElement.addEventListener('click', (e) => {
           Array.from(DOMElements.languageMenu.getElementsByClassName('active')).forEach((element) => {
             element.classList.remove('active');
           });
@@ -1584,6 +1584,15 @@ export class InterfaceController {
           this.client.setLanguageTrack(track);
           e.stopPropagation();
         });
+        return trackElement;
+      });
+      languageElement.addEventListener('click', (e) => {
+        trackElements.forEach((element) => {
+          if (element) {
+            element.click();
+          }
+        });
+        e.stopPropagation();
       });
     });
   }
