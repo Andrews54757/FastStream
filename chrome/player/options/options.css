@@ -262,7 +262,15 @@ input:focus {
     font-size: 12px;
 }
 
+.select > select:focus {
+    border: 1px solid blue;
+}
+
 input[type="checkbox"] {
     width: 16px;
     height: 16px;
+}
+
+input[type="checkbox"]:focus {
+    outline: 1px solid blue;
 }
