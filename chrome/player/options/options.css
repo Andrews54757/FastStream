@@ -221,7 +221,7 @@ button:hover {
 .option.grid2 {
     display: grid;
     gap: 5px;
-    grid-template-columns: 1fr 160px;
+    grid-template-columns: 1fr 150px;
     align-items: center;
 }
 
