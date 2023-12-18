@@ -767,6 +767,12 @@
     "options_autourl_hint": {
         "message": "Sugerencia: Prueba regex en"
     },
+    "options_pattern_header": {
+        "message": "Patrones de Fuente Personalizados"
+    },
+    "options_pattern_body": {
+        "message": "Estos patrones se utilizan para detectar fuentes de video personalizadas en páginas web. Se aplican en orden y se usa la primera coincidencia. Solo para usuarios avanzados."
+    },
     "options_help_header": {
         "message": "Ayuda"
     },

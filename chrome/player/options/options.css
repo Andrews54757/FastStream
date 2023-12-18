@@ -110,7 +110,8 @@ p.hint {
     color: rgb(0, 0, 255);
 }
 
-#autoEnableURLs {
+#autoEnableURLs,
+#customSourcePatterns {
     color: black;
     background-color: transparent;
     font-size: 12px;
@@ -124,7 +125,8 @@ p.hint {
     resize: none;
 }
 
-#autoEnableURLs:focus {
+#autoEnableURLs:focus,
+#customSourcePatterns:focus {
     border: 1px solid blue;
 }
 

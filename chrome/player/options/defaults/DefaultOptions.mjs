@@ -11,6 +11,7 @@ export const DefaultOptions = {
   autoEnableBestSubtitles: false,
   autoplayYoutube: true,
   autoEnableURLs: [],
+  customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
   videoBrightness: 1,
   videoContrast: 1,

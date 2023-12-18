@@ -28,6 +28,7 @@ const exportButton = document.getElementById('export');
 const clickAction = document.getElementById('clickaction');
 const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
+const customSourcePatterns = document.getElementById('customSourcePatterns');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -60,6 +61,7 @@ async function loadOptions(newOptions) {
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   playbackRate.value = Options.playbackRate;
   qualityMultiplier.value = Options.qualityMultiplier;
+  customSourcePatterns.value = Options.customSourcePatterns || '';
 
   setSelectMenuValue(clickAction, Options.singleClickAction);
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
@@ -293,6 +295,11 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('input', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  optionChanged();
+});
+
+customSourcePatterns.addEventListener('input', (e) => {
+  Options.customSourcePatterns = customSourcePatterns.value;
   optionChanged();
 });
 

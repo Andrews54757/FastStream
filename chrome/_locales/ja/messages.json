@@ -768,6 +768,12 @@
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
     },
+    "options_pattern_header": {
+        "message": "カスタムソースパターン"
+    },
+    "options_pattern_body": {
+        "message": "これらのパターンは、Web ページ上のカスタム動画ソースを検出するために使用されます。順番に適用され、最初に一致したものが使用されます。上級者向け。"
+    },
     "options_help_header": {
         "message": "ヘルプ"
     },

@@ -768,6 +768,12 @@
     "options_autourl_hint": {
         "message": "Hint: Test regex on"
     },
+    "options_pattern_header": {
+        "message": "Custom Source Patterns"
+    },
+    "options_pattern_body": {
+        "message": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only."
+    },
     "options_help_header": {
         "message": "Help"
     },

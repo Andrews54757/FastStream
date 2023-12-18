@@ -12,6 +12,7 @@ import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 let Options = {};
 
 const AutoEnableList = [];
+const CustomSourcePatterns = [];
 const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
 const PlayerURL = chrome.runtime.getURL('player/index.html');
@@ -425,9 +426,35 @@ async function loadOptions(newOptions) {
     }
 
     if (urlStr[0] === '~') {
-      AutoEnableList.push(new RegExp(urlStr.substring(1)));
+      try {
+        AutoEnableList.push(new RegExp(urlStr.substring(1)));
+      } catch (e) {
+      }
     } else {
       AutoEnableList.push(urlStr);
+    }
+  });
+
+  CustomSourcePatterns.length = 0;
+  Options.customSourcePatterns.split('\n') .forEach((line)=>{
+    line = line.trim();
+    if (line.length === 0) return;
+    if (line.startsWith('#') || line.startsWith('//')) return;
+
+    const args = line.split(' ');
+    const extStr = args[0];
+    const regexStr = args.slice(1).join(' ');
+
+    // parse regex and flags
+    const regex = regexStr.substring(1, regexStr.lastIndexOf('/'));
+    const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1);
+    try {
+      CustomSourcePatterns.push({
+        regex: new RegExp(regex, flags),
+        ext: extStr,
+      });
+    } catch (e) {
+
     }
   });
 }
@@ -762,9 +789,20 @@ function frameHasPlayer(frame) {
 chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
       const url = details.url;
-      const ext = URLUtils.get_url_extension(url);
+      let ext = URLUtils.get_url_extension(url);
       const frame = getOrCreateFrame(details);
       if (frameHasPlayer(frame)) return;
+
+      if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
+        return; // Client or server error. Ignore it
+      }
+
+      const customSourcePattern = CustomSourcePatterns.find((item)=>{
+        return item.regex.test(url);
+      });
+      if (customSourcePattern) {
+        ext = customSourcePattern.ext;
+      }
 
       if (isSubtitles(ext)) {
         return handleSubtitles(url, frame, frame.requestHeaders[details.requestId]);
@@ -776,10 +814,6 @@ chrome.webRequest.onHeadersReceived.addListener(
         } else {
           return;
         }
-      }
-
-      if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
-        return; // Client or server error. Ignore it
       }
 
       onSourceRecieved(details, frame, mode);
