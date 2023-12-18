@@ -35,6 +35,12 @@ autoEnableURLSInput.setAttribute('autocorrect', 'off');
 autoEnableURLSInput.setAttribute('spellcheck', false);
 autoEnableURLSInput.placeholder = 'https://example.com/movie/\n~^https:\\/\\/example\\.com\\/(movie|othermovie)\\/';
 
+customSourcePatterns.setAttribute('autocapitalize', 'off');
+customSourcePatterns.setAttribute('autocomplete', 'off');
+customSourcePatterns.setAttribute('autocorrect', 'off');
+customSourcePatterns.setAttribute('spellcheck', false);
+customSourcePatterns.placeholder = '# This is a comment. Use the following format.\n[file extension] /[regex]/[flags]';
+
 loadOptions();
 
 
