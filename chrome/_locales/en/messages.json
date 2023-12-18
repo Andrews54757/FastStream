@@ -711,14 +711,35 @@
     "options_general_playbackrate": {
         "message": "Default playback rate"
     },
-    "options_general_clickpause": {
-        "message": "Single click toggles play/pause"
-    },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos"
     },
     "options_general_quality": {
         "message": "Quality multiplier factor for quality selection algorithm (higher will choose higher quality)"
+    },
+    "options_general_clickaction": {
+        "message": "Single click action"
+    },
+    "options_general_dblclickaction": {
+        "message": "Double click action"
+    },
+    "options_general_tplclickaction": {
+        "message": "Triple click action"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Toggle play/pause"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Toggle fullscreen"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Toggle picture-in-picture"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Hide controls"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Hide player"
     },
     "options_export_header": {
         "message": "Import/Export Settings"

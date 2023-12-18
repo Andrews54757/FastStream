@@ -710,14 +710,35 @@
     "options_general_playbackrate": {
         "message": "Velocidad de reproducción predeterminada"
     },
-    "options_general_clickpause": {
-        "message": "Un solo clic alterna reproducir/pausar"
-    },
     "options_general_autoplayyt": {
         "message": "Reproducir automáticamente videos de YouTube incrustados"
     },
     "options_general_quality": {
         "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
+    },
+    "options_general_clickaction": {
+        "message": "Acción de clic"
+    },
+    "options_general_dblclickaction": {
+        "message": "Acción de doble clic"
+    },
+    "options_general_tplclickaction": {
+        "message": "Acción de triple clic"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Alternar reproducir/pausar"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Alternar pantalla completa"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Alternar imagen en imagen"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Ocultar controles"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Ocultar reproductor"
     },
     "options_export_header": {
         "message": "Importar/Exportar Configuraciones"

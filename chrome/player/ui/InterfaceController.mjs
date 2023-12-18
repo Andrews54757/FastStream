@@ -3,6 +3,7 @@ import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
+import {ClickActions} from '../options/defaults/ClickActions.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
@@ -20,6 +21,8 @@ export class InterfaceController {
     this.client = client;
     this.persistent = client.persistent;
     this.isSeeking = false;
+    this.hidden = false;
+    this.shouldPlay = false;
     this.isMouseOverProgressbar = false;
 
     this.lastSpeed = 0;
@@ -421,14 +424,6 @@ export class InterfaceController {
       this.playPauseToggle();
       e.stopPropagation();
     });
-    DOMElements.videoContainer.addEventListener('dblclick', (e) => {
-      if (!this.client.options.clickToPause) {
-        this.playPauseToggle();
-      } else {
-        this.hideControlBarOnAction();
-      }
-      e.stopPropagation();
-    });
     DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
     DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
@@ -590,17 +585,54 @@ export class InterfaceController {
       this.focusingControls = false;
       this.queueControlsHide();
     });
-    DOMElements.videoContainer.addEventListener('click', () => {
+    let clickCount = 0;
+    let clickTimeout = null;
+    DOMElements.videoContainer.addEventListener('click', (e) => {
       if (this.isBigPlayButtonVisible()) {
-        this.playPauseToggle();
-      } else if (this.client.options.clickToPause) {
         this.playPauseToggle();
         return;
       }
 
-      this.focusingControls = false;
-      this.mouseOverControls = false;
-      this.hideControlBarOnAction();
+      if (clickTimeout !== null) {
+        clickCount++;
+      } else {
+        clickCount = 1;
+      }
+      clearTimeout(clickTimeout);
+      clickTimeout = setTimeout(() => {
+        clickTimeout = null;
+
+        let clickAction;
+        if (clickCount === 1) {
+          clickAction = this.client.options.singleClickAction;
+        } else if (clickCount === 2) {
+          clickAction = this.client.options.doubleClickAction;
+        } else if (clickCount === 3) {
+          clickAction = this.client.options.tripleClickAction;
+        } else {
+          return;
+        }
+
+        switch (clickAction) {
+          case ClickActions.FULLSCREEN:
+            this.fullscreenToggle();
+            break;
+          case ClickActions.PIP:
+            this.pipToggle();
+            break;
+          case ClickActions.PLAY_PAUSE:
+            this.playPauseToggle();
+            break;
+          case ClickActions.HIDE_CONTROLS:
+            this.focusingControls = false;
+            this.mouseOverControls = false;
+            this.hideControlBar();
+            break;
+          case ClickActions.HIDE_PLAYER:
+            this.toggleHide();
+            break;
+        }
+      }, clickCount < 3 ? 300 : 0);
     });
     DOMElements.hideButton.addEventListener('click', () => {
       DOMElements.hideButton.blur();
@@ -692,6 +724,22 @@ export class InterfaceController {
     DOMElements.download.style.display = (this.client.player && !this.client.player.canSave().cantSave) ? 'inline-block' : 'none';
     DOMElements.screenshot.style.display = this.client.player ? 'inline-block' : 'none';
     DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
+  }
+
+  toggleHide() {
+    if (this.hidden) {
+      DOMElements.playerContainer.classList.remove('player-hidden');
+      this.hidden = false;
+      if (this.shouldPlay) {
+        this.client.player?.play();
+      }
+    } else {
+      DOMElements.playerContainer.classList.add('player-hidden');
+
+      this.hidden = true;
+      this.shouldPlay = this.client.persistent.playing;
+      this.client.player?.pause();
+    }
   }
 
   pipToggle() {

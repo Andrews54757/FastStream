@@ -14,6 +14,7 @@ import {DOMElements} from './ui/DOMElements.mjs';
 import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
 import {Localize} from './modules/Localize.mjs';
+import {ClickActions} from './options/defaults/ClickActions.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -31,7 +32,9 @@ export class FastStreamClient extends EventEmitter {
       freeFragments: true,
       downloadAll: false,
       freeUnusedChannels: true,
-      clickToPause: false,
+      singleClickAction: ClickActions.HIDE_CONTROLS,
+      doubleClickAction: ClickActions.PLAY_PAUSE,
+      tripleClickAction: ClickActions.FULLSCREEN,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -116,9 +119,11 @@ export class FastStreamClient extends EventEmitter {
     this.options.downloadAll = options.downloadAll;
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
-    this.options.clickToPause = options.clickToPause;
     this.options.maxSpeed = options.maxSpeed;
     this.options.seekStepSize = options.seekStepSize;
+    this.options.singleClickAction = options.singleClickAction;
+    this.options.doubleClickAction = options.doubleClickAction;
+    this.options.tripleClickAction = options.tripleClickAction;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;

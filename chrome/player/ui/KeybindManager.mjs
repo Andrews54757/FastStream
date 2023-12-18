@@ -1,13 +1,11 @@
 import {DefaultKeybinds} from '../options/defaults/DefaultKeybinds.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
-import {DOMElements} from './DOMElements.mjs';
 
 export class KeybindManager extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.hidden = false;
     this.keybindMap = new Map();
     this.setup();
   }
@@ -22,21 +20,8 @@ export class KeybindManager extends EventEmitter {
       this.onKeyDown(e);
     });
 
-    let shouldPlay = false;
     this.on('HidePlayer', (e) => {
-      if (this.hidden) {
-        DOMElements.playerContainer.classList.remove('player-hidden');
-        this.hidden = false;
-        if (shouldPlay) {
-          this.client.player?.play();
-        }
-      } else {
-        DOMElements.playerContainer.classList.add('player-hidden');
-
-        this.hidden = true;
-        shouldPlay = this.client.persistent.playing;
-        this.client.player?.pause();
-      }
+      this.client.interfaceController.toggleHide();
     });
 
     this.on('GoToStart', (e) => {

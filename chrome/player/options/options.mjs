@@ -7,6 +7,7 @@ import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 import {Localize} from '../modules/Localize.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
+import {ClickActions} from './defaults/ClickActions.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -20,11 +21,13 @@ const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const seekStepSize = document.getElementById('seekstepsize');
 const playbackRate = document.getElementById('playbackrate');
-const clickToPause = document.getElementById('clicktopause');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const qualityMultiplier = document.getElementById('qualitymultiplier');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
+const clickAction = document.getElementById('clickaction');
+const dblclickAction = document.getElementById('dblclickaction');
+const tplclickAction = document.getElementById('tplclickaction');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -52,12 +55,15 @@ async function loadOptions(newOptions) {
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
-  clickToPause.checked = !!Options.clickToPause;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   playbackRate.value = Options.playbackRate;
   qualityMultiplier.value = Options.qualityMultiplier;
+
+  setSelectMenuValue(clickAction, Options.singleClickAction);
+  setSelectMenuValue(dblclickAction, Options.doubleClickAction);
+  setSelectMenuValue(tplclickAction, Options.tripleClickAction);
 
   if (Options.keybinds) {
     keybindsList.replaceChildren();
@@ -82,15 +88,59 @@ async function loadOptions(newOptions) {
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
 }
 
+function createSelectMenu(container, options, selected, localPrefix, callback) {
+  container.replaceChildren();
+  const select = document.createElement('select');
+  for (const option of options) {
+    const optionElement = document.createElement('option');
+    optionElement.value = option;
+    optionElement.textContent = Localize.getMessage(localPrefix + '_' + option);
+    if (option === selected) {
+      optionElement.selected = true;
+    }
+    select.appendChild(optionElement);
+  }
+  select.addEventListener('change', callback);
+  container.appendChild(select);
+}
+
+function setSelectMenuValue(container, value) {
+  const select = container.querySelector('select');
+  if (!select) {
+    return;
+  }
+  select.value = value;
+}
+
+createSelectMenu(clickAction, Object.values(ClickActions), Options.singleClickAction, 'options_general_clickaction', (e) => {
+  Options.singleClickAction = e.target.value;
+  optionChanged();
+});
+
+createSelectMenu(dblclickAction, Object.values(ClickActions), Options.doubleClickAction, 'options_general_clickaction', (e) => {
+  Options.doubleClickAction = e.target.value;
+  optionChanged();
+});
+
+createSelectMenu(tplclickAction, Object.values(ClickActions), Options.tripleClickAction, 'options_general_clickaction', (e) => {
+  Options.tripleClickAction = e.target.value;
+  optionChanged();
+});
+
 document.querySelectorAll('.option').forEach((option) => {
   option.addEventListener('click', (e) => {
     if (e.target.tagName !== 'INPUT') {
       const input = option.querySelector('input');
-      input.click();
+      if (input) {
+        input.click();
+      }
     }
   });
 
-  WebUtils.setupTabIndex(option.querySelector('input'));
+  const input = option.querySelector('input');
+  if (input) {
+    WebUtils.setupTabIndex(input);
+  }
 });
 
 document.querySelectorAll('.video-option').forEach((option) => {
@@ -203,11 +253,6 @@ freeUnusedChannels.addEventListener('change', () => {
 
 autoplayYoutube.addEventListener('change', () => {
   Options.autoplayYoutube = autoplayYoutube.checked;
-  optionChanged();
-});
-
-clickToPause.addEventListener('change', () => {
-  Options.clickToPause = clickToPause.checked;
   optionChanged();
 });
 

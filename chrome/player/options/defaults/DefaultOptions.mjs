@@ -1,4 +1,5 @@
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {ClickActions} from './ClickActions.mjs';
 import {DefaultKeybinds} from './DefaultKeybinds.mjs';
 
 export const DefaultOptions = {
@@ -8,7 +9,6 @@ export const DefaultOptions = {
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
-  clickToPause: false,
   autoplayYoutube: true,
   autoEnableURLs: [],
   keybinds: DefaultKeybinds,
@@ -23,4 +23,7 @@ export const DefaultOptions = {
   seekStepSize: 2,
   playbackRate: 1,
   qualityMultiplier: 1.1,
+  singleClickAction: ClickActions.HIDE_CONTROLS,
+  doubleClickAction: ClickActions.PLAY_PAUSE,
+  tripleClickAction: ClickActions.FULLSCREEN,
 };

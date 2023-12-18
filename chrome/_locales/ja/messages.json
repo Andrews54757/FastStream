@@ -711,14 +711,35 @@
     "options_general_playbackrate": {
         "message": "デフォルトの再生速度"
     },
-    "options_general_clickpause": {
-        "message": "シングルクリックで再生/一時停止を切り替えます"
-    },
     "options_general_autoplayyt": {
         "message": "YouTube 動画の自動再生"
     },
     "options_general_quality": {
         "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
+    },
+    "options_general_clickaction": {
+        "message": "シングルクリックアクション"
+    },
+    "options_general_dblclickaction": {
+        "message": "ダブルクリックアクション"
+    },
+    "options_general_tplclickaction": {
+        "message": "トリプルクリックアクション"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "再生/一時停止を切り替えます"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "フルスクリーンを切り替えます"
+    },
+    "options_general_clickaction_pip": {
+        "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "コントロールを隠します"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "プレーヤーを隠します"
     },
     "options_export_header": {
         "message": "設定のインポート/エクスポート"
