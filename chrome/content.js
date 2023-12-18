@@ -110,7 +110,7 @@ chrome.runtime.onMessage.addListener(
             return;
           }
 
-          if (!video || video?.highest?.tagName === 'BODY') {
+          if (!video || (video?.highest?.tagName === 'BODY' && !request.noRedirect)) {
             window.location = request.url;
             console.log('redirecting to player');
             sendResponse('redirect');

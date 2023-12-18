@@ -664,6 +664,7 @@ async function openPlayer(frame) {
   return chrome.tabs.sendMessage(frame.tab.tabId, {
     type: 'player',
     url: PlayerURL + '?frame_id=' + frame.frameId,
+    noRedirect: frame.frameId === 0,
   }, {
     frameId: frame.frameId,
   }, (response) => {
