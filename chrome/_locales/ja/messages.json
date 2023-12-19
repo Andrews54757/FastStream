@@ -741,6 +741,18 @@
     "options_general_clickaction_hideplayer": {
         "message": "プレーヤーを隠します"
     },
+    "options_general_pagebluraction": {
+        "message": "タブが変更されたとき"
+    },
+    "options_general_pagebluraction_nothing": {
+        "message": "何もしません"
+    },
+    "options_general_pagebluraction_playpause": {
+        "message": "動画の再生/一時停止を切り替えます"
+    },
+    "options_general_pagebluraction_pip": {
+        "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
+    },
     "options_export_header": {
         "message": "設定のインポート/エクスポート"
     },

@@ -4,6 +4,7 @@ import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {ClickActions} from '../options/defaults/ClickActions.mjs';
+import {PageBlurActions} from '../options/defaults/PageBlurActions.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
@@ -700,6 +701,11 @@ export class InterfaceController {
       e.stopPropagation();
     });
 
+    document.addEventListener('visibilitychange', ()=>{
+      console.log('vischange', null, !document.hidden);
+      this.handleVisibilityChange(!document.hidden);
+    });
+
     // eslint-disable-next-line new-cap
     Coloris({
       theme: 'pill',
@@ -717,6 +723,37 @@ export class InterfaceController {
     });
 
     this.updateToolVisibility();
+  }
+
+  async handleVisibilityChange(isVisible) {
+    const action = this.client.options.pageBlurAction;
+
+    if (isVisible === this.lastPageVisibility) {
+      return;
+    }
+    switch (action) {
+      case PageBlurActions.NOTHING:
+        break;
+      case PageBlurActions.PLAYPAUSE:
+        if (!isVisible) {
+          this.shouldPlay = this.client.persistent.playing;
+          await this.client.player?.pause();
+        } else {
+          if (this.shouldPlay) {
+            await this.client.player?.play();
+          }
+        }
+        break;
+      case PageBlurActions.PIP:
+        if (!isVisible) {
+          await this.enterPip();
+        } else {
+          await this.exitPip();
+        }
+        break;
+    }
+
+    this.lastPageVisibility = isVisible;
   }
 
   updateToolVisibility() {
@@ -783,20 +820,27 @@ export class InterfaceController {
   }
 
   pipToggle() {
-    // if ('documentPictureInPicture' in window) {
-    //   this.documentPipToggle();
-    //   return;
-    // }
     if (document.pictureInPictureElement) {
-      document.exitPictureInPicture();
+      return this.exitPip();
     } else {
-      if (!this.client.player) {
-        alert(Localize.getMessage('player_nosource_alert'));
-        return;
-      }
-      this.client.player.getVideo().requestPictureInPicture();
+      return this.enterPip();
     }
   }
+
+  exitPip() {
+    if (document.pictureInPictureElement) {
+      return document.exitPictureInPicture();
+    }
+    return Promise.resolve();
+  }
+
+  enterPip() {
+    if (!document.pictureInPictureElement && this.client.player) {
+      return this.client.player.getVideo().requestPictureInPicture();
+    }
+    return Promise.resolve();
+  }
+
   setupRateChanger() {
     const els = [];
     const speedList = document.createElement('div');
@@ -1216,6 +1260,9 @@ export class InterfaceController {
   skipSegment() {
     const time = this.client.currentTime;
     const currentSegment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
+    if (!currentSegment) {
+      return;
+    }
     this.client.currentTime = currentSegment.endTime;
 
     if (currentSegment.onSkip) {

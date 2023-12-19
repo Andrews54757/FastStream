@@ -740,6 +740,18 @@
     "options_general_clickaction_hideplayer": {
         "message": "Ocultar reproductor"
     },
+    "options_general_pagebluraction": {
+        "message": "Cuando cambia la pestaña"
+    },
+    "options_general_pagebluraction_nothing": {
+        "message": "No hacer nada"
+    },
+    "options_general_pagebluraction_playpause": {
+        "message": "Reproducir/pausar video"
+    },
+    "options_general_pagebluraction_pip": {
+        "message": "Alternar imagen en imagen"
+    },
     "options_export_header": {
         "message": "Importar/Exportar Configuraciones"
     },

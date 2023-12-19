@@ -15,6 +15,7 @@ import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
 import {Localize} from './modules/Localize.mjs';
 import {ClickActions} from './options/defaults/ClickActions.mjs';
+import {PageBlurActions} from './options/defaults/PageBlurActions.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -35,6 +36,7 @@ export class FastStreamClient extends EventEmitter {
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
+      pageBlurAction: PageBlurActions.NOTHING,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -124,6 +126,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;
+    this.options.pageBlurAction = options.pageBlurAction;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;

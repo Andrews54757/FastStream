@@ -741,6 +741,18 @@
     "options_general_clickaction_hideplayer": {
         "message": "Hide player"
     },
+    "options_general_pagebluraction": {
+        "message": "When tab changes"
+    },
+    "options_general_pagebluraction_nothing": {
+        "message": "Do nothing"
+    },
+    "options_general_pagebluraction_playpause": {
+        "message": "Play/Pause video"
+    },
+    "options_general_pagebluraction_pip": {
+        "message": "Toggle picture-in-picture"
+    },
     "options_export_header": {
         "message": "Import/Export Settings"
     },

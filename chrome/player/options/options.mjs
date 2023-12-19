@@ -8,6 +8,7 @@ import {Localize} from '../modules/Localize.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
+import {PageBlurActions} from './defaults/PageBlurActions.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -28,6 +29,7 @@ const exportButton = document.getElementById('export');
 const clickAction = document.getElementById('clickaction');
 const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
+const pageBlurActions = document.getElementById('pagebluraction');
 const customSourcePatterns = document.getElementById('customSourcePatterns');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
@@ -74,6 +76,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(clickAction, Options.singleClickAction);
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
+  setSelectMenuValue(pageBlurActions, Options.pageBlurAction);
 
   if (Options.keybinds) {
     keybindsList.replaceChildren();
@@ -134,6 +137,11 @@ createSelectMenu(dblclickAction, Object.values(ClickActions), Options.doubleClic
 
 createSelectMenu(tplclickAction, Object.values(ClickActions), Options.tripleClickAction, 'options_general_clickaction', (e) => {
   Options.tripleClickAction = e.target.value;
+  optionChanged();
+});
+
+createSelectMenu(pageBlurActions, Object.values(PageBlurActions), Options.pageBlurAction, 'options_general_pagebluraction', (e) => {
+  Options.pageBlurAction = e.target.value;
   optionChanged();
 });
 
