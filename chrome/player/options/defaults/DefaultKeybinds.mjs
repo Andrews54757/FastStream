@@ -2,6 +2,7 @@ export const DefaultKeybinds = {
   'HidePlayer': 'AltRight',
   'PlayPause': 'Space',
   'Fullscreen': 'KeyF',
+  'PictureInPicture': 'KeyP',
   'VolumeUp': 'ArrowUp',
   'VolumeDown': 'ArrowDown',
   'SeekForward': 'ArrowRight',

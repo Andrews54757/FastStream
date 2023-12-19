@@ -69,6 +69,10 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.hideControlBarOnAction(2000);
     });
 
+    this.on('PictureInPicture', (e) => {
+      this.client.interfaceController.pipToggle();
+    });
+
     this.on('SeekForwardLarge', (e) => {
       this.client.setSeekSave(false);
       this.client.currentTime += this.client.options.seekStepSize * 5;
