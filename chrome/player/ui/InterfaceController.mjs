@@ -742,7 +742,51 @@ export class InterfaceController {
     }
   }
 
+  async documentPipToggle() {
+    if (window.documentPictureInPicture.window) {
+      window.documentPictureInPicture.window.close();
+      return;
+    }
+
+    const pipWindow = await documentPictureInPicture.requestWindow({
+      width: DOMElements.playerContainer.clientWidth,
+      height: DOMElements.playerContainer.clientHeight,
+    });
+
+    pipWindow.document.body.appendChild(DOMElements.playerContainer);
+
+    // Copy style sheets over from the initial document
+    // so that the player looks the same.
+    [...document.styleSheets].forEach((styleSheet) => {
+      try {
+        const cssRules = [...styleSheet.cssRules]
+            .map((rule) => rule.cssText)
+            .join('');
+        const style = document.createElement('style');
+
+        style.textContent = cssRules;
+        pipWindow.document.head.appendChild(style);
+      } catch (e) {
+        const link = document.createElement('link');
+
+        link.rel = 'stylesheet';
+        link.type = styleSheet.type;
+        link.media = styleSheet.media;
+        link.href = styleSheet.href;
+        pipWindow.document.head.appendChild(link);
+      }
+    });
+
+    pipWindow.addEventListener('pagehide', (event) => {
+      document.body.appendChild(DOMElements.playerContainer);
+    });
+  }
+
   pipToggle() {
+    // if ('documentPictureInPicture' in window) {
+    //   this.documentPipToggle();
+    //   return;
+    // }
     if (document.pictureInPictureElement) {
       document.exitPictureInPicture();
     } else {
