@@ -741,16 +741,16 @@
     "options_general_clickaction_hideplayer": {
         "message": "Hide player"
     },
-    "options_general_pagebluraction": {
-        "message": "When active tab changes"
+    "options_general_vischangeaction": {
+        "message": "When player visiblity changes"
     },
-    "options_general_pagebluraction_nothing": {
+    "options_general_vischangeaction_nothing": {
         "message": "Do nothing"
     },
-    "options_general_pagebluraction_playpause": {
+    "options_general_vischangeaction_playpause": {
         "message": "Toggle play/pause"
     },
-    "options_general_pagebluraction_pip": {
+    "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
     },
     "options_export_header": {

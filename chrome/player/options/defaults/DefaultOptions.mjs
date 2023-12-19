@@ -1,7 +1,7 @@
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {ClickActions} from './ClickActions.mjs';
 import {DefaultKeybinds} from './DefaultKeybinds.mjs';
-import {PageBlurActions} from './PageBlurActions.mjs';
+import {VisChangeActions} from './VisChangeActions.mjs';
 
 export const DefaultOptions = {
   playMP4URLs: false,
@@ -28,5 +28,5 @@ export const DefaultOptions = {
   singleClickAction: ClickActions.HIDE_CONTROLS,
   doubleClickAction: ClickActions.PLAY_PAUSE,
   tripleClickAction: ClickActions.FULLSCREEN,
-  pageBlurAction: PageBlurActions.NOTHING,
+  visChangeAction: VisChangeActions.NOTHING,
 };

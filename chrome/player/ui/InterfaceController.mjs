@@ -4,7 +4,7 @@ import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {ClickActions} from '../options/defaults/ClickActions.mjs';
-import {PageBlurActions} from '../options/defaults/PageBlurActions.mjs';
+import {VisChangeActions} from '../options/defaults/VisChangeActions.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
@@ -702,9 +702,21 @@ export class InterfaceController {
     });
 
     document.addEventListener('visibilitychange', ()=>{
-      console.log('vischange', null, !document.hidden);
       this.handleVisibilityChange(!document.hidden);
     });
+
+    const o = new IntersectionObserver(([entry]) => {
+      console.log('vischange', entry, entry.intersectionRatio);
+      if (entry.intersectionRatio > 0.1) {
+        this.handleVisibilityChange(true);
+      } else {
+        this.handleVisibilityChange(false);
+      }
+    }, {
+      threshold: [0, 0.1, 0.5],
+    });
+
+    o.observe(document.body);
 
     // eslint-disable-next-line new-cap
     Coloris({
@@ -726,15 +738,15 @@ export class InterfaceController {
   }
 
   async handleVisibilityChange(isVisible) {
-    const action = this.client.options.pageBlurAction;
+    const action = this.client.options.visChangeAction;
 
     if (isVisible === this.lastPageVisibility) {
       return;
     }
     switch (action) {
-      case PageBlurActions.NOTHING:
+      case VisChangeActions.NOTHING:
         break;
-      case PageBlurActions.PLAY_PAUSE:
+      case VisChangeActions.PLAY_PAUSE:
         if (!isVisible) {
           this.shouldPlay = this.client.persistent.playing;
           await this.client.player?.pause();
@@ -744,7 +756,7 @@ export class InterfaceController {
           }
         }
         break;
-      case PageBlurActions.PIP:
+      case VisChangeActions.PIP:
         if (!isVisible) {
           await this.enterPip();
         } else {
