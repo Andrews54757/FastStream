@@ -150,7 +150,16 @@ document.querySelectorAll('.option').forEach((option) => {
     if (e.target.tagName !== 'INPUT') {
       const input = option.querySelector('input');
       if (input) {
-        input.click();
+        if (input.type === 'checkbox') {
+          input.click();
+        } else {
+          input.focus();
+        }
+      } else {
+        const select = option.querySelector('select');
+        if (select) {
+          select.focus();
+        }
       }
     }
   });
