@@ -243,6 +243,10 @@ input {
     font-size: 12px;
 }
 
+input[type="range"] {
+    padding: 3px 0px;
+}
+
 input:focus {
     border: 1px solid blue;
 }
