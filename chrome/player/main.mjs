@@ -23,8 +23,7 @@ if (EnvUtils.isExtension()) {
             }, '*');
           }
         } else if (request.type === 'options') {
-          OPTIONS = JSON.parse(request.options);
-          if (window.fastStream) window.fastStream.setOptions(OPTIONS);
+          loadOptions();
         } if (request.type === 'analyzerData') {
           window.fastStream.loadAnalyzerData(request.data);
         } else if (request.type === 'media_name') {
@@ -215,20 +214,22 @@ async function sortSubtitles(subs) {
   return subs;
 }
 
+async function loadOptions() {
+  try {
+    OPTIONS = await Utils.getOptionsFromStorage();
+    window.fastStream.setOptions(OPTIONS);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 async function setup() {
   if (!window.fastStream) {
     window.fastStream = new FastStreamClient();
     await window.fastStream.setup();
   }
 
-  if (EnvUtils.isExtension()) {
-    try {
-      OPTIONS = await Utils.getOptionsFromStorage();
-      window.fastStream.setOptions(OPTIONS);
-    } catch (e) {
-      console.error(e);
-    }
-  }
+  await loadOptions();
 
   const urlParams = new URLSearchParams(window.location.search);
   const myParam = urlParams.get('frame_id');
@@ -280,14 +281,12 @@ async function setup() {
   }
 
   if (!EnvUtils.isExtension()) {
-    window.fastStream.setOptions(await Utils.getOptionsFromStorage());
-
     // if not extension context then use iframe messager
     window.addEventListener('message', (e) => {
       if (e.origin !== window.location.origin) return;
 
       if (e.data?.type === 'options') {
-        window.fastStream.setOptions(JSON.parse(e.data.options));
+        loadOptions();
       } else if (e.data?.type === 'sources') {
         recieveSources(e.data, () => {});
       }

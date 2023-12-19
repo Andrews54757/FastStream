@@ -362,26 +362,38 @@ exportButton.addEventListener('click', async () => {
 
 function optionChanged() {
   if (EnvUtils.isExtension()) {
-    chrome?.runtime?.sendMessage({
-      type: 'options',
+    chrome.storage.local.set({
       options: JSON.stringify(Options),
+    }, ()=>{
+      chrome.runtime.sendMessage({
+        type: 'options',
+      });
     });
   } else {
+    localStorage.setItem('options', JSON.stringify(Options));
     const postWindow = window.opener || window.parent || window;
     postWindow.postMessage({
       type: 'options',
-      options: JSON.stringify(Options),
     }, '/');
-    localStorage.setItem('options', JSON.stringify(Options));
   }
 }
+
 if (EnvUtils.isExtension()) {
-// Load options on options event
+  // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === 'options') {
-      loadOptions(JSON.parse(request.options));
+      loadOptions();
     }
   });
+
+  // Load options on visibility change
+  const o = new IntersectionObserver(([entry]) => {
+    if (entry.isIntersecting) {
+      loadOptions();
+    }
+  });
+
+  o.observe(document.body);
 
   const ratebox = document.getElementById('ratebox');
   document.getElementById('rate').addEventListener('click', (e) => {
@@ -459,3 +471,5 @@ if (EnvUtils.isExtension()) {
   });
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
+
+

@@ -706,7 +706,6 @@ export class InterfaceController {
     });
 
     const o = new IntersectionObserver(([entry]) => {
-      console.log('vischange', entry, entry.intersectionRatio);
       if (entry.intersectionRatio > 0.1) {
         this.handleVisibilityChange(true);
       } else {

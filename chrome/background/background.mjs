@@ -154,7 +154,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   if (msg.type === 'options') {
-    loadOptions(JSON.parse(msg.options));
+    loadOptions();
     sendResponse('ok');
     return;
   }
@@ -402,10 +402,6 @@ function getMediaNameFromTab(tab) {
 async function loadOptions(newOptions) {
   newOptions = newOptions || await Utils.getOptionsFromStorage();
   Options = newOptions;
-
-  chrome.storage.local.set({
-    options: JSON.stringify(Options),
-  });
 
   if (Options.playMP4URLs) {
     setupRedirectRule(1, ['mp4']);
