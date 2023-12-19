@@ -734,7 +734,7 @@ export class InterfaceController {
     switch (action) {
       case PageBlurActions.NOTHING:
         break;
-      case PageBlurActions.PLAYPAUSE:
+      case PageBlurActions.PLAY_PAUSE:
         if (!isVisible) {
           this.shouldPlay = this.client.persistent.playing;
           await this.client.player?.pause();

@@ -748,7 +748,7 @@
         "message": "Do nothing"
     },
     "options_general_pagebluraction_playpause": {
-        "message": "Play/Pause video"
+        "message": "Toggle play/pause"
     },
     "options_general_pagebluraction_pip": {
         "message": "Toggle picture-in-picture"

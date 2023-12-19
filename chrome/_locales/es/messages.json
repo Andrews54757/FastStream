@@ -747,7 +747,7 @@
         "message": "No hacer nada"
     },
     "options_general_pagebluraction_playpause": {
-        "message": "Reproducir/pausar video"
+        "message": "Alternar reproducir/pausar"
     },
     "options_general_pagebluraction_pip": {
         "message": "Alternar imagen en imagen"

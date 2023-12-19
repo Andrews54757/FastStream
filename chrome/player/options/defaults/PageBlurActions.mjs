@@ -1,5 +1,5 @@
 export const PageBlurActions = {
   NOTHING: 'nothing',
-  PLAYPAUSE: 'playpause',
+  PLAY_PAUSE: 'playpause',
   PIP: 'pip',
 };
