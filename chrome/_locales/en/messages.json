@@ -742,7 +742,7 @@
         "message": "Hide player"
     },
     "options_general_pagebluraction": {
-        "message": "When tab changes"
+        "message": "When active tab changes"
     },
     "options_general_pagebluraction_nothing": {
         "message": "Do nothing"
