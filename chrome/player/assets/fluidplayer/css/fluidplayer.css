@@ -1117,7 +1117,6 @@ body {
     background-color: var(--menu-textbutton-hover-background-color);
 }
 
-
 .close_button {
     cursor: pointer;
     position: absolute;
@@ -1131,19 +1130,31 @@ body {
     background-color: var(--close-button-hover-color);
 }
 
-.popwindow .close_button {
-    top: 5px;
+.window_header {
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 5px;
+}
+
+.window_header .title {
+    font-size: 13px;
+    text-align: center;
+}
+
+
+.window_header .close_button {
     right: 5px;
+    top: 50%;
+    transform: translate(0, -50%);
 }
 
 .popwindow {
-    padding: 1px 20px;
+    display: flex;
+    flex-direction: column;
     border-radius: 5px;
     border: var(--popwindow-border);
     position: absolute;
-    display: flex;
-    gap: 5px;
-    flex-direction: column;
     top: 20px;
     bottom: 60px;
     left: 10%;
@@ -1156,9 +1167,13 @@ body {
     outline: none;
 }
 
-.popwindow .title {
-    font-size: 13px;
-    text-align: center;
+.popwindow .content_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 1px 20px;
+    flex: 1;
+    min-height: 0;
 }
 
 .expanded.controls_visible .popwindow {
@@ -1891,7 +1906,6 @@ body {
 }
 
 .options_container {
-    padding: 1px 0px;
     overflow: hidden;
     max-width: 500px;
     width: 90%;

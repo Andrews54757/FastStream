@@ -242,14 +242,16 @@ export class SourcesBrowser {
 
     this.linkui = {};
 
+    const contentContainer = DOMElements.linkuiContainer.getElementsByClassName('content_container')[0];
+
     this.linkui.sourcesFound = WebUtils.create('div', null, 'linkui-sources-found');
     this.linkui.sourcesFound.textContent = Localize.getMessage('player_source_nonelisted');
-    DOMElements.linkuiContainer.appendChild(this.linkui.sourcesFound);
+    contentContainer.appendChild(this.linkui.sourcesFound);
 
     this.linkui.addNewButton = WebUtils.create('div', null, 'linkui-addnew-button');
     this.linkui.addNewButton.textContent = Localize.getMessage('player_source_addbtn');
     WebUtils.setupTabIndex(this.linkui.addNewButton);
-    DOMElements.linkuiContainer.appendChild(this.linkui.addNewButton);
+    contentContainer.appendChild(this.linkui.addNewButton);
 
 
     this.linkui.addNewButton.addEventListener('click', (e) => {
@@ -260,7 +262,7 @@ export class SourcesBrowser {
     this.linkui.clearButton = WebUtils.create('div', null, 'linkui-clear-button');
     this.linkui.clearButton.textContent = Localize.getMessage('player_source_clearbtn');
     WebUtils.setupTabIndex(this.linkui.clearButton);
-    DOMElements.linkuiContainer.appendChild(this.linkui.clearButton);
+    contentContainer.appendChild(this.linkui.clearButton);
 
     this.linkui.clearButton.addEventListener('click', (e) => {
       this.sources.length = 0;
@@ -269,6 +271,6 @@ export class SourcesBrowser {
     });
 
     this.linkui.sourcesList = WebUtils.create('div', null, 'linkui-sources-list');
-    DOMElements.linkuiContainer.appendChild(this.linkui.sourcesList);
+    contentContainer.appendChild(this.linkui.sourcesList);
   }
 }
