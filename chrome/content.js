@@ -262,7 +262,7 @@ function makeMiniPlayer(iframeObj) {
   placeholder.id = id;
   iframeObj.oldStyle = element.getAttribute('style');
   placeholder.setAttribute('style', iframeObj.oldStyle);
-  placeholder.style.backgroundColor = 'black';
+  placeholder.style.setProperty('background-color', 'black', 'important');
   placeholder.classList = element.classList;
 
   element.parentElement.insertBefore(placeholder, element);
@@ -270,6 +270,7 @@ function makeMiniPlayer(iframeObj) {
   players.forEach((player) => {
     if (player.iframe === element) {
       player.iframe = placeholder;
+      player.isPlaceholder = true;
     }
   });
 
@@ -295,6 +296,7 @@ function unmakeMiniPlayer(iframeObj) {
   players.forEach((player) => {
     if (player.iframe === iframeObj.placeholder) {
       player.iframe = element;
+      player.isPlaceholder = false;
     }
   });
   const id = iframeObj.placeholder.id;
@@ -352,6 +354,9 @@ function get_yt_identifier(urlStr) {
 function updatePlayerStyles() {
   players.forEach((player) => {
     updatePlayerStyle(player.old, player.iframe, player.isYt);
+    if (player.isPlaceholder) {
+      player.iframe.style.setProperty('background-color', 'black', 'important');
+    }
   });
 }
 
