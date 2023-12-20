@@ -46,7 +46,7 @@ chrome.runtime.onMessage.addListener(
           if (iframeObj.isMini && request.autoExit) {
             // if placeholder is visible again
             const observer = new IntersectionObserver(([entry]) => {
-              if (entry.intersectionRatio > 0.1) {
+              if (entry.intersectionRatio > 0.25) {
                 unmakeMiniPlayer(iframeObj);
                 observer.disconnect();
 
@@ -58,7 +58,7 @@ chrome.runtime.onMessage.addListener(
                 updatePlayerStyles();
               }
             }, {
-              threshold: [0, 0.1, 0.5],
+              threshold: [0, 0.25, 0.5],
             });
             observer.observe(iframeObj.placeholder);
           }

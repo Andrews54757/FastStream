@@ -714,13 +714,13 @@ export class InterfaceController {
     });
 
     const o = new IntersectionObserver(([entry]) => {
-      if (entry.intersectionRatio > 0.1) {
+      if (entry.intersectionRatio > 0.25) {
         this.handleVisibilityChange(true);
       } else {
         this.handleVisibilityChange(false);
       }
     }, {
-      threshold: [0, 0.1, 0.5],
+      threshold: [0, 0.25, 0.5],
     });
 
     o.observe(document.body);
