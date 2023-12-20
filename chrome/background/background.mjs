@@ -341,6 +341,9 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 async function handleFullScreenRequest(frame, message) {
+  if (frame.parentId === -1) {
+    return 'invalid';
+  }
   const needsToSendFrameId = !frame.hasSentFrameId;
   if (needsToSendFrameId) {
     frame.hasSentFrameId = true;
