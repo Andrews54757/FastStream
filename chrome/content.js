@@ -39,15 +39,10 @@ chrome.runtime.onMessage.addListener(
           throw new Error('No element found for frame id ' + request.frameId);
         }
 
+        iframeObj.miniSize = request.size;
+
         if (document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
-          if (iframeObj.isMini) {
-            const element = iframeObj.placeholder;
-            const aspectRatio = element.clientWidth / element.clientHeight;
-            const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * request.size, document.body.clientWidth);
-            const newHeight = newWidth / aspectRatio;
-            iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
-            iframeObj.iframe.style.setProperty('height', newHeight + 'px', 'important');
-          }
+          updateMiniSize(iframeObj);
         } else {
           toggleMiniPlayer(iframeObj, request.size);
           if (iframeObj.isMini && request.autoExit) {
@@ -235,18 +230,29 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
+function updateMiniSize(iframeObj) {
+  if (iframeObj.isMini) {
+    const element = iframeObj.placeholder;
+    const aspectRatio = element.clientWidth / element.clientHeight;
+    const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * iframeObj.miniSize, document.body.clientWidth);
+    const newHeight = newWidth / aspectRatio;
+    iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
+    iframeObj.iframe.style.setProperty('height', newHeight + 'px', 'important');
+  }
+}
 
-function makeMiniPlayer(iframeObj, size) {
+function updateMiniSizes() {
+  iframeMap.forEach((iframeObj) => {
+    updateMiniSize(iframeObj);
+  });
+}
+
+function makeMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
     return;
   }
 
   const element = iframeObj.iframe;
-
-  const aspectRatio = element.clientWidth / element.clientHeight;
-  const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * size, document.body.clientWidth);
-  const newHeight = newWidth / aspectRatio;
-
 
   iframeObj.isMini = true;
   const id = element.id;
@@ -275,9 +281,7 @@ function makeMiniPlayer(iframeObj, size) {
         z-index: 2147483647 !important;
         border: 1px solid rgba(0, 0, 0, 0.2) !important;
       `);
-
-  element.style.setProperty('width', newWidth + 'px', 'important');
-  element.style.setProperty('height', newHeight + 'px', 'important');
+  updateMiniSize(iframeObj);
 }
 
 function unmakeMiniPlayer(iframeObj) {
@@ -300,12 +304,12 @@ function unmakeMiniPlayer(iframeObj) {
   iframeObj.placeholder = null;
 }
 
-function toggleMiniPlayer(iframeObj, size) {
+function toggleMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
     unmakeMiniPlayer(iframeObj);
     return false;
   } else {
-    makeMiniPlayer(iframeObj, size);
+    makeMiniPlayer(iframeObj);
     return true;
   }
 }
@@ -319,6 +323,7 @@ document.addEventListener('fullscreenchange', () => {
 
 window.addEventListener('resize', () => {
   updatePlayerStyles();
+  updateMiniSizes();
 });
 
 function hideYT(player) {
