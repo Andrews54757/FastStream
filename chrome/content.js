@@ -88,7 +88,7 @@ chrome.runtime.onMessage.addListener(
 
         const element = iframeObj.iframe;
 
-        if (document.fullscreenElement === element || iframeObj.isMini) {
+        if (document.fullscreenElement === element) {
           document.exitFullscreen();
           sendResponse('exit');
         } else {
