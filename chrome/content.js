@@ -241,7 +241,7 @@ function makeMiniPlayer(iframeObj) {
 
   const aspectRatio = width / height;
 
-  const newWidth = document.body.clientWidth / 4;
+  const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) / 4, document.body.clientWidth);
   const newHeight = newWidth / aspectRatio;
 
 
