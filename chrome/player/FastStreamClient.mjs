@@ -37,6 +37,7 @@ export class FastStreamClient extends EventEmitter {
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
+      miniSize: 0.25,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -127,6 +128,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;
     this.options.visChangeAction = options.visChangeAction;
+    this.options.miniSize = options.miniSize;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;
@@ -153,6 +155,9 @@ export class FastStreamClient extends EventEmitter {
       this.videoAnalyzer.enable();
     } else {
       this.videoAnalyzer.disable();
+    }
+    if (this.interfaceController.miniPlayerActive) {
+      this.interfaceController.requestMiniplayer(true);
     }
   }
 

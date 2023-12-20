@@ -743,7 +743,7 @@ export class InterfaceController {
   async handleVisibilityChange(isVisible) {
     const action = this.client.options.visChangeAction;
 
-    if (isVisible === this.lastPageVisibility || this.disableVisibilityChange) {
+    if (isVisible === this.lastPageVisibility || this.miniPlayerActive) {
       return;
     }
     switch (action) {
@@ -767,30 +767,35 @@ export class InterfaceController {
         }
         break;
       case VisChangeActions.MINI_PLAYER:
-        if (EnvUtils.isExtension()) {
-          this.disableVisibilityChange = true;
-          chrome.runtime.sendMessage({
-            type: 'request_miniplayer',
-            force: !isVisible,
-            autoExit: true,
-          }, (response) => {
-            if (response !== 'enter') {
-              this.disableVisibilityChange = false;
-            }
-          });
-        }
+        this.requestMiniplayer(!isVisible);
         break;
     }
 
     this.lastPageVisibility = isVisible;
   }
 
+  requestMiniplayer(force) {
+    if (EnvUtils.isExtension()) {
+      this.miniPlayerActive = true;
+      chrome.runtime.sendMessage({
+        type: 'request_miniplayer',
+        size: this.client.options.miniSize,
+        force,
+        autoExit: true,
+      }, (response) => {
+        if (response !== 'enter') {
+          this.miniPlayerActive = false;
+        }
+      });
+    }
+  }
+
   setMiniplayerStatus(isMini) {
     if (isMini) {
-      this.disableVisibilityChange = true;
+      this.miniPlayerActive = true;
       DOMElements.playerContainer.classList.add('miniplayer');
     } else {
-      this.disableVisibilityChange = false;
+      this.miniPlayerActive = false;
       DOMElements.playerContainer.classList.remove('miniplayer');
     }
   }

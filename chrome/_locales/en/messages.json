@@ -753,6 +753,9 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Toggle miniplayer"
     },
+    "options_general_minisize": {
+        "message": "Miniplayer size"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
     },

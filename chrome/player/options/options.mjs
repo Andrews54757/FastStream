@@ -31,6 +31,8 @@ const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
 const visChangeAction = document.getElementById('vischangeaction');
 const customSourcePatterns = document.getElementById('customSourcePatterns');
+const showWhenMiniSelected = document.getElementById('showWhenMiniSelected');
+const miniSize = document.getElementById('minisize');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -54,6 +56,7 @@ if (!EnvUtils.isExtension()) {
   autoplayYoutube.disabled = true;
   autoEnableURLSInput.disabled = true;
   customSourcePatterns.disabled = true;
+  miniSize.disabled = true;
 }
 
 async function loadOptions(newOptions) {
@@ -72,11 +75,17 @@ async function loadOptions(newOptions) {
   playbackRate.value = Options.playbackRate;
   qualityMultiplier.value = Options.qualityMultiplier;
   customSourcePatterns.value = Options.customSourcePatterns || '';
+  miniSize.value = Options.miniSize;
 
   setSelectMenuValue(clickAction, Options.singleClickAction);
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
+  if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
+    showWhenMiniSelected.style.display = '';
+  } else {
+    showWhenMiniSelected.style.display = 'none';
+  }
 
   if (Options.keybinds) {
     keybindsList.replaceChildren();
@@ -142,6 +151,11 @@ createSelectMenu(tplclickAction, Object.values(ClickActions), Options.tripleClic
 
 createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visChangeAction, 'options_general_vischangeaction', (e) => {
   Options.visChangeAction = e.target.value;
+  if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
+    showWhenMiniSelected.style.display = '';
+  } else {
+    showWhenMiniSelected.style.display = 'none';
+  }
   optionChanged();
 });
 
@@ -302,6 +316,11 @@ playbackRate.addEventListener('change', () => {
 
 qualityMultiplier.addEventListener('change', () => {
   Options.qualityMultiplier = Math.max(parseFloat(qualityMultiplier.value) || 1, 0.01);
+  optionChanged();
+});
+
+miniSize.addEventListener('change', () => {
+  Options.miniSize = Math.min(Math.max(parseFloat(miniSize.value) || 0.25, 0.01), 1);
   optionChanged();
 });
 

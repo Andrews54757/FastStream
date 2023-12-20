@@ -40,9 +40,16 @@ chrome.runtime.onMessage.addListener(
         }
 
         if (document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
-
+          if (iframeObj.isMini) {
+            const element = iframeObj.placeholder;
+            const aspectRatio = element.clientWidth / element.clientHeight;
+            const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * request.size, document.body.clientWidth);
+            const newHeight = newWidth / aspectRatio;
+            iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
+            iframeObj.iframe.style.setProperty('height', newHeight + 'px', 'important');
+          }
         } else {
-          toggleMiniPlayer(iframeObj);
+          toggleMiniPlayer(iframeObj, request.size);
           if (iframeObj.isMini && request.autoExit) {
             // if placeholder is visible again
             const observer = new IntersectionObserver(([entry]) => {
@@ -229,19 +236,15 @@ chrome.runtime.onMessage.addListener(
     });
 
 
-function makeMiniPlayer(iframeObj) {
+function makeMiniPlayer(iframeObj, size) {
   if (iframeObj.isMini) {
     return;
   }
 
   const element = iframeObj.iframe;
 
-  const width = element.clientWidth;
-  const height = element.clientHeight;
-
-  const aspectRatio = width / height;
-
-  const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) / 4, document.body.clientWidth);
+  const aspectRatio = element.clientWidth / element.clientHeight;
+  const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * size, document.body.clientWidth);
   const newHeight = newWidth / aspectRatio;
 
 
@@ -297,12 +300,12 @@ function unmakeMiniPlayer(iframeObj) {
   iframeObj.placeholder = null;
 }
 
-function toggleMiniPlayer(iframeObj) {
+function toggleMiniPlayer(iframeObj, size) {
   if (iframeObj.isMini) {
     unmakeMiniPlayer(iframeObj);
     return false;
   } else {
-    makeMiniPlayer(iframeObj);
+    makeMiniPlayer(iframeObj, size);
     return true;
   }
 }

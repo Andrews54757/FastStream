@@ -756,6 +756,9 @@
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
     },
+    "options_general_minisize": {
+        "message": "ミニプレーヤーのサイズ"
+    },
     "options_export_header": {
         "message": "設定のインポート/エクスポート"
     },

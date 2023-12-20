@@ -752,6 +752,9 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Alternar miniplayer"
     },
+    "options_general_minisize": {
+        "message": "Tamaño del miniplayer"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagen en imagen"
     },

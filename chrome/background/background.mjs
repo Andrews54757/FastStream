@@ -226,6 +226,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === 'request_miniplayer') {
     handleFullScreenRequest(frame, {
       type: 'miniplayer',
+      size: msg.size,
       force: msg.force,
       autoExit: msg.autoExit,
     }).then((result) => {

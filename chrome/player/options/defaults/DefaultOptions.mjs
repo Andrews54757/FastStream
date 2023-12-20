@@ -29,4 +29,5 @@ export const DefaultOptions = {
   doubleClickAction: ClickActions.PLAY_PAUSE,
   tripleClickAction: ClickActions.FULLSCREEN,
   visChangeAction: VisChangeActions.NOTHING,
+  miniSize: 0.25,
 };
