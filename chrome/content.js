@@ -40,9 +40,10 @@ chrome.runtime.onMessage.addListener(
         }
 
         iframeObj.miniSize = request.size;
+        iframeObj.miniStyles = request.styles;
 
         if (document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
-          updateMiniSize(iframeObj);
+          updateMiniPlayer(iframeObj);
         } else {
           toggleMiniPlayer(iframeObj, request.size);
           if (iframeObj.isMini && request.autoExit) {
@@ -230,7 +231,7 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
-function updateMiniSize(iframeObj) {
+function updateMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
     const element = iframeObj.placeholder;
     const aspectRatio = element.clientWidth / element.clientHeight;
@@ -238,12 +239,18 @@ function updateMiniSize(iframeObj) {
     const newHeight = newWidth / aspectRatio;
     iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
     iframeObj.iframe.style.setProperty('height', newHeight + 'px', 'important');
+
+    for (const key in iframeObj.miniStyles) {
+      if (Object.hasOwn(iframeObj.miniStyles, key)) {
+        iframeObj.iframe.style.setProperty(key, iframeObj.miniStyles[key], 'important');
+      }
+    }
   }
 }
 
-function updateMiniSizes() {
+function resizeMiniPlayers() {
   iframeMap.forEach((iframeObj) => {
-    updateMiniSize(iframeObj);
+    updateMiniPlayer(iframeObj);
   });
 }
 
@@ -275,14 +282,15 @@ function makeMiniPlayer(iframeObj) {
   });
 
   element.setAttribute('style', `
-        position: fixed !important;
-        right: 0px !important;
-        bottom: 0px !important;
-        display: block !important;
-        z-index: 2147483647 !important;
-        border: 1px solid rgba(0, 0, 0, 0.2) !important;
-      `);
-  updateMiniSize(iframeObj);
+    position: fixed !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 0px !important;
+    z-index: 2147483647 !important;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+  `);
+  updateMiniPlayer(iframeObj);
 }
 
 function unmakeMiniPlayer(iframeObj) {
@@ -325,7 +333,7 @@ document.addEventListener('fullscreenchange', () => {
 
 window.addEventListener('resize', () => {
   updatePlayerStyles();
-  updateMiniSizes();
+  resizeMiniPlayers();
 });
 
 function hideYT(player) {

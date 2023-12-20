@@ -756,6 +756,21 @@
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
     },
+    "options_general_minipos": {
+        "message": "ミニプレーヤーの位置"
+    },
+    "options_general_minipos_topleft": {
+        "message": "左上"
+    },
+    "options_general_minipos_topright": {
+        "message": "右上"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "左下"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "右下"
+    },
     "options_general_minisize": {
         "message": "ミニプレーヤーのサイズ"
     },

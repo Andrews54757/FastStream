@@ -9,6 +9,7 @@ import {Localize} from '../modules/Localize.mjs';
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
 import {VisChangeActions} from './defaults/VisChangeActions.mjs';
+import {MiniplayerPositions} from './defaults/MiniplayerPositions.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -33,6 +34,7 @@ const visChangeAction = document.getElementById('vischangeaction');
 const customSourcePatterns = document.getElementById('customSourcePatterns');
 const showWhenMiniSelected = document.getElementById('showWhenMiniSelected');
 const miniSize = document.getElementById('minisize');
+const miniPos = document.getElementById('minipos');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -81,6 +83,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
+  setSelectMenuValue(miniPos, Options.miniPos);
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
   } else {
@@ -156,6 +159,11 @@ createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visCh
   } else {
     showWhenMiniSelected.style.display = 'none';
   }
+  optionChanged();
+});
+
+createSelectMenu(miniPos, Object.values(MiniplayerPositions), Options.miniPos, 'options_general_minipos', (e) => {
+  Options.miniPos = e.target.value;
   optionChanged();
 });
 

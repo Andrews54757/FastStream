@@ -753,6 +753,21 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Toggle miniplayer"
     },
+    "options_general_minipos": {
+        "message": "Miniplayer position"
+    },
+    "options_general_minipos_topleft": {
+        "message": "Top Left"
+    },
+    "options_general_minipos_topright": {
+        "message": "Top Right"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "Bottom Left"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "Bottom Right"
+    },
     "options_general_minisize": {
         "message": "Miniplayer size"
     },

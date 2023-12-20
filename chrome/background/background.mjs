@@ -229,6 +229,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       size: msg.size,
       force: msg.force,
       autoExit: msg.autoExit,
+      styles: msg.styles,
     }).then((result) => {
       sendResponse(result);
     });

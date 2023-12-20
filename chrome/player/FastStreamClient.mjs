@@ -16,6 +16,7 @@ import {EnvUtils} from './utils/EnvUtils.mjs';
 import {Localize} from './modules/Localize.mjs';
 import {ClickActions} from './options/defaults/ClickActions.mjs';
 import {VisChangeActions} from './options/defaults/VisChangeActions.mjs';
+import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -38,6 +39,7 @@ export class FastStreamClient extends EventEmitter {
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
       miniSize: 0.25,
+      miniPos: MiniplayerPositions.BOTTOM_RIGHT,
       videoBrightness: 1,
       videoContrast: 1,
       videoSaturation: 1,
@@ -129,6 +131,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.tripleClickAction = options.tripleClickAction;
     this.options.visChangeAction = options.visChangeAction;
     this.options.miniSize = options.miniSize;
+    this.options.miniPos = options.miniPos;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;

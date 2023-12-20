@@ -752,6 +752,36 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Alternar miniplayer"
     },
+    // "options_general_minipos": {
+    //     "message": "Miniplayer position"
+    // },
+    // "options_general_minipos_topleft": {
+    //     "message": "Top Left"
+    // },
+    // "options_general_minipos_topright": {
+    //     "message": "Top Right"
+    // },
+    // "options_general_minipos_bottomleft": {
+    //     "message": "Bottom Left"
+    // },
+    // "options_general_minipos_bottomright": {
+    //     "message": "Bottom Right"
+    // },
+    "options_general_minipos": {
+        "message": "Posición del miniplayer"
+    },
+    "options_general_minipos_topleft": {
+        "message": "Arriba a la izquierda"
+    },
+    "options_general_minipos_topright": {
+        "message": "Arriba a la derecha"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "Abajo a la izquierda"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "Abajo a la derecha"
+    },
     "options_general_minisize": {
         "message": "Tamaño del miniplayer"
     },

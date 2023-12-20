@@ -1,6 +1,7 @@
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {ClickActions} from './ClickActions.mjs';
 import {DefaultKeybinds} from './DefaultKeybinds.mjs';
+import {MiniplayerPositions} from './MiniplayerPositions.mjs';
 import {VisChangeActions} from './VisChangeActions.mjs';
 
 export const DefaultOptions = {
@@ -30,4 +31,5 @@ export const DefaultOptions = {
   tripleClickAction: ClickActions.FULLSCREEN,
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,
+  miniPos: MiniplayerPositions.BOTTOM_RIGHT,
 };

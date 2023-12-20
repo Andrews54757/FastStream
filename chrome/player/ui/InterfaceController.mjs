@@ -4,6 +4,7 @@ import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {ClickActions} from '../options/defaults/ClickActions.mjs';
+import {MiniplayerPositions} from '../options/defaults/MiniplayerPositions.mjs';
 import {VisChangeActions} from '../options/defaults/VisChangeActions.mjs';
 import {SubtitleTrack} from '../SubtitleTrack.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
@@ -777,10 +778,32 @@ export class InterfaceController {
   requestMiniplayer(force) {
     if (EnvUtils.isExtension()) {
       this.miniPlayerActive = true;
+
+      const styles = {};
+      switch (this.client.options.miniPos) {
+        case MiniplayerPositions.TOP_LEFT:
+          styles.top = '0px';
+          styles.left = '0px';
+          break;
+        case MiniplayerPositions.TOP_RIGHT:
+          styles.top = '0px';
+          styles.right = '0px';
+          break;
+        case MiniplayerPositions.BOTTOM_LEFT:
+          styles.bottom = '0px';
+          styles.left = '0px';
+          break;
+        case MiniplayerPositions.BOTTOM_RIGHT:
+          styles.bottom = '0px';
+          styles.right = '0px';
+          break;
+      }
+
       chrome.runtime.sendMessage({
         type: 'request_miniplayer',
         size: this.client.options.miniSize,
         force,
+        styles,
         autoExit: true,
       }, (response) => {
         if (response !== 'enter') {
