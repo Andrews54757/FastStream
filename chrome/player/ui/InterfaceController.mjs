@@ -703,7 +703,7 @@ export class InterfaceController {
 
     document.addEventListener('visibilitychange', ()=>{
       const o = new IntersectionObserver(([entry]) => {
-        if (entry.intersectionRatio > 0.1) {
+        if (entry.intersectionRatio > 0.25) {
           this.handleVisibilityChange(true);
         } else {
           this.handleVisibilityChange(false);
