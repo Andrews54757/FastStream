@@ -702,7 +702,15 @@ export class InterfaceController {
     });
 
     document.addEventListener('visibilitychange', ()=>{
-      this.handleVisibilityChange(!document.hidden);
+      const o = new IntersectionObserver(([entry]) => {
+        if (entry.intersectionRatio > 0.1) {
+          this.handleVisibilityChange(true);
+        } else {
+          this.handleVisibilityChange(false);
+        }
+        o.disconnect();
+      });
+      o.observe(document.body);
     });
 
     const o = new IntersectionObserver(([entry]) => {
@@ -739,7 +747,7 @@ export class InterfaceController {
   async handleVisibilityChange(isVisible) {
     const action = this.client.options.visChangeAction;
 
-    if (isVisible === this.lastPageVisibility) {
+    if (isVisible === this.lastPageVisibility || this.disableVisibilityChange) {
       return;
     }
     switch (action) {
@@ -762,9 +770,33 @@ export class InterfaceController {
           await this.exitPip();
         }
         break;
+      case VisChangeActions.MINI_PLAYER:
+        if (EnvUtils.isExtension()) {
+          this.disableVisibilityChange = true;
+          chrome.runtime.sendMessage({
+            type: 'request_miniplayer',
+            force: !isVisible,
+            autoExit: true,
+          }, (response) => {
+            if (response !== 'enter') {
+              this.disableVisibilityChange = false;
+            }
+          });
+        }
+        break;
     }
 
     this.lastPageVisibility = isVisible;
+  }
+
+  setMiniplayerStatus(isMini) {
+    if (isMini) {
+      this.disableVisibilityChange = true;
+      DOMElements.playerContainer.classList.add('miniplayer');
+    } else {
+      this.disableVisibilityChange = false;
+      DOMElements.playerContainer.classList.remove('miniplayer');
+    }
   }
 
   updateToolVisibility() {
@@ -1855,7 +1887,7 @@ export class InterfaceController {
       } else {
         if (EnvUtils.isExtension()) {
           chrome.runtime.sendMessage({
-            type: 'fullscreen',
+            type: 'request_fullscreen',
           }, (response)=>{
             this.setFullscreenStatus(response === 'enter');
           });

@@ -750,6 +750,9 @@
     "options_general_vischangeaction_playpause": {
         "message": "再生/一時停止を切り替えます"
     },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "ミニプレーヤーを切り替えます"
+    },
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
     },

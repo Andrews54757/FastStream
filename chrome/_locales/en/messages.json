@@ -750,6 +750,9 @@
     "options_general_vischangeaction_playpause": {
         "message": "Toggle play/pause"
     },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Toggle miniplayer"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
     },

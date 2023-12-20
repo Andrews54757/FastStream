@@ -216,12 +216,33 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       });
       return true;
     }
-  } else if (msg.type === 'fullscreen') {
-    handleFullScreenRequest(frame).then((result) => {
+  } else if (msg.type === 'request_fullscreen') {
+    handleFullScreenRequest(frame, {
+      type: 'fullscreen',
+    }).then((result) => {
       sendResponse(result);
     });
     return true;
-  } else if (msg.type ==='fullscreen_change') {
+  } else if (msg.type === 'request_miniplayer') {
+    handleFullScreenRequest(frame, {
+      type: 'miniplayer',
+      force: msg.force,
+      autoExit: msg.autoExit,
+    }).then((result) => {
+      sendResponse(result);
+    });
+    return true;
+  } else if (msg.type ==='miniplayer_change_init') {
+    // send to msg.frameId
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: 'miniplayer_change',
+      miniplayer: msg.miniplayer,
+    }, {
+      frameId: msg.frameId,
+    }, ()=>{
+      BackgroundUtils.checkMessageError('miniplayer_change');
+    });
+  } else if (msg.type ==='fullscreen_change_init') {
     // send to children
     for (const i in tab.frames) {
       if (Object.hasOwn(tab.frames, i)) {
@@ -317,7 +338,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   sendResponse('ok');
 });
 
-async function handleFullScreenRequest(frame) {
+async function handleFullScreenRequest(frame, message) {
   const needsToSendFrameId = !frame.hasSentFrameId;
   if (needsToSendFrameId) {
     frame.hasSentFrameId = true;
@@ -338,8 +359,8 @@ async function handleFullScreenRequest(frame) {
 
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'fullscreen',
       frameId: frame.frameId,
+      ...message,
     }, {
       frameId: frame.parentId,
     }, (response) => {

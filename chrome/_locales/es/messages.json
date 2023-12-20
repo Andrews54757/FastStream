@@ -749,6 +749,9 @@
     "options_general_vischangeaction_playpause": {
         "message": "Alternar reproducir/pausar"
     },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Alternar miniplayer"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagen en imagen"
     },

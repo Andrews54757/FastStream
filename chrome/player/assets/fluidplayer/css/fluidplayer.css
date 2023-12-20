@@ -4,6 +4,8 @@ body {
     margin: 0px;
     overflow: hidden;
     background-color: black;
+
+    --font-size-small: 16px;
 }
 
 .fluid_video_wrapper {
@@ -227,7 +229,7 @@ body {
     display: inline-block;
     vertical-align: top;
     height: 24px;
-    font-size: 16px;
+    font-size: var(--font-size-small);
     font-weight: normal;
     font-style: normal;
     text-align: left;
@@ -258,11 +260,11 @@ body {
     white-space: nowrap;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .fluid_controls_container {
+.expanded.controls_visible .fluid_controls_container {
     height: 133px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_subtitles_container {
+.fluid_subtitles_container {
     color: white;
     position: absolute;
     bottom: 46px;
@@ -273,11 +275,11 @@ body {
     transition: bottom 0.5s;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default.controls_visible.expanded .fluid_subtitles_container {
+.controls_visible.expanded .fluid_subtitles_container {
     bottom: 126px;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_subtitles_container .subtitle-track {
+.fluid_subtitles_container .subtitle-track {
     color: white;
     font-size: 1em;
     padding: 0.25em;
@@ -323,12 +325,12 @@ body {
 }
 
 .fluid_controls_left {
-   flex: 1 1 auto;
-   min-width: 100px;
+    flex: 1 1 auto;
+    min-width: 100px;
 }
 
 .fluid_controls_right {
-   flex: none;
+    flex: none;
 }
 
 .fluid_controls_left,
@@ -495,30 +497,10 @@ body {
     cursor: pointer;
 }
 
-.fluid_button_video_source .fluid_video_sources_list,
-.fluid_button_language .fluid_language_list {
-    position: absolute;
-    right: 0px;
-    bottom: 36px;
-    z-index: 888888;
-    opacity: 99%;
-    background-color: var(--menu-background-color);
-    border-radius: 3px;
-    border: var(--menu-border);
-    color: var(--menu-text-color);
-    font-size: 16px;
-    font-weight: normal;
-    word-wrap: break-word;
-    white-space: normal;
-    width: max-content;
-    padding: 0;
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
-}
-
 .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item {
     padding: 8px 5px;
     border-top: var(--menu-border);
+    cursor: pointer;
 }
 
 .fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item:first-child {
@@ -534,11 +516,11 @@ body {
     display: table-row;
 }
 
-.language_table .language_container > div {
+.language_table .language_container>div {
     border-top: var(--menu-border);
 }
 
-.language_table .language_container:first-child > div {
+.language_table .language_container:first-child>div {
     border-top: none;
 }
 
@@ -552,6 +534,7 @@ body {
     display: table-cell;
     padding: 8px 10px;
     border-left: var(--menu-border);
+    cursor: pointer;
 }
 
 .language_track:hover,
@@ -589,9 +572,11 @@ body {
 .fluid_button_soundwave {
     color: var(--soundwave-toggle-color);
 }
+
 .fluid_button_subtitles {
     color: var(--subtitles-toggle-color);
 }
+
 .fluid_button svg:hover {
     opacity: 1;
 }
@@ -732,7 +717,7 @@ body {
 .fluid_controls_progress_container .seek_preview {
     position: absolute;
     background-color: var(--seek-preview-background-color);
-    font-size: 16px;
+    font-size: var(--font-size-small);
     text-align: center;
     padding: 3px 10px;
     border-radius: 3px;
@@ -816,21 +801,41 @@ body {
 
 .subtitles_menu {
     border-top-right-radius: 3px;
-    border: var(--menu-border);
     border-top-left-radius: 3px;
-    position: absolute;
-    bottom: 36px;
-    background-color: var(--menu-background-color);
-    color: var(--menu-text-color);
     width: 250px;
-    max-height: calc(100vh - 200px);
-    overflow-y: auto;
+}
+
+
+.fluid_button_video_source .fluid_video_sources_list,
+.fluid_button_language .fluid_language_list {
+    opacity: 99%;
+    border-radius: 3px;
+    width: max-content;
+    padding: 0;
+}
+
+.menu_container {
+    z-index: 888888;
+    position: absolute;
     right: 0px;
-    z-index: 1000;
-    font-size: 16px;
-    cursor: auto;
-    word-wrap: break-word;
+    bottom: 36px;
     white-space: normal;
+    word-wrap: break-word;
+    overflow-y: auto;
+    font-weight: normal;
+    cursor: auto;
+    font-size: var(--font-size-small);
+    border: var(--menu-border);
+    color: var(--menu-text-color);
+    background-color: var(--menu-background-color);
+}
+
+.menu_container {
+    max-height: calc(100vh - 55px);
+}
+
+.expanded .menu_container {
+    max-height: calc(100vh - 135px);
 }
 
 .status_message {
@@ -849,9 +854,11 @@ body {
 .status_message.success {
     color: var(--status-success-color);
 }
+
 .status_message.error {
     color: var(--status-error-color);
 }
+
 .status_message.warning {
     color: var(--status-warning-color);
 }
@@ -931,17 +938,18 @@ body {
     background-color: var(--intro-outro-bar-color);
 }
 
-.intro_outro_container > .skip_segment {
+.intro_outro_container>.skip_segment {
     min-width: 3px;
 }
 
-.intro_outro_container > div.chapter {
-    background-color: rgb(0,0,0,0.3);
+.intro_outro_container>div.chapter {
+    background-color: rgb(0, 0, 0, 0.3);
     border-radius: 0px;
     top: 0px;
     bottom: 0px;
     width: 2px;
 }
+
 .hide_button {
     color: var(--popbutton-text-color);
     position: absolute;
@@ -1060,7 +1068,7 @@ body {
 .subtitles_title {
     flex: 1 1 auto;
     text-align: center;
-    font-size: 16px;
+    font-size: var(--font-size-small);
 }
 
 .subtitles_options_back:hover {
@@ -1069,7 +1077,7 @@ body {
 
 .subtitles_options .option {
     position: relative;
-    font-size: 14px;
+    font-size: var(--font-size-small);
     width: 100%;
     height: 25px;
     margin-bottom: 5px;
@@ -1093,6 +1101,7 @@ body {
     bottom: 0px;
     right: 10px;
     left: 50%;
+    font-size: var(--font-size-small);
 
 }
 
@@ -1867,6 +1876,7 @@ body {
 .tooltip .tooltiptext.right {
     margin-left: -10px;
 }
+
 .tooltip .tooltiptext.right::after {
     left: 10px;
 }
@@ -1874,6 +1884,7 @@ body {
 .tooltip .tooltiptext.left {
     margin-left: -190px;
 }
+
 .tooltip .tooltiptext.left::after {
     left: auto;
     right: 5px;
@@ -1888,9 +1899,9 @@ body {
 }
 
 .tooltip .tooltiptext.down::after {
-   bottom: 100%;
-   top: auto;
-   border-color: transparent transparent rgb(200, 200, 200) transparent;
+    bottom: 100%;
+    top: auto;
+    border-color: transparent transparent rgb(200, 200, 200) transparent;
 }
 
 
@@ -2139,6 +2150,7 @@ body {
 .mixer .master {
     flex: 1 1 auto;
 }
+
 .mixer_channel_container {
     flex: 1 1 auto;
     position: relative;
@@ -2409,7 +2421,8 @@ body {
     color: rgba(220, 80, 80, 0.9);
     width: 100%;
     height: 30px;
-    line-height: 30px;;
+    line-height: 30px;
+    ;
 }
 
 .compressor_toggle:hover {
@@ -2523,8 +2536,13 @@ body {
     text-align: center;
     font-size: 14px;
 }
+
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
+    body {
+        --font-size-small: 13px;
+    }
+
     .fluid_button {
         width: 18px;
         height: 18px;
@@ -2544,9 +2562,26 @@ body {
         left: 5px;
         right: 5px;
     }
+
+    .subtitles_menu {
+        width: 200px;
+    }
+
+    .fluid_subtitles_container {
+        bottom: 5px;
+    }
+
+    .controls_visible .fluid_subtitles_container {
+        bottom: 46px;
+    }
+
 }
 
 @media screen and (max-width: 500px) {
+
+    body {
+        --font-size-small: 9px;
+    }
 
     .fluid_button_soundwave,
     .fluid_button_link,
@@ -2554,5 +2589,11 @@ body {
         display: none !important;
     }
 
+    .subtitles_menu {
+        width: 150px;
+    }
 
+    .disable-when-mini {
+        display: none;
+    }
 }

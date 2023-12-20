@@ -221,6 +221,7 @@ export class SubtitlesManager {
     const internetbutton = document.createElement('div');
     internetbutton.textContent = Localize.getMessage('player_subtitlesmenu_searchbtn');
     internetbutton.classList.add('subtitle-menu-option');
+    internetbutton.classList.add('disable-when-mini');
     WebUtils.setupTabIndex(internetbutton);
     internetbutton.addEventListener('click', (e) => {
       this.openSubtitlesSearch.toggleUI();

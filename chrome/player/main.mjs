@@ -13,6 +13,7 @@ let OPTIONS = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
+        console.log('Recieved message', request);
         if (request.type === 'keypress') {
           if (window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
         } else if (request.type === 'sendFrameId') {
@@ -31,6 +32,8 @@ if (EnvUtils.isExtension()) {
           if (name) {
             if (window.fastStream) window.fastStream.setMediaName(name);
           }
+        } else if (request.type === 'miniplayer_change' && window.fastStream) {
+          window.fastStream.interfaceController.setMiniplayerStatus(request.miniplayer);
         } else if (request.type === 'fullscreen_change' && window.fastStream) {
           window.fastStream.interfaceController.setFullscreenStatus(request.fullscreen);
         } else if (request.type === 'sources' && window.fastStream) {
