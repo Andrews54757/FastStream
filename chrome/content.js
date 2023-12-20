@@ -270,6 +270,7 @@ function makeMiniPlayer(iframeObj) {
         bottom: 0px !important;
         display: block !important;
         z-index: 2147483647 !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
       `);
 
   element.style.setProperty('width', newWidth + 'px', 'important');
