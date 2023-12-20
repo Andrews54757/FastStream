@@ -99,6 +99,9 @@ export class SubtitlesSettingsManager extends EventEmitter {
       const settingsStr = await Utils.getConfig('subtitlesSettings');
       if (settingsStr) {
         const settings = JSON.parse(settingsStr);
+        if (settings['font-size'] === '40px') { // TODO: Remove this in the future
+          settings['font-size'] = DefaultSubtitlesSettings['font-size'];
+        }
         this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);
       }
       this.updateSettingsUI();
