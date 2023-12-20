@@ -13,7 +13,6 @@ let OPTIONS = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
-        console.log('Recieved message', request);
         if (request.type === 'keypress') {
           if (window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
         } else if (request.type === 'sendFrameId') {
