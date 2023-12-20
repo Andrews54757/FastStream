@@ -803,6 +803,13 @@ chrome.webRequest.onHeadersReceived.addListener(
 
       if (isSubtitles(ext)) {
         return handleSubtitles(url, frame, frame.requestHeaders[details.requestId]);
+      } else if (ext === 'json') {
+        // Vimeo. Check if filename is master.json
+        const filename = URLUtils.get_file_name(url);
+        if (filename === 'master.json' && url.includes('/video/')) {
+          ext = 'mpd';
+          details.url = URLUtils.strip_queryhash(url).replace('master.json', 'master.mpd');
+        }
       }
       let mode = URLUtils.getModeFromExtension(ext);
       if (!mode) {
