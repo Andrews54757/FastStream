@@ -209,6 +209,10 @@ chrome.runtime.onMessage.addListener(
         OverridenYTKeys = true;
         return true;
       } else if (request.type === 'remove_players') {
+        iframeMap.forEach((iframeObj) => {
+          unmakeMiniPlayer(iframeObj);
+        });
+
         players.forEach((player) => {
           if (player.isYt) {
             showYT(player.old);
@@ -219,6 +223,7 @@ chrome.runtime.onMessage.addListener(
 
           removePauseListeners(player.old);
         });
+
         players.length = 0;
         FoundYTPlayer = null;
         OverridenYTKeys = false;
