@@ -1022,12 +1022,14 @@ export class InterfaceController {
         });
       } else if (audioFormats.includes(ext)) {
         newSource = new VideoSource(window.URL.createObjectURL(file), {}, PlayerModes.DIRECT);
+        newSource.identifier = file.name + 'size' + file.size;
       } else if (URLUtils.getModeFromExtension(ext)) {
         let mode = URLUtils.getModeFromExtension(ext);
         if (mode === PlayerModes.ACCELERATED_MP4) {
           mode = PlayerModes.DIRECT;
         }
         newSource = new VideoSource(window.URL.createObjectURL(file), {}, mode);
+        newSource.identifier = file.name + 'size' + file.size;
       } else if (ext === 'fsa') {
         const buffer = await RequestUtils.httpGetLarge(window.URL.createObjectURL(file));
         try {
