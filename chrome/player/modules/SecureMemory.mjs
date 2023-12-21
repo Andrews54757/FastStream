@@ -171,4 +171,9 @@ export class SecureMemory {
       };
     });
   }
+
+  destroy() {
+    this.indexedDbManager.close();
+    this.indexedDbManager = null;
+  }
 }

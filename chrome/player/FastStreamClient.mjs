@@ -133,6 +133,10 @@ export class FastStreamClient extends EventEmitter {
     this.downloadManager.destroy();
     this.videoAnalyzer.destroy();
     this.interfaceController.destroy();
+    if (this.progressMemory) {
+      this.progressMemory.destroy();
+      this.progressMemory = null;
+    }
   }
 
   setOptions(options) {
