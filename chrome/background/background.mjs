@@ -344,7 +344,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
     sendSources(frame);
   } else {
-    sendResponse('unknown');
     return;
   }
 

@@ -39,7 +39,6 @@ if (EnvUtils.isExtension()) {
           recieveSources(request, sendResponse);
           return true;
         } else {
-          sendResponse('unknown');
           return;
         }
 
