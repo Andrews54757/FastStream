@@ -1,29 +1,40 @@
 const closeQueue = [];
 
 export class IndexedDBManager {
-  constructor() {
+  constructor(persistentName) {
+    this.persistentName = persistentName;
   }
 
   static isSupported() {
     return window.indexedDB !== undefined;
   }
 
+  isPersistent() {
+    return !!this.persistentName;
+  }
+
   async setup() {
     await this.close();
-    this.prune();
 
-    this.aliveInterval = setInterval(()=>{
-      this.keepAlive();
-    }, 1000);
+    if (!this.isPersistent()) {
+      this.prune();
+      this.aliveInterval = setInterval(()=>{
+        this.keepAlive();
+      }, 1000);
+      this.dbName = 'faststream-temp-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
+    } else {
+      this.dbName = this.persistentName;
+    }
 
-    this.dbName = 'faststream-temp-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
     this.db = await this.requestDB(this.dbName);
     closeQueue.push(this);
 
     return this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('metadata');
       metaDataStore.put(Date.now(), 'creation_time');
-      metaDataStore.put(Date.now(), 'updated_time');
+      if (!this.isPersistent()) {
+        metaDataStore.put(Date.now(), 'updated_time');
+      }
     });
   }
 
@@ -33,7 +44,9 @@ export class IndexedDBManager {
       this.db.close();
       this.db = null;
 
-      await this.deleteDB(this.dbName);
+      if (!this.isPersistent()) {
+        await this.deleteDB(this.dbName);
+      }
 
       const index = closeQueue.indexOf(this);
       if (index !== -1) {
@@ -110,6 +123,13 @@ export class IndexedDBManager {
     });
   }
 
+  async setValue(db, storeName, key, value) {
+    return this.transact(db, storeName, 'readwrite', (transaction)=>{
+      const metaDataStore = transaction.objectStore(storeName);
+      return this.wrapRequest(metaDataStore.put(value, key));
+    });
+  }
+
   async clearStorage() {
     if (!this.db) return;
     return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
@@ -124,24 +144,25 @@ export class IndexedDBManager {
 
   async setFile(identifier, data) {
     return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
-      const metaDataStore = transaction.objectStore('files');
-      return this.wrapRequest(metaDataStore.put(data, identifier));
+      const fileStore = transaction.objectStore('files');
+      return this.wrapRequest(fileStore.put(data, identifier));
     });
   }
 
   async deleteFile(identifier) {
     return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
-      const metaDataStore = transaction.objectStore('files');
-      return this.wrapRequest(metaDataStore.delete(identifier));
+      const fileStore = transaction.objectStore('files');
+      return this.wrapRequest(fileStore.delete(identifier));
     });
   }
 
+  getDatabase() {
+    return this.db;
+  }
+
   keepAlive() {
-    if (this.db) {
-      this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
-        const metaDataStore = transaction.objectStore('metadata');
-        metaDataStore.put(Date.now(), 'updated_time');
-      });
+    if (this.db && !this.isPersistent()) {
+      this.setValue(this.db, 'metadata', 'updated_time', Date.now());
     }
   }
 

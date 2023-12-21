@@ -33,6 +33,7 @@ const tplclickAction = document.getElementById('tplclickaction');
 const visChangeAction = document.getElementById('vischangeaction');
 const customSourcePatterns = document.getElementById('customSourcePatterns');
 const showWhenMiniSelected = document.getElementById('showWhenMiniSelected');
+const storeProgress = document.getElementById('storeprogress');
 const miniSize = document.getElementById('minisize');
 const miniPos = document.getElementById('minipos');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -78,6 +79,7 @@ async function loadOptions(newOptions) {
   qualityMultiplier.value = Options.qualityMultiplier;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
+  storeProgress.checked = !!Options.storeProgress;
 
   setSelectMenuValue(clickAction, Options.singleClickAction);
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
@@ -292,6 +294,11 @@ analyzeVideos.addEventListener('change', () => {
 
 downloadAll.addEventListener('change', () => {
   Options.downloadAll = downloadAll.checked;
+  optionChanged();
+});
+
+storeProgress.addEventListener('change', () => {
+  Options.storeProgress = storeProgress.checked;
   optionChanged();
 });
 

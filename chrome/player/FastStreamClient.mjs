@@ -17,6 +17,7 @@ import {Localize} from './modules/Localize.mjs';
 import {ClickActions} from './options/defaults/ClickActions.mjs';
 import {VisChangeActions} from './options/defaults/VisChangeActions.mjs';
 import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
+import {SecureMemory} from './modules/SecureMemory.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -34,6 +35,7 @@ export class FastStreamClient extends EventEmitter {
       freeFragments: true,
       downloadAll: false,
       freeUnusedChannels: true,
+      storeProgress: false,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -61,6 +63,7 @@ export class FastStreamClient extends EventEmitter {
       playbackRate: 1,
     };
 
+    this.progressMemory = null;
     this.playerLoader = new PlayerLoader();
     this.interfaceController = new InterfaceController(this);
     this.keybindManager = new KeybindManager(this);
@@ -88,6 +91,19 @@ export class FastStreamClient extends EventEmitter {
 
   async setup() {
     await this.downloadManager.setup();
+    if (SecureMemory.isSupported()) {
+      const progressMemory = new SecureMemory('faststream-progress');
+      try {
+        await progressMemory.setup();
+        this.progressMemory = progressMemory;
+      } catch (e) {
+        console.warn('Failed to setup secure progress memory', e);
+      }
+    }
+
+    if (this.progressMemory) {
+      await this.progressMemory.pruneOld(Date.now() - 1000 * 60 * 60 * 24 * 365); // 1 year
+    }
   }
 
   shouldDownloadAll() {
@@ -121,6 +137,16 @@ export class FastStreamClient extends EventEmitter {
 
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
+
+    if (options.storeProgress !== this.options.storeProgress) {
+      if (options.storeProgress) {
+        if (this.progressMemory && this.player) {
+          this.loadProgressData(false);
+        }
+      }
+    }
+
+    this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
@@ -228,6 +254,15 @@ export class FastStreamClient extends EventEmitter {
     this.subtitlesManager.renderSubtitles();
     this.subtitleSyncer.onVideoTimeUpdate();
     this.interfaceController.updateSkipSegments();
+
+    if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime) {
+      const now = Date.now();
+      if (now - this.lastProgressSave > 1000) {
+        this.lastProgressSave = now;
+        this.progressData.lastTime = time;
+        this.saveProgressData();
+      }
+    }
   }
 
   seekPreview(time) {
@@ -392,8 +427,54 @@ export class FastStreamClient extends EventEmitter {
     if (autoPlay) {
       this.play();
     }
+
+    if (this.progressMemory && this.options.storeProgress) {
+      await this.loadProgressData(true);
+    }
   }
 
+  async loadProgressData(changeTime = false) {
+    if (this.progressDataLoading || this.progressData) {
+      return;
+    }
+
+    this.progressDataLoading = true;
+    this.progressHashesCache = await this.progressMemory.getHashes(this.player.getSource().identifier);
+    this.progressData = (await this.progressMemory.getFile(this.progressHashesCache)) || {
+      lastTime: 0,
+    };
+
+    if (!changeTime) {
+      this.progressDataLoading = false;
+      return;
+    }
+
+    const changeTimeFn = () =>{
+      if (!this.duration) return;
+      this.player.off(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
+
+      if (!this.progressDataLoading || !this.progressData) return;
+      this.progressDataLoading = false;
+
+      const lastTime = this.progressData.lastTime;
+      if (lastTime && lastTime < this.duration - 5) {
+        this.setSeekSave(false);
+        this.currentTime = lastTime;
+        this.setSeekSave(true);
+      }
+    };
+
+    this.player.on(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
+    changeTimeFn();
+  }
+
+  async saveProgressData() {
+    if (this.progressDataLoading || !this.progressData) {
+      return;
+    }
+
+    return this.progressMemory.setFile(this.progressHashesCache, this.progressData);
+  }
 
   getNextToDownload() {
     const currentFragment = this.currentFragment;
@@ -614,6 +695,10 @@ export class FastStreamClient extends EventEmitter {
     this.fragmentsStore = {};
     this.pastSeeks.length = 0;
     this.pastUnseeks.length = 0;
+    this.progressHashesCache = null;
+    this.progressData = null;
+    this.progressDataLoading = false;
+    this.lastProgressSave = 0;
     if (this.context) {
       this.context.destroy();
       this.context = null;

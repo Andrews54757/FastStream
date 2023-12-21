@@ -11,6 +11,7 @@ export const DefaultOptions = {
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
+  storeProgress: false,
   autoplayYoutube: EnvUtils.isExtension(),
   autoEnableURLs: [],
   customSourcePatterns: ``,

@@ -696,6 +696,9 @@
     "options_general_analyze": {
         "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
     },
+    "options_general_storeprogress": {
+        "message": "Save progress of videos in local storage"
+    },
     "options_general_autosub": {
         "message": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)"
     },
