@@ -26,7 +26,7 @@ export class IndexedDBManager {
       this.dbName = this.persistentName;
     }
 
-    this.db = await this.requestDB(this.dbName);
+    this.db = await this.requestDB(this.dbName, true, this.isPersistent());
     closeQueue.push(this);
 
     return this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
@@ -73,13 +73,22 @@ export class IndexedDBManager {
     return Promise.all(databases.map(async (database)=>{
       if (database.name.startsWith('faststream-temp-')) {
         try {
-          const db = await this.requestDB(database.name);
+          const db = await this.requestDB(database.name, false);
           // check if stale
-          const updatedTime = await this.getValue(db, 'metadata', 'updated_time');
-          if (!updatedTime || Date.now() - updatedTime > 10000) {
+          try {
+            const updatedTime = await this.getValue(db, 'metadata', 'updated_time');
+            if (!updatedTime || Date.now() - updatedTime > 10000) {
+              throw new Error('Stale');
+            }
+          } catch (e) {
             db.close();
             await this.deleteDB(database.name);
             console.log('Pruned', database.name);
+
+            if (!window.indexedDB.databases) {
+              const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
+              localStorage.setItem('fs_temp_databases', JSON.stringify(databases.filter((name)=>name !== database.name)));
+            }
           }
         } catch (e) {
           console.error(e);
@@ -88,19 +97,20 @@ export class IndexedDBManager {
     }));
   }
 
-  async requestDB(dbName) {
+  async requestDB(dbName, open = false, persistent = false) {
     const request = window.indexedDB.open(dbName, 3);
-    request.onupgradeneeded = async (event) => {
-      const db = event.target.result;
-      db.createObjectStore('metadata');
-      db.createObjectStore('files');
-      if (!window.indexedDB.databases) {
-        const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
-        databases.push(dbName);
-        localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
-      }
-    };
-
+    if (open) {
+      request.onupgradeneeded = async (event) => {
+        const db = event.target.result;
+        db.createObjectStore('metadata');
+        db.createObjectStore('files');
+        if (!persistent && !window.indexedDB.databases) {
+          const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
+          if (!databases.includes(dbName)) databases.push(dbName);
+          localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
+        }
+      };
+    }
     return this.wrapRequest(request, 5000);
   }
 
@@ -109,10 +119,6 @@ export class IndexedDBManager {
       await this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
     } catch (e) {
       console.error(e);
-    }
-    if (!window.indexedDB.databases) {
-      const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
-      localStorage.setItem('fs_temp_databases', JSON.stringify(databases.filter((name)=>name !== dbName)));
     }
   }
 
@@ -168,7 +174,14 @@ export class IndexedDBManager {
 
   transact(db, storeName, mode, callback) {
     return new Promise(async (resolve, reject)=>{
-      const transaction = db.transaction(storeName, mode);
+      let transaction;
+      try {
+        transaction = db.transaction(storeName, mode);
+      } catch (e) {
+        reject(e);
+        return;
+      }
+
       let result = Promise.resolve(null);
       transaction.onerror = (event) => {
         console.error(event);
