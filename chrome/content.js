@@ -165,7 +165,8 @@ chrome.runtime.onMessage.addListener(
             return;
           }
 
-          if (!video || (video?.highest?.tagName === 'BODY' && !request.noRedirect)) {
+          const playerFillsScreen = video?.highest?.tagName === 'BODY';
+          if (!video || (playerFillsScreen && !request.noRedirect)) {
             window.location = request.url;
             console.log('redirecting to player');
             sendResponse('redirect');
@@ -173,7 +174,7 @@ chrome.runtime.onMessage.addListener(
           // copy styles
             const iframe = document.createElement('iframe');
             iframe.src = request.url;
-            updateIframeStyle(video.highest, iframe, isYt);
+            updateIframeStyle(video.highest, iframe, isYt, playerFillsScreen);
 
             iframe.allowFullscreen = true;
             iframe.allow = 'autoplay; fullscreen; picture-in-picture';
@@ -192,6 +193,7 @@ chrome.runtime.onMessage.addListener(
               iframe,
               old: video.highest,
               isYt,
+              fillScreen: playerFillsScreen,
             });
             console.log('replacing video with iframe');
             sendResponse('replace');
@@ -294,6 +296,7 @@ function makeMiniPlayer(iframeObj) {
     padding: 0px !important;
     z-index: 2147483647 !important;
     border: 1px solid rgba(0, 0, 0, 0.2) !important;
+    outline: none !important;
   `);
   updateMiniPlayer(iframeObj);
 }
@@ -366,6 +369,8 @@ function get_yt_identifier(urlStr) {
 
 function updatePlayerStyles() {
   players.forEach((player) => {
+    if (player.fillScreen) return;
+
     updatePlayerStyle(player.old, player.iframe, player.isYt);
     if (player.isPlaceholder) {
       player.iframe.style.setProperty('background-color', 'black', 'important');
@@ -378,11 +383,11 @@ function updatePlayerStyle(old, iframe, isYt) {
   iframe.style.display = 'none';
   if (isYt) {
     showYT(old);
-    updateIframeStyle(old, iframe, true);
+    updateIframeStyle(old, iframe, isYt);
     hideYT(old);
   } else {
     parent.insertBefore(old, iframe);
-    updateIframeStyle(old, iframe);
+    updateIframeStyle(old, iframe, isYt);
     parent.removeChild(old);
   }
 }
@@ -412,13 +417,31 @@ function removePauseListeners(element) {
   });
 }
 
-function updateIframeStyle(old, iframe, isYt) {
+function updateIframeStyle(old, iframe, isYt, fillScreen) {
+  if (fillScreen) {
+    iframe.setAttribute('style', `
+      position: fixed !important;
+      display: block !important;
+      visibility: visible !important;
+      opacity: 1 !important;
+      padding: 0px !important;
+      z-index: 2147483647 !important;
+      border: none !important;
+      outline: none !important;
+      top: 0px !important;
+      left: 0px !important;
+      width: 100% !important;
+      height: 100% !important;
+    `);
+    return;
+  }
+
   const styles = window.getComputedStyle(old);
-  const rect = old.getBoundingClientRect();
 
   iframe.setAttribute('style', old.getAttribute('style'));
   iframe.classList = old.classList;
 
+  const rect = old.getBoundingClientRect();
   const width = Math.max(rect.width, 100) + 'px';
   const height = Math.max(rect.height, 100) + 'px';
 
