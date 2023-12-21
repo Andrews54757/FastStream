@@ -1,7 +1,7 @@
 export class BackgroundUtils {
-  static checkMessageError(message) {
+  static checkMessageError(message, suppress = false) {
     if (chrome.runtime.lastError) {
-      console.warn(`Unable to send message '${message}'`, chrome.runtime.lastError);
+      if (!suppress) console.warn(`Unable to send message '${message}'`, chrome.runtime.lastError);
     }
   }
 

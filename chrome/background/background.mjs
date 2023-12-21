@@ -163,7 +163,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
             type: 'options',
             time: msg.time,
           }, (response) => {
-            BackgroundUtils.checkMessageError('options');
+            BackgroundUtils.checkMessageError('options', true);
           });
         }
       });
