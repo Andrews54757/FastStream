@@ -2,7 +2,7 @@ const closeQueue = [];
 
 export class IndexedDBManager {
   constructor(persistentName) {
-    this.persistentName = persistentName;
+    this.persistentName = persistentName || null;
   }
 
   static isSupported() {
@@ -10,7 +10,7 @@ export class IndexedDBManager {
   }
 
   isPersistent() {
-    return !!this.persistentName;
+    return this.persistentName !== null;
   }
 
   async setup() {
@@ -76,7 +76,7 @@ export class IndexedDBManager {
           const db = await this.requestDB(database.name);
           // check if stale
           const updatedTime = await this.getValue(db, 'metadata', 'updated_time');
-          if (!updatedTime || Date.now() - updatedTime > 5000) {
+          if (!updatedTime || Date.now() - updatedTime > 10000) {
             db.close();
             await this.deleteDB(database.name);
             console.log('Pruned', database.name);
