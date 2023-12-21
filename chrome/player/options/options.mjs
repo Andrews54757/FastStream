@@ -394,13 +394,16 @@ exportButton.addEventListener('click', async () => {
   URL.revokeObjectURL(url);
 });
 
+let optionSendTime = null;
 function optionChanged() {
   if (EnvUtils.isExtension()) {
     chrome.storage.local.set({
       options: JSON.stringify(Options),
     }, ()=>{
+      optionSendTime = Date.now();
       chrome.runtime.sendMessage({
-        type: 'options',
+        type: 'options_init',
+        time: optionSendTime,
       });
     });
   } else {
@@ -415,8 +418,10 @@ function optionChanged() {
 if (EnvUtils.isExtension()) {
   // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === 'options') {
-      loadOptions();
+    if (request.type === 'options' || request.type === 'options_init') {
+      if (request.time !== optionSendTime) {
+        loadOptions();
+      }
     }
   });
 

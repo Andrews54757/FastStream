@@ -153,9 +153,21 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
-  if (msg.type === 'options') {
+  if (msg.type === 'options_init') {
     loadOptions();
-    sendResponse('ok');
+    // sent to all tabs
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        if (CachedTabs[tab.id]) {
+          chrome.tabs.sendMessage(tab.id, {
+            type: 'options',
+            time: msg.time,
+          }, (response) => {
+            BackgroundUtils.checkMessageError('options');
+          });
+        }
+      });
+    });
     return;
   }
 
@@ -170,7 +182,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
-
   if (msg.type === 'transmit_key') {
     // send to children
     for (const i in tab.frames) {
@@ -197,7 +208,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }, {
         frameId: frame.parentId,
       }, (response) => {
-        if (response.error) {
+        if (!response || response.error) {
           sendResponse(null);
           return;
         } else {
