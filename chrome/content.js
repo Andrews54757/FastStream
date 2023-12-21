@@ -242,7 +242,8 @@ function updateMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
     const element = iframeObj.placeholder;
     const aspectRatio = element.clientWidth / element.clientHeight;
-    const newWidth = Math.min(Math.max(document.body.clientWidth, document.body.clientHeight * aspectRatio) * iframeObj.miniSize, document.body.clientWidth);
+    console.log(document.body.clientWidth, document.body.clientHeight, aspectRatio);
+    const newWidth = Math.min(Math.max(window.screen.width, window.screen.height * aspectRatio) * iframeObj.miniSize, document.body.clientWidth);
     const newHeight = newWidth / aspectRatio;
     iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
     iframeObj.iframe.style.setProperty('height', newHeight + 'px', 'important');
@@ -266,14 +267,14 @@ function makeMiniPlayer(iframeObj) {
     return;
   }
 
-  const element = iframeObj.iframe;
-
   iframeObj.isMini = true;
-  const id = element.id;
-  element.id = '';
+
+  const element = iframeObj.iframe;
   const placeholder = document.createElement('div');
+
+  transferId(element, placeholder);
+
   iframeObj.placeholder = placeholder;
-  placeholder.id = id;
   iframeObj.oldStyle = element.getAttribute('style');
   placeholder.setAttribute('style', iframeObj.oldStyle);
   placeholder.style.setProperty('background-color', 'black', 'important');
@@ -315,9 +316,9 @@ function unmakeMiniPlayer(iframeObj) {
       player.isPlaceholder = false;
     }
   });
-  const id = iframeObj.placeholder.id;
-  iframeObj.placeholder.id = '';
-  element.id = id;
+
+  transferId(iframeObj.placeholder, element);
+
   iframeObj.placeholder.remove();
   iframeObj.placeholder = null;
 }
@@ -387,6 +388,7 @@ function updatePlayerStyle(old, iframe, isYt) {
     hideYT(old);
   } else {
     parent.insertBefore(old, iframe);
+    transferId(iframe, old);
     updateIframeStyle(old, iframe, isYt);
     parent.removeChild(old);
   }
@@ -456,12 +458,21 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
 
   iframe.style.position = styles.position;
   if (!isYt) {
-    iframe.id = old.id;
+    transferId(old, iframe);
   }
+
   iframe.style.zIndex = styles.zIndex;
   iframe.style.border = styles.border;
   iframe.style.borderRadius = styles.borderRadius;
   iframe.style.boxShadow = styles.boxShadow;
+}
+
+function transferId(from, to) {
+  const fromId = from.id;
+  if (fromId) {
+    from.id = '';
+    to.id = fromId;
+  }
 }
 
 function httpRequest(...args) {
