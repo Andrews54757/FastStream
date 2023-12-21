@@ -710,7 +710,11 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (this.player) {
-      this.player.destroy();
+      try {
+        this.player.destroy();
+      } catch (e) {
+        console.error(e);
+      }
       this.player = null;
     }
 
@@ -720,7 +724,11 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (this.previewPlayer) {
-      this.previewPlayer.destroy();
+      try {
+        this.previewPlayer.destroy();
+      } catch (e) {
+        console.error(e);
+      }
       this.previewPlayer = null;
     }
 

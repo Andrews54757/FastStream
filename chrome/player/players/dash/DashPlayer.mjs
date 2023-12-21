@@ -230,7 +230,11 @@ export default class DashPlayer extends EventEmitter {
   }
 
   destroy() {
-    this.dash.destroy();
+    try {
+      this.dash.destroy();
+    } catch (e) {
+
+    }
     this.dash = null;
     this.emit(DefaultPlayerEvents.DESTROYED);
   }
