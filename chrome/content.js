@@ -242,7 +242,6 @@ function updateMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
     const element = iframeObj.placeholder;
     const aspectRatio = element.clientWidth / element.clientHeight;
-    console.log(document.body.clientWidth, document.body.clientHeight, aspectRatio);
     const newWidth = Math.min(Math.max(window.screen.width, window.screen.height * aspectRatio) * iframeObj.miniSize, document.body.clientWidth);
     const newHeight = newWidth / aspectRatio;
     iframeObj.iframe.style.setProperty('width', newWidth + 'px', 'important');
