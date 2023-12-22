@@ -75,6 +75,10 @@ export default class DashPlayer extends EventEmitter {
       this.extractAllFragments();
     });
 
+    this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
+      this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
+    });
+
     // eslint-disable-next-line new-cap
     this.dash.extend('XHRLoader', DASHLoaderFactory(this), false);
   }
