@@ -10,6 +10,7 @@ import {VideoSource} from './VideoSource.mjs';
 
 
 let OPTIONS = null;
+let optionSendTime = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
@@ -22,8 +23,11 @@ if (EnvUtils.isExtension()) {
               id: request.frameId,
             }, '*');
           }
-        } else if (request.type === 'options') {
-          loadOptions();
+        } else if (request.type === 'options' || request.type === 'options_init') {
+          if (request.time !== optionSendTime) {
+            optionSendTime = request.time;
+            loadOptions();
+          }
         } if (request.type === 'analyzerData') {
           window.fastStream.loadAnalyzerData(request.data);
         } else if (request.type === 'media_name') {

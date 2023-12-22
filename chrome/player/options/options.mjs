@@ -420,6 +420,7 @@ if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === 'options' || request.type === 'options_init') {
       if (request.time !== optionSendTime) {
+        optionSendTime = request.time;
         loadOptions();
       }
     }
