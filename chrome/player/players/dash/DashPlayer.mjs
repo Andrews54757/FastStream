@@ -7,6 +7,7 @@ import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
 import {DASHLoaderFactory} from './DashLoader.mjs';
+import {TrackFilter} from './TrackFilter.mjs';
 
 export default class DashPlayer extends EventEmitter {
   constructor(client, options) {
@@ -42,40 +43,9 @@ export default class DashPlayer extends EventEmitter {
       },
     });
 
-    this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
-      console.log('STREAM_INITIALIZED', navigator.language || 'en');
+    this.dash.setCustomInitialTrackSelectionFunction((tracks)=>{
       const lang = navigator.language || 'en';
-      this.dash.setInitialMediaSettingsFor('video', {
-        lang,
-      });
-
-      this.dash.setInitialMediaSettingsFor('audio', {
-        lang,
-      });
-
-      const videoTracks = this.videoTracks;
-      const audioTracks = this.audioTracks;
-      const vtrack = videoTracks.find((track) => {
-        const subsetLength = Math.min(track.lang.length, lang.length);
-        return subsetLength !== 0 && track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
-      });
-
-      if (vtrack) {
-        this.dash.setCurrentTrack(vtrack);
-      }
-
-      const atrack = audioTracks.find((track) => {
-        const subsetLength = Math.min(track.lang.length, lang.length);
-        return subsetLength !== 0 && track.lang.substring(0, subsetLength).toLowerCase() === lang.substring(0, subsetLength).toLowerCase();
-      });
-
-      if (atrack) {
-        this.dash.setCurrentTrack(atrack);
-      }
-
-      if (videoTracks.length > 1 || audioTracks.length > 1) {
-        this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
-      }
+      return TrackFilter.filterTracks(tracks, lang);
     });
 
     this.dash.on('needkey', (e) => {
@@ -105,14 +75,6 @@ export default class DashPlayer extends EventEmitter {
       this.extractAllFragments();
     });
 
-    // for (let eventName in dashjs.Protection.events) {
-    //     let event = dashjs.Protection.events[eventName];
-    //     let test = (() => {
-    //         this.dash.on(event, (e) => {
-    //             console.log(event, e,  this.dash.getTracksFor("audio"))
-    //         });
-    //     })(event)
-    // }
     // eslint-disable-next-line new-cap
     this.dash.extend('XHRLoader', DASHLoaderFactory(this), false);
   }
@@ -327,31 +289,12 @@ export default class DashPlayer extends EventEmitter {
     return this.video.duration;
   }
 
-
-  filterLanguageTracks(tracks) {
-    const seenLanguages = [];
-    return tracks.filter((track) => {
-      // Check if codec is supported
-      if (!this.video.canPlayType(track.codec)) {
-        return false;
-      }
-
-      // Check if language is unique
-      if (seenLanguages.includes(track.lang)) {
-        return false;
-      }
-
-      seenLanguages.push(track.lang);
-      return true;
-    });
-  }
-
   get audioTracks() {
-    return this.filterLanguageTracks(this.dash.getTracksFor('audio'));
+    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('audio'));
   }
 
   get videoTracks() {
-    return this.filterLanguageTracks(this.dash.getTracksFor('video'));
+    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'));
   }
 
   get languageTracks() {
