@@ -405,7 +405,13 @@ export class SubtitlesManager {
       update: () => {
         const track = this.tracks[i];
         const activeIndex = this.activeTracks.indexOf(track);
-        const name = (track.language ? ('(' + track.language + ') ') : '') + (track.label || `Track ${i + 1}`);
+        const nameCandidate = (track.language ? ('(' + track.language + ') ') : '') + (track.label || `Track ${i + 1}`);
+        let name = nameCandidate;
+        // limit to 30 chars
+        if (name.length > 30) {
+          name = name.substring(0, 30) + '...';
+        }
+
         if (activeIndex !== -1) {
           trackElement.classList.add('subtitle-track-active');
 
@@ -418,6 +424,8 @@ export class SubtitlesManager {
           trackElement.classList.remove('subtitle-track-active');
           trackName.textContent = name;
         }
+
+        trackName.title = nameCandidate;
       },
     };
   }
