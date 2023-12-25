@@ -11,6 +11,7 @@ import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 
 let Options = {};
+const OptionsCache = {};
 
 const AutoEnableList = [];
 const ExtensionVersion = chrome.runtime.getManifest().version;
@@ -18,7 +19,7 @@ const Logging = false;
 const PlayerURL = chrome.runtime.getURL('player/index.html');
 const CachedTabs = {};
 
-const customSourcePatternsMatcher = new MultiRegexMatcher();
+let CustomSourcePatternsMatcher = new MultiRegexMatcher();
 
 const sponsorBlockBackend = new SponsorBlockIntegration();
 sponsorBlockBackend.setup();
@@ -472,12 +473,36 @@ async function loadOptions(newOptions) {
   loadCustomPatterns();
 }
 
-function loadCustomPatterns() {
-  customSourcePatternsMatcher.clear();
-  Options.customSourcePatterns.split('\n').forEach((line)=>{
-    line = line.trim();
-    if (line.length === 0) return;
-    if (line.startsWith('#') || line.startsWith('//')) return;
+async function loadCustomPatterns() {
+  const customSourcePatterns = Options.customSourcePatterns;
+  if (OptionsCache.customSourcePatterns !== customSourcePatterns) {
+    OptionsCache.customSourcePatterns = customSourcePatterns;
+
+    const matcher = new MultiRegexMatcher();
+    await loadCustomPatternsFile(matcher, Options.customSourcePatterns, true);
+
+    if (OptionsCache.customSourcePatterns !== customSourcePatterns) return;
+
+    matcher.compile();
+    CustomSourcePatternsMatcher = matcher;
+  }
+}
+
+async function loadCustomPatternsFile(matcher, fileStr, isPrimary = false) {
+  const lines = fileStr.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    if (line.length === 0) continue;
+
+    if (line.startsWith('#') || line.startsWith('//')) continue; // comment
+
+    if (line.startsWith('@')) { // command, do nothing for now. Future use
+      // line = line.substring(1);
+      // const command = line.substring(0, line.indexOf(' '));
+      // const body = line.substring(line.indexOf(' ') + 1);
+      continue;
+    }
 
     const args = line.split(' ');
     const extStr = args[0];
@@ -488,12 +513,11 @@ function loadCustomPatterns() {
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1);
 
     try {
-      customSourcePatternsMatcher.addRegex(regex, flags, extStr);
+      matcher.addRegex(regex, flags, extStr);
     } catch (e) {
       console.warn(e);
     }
-  });
-  customSourcePatternsMatcher.compile();
+  }
 }
 
 async function setupRedirectRule(ruleID, filetypes) {
@@ -835,7 +859,7 @@ chrome.webRequest.onHeadersReceived.addListener(
         return; // Client or server error. Ignore it
       }
 
-      const output = customSourcePatternsMatcher.match(url);
+      const output = CustomSourcePatternsMatcher.match(url);
       if (output) {
         ext = output;
       }
