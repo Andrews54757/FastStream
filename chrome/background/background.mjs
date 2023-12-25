@@ -5,6 +5,7 @@ import {URLUtils} from '../player/utils/URLUtils.mjs';
 import {Utils} from '../player/utils/Utils.mjs';
 import {BackgroundUtils} from './BackgroundUtils.mjs';
 import {TabHolder} from './Containers.mjs';
+import {MultiRegexMatcher} from './MultiRegexMatcher.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
 import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
@@ -12,11 +13,12 @@ import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 let Options = {};
 
 const AutoEnableList = [];
-const CustomSourcePatterns = [];
 const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
 const PlayerURL = chrome.runtime.getURL('player/index.html');
 const CachedTabs = {};
+
+const customSourcePatternsMatcher = new MultiRegexMatcher();
 
 const sponsorBlockBackend = new SponsorBlockIntegration();
 sponsorBlockBackend.setup();
@@ -467,8 +469,12 @@ async function loadOptions(newOptions) {
     }
   });
 
-  CustomSourcePatterns.length = 0;
-  Options.customSourcePatterns.split('\n') .forEach((line)=>{
+  loadCustomPatterns();
+}
+
+function loadCustomPatterns() {
+  customSourcePatternsMatcher.clear();
+  Options.customSourcePatterns.split('\n').forEach((line)=>{
     line = line.trim();
     if (line.length === 0) return;
     if (line.startsWith('#') || line.startsWith('//')) return;
@@ -480,15 +486,14 @@ async function loadOptions(newOptions) {
     // parse regex and flags
     const regex = regexStr.substring(1, regexStr.lastIndexOf('/'));
     const flags = regexStr.substring(regexStr.lastIndexOf('/') + 1);
-    try {
-      CustomSourcePatterns.push({
-        regex: new RegExp(regex, flags),
-        ext: extStr,
-      });
-    } catch (e) {
 
+    try {
+      customSourcePatternsMatcher.addRegex(regex, flags, extStr);
+    } catch (e) {
+      console.warn(e);
     }
   });
+  customSourcePatternsMatcher.compile();
 }
 
 async function setupRedirectRule(ruleID, filetypes) {
@@ -830,11 +835,9 @@ chrome.webRequest.onHeadersReceived.addListener(
         return; // Client or server error. Ignore it
       }
 
-      const customSourcePattern = CustomSourcePatterns.find((item)=>{
-        return item.regex.test(url);
-      });
-      if (customSourcePattern) {
-        ext = customSourcePattern.ext;
+      const output = customSourcePatternsMatcher.match(url);
+      if (output) {
+        ext = output;
       }
 
       if (isSubtitles(ext)) {
