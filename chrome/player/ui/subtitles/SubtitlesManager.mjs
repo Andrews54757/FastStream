@@ -472,6 +472,21 @@ export class SubtitlesManager {
     });
   }
 
+  createSubtitleDisplayElements(i) {
+    const trackContainer = document.createElement('div');
+    trackContainer.className = 'subtitle-track';
+    this.applyStyles(trackContainer);
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'subtitle-track-wrapper';
+    wrapper.appendChild(trackContainer);
+
+    return {
+      trackContainer,
+      wrapper,
+    };
+  }
+
   renderSubtitles() {
     const cachedElements = this.subtitleTrackDisplayElements;
     const tracks = this.activeTracks;
@@ -490,13 +505,7 @@ export class SubtitlesManager {
 
     // Add new elements
     for (let i = cachedElements.length; i < trackLen; i++) {
-      const trackContainer = document.createElement('div');
-      trackContainer.className = 'subtitle-track';
-      this.applyStyles(trackContainer);
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'subtitle-track-wrapper';
-      wrapper.appendChild(trackContainer);
+      const {trackContainer, wrapper} = this.createSubtitleDisplayElements(i);
 
       cachedElements.push(trackContainer);
       DOMElements.subtitlesContainer.appendChild(wrapper);
