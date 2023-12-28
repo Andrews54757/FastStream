@@ -17,7 +17,8 @@ export class SubtitlesManager {
     this.activeTracks = [];
     this.isTestSubtitleActive = false;
 
-    this.subtitleTrackElements = [];
+    this.subtitleTrackListElements = [];
+    this.subtitleTrackDisplayElements = [];
 
     this.settingsManager = new SubtitlesSettingsManager();
     this.settingsManager.on(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.onSettingsChanged.bind(this));
@@ -431,7 +432,7 @@ export class SubtitlesManager {
   }
 
   updateTrackList() {
-    const cachedElements = this.subtitleTrackElements;
+    const cachedElements = this.subtitleTrackListElements;
     const tracks = this.tracks;
 
     // Remove extra elements
@@ -465,32 +466,45 @@ export class SubtitlesManager {
   }
 
   renderSubtitles() {
-    DOMElements.subtitlesContainer.replaceChildren();
+    const cachedElements = this.subtitleTrackDisplayElements;
+    const tracks = this.activeTracks;
+    let trackLen = tracks.length;
 
     if (this.isTestSubtitleActive) {
+      trackLen++;
+    }
+
+    // Remove extra elements
+    for (let i = cachedElements.length - 1; i >= trackLen; i--) {
+      const el = cachedElements[i];
+      el.parentElement.remove();
+      cachedElements.splice(i, 1);
+    }
+
+    // Add new elements
+    for (let i = cachedElements.length; i < trackLen; i++) {
       const trackContainer = document.createElement('div');
       trackContainer.className = 'subtitle-track';
       this.applyStyles(trackContainer);
-
-      const cue = document.createElement('div');
-      cue.textContent = Localize.getMessage('player_testsubtitle');
-      trackContainer.appendChild(cue);
 
       const wrapper = document.createElement('div');
       wrapper.className = 'subtitle-track-wrapper';
       wrapper.appendChild(trackContainer);
+
+      cachedElements.push(trackContainer);
       DOMElements.subtitlesContainer.appendChild(wrapper);
     }
-    const tracks = this.activeTracks;
+
+    // Update elements
     const currentTime = this.client.persistent.currentTime;
-    tracks.forEach((track) => {
-      const trackContainer = document.createElement('div');
-      trackContainer.className = 'subtitle-track';
-      this.applyStyles(trackContainer);
-      const cues = track.cues;
+
+    for (let i = 0; i < tracks.length; i++) {
+      const trackContainer = cachedElements[i];
+      trackContainer.replaceChildren();
+      const cues = tracks[i].cues;
       let hasCues = false;
 
-      let cueIndex = Utils.binarySearch(cues, currentTime, (time, cue) => {
+      let cueIndex = Utils.binarySearch(cues, this.client.persistent.currentTime, (time, cue) => {
         if (cue.startTime > time) {
           return -1;
         } else if (cue.endTime < time) {
@@ -515,19 +529,27 @@ export class SubtitlesManager {
         }
       }
 
-      const wrapper = document.createElement('div');
-      wrapper.className = 'subtitle-track-wrapper';
-      wrapper.appendChild(trackContainer);
-      DOMElements.subtitlesContainer.appendChild(wrapper);
-
       if (!hasCues) {
-        wrapper.style.opacity = 0;
+        trackContainer.style.opacity = 0;
         const fillerCue = document.createElement('div');
         trackContainer.appendChild(fillerCue);
 
         fillerCue.textContent = '|';
+      } else {
+        trackContainer.style.opacity = '';
       }
-    });
+    }
+
+
+    if (this.isTestSubtitleActive) {
+      const trackContainer = cachedElements[trackLen - 1];
+      trackContainer.replaceChildren();
+      trackContainer.style.opacity = '';
+
+      const cue = document.createElement('div');
+      cue.textContent = Localize.getMessage('player_testsubtitle');
+      trackContainer.appendChild(cue);
+    }
   }
 
   mediaNameSet() {
