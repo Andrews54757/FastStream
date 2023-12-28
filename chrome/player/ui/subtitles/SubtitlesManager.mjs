@@ -257,6 +257,10 @@ export class SubtitlesManager {
       e.stopPropagation();
       e.preventDefault();
     });
+
+    window.addEventListener('resize', () => {
+      this.checkTrackBounds();
+    });
   }
 
   createTrackEntryElements(i) {
@@ -481,10 +485,80 @@ export class SubtitlesManager {
     wrapper.className = 'subtitle-track-wrapper';
     wrapper.appendChild(trackContainer);
 
+    wrapper.style.marginBottom = '5px';
+
+
+    let yStart = 0;
+
+    const mouseup = (e) => {
+      document.removeEventListener('mousemove', mousemove);
+      document.removeEventListener('mouseup', mouseup);
+      e.stopPropagation();
+    };
+
+    const mousemove = (e) => {
+      // drag by adjusting margin-bottom
+      const oldDiff = yStart - e.clientY;
+      let diff = oldDiff;
+      let current = wrapper;
+      do {
+        const marginBottom = parseInt(current.style.marginBottom) || 0;
+        const newMarginBottom = Math.max(marginBottom + diff, 5);
+        current.style.marginBottom = newMarginBottom + 'px';
+        diff -= (newMarginBottom - marginBottom);
+        current = current.nextElementSibling;
+      } while (current && diff < 0);
+
+      const adjustedDiff = oldDiff - diff;
+
+      const previousSibling = wrapper.previousElementSibling;
+      if (previousSibling) {
+        const previousMarginBottom = parseInt(previousSibling.style.marginBottom) || 0;
+        const newPreviousMarginBottom = Math.max(previousMarginBottom - adjustedDiff, 5);
+        previousSibling.style.marginBottom = newPreviousMarginBottom + 'px';
+      }
+
+      yStart = e.clientY;
+      this.checkTrackBounds();
+      e.stopPropagation();
+    };
+
+    wrapper.addEventListener('mousedown', (e) => {
+      yStart = e.clientY;
+      document.addEventListener('mousemove', mousemove);
+      document.addEventListener('mouseup', mouseup);
+      e.stopPropagation();
+    });
+
+
     return {
       trackContainer,
       wrapper,
     };
+  }
+
+  // Make sure subtitles are not outside of the video
+  checkTrackBounds() {
+    const trackElements = this.subtitleTrackDisplayElements;
+    const playerHeight = DOMElements.playerContainer.offsetHeight - parseInt(window.getComputedStyle(DOMElements.subtitlesContainer).bottom);
+
+    let totalTrackHeight = 0;
+    for (let i = 0; i < trackElements.length; i++) {
+      const trackWrapper = trackElements[i].parentElement;
+      const marginBottom = parseInt(trackWrapper.style.marginBottom);
+      totalTrackHeight += trackWrapper.offsetHeight + marginBottom;
+    }
+
+    let shrinkAmount = Math.max(totalTrackHeight - playerHeight, 0);
+    // shrink margin-bottom from topmost track downwards
+    for (let i = 0; i < trackElements.length && shrinkAmount > 0; i++) {
+      const trackWrapper = trackElements[i].parentElement;
+      const style = window.getComputedStyle(trackWrapper);
+      const marginBottom = parseInt(style.marginBottom);
+      const newMarginBottom = Math.max(marginBottom - shrinkAmount, 5);
+      trackWrapper.style.marginBottom = newMarginBottom + 'px';
+      shrinkAmount -= (marginBottom - newMarginBottom);
+    }
   }
 
   renderSubtitles() {
@@ -566,6 +640,8 @@ export class SubtitlesManager {
       cue.textContent = Localize.getMessage('player_testsubtitle');
       trackContainer.appendChild(cue);
     }
+
+    this.checkTrackBounds();
   }
 
   mediaNameSet() {
