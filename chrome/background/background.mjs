@@ -354,7 +354,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 async function handleFullScreenRequest(frame, message) {
-  if (frame.parentId === -1) {
+  if (frame.parentId < 0) {
     return 'invalid';
   }
   const needsToSendFrameId = !frame.hasSentFrameId;
@@ -561,8 +561,6 @@ function handleSubtitles(url, frame, headers) {
     label: u.split('.')[0],
     time: Date.now(),
   });
-
-  sendSourcesToMainFramePlayers(frame);
 }
 
 function getSourceFromURL(frame, url) {
