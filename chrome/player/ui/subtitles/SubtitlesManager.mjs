@@ -553,8 +553,7 @@ export class SubtitlesManager {
     // shrink margin-bottom from topmost track downwards
     for (let i = 0; i < trackElements.length && shrinkAmount > 0; i++) {
       const trackWrapper = trackElements[i].parentElement;
-      const style = window.getComputedStyle(trackWrapper);
-      const marginBottom = parseInt(style.marginBottom);
+      const marginBottom = parseInt(trackWrapper.style.marginBottom) || 0;
       const newMarginBottom = Math.max(marginBottom - shrinkAmount, 5);
       trackWrapper.style.marginBottom = newMarginBottom + 'px';
       shrinkAmount -= (marginBottom - newMarginBottom);
