@@ -99,6 +99,7 @@ export class SubtitlesManager {
 
   onSettingsChanged(settings) {
     this.openSubtitlesSearch.setLanguageInputValue(settings['default-lang']);
+    this.refreshSubtitleStyles();
     this.renderSubtitles();
     this.client.subtitleSyncer.onVideoTimeUpdate();
   }
@@ -463,6 +464,12 @@ export class SubtitlesManager {
     trackContainer.style.color = settings.color;
     trackContainer.style.fontSize = settings['font-size'];
     trackContainer.style.backgroundColor = settings.background;
+  }
+
+  refreshSubtitleStyles() {
+    this.subtitleTrackDisplayElements.forEach((el) => {
+      this.applyStyles(el);
+    });
   }
 
   renderSubtitles() {
