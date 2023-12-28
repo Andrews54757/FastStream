@@ -649,7 +649,7 @@ export class MP4 {
   }
   static tkhd(track) {
     const id = track.id;
-    const duration = track.duration * track.timescale;
+    const duration = track.duration * track.movieTimescale;
     const width = track.width;
     const height = track.height;
     const upperWordDuration = Math.floor(duration / (UINT32_MAX + 1));

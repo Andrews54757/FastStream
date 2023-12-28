@@ -49,6 +49,7 @@ export class HLS2MP4 extends EventEmitter {
           use64Offsets: false,
           nextChunkId: 1,
           elst: [],
+          padding: 0,
         };
       }
 
@@ -94,6 +95,7 @@ export class HLS2MP4 extends EventEmitter {
           use64Offsets: false,
           nextChunkId: 1,
           elst: [],
+          padding: 0,
         };
       }
 
@@ -136,6 +138,7 @@ export class HLS2MP4 extends EventEmitter {
           use64Offsets: false,
           nextChunkId: 1,
           elst: [],
+          padding: 0,
         };
       }
 
@@ -201,22 +204,39 @@ export class HLS2MP4 extends EventEmitter {
     }
 
     const len = tracks[0].chunks.length;
-    let minPts = tracks[0].chunks[0].startPTS;
+    let minDts = tracks[0].chunks[0].startDTS;
 
     for (let i = 0; i < tracks.length; i++) {
       if (tracks[i].chunks.length !== len) {
         console.log('WARNING: chunk length is not equal', tracks[i].chunks.length, len);
       }
 
-      if (tracks[i].chunks[0].startPTS < minPts) {
-        minPts = tracks[i].chunks[0].startPTS;
+      if (tracks[i].chunks[0].startDTS < minDts) {
+        minDts = tracks[i].chunks[0].startDTS;
       }
     }
+
+    tracks.forEach((track) => {
+      const trackDTS = track.chunks[0].startDTS;
+      const diff = trackDTS - minDts;
+      if (diff > 0.01) {
+        const cts = track.chunks[0].startPTS - track.chunks[0].startDTS;
+        track.elst.push({
+          media_time: -1,
+          segment_duration: Math.floor((diff + cts) * track.timescale),
+        });
+        track.padding = diff;
+      }
+    });
+
+
     const movieTimescale = tracks[0].timescale;
     tracks.forEach((track) => {
+      track.movieTimescale = movieTimescale;
+
       track.elst.push({
-        media_time: (track.chunks[0].startPTS - minPts) * movieTimescale,
-        segment_duration: (track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS) * movieTimescale,
+        media_time: (track.chunks[0].startPTS - track.chunks[0].startDTS) * movieTimescale,
+        segment_duration: (track.chunks[track.chunks.length - 1].endDTS - track.chunks[0].startDTS - track.padding) * movieTimescale,
       });
 
       track.samples = [];
