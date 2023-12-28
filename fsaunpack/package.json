@@ -1,0 +1,14 @@
+{
+  "name": "fsaunpack",
+  "version": "1.0.0",
+  "description": "for unpacking",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
