@@ -199,15 +199,20 @@ export class DownloadManager {
   }
 
   onDownloaderFinished(downloader, entry) {
+    if (entry.status === DownloadStatus.DOWNLOAD_FAILED && !entry.aborted &&
+      this.downloaders.length > 1) {
+      const ind = this.downloaders.indexOf(downloader);
+      if (ind !== -1) {
+        this.downloaders.splice(ind, 1);
+        this.client.resetFailed();
+        console.log('Downloader failed, removing downloader and trying again');
+      }
+    }
+
     if (this.testing) {
       const ind = this.downloaders.indexOf(downloader);
       if (ind !== -1) {
         if (entry.status === DownloadStatus.DOWNLOAD_FAILED && !entry.aborted) {
-          if (this.downloaders.length > 1) {
-            this.downloaders.splice(ind, 1);
-            this.client.resetFailed();
-            console.log('Downloader failed, removing downloader and trying again');
-          }
           this.failed++;
           if (this.failed >= 4) {
             console.log('Speed test failed');
