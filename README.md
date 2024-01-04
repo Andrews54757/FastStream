@@ -36,6 +36,9 @@ Notes:
 - This extension does not collect telemetry of any kind. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
 - We take accessibility seriously. If you need accommodations not available in the current version, please contact us and we will work on it ASAP.
 
+## Browser compatibility
+Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work. Exception: FastStream will NOT work using Brave Browser due to [brave/brave-browser#30854](https://github.com/brave/brave-browser/issues/30854)
+
 ## Installation For Chrome and Firefox
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
