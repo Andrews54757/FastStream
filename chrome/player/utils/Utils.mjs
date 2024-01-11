@@ -1,21 +1,14 @@
 import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
+import {DefaultSubtitlesSettings} from '../options/defaults/DefaultSubtitlesSettings.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 
 export class Utils {
-  static async getOptionsFromStorage() {
-    const optionsStr = await (new Promise((resolve, reject) => {
-      if (EnvUtils.isExtension()) {
-        chrome.storage.local.get({
-          options: '{}',
-        }, (results) => {
-          resolve(results.options);
-        });
-      } else {
-        resolve(localStorage.getItem('options') || '{}');
-      }
-    }));
-    const options = JSON.parse(optionsStr);
-    return this.mergeOptions(DefaultOptions, options);
+  static getOptionsFromStorage() {
+    return Utils.loadAndParseOptions('options', DefaultOptions);
+  }
+
+  static getSubtitlesSettingsFromStorage() {
+    return Utils.loadAndParseOptions('subtitlesSettings', DefaultSubtitlesSettings);
   }
 
   static mergeOptions(defaultOptions, newOptions) {
@@ -84,6 +77,19 @@ export class Utils {
     });
 
     return zippedFragments;
+  }
+
+  static async loadAndParseOptions(key, defaultOptions) {
+    const settingsStr = await Utils.getConfig(key);
+    if (settingsStr) {
+      try {
+        const settings = JSON.parse(settingsStr);
+        return Utils.mergeOptions(defaultOptions, settings);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    return Utils.mergeOptions(defaultOptions, {});
   }
 
   static getConfig(key) {

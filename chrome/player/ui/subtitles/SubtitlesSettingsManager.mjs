@@ -136,19 +136,9 @@ export class SubtitlesSettingsManager extends EventEmitter {
   }
 
   async loadSettings() {
-    try {
-      const settingsStr = await Utils.getConfig('subtitlesSettings');
-      if (settingsStr) {
-        const settings = JSON.parse(settingsStr);
-        this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);
-      }
-      this.updateSettingsUI();
-      this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
-    } catch (e) {
-      console.error(e);
-      this.updateSettingsUI();
-      this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
-    }
+    this.settings = await Utils.getSubtitlesSettingsFromStorage();
+    this.updateSettingsUI();
+    this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
   }
 
   showUI() {
