@@ -827,6 +827,12 @@
     "subtitles_settings_background": {
         "message": "Color de Fondo"
     },
+    "subtitles_settings_outlineColor": {
+        "message": "Outline Color"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "Outline Width"
+    },
     "subtitles_settings_defaultLanguage": {
         "message": "Idioma"
     }

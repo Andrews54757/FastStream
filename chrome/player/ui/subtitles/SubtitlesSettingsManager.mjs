@@ -61,6 +61,27 @@ export class SubtitlesSettingsManager extends EventEmitter {
         element.style[config.property] = settings[key];
       }
     }
+    this.applyOutline(element, settings);
+  }
+
+  applyOutline(element, settings) {
+    element.style.textShadow = '';
+    const outlineWidth = settings.outlineWidth;
+    const outlineColor = settings.outlineColor;
+    const unit = 'px';
+    const outlineWidthValue = parseFloat(outlineWidth);
+    if (isNaN(outlineWidthValue) || outlineWidthValue === 0) return;
+
+    // This is a hack to make the outline look better
+    // go around the perimeter of the text, circularly
+    const shadow = [];
+    const resolution = Math.max(360 / (outlineWidthValue * 8), 10);
+    for (let i = 0; i < 360; i += resolution) {
+      const x = Math.cos(i * Math.PI / 180) * outlineWidthValue;
+      const y = Math.sin(i * Math.PI / 180) * outlineWidthValue;
+      shadow.push(`${x}${unit} ${y}${unit} 0px ${outlineColor}`);
+    }
+    element.style.textShadow = shadow.join(',');
   }
 
   updateSettingsUI() {
@@ -80,7 +101,12 @@ export class SubtitlesSettingsManager extends EventEmitter {
       input.name = key;
       input.type = 'text';
       input.value = this.settings[key];
-      if (config.type === 'css' && config.isColor) {
+
+      input.setAttribute('autocomplete', 'off');
+      input.setAttribute('autocorrect', 'off');
+      input.setAttribute('autocapitalize', 'off');
+
+      if (config.isColor) {
         Coloris.bindElement(input);
         input.addEventListener('keydown', (e)=>{
           if (e.key === 'Enter') {
