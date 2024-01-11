@@ -189,8 +189,8 @@ async function sortSubtitles(subs) {
   const subtitlesSettings = await Utils.getConfig('subtitlesSettings');
   try {
     const settings = JSON.parse(subtitlesSettings);
-    if (settings['default-lang']) {
-      defLang = settings['default-lang'];
+    if (settings.defaultLanguage) {
+      defLang = settings.defaultLanguage;
     }
   } catch (e) {
     console.log(e);

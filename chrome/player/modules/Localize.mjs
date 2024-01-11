@@ -8,7 +8,7 @@ const TranslationMap = {
 export class Localize {
   static getMessage(key, substitutions) {
     if (EnvUtils.isExtension()) {
-      return chrome.i18n.getMessage(key, substitutions);
+      return chrome.i18n.getMessage(key, substitutions) || key;
     }
 
     if (!Object.hasOwn(TranslationMap, key)) {

@@ -36,7 +36,7 @@ export class SubtitlesManager {
       return returnedTrack;
     }
 
-    const defLang = this.settingsManager.getSettings()['default-lang'];
+    const defLang = this.settingsManager.getSettings().defaultLanguage;
     if (autoset && this.activeTracks.length === 0 && this.client.options.autoEnableBestSubtitles) {
       if (subtitleTrack.language && subtitleTrack.language.substring(0, defLang.length) === defLang) {
         this.activateTrack(subtitleTrack);
@@ -98,7 +98,7 @@ export class SubtitlesManager {
   }
 
   onSettingsChanged(settings) {
-    this.openSubtitlesSearch.setLanguageInputValue(settings['default-lang']);
+    this.openSubtitlesSearch.setLanguageInputValue(settings.defaultLanguage);
     this.refreshSubtitleStyles();
     this.renderSubtitles();
     this.client.subtitleSyncer.onVideoTimeUpdate();
@@ -464,10 +464,7 @@ export class SubtitlesManager {
   }
 
   applyStyles(trackContainer) {
-    const settings = this.settingsManager.getSettings();
-    trackContainer.style.color = settings.color;
-    trackContainer.style.fontSize = settings['font-size'];
-    trackContainer.style.backgroundColor = settings.background;
+    return this.settingsManager.applyStyles(trackContainer);
   }
 
   refreshSubtitleStyles() {

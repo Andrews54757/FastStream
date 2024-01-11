@@ -809,6 +809,22 @@ body {
     width: 250px;
 }
 
+.subtitles_menu.settings {
+    width: 300px;
+}
+
+.subtitles_menu .subtitles_options {
+    display: none;
+}
+
+.subtitles_menu.settings .subtitles_options {
+    display: block;
+}
+
+.subtitles_menu.settings .subtitles_view {
+    display: none;
+}
+
 
 .fluid_button_video_source .fluid_video_sources_list,
 .fluid_button_language .fluid_language_list {

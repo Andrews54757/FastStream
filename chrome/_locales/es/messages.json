@@ -817,5 +817,17 @@
     },
     "options_help_issues": {
         "message": "Seguimiento de Problemas"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Tamaño de Fuente"
+    },
+    "subtitles_settings_color": {
+        "message": "Color de Fuente"
+    },
+    "subtitles_settings_background": {
+        "message": "Color de Fondo"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Idioma"
     }
 }

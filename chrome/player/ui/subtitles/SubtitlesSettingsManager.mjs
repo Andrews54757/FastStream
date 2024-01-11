@@ -1,10 +1,9 @@
 import {Coloris} from '../../modules/coloris.mjs';
-import {DefaultSubtitlesSettings} from '../../options/defaults/DefaultSubtitlesSettings.mjs';
+import {DefaultSubtitlesSettings, SubtitleSettingsConfigData} from '../../options/defaults/DefaultSubtitlesSettings.mjs';
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {Utils} from '../../utils/Utils.mjs';
-
-const COLOR_SETTINGS = ['color', 'background'];
+import {Localize} from '../../modules/Localize.mjs';
 
 export const SubtitlesSettingsManagerEvents = {
   SETTINGS_CHANGED: 'settingsChanged',
@@ -51,21 +50,37 @@ export class SubtitlesSettingsManager extends EventEmitter {
     this.updateSettingsUI();
   }
 
+  applyStyles(element) {
+    const settings = this.getSettings();
+    for (const key in settings) {
+      if (!Object.hasOwn(settings, key)) continue;
+      const config = SubtitleSettingsConfigData[key];
+      if (!config) continue;
+
+      if (config.type === 'css') {
+        element.style[config.property] = settings[key];
+      }
+    }
+  }
+
   updateSettingsUI() {
     DOMElements.subtitlesOptionsList.replaceChildren();
     for (const key in this.settings) {
       if (!Object.hasOwn(this.settings, key)) continue;
+      const config = SubtitleSettingsConfigData[key];
+      if (!config) continue;
+
       const option = document.createElement('div');
       option.classList.add('option');
 
       const label = document.createElement('div');
-      label.textContent = key.charAt(0).toUpperCase() + key.substring(1);
+      label.textContent = Localize.getMessage('subtitles_settings_' + key);
 
       const input = document.createElement('input');
       input.name = key;
       input.type = 'text';
       input.value = this.settings[key];
-      if (COLOR_SETTINGS.includes(key)) {
+      if (config.type === 'css' && config.isColor) {
         Coloris.bindElement(input);
         input.addEventListener('keydown', (e)=>{
           if (e.key === 'Enter') {
@@ -99,9 +114,6 @@ export class SubtitlesSettingsManager extends EventEmitter {
       const settingsStr = await Utils.getConfig('subtitlesSettings');
       if (settingsStr) {
         const settings = JSON.parse(settingsStr);
-        if (settings['font-size'] === '40px') { // TODO: Remove this in the future
-          settings['font-size'] = DefaultSubtitlesSettings['font-size'];
-        }
         this.settings = Utils.mergeOptions(DefaultSubtitlesSettings, settings);
       }
       this.updateSettingsUI();
@@ -114,12 +126,10 @@ export class SubtitlesSettingsManager extends EventEmitter {
   }
 
   showUI() {
-    DOMElements.subtitlesOptions.style.display = '';
-    DOMElements.subtitlesView.style.display = 'none';
+    DOMElements.subtitlesMenu.classList.add('settings');
   }
 
   hideUI() {
-    DOMElements.subtitlesOptions.style.display = 'none';
-    DOMElements.subtitlesView.style.display = '';
+    DOMElements.subtitlesMenu.classList.remove('settings');
   }
 }

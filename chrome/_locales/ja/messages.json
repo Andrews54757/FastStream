@@ -817,6 +817,18 @@
         "message": "ようこそのページ"
     },
     "options_help_issues": {
-        "message": "Issue Tracker"
+        "message": "問題を報告"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Font Size"
+    },
+    "subtitles_settings_color": {
+        "message": "Font Color"
+    },
+    "subtitles_settings_background": {
+        "message": "Background Color"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Language"
     }
 }
