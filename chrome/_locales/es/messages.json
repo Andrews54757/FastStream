@@ -818,6 +818,12 @@
     "options_help_issues": {
         "message": "Seguimiento de Problemas"
     },
+    "subtitles_settings_fontFamily": {
+        "message": "Fuente"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Peso de Fuente"
+    },
     "subtitles_settings_fontSize": {
         "message": "Tamaño de Fuente"
     },

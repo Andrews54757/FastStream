@@ -819,6 +819,12 @@
     "options_help_issues": {
         "message": "問題を報告"
     },
+    "subtitles_settings_fontFamily": {
+        "message": "Font Family"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Font Weight"
+    },
     "subtitles_settings_fontSize": {
         "message": "Font Size"
     },

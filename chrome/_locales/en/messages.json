@@ -819,6 +819,12 @@
     "options_help_issues": {
         "message": "Issue Tracker"
     },
+    "subtitles_settings_fontFamily": {
+        "message": "Font Family"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Font Weight"
+    },
     "subtitles_settings_fontSize": {
         "message": "Font Size"
     },

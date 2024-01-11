@@ -1,4 +1,6 @@
 export const DefaultSubtitlesSettings = {
+  fontFamily: 'Arial',
+  fontWeight: 'normal',
   fontSize: '3vw',
   color: 'rgba(255,255,255,1)',
   background: 'rgba(10,10,10,0.3)',
@@ -8,6 +10,14 @@ export const DefaultSubtitlesSettings = {
 };
 
 export const SubtitleSettingsConfigData = {
+  fontFamily: {
+    type: 'css',
+    property: 'font-family',
+  },
+  fontWeight: {
+    type: 'css',
+    property: 'font-weight',
+  },
   fontSize: {
     type: 'css',
     property: 'font-size',
