@@ -1,6 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
+import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
@@ -125,7 +126,7 @@ export default class YTPlayer extends DashPlayer {
   }
 
   async getVideoInfo(identifier, tvMode = false) {
-    const cache = !EnvUtils.isIncognito() ? new UniversalCache() : undefined;
+    const cache = (await IndexedDBManager.isSupportedAndAvailable()) ? new UniversalCache() : undefined;
     const youtube = await Innertube.create({
       cache,
       fetch: this.youtubeFetch.bind(this),

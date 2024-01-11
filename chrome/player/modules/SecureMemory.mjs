@@ -99,12 +99,12 @@ export class SecureMemory {
 
   async getSalt(name) {
     const db = this.indexedDbManager.getDatabase();
-    const salt = await this.indexedDbManager.getValue(db, 'metadata', name);
+    const salt = await IndexedDBManager.getValue(db, 'metadata', name);
     if (salt) {
       return salt;
     } else {
       const newSalt = await SecureMemory.randomBuffer(128);
-      await this.indexedDbManager.setValue(db, 'metadata', name, newSalt);
+      await IndexedDBManager.setValue(db, 'metadata', name, newSalt);
       return newSalt;
     }
   }

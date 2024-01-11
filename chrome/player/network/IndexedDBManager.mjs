@@ -9,6 +9,20 @@ export class IndexedDBManager {
     return window.indexedDB !== undefined;
   }
 
+  static async isSupportedAndAvailable() {
+    if (!IndexedDBManager.isSupported()) return false;
+
+    try {
+      const db = await IndexedDBManager.requestDB('faststream-temp-test', true);
+      db.close();
+      await IndexedDBManager.deleteDB('faststream-temp-test');
+      return true;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
+
   isPersistent() {
     return this.persistentName !== null;
   }
@@ -26,10 +40,10 @@ export class IndexedDBManager {
       this.dbName = this.persistentName;
     }
 
-    this.db = await this.requestDB(this.dbName, true);
+    this.db = await IndexedDBManager.requestDB(this.dbName, true);
     closeQueue.push(this);
 
-    return this.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
+    return IndexedDBManager.transact(this.db, 'metadata', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('metadata');
       metaDataStore.put(Date.now(), 'creation_time');
       if (!this.isPersistent()) {
@@ -45,7 +59,7 @@ export class IndexedDBManager {
       this.db = null;
 
       if (!this.isPersistent()) {
-        await this.deleteDB(this.dbName);
+        await IndexedDBManager.deleteDB(this.dbName);
       }
 
       const index = closeQueue.indexOf(this);
@@ -55,7 +69,7 @@ export class IndexedDBManager {
     }
   }
 
-  async getDatabases() {
+  static async getDatabases() {
     if (window.indexedDB.databases) {
       return window.indexedDB.databases();
     } else {
@@ -68,14 +82,14 @@ export class IndexedDBManager {
   }
 
   async prune() {
-    const databases = await this.getDatabases();
+    const databases = await IndexedDBManager.getDatabases();
 
     // Double check because of Firefox bug
     if (!window.indexedDB.databases) {
       const previouslyDeleted = JSON.parse(localStorage.getItem('fs_temp_databases_deleted') || '[]');
       await Promise.all(previouslyDeleted.map(async (database)=>{
         try {
-          await this.deleteDB(database);
+          await IndexedDBManager.deleteDB(database);
         } catch (e) {
           console.error(e);
         }
@@ -86,16 +100,16 @@ export class IndexedDBManager {
     return Promise.all(databases.map(async (database)=>{
       if (database.name.startsWith('faststream-temp-')) {
         try {
-          const db = await this.requestDB(database.name, false);
+          const db = await IndexedDBManager.requestDB(database.name, false);
           // check if stale
           try {
-            const updatedTime = await this.getValue(db, 'metadata', 'updated_time');
+            const updatedTime = await IndexedDBManager.getValue(db, 'metadata', 'updated_time');
             if (!updatedTime || Date.now() - updatedTime > 10000) {
               throw new Error('Stale');
             }
           } catch (e) {
             db.close();
-            await this.deleteDB(database.name);
+            await IndexedDBManager.deleteDB(database.name);
             console.log('Pruned', database.name);
           }
         } catch (e) {
@@ -105,7 +119,7 @@ export class IndexedDBManager {
     }));
   }
 
-  async requestDB(dbName, open = false) {
+  static async requestDB(dbName, open = false) {
     const request = window.indexedDB.open(dbName, 3);
     if (open) {
       request.onupgradeneeded = async (event) => {
@@ -119,12 +133,12 @@ export class IndexedDBManager {
         }
       };
     }
-    return this.wrapRequest(request, 5000);
+    return IndexedDBManager.wrapRequest(request, 5000);
   }
 
-  async deleteDB(dbName) {
+  static async deleteDB(dbName) {
     try {
-      await this.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
+      await IndexedDBManager.wrapRequest(window.indexedDB.deleteDatabase(dbName), 5000);
 
       if (!window.indexedDB.databases) {
         const deleted = JSON.parse(localStorage.getItem('fs_temp_databases_deleted') || '[]');
@@ -139,43 +153,43 @@ export class IndexedDBManager {
     }
   }
 
-  async getValue(db, storeName, key) {
-    return this.transact(db, storeName, 'readonly', (transaction)=>{
+  static async getValue(db, storeName, key) {
+    return IndexedDBManager.transact(db, storeName, 'readonly', (transaction)=>{
       const metaDataStore = transaction.objectStore(storeName);
-      return this.wrapRequest(metaDataStore.get(key));
+      return IndexedDBManager.wrapRequest(metaDataStore.get(key));
     });
   }
 
-  async setValue(db, storeName, key, value) {
-    return this.transact(db, storeName, 'readwrite', (transaction)=>{
+  static async setValue(db, storeName, key, value) {
+    return IndexedDBManager.transact(db, storeName, 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore(storeName);
-      return this.wrapRequest(metaDataStore.put(value, key));
+      return IndexedDBManager.wrapRequest(metaDataStore.put(value, key));
     });
   }
 
   async clearStorage() {
     if (!this.db) return;
-    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
+    return IndexedDBManager.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const metaDataStore = transaction.objectStore('files');
-      return this.wrapRequest(metaDataStore.clear());
+      return IndexedDBManager.wrapRequest(metaDataStore.clear());
     });
   }
 
   async getFile(identifier) {
-    return this.getValue(this.db, 'files', identifier);
+    return IndexedDBManager.getValue(this.db, 'files', identifier);
   }
 
   async setFile(identifier, data) {
-    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
+    return IndexedDBManager.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const fileStore = transaction.objectStore('files');
-      return this.wrapRequest(fileStore.put(data, identifier));
+      return IndexedDBManager.wrapRequest(fileStore.put(data, identifier));
     });
   }
 
   async deleteFile(identifier) {
-    return this.transact(this.db, 'files', 'readwrite', (transaction)=>{
+    return IndexedDBManager.transact(this.db, 'files', 'readwrite', (transaction)=>{
       const fileStore = transaction.objectStore('files');
-      return this.wrapRequest(fileStore.delete(identifier));
+      return IndexedDBManager.wrapRequest(fileStore.delete(identifier));
     });
   }
 
@@ -185,11 +199,11 @@ export class IndexedDBManager {
 
   keepAlive() {
     if (this.db && !this.isPersistent()) {
-      this.setValue(this.db, 'metadata', 'updated_time', Date.now());
+      IndexedDBManager.setValue(this.db, 'metadata', 'updated_time', Date.now());
     }
   }
 
-  transact(db, storeName, mode, callback) {
+  static transact(db, storeName, mode, callback) {
     return new Promise(async (resolve, reject)=>{
       let transaction;
       try {
@@ -214,7 +228,7 @@ export class IndexedDBManager {
     });
   }
 
-  wrapRequest(request, timeout) {
+  static wrapRequest(request, timeout) {
     return new Promise((resolve, reject)=>{
       request.onerror = (event) => {
         console.error(event);
