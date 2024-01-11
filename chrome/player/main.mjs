@@ -186,9 +186,9 @@ async function sortSubtitles(subs) {
   }
 
   let defLang = 'en';
-  const subtitlesSettings = await Utils.getSubtitleSettingsFromStorage();
+  const subtitlesSettings = await Utils.getSubtitlesSettingsFromStorage();
   if (subtitlesSettings.defaultLanguage) {
-    defLang = settings.defaultLanguage;
+    defLang = subtitlesSettings.defaultLanguage;
   }
 
   await Promise.all(subs.map((sub) => {
