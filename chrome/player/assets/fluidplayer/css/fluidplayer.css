@@ -2583,6 +2583,10 @@ body {
         width: 200px;
     }
 
+    .subtitles_menu.settings {
+        width: 250px;
+    }
+
     .fluid_subtitles_container {
         bottom: 0px;
     }
@@ -2607,6 +2611,10 @@ body {
 
     .subtitles_menu {
         width: 150px;
+    }
+
+    .subtitles_menu.settings {
+        width: 200px;
     }
 
     .disable-when-mini {
