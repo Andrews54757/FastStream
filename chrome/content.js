@@ -437,12 +437,12 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
     return;
   }
 
+  const rect = old.getBoundingClientRect();
   const styles = window.getComputedStyle(old);
 
   iframe.setAttribute('style', old.getAttribute('style'));
   iframe.classList = old.classList;
 
-  const rect = old.getBoundingClientRect();
   const width = Math.max(rect.width, 100) + 'px';
   const height = Math.max(rect.height, 100) + 'px';
 
