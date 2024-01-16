@@ -231,8 +231,15 @@ export default class HLSPlayer extends EventEmitter {
         }
       }
       if (fragment.encrypted) {
-        fragment.fs_oldcryptdata = fragment.decryptdata;
-        fragment.fs_oldlevelKeys = fragment.levelkeys;
+        if (fragment.decryptdata && fragment.levelkeys) {
+          fragment.fs_oldcryptdata = fragment.decryptdata;
+          fragment.fs_oldlevelKeys = fragment.levelkeys;
+        } else {
+          this.emit(DefaultPlayerEvents.NEED_KEY);
+          // console.log(fragment);
+          // console.error('SAMPLE-AES not supported!');
+          // throw new Error('SAMPLE-AES not supported!');
+        }
 
         fragment.levelkeys = null;
         fragment._decryptdata = null;

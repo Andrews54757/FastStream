@@ -23,7 +23,7 @@ export class HLSFragmentRequester {
 
     const frag = fragment.getFrag();
 
-    if (frag.decryptdata || frag.encrypted) {
+    if (frag.decryptdata) {
       throw new Error('unexpected decryptdata');
     }
     let keyPromise;
