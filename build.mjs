@@ -160,14 +160,49 @@ function splice(fileText, target, relativePath) {
         console.log(`[Splicer-${target}] Removing lines ${i - removedLines}-${i + 1}`, relativePath);
         continue;
       } else if (command === 'INSERT_LOCALE') {
-        const localePath = path.join(chromeSourceDir, '_locales/en/messages.json');
-        const messages = JSON.parse(fs.readFileSync(localePath, 'utf8'));
-        const translationMap = {};
-        Object.keys(messages).forEach((key) => {
-          translationMap[key] = messages[key].message;
+        const localesPath = path.join(chromeSourceDir, '_locales/');
+        // get all locale folders
+        const localeFolders = fs.readdirSync(localesPath);
+        const locales = [];
+
+        localeFolders.forEach((localeFolder) => {
+          const localePath = path.join(localesPath, localeFolder, 'messages.json');
+          // check if file exists
+          if (!fs.existsSync(localePath)) {
+            return;
+          }
+
+          const messages = JSON.parse(fs.readFileSync(localePath, 'utf8'));
+          const translationMap = {};
+          Object.keys(messages).forEach((key) => {
+            translationMap[key] = messages[key].message;
+          });
+          locales.push({
+            translationMap,
+            code: localeFolder,
+          });
         });
 
-        const localeText = JSON.stringify(translationMap, null, 2);
+        // put english first
+        const defaultLanguage = 'en';
+        locales.sort((a, b) => {
+          if (a.code === defaultLanguage) {
+            return -1;
+          } else if (b.code === defaultLanguage) {
+            return 1;
+          } else {
+            return a.code.localeCompare(b.code);
+          }
+        });
+
+        const newLocales = {};
+        newLocales['LANGUAGES'] = locales.map((locale) => locale.code);
+        Object.keys(locales[0].translationMap).forEach((key) => {
+          const translations = locales.map((locale) => locale.translationMap[key]);
+          newLocales[key] = translations;
+        });
+
+        const localeText = JSON.stringify(newLocales, null, 2);
         newLines.push(localeText.substring(1, localeText.length - 1).trim());
         console.log(`[Splicer-${target}] Inserting locale`, relativePath);
         continue;
