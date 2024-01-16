@@ -673,7 +673,11 @@ export class InterfaceController {
     }, false);
 
     DOMElements.settingsButton.addEventListener('click', (e) => {
-      this.optionsWindow.toggleUI();
+      if (e.shiftKey) {
+        chrome.runtime.openOptionsPage();
+      } else {
+        this.optionsWindow.toggleUI();
+      }
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(DOMElements.settingsButton);
