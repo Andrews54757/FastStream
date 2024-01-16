@@ -232,7 +232,7 @@
         "message": "言語"
     },
     "player_opensubtitles_year": {
-        "message": "年号"
+        "message": "年"
     },
     "player_opensubtitles_sortby": {
         "message": "ソート順"
@@ -721,43 +721,43 @@
         "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
     },
     "options_general_clickaction": {
-        "message": "シングルクリックアクション"
+        "message": "シングルクリック時のアクション"
     },
     "options_general_dblclickaction": {
-        "message": "ダブルクリックアクション"
+        "message": "ダブルクリック時のアクション"
     },
     "options_general_tplclickaction": {
-        "message": "トリプルクリックアクション"
+        "message": "トリプルクリック時のアクション"
     },
     "options_general_clickaction_playpause": {
-        "message": "再生/一時停止を切り替えます"
+        "message": "再生/一時停止に切り替え"
     },
     "options_general_clickaction_fullscreen": {
-        "message": "フルスクリーンを切り替えます"
+        "message": "フルスクリーンに切り替え"
     },
     "options_general_clickaction_pip": {
-        "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
+        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },
     "options_general_clickaction_hidecontrols": {
-        "message": "コントロールを隠します"
+        "message": "コントロールを非表示"
     },
     "options_general_clickaction_hideplayer": {
-        "message": "プレーヤーを隠します"
+        "message": "プレーヤーを非表示"
     },
     "options_general_vischangeaction": {
         "message": "プレーヤーの可視性が変更されたとき"
     },
     "options_general_vischangeaction_nothing": {
-        "message": "何もしません"
+        "message": "何もしない"
     },
     "options_general_vischangeaction_playpause": {
-        "message": "再生/一時停止を切り替えます"
+        "message": "再生/一時停止に切り替え"
     },
     "options_general_vischangeaction_miniplayer": {
-        "message": "ミニプレーヤーを切り替えます"
+        "message": "ミニプレーヤーに切り替え"
     },
     "options_general_vischangeaction_pip": {
-        "message": "ピクチャー イン ピクチャー (PiP) を切り替えます"
+        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },
     "options_general_minipos": {
         "message": "ミニプレーヤーの位置"
@@ -820,27 +820,27 @@
         "message": "問題を報告"
     },
     "subtitles_settings_fontFamily": {
-        "message": "Font Family"
+        "message": "フォントファミリー"
     },
     "subtitles_settings_fontWeight": {
-        "message": "Font Weight"
+        "message": "フォントの太さ"
     },
     "subtitles_settings_fontSize": {
-        "message": "Font Size"
+        "message": "フォントのサイズ"
     },
     "subtitles_settings_color": {
-        "message": "Font Color"
+        "message": "フォントの色"
     },
     "subtitles_settings_background": {
-        "message": "Background Color"
+        "message": "背景の色"
     },
     "subtitles_settings_outlineColor": {
-        "message": "Outline Color"
+        "message": "輪郭線の色"
     },
     "subtitles_settings_outlineWidth": {
-        "message": "Outline Width"
+        "message": "輪郭線の太さ"
     },
     "subtitles_settings_defaultLanguage": {
-        "message": "Language"
+        "message": "言語"
     }
 }
