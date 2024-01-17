@@ -84,6 +84,9 @@ Many thanks to the contributors of this project.
 - Dael (dael_io): Fixed Spanish translations
 - reindex-ot: Japanese translations
 
+## Funding & Donation Policy
+
+FastStream does not accept donations for the project as a whole. Please see the [wiki](https://github.com/Andrews54757/FastStream/wiki/Funding) for more details.
 
 ## Technical Details
 
