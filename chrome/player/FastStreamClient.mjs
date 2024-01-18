@@ -212,7 +212,10 @@ export class FastStreamClient extends EventEmitter {
       );
       svg.id = 'daltonizer-svg';
       filter.id = 'daltonizer';
-      document.head.appendChild(svg);
+      svg.style.position = 'absolute';
+      svg.style.width = '0px';
+      svg.style.height = '0px';
+      document.body.appendChild(svg);
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
