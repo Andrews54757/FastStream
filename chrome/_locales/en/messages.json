@@ -681,6 +681,24 @@
     "options_video_hue": {
         "message": "Hue Rotate"
     },
+    "options_video_daltonizer_type": {
+        "message": "Color blindness correction"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Strength"
+    },
+    "options_video_daltonizer_none": {
+        "message": "None"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomaly"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomaly"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomaly"
+    },
     "options_general_header": {
         "message": "General Options"
     },

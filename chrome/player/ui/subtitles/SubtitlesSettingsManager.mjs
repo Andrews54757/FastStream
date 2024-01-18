@@ -75,11 +75,13 @@ export class SubtitlesSettingsManager extends EventEmitter {
     // This is a hack to make the outline look better
     // go around the perimeter of the text, circularly
     const shadow = [];
-    const resolution = Math.max(360 / (outlineWidthValue * 8), 10);
-    for (let i = 0; i < 360; i += resolution) {
-      const x = Math.cos(i * Math.PI / 180) * outlineWidthValue;
-      const y = Math.sin(i * Math.PI / 180) * outlineWidthValue;
-      shadow.push(`${x}${unit} ${y}${unit} 0px ${outlineColor}`);
+    for (let r = outlineWidthValue; r > 0; r -= 4) {
+      const resolution = Math.min(Math.max(360 / (r * 16), 2), 45);
+      for (let i = 0; i < 360; i += resolution) {
+        const x = Math.cos(i * Math.PI / 180) * r;
+        const y = Math.sin(i * Math.PI / 180) * r;
+        shadow.push(`${x.toFixed(2)}${unit} ${y.toFixed(2)}${unit} 0px ${outlineColor}`);
+      }
     }
     element.style.textShadow = shadow.join(',');
   }

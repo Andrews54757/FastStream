@@ -18,6 +18,8 @@ import {ClickActions} from './options/defaults/ClickActions.mjs';
 import {VisChangeActions} from './options/defaults/VisChangeActions.mjs';
 import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
 import {SecureMemory} from './modules/SecureMemory.mjs';
+import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
+import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -49,6 +51,8 @@ export class FastStreamClient extends EventEmitter {
       videoSepia: 0,
       videoInvert: 0,
       videoHueRotate: 0,
+      videoDaltonizerType: DaltonizerTypes.NONE,
+      videoDaltonizerStrength: 1,
       seekStepSize: 0.2,
       defaultPlaybackRate: 1,
       qualityMultiplier: 1,
@@ -170,6 +174,8 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoSepia = options.videoSepia;
     this.options.videoInvert = options.videoInvert;
     this.options.videoHueRotate = options.videoHueRotate;
+    this.options.videoDaltonizerType = options.videoDaltonizerType;
+    this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
 
     this.options.qualityMultiplier = options.qualityMultiplier;
 
@@ -195,36 +201,21 @@ export class FastStreamClient extends EventEmitter {
   }
 
   updateCSSFilters() {
-    const filters = [];
-    if (this.options.videoBrightness !== 1) {
-      filters.push(`brightness(${this.options.videoBrightness})`);
+    if (this.options.videoDaltonizerType !== -1 && this.options.videoDaltonizerStrength > 0) {
+      const previous = document.getElementById('daltonizer-svg');
+      if (previous) {
+        previous.remove();
+      }
+
+      const {svg, filter} = CSSFilterUtils.makeLMSDaltonizerFilter(
+          this.options.videoDaltonizerType, this.options.videoDaltonizerStrength,
+      );
+      svg.id = 'daltonizer-svg';
+      filter.id = 'daltonizer';
+      document.head.appendChild(svg);
     }
 
-    if (this.options.videoContrast !== 1) {
-      filters.push(`contrast(${this.options.videoContrast})`);
-    }
-
-    if (this.options.videoSaturation !== 1) {
-      filters.push(`saturate(${this.options.videoSaturation})`);
-    }
-
-    if (this.options.videoGrayscale !== 0) {
-      filters.push(`grayscale(${this.options.videoGrayscale})`);
-    }
-
-    if (this.options.videoSepia !== 0) {
-      filters.push(`sepia(${this.options.videoSepia})`);
-    }
-
-    if (this.options.videoInvert !== 0) {
-      filters.push(`invert(${this.options.videoInvert})`);
-    }
-
-    if (this.options.videoHueRotate !== 0) {
-      filters.push(`hue-rotate(${this.options.videoHueRotate}deg)`);
-    }
-
-    const filterStr = filters.join(' ');
+    const filterStr = CSSFilterUtils.getFilterString(this.options);
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;

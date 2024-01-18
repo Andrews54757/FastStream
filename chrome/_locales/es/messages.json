@@ -680,6 +680,24 @@
     "options_video_hue": {
         "message": "Tono Rotar"
     },
+    "options_video_daltonizer_type": {
+        "message": "Corrección del daltonismo"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Intensidad"
+    },
+    "options_video_daltonizer_none": {
+        "message": "Ninguno"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomaly"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomaly"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomaly"
+    },
     "options_general_header": {
         "message": "Opciones Generales"
     },

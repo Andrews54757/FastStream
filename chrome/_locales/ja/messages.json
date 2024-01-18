@@ -681,6 +681,24 @@
     "options_video_hue": {
         "message": "色相の回転"
     },
+    "options_video_daltonizer_type": {
+        "message": "色覚異常の矯正"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "強度"
+    },
+    "options_video_daltonizer_none": {
+        "message": "なし"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomaly"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomaly"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomaly"
+    },
     "options_general_header": {
         "message": "一般設定"
     },
