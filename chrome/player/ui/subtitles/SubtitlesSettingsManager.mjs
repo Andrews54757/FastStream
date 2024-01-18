@@ -76,7 +76,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
     // go around the perimeter of the text, circularly
     const shadow = [];
     for (let r = outlineWidthValue; r > 0; r -= 4) {
-      const resolution = Math.min(Math.max(360 / (r * 16), 2), 45);
+      const resolution = Math.min(Math.max(360 / (r * 8), 2), 45);
       for (let i = 0; i < 360; i += resolution) {
         const x = Math.cos(i * Math.PI / 180) * r;
         const y = Math.sin(i * Math.PI / 180) * r;
