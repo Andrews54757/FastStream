@@ -45,7 +45,7 @@ export class CSSFilterUtils {
     return filters.join(' ');
   }
 
-  static makeLMSDaltonizerFilter(type, loss) {
-    return SVGDaltonizer.makeLMSDaltonizerFilter(DaltonizerTypeMap.get(type), loss);
+  static makeLMSDaltonizerFilter(type, strength) {
+    return SVGDaltonizer.makeLMSDaltonizerFilter(DaltonizerTypeMap.get(type), strength, true);
   }
 }

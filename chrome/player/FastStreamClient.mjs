@@ -201,7 +201,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   updateCSSFilters() {
-    if (this.options.videoDaltonizerType !== -1 && this.options.videoDaltonizerStrength > 0) {
+    if (this.options.videoDaltonizerType !== DaltonizerTypes.NONE && this.options.videoDaltonizerStrength > 0) {
       const previous = document.getElementById('daltonizer-svg');
       if (previous) {
         previous.remove();
