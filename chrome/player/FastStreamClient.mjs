@@ -211,7 +211,7 @@ export class FastStreamClient extends EventEmitter {
           this.options.videoDaltonizerType, this.options.videoDaltonizerStrength,
       );
       svg.id = 'daltonizer-svg';
-      filter.id = 'daltonizer';
+      filter.id = `daltonizer-${this.options.videoDaltonizerType}-${this.options.videoDaltonizerStrength}`;
       svg.style.position = 'absolute';
       svg.style.width = '0px';
       svg.style.height = '0px';

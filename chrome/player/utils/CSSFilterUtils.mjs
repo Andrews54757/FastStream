@@ -39,7 +39,7 @@ export class CSSFilterUtils {
     }
 
     if (options.videoDaltonizerType !== DaltonizerTypes.NONE && options.videoDaltonizerStrength > 0) {
-      filters.push(`url(#daltonizer)`);
+      filters.push(`url(#daltonizer-${options.videoDaltonizerType}-${options.videoDaltonizerStrength})`);
     }
 
     return filters.join(' ');
