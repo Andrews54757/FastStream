@@ -115,7 +115,7 @@ export function HLSLoaderFactory(player) {
               }
             } else {
               if (this.callbacks) {
-                this.callbacks.onError(this.stats.error || {code: 'UNK', text: 'Unknown'}, this.context, null);
+                this.callbacks.onError(this.stats.error || {code: 520, text: 'Unknown'}, this.context, null);
               }
             }
           },
@@ -161,7 +161,7 @@ export function HLSLoaderFactory(player) {
             if (this.stats.timeout) {
               this.callbacks.onTimeout(this.stats, this.context);
             } else {
-              this.callbacks.onError(this.stats.error || {code: 'UNK', text: 'Unknown'}, this.context, null);
+              this.callbacks.onError(this.stats.error || {code: 520, text: 'Unknown'}, this.context, null);
             }
           }
         },

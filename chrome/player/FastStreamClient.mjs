@@ -573,16 +573,20 @@ export class FastStreamClient extends EventEmitter {
   }
 
   predownloadFragments() {
-    let nextDownload = this.getNextToDownload();
-    let hasDownloaded = false;
-    let index = 0;
+    // Don't pre-download if user is offline
+    if (!navigator.onLine) {
+      return false;
+    }
 
+    // throttle download speed if needed
     const speed = this.downloadManager.getSpeed();
-
-    // throttle download speed so blob can catch up
     if (speed > this.options.maxSpeed) {
       return false;
     }
+
+    let nextDownload = this.getNextToDownload();
+    let hasDownloaded = false;
+    let index = 0;
 
     while (nextDownload) {
       if (nextDownload.canFree() && !this.shouldDownloadAll()) {
