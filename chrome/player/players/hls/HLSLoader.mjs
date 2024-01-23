@@ -120,10 +120,8 @@ export function HLSLoaderFactory(player) {
             }
           },
           onAbort: (entry) => {
-            if (!entry.stats.aborted) {
-              throw new Error('onAbort called without aborted flag');
-            }
             this.copyStats(entry.stats);
+            this.stats.aborted = true;
             if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
           },
 
@@ -169,6 +167,7 @@ export function HLSLoaderFactory(player) {
         },
         onAbort: (entry) => {
           this.copyStats(entry.stats);
+          this.stats.aborted = true;
           if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
         },
       });
