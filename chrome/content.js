@@ -520,6 +520,10 @@ function httpRequest(...args) {
 }
 
 function querySelectorAllIncludingShadows(query, currentElement = document.body, results = []) {
+  if (!currentElement) {
+    return results;
+  }
+
   Array.from(currentElement.querySelectorAll(query)).forEach((el) => results.push(el));
 
   const allElements = currentElement.querySelectorAll('*');
