@@ -1182,16 +1182,17 @@ export class InterfaceController {
       return;
     }
 
+    const doPartial = e.altKey;
+    const doDump = e.shiftKey;
     const player = this.client.player;
 
     const {canSave, isComplete, canStream} = player.canSave();
 
-    if (!canSave) {
+    if (!canSave && !doDump) {
       alert(Localize.getMessage('player_savevideo_unsupported'));
       return;
     }
 
-    const doPartial = e.altKey;
     if (doPartial && !isComplete) {
       const res = confirm(Localize.getMessage('player_savevideo_partial_confirm'));
       if (!res) {
@@ -1213,7 +1214,7 @@ export class InterfaceController {
       return;
     }
 
-    if (e.shiftKey) {
+    if (doDump) {
       this.dumpBuffer(name);
       return;
     }
