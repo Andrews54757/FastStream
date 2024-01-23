@@ -119,6 +119,13 @@ export function HLSLoaderFactory(player) {
               }
             }
           },
+          onAbort: (entry) => {
+            if (!entry.stats.aborted) {
+              throw new Error('onAbort called without aborted flag');
+            }
+            this.copyStats(entry.stats);
+            if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
+          },
 
         }, this.config, 1000);
       } catch (e) {
@@ -159,6 +166,10 @@ export function HLSLoaderFactory(player) {
               this.callbacks.onError(this.stats.error, this.context, null);
             }
           }
+        },
+        onAbort: (entry) => {
+          this.copyStats(entry.stats);
+          if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
         },
       });
     }

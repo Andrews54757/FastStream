@@ -25,7 +25,7 @@ export default class HLSPlayer extends EventEmitter {
     this.hls = new Hls({
       autoStartLoad: false,
       startPosition: -1,
-      debug: false,
+      debug: !false,
       capLevelOnFPSDrop: false,
       capLevelToPlayerSize: true,
       defaultAudioCodec: undefined,
