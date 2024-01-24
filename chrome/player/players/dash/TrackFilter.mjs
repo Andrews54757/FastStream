@@ -133,7 +133,7 @@ export class TrackFilter {
     });
   }
 
-  static uniqueLanguages(tracks) {
+  static uniqueLanguages(tracks, qualityMultiplier) {
     tracks = this.filterTracksByCodec(tracks);
 
     const languageMap = new Map();
@@ -153,7 +153,13 @@ export class TrackFilter {
       }
 
       if (langTracks.length > 1) {
-        langTracks = this.prioritizeMP4Tracks(langTracks);
+        if (langTracks[0].type === 'video') {
+          const levelList = this.getLevelList(langTracks, langTracks[0].lang);
+          const chosenQuality = Utils.selectQuality(levelList, qualityMultiplier);
+          langTracks = [levelList.get(chosenQuality).track];
+        } else {
+          langTracks = this.prioritizeMP4Tracks(langTracks);
+        }
       }
 
       if (langTracks.length > 1) {

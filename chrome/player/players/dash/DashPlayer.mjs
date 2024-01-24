@@ -82,7 +82,6 @@ export default class DashPlayer extends EventEmitter {
     });
 
     this.dash.on('initFragmentNeeded', ()=>{
-      console.log(this.desiredVideoLevel, this.desiredAudioLevel, this.currentLevel, this.currentAudioLevel);
       if (this.currentLevel !== this.desiredVideoLevel) {
         this.currentLevel = this.desiredVideoLevel;
       }
@@ -254,7 +253,6 @@ export default class DashPlayer extends EventEmitter {
   }
 
   set currentLevel(value) {
-    console.error('set current level', value );
     if (typeof value !== 'string') return;
     try {
       const tracks = this.dash.getTracksFor('video');
@@ -305,7 +303,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get videoTracks() {
-    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'));
+    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'), this.qualityMultiplier);
   }
 
   get languageTracks() {
