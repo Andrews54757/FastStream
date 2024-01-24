@@ -27,7 +27,7 @@ export class SubtitleSyncer extends EventEmitter {
   shiftSubtitles(delta) {
     if (!this.started) return;
     this.trackToSync.shift(delta);
-    this.client.subtitlesManager.renderSubtitles();
+    this.client.interfaceController.subtitlesManager.renderSubtitles();
     this.onVideoTimeUpdate();
   }
   setup() {
@@ -106,7 +106,7 @@ export class SubtitleSyncer extends EventEmitter {
         const delta = e.clientX - grabStartTrack;
         grabStartTrack = e.clientX;
         this.trackToSync.shift(delta / this.ui.timelineTicks.clientWidth * this.video.duration);
-        this.client.subtitlesManager.renderSubtitles();
+        this.client.interfaceController.subtitlesManager.renderSubtitles();
       }
     });
   }

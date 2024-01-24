@@ -3,12 +3,10 @@ import {KeybindManager} from './ui/KeybindManager.mjs';
 import {DownloadManager} from './network/DownloadManager.mjs';
 import {DefaultPlayerEvents} from './enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from './enums/DownloadStatus.mjs';
-import {SubtitlesManager} from './ui/subtitles/SubtitlesManager.mjs';
 import {VideoAnalyzer} from './modules/analyzer/VideoAnalyzer.mjs';
 import {AnalyzerEvents} from './enums/AnalyzerEvents.mjs';
 import {EventEmitter} from './modules/eventemitter.mjs';
 import {SourcesBrowser} from './ui/SourcesBrowser.mjs';
-import {SubtitleSyncer} from './ui/subtitles/SubtitleSyncer.mjs';
 import {PlayerLoader} from './players/PlayerLoader.mjs';
 import {DOMElements} from './ui/DOMElements.mjs';
 import {AudioConfigManager} from './ui/audio/AudioConfigManager.mjs';
@@ -72,10 +70,8 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController = new InterfaceController(this);
     this.keybindManager = new KeybindManager(this);
     this.downloadManager = new DownloadManager(this);
-    this.subtitlesManager = new SubtitlesManager(this);
     this.sourcesBrowser = new SourcesBrowser(this);
     this.videoAnalyzer = new VideoAnalyzer(this);
-    this.subtitleSyncer = new SubtitleSyncer(this);
     this.audioConfigManager = new AudioConfigManager(this);
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
@@ -234,11 +230,11 @@ export class FastStreamClient extends EventEmitter {
   }
 
   clearSubtitles() {
-    this.subtitlesManager.clearTracks();
+    this.interfaceController.subtitlesManager.clearTracks();
   }
 
   loadSubtitleTrack(subtitleTrack, autoset = false) {
-    return this.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
+    return this.interfaceController.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
   }
 
   updateDuration() {
@@ -248,10 +244,7 @@ export class FastStreamClient extends EventEmitter {
 
   updateTime(time) {
     this.persistent.currentTime = time;
-    this.interfaceController.updateProgress();
-    this.subtitlesManager.renderSubtitles();
-    this.subtitleSyncer.onVideoTimeUpdate();
-    this.interfaceController.updateSkipSegments();
+    this.interfaceController.timeUpdated();
 
     if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime) {
       const now = Date.now();
@@ -752,7 +745,7 @@ export class FastStreamClient extends EventEmitter {
 
   setMediaName(name) {
     this.mediaName = name;
-    this.subtitlesManager.mediaNameSet();
+    this.interfaceController.subtitlesManager.mediaNameSet();
   }
 
   bindPlayer(player) {

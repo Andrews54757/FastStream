@@ -1,3 +1,4 @@
+import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {Localize} from '../../modules/Localize.mjs';
 import {WebVTT} from '../../modules/vtt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
@@ -8,12 +9,14 @@ import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSearch.mjs';
 import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
+import {SubtitleSyncer} from './SubtitleSyncer.mjs';
 
-export class SubtitlesManager {
+export class SubtitlesManager extends EventEmitter {
   constructor(client) {
+    super();
     this.client = client;
-    this.tracks = [];
 
+    this.tracks = [];
     this.activeTracks = [];
     this.isTestSubtitleActive = false;
 
@@ -26,6 +29,8 @@ export class SubtitlesManager {
 
     this.openSubtitlesSearch = new OpenSubtitlesSearch(client.version);
     this.openSubtitlesSearch.on(OpenSubtitlesSearchEvents.TRACK_DOWNLOADED, this.onSubtitleTrackDownloaded.bind(this));
+
+    this.subtitleSyncer = new SubtitleSyncer(client);
 
     this.setupUI();
   }
@@ -85,7 +90,7 @@ export class SubtitlesManager {
     this.tracks.length = 0;
     this.activeTracks.length = 0;
     this.updateTrackList();
-    this.client.subtitleSyncer.stop();
+    this.subtitleSyncer.stop();
   }
 
   removeTrack(track) {
@@ -94,14 +99,14 @@ export class SubtitlesManager {
     ind = this.activeTracks.indexOf(track);
     if (ind !== -1) this.activeTracks.splice(ind, 1);
     this.updateTrackList();
-    this.client.subtitleSyncer.toggleTrack(track, true);
+    this.subtitleSyncer.toggleTrack(track, true);
   }
 
   onSettingsChanged(settings) {
     this.openSubtitlesSearch.setLanguageInputValue(settings.defaultLanguage);
     this.refreshSubtitleStyles();
     this.renderSubtitles();
-    this.client.subtitleSyncer.onVideoTimeUpdate();
+    this.subtitleSyncer.onVideoTimeUpdate();
   }
 
   onSubtitleTrackDownloaded(track) {
@@ -128,6 +133,7 @@ export class SubtitlesManager {
   }
 
   openUI() {
+    this.emit('open');
     DOMElements.subtitlesMenu.style.display = '';
   }
 
@@ -161,7 +167,7 @@ export class SubtitlesManager {
       }
 
       this.renderSubtitles();
-      this.client.subtitleSyncer.onVideoTimeUpdate();
+      this.subtitleSyncer.onVideoTimeUpdate();
     });
     WebUtils.setupTabIndex(DOMElements.subtitlesOptionsTestButton);
 
@@ -297,7 +303,7 @@ export class SubtitlesManager {
     resyncTool.appendChild(svg);
 
     resyncTool.addEventListener('click', (e) => {
-      this.client.subtitleSyncer.toggleTrack(this.tracks[i]);
+      this.subtitleSyncer.toggleTrack(this.tracks[i]);
       e.stopPropagation();
     }, true);
 
@@ -358,7 +364,7 @@ export class SubtitlesManager {
     shiftLTrack.addEventListener('click', (e) => {
       this.tracks[i].shift(-0.2);
       this.renderSubtitles();
-      this.client.subtitleSyncer.onVideoTimeUpdate();
+      this.subtitleSyncer.onVideoTimeUpdate();
       this.client.interfaceController.setStatusMessage('subtitles', Localize.getMessage('player_subtitlesmenu_shifttool_message', ['-0.2']), 'info', 700);
       e.stopPropagation();
     }, true);
@@ -371,7 +377,7 @@ export class SubtitlesManager {
     shiftRTrack.addEventListener('click', (e) => {
       this.tracks[i].shift(0.2);
       this.renderSubtitles();
-      this.client.subtitleSyncer.onVideoTimeUpdate();
+      this.subtitleSyncer.onVideoTimeUpdate();
       this.client.interfaceController.setStatusMessage('subtitles', Localize.getMessage('player_subtitlesmenu_shifttool_message', ['+0.2']), 'info', 700);
       e.stopPropagation();
     }, true);
@@ -460,7 +466,7 @@ export class SubtitlesManager {
     }
 
     this.renderSubtitles();
-    this.client.subtitleSyncer.onVideoTimeUpdate();
+    this.subtitleSyncer.onVideoTimeUpdate();
   }
 
   applyStyles(trackContainer) {

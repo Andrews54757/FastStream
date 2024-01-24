@@ -21,6 +21,7 @@ import {VideoQualityChanger} from './menus/VideoQualityChanger.mjs';
 import {OptionsWindow} from './OptionsWindow.mjs';
 import {ProgressBar} from './ProgressBar.mjs';
 import {StatusManager} from './StatusManager.mjs';
+import {SubtitlesManager} from './subtitles/SubtitlesManager.mjs';
 
 export class InterfaceController {
   constructor(client) {
@@ -33,6 +34,8 @@ export class InterfaceController {
     this.mouseActivityCooldown = 0;
 
     this.failed = false;
+
+    this.subtitlesManager = new SubtitlesManager(this.client);
 
     this.playbackRateChanger = new PlaybackRateChanger();
     this.playbackRateChanger.setupUI();
@@ -52,6 +55,11 @@ export class InterfaceController {
       this.client.setLanguageTrack(track);
     });
 
+    this.playbackRateChanger.on('open', this.closeAllMenus.bind(this));
+    this.videoQualityChanger.on('open', this.closeAllMenus.bind(this));
+    this.languageChanger.on('open', this.closeAllMenus.bind(this));
+    this.subtitlesManager.on('open', this.closeAllMenus.bind(this));
+
     this.progressBar = new ProgressBar(this.client);
     this.progressBar.on('enteredSkipSegment', (segment)=>{
       this.showControlBar();
@@ -63,6 +71,13 @@ export class InterfaceController {
     this.optionsWindow = new OptionsWindow();
 
     this.setupDOM();
+  }
+
+  closeAllMenus() {
+    this.playbackRateChanger.closeUI();
+    this.videoQualityChanger.closeUI();
+    this.languageChanger.closeUI();
+    this.subtitlesManager.closeUI();
   }
 
   setStatusMessage(key, message, type, expiry) {
@@ -658,7 +673,7 @@ export class InterfaceController {
       return track;
     }))).forEach((track) => {
       const returnedTrack = this.client.loadSubtitleTrack(track);
-      this.client.subtitlesManager.activateTrack(returnedTrack);
+      this.subtitlesManager.activateTrack(returnedTrack);
     });
 
     this.client.play();
@@ -683,13 +698,12 @@ export class InterfaceController {
 
   durationChanged() {
     const duration = this.client.duration;
-    if (duration < 5 * 60 || this.client.subtitleSyncer.started) {
+    if (duration < 5 * 60 || this.subtitlesManager.subtitleSyncer.started) {
       this.runProgressLoop();
     } else {
       this.stopProgressLoop();
     }
-    this.updateProgress();
-    this.updateSkipSegments();
+    this.timeUpdated();
   }
 
   runProgressLoop() {
@@ -1035,7 +1049,7 @@ export class InterfaceController {
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
   }
 
-  updateProgress() {
+  timeUpdated() {
     const duration = this.client.duration;
     DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / duration, 0, 1) * 100 + '%';
     DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(duration);
@@ -1050,6 +1064,10 @@ export class InterfaceController {
     } else {
       this.setStatusMessage('chapter', null, 'info');
     }
+
+    this.subtitlesManager.renderSubtitles();
+    this.subtitlesManager.subtitleSyncer.onVideoTimeUpdate();
+    this.updateSkipSegments();
   }
 
   fullscreenToggle() {

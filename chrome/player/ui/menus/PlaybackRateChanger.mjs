@@ -12,6 +12,8 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   openUI(dontSetStayVisible = false) {
+    this.emit('open');
+
     DOMElements.rateMenuContainer.style.display = '';
     this.speedList.scrollTop = this.playbackElements[Math.round(this.playbackRate * 10) - 1].offsetTop - 60;
     if (!dontSetStayVisible) {
