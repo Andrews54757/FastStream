@@ -1,4 +1,3 @@
-import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
@@ -16,146 +15,92 @@ import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {LanguageChanger} from './menus/LanguageChanger.mjs';
+import {PlaybackRateChanger} from './menus/PlaybackRateChanger.mjs';
+import {VideoQualityChanger} from './menus/VideoQualityChanger.mjs';
 import {OptionsWindow} from './OptionsWindow.mjs';
+import {ProgressBar} from './ProgressBar.mjs';
+import {StatusManager} from './StatusManager.mjs';
 
 export class InterfaceController {
   constructor(client) {
     this.client = client;
     this.persistent = client.persistent;
-    this.isSeeking = false;
     this.hidden = false;
-    this.shouldPlay = false;
-    this.isMouseOverProgressbar = false;
-
+    this.lastTime = 0;
     this.lastSpeed = 0;
     this.mouseOverControls = false;
     this.mouseActivityCooldown = 0;
-    this.playbackRate = 10;
 
-    this.skipSegments = [];
-
-    this.hasShownSkip = false;
     this.failed = false;
 
-    this.optionsWindow = new OptionsWindow();
+    this.playbackRateChanger = new PlaybackRateChanger();
+    this.playbackRateChanger.setupUI();
+    this.playbackRateChanger.on('rateChanged', (rate) => {
+      this.client.playbackRate = rate;
+    });
 
-    this.statusMessages = new Map();
-    this.registerStatusLevel('welcome');
-    this.registerStatusLevel('download');
-    this.registerStatusLevel('info');
-    this.registerStatusLevel('error');
-    this.registerStatusLevel('save-video', 1);
-    this.registerStatusLevel('save-screenshot', 1);
-    this.registerStatusLevel('subtitles', 1);
-    this.registerStatusLevel('chapter', 2);
+    this.videoQualityChanger = new VideoQualityChanger();
+    this.videoQualityChanger.setupUI();
+    this.videoQualityChanger.on('qualityChanged', (level) => {
+      this.client.currentLevel = level;
+    });
+
+    this.languageChanger = new LanguageChanger();
+    this.languageChanger.setupUI();
+    this.languageChanger.on('languageChanged', (track) => {
+      this.client.setLanguageTrack(track);
+    });
+
+    this.progressBar = new ProgressBar(this.client);
+    this.progressBar.on('enteredSkipSegment', (segment)=>{
+      this.showControlBar();
+      this.queueControlsHide(5000);
+    });
+    this.progressBar.setupUI();
+
+    this.statusManager = new StatusManager();
+    this.optionsWindow = new OptionsWindow();
 
     this.setupDOM();
   }
 
-  registerStatusLevel(key, channel) {
-    const level = {
-      key,
-      message: '',
-      type: 'info',
-      expiry: 0,
-      channel: channel || 0,
-      maxWidth: 0,
-    };
-    this.statusMessages.set(key, level);
-  }
-
   setStatusMessage(key, message, type, expiry) {
-    const level = this.statusMessages.get(key);
-    if (!level) {
-      throw new Error(`Unknown status level ${key}`);
-    }
-
-    level.message = message;
-    level.type = type || 'info';
-    level.expiry = expiry ? (Date.now() + expiry) : 0;
-    this.updateStatusMessage();
+    this.statusManager.setStatusMessage(key, message, type, expiry);
   }
 
-  getStatusMessage(key) {
-    const level = this.statusMessages.get(key);
-    if (!level) {
-      throw new Error(`Unknown status level ${key}`);
+  tick() {
+    if (this.client.player) {
+      this.updateFragmentsLoaded();
+      this.checkBuffering();
     }
 
-    return level.message;
+    this.statusManager.updateStatusMessage();
   }
 
-  updateStatusMessage() {
-    const elements = DOMElements.statusMessages;
-    const toDisplayList = new Array(elements.length).fill(null);
-    this.statusMessages.forEach((level) => {
-      if (level.expiry && Date.now() > level.expiry) {
-        level.message = '';
+  checkBuffering() {
+    const currentVideo = this.client.currentVideo;
+    if (this.persistent.playing) {
+      const time = this.client.currentTime;
+      if (time === this.lastTime) {
+        this.setBuffering(true);
+      } else {
+        this.setBuffering(false);
       }
-      if (level.message) {
-        toDisplayList[level.channel] = level;
+      this.lastTime = time;
+    } else if (currentVideo) {
+      if (currentVideo.readyState === 0) {
+        this.setBuffering(true);
+      } else if (currentVideo.readyState > 1) {
+        this.setBuffering(false);
       }
-    });
-
-    let displayCount = 0;
-    toDisplayList.forEach((toDisplay, index) => {
-      const element = elements[index];
-      if (!toDisplay) {
-        element.style.display = 'none';
-        return;
-      }
-
-      displayCount++;
-
-      element.style.width = '';
-      element.style.display = '';
-      element.textContent = toDisplay.message;
-      element.title = toDisplay.message;
-      element.className = `status_message ${toDisplay.type}`;
-    });
-
-    if (displayCount > 1) {
-      // Fix the widths of the earlier status messages
-      let lastFound = false;
-      for (let i = toDisplayList.length - 1; i >= 0; i--) {
-        const toDisplay = toDisplayList[i];
-        if (!toDisplay) {
-          continue;
-        }
-
-        if (!lastFound) {
-          lastFound = true;
-          continue;
-        }
-
-        const element = elements[i];
-        const width = element.offsetWidth + 5;
-
-        toDisplay.maxWidth = Math.max(toDisplay.maxWidth, width);
-        element.style.width = toDisplay.maxWidth + 'px';
-      }
-    } else {
-      this.statusMessages.forEach((level) => {
-        level.maxWidth = 0;
-      });
     }
   }
 
   reset() {
     DOMElements.videoContainer.replaceChildren();
-    DOMElements.seekPreviewVideo.replaceChildren();
 
-    const spinner = document.createElement('div');
-    spinner.classList.add('spinner');
-    DOMElements.seekPreviewVideo.appendChild(spinner);
-    DOMElements.seekPreviewVideo.classList.remove('loading');
-
-    DOMElements.seekPreviewVideo.style.display = 'none';
-    DOMElements.progressLoadedContainer.replaceChildren();
-    this.progressCache = [];
-    this.progressCacheAudio = [];
-    this.skipSegments = [];
-    this.hasShownSkip = false;
+    this.progressBar.reset();
     this.failed = false;
     this.setStatusMessage('error', null, 'error');
     this.setStatusMessage('chapter', null, 'error');
@@ -212,162 +157,24 @@ export class InterfaceController {
     DOMElements.seekPreviewVideo.appendChild(video);
   }
 
-  collectProgressbarData(fragments) {
-    let i = 0;
-    let total = 0;
-    let loaded = 0;
-    let failed = 0;
-    let currentTime = -1;
-    const results = [];
-    while (i < fragments.length) {
-      const frag = fragments[i];
-
-      if (!frag) {
-        i++;
-        continue;
-      }
-      total++;
-      if (currentTime === -1) {
-        currentTime = frag.start ? Math.max(frag.start, 0) : 0;
-      }
-
-      const start = currentTime;
-
-      let end = currentTime + frag.duration;
-      currentTime = end;
-
-      if (frag.status === DownloadStatus.WAITING) {
-        i++;
-        continue;
-      }
-
-      const entry = {
-        start: start,
-        end: 0,
-        width: 0,
-        statusClass: 'download-uninitiated',
-      };
-      results.push(entry);
-
-      if (frag.status === DownloadStatus.DOWNLOAD_INITIATED) {
-        entry.statusClass = 'download-initiated';
-      } else if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-        loaded++;
-        entry.statusClass = 'download-complete';
-      } else if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
-        failed++;
-        entry.statusClass = 'download-failed';
-      }
-
-      i++;
-
-      while (i < fragments.length && fragments[i].status === frag.status) {
-        end = currentTime + fragments[i].duration;
-        currentTime = end;
-        i++;
-
-        total++;
-        if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-          loaded++;
-        } else if (frag.status === DownloadStatus.DOWNLOAD_FAILED) {
-          failed++;
-        }
-      }
-
-      entry.end = end;
-      entry.width = end - start;
-    }
-    return {
-      results, total, loaded, failed,
-    };
+  updateMarkers() {
+    this.progressBar.updateMarkers();
   }
 
-  updateProgressBar(cache, results, additionalClass) {
-    const duration = this.client.duration;
-    for (let i = cache.length; i < results.length; i++) {
-      const entry = {
-        start: -1,
-        width: -1,
-        className: '',
-        element: document.createElement('div'),
-      };
-      DOMElements.progressLoadedContainer.appendChild(entry.element);
-      cache.push(entry);
-    }
-
-    for (let i = results.length; i < cache.length; i++) {
-      cache[i].element.remove();
-    }
-
-    cache.length = results.length;
-
-    for (let i = 0; i < results.length; i++) {
-      const result = results[i];
-      const entry = cache[i];
-      if (entry.start !== result.start) {
-        entry.start = result.start;
-        entry.element.style.left = Math.min(result.start / duration * 100, 100) + '%';
-      }
-
-      if (entry.width !== result.width) {
-        entry.width = result.width;
-        entry.element.style.width = Math.min(result.width / duration * 100, 100) + '%';
-      }
-
-      const className = ([result.statusClass, additionalClass]).join(' ');
-      if (entry.className !== className) {
-        entry.className = className;
-        entry.element.className = className;
-      }
-    }
-  }
-  renderProgressBar(cache, fragments, additionalClass = null) {
-    const {results, total, loaded, failed} = this.collectProgressbarData(fragments);
-
-    this.updateProgressBar(cache, results, additionalClass);
-
-    return {
-      total,
-      loaded,
-      failed,
-    };
-  }
   updateFragmentsLoaded() {
-    if (!this.client.player) {
-      this.renderProgressBar(this.progressCache, []);
-      this.renderProgressBar(this.progressCacheAudio, []);
-      return;
-    }
+    this.progressBar.updateFragmentsLoaded();
+    this.updateDownloadStatus();
+  }
 
-    const level = this.client.player.currentLevel;
-    const audioLevel = this.client.player.currentAudioLevel;
-
-    const fragments = this.client.getFragments(level);
-    const audioFragments = this.client.getFragments(audioLevel);
-
-    let total = 0;
-    let loaded = 0;
-    let failed = 0;
-
-    if (fragments) {
-      const result = this.renderProgressBar(this.progressCache, fragments, audioFragments ? 'download-video' : null);
-      total += result.total;
-      loaded += result.loaded;
-      failed += result.failed;
-    }
-
-    if (audioFragments) {
-      const result = this.renderProgressBar(this.progressCacheAudio, audioFragments, fragments ? 'download-audio' : null);
-      total += result.total;
-      loaded += result.loaded;
-      failed += result.failed;
-    }
-
+  updateDownloadStatus() {
+    const {loaded, total, failed} = this.progressBar.getFragmentCounts();
     if (total === 0) {
+      this.setStatusMessage('download', null);
       return;
     }
 
-    const percentDone = Math.floor((loaded / total) * 1000) / 10;
+    const percentDone = total === 0 ? 0 :
+        Math.floor((loaded / total) * 1000) / 10;
 
     const newSpeed = this.client.downloadManager.getSpeed();
     if (newSpeed > 0 && this.lastSpeed > 0) {
@@ -379,7 +186,7 @@ export class InterfaceController {
     let speed = this.lastSpeed; // bytes per second
     speed = Math.round(speed / 1000 / 1000 * 10) / 10; // MB per second
 
-    if (loaded < total) {
+    if (total === 0 || loaded < total) {
       this.shownDownloadComplete = false;
       this.setStatusMessage('download', `${this.client.downloadManager.downloaders.length}C ↓${speed}MB/s ${percentDone}%`, 'success');
     } else if (!this.shownDownloadComplete) {
@@ -393,6 +200,10 @@ export class InterfaceController {
     } else {
       DOMElements.resetFailed.style.display = 'none';
     }
+  }
+
+  updateSkipSegments() {
+    this.progressBar.updateSkipSegments();
   }
 
   setupDOM() {
@@ -426,155 +237,11 @@ export class InterfaceController {
       this.playPauseToggle();
       e.stopPropagation();
     });
-    DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
-    DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
-    DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
-    DOMElements.progressContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
 
     DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.fullscreen);
 
     document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
-    let videoSourceClicked = false;
-    DOMElements.videoSource.addEventListener('click', (e) => {
-      videoSourceClicked = !videoSourceClicked;
-      if (videoSourceClicked) {
-        DOMElements.videoSourceList.style.display = '';
-      } else {
-        DOMElements.videoSourceList.style.display = 'none';
-      }
-      e.stopPropagation();
-    });
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      videoSourceClicked = false;
-      DOMElements.videoSourceList.style.display = 'none';
-    });
-
-    DOMElements.videoSource.tabIndex = 0;
-
-    DOMElements.videoSource.addEventListener('focus', ()=>{
-      DOMElements.videoSourceList.style.display = '';
-    });
-
-    DOMElements.videoSource.addEventListener('blur', ()=>{
-      if (!videoSourceClicked) {
-        DOMElements.videoSourceList.style.display = 'none';
-      }
-      const candidates = Array.from(DOMElements.videoSourceList.children);
-      let current = candidates.find((el) => el.classList.contains('candidate'));
-      if (!current) {
-        current = candidates.find((el) => el.classList.contains('source_active'));
-      }
-      if (!current) {
-        return;
-      }
-      current.classList.remove('candidate');
-    });
-    DOMElements.videoSource.addEventListener('keydown', (e) => {
-      const candidates = Array.from(DOMElements.videoSourceList.children);
-      let current = candidates.find((el) => el.classList.contains('candidate'));
-      if (!current) {
-        current = candidates.find((el) => el.classList.contains('source_active'));
-      }
-      if (!current) {
-        return;
-      }
-
-      const index = candidates.indexOf(current);
-      if (e.key === 'ArrowDown') {
-        current.classList.remove('candidate');
-        const next = (index < candidates.length - 1) ? candidates[index + 1] : candidates[0];
-        next.classList.add('candidate');
-        e.preventDefault();
-        e.stopPropagation();
-      } else if (e.key === 'ArrowUp') {
-        current.classList.remove('candidate');
-        const next = (index > 0) ? candidates[index - 1] : candidates[candidates.length - 1];
-        next.classList.add('candidate');
-        e.preventDefault();
-        e.stopPropagation();
-      } else if (e.key === 'Enter') {
-        current.click();
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-
-    let languageClicked = false;
-    DOMElements.languageButton.addEventListener('click', (e) => {
-      languageClicked = ! languageClicked;
-      if (languageClicked) {
-        DOMElements.languageMenu.style.display = '';
-      } else {
-        DOMElements.languageMenu.style.display = 'none';
-      }
-      e.stopPropagation();
-    });
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      languageClicked = false;
-      DOMElements.languageMenu.style.display = 'none';
-    });
-
-    DOMElements.languageButton.tabIndex = 0;
-
-    DOMElements.languageButton.addEventListener('focus', ()=>{
-      DOMElements.languageMenu.style.display = '';
-    });
-
-    DOMElements.languageButton.addEventListener('blur', ()=>{
-      if (!languageClicked) {
-        DOMElements.languageMenu.style.display = 'none';
-      }
-      const candidates = Array.from(DOMElements.languageMenu.getElementsByClassName('language_track'));
-      let current = candidates.find((el) => el.classList.contains('candidate'));
-      if (!current) {
-        current = candidates.find((el) => el.classList.contains('active'));
-      }
-      if (!current) {
-        return;
-      }
-      current.classList.remove('candidate');
-    });
-    DOMElements.languageButton.addEventListener('keydown', (e) => {
-      const candidates = Array.from(DOMElements.languageMenu.getElementsByClassName('language_track'));
-      let current = candidates.find((el) => el.classList.contains('candidate'));
-      if (!current) {
-        current = candidates.find((el) => el.classList.contains('active'));
-      }
-      if (!current) {
-        return;
-      }
-
-      const index = candidates.indexOf(current);
-      if (e.key === 'ArrowDown') {
-        current.classList.remove('candidate');
-        if (index < candidates.length - 1) {
-          candidates[index + 1].classList.add('candidate');
-        } else {
-          candidates[0].classList.add('candidate');
-        }
-        e.preventDefault();
-        e.stopPropagation();
-      } else if (e.key === 'ArrowUp') {
-        current.classList.remove('candidate');
-        if (index > 0) {
-          candidates[index - 1].classList.add('candidate');
-        } else {
-          candidates[candidates.length - 1].classList.add('candidate');
-        }
-        e.preventDefault();
-        e.stopPropagation();
-      } else if (e.key === 'Enter') {
-        current.click();
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-
-    DOMElements.languageMenu.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
 
     DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
     DOMElements.controlsContainer.addEventListener('mouseenter', this.onControlsMouseEnter.bind(this));
@@ -684,23 +351,6 @@ export class InterfaceController {
 
     const welcomeText = Localize.getMessage('player_welcometext', [this.client.version]);
     this.setStatusMessage('welcome', welcomeText, 'info', 3000);
-    this.setupRateChanger();
-
-    this.seekMarker = document.createElement('div');
-    this.seekMarker.classList.add('seek_marker');
-    DOMElements.markerContainer.appendChild(this.seekMarker);
-    this.seekMarker.style.display = 'none';
-
-    this.unseekMarker = document.createElement('div');
-    this.unseekMarker.classList.add('seek_marker');
-    this.unseekMarker.classList.add('unseek_marker');
-    DOMElements.markerContainer.appendChild(this.unseekMarker);
-    this.unseekMarker.style.display = 'none';
-
-    this.analyzerMarker = document.createElement('div');
-    this.analyzerMarker.classList.add('analyzer_marker');
-    DOMElements.markerContainer.appendChild(this.analyzerMarker);
-    this.analyzerMarker.style.display = 'none';
 
     DOMElements.controlsContainer.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -912,80 +562,6 @@ export class InterfaceController {
     return Promise.resolve();
   }
 
-  setupRateChanger() {
-    const els = [];
-    const speedList = document.createElement('div');
-    speedList.classList.add('rate-changer-list');
-
-    DOMElements.rateMenu.appendChild(speedList);
-
-    let clicked = false;
-
-    DOMElements.playbackRate.addEventListener('focus', (e) => {
-      if (DOMElements.rateMenuContainer.style.display === 'none') {
-        DOMElements.rateMenuContainer.style.display = '';
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
-      }
-    });
-
-    DOMElements.playbackRate.addEventListener('blur', (e) => {
-      if (!clicked) {
-        DOMElements.rateMenuContainer.style.display = 'none';
-      }
-    });
-
-    DOMElements.playbackRate.addEventListener('click', (e) => {
-      clicked = !clicked;
-      if (!clicked) {
-        DOMElements.rateMenuContainer.style.display = 'none';
-      } else {
-        DOMElements.rateMenuContainer.style.display = '';
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
-      }
-      e.stopPropagation();
-    });
-
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      DOMElements.rateMenuContainer.style.display = 'none';
-      clicked = false;
-    });
-
-    WebUtils.setupTabIndex(DOMElements.playbackRate);
-
-
-    for (let i = 1; i <= 80; i += 1) {
-      ((i) => {
-        const el = document.createElement('div');
-        els.push(el);
-        el.textContent = ((i + 0.1) / 10).toString().substring(0, 3);
-
-        el.addEventListener('click', (e) => {
-          e.stopPropagation();
-          this.client.playbackRate = i / 10;
-        }, true);
-        speedList.appendChild(el);
-      })(i);
-    }
-
-    els[this.playbackRate - 1].classList.add('rate-selected');
-
-    this.playbackElements = els;
-
-    DOMElements.playbackRate.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowDown') {
-        this.client.playbackRate = Math.min(8, (this.playbackRate + 1) / 10);
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
-        e.preventDefault();
-        e.stopPropagation();
-      } else if (e.key === 'ArrowUp') {
-        this.client.playbackRate = Math.max(0.1, (this.playbackRate - 1) / 10);
-        speedList.scrollTop = els[this.playbackRate - 1].offsetTop - 60;
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-  }
-
   async onFileDrop(e) {
     e.stopPropagation();
     e.preventDefault();
@@ -1100,7 +676,7 @@ export class InterfaceController {
       return;
     }
     window.requestAnimationFrame(this.progressLoop.bind(this));
-    if (!this.isSeeking) {
+    if (!this.progressBar.isSeeking) {
       this.client.updateTime(this.client.currentTime);
     }
   }
@@ -1303,46 +879,8 @@ export class InterfaceController {
     }
   }
 
-  updateMarkers() {
-    const pastSeeks = this.client.pastSeeks;
-    const duration = this.client.duration;
-    if (pastSeeks.length) {
-      const time = pastSeeks[pastSeeks.length - 1];
-      this.seekMarker.style.left = (time / duration * 100) + '%';
-      this.seekMarker.style.display = '';
-    } else {
-      this.seekMarker.style.display = 'none';
-    }
-
-    const pastUnseeks = this.client.pastUnseeks;
-    if (pastUnseeks.length) {
-      const time = pastUnseeks[pastUnseeks.length - 1];
-      this.unseekMarker.style.left = (time / duration * 100) + '%';
-      this.unseekMarker.style.display = '';
-    } else {
-      this.unseekMarker.style.display = 'none';
-    }
-
-    const analyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition(); ;
-    if (analyzerMarkerPosition !== null) {
-      this.analyzerMarker.style.left = (analyzerMarkerPosition / duration * 100) + '%';
-      this.analyzerMarker.style.display = '';
-    } else {
-      this.analyzerMarker.style.display = 'none';
-    }
-  }
   skipSegment() {
-    const time = this.client.currentTime;
-    const currentSegment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
-    if (!currentSegment) {
-      return;
-    }
-    this.client.currentTime = currentSegment.endTime;
-
-    if (currentSegment.onSkip) {
-      currentSegment.onSkip();
-    }
-
+    this.progressBar.skipSegment();
     this.hideControlBarOnAction();
   }
 
@@ -1403,10 +941,6 @@ export class InterfaceController {
     DOMElements.controlsContainer.classList.add('fade_in');
   }
 
-  getOffsetLeft(elem) {
-    return elem.getBoundingClientRect().left;
-  }
-
   muteToggle() {
     if (0 !== this.persistent.volume && !this.persistent.muted) {
       this.persistent.volume = 0;
@@ -1416,148 +950,6 @@ export class InterfaceController {
       this.persistent.muted = false;
     }
     this.client.volume = this.persistent.volume;
-  }
-
-  onProgressbarMouseLeave() {
-    this.isMouseOverProgressbar = false;
-    if (!this.isSeeking) {
-      this.hidePreview();
-    }
-  }
-
-  onProgressbarMouseEnter() {
-    this.isMouseOverProgressbar = true;
-
-    this.showPreview();
-  }
-
-  showPreview() {
-    DOMElements.seekPreview.style.display = '';
-    DOMElements.seekPreviewTip.style.display = '';
-  }
-
-  hidePreview() {
-    DOMElements.seekPreview.style.display = 'none';
-    DOMElements.seekPreviewTip.style.display = 'none';
-  }
-
-
-  onProgressbarMouseMove(event) {
-    const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
-    const totalWidth = DOMElements.progressContainer.clientWidth;
-
-    const time = this.client.duration * currentX / totalWidth;
-    const chapter = this.client.chapters.find((chapter) => chapter.startTime <= time && chapter.endTime >= time);
-    const segment = this.skipSegments.find((segment) => segment.startTime <= time && segment.endTime >= time);
-
-    let text = '';
-    let offset = 25;
-
-    if (segment) {
-      text += segment.name + '\n';
-      offset += 25;
-    }
-
-    if (chapter) {
-      text += chapter.name + '\n';
-      offset += 25;
-    }
-
-    DOMElements.seekPreviewVideo.style.bottom = offset + 'px';
-
-    text += StringUtils.formatTime(time);
-    DOMElements.seekPreviewText.innerText = text;
-
-    const maxWidth = Math.max(DOMElements.seekPreviewVideo.clientWidth, DOMElements.seekPreview.clientWidth);
-
-
-    let nudgeAmount = 0;
-
-    if (currentX < maxWidth / 2) {
-      nudgeAmount = maxWidth / 2 - currentX;
-    }
-
-    if (currentX > totalWidth - maxWidth / 2) {
-      nudgeAmount = (totalWidth - maxWidth / 2 - currentX);
-    }
-
-    DOMElements.seekPreview.style.left = (currentX + nudgeAmount) / totalWidth * 100 + '%';
-    DOMElements.seekPreviewTip.style.left = currentX / totalWidth * 100 + '%';
-
-    if (nudgeAmount) {
-      DOMElements.seekPreviewTip.classList.add('detached');
-    } else {
-      DOMElements.seekPreviewTip.classList.remove('detached');
-    }
-
-
-    this.client.seekPreview(time);
-  }
-
-
-  onProgressbarMouseDown(event) {
-    let shouldPlay = false;
-    if (this.persistent.playing) {
-      this.client.player.pause();
-      shouldPlay = true;
-    }
-
-    this.isSeeking = true;
-    this.showPreview();
-    this.client.savePosition();
-    this.client.setSeekSave(false);
-
-    DOMElements.progressContainer.classList.add('freeze');
-    // we need an initial position for touchstart events, as mouse up has no offset x for iOS
-    let initialPosition = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
-
-    const shiftTime = (timeBarX) => {
-      const totalWidth = DOMElements.progressContainer.clientWidth;
-      if (totalWidth) {
-        const newTime = this.client.duration * timeBarX / totalWidth;
-        this.client.currentTime = newTime;
-        this.client.updateTime(newTime);
-      }
-    };
-
-    const onProgressbarMouseMove = (event) => {
-      const currentX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
-      initialPosition = NaN; // mouse up will fire after the move, we don't want to trigger the initial position in the event of iOS
-      shiftTime(currentX);
-    };
-
-    const onProgressbarMouseUp = (event) => {
-      document.removeEventListener('mousemove', onProgressbarMouseMove);
-      document.removeEventListener('touchmove', onProgressbarMouseMove);
-      document.removeEventListener('mouseup', onProgressbarMouseUp);
-      document.removeEventListener('touchend', onProgressbarMouseUp);
-      this.isSeeking = false;
-
-      if (!this.isMouseOverProgressbar) {
-        this.hidePreview();
-      }
-
-      let clickedX = Math.min(Math.max(event.clientX - this.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
-
-      if (isNaN(clickedX) && !isNaN(initialPosition)) {
-        clickedX = initialPosition;
-      }
-      if (!isNaN(clickedX)) {
-        shiftTime(clickedX);
-      }
-      this.client.setSeekSave(true);
-
-      DOMElements.progressContainer.classList.remove('freeze');
-
-      if (shouldPlay) {
-        this.client.player?.play();
-      }
-    };
-    shiftTime(initialPosition);
-    document.addEventListener('mouseup', onProgressbarMouseUp);
-    document.addEventListener('touchend', onProgressbarMouseUp);
-    document.addEventListener('mousemove', onProgressbarMouseMove);
-    document.addEventListener('touchmove', onProgressbarMouseMove);
   }
 
   onVolumeBarMouseDown(event) {
@@ -1610,261 +1002,15 @@ export class InterfaceController {
   }
 
   updatePlaybackRate() {
-    this.playbackRate = Math.round(this.persistent.playbackRate * 10);
-    this.playbackElements.forEach((el) => {
-      el.classList.remove('rate-selected');
-    });
-
-    this.playbackElements[this.playbackRate - 1].classList.add('rate-selected');
-  }
-
-  updateSkipSegments() {
-    DOMElements.skipSegmentsContainer.replaceChildren();
-
-    const introMatch = this.client.videoAnalyzer.getIntro();
-    const outroMatch = this.client.videoAnalyzer.getOutro();
-    const duration = this.client.duration;
-    if (!duration) {
-      return;
-    }
-
-    const skipSegments = [];
-
-    if (introMatch) {
-      skipSegments.push({
-        startTime: Utils.clamp(introMatch.startTime, 0, duration),
-        endTime: Utils.clamp(introMatch.endTime, 0, duration),
-        class: 'intro',
-        name: 'Intro',
-        skipText: Localize.getMessage('player_skipintro'),
-      });
-    }
-
-    if (outroMatch) {
-      skipSegments.push({
-        startTime: Utils.clamp(outroMatch.startTime, 0, duration),
-        endTime: Utils.clamp(outroMatch.endTime, 0, duration),
-        class: 'outro',
-        name: 'Outro',
-        skipText: Localize.getMessage('player_skipoutro'),
-      });
-    }
-
-    this.client.skipSegments.forEach((segment) => {
-      skipSegments.push({
-        ...segment,
-        startTime: Utils.clamp(segment.startTime, 0, duration),
-        endTime: Utils.clamp(segment.endTime, 0, duration),
-      });
-    });
-
-    let currentSegment = null;
-    const time = this.client.currentTime;
-
-    skipSegments.forEach((segment) => {
-      const segmentElement = document.createElement('div');
-      segmentElement.classList.add('skip_segment');
-      segmentElement.classList.add(segment.class);
-      segmentElement.style.left = segment.startTime / duration * 100 + '%';
-      segmentElement.style.width = (segment.endTime - segment.startTime) / duration * 100 + '%';
-
-      if (segment.color) {
-        segmentElement.style.backgroundColor = segment.color;
-      }
-
-      DOMElements.skipSegmentsContainer.appendChild(segmentElement);
-
-      if (!currentSegment && time >= segment.startTime && time < segment.endTime) {
-        currentSegment = segment;
-        segmentElement.classList.add('active');
-      }
-    });
-
-    this.skipSegments = skipSegments;
-
-    if (currentSegment) {
-      DOMElements.skipButton.style.display = '';
-      DOMElements.skipButton.textContent = currentSegment.skipText;
-      DOMElements.progressContainer.classList.add('skip_freeze');
-    } else {
-      DOMElements.progressContainer.classList.remove('skip_freeze');
-      DOMElements.skipButton.style.display = 'none';
-      this.hasShownSkip = false;
-    }
-
-    if (DOMElements.skipButton.style.display !== 'none') {
-      if (!this.hasShownSkip) {
-        this.hasShownSkip = true;
-
-        if (currentSegment.autoSkip) {
-          this.skipSegment();
-        }
-
-        this.showControlBar();
-        this.queueControlsHide(5000);
-      }
-    }
-
-    const chapters = [];
-    this.client.chapters.forEach((chapter) => {
-      chapters.push({
-        ...chapter,
-        startTime: Utils.clamp(chapter.startTime, 0, duration),
-        endTime: Utils.clamp(chapter.endTime, 0, duration),
-      });
-    });
-
-    chapters.forEach((chapter) => {
-      if (chapter.startTime !== 0) {
-        const chapterElement = document.createElement('div');
-        chapterElement.classList.add('chapter');
-        chapterElement.style.left = chapter.startTime / duration * 100 + '%';
-        DOMElements.skipSegmentsContainer.appendChild(chapterElement);
-      }
-    });
+    this.playbackRateChanger.setPlaybackRate(this.persistent.playbackRate, true);
   }
 
   updateLanguageTracks() {
-    const tracks = this.client.languageTracks;
-    const videoTracks = tracks.video;
-    const audioTracks = tracks.audio;
-    if (videoTracks.length < 2 && audioTracks.length < 2) {
-      DOMElements.languageButton.style.display = 'none';
-      return;
-    } else {
-      DOMElements.languageButton.style.display = '';
-    }
-
-    DOMElements.languageMenu.replaceChildren();
-    const languageTable = document.createElement('div');
-    languageTable.classList.add('language_table');
-    DOMElements.languageMenu.appendChild(languageTable);
-
-    const languages = [];
-    if (videoTracks.length > 1) {
-      videoTracks.forEach((track) => {
-        if (!languages.includes(track.lang)) {
-          languages.push(track.lang);
-        }
-      });
-    }
-
-    if (audioTracks.length > 1) {
-      audioTracks.forEach((track) => {
-        if (!languages.includes(track.lang)) {
-          languages.push(track.lang);
-        }
-      });
-    }
-
-    languages.sort();
-
-    const regionNames = new Intl.DisplayNames([
-      navigator.language,
-    ], {type: 'language'});
-
-    languages.forEach((language) => {
-      const languageElement = document.createElement('div');
-      languageElement.classList.add('language_container');
-      languageTable.appendChild(languageElement);
-
-      const languageText = document.createElement('div');
-      languageText.classList.add('language_text');
-      try {
-        languageText.textContent = regionNames.of(language);
-      } catch (e) {
-        languageText.textContent = language || 'Unknown';
-      }
-      languageElement.appendChild(languageText);
-
-      const videoTrack = videoTracks.find((track) => track.lang === language);
-      const audioTrack = audioTracks.find((track) => track.lang === language);
-      const trackElements = ([videoTrack, audioTrack]).map((track) => {
-        if (!track) return;
-        const trackElement = document.createElement('div');
-        trackElement.classList.add('language_track');
-        trackElement.textContent = Localize.getMessage('player_languagemenu_' + track.type);
-        trackElement.setAttribute('aria-label', Localize.getMessage('player_languagemenu_' + track.type) + ': ' + language);
-        if (track.isActive) {
-          trackElement.classList.add('active');
-        }
-        languageElement.appendChild(trackElement);
-        trackElement.addEventListener('click', (e) => {
-          Array.from(DOMElements.languageMenu.getElementsByClassName('active')).forEach((element) => {
-            element.classList.remove('active');
-          });
-
-          trackElement.classList.add('active');
-          this.client.setLanguageTrack(track);
-          e.stopPropagation();
-        });
-        return trackElement;
-      });
-      languageElement.addEventListener('click', (e) => {
-        trackElements.forEach((element) => {
-          if (element) {
-            element.click();
-          }
-        });
-        e.stopPropagation();
-      });
-    });
+    this.languageChanger.updateLanguageTracks(this.client);
   }
 
   updateQualityLevels() {
-    const levels = this.client.levels;
-
-    if (!levels || levels.size <= 1) {
-      DOMElements.videoSource.style.display = 'none';
-      return;
-    } else {
-      DOMElements.videoSource.style.display = '';
-    }
-
-    const currentLevel = this.client.currentLevel;
-
-    DOMElements.videoSourceList.replaceChildren();
-    levels.forEach((level, i) => {
-      const levelelement = document.createElement('div');
-
-      levelelement.classList.add('fluid_video_source_list_item');
-      levelelement.addEventListener('click', (e) => {
-        Array.from(DOMElements.videoSourceList.getElementsByClassName('source_active')).forEach((element) => {
-          element.classList.remove('source_active');
-        });
-        this.client.currentLevel = i;
-        levelelement.classList.add('source_active');
-        e.stopPropagation();
-      });
-
-      if (i === currentLevel) {
-        levelelement.classList.add('source_active');
-      }
-
-      const icon = document.createElement('span');
-      icon.classList.add('source_button_icon');
-
-      const text = document.createElement('span');
-      const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
-
-      text.textContent = (i === currentLevel) ? label + ' ' + Localize.getMessage('player_quality_current') : label;
-      levelelement.appendChild(text);
-
-      DOMElements.videoSourceList.appendChild(levelelement);
-    });
-
-    const current = levels.get(currentLevel);
-    if (!current) {
-      console.warn('No current level');
-      return;
-    }
-    const isHD = current.width >= 1280;
-
-    if (isHD) {
-      DOMElements.videoSource.classList.add('hd');
-    } else {
-      DOMElements.videoSource.classList.remove('hd');
-    }
+    this.videoQualityChanger.updateQualityLevels(this.client);
   }
 
   updateVolumeBar() {
@@ -1888,6 +1034,7 @@ export class InterfaceController {
     currentVolumeTag.style.width = (volume * 100) / 3 + '%';
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
   }
+
   updateProgress() {
     const duration = this.client.duration;
     DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / duration, 0, 1) * 100 + '%';
@@ -1985,7 +1132,7 @@ export class InterfaceController {
     }
   }
   playPauseAnimation() {
-    if (this.isSeeking) {
+    if (this.progressBar.isSeeking) {
       return;
     }
     DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');

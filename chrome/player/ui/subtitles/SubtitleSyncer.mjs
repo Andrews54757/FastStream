@@ -57,7 +57,7 @@ export class SubtitleSyncer extends EventEmitter {
       isGrabbing = true;
       grabStart = e.clientX;
       grabStartTime = this.video.currentTime;
-      this.client.interfaceController.isSeeking = true;
+      this.client.interfaceController.progressBar.isSeeking = true;
       shouldPlay = this.client.persistent.playing;
       if (this.client.persistent.playing) {
         this.client.player.pause();
@@ -70,7 +70,7 @@ export class SubtitleSyncer extends EventEmitter {
         const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
         this.client.currentTime = time;
         this.client.updateTime(time);
-        this.client.interfaceController.isSeeking = false;
+        this.client.interfaceController.progressBar.isSeeking = false;
 
         if (shouldPlay) {
           this.client.player.play();

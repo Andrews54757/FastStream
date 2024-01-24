@@ -552,31 +552,12 @@ export class FastStreamClient extends EventEmitter {
         if (this.fragments) this.freeFragments(this.fragments);
         if (this.audioFragments) this.freeFragments(this.audioFragments);
       }
-
-      this.interfaceController.updateFragmentsLoaded();
-
-      // Detect buffering
-      if (this.persistent.playing) {
-        const time = this.currentTime;
-        if (time === this.lastTime) {
-          this.interfaceController.setBuffering(true);
-        } else {
-          this.interfaceController.setBuffering(false);
-        }
-        this.lastTime = time;
-      } else if (this.currentVideo) {
-        if (this.currentVideo.readyState === 0) {
-          this.interfaceController.setBuffering(true);
-        } else if (this.currentVideo.readyState > 1) {
-          this.interfaceController.setBuffering(false);
-        }
-      }
     }
 
+    this.interfaceController.tick();
     this.checkLevelChange();
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
-    this.interfaceController.updateStatusMessage();
   }
 
   predownloadFragments() {
@@ -894,7 +875,7 @@ export class FastStreamClient extends EventEmitter {
 
 
     this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
-      if (this.interfaceController.isSeeking) return;
+      if (this.interfaceController.progressBar.isSeeking) return;
 
       this.updateTime(this.currentTime);
 
