@@ -43,6 +43,9 @@ export default class DashPlayer extends EventEmitter {
           bufferPruningInterval: 1,
 
         },
+        text: {
+          defaultEnabled: false,
+        },
       },
       // 'debug': {
       //   'logLevel': DashJS.Debug.LOG_LEVEL_INFO,
@@ -82,11 +85,11 @@ export default class DashPlayer extends EventEmitter {
     });
 
     this.dash.on('initFragmentNeeded', ()=>{
-      if (this.currentLevel !== this.desiredVideoLevel) {
+      if (this.desiredVideoLevel && this.currentLevel !== this.desiredVideoLevel) {
         this.currentLevel = this.desiredVideoLevel;
       }
 
-      if (this.currentAudioLevel !== this.desiredAudioLevel) {
+      if (this.desiredAudioLevel && this.currentAudioLevel !== this.desiredAudioLevel) {
         this.currentAudioLevel = this.desiredAudioLevel;
       }
     });
