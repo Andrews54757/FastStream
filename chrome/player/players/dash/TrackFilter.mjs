@@ -175,7 +175,7 @@ export class TrackFilter {
     const byQualityLevel = new Map();
     tracks.forEach((track) => {
       track.bitrateList.forEach((data, qualityIndex) => {
-        const key = data.width + 'x' + data.height;
+        const key = (data.width || 0) + 'x' + (data.height || 0);
         let arr = byQualityLevel.get(key);
         if (!arr) {
           arr = [];
@@ -203,7 +203,13 @@ export class TrackFilter {
         return a.bitrate - b.bitrate;
       });
 
-      result.push(arr[0]);
+      if (key === '0x0') {
+        arr.forEach((data) => {
+          result.push(data);
+        });
+      } else {
+        result.push(arr[0]);
+      }
     });
 
     // sort by bitrate
