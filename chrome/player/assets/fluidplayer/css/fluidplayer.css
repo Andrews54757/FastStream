@@ -1797,7 +1797,7 @@ body {
 }
 
 .rate-changer-list>div {
-    font-size: 18px;
+    font-size: var(--font-size-small);
     width: 60px;
     text-align: center;
     padding: 3px 0px;
@@ -2595,6 +2595,18 @@ body {
         bottom: 40px;
     }
 
+    .rate_menu_container {
+        height: 100px;
+        width: 50px;
+    }
+    
+    .rate-changer-list {
+        width: 70px;
+    }
+    .rate-changer-list>div {
+        width: 50px;
+    }
+
 }
 
 @media screen and (max-width: 500px) {
@@ -2619,5 +2631,10 @@ body {
 
     .disable-when-mini {
         display: none;
+    }
+
+    .rate-changer-list>div {
+        width: 50px;
+        font-size: 13px;
     }
 }
