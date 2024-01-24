@@ -107,6 +107,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
       input.setAttribute('autocomplete', 'off');
       input.setAttribute('autocorrect', 'off');
       input.setAttribute('autocapitalize', 'off');
+      input.setAttribute('spellcheck', 'false');
 
       if (config.isColor) {
         Coloris.bindElement(input);
