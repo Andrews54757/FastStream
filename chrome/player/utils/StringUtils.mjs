@@ -173,4 +173,12 @@ export class StringUtils {
     }
     return Math.round(value) + ' ' + unit;
   }
+
+  static parseHTTPRange(range) {
+    const match = range.match(/(\d+)-(\d+)?/);
+    if (!match) return [undefined, undefined];
+    const start = parseInt(match[1], 10);
+    const end = parseInt(match[2], 10);
+    return [start, end];
+  }
 }

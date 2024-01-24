@@ -1,3 +1,4 @@
+import {StringUtils} from '../../utils/StringUtils.mjs';
 
 
 export function DASHLoaderFactory(player) {
@@ -68,10 +69,14 @@ export function DASHLoaderFactory(player) {
       let rangeStart = undefined;
       let rangeEnd = undefined;
 
-      if (request.range && request.range.indexOf('-') > -1) {
-        const range = request.range.split('-');
-        rangeStart = parseInt(range[0], 10);
-        rangeEnd = parseInt(range[1], 10) + 1;
+      if (request.range) {
+        const [start, end] = StringUtils.parseHTTPRange(request.range);
+        if (start === undefined) {
+          console.warn('Failed to parse range', request.range);
+        } else {
+          rangeStart = start;
+          rangeEnd = end + 1;
+        }
       }
 
       //  console.log("request",request, httpRequest.request.range, rangeStart, rangeEnd, httpRequest.request.mediaInfo.representations)
