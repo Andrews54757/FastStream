@@ -945,6 +945,10 @@ export class InterfaceController {
       e.stopPropagation();
     });
 
+    DOMElements.playerContainer.addEventListener('click', (e) => {
+      DOMElements.rateMenuContainer.style.display = 'none';
+      clicked = false;
+    });
 
     WebUtils.setupTabIndex(DOMElements.playbackRate);
 
@@ -979,10 +983,6 @@ export class InterfaceController {
         e.preventDefault();
         e.stopPropagation();
       }
-    });
-
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      DOMElements.rateMenuContainer.style.display = 'none';
     });
   }
 
