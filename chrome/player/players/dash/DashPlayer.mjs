@@ -45,7 +45,7 @@ export default class DashPlayer extends EventEmitter {
         },
       },
       // 'debug': {
-      //   'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
+      //   'logLevel': DashJS.Debug.LOG_LEVEL_INFO,
       // },
     });
 
@@ -141,10 +141,6 @@ export default class DashPlayer extends EventEmitter {
           this.client.makeFragment(fragment.level, fragment.sn, fragment);
         }
       });
-
-      if (this.currentTime === 0 && this.video.readyState < 2) {
-        this.currentTime = segments[0].startTime;
-      }
     }
   }
 
