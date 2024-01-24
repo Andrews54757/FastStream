@@ -447,9 +447,12 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
+    let interval = 0;
+
     const changeTimeFn = () =>{
-      if (!this.duration) return;
-      this.player.off(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
+      if (!this.duration || !this.currentVideo || this.currentVideo.readyState === 0) return;
+      clearInterval(interval);
+      this.context.off(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
 
       if (!this.progressDataLoading || !this.progressData) return;
       this.progressDataLoading = false;
@@ -462,7 +465,11 @@ export class FastStreamClient extends EventEmitter {
       }
     };
 
-    this.player.on(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
+    interval = setInterval(() => {
+      changeTimeFn();
+    }, 1000);
+
+    this.context.on(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
     changeTimeFn();
   }
 

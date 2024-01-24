@@ -1,3 +1,5 @@
+import {Utils} from '../../utils/Utils.mjs';
+
 export class TrackFilter {
   static getTracksWithHighestSelectionPriority(trackArr) {
     let max = 0;
@@ -68,7 +70,7 @@ export class TrackFilter {
 
   static prioritizeMP4Tracks(tracks) {
     const mp4Tracks = tracks.filter((track) => {
-      return track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4';
+      return this.isTrackMP4(track);
     });
 
     if (mp4Tracks.length > 0) {
@@ -76,6 +78,10 @@ export class TrackFilter {
     } else {
       return tracks;
     }
+  }
+
+  static isTrackMP4(track) {
+    return track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4';
   }
 
   static prioritizeLang(tracks, lang) {
@@ -127,7 +133,7 @@ export class TrackFilter {
     });
   }
 
-  static uniqueLanguages(tracks) {
+  static uniqueLanguages(tracks, qualityMultiplier) {
     tracks = this.filterTracksByCodec(tracks);
 
     const languageMap = new Map();
@@ -147,7 +153,13 @@ export class TrackFilter {
       }
 
       if (langTracks.length > 1) {
-        langTracks = this.prioritizeMP4Tracks(langTracks);
+        if (langTracks[0].type === 'video') {
+          const levelList = this.getLevelList(langTracks, langTracks[0].lang);
+          const chosenQuality = Utils.selectQuality(levelList, qualityMultiplier);
+          langTracks = [levelList.get(chosenQuality).track];
+        } else {
+          langTracks = this.prioritizeMP4Tracks(langTracks);
+        }
       }
 
       if (langTracks.length > 1) {
@@ -159,7 +171,68 @@ export class TrackFilter {
     return result;
   }
 
-  static filterTracks(tracks, lang) {
+  static prioritizeMP4WithQuality(tracks) {
+    const byQualityLevel = new Map();
+    tracks.forEach((track) => {
+      track.bitrateList.forEach((data, qualityIndex) => {
+        const key = (data.width || 0) + 'x' + (data.height || 0);
+        let arr = byQualityLevel.get(key);
+        if (!arr) {
+          arr = [];
+          byQualityLevel.set(key, arr);
+        }
+        arr.push({
+          level: ([track.streamInfo.index, track.index, qualityIndex]).join(':'),
+          bitrate: data.bandwidth,
+          width: data.width,
+          height: data.height,
+          isMP4: this.isTrackMP4(track),
+          track,
+        });
+      });
+    });
+
+    const result = [];
+    byQualityLevel.forEach((arr, key) => {
+      const mp4Arr = arr.filter((o) => o.isMP4);
+      if (mp4Arr.length > 0) {
+        arr = mp4Arr;
+      }
+
+      arr.sort((a, b) => {
+        return a.bitrate - b.bitrate;
+      });
+
+      if (key === '0x0') {
+        arr.forEach((data) => {
+          result.push(data);
+        });
+      } else {
+        result.push(arr[0]);
+      }
+    });
+
+    // sort by bitrate
+    result.sort((a, b) => {
+      return a.bitrate - b.bitrate;
+    });
+
+    return result;
+  }
+
+  static getLevelList(tracks, lang) {
+    tracks = this.prioritizeLang(tracks, lang);
+    tracks = this.filterTracksByCodec(tracks);
+    const result = this.prioritizeMP4WithQuality(tracks);
+    // make into map
+    const map = new Map();
+    result.forEach((data) => {
+      map.set(data.level, data);
+    });
+    return map;
+  }
+
+  static filterTracks(tracks, lang, qualityMultiplier) {
     if (tracks.length > 1) {
       tracks = this.filterTracksByCodec(tracks);
     }
@@ -173,7 +246,13 @@ export class TrackFilter {
     }
 
     if (tracks.length > 1) {
-      tracks = this.prioritizeMP4Tracks(tracks);
+      if (tracks[0].type === 'video') {
+        const levelList = this.getLevelList(tracks, lang);
+        const chosenQuality = Utils.selectQuality(levelList, qualityMultiplier);
+        tracks = [levelList.get(chosenQuality).track];
+      } else {
+        tracks = this.prioritizeMP4Tracks(tracks);
+      }
     }
 
     if (tracks.length > 1) {

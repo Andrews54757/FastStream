@@ -1,3 +1,4 @@
+import {StringUtils} from '../../utils/StringUtils.mjs';
 import {Fragment} from '../Fragment.mjs';
 
 export class DashFragment extends Fragment {
@@ -12,9 +13,14 @@ export class DashFragment extends Fragment {
   getContext() {
     let rangeStart = undefined;
     let rangeEnd = undefined;
-    if (this.request.range && this.request.range.indexOf('-') > -1) {
-      rangeStart = parseInt(this.request.range.split('-')[0]);
-      rangeEnd = parseInt(this.request.range.split('-')[1]) + 1;
+    if (this.request.range) {
+      const [start, end] = StringUtils.parseHTTPRange(this.request.range);
+      if (start === undefined) {
+        console.error('Failed to parse range', this.request.range);
+      } else {
+        rangeStart = start;
+        rangeEnd = end + 1;
+      }
     }
     return {
       url: this.request.url,
