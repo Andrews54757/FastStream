@@ -43,7 +43,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
     });
 
     DOMElements.subtitlesOptionsBackButton.addEventListener('click', (e) => {
-      this.hideUI();
+      this.closeUI();
       e.stopPropagation();
     });
 
@@ -144,11 +144,11 @@ export class SubtitlesSettingsManager extends EventEmitter {
     this.emit(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.settings);
   }
 
-  showUI() {
+  openUI() {
     DOMElements.subtitlesMenu.classList.add('settings');
   }
 
-  hideUI() {
+  closeUI() {
     DOMElements.subtitlesMenu.classList.remove('settings');
   }
 }

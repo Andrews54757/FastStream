@@ -5,19 +5,19 @@ import {DOMElements} from '../DOMElements.mjs';
 export class LanguageChanger extends EventEmitter {
   constructor() {
     super();
-    this.stayVisible = false;
+    this.stayOpen = false;
   }
 
-  showUI(dontSetVisible = false) {
+  openUI(dontSetStayVisible = false) {
     DOMElements.languageMenu.style.display = '';
-    if (!dontSetVisible) {
-      this.stayVisible = true;
+    if (!dontSetStayVisible) {
+      this.stayOpen = true;
     }
   }
 
-  hideUI() {
+  closeUI() {
     DOMElements.languageMenu.style.display = 'none';
-    this.stayVisible = false;
+    this.stayOpen = false;
   }
 
   isVisible() {
@@ -26,29 +26,29 @@ export class LanguageChanger extends EventEmitter {
 
   setupUI() {
     DOMElements.languageButton.addEventListener('click', (e) => {
-      if (this.stayVisible) {
-        this.hideUI();
+      if (this.stayOpen) {
+        this.closeUI();
       } else {
-        this.showUI();
+        this.openUI();
       }
       e.stopPropagation();
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.hideUI();
+      this.closeUI();
     });
 
     DOMElements.languageButton.tabIndex = 0;
 
     DOMElements.languageButton.addEventListener('focus', ()=>{
       if (!this.isVisible()) {
-        this.showUI(true);
+        this.openUI(true);
       }
     });
 
     DOMElements.languageButton.addEventListener('blur', ()=>{
-      if (!this.stayVisible) {
-        this.hideUI();
+      if (!this.stayOpen) {
+        this.closeUI();
       }
 
       const candidates = Array.from(DOMElements.languageMenu.getElementsByClassName('language_track'));

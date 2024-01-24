@@ -246,7 +246,7 @@ export class SubtitlesManager {
     WebUtils.setupTabIndex(optionsbutton);
 
     optionsbutton.addEventListener('click', (e) => {
-      this.settingsManager.showUI();
+      this.settingsManager.openUI();
     });
 
     WebUtils.setupTabIndex(DOMElements.subtitlesOptionsBackButton);

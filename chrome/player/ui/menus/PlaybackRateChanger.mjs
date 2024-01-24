@@ -6,22 +6,22 @@ import {DOMElements} from '../DOMElements.mjs';
 export class PlaybackRateChanger extends EventEmitter {
   constructor() {
     super();
-    this.stayVisible = false;
+    this.stayOpen = false;
     this.playbackRate = 1;
     this.playbackElements = [];
   }
 
-  showUI(dontSetVisible = false) {
+  openUI(dontSetStayVisible = false) {
     DOMElements.rateMenuContainer.style.display = '';
     this.speedList.scrollTop = this.playbackElements[Math.round(this.playbackRate * 10) - 1].offsetTop - 60;
-    if (!dontSetVisible) {
-      this.stayVisible = true;
+    if (!dontSetStayVisible) {
+      this.stayOpen = true;
     }
   }
 
-  hideUI() {
+  closeUI() {
     DOMElements.rateMenuContainer.style.display = 'none';
-    this.stayVisible = false;
+    this.stayOpen = false;
   }
 
   isVisible() {
@@ -38,27 +38,27 @@ export class PlaybackRateChanger extends EventEmitter {
 
     DOMElements.playbackRate.addEventListener('focus', (e) => {
       if (!this.isVisible()) {
-        this.showUI(true);
+        this.openUI(true);
       }
     });
 
     DOMElements.playbackRate.addEventListener('blur', (e) => {
-      if (!this.stayVisible) {
-        this.hideUI();
+      if (!this.stayOpen) {
+        this.closeUI();
       }
     });
 
     DOMElements.playbackRate.addEventListener('click', (e) => {
-      if (this.stayVisible) {
-        this.hideUI();
+      if (this.stayOpen) {
+        this.closeUI();
       } else {
-        this.showUI();
+        this.openUI();
       }
       e.stopPropagation();
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.hideUI();
+      this.closeUI();
     });
 
     WebUtils.setupTabIndex(DOMElements.playbackRate);

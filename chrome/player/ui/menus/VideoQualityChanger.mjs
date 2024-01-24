@@ -5,19 +5,19 @@ import {DOMElements} from '../DOMElements.mjs';
 export class VideoQualityChanger extends EventEmitter {
   constructor() {
     super();
-    this.stayVisible = false;
+    this.stayOpen = false;
   }
 
-  showUI(dontSetVisible = false) {
+  openUI(dontSetStayVisible = false) {
     DOMElements.videoSourceList.style.display = '';
-    if (!dontSetVisible) {
-      this.stayVisible = true;
+    if (!dontSetStayVisible) {
+      this.stayOpen = true;
     }
   }
 
-  hideUI() {
+  closeUI() {
     DOMElements.videoSourceList.style.display = 'none';
-    this.stayVisible = false;
+    this.stayOpen = false;
   }
 
   isVisible() {
@@ -26,29 +26,29 @@ export class VideoQualityChanger extends EventEmitter {
 
   setupUI() {
     DOMElements.videoSource.addEventListener('click', (e) => {
-      if (this.stayVisible) {
-        this.hideUI();
+      if (this.stayOpen) {
+        this.closeUI();
       } else {
-        this.showUI();
+        this.openUI();
       }
       e.stopPropagation();
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.hideUI();
+      this.closeUI();
     });
 
     DOMElements.videoSource.tabIndex = 0;
 
     DOMElements.videoSource.addEventListener('focus', ()=>{
       if (!this.isVisible()) {
-        this.showUI(true);
+        this.openUI(true);
       }
     });
 
     DOMElements.videoSource.addEventListener('blur', ()=>{
-      if (!this.stayVisible) {
-        this.hideUI();
+      if (!this.stayOpen) {
+        this.closeUI();
       }
 
       const candidates = Array.from(DOMElements.videoSourceList.children);
