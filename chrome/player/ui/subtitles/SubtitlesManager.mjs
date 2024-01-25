@@ -293,7 +293,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const resyncTool = document.createElement('div');
     resyncTool.title = Localize.getMessage('player_subtitlesmenu_resynctool_label');
-    resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool';
+    resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool subtitle-tool';
     trackElement.appendChild(resyncTool);
     // svg use
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -309,7 +309,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const downloadTrack = document.createElement('div');
     downloadTrack.title = Localize.getMessage('player_subtitlesmenu_savetool_label');
-    downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool';
+    downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool subtitle-tool';
 
     // svg use
     const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -347,6 +347,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const removeTrack = document.createElement('div');
     removeTrack.classList.add('subtitle-remove-tool');
+    removeTrack.classList.add('subtitle-tool');
     removeTrack.title = Localize.getMessage('player_subtitlesmenu_removetool_label');
     trackElement.appendChild(removeTrack);
 
@@ -358,6 +359,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const shiftLTrack = document.createElement('div');
     shiftLTrack.classList.add('subtitle-shiftl-tool');
+    shiftLTrack.classList.add('subtitle-tool');
     shiftLTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['-0.2']);
     trackElement.appendChild(shiftLTrack);
 
@@ -371,6 +373,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const shiftRTrack = document.createElement('div');
     shiftRTrack.classList.add('subtitle-shiftr-tool');
+    shiftRTrack.classList.add('subtitle-tool');
     shiftRTrack.title = Localize.getMessage('player_subtitlesmenu_shifttool_label', ['+0.2']);
     trackElement.appendChild(shiftRTrack);
 

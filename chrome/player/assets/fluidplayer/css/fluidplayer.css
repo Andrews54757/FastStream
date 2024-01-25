@@ -1689,11 +1689,7 @@ body {
     color: var(--subtitles-track-enabled-color);
 }
 
-.subtitle-resync-tool,
-.subtitle-download-tool,
-.subtitle-remove-tool,
-.subtitle-shiftl-tool,
-.subtitle-shiftr-tool {
+.subtitle-tool {
     display: none;
     position: absolute !important;
     cursor: pointer;
@@ -1721,11 +1717,8 @@ body {
     height: 20px;
 }
 
-.subtitle-track-element:hover .subtitle-resync-tool,
-.subtitle-track-element:hover .subtitle-download-tool,
-.subtitle-track-element:hover .subtitle-remove-tool,
-.subtitle-track-element:hover .subtitle-shiftl-tool,
-.subtitle-track-element:hover .subtitle-shiftr-tool {
+.subtitle-track-element:hover .subtitle-tool,
+.subtitle-track-element.subtitle-track-active .subtitle-tool {
     display: block;
 }
 
