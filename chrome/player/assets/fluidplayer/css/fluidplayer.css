@@ -6,6 +6,7 @@ body {
     background-color: black;
 
     --font-size-small: 16px;
+    --font-size-medium: 18px;
 }
 
 .fluid_video_wrapper {
@@ -1777,7 +1778,7 @@ body {
     overflow: hidden;
     border-top-right-radius: 4px;
     border-top-left-radius: 4px;
-    height: 150px;
+    height: 170px;
     z-index: 1000;
     background-color: var(--menu-background-color);
 }
@@ -1797,7 +1798,7 @@ body {
 }
 
 .rate-changer-list>div {
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-medium);
     width: 60px;
     text-align: center;
     padding: 3px 0px;
@@ -2557,6 +2558,7 @@ body {
 @media screen and (max-width: 700px) {
     body {
         --font-size-small: 13px;
+        --font-size-medium: 16px;
     }
 
     .fluid_button {
@@ -2596,7 +2598,7 @@ body {
     }
 
     .rate_menu_container {
-        height: 100px;
+        height: 150px;
         width: 50px;
     }
     
@@ -2631,10 +2633,5 @@ body {
 
     .disable-when-mini {
         display: none;
-    }
-
-    .rate-changer-list>div {
-        width: 50px;
-        font-size: 13px;
     }
 }

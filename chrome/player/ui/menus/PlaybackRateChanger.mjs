@@ -15,10 +15,15 @@ export class PlaybackRateChanger extends EventEmitter {
     this.emit('open');
 
     DOMElements.rateMenuContainer.style.display = '';
-    this.speedList.scrollTop = this.playbackElements[Math.round(this.playbackRate * 10) - 1].offsetTop - 60;
+    this.scrollToPosition();
     if (!dontSetStayVisible) {
       this.stayOpen = true;
     }
+  }
+
+  scrollToPosition() {
+    const element = this.playbackElements[Math.round(this.playbackRate * 10) - 1];
+    this.speedList.scrollTop = element.offsetTop - this.speedList.clientHeight / 2 + element.clientHeight / 2;
   }
 
   closeUI() {
@@ -107,7 +112,7 @@ export class PlaybackRateChanger extends EventEmitter {
     });
 
     const element = this.playbackElements[Math.round(this.playbackRate * 10) - 1];
-    this.speedList.scrollTop = element.offsetTop - 60;
+    this.scrollToPosition();
     element.classList.add('rate-selected');
 
     if (!noEmit) {
