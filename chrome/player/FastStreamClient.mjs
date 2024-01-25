@@ -868,7 +868,7 @@ export class FastStreamClient extends EventEmitter {
 
 
     this.context.on(DefaultPlayerEvents.TIMEUPDATE, (event) => {
-      if (this.interfaceController.progressBar.isSeeking) return;
+      if (this.interfaceController.isUserSeeking()) return;
 
       this.updateTime(this.currentTime);
 

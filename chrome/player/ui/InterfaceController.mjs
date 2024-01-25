@@ -1149,8 +1149,13 @@ export class InterfaceController {
       playButtonBig.classList.replace('fluid_initial_pause_button', 'fluid_initial_play_button');
     }
   }
+
+  isUserSeeking() {
+    return this.progressBar.isSeeking || this.subtitlesManager.subtitleSyncer.isSeeking;
+  }
+
   playPauseAnimation() {
-    if (this.progressBar.isSeeking) {
+    if (this.isUserSeeking()) {
       return;
     }
     DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
