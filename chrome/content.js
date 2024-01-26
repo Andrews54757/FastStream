@@ -20,6 +20,7 @@ window.addEventListener('message', (e) => {
             isMini: false,
             isFullscreen: false,
             placeholder: null,
+            oldStyle: '',
           });
           break;
         }
@@ -269,12 +270,12 @@ function makeMiniPlayer(iframeObj) {
   iframeObj.isMini = true;
 
   const element = iframeObj.iframe;
-  const placeholder = document.createElement('div');
+  const placeholder = document.createElement(element.tagName);
 
   transferId(element, placeholder);
 
   iframeObj.placeholder = placeholder;
-  iframeObj.oldStyle = element.getAttribute('style');
+  iframeObj.oldStyle = element.getAttribute('style') || '';
   placeholder.setAttribute('style', iframeObj.oldStyle);
   placeholder.style.setProperty('background-color', 'black', 'important');
   placeholder.classList = element.classList;
@@ -297,6 +298,10 @@ function makeMiniPlayer(iframeObj) {
     z-index: 2147483647 !important;
     border: 1px solid rgba(0, 0, 0, 0.2) !important;
     outline: none !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
   `);
   updateMiniPlayer(iframeObj);
 }
