@@ -137,16 +137,17 @@ export class StringUtils {
       if (sci.includes(split[0].toLowerCase())) {
         multiplier *= 1000 ** sci.indexOf(split[0].toLowerCase());
       } else {
-        // MB default
+        // M default
         multiplier *= 1000 ** 2;
       }
 
-      if (split[split.length - 1] === 'b') {
+      if (split[split.length - 1] !== 'B') {
         multiplier /= 8;
       }
     } else {
-      // MB default
+      // Mb default
       multiplier *= 1000 ** 2;
+      multiplier /= 8;
     }
 
     if (unit2) {
