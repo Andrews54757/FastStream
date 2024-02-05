@@ -115,9 +115,16 @@ export class StringUtils {
     // regex
     const float = parseFloat(speedStr);
     const unit = speedStr.replace(float, '').trim();
+    if (
+      isNaN(float) ||
+      float < 0 ||
+      float === Infinity
+    ) {
+      return -1;
+    }
 
     // Unit can be MB/s, Mb/s, MB/hr, mb/ms, etc.
-    const match = unit.match(/([a-zA-Z]+)\/?([a-zA-Z]+)?/);
+    const match = unit.match(/([a-oq-zA-Z]+)[\/|p]?([a-zA-Z]+)?/);
     const unit1 = match?.[1];
     const unit2 = match?.[2];
 
@@ -130,7 +137,7 @@ export class StringUtils {
       if (sci.includes(split[0].toLowerCase())) {
         multiplier *= 1000 ** sci.indexOf(split[0].toLowerCase());
       } else {
-      // MB default
+        // MB default
         multiplier *= 1000 ** 2;
       }
 
@@ -152,24 +159,36 @@ export class StringUtils {
     return float * multiplier;
   }
 
-  static getSpeedString(speed) {
-    let unit = 'B/s';
+  static getSpeedString(speed, useBits = false) {
+    if (speed === -1) {
+      return '∞ M' + (useBits ? 'bps' : 'B/s');
+    }
+
+    let unit = '';
     let value = speed;
-    if (speed > 1000) {
-      unit = 'KB/s';
+    if (useBits) {
+      speed *= 8;
+    }
+    if (speed >= 1000) {
+      unit = 'K';
       value = speed / 1000;
     }
-    if (speed > 1000000) {
-      unit = 'MB/s';
+    if (speed >= 1000000) {
+      unit = 'M';
       value = speed / 1000000;
     }
-    if (speed > 1000000000) {
-      unit = 'GB/s';
+    if (speed >= 1000000000) {
+      unit = 'G';
       value = speed / 1000000000;
     }
-    if (speed > 1000000000000) {
-      unit = 'TB/s';
+    if (speed >= 1000000000000) {
+      unit = 'T';
       value = speed / 1000000000000;
+    }
+    if (useBits) {
+      unit += 'bps';
+    } else {
+      unit += 'B/s';
     }
     return Math.round(value) + ' ' + unit;
   }

@@ -26,7 +26,7 @@ export const DefaultOptions = {
   videoHueRotate: 0,
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
-  maxSpeed: 300 * 1000 * 1000,
+  maxSpeed: -1,
   seekStepSize: 2,
   playbackRate: 1,
   qualityMultiplier: 1.1,
