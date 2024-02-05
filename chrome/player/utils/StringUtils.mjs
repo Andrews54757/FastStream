@@ -191,7 +191,7 @@ export class StringUtils {
     } else {
       unit += 'B/s';
     }
-    return Math.round(value) + ' ' + unit;
+    return Math.round(value * 100) / 100 + ' ' + unit;
   }
 
   static parseHTTPRange(range) {
