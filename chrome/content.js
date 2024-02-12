@@ -184,10 +184,10 @@ chrome.runtime.onMessage.addListener(
             pauseAllWithin(video.highest);
 
             if (isYt) {
-              video.highest.parentElement.insertBefore(iframe, video.highest);
+              video.highest.parentNode.insertBefore(iframe, video.highest);
               hideYT(video.highest);
             } else {
-              video.highest.parentElement.replaceChild(iframe, video.highest);
+              video.highest.parentNode.replaceChild(iframe, video.highest);
             }
 
             players.push({
@@ -219,9 +219,9 @@ chrome.runtime.onMessage.addListener(
         players.forEach((player) => {
           if (player.isYt) {
             showYT(player.old);
-            player.iframe.parentElement.removeChild(player.iframe);
+            player.iframe.parentNode.removeChild(player.iframe);
           } else {
-            player.iframe.parentElement.replaceChild(player.old, player.iframe);
+            player.iframe.parentNode.replaceChild(player.old, player.iframe);
           }
 
           removePauseListeners(player.old);
@@ -280,7 +280,7 @@ function makeMiniPlayer(iframeObj) {
   placeholder.style.setProperty('background-color', 'black', 'important');
   placeholder.classList = element.classList;
 
-  element.parentElement.insertBefore(placeholder, element);
+  element.parentNode.insertBefore(placeholder, element);
 
   players.forEach((player) => {
     if (player.iframe === element) {
@@ -384,7 +384,7 @@ function updatePlayerStyles() {
 }
 
 function updatePlayerStyle(old, iframe, isYt) {
-  const parent = iframe.parentElement;
+  const parent = iframe.parentNode;
   iframe.style.display = 'none';
   if (isYt) {
     showYT(old);
@@ -551,6 +551,16 @@ function isVisible(domElement) {
   });
 }
 
+function getNextParentElement(element) {
+  if (element.parentElement) {
+    return element.parentElement;
+  }
+  if (element.parentNode?.host) {
+    return element.parentNode.host;
+  }
+  return null;
+}
+
 function testSimilarity(originalElement, childElement, parentElement) {
   const parentRect = parentElement.getBoundingClientRect();
   if (parentRect.width === 0 || parentRect.height === 0) {
@@ -587,8 +597,8 @@ function getParentElementsWithSameBounds(element) {
   const elements = [];
   const originalElement = element;
 
-  while (element.parentElement) {
-    const parent = element.parentElement;
+  while (getNextParentElement(element)) {
+    const parent = getNextParentElement(element);
     if (testSimilarity(originalElement, element, parent)) {
       elements.push(parent);
     } else {
