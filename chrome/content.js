@@ -551,27 +551,31 @@ function isVisible(domElement) {
   });
 }
 
-function parentHasSimilarBounds(element) {
-  const parent = element.parentElement;
-  const rect = element.getBoundingClientRect();
-  const parentRect = parent.getBoundingClientRect();
-  const tolerance = 4;
-  if ( // First check
-    Math.abs(rect.x - parentRect.x) < tolerance &&
-    Math.abs(rect.y - parentRect.y) < tolerance &&
-    Math.abs(rect.width - parentRect.width) < tolerance &&
-    Math.abs(rect.height - parentRect.height) < tolerance
+function testSimilarity(originalElement, childElement, parentElement) {
+  const parentRect = parentElement.getBoundingClientRect();
+  if (parentRect.width === 0 || parentRect.height === 0) {
+    return true;
+  }
+
+  const originalRect = originalElement.getBoundingClientRect();
+  const tolerance = Math.max(Math.min(originalRect.width, originalRect.height, 5000), 100) * 0.1;
+  if (
+    Math.abs(originalRect.x - parentRect.x) < tolerance &&
+    Math.abs(originalRect.y - parentRect.y) < tolerance &&
+    Math.abs(originalRect.width - parentRect.width) < tolerance &&
+    Math.abs(originalRect.height - parentRect.height) < tolerance
   ) {
     return true;
   }
 
   // Check if parent element is overflow hidden and child element can cover the parent element
-  const parentStyle = window.getComputedStyle(parent);
+  const parentStyle = window.getComputedStyle(parentElement);
+  const childRect = childElement.getBoundingClientRect();
   if (parentStyle.overflow === 'hidden') {
-    if (rect.x <= parentRect.x &&
-      rect.y <= parentRect.y &&
-      rect.x + rect.width >= parentRect.x + parentRect.width &&
-      rect.y + rect.height >= parentRect.y + parentRect.height) {
+    if (childRect.x <= parentRect.x &&
+      childRect.y <= parentRect.y &&
+      childRect.x + childRect.width >= parentRect.x + parentRect.width &&
+      childRect.y + childRect.height >= parentRect.y + parentRect.height) {
       return true;
     }
   }
@@ -581,10 +585,11 @@ function parentHasSimilarBounds(element) {
 
 function getParentElementsWithSameBounds(element) {
   const elements = [];
+  const originalElement = element;
 
   while (element.parentElement) {
     const parent = element.parentElement;
-    if (parentHasSimilarBounds(element)) {
+    if (testSimilarity(originalElement, element, parent)) {
       elements.push(parent);
     } else {
       break;
