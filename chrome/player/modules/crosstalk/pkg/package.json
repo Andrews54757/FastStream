@@ -1,0 +1,14 @@
+{
+  "name": "fs-crosstalk",
+  "version": "0.1.0",
+  "files": [
+    "fs_crosstalk_bg.wasm",
+    "fs_crosstalk.js",
+    "fs_crosstalk.d.ts"
+  ],
+  "module": "fs_crosstalk.js",
+  "types": "fs_crosstalk.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
