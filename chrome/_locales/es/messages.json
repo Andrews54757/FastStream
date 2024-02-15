@@ -575,6 +575,30 @@
     "audiomixer_mute_label": {
         "message": "Silenciar"
     },
+    "audiocrosstalk_title": {
+        "message": "Corrección de Crosstalk de Audio"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "Corrección de Crosstalk Habilitada"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "Corrección de Crosstalk Deshabilitada"
+    },
+    "audiocrosstalk_inputgain": {
+        "message": "Ganancia de Entrada"
+    },
+    "audiocrosstalk_decaygain": {
+        "message": "Decaimiento"
+    },
+    "audiocrosstalk_endgain": {
+        "message": "Ganancia Final"
+    },
+    "audiocrosstalk_centergain": {
+        "message": "Ganancia Central"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
     "audiocompressor_title": {
         "message": "Compresor de Audio"
     },
