@@ -74,6 +74,16 @@ class LCC {
     this.decaygain = decaygain;
     this.endgain = endgain;
     this.centergain = centergain;
+    console.log('LCC configured',
+        `inputgain: ${inputgain}`,
+        `decaygain: ${decaygain}`,
+        `endgain: ${endgain}`,
+        `centergain: ${centergain}`,
+        `microdelay: ${microdelay}`,
+        `samplerate: ${samplerate}`,
+        `bufflen: ${this.bufflen}`,
+        `delaymod: ${this.delaymod}`,
+    );
   }
 
   lcc(input1, input2, output1, output2) {
@@ -88,8 +98,8 @@ class LCC {
 
       const prevIndex = (index + i * 2) % bufflen;
 
-      const out1 = in1 - this.decaygain * prevOutput[prevIndex];
-      const out2 = in2 - this.decaygain * prevOutput[prevIndex + 1];
+      const out1 = in1 - this.decaygain * prevOutput[prevIndex + 1];
+      const out2 = in2 - this.decaygain * prevOutput[prevIndex];
 
       prevOutput[prevIndex] = out1;
       prevOutput[prevIndex + 1] = out2;
