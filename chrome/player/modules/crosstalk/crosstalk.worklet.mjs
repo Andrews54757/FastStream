@@ -16,7 +16,7 @@ class BandpassFilter {
   }
 }
 
-class LCC {
+class XCC {
   constructor(options) {
     this.configure(options);
   }
@@ -48,7 +48,7 @@ class LCC {
     this.bandpass2 = new BandpassFilter(lowpass, samplerate);
   }
 
-  lcc(input1, input2, output1, output2) {
+  process(input1, input2, output1, output2) {
     const len = input1.length;
     const bufflen = this.bufflen;
     const prevOutput = this.previousOutputBuffer;
@@ -95,14 +95,14 @@ registerProcessor('crosstalk-worklet', class CrosstalkWorklet extends AudioWorkl
     this._closed = false;
 
     options.processorOptions.samplerate = sampleRate;
-    this.lcc = new LCC(options.processorOptions);
+    this.xcc = new XCC(options.processorOptions);
 
     this.port.onmessage = (event) => {
       if (event.data.type === 'close') {
         this.close();
       } else if (event.data.type === 'configure') {
         event.data.options.samplerate = sampleRate;
-        this.lcc.configure(event.data.options);
+        this.xcc.configure(event.data.options);
       }
     };
   }
@@ -111,7 +111,7 @@ registerProcessor('crosstalk-worklet', class CrosstalkWorklet extends AudioWorkl
     if (this._closed) {
       return false;
     }
-    return this.lcc.lcc(inputs[0][0], inputs[0][1], outputs[0][0], outputs[0][1]);
+    return this.xcc.process(inputs[0][0], inputs[0][1], outputs[0][0], outputs[0][1]);
   }
 
   close() {
