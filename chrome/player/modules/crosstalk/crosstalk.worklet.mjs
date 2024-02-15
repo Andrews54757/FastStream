@@ -107,6 +107,7 @@ class LCC {
     const prevOutput = this.previousOutput.buffer;
     let prevIndex = this.previousOutput.index;
     const centerconstant = this.centergain * this.inputgain / 2.0;
+    const delaymodinv = 1.0 - this.delaymod;
     for (let i = 0; i < len; i++) {
       const in1 = input1[i] * this.inputgain;
       const in2 = input2[i] * this.inputgain;
@@ -117,8 +118,15 @@ class LCC {
       const diff1 = in1 - in1filtered;
       const diff2 = in2 - in2filtered;
 
-      const out1 = in1filtered - this.decaygain * prevOutput[prevIndex + 1];
-      const out2 = in2filtered - this.decaygain * prevOutput[prevIndex];
+      let prevNext = prevIndex + 2;
+      if (prevNext >= bufflen) {
+        prevNext = 0;
+      }
+
+      const interp1 = prevOutput[prevIndex] * delaymodinv + prevOutput[prevNext] * this.delaymod;
+      const interp2 = prevOutput[prevIndex + 1] * delaymodinv + prevOutput[prevNext + 1] * this.delaymod;
+      const out1 = in1filtered - this.decaygain * interp2;
+      const out2 = in2filtered - this.decaygain * interp1;
 
       prevOutput[prevIndex] = out1;
       prevOutput[prevIndex + 1] = out2;
@@ -127,10 +135,7 @@ class LCC {
       output1[i] = this.endgain * (out1 + center + diff1);
       output2[i] = this.endgain * (out2 + center + diff2);
 
-      prevIndex += 2;
-      if (prevIndex === bufflen) {
-        prevIndex = 0;
-      }
+      prevIndex = prevNext;
     }
     this.previousOutput.index = prevIndex;
     return true;
