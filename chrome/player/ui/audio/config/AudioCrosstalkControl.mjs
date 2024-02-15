@@ -1,15 +1,15 @@
 export class AudioCrosstalkControl {
-  constructor(enabled, decaygain, centergain, microdelay, highpass, lowpass) {
+  constructor(enabled, decaygain, centergain, microdelay, lowbypass, highbypass) {
     this.enabled = !!enabled;
     this.decaygain = parseFloat(decaygain);
     this.centergain = parseFloat(centergain);
     this.microdelay = parseFloat(microdelay);
-    this.highpass = parseFloat(highpass);
-    this.lowpass = parseFloat(lowpass);
+    this.lowbypass = parseFloat(lowbypass);
+    this.highbypass = parseFloat(highbypass);
   }
 
   static fromObj(obj) {
-    return new AudioCrosstalkControl(obj.enabled, obj.decaygain, obj.centergain, obj.microdelay, obj.highpass, obj.lowpass);
+    return new AudioCrosstalkControl(obj.enabled, obj.decaygain, obj.centergain, obj.microdelay, obj.lowbypass, obj.highbypass);
   }
 
   toObj() {
@@ -18,8 +18,8 @@ export class AudioCrosstalkControl {
       decaygain: this.decaygain,
       centergain: this.centergain,
       microdelay: this.microdelay,
-      highpass: this.highpass,
-      lowpass: this.lowpass,
+      lowbypass: this.lowbypass,
+      highbypass: this.highbypass,
     };
   }
 }

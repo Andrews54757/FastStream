@@ -55,8 +55,8 @@ export class AudioCrosstalk {
       decaygain: AudioUtils.dbToGain(this.crosstalkConfig.decaygain),
       centergain: AudioUtils.dbToGain(this.crosstalkConfig.centergain),
       microdelay: this.crosstalkConfig.microdelay,
-      highpass: this.crosstalkConfig.highpass,
-      lowpass: this.crosstalkConfig.lowpass,
+      lowbypass: this.crosstalkConfig.lowbypass,
+      highbypass: this.crosstalkConfig.highbypass,
     };
   }
 
@@ -147,33 +147,33 @@ export class AudioCrosstalk {
     }, 'µs');
 
 
-    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
-      if (this.crosstalkConfig && val !== this.crosstalkConfig.highpass) {
-        this.crosstalkConfig.highpass = val;
+    this.crosstalkKnobs.lowbypass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowbypass'), 20, 2000, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.lowbypass) {
+        this.crosstalkConfig.lowbypass = val;
         this.updateCrosstalk();
       }
     }, 'Hz');
 
 
-    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 2000, 20000, (val) => {
-      if (this.crosstalkConfig && val !== this.crosstalkConfig.lowpass) {
-        this.crosstalkConfig.lowpass = val;
+    this.crosstalkKnobs.highbypass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highbypass'), 2000, 20000, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.highbypass) {
+        this.crosstalkConfig.highbypass = val;
         this.updateCrosstalk();
       }
     }, 'Hz');
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowpass.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowbypass.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highbypass.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
     if (this.crosstalkConfig) {
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
       this.crosstalkKnobs.microdelay.knob.val(this.crosstalkConfig.microdelay);
-      this.crosstalkKnobs.highpass.knob.val(this.crosstalkConfig.highpass);
-      this.crosstalkKnobs.lowpass.knob.val(this.crosstalkConfig.lowpass);
+      this.crosstalkKnobs.lowbypass.knob.val(this.crosstalkConfig.lowbypass);
+      this.crosstalkKnobs.highbypass.knob.val(this.crosstalkConfig.highbypass);
     }
   }
 

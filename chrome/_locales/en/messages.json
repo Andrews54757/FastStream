@@ -594,11 +594,11 @@
     "audiocrosstalk_microdelay": {
         "message": "Delta T"
     },
-    "audiocrosstalk_highpass": {
-        "message": "Highpass"
+    "audiocrosstalk_lowbypass": {
+        "message": "Low Bypass"
     },
-    "audiocrosstalk_lowpass": {
-        "message": "Lowpass"
+    "audiocrosstalk_highbypass": {
+        "message": "High Bypass"
     },
     "audiocompressor_title": {
         "message": "Audio Compressor"

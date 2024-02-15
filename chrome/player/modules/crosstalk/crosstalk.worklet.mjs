@@ -27,8 +27,8 @@ class XCC {
     centergain,
     microdelay,
     samplerate,
-    highpass,
-    lowpass,
+    lowbypass,
+    highbypass,
   }) {
     const delay = microdelay * 1e-6 * samplerate;
     this.bufflen = Math.ceil(delay) * 2;
@@ -41,8 +41,8 @@ class XCC {
     this.decaygain = decaygain;
     this.centergain = centergain;
 
-    this.bandpass1 = new BandpassFilter(highpass, lowpass, samplerate);
-    this.bandpass2 = new BandpassFilter(highpass, lowpass, samplerate);
+    this.bandpass1 = new BandpassFilter(lowbypass, highbypass, samplerate);
+    this.bandpass2 = new BandpassFilter(lowbypass, highbypass, samplerate);
   }
 
   process(input1, input2, output1, output2) {
