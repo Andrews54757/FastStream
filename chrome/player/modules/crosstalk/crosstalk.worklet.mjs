@@ -97,8 +97,6 @@ class LCC {
 
     this.bandpass1 = new BandpassFilter(highpass, samplerate);
     this.bandpass2 = new BandpassFilter(lowpass, samplerate);
-
-    console.debug('LCC configured', this);
   }
 
   lcc(input1, input2, output1, output2) {
