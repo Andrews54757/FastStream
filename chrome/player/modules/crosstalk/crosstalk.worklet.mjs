@@ -1,12 +1,13 @@
 class BandpassFilter {
-  constructor(frequency, samplerate) {
-    const dt = 1.0 / samplerate;
-    const rc = 1.0 / (2 * Math.PI * frequency);
+  constructor(highpassCF, lowpassCF, samplerate) {
+    const DT = 1.0 / samplerate;
+    const RCH = 1.0 / (2 * Math.PI * highpassCF);
+    const RCL = 1.0 / (2 * Math.PI * lowpassCF);
     this.lastXH = 0;
     this.lastYH = 0;
     this.lastYL = 0;
-    this.tch = rc / (rc + dt);
-    this.tcl = dt / (rc + dt);
+    this.tch = RCH / (RCH + DT);
+    this.tcl = RCL / (RCL + DT);
   }
   process(nextX) {
     this.lastYH = this.tch * (this.lastYH + nextX - this.lastXH);
@@ -44,8 +45,8 @@ class XCC {
     this.endgain = endgain;
     this.centergain = centergain;
 
-    this.bandpass1 = new BandpassFilter(highpass, samplerate);
-    this.bandpass2 = new BandpassFilter(lowpass, samplerate);
+    this.bandpass1 = new BandpassFilter(highpass, lowpass, samplerate);
+    this.bandpass2 = new BandpassFilter(highpass, lowpass, samplerate);
   }
 
   process(input1, input2, output1, output2) {
