@@ -284,7 +284,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
-    this.crosstalkKnobs.microdelay = this.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 500, (val) => {
+    this.crosstalkKnobs.microdelay = this.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 100, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
         this.crosstalkConfig.microdelay = val;
         this.updateCrosstalk();
