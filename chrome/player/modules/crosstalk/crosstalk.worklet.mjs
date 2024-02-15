@@ -1,20 +1,3 @@
-class FloatRingBuffer {
-  constructor(size) {
-    this.size = size;
-    this.buffer = new Float32Array(size);
-    this.index = 0;
-  }
-
-  resize(newSize) {
-    if (newSize === this.size) {
-      return;
-    }
-    this.buffer = new Float32Array(newSize);
-    this.size = newSize;
-    this.index = 0;
-  }
-}
-
 class BandpassFilter {
   constructor(frequency, samplerate) {
     const dt = 1.0 / samplerate;
@@ -33,10 +16,8 @@ class BandpassFilter {
   }
 }
 
-
 class LCC {
   constructor(options) {
-    this.previousOutput = new FloatRingBuffer(0);
     this.configure(options);
   }
 
@@ -53,7 +34,10 @@ class LCC {
     const delay = microdelay * 1e-6 * samplerate;
     this.bufflen = Math.ceil(delay) * 2;
     this.delaymod = this.bufflen / 2 - delay;
-    this.previousOutput.resize(this.bufflen);
+    if (!this.previousOutputBuffer || this.previousOutputBuffer.length !== this.bufflen) {
+      this.previousOutputBuffer = new Float32Array(this.bufflen);
+    }
+    this.previousOutputIndex = 0;
 
     this.inputgain = inputgain;
     this.decaygain = decaygain;
@@ -67,8 +51,8 @@ class LCC {
   lcc(input1, input2, output1, output2) {
     const len = input1.length;
     const bufflen = this.bufflen;
-    const prevOutput = this.previousOutput.buffer;
-    let prevIndex = this.previousOutput.index;
+    const prevOutput = this.previousOutputBuffer;
+    let prevIndex = this.previousOutputIndex;
     const centerconstant = this.centergain * this.inputgain / 2.0;
     const delaymodinv = 1.0 - this.delaymod;
     for (let i = 0; i < len; i++) {
@@ -100,7 +84,7 @@ class LCC {
 
       prevIndex = prevNext;
     }
-    this.previousOutput.index = prevIndex;
+    this.previousOutputIndex = prevIndex;
     return true;
   }
 }
