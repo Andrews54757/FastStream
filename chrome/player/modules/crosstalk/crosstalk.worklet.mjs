@@ -50,25 +50,21 @@ class FloatRingBuffer {
   }
 }
 
-class Filter {
+class BandpassFilter {
   constructor(frequency, samplerate) {
     const dt = 1.0 / samplerate;
     const rc = 1.0 / (2 * Math.PI * frequency);
-    this.lastX = 0;
-    this.lastY = 0;
+    this.lastXH = 0;
+    this.lastYH = 0;
+    this.lastYL = 0;
     this.tch = rc / (rc + dt);
     this.tcl = dt / (rc + dt);
   }
-  highpass(nextX) {
-    const newY = this.tch * (this.lastY + nextX - this.lastX);
-    this.lastX = nextX;
-    this.lastY = newY;
-    return newY;
-  }
-  lowpass(nextX) {
-    const newY = this.tcl * nextX + (1 - this.tcl) * this.lastY;
-    this.lastY = newY;
-    return newY;
+  process(nextX) {
+    this.lastYH = this.tch * (this.lastYH + nextX - this.lastXH);
+    this.lastXH = nextX;
+    this.lastYL = this.tcl * this.lastYH + (1 - this.tcl) * this.lastYL;
+    return this.lastYL;
   }
 }
 
@@ -99,11 +95,8 @@ class LCC {
     this.endgain = endgain;
     this.centergain = centergain;
 
-    this.highpass1 = new Filter(highpass, samplerate);
-    this.lowpass1 = new Filter(lowpass, samplerate);
-
-    this.highpass2 = new Filter(highpass, samplerate);
-    this.lowpass2 = new Filter(lowpass, samplerate);
+    this.bandpass1 = new BandpassFilter(highpass, samplerate);
+    this.bandpass2 = new BandpassFilter(lowpass, samplerate);
 
     console.debug('LCC configured', this);
   }
@@ -112,19 +105,17 @@ class LCC {
     const len = input1.length;
     const bufflen = this.bufflen;
     const prevOutput = this.previousOutput.buffer;
-    const index = this.previousOutput.index;
+    let prevIndex = this.previousOutput.index;
     const centerconstant = this.centergain * this.inputgain / 2.0;
     for (let i = 0; i < len; i++) {
       const in1 = input1[i] * this.inputgain;
       const in2 = input2[i] * this.inputgain;
 
-      const in1filtered = this.lowpass1.lowpass(this.highpass1.highpass(in1));
-      const in2filtered = this.lowpass2.lowpass(this.highpass2.highpass(in2));
+      const in1filtered = this.bandpass1.process(in1);
+      const in2filtered = this.bandpass2.process(in2);
 
       const diff1 = in1 - in1filtered;
       const diff2 = in2 - in2filtered;
-
-      const prevIndex = (index + i * 2) % bufflen;
 
       const out1 = in1filtered - this.decaygain * prevOutput[prevIndex + 1];
       const out2 = in2filtered - this.decaygain * prevOutput[prevIndex];
@@ -135,8 +126,13 @@ class LCC {
       const center = (in1filtered + in2filtered) * centerconstant;
       output1[i] = this.endgain * (out1 + center + diff1);
       output2[i] = this.endgain * (out2 + center + diff2);
+
+      prevIndex += 2;
+      if (prevIndex === bufflen) {
+        prevIndex = 0;
+      }
     }
-    this.previousOutput.index = (index + len * 2) % bufflen;
+    this.previousOutput.index = prevIndex;
     return true;
   }
 }
