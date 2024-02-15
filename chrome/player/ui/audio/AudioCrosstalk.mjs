@@ -190,7 +190,7 @@ export class AudioCrosstalk {
     }, 'µs');
 
 
-    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 20000, (val) => {
+    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.highpass) {
         this.crosstalkConfig.highpass = val;
         this.updateCrosstalk();
@@ -198,7 +198,7 @@ export class AudioCrosstalk {
     }, 'Hz');
 
 
-    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 20, 20000, (val) => {
+    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 2000, 20000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.lowpass) {
         this.crosstalkConfig.lowpass = val;
         this.updateCrosstalk();
