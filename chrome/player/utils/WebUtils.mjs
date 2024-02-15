@@ -1,3 +1,6 @@
+import {Knob} from '../modules/knob.mjs';
+import {Utils} from './Utils.mjs';
+
 export class WebUtils {
   static create(type, style, cl) {
     const el = document.createElement(type || 'div');
@@ -18,6 +21,136 @@ export class WebUtils {
 
   static getOffsetLeft(elem) {
     return elem.getBoundingClientRect().left;
+  }
+
+  static createKnob(name, minValue, maxValue, callback, units = '') {
+    const knobContainer = this.create('div', null, 'knob_container');
+    const knobName = this.create('div', null, 'knob_name');
+    knobName.textContent = name;
+    knobContainer.appendChild(knobName);
+
+    const knobMinValueTick = this.create('div', null, 'knob_min_value_tick');
+    knobContainer.appendChild(knobMinValueTick);
+
+    const knobMinValueLabel = this.create('div', null, 'knob_min_value_label');
+    knobMinValueLabel.textContent = minValue;
+    knobContainer.appendChild(knobMinValueLabel);
+
+    const knobMaxValueTick = this.create('div', null, 'knob_max_value_tick');
+    knobContainer.appendChild(knobMaxValueTick);
+
+    const knobMaxValueLabel = this.create('div', null, 'knob_max_value_label');
+    knobMaxValueLabel.textContent = maxValue;
+    knobContainer.appendChild(knobMaxValueLabel);
+
+    const knobKnobContainer = this.create('div', null, 'knob_knob_container');
+    knobContainer.appendChild(knobKnobContainer);
+
+    const knobKnob = this.create('div', null, 'knob_knob');
+    const knobBump = this.create('div', null, 'knob_bump');
+    knobKnob.appendChild(knobBump);
+    knobKnobContainer.appendChild(knobKnob);
+
+    const knobValue = this.create('div', null, 'knob_value');
+    knobContainer.appendChild(knobValue);
+    knobValue.contentEditable = true;
+
+    const decimals = Utils.clamp(3 - Math.ceil(Math.log10(maxValue - minValue)), 0, 3);
+
+    let shouldCall = false;
+    const knob = new Knob(knobKnob, (knob, indicator)=>{
+      knobKnob.style.transform = `rotate(-${indicator.angle}deg)`;
+      // dont update the value if the user is editing it
+      if (knobValue !== document.activeElement) {
+        knobValue.textContent = knob.val().toFixed(decimals) + ' ' + units;
+      }
+
+      if (shouldCall && callback) {
+        callback(knob.val());
+      }
+    });
+
+    knobValue.addEventListener('input', ()=>{
+      const val = parseFloat(knobValue.textContent.replace(units, ''));
+      if (isNaN(val)) {
+        return;
+      }
+      knob.val(val);
+    });
+
+    knobValue.addEventListener('keydown', (e)=>{
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        knobValue.blur();
+      }
+      e.stopPropagation();
+    });
+
+    knobValue.addEventListener('blur', (e)=>{
+      const val = parseFloat(knobValue.textContent.replace(units, ''));
+      knob.val(val);
+    });
+
+    knob.options.indicatorAutoRotate = true;
+    knob.options.angleEnd = 315;
+    knob.options.angleStart = 45;
+    knob.options.valueMin = minValue;
+    knob.options.valueMax = maxValue;
+    knob.val(minValue);
+
+    setTimeout(()=>{
+      shouldCall = true;
+    }, 1);
+
+
+    const container = knobKnobContainer;
+    const rect = container.getBoundingClientRect();
+    knob.setPosition(rect.left, rect.top);
+    knob.setDimensions(50, 50);
+
+    const mouseMove = (e) => {
+      knob.doTouchMove([{
+        pageX: e.pageX,
+        pageY: e.pageY,
+      }], e.timeStamp);
+      e.preventDefault();
+    };
+
+    const mouseUp = (e) => {
+      knob.doTouchEnd(e.timeStamp);
+      document.removeEventListener('mousemove', mouseMove);
+      document.removeEventListener('mouseup', mouseUp);
+    };
+
+    container.addEventListener('mousedown', (e) =>{
+      const rect = container.getBoundingClientRect();
+      knob.setPosition(rect.left, rect.top);
+
+      knob.doTouchStart([{
+        pageX: e.pageX,
+        pageY: e.pageY,
+      }], e.timeStamp);
+
+      document.addEventListener('mousemove', mouseMove);
+      document.addEventListener('mouseup', mouseUp);
+    });
+
+    // Handle scroll
+    container.addEventListener('wheel', function(e) {
+      // reset the position in case knob moved
+      knob.setPosition(container.offsetLeft, container.offsetTop);
+
+      const delta = -e.wheelDelta;
+      knob.doMouseScroll(delta, e.timeStamp, e.pageX, e.pageY);
+
+      e.preventDefault();
+    });
+
+
+    return {
+      container: knobContainer,
+      knob: knob,
+    };
   }
 
   static createPagesBar(page, totalPages, callback) {

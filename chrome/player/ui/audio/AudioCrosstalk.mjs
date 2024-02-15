@@ -1,8 +1,6 @@
 import {Localize} from '../../modules/Localize.mjs';
 import {Crosstalk} from '../../modules/crosstalk/Crosstalk.mjs';
-import {Knob} from '../../modules/knob.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
-import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 
 export class AudioCrosstalk {
@@ -138,134 +136,6 @@ export class AudioCrosstalk {
 
     this.updateCrosstalk();
   }
-  createKnob(name, minValue, maxValue, callback, units = '') {
-    const knobContainer = WebUtils.create('div', null, 'knob_container');
-    const knobName = WebUtils.create('div', null, 'knob_name');
-    knobName.textContent = name;
-    knobContainer.appendChild(knobName);
-
-    const knobMinValueTick = WebUtils.create('div', null, 'knob_min_value_tick');
-    knobContainer.appendChild(knobMinValueTick);
-
-    const knobMinValueLabel = WebUtils.create('div', null, 'knob_min_value_label');
-    knobMinValueLabel.textContent = minValue;
-    knobContainer.appendChild(knobMinValueLabel);
-
-    const knobMaxValueTick = WebUtils.create('div', null, 'knob_max_value_tick');
-    knobContainer.appendChild(knobMaxValueTick);
-
-    const knobMaxValueLabel = WebUtils.create('div', null, 'knob_max_value_label');
-    knobMaxValueLabel.textContent = maxValue;
-    knobContainer.appendChild(knobMaxValueLabel);
-
-    const knobKnobContainer = WebUtils.create('div', null, 'knob_knob_container');
-    knobContainer.appendChild(knobKnobContainer);
-
-    const knobKnob = WebUtils.create('div', null, 'knob_knob');
-    const knobBump = WebUtils.create('div', null, 'knob_bump');
-    knobKnob.appendChild(knobBump);
-    knobKnobContainer.appendChild(knobKnob);
-
-    const knobValue = WebUtils.create('div', null, 'knob_value');
-    knobContainer.appendChild(knobValue);
-    knobValue.contentEditable = true;
-
-    const decimals = Utils.clamp(3 - Math.ceil(Math.log10(maxValue - minValue)), 0, 3);
-
-    let shouldCall = false;
-    const knob = new Knob(knobKnob, (knob, indicator) => {
-      knobKnob.style.transform = `rotate(-${indicator.angle}deg)`;
-      // dont update the value if the user is editing it
-      if (knobValue !== document.activeElement) {
-        knobValue.textContent = knob.val().toFixed(decimals) + ' ' + units;
-      }
-
-      if (shouldCall && callback) {
-        callback(knob.val());
-      }
-    });
-
-    knobValue.addEventListener('input', () => {
-      const val = parseFloat(knobValue.textContent.replace(units, ''));
-      if (isNaN(val)) {
-        return;
-      }
-      knob.val(val);
-    });
-
-    knobValue.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        knobValue.blur();
-      }
-    });
-
-    knobValue.addEventListener('blur', (e) => {
-      const val = parseFloat(knobValue.textContent.replace(units, ''));
-      knob.val(val);
-    });
-
-    knob.options.indicatorAutoRotate = true;
-    knob.options.angleEnd = 315;
-    knob.options.angleStart = 45;
-    knob.options.valueMin = minValue;
-    knob.options.valueMax = maxValue;
-    knob.val(minValue);
-
-    setTimeout(() => {
-      shouldCall = true;
-    }, 1);
-
-
-    const container = knobKnobContainer;
-    const rect = container.getBoundingClientRect();
-    knob.setPosition(rect.left, rect.top);
-    knob.setDimensions(50, 50);
-
-    const mouseMove = (e) => {
-      knob.doTouchMove([{
-        pageX: e.pageX,
-        pageY: e.pageY,
-      }], e.timeStamp);
-      e.preventDefault();
-    };
-
-    const mouseUp = (e) => {
-      knob.doTouchEnd(e.timeStamp);
-      document.removeEventListener('mousemove', mouseMove);
-      document.removeEventListener('mouseup', mouseUp);
-    };
-
-    container.addEventListener('mousedown', (e) => {
-      const rect = container.getBoundingClientRect();
-      knob.setPosition(rect.left, rect.top);
-
-      knob.doTouchStart([{
-        pageX: e.pageX,
-        pageY: e.pageY,
-      }], e.timeStamp);
-
-      document.addEventListener('mousemove', mouseMove);
-      document.addEventListener('mouseup', mouseUp);
-    });
-
-    // Handle scroll
-    container.addEventListener('wheel', function(e) {
-      // reset the position in case knob moved
-      knob.setPosition(container.offsetLeft, container.offsetTop);
-
-      const delta = -e.wheelDelta;
-      knob.doMouseScroll(delta, e.timeStamp, e.pageX, e.pageY);
-
-      e.preventDefault();
-    });
-
-
-    return {
-      container: knobContainer,
-      knob: knob,
-    };
-  }
 
   setupCrosstalkControls() {
     this.ui.crosstalkControls.replaceChildren();
@@ -282,7 +152,7 @@ export class AudioCrosstalk {
 
     this.crosstalkKnobs = {};
 
-    this.crosstalkKnobs.inputgain = this.createKnob(Localize.getMessage('audiocrosstalk_inputgain'), -10, 10, (val) => {
+    this.crosstalkKnobs.inputgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_inputgain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.inputgain) {
         this.crosstalkConfig.inputgain = val;
         this.updateCrosstalk();
@@ -291,7 +161,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.inputgain.container);
 
-    this.crosstalkKnobs.decaygain = this.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
+    this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
         this.crosstalkConfig.decaygain = val;
         this.updateCrosstalk();
@@ -300,7 +170,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
 
-    this.crosstalkKnobs.endgain = this.createKnob(Localize.getMessage('audiocrosstalk_endgain'), -10, 10, (val) => {
+    this.crosstalkKnobs.endgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_endgain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.endgain) {
         this.crosstalkConfig.endgain = val;
         this.updateCrosstalk();
@@ -309,7 +179,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.endgain.container);
 
-    this.crosstalkKnobs.centergain = this.createKnob(Localize.getMessage('audiocrosstalk_centergain'), -10, 10, (val) => {
+    this.crosstalkKnobs.centergain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_centergain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.centergain) {
         this.crosstalkConfig.centergain = val;
         this.updateCrosstalk();
@@ -318,7 +188,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
-    this.crosstalkKnobs.microdelay = this.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 100, (val) => {
+    this.crosstalkKnobs.microdelay = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 100, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
         this.crosstalkConfig.microdelay = val;
         this.updateCrosstalk();
@@ -327,7 +197,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
 
-    this.crosstalkKnobs.highpass = this.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
+    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.highpass) {
         this.crosstalkConfig.highpass = val;
         this.updateCrosstalk();
@@ -336,7 +206,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
 
-    this.crosstalkKnobs.lowpass = this.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 3000, 8000, (val) => {
+    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 3000, 8000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.lowpass) {
         this.crosstalkConfig.lowpass = val;
         this.updateCrosstalk();
