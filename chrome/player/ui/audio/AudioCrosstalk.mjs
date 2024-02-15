@@ -187,7 +187,7 @@ export class AudioCrosstalk {
         this.crosstalkConfig.microdelay = val;
         this.updateCrosstalk();
       }
-    }, 'us');
+    }, 'µs');
 
 
     this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 20000, (val) => {
