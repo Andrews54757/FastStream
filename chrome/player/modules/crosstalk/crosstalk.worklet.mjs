@@ -37,8 +37,8 @@ class XCC {
     this.delaymod = this.bufflen / 2 - delay;
     if (!this.previousOutputBuffer || this.previousOutputBuffer.length !== this.bufflen) {
       this.previousOutputBuffer = new Float32Array(this.bufflen);
+      this.previousOutputIndex = 0;
     }
-    this.previousOutputIndex = 0;
 
     this.inputgain = inputgain;
     this.decaygain = decaygain;
