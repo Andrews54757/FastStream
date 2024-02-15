@@ -1973,7 +1973,7 @@ body {
     height: 300px;
     background-color: black;
     border-radius: 3px;
-    min-width: 560px;
+    min-width: 300px;
 }
 
 .equalizer canvas {
@@ -2291,6 +2291,22 @@ body {
     border-radius: 3px;
 }
 
+@media (max-width: 850px) {
+    .compressor .compressor_graph {
+        display: none;
+    }
+
+    .compressor,
+    .crosstalk {
+        min-width: 300px;
+        width: 100%;
+    }
+
+    .compressor_controls {
+        margin-left: 15px;;
+    }
+}
+
 .compressor_title {
     top: 5px;
     left: 0px;
@@ -2309,7 +2325,6 @@ body {
     bottom: 0px;
     left: 0px;
     right: 0px;
-    gap: 10px;
 }
 
 
@@ -2367,11 +2382,9 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
     margin-right: 15px;
-}
-
-.crosstalk_controls {
     margin-left: 15px;
 }
+
 
 .compressor_x_axis_tick {
     position: absolute;
