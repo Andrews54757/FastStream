@@ -70,6 +70,20 @@ export class AudioCrosstalk {
 
     if (crosstalk.enabled) {
       if (!this.crosstalkNode) {
+        this.highpass = this.audioContext.createBiquadFilter();
+        this.highpass.type = 'highpass';
+
+        this.lowpass = this.audioContext.createBiquadFilter();
+        this.lowpass.type = 'lowpass';
+
+        this.highpass.connect(this.lowpass); // connect the highpass to the lowpass to make bandpass
+
+        this.highpass_inv = this.audioContext.createBiquadFilter();
+        this.highpass_inv.type = 'highpass';
+
+        this.lowpass_inv = this.audioContext.createBiquadFilter();
+        this.lowpass_inv.type = 'lowpass';
+
         this.sourceNode.disconnect(this.destinationNode);
         this.crosstalkNode = new Crosstalk.CrosstalkNode(this.audioContext, this.getCrosstalkConfigObj());
 
@@ -81,18 +95,38 @@ export class AudioCrosstalk {
         }
         this.settingUpCrosstalk = false;
 
-        this.sourceNode.connect(this.crosstalkNode.getNode());
+        this.sourceNode.connect(this.highpass);
+        this.sourceNode.connect(this.highpass_inv);
+        this.sourceNode.connect(this.lowpass_inv);
+        this.lowpass.connect(this.crosstalkNode.getNode());
         this.crosstalkNode.getNode().connect(this.destinationNode);
+        this.highpass_inv.connect(this.destinationNode);
+        this.lowpass_inv.connect(this.destinationNode);
       } else {
         this.crosstalkNode.configure(this.getCrosstalkConfigObj());
       }
+
+      this.highpass.frequency.value = crosstalk.highpass;
+      this.lowpass.frequency.value = crosstalk.lowpass;
+      this.highpass_inv.frequency.value = crosstalk.lowpass;
+      this.lowpass_inv.frequency.value = crosstalk.highpass;
     } else {
       if (this.crosstalkNode) {
-        this.sourceNode.disconnect(this.crosstalkNode.getNode());
+        this.sourceNode.disconnect(this.highpass);
+        this.sourceNode.disconnect(this.highpass_inv);
+        this.sourceNode.disconnect(this.lowpass_inv);
+        this.highpass.disconnect(this.lowpass);
+        this.lowpass.disconnect(this.crosstalkNode.getNode());
         this.crosstalkNode.getNode().disconnect(this.destinationNode);
+        this.highpass_inv.disconnect(this.destinationNode);
+        this.lowpass_inv.disconnect(this.destinationNode);
         this.sourceNode.connect(this.destinationNode);
         this.crosstalkNode.destroy();
         this.crosstalkNode = null;
+        this.highpass = null;
+        this.lowpass = null;
+        this.highpass_inv = null;
+        this.lowpass_inv = null;
       }
     }
   }
@@ -139,7 +173,7 @@ export class AudioCrosstalk {
     const decimals = Utils.clamp(3 - Math.ceil(Math.log10(maxValue - minValue)), 0, 3);
 
     let shouldCall = false;
-    const knob = new Knob(knobKnob, (knob, indicator)=>{
+    const knob = new Knob(knobKnob, (knob, indicator) => {
       knobKnob.style.transform = `rotate(-${indicator.angle}deg)`;
       // dont update the value if the user is editing it
       if (knobValue !== document.activeElement) {
@@ -151,7 +185,7 @@ export class AudioCrosstalk {
       }
     });
 
-    knobValue.addEventListener('input', ()=>{
+    knobValue.addEventListener('input', () => {
       const val = parseFloat(knobValue.textContent.replace(units, ''));
       if (isNaN(val)) {
         return;
@@ -159,14 +193,14 @@ export class AudioCrosstalk {
       knob.val(val);
     });
 
-    knobValue.addEventListener('keydown', (e)=>{
+    knobValue.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
         knobValue.blur();
       }
     });
 
-    knobValue.addEventListener('blur', (e)=>{
+    knobValue.addEventListener('blur', (e) => {
       const val = parseFloat(knobValue.textContent.replace(units, ''));
       knob.val(val);
     });
@@ -178,7 +212,7 @@ export class AudioCrosstalk {
     knob.options.valueMax = maxValue;
     knob.val(minValue);
 
-    setTimeout(()=>{
+    setTimeout(() => {
       shouldCall = true;
     }, 1);
 
@@ -202,7 +236,7 @@ export class AudioCrosstalk {
       document.removeEventListener('mouseup', mouseUp);
     };
 
-    container.addEventListener('mousedown', (e) =>{
+    container.addEventListener('mousedown', (e) => {
       const rect = container.getBoundingClientRect();
       knob.setPosition(rect.left, rect.top);
 
@@ -257,7 +291,7 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.inputgain.container);
 
-    this.crosstalkKnobs.decaygain = this.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, 0, (val) => {
+    this.crosstalkKnobs.decaygain = this.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
         this.crosstalkConfig.decaygain = val;
         this.updateCrosstalk();
@@ -293,12 +327,32 @@ export class AudioCrosstalk {
 
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
 
+    this.crosstalkKnobs.highpass = this.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.highpass) {
+        this.crosstalkConfig.highpass = val;
+        this.updateCrosstalk();
+      }
+    }, 'Hz');
+
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
+
+    this.crosstalkKnobs.lowpass = this.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 3000, 8000, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.lowpass) {
+        this.crosstalkConfig.lowpass = val;
+        this.updateCrosstalk();
+      }
+    }, 'Hz');
+
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowpass.container);
+
     if (this.crosstalkConfig) {
       this.crosstalkKnobs.inputgain.knob.val(this.crosstalkConfig.inputgain);
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
       this.crosstalkKnobs.endgain.knob.val(this.crosstalkConfig.endgain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
       this.crosstalkKnobs.microdelay.knob.val(this.crosstalkConfig.microdelay);
+      this.crosstalkKnobs.highpass.knob.val(this.crosstalkConfig.highpass);
+      this.crosstalkKnobs.lowpass.knob.val(this.crosstalkConfig.lowpass);
     }
   }
 

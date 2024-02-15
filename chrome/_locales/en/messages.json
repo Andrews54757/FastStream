@@ -600,6 +600,12 @@
     "audiocrosstalk_microdelay": {
         "message": "Delta T"
     },
+    "audiocrosstalk_highpass": {
+        "message": "Highpass"
+    },
+    "audiocrosstalk_lowpass": {
+        "message": "Lowpass"
+    },
     "audiocompressor_title": {
         "message": "Audio Compressor"
     },
