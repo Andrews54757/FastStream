@@ -585,14 +585,8 @@
     "audiocrosstalk_disabled": {
         "message": "クロストーク補正無効"
     },
-    "audiocrosstalk_inputgain": {
-        "message": "入力ゲイン"
-    },
     "audiocrosstalk_decaygain": {
         "message": "減衰"
-    },
-    "audiocrosstalk_endgain": {
-        "message": "エンドゲイン"
     },
     "audiocrosstalk_centergain": {
         "message": "センターゲイン"

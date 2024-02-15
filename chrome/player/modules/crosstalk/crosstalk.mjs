@@ -12,9 +12,7 @@ const assetPath = (file) => {
 };
 
 const defaultProcessorOptions = {
-  inputgain: 0.70,
   decaygain: 0.74989420933,
-  endgain: 1.4285,
   centergain: 0.70,
   microdelay: 32,
 };

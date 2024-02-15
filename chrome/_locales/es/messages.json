@@ -584,14 +584,8 @@
     "audiocrosstalk_disabled": {
         "message": "Corrección de Crosstalk Deshabilitada"
     },
-    "audiocrosstalk_inputgain": {
-        "message": "Ganancia de Entrada"
-    },
     "audiocrosstalk_decaygain": {
         "message": "Decaimiento"
-    },
-    "audiocrosstalk_endgain": {
-        "message": "Ganancia Final"
     },
     "audiocrosstalk_centergain": {
         "message": "Ganancia Central"

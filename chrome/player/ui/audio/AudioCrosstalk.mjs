@@ -52,9 +52,7 @@ export class AudioCrosstalk {
 
   getCrosstalkConfigObj() {
     return {
-      inputgain: AudioUtils.dbToGain(this.crosstalkConfig.inputgain),
       decaygain: AudioUtils.dbToGain(this.crosstalkConfig.decaygain),
-      endgain: AudioUtils.dbToGain(this.crosstalkConfig.endgain),
       centergain: AudioUtils.dbToGain(this.crosstalkConfig.centergain),
       microdelay: this.crosstalkConfig.microdelay,
       highpass: this.crosstalkConfig.highpass,
@@ -126,27 +124,12 @@ export class AudioCrosstalk {
 
     this.crosstalkKnobs = {};
 
-    this.crosstalkKnobs.inputgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_inputgain'), -10, 10, (val) => {
-      if (this.crosstalkConfig && val !== this.crosstalkConfig.inputgain) {
-        this.crosstalkConfig.inputgain = val;
-        this.updateCrosstalk();
-      }
-    }, 'dB');
-
     this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
         this.crosstalkConfig.decaygain = val;
         this.updateCrosstalk();
       }
     }, 'dB');
-
-    this.crosstalkKnobs.endgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_endgain'), -10, 10, (val) => {
-      if (this.crosstalkConfig && val !== this.crosstalkConfig.endgain) {
-        this.crosstalkConfig.endgain = val;
-        this.updateCrosstalk();
-      }
-    }, 'dB');
-
 
     this.crosstalkKnobs.centergain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_centergain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.centergain) {
@@ -156,7 +139,7 @@ export class AudioCrosstalk {
     }, 'dB');
 
 
-    this.crosstalkKnobs.microdelay = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 100, (val) => {
+    this.crosstalkKnobs.microdelay = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 120, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
         this.crosstalkConfig.microdelay = val;
         this.updateCrosstalk();
@@ -183,14 +166,10 @@ export class AudioCrosstalk {
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowpass.container);
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.inputgain.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.endgain.container);
 
     if (this.crosstalkConfig) {
-      this.crosstalkKnobs.inputgain.knob.val(this.crosstalkConfig.inputgain);
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
-      this.crosstalkKnobs.endgain.knob.val(this.crosstalkConfig.endgain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
       this.crosstalkKnobs.microdelay.knob.val(this.crosstalkConfig.microdelay);
       this.crosstalkKnobs.highpass.knob.val(this.crosstalkConfig.highpass);

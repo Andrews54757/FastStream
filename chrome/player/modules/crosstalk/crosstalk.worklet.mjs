@@ -23,9 +23,7 @@ class XCC {
   }
 
   configure({
-    inputgain,
     decaygain,
-    endgain,
     centergain,
     microdelay,
     samplerate,
@@ -40,9 +38,7 @@ class XCC {
       this.previousOutputIndex = 0;
     }
 
-    this.inputgain = inputgain;
     this.decaygain = decaygain;
-    this.endgain = endgain;
     this.centergain = centergain;
 
     this.bandpass1 = new BandpassFilter(highpass, lowpass, samplerate);
@@ -54,11 +50,11 @@ class XCC {
     const bufflen = this.bufflen;
     const prevOutput = this.previousOutputBuffer;
     let prevIndex = this.previousOutputIndex;
-    const centerconstant = this.centergain * this.inputgain / 2.0;
+    const centerconstant = this.centergain / 2.0;
     const delaymodinv = 1.0 - this.delaymod;
     for (let i = 0; i < len; i++) {
-      const in1 = input1[i] * this.inputgain;
-      const in2 = input2[i] * this.inputgain;
+      const in1 = input1[i];
+      const in2 = input2[i];
 
       const in1filtered = this.bandpass1.process(in1);
       const in2filtered = this.bandpass2.process(in2);
@@ -80,8 +76,8 @@ class XCC {
       prevOutput[prevIndex + 1] = out2;
 
       const center = (in1filtered + in2filtered) * centerconstant;
-      output1[i] = this.endgain * (out1 + center + diff1);
-      output2[i] = this.endgain * (out2 + center + diff2);
+      output1[i] = (out1 + center + diff1);
+      output2[i] = (out2 + center + diff2);
 
       prevIndex = prevNext;
     }
