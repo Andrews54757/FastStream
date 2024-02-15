@@ -387,9 +387,7 @@ export class FastStreamClient extends EventEmitter {
 
     this.audioConfigManager.setupNodes();
 
-    this.audioGain = this.audioContext.createGain();
-    this.audioConfigManager.getOutputNode().connect(this.audioGain);
-    this.audioGain.connect(this.audioContext.destination);
+    this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
     this.updateVolume();
 
 
@@ -723,11 +721,6 @@ export class FastStreamClient extends EventEmitter {
     if (this.audioSource) {
       this.audioSource.disconnect();
       this.audioSource = null;
-    }
-
-    if (this.audioGain) {
-      this.audioGain.disconnect();
-      this.audioGain = null;
     }
 
     promises.push(this.downloadManager.reset());
@@ -1074,7 +1067,7 @@ export class FastStreamClient extends EventEmitter {
   updateVolume() {
     const value = this.persistent.volume;
     if (this.player) this.player.volume = 1;
-    if (this.audioGain) this.audioGain.gain.value = value;
+    this.audioConfigManager.updateVolume(value);
     this.interfaceController.updateVolumeBar();
   }
 

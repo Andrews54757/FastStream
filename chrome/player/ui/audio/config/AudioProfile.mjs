@@ -1,5 +1,6 @@
 import {AudioChannelControl} from './AudioChannelControl.mjs';
 import {AudioCompressionControl} from './AudioCompressionControl.mjs';
+import {AudioCrosstalkControl} from './AudioCrosstalkControl.mjs';
 import {AudioEQNode} from './AudioEQNode.mjs';
 
 export class AudioProfile {
@@ -8,6 +9,7 @@ export class AudioProfile {
     this.equalizerNodes = [];
     this.mixerChannels = [];
     this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24, 1);
+    this.crosstalk = new AudioCrosstalkControl(false, -3, -2.5, 3, -3, 32);
     this.label = `Profile ${id}`;
   }
 
@@ -23,6 +25,10 @@ export class AudioProfile {
 
     if (obj.compressor) {
       profile.compressor = AudioCompressionControl.fromObj(obj.compressor || {});
+    }
+
+    if (obj.crosstalk) {
+      profile.crosstalk = AudioCrosstalkControl.fromObj(obj.crosstalk || {});
     }
 
     return profile;
@@ -43,6 +49,7 @@ export class AudioProfile {
         return channel.toObj();
       }),
       compressor: this.compressor.toObj(),
+      crosstalk: this.crosstalk.toObj(),
     };
   }
 }

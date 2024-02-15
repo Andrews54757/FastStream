@@ -2280,7 +2280,8 @@ body {
 }
 
 
-.compressor {
+.compressor,
+.crosstalk {
     position: relative;
     width: 30%;
     min-width: 560px;
@@ -2290,7 +2291,7 @@ body {
     border-radius: 3px;
 }
 
-.compressor .compressor_title {
+.compressor_title {
     top: 5px;
     left: 0px;
     right: 0px;
@@ -2300,7 +2301,8 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.compressor_container {
+.compressor_container,
+.crosstalk_container {
     display: flex;
     position: absolute;
     top: 30px;
@@ -2310,7 +2312,8 @@ body {
     gap: 10px;
 }
 
-.compressor_container .compressor_graph {
+
+.compressor_graph {
     position: relative;
     height: 270px;
     width: 270px;
@@ -2319,7 +2322,7 @@ body {
     box-sizing: border-box;
 }
 
-.compressor_graph .compressor_y_axis {
+.compressor_y_axis {
     position: absolute;
     top: 0px;
     bottom: 30px;
@@ -2327,7 +2330,7 @@ body {
     width: 30px;
 }
 
-.compressor_graph .compressor_x_axis {
+.compressor_x_axis {
     position: absolute;
     bottom: 0px;
     left: 30px;
@@ -2335,7 +2338,7 @@ body {
     height: 30px;
 }
 
-.compressor_graph .compressor_graph_container {
+.compressor_graph_container {
     position: absolute;
     top: 0px;
     bottom: 30px;
@@ -2344,7 +2347,7 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.compressor_graph .compressor_graph_container canvas {
+.compressor_graph_container canvas {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -2353,7 +2356,8 @@ body {
 }
 
 
-.compressor_container .compressor_controls {
+.compressor_controls,
+.crosstalk_controls {
     display: flex;
     flex-wrap: wrap;
     position: relative;
@@ -2363,6 +2367,10 @@ body {
     box-sizing: border-box;
     overflow-y: auto;
     margin-right: 15px;
+}
+
+.crosstalk_controls {
+    margin-left: 15px;
 }
 
 .compressor_x_axis_tick {

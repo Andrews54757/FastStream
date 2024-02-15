@@ -6,6 +6,7 @@ import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {AudioChannelMixer} from './AudioChannelMixer.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
+import {AudioCrosstalk} from './AudioCrosstalk.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
 import {AudioProfile} from './config/AudioProfile.mjs';
 
@@ -22,6 +23,7 @@ export class AudioConfigManager extends EventEmitter {
     this.audioEqualizer = new AudioEqualizer();
     this.audioCompressor = new AudioCompressor();
     this.audioChannelMixer = new AudioChannelMixer();
+    this.audioCrosstalk = new AudioCrosstalk();
 
 
     this.setupUI();
@@ -105,6 +107,7 @@ export class AudioConfigManager extends EventEmitter {
     this.audioEqualizer.setEqualizerConfig(this.currentProfile.equalizerNodes);
     this.audioCompressor.setCompressionConfig(this.currentProfile.compressor);
     this.audioChannelMixer.setChannelMixerConfig(this.currentProfile.mixerChannels);
+    this.audioCrosstalk.setCrosstalkConfig(this.currentProfile.crosstalk);
     this.saveProfilesToStorage();
   }
 
@@ -377,6 +380,7 @@ export class AudioConfigManager extends EventEmitter {
     this.ui.dynamicsContainer.appendChild(this.audioEqualizer.getElement());
     this.ui.dynamicsContainer.appendChild(this.audioCompressor.getElement());
     this.ui.dynamicsContainer.appendChild(this.audioChannelMixer.getElement());
+    this.ui.dynamicsContainer.appendChild(this.audioCrosstalk.getElement());
   }
 
 
@@ -393,6 +397,7 @@ export class AudioConfigManager extends EventEmitter {
     this.audioEqualizer.render();
     this.audioCompressor.render();
     this.audioChannelMixer.render();
+    this.audioCrosstalk.render();
   }
 
   startRenderLoop() {
@@ -416,17 +421,25 @@ export class AudioConfigManager extends EventEmitter {
     }
 
     this.audioChannelMixer.setupNodes(this.audioContext);
-
     this.audioEqualizer.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioCompressor.setupNodes(this.audioContext, this.audioEqualizer.getOutputNode(), this.audioChannelMixer.getInputNode());
 
+    this.audioGain = this.audioContext.createGain();
+    this.audioGain.gain.value = 1;
+
+    this.audioChannelMixer.getOutputNode().connect(this.audioGain);
+    this.audioCrosstalk.setupNodes(this.audioContext, this.audioChannelMixer.getOutputNode(), this.audioGain);
 
     if (DOMElements.audioConfigContainer.style.display !== 'none') {
       this.startRenderLoop();
     }
   }
 
+  updateVolume(value) {
+    if (this.audioGain) this.audioGain.gain.value = value;
+  }
+
   getOutputNode() {
-    return this.audioChannelMixer.getOutputNode();
+    return this.audioGain;
   }
 }

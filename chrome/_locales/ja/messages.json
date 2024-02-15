@@ -576,6 +576,30 @@
     "audiomixer_mute_label": {
         "message": "消音"
     },
+    "audiocrosstalk_title": {
+        "message": "オーディオクロストーク補正"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "クロストーク補正有効"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "クロストーク補正無効"
+    },
+    "audiocrosstalk_inputgain": {
+        "message": "入力ゲイン"
+    },
+    "audiocrosstalk_decaygain": {
+        "message": "減衰"
+    },
+    "audiocrosstalk_endgain": {
+        "message": "エンドゲイン"
+    },
+    "audiocrosstalk_centergain": {
+        "message": "センターゲイン"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
     "audiocompressor_title": {
         "message": "オーディオコンプレッサー"
     },
