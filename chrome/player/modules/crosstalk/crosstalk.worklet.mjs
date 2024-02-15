@@ -50,6 +50,28 @@ class FloatRingBuffer {
   }
 }
 
+class Filter {
+  constructor(frequency, samplerate) {
+    const dt = 1.0 / samplerate;
+    const rc = 1.0 / (2 * Math.PI * frequency);
+    this.lastX = 0;
+    this.lastY = 0;
+    this.tch = rc / (rc + dt);
+    this.tcl = dt / (rc + dt);
+  }
+  highpass(nextX) {
+    const newY = this.tch * (this.lastY + nextX - this.lastX);
+    this.lastX = nextX;
+    this.lastY = newY;
+    return newY;
+  }
+  lowpass(nextX) {
+    const newY = this.tcl * nextX + (1 - this.tcl) * this.lastY;
+    this.lastY = newY;
+    return newY;
+  }
+}
+
 
 class LCC {
   constructor(options) {
@@ -64,6 +86,8 @@ class LCC {
     centergain,
     microdelay,
     samplerate,
+    highpass,
+    lowpass,
   }) {
     const delay = microdelay * 1e-6 * samplerate;
     this.bufflen = Math.ceil(delay) * 2;
@@ -74,16 +98,14 @@ class LCC {
     this.decaygain = decaygain;
     this.endgain = endgain;
     this.centergain = centergain;
-    // console.log('LCC configured',
-    //     `inputgain: ${inputgain}`,
-    //     `decaygain: ${decaygain}`,
-    //     `endgain: ${endgain}`,
-    //     `centergain: ${centergain}`,
-    //     `microdelay: ${microdelay}`,
-    //     `samplerate: ${samplerate}`,
-    //     `bufflen: ${this.bufflen}`,
-    //     `delaymod: ${this.delaymod}`,
-    // );
+
+    this.highpass1 = new Filter(highpass, samplerate);
+    this.lowpass1 = new Filter(lowpass, samplerate);
+
+    this.highpass2 = new Filter(highpass, samplerate);
+    this.lowpass2 = new Filter(lowpass, samplerate);
+
+    console.debug('LCC configured', this);
   }
 
   lcc(input1, input2, output1, output2) {
@@ -96,17 +118,23 @@ class LCC {
       const in1 = input1[i] * this.inputgain;
       const in2 = input2[i] * this.inputgain;
 
+      const in1filtered = this.lowpass1.lowpass(this.highpass1.highpass(in1));
+      const in2filtered = this.lowpass2.lowpass(this.highpass2.highpass(in2));
+
+      const diff1 = in1 - in1filtered;
+      const diff2 = in2 - in2filtered;
+
       const prevIndex = (index + i * 2) % bufflen;
 
-      const out1 = in1 - this.decaygain * prevOutput[prevIndex + 1];
-      const out2 = in2 - this.decaygain * prevOutput[prevIndex];
+      const out1 = in1filtered - this.decaygain * prevOutput[prevIndex + 1];
+      const out2 = in2filtered - this.decaygain * prevOutput[prevIndex];
 
       prevOutput[prevIndex] = out1;
       prevOutput[prevIndex + 1] = out2;
 
-      const center = (in1 + in2) * centerconstant;
-      output1[i] = this.endgain * (out1 + center);
-      output2[i] = this.endgain * (out2 + center);
+      const center = (in1filtered + in2filtered) * centerconstant;
+      output1[i] = this.endgain * (out1 + center + diff1);
+      output2[i] = this.endgain * (out2 + center + diff2);
     }
     this.previousOutput.index = (index + len * 2) % bufflen;
     return true;

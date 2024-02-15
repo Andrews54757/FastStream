@@ -57,6 +57,8 @@ export class AudioCrosstalk {
       endgain: AudioUtils.dbToGain(this.crosstalkConfig.endgain),
       centergain: AudioUtils.dbToGain(this.crosstalkConfig.centergain),
       microdelay: this.crosstalkConfig.microdelay,
+      highpass: this.crosstalkConfig.highpass,
+      lowpass: this.crosstalkConfig.lowpass,
     };
   }
 
@@ -68,20 +70,6 @@ export class AudioCrosstalk {
 
     if (crosstalk.enabled) {
       if (!this.crosstalkNode) {
-        this.highpass = this.audioContext.createBiquadFilter();
-        this.highpass.type = 'highpass';
-
-        this.lowpass = this.audioContext.createBiquadFilter();
-        this.lowpass.type = 'lowpass';
-
-        this.highpass.connect(this.lowpass); // connect the highpass to the lowpass to make bandpass
-
-        this.highpass_inv = this.audioContext.createBiquadFilter();
-        this.highpass_inv.type = 'highpass';
-
-        this.lowpass_inv = this.audioContext.createBiquadFilter();
-        this.lowpass_inv.type = 'lowpass';
-
         this.sourceNode.disconnect(this.destinationNode);
         this.crosstalkNode = new Crosstalk.CrosstalkNode(this.audioContext, this.getCrosstalkConfigObj());
 
@@ -92,44 +80,30 @@ export class AudioCrosstalk {
           console.error('Error initializing crosstalk', e);
         }
         this.settingUpCrosstalk = false;
-
-        this.sourceNode.connect(this.highpass);
-        this.sourceNode.connect(this.highpass_inv);
-        this.sourceNode.connect(this.lowpass_inv);
-        this.lowpass.connect(this.crosstalkNode.getNode());
+        this.sourceNode.connect(this.crosstalkNode.getNode());
         this.crosstalkNode.getNode().connect(this.destinationNode);
-        this.highpass_inv.connect(this.destinationNode);
-        this.lowpass_inv.connect(this.destinationNode);
       } else {
         this.crosstalkNode.configure(this.getCrosstalkConfigObj());
       }
-
-      this.highpass.frequency.value = crosstalk.highpass;
-      this.lowpass.frequency.value = crosstalk.lowpass;
-      this.highpass_inv.frequency.value = crosstalk.lowpass;
-      this.lowpass_inv.frequency.value = crosstalk.highpass;
     } else {
       if (this.crosstalkNode) {
-        this.sourceNode.disconnect(this.highpass);
-        this.sourceNode.disconnect(this.highpass_inv);
-        this.sourceNode.disconnect(this.lowpass_inv);
-        this.highpass.disconnect(this.lowpass);
-        this.lowpass.disconnect(this.crosstalkNode.getNode());
+        this.sourceNode.disconnect(this.crosstalkNode.getNode());
         this.crosstalkNode.getNode().disconnect(this.destinationNode);
-        this.highpass_inv.disconnect(this.destinationNode);
-        this.lowpass_inv.disconnect(this.destinationNode);
         this.sourceNode.connect(this.destinationNode);
         this.crosstalkNode.destroy();
         this.crosstalkNode = null;
-        this.highpass = null;
-        this.lowpass = null;
-        this.highpass_inv = null;
-        this.lowpass_inv = null;
       }
     }
   }
 
   setupNodes(audioContext, sourceNode, destinationNode) {
+    if (this.audioContext !== audioContext) {
+      if (this.crosstalkNode) {
+        this.crosstalkNode.getNode().disconnect();
+        this.crosstalkNode.destroy();
+        this.crosstalkNode = null;
+      }
+    }
     this.audioContext = audioContext;
     this.sourceNode = sourceNode;
     this.destinationNode = destinationNode;

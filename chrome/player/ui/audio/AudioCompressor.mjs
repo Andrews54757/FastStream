@@ -105,6 +105,16 @@ export class AudioCompressor {
   }
 
   setupNodes(audioContext, sourceNode, destinationNode) {
+    if (this.audioContext !== audioContext) {
+      if (this.compressorNode) {
+        this.compressorNode.disconnect();
+        this.compressorNode = null;
+      }
+      if (this.compressorGain) {
+        this.compressorGain.disconnect();
+        this.compressorGain = null;
+      }
+    }
     this.audioContext = audioContext;
     this.sourceNode = sourceNode;
     this.destinationNode = destinationNode;
