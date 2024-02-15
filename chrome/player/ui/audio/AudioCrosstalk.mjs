@@ -159,16 +159,12 @@ export class AudioCrosstalk {
       }
     }, 'dB');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.inputgain.container);
-
     this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
         this.crosstalkConfig.decaygain = val;
         this.updateCrosstalk();
       }
     }, 'dB');
-
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
 
     this.crosstalkKnobs.endgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_endgain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.endgain) {
@@ -177,7 +173,6 @@ export class AudioCrosstalk {
       }
     }, 'dB');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.endgain.container);
 
     this.crosstalkKnobs.centergain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_centergain'), -10, 10, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.centergain) {
@@ -186,7 +181,6 @@ export class AudioCrosstalk {
       }
     }, 'dB');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
     this.crosstalkKnobs.microdelay = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 1, 100, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
@@ -195,25 +189,29 @@ export class AudioCrosstalk {
       }
     }, 'us');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
 
-    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 2000, (val) => {
+    this.crosstalkKnobs.highpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_highpass'), 20, 20000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.highpass) {
         this.crosstalkConfig.highpass = val;
         this.updateCrosstalk();
       }
     }, 'Hz');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
 
-    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 3000, 8000, (val) => {
+    this.crosstalkKnobs.lowpass = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_lowpass'), 20, 20000, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.lowpass) {
         this.crosstalkConfig.lowpass = val;
         this.updateCrosstalk();
       }
     }, 'Hz');
 
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.highpass.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowpass.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.inputgain.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.endgain.container);
 
     if (this.crosstalkConfig) {
       this.crosstalkKnobs.inputgain.knob.val(this.crosstalkConfig.inputgain);
