@@ -9,44 +9,9 @@ class FloatRingBuffer {
     if (newSize === this.size) {
       return;
     }
-    this.buffer = this.getBuffer(-Math.min(this.size, newSize), newSize);
+    this.buffer = new Float32Array(newSize);
     this.size = newSize;
     this.index = 0;
-  }
-
-  getIndex(offset) {
-    return (this.index + offset) % this.size;
-  }
-
-  getBuffer(offset, size) {
-    let outputSize = size;
-    if (size > this.size) {
-      outputSize = size;
-      size = this.size;
-    }
-    const start = this.getIndex(offset);
-    const out = new Float32Array(outputSize);
-    // copy the first part of the buffer
-    const firstPart = Math.min(size, this.size - start);
-    out.set(this.buffer.subarray(start, start + firstPart));
-    // copy the rest from the beginning of the buffer
-    if (firstPart < size) {
-      out.set(this.buffer.subarray(0, size - firstPart), firstPart);
-    }
-    return out;
-  }
-
-  pushBuffer(offset, buffer) {
-    if (buffer.length > this.size) {
-      throw new Error('Buffer is larger than the ring buffer');
-    }
-    const start = this.getIndex(offset);
-    const firstPart = Math.min(buffer.length, this.size - start);
-    this.buffer.set(buffer.subarray(0, firstPart), start);
-    if (firstPart < buffer.length) {
-      this.buffer.set(buffer.subarray(firstPart), 0);
-    }
-    this.index = (start + buffer.length) % this.size;
   }
 }
 
