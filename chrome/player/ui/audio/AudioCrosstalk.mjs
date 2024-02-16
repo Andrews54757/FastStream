@@ -121,7 +121,7 @@ export class AudioCrosstalk {
 
     const delay = 1e6 * earToEarDistance/2 * (Math.asin(ratio) + ratio) / speedOfSound;
 
-    return Math.round(Utils.clamp(delay, 30, 150));
+    return Math.round(Utils.clamp(delay, 30, 120));
   }
 
   calculateCrosstalkDecayGain(delay) {
