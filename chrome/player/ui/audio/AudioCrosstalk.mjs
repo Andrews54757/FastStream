@@ -69,16 +69,18 @@ export class AudioCrosstalk {
 
     if (crosstalk.enabled) {
       if (!this.crosstalkNode) {
-        this.sourceNode.disconnect(this.destinationNode);
         this.crosstalkNode = new Crosstalk.CrosstalkNode(this.audioContext, this.getCrosstalkConfigObj());
 
         this.settingUpCrosstalk = true;
         try {
           await this.crosstalkNode.init();
         } catch (e) {
-          console.error('Error initializing crosstalk', e);
+          this.settingUpCrosstalk = false;
+          this.crosstalkNode = null;
+          return;
         }
         this.settingUpCrosstalk = false;
+        this.sourceNode.disconnect(this.destinationNode);
         this.sourceNode.connect(this.crosstalkNode.getNode());
         this.crosstalkNode.getNode().connect(this.destinationNode);
       } else {
