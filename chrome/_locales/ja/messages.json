@@ -600,6 +600,12 @@
     "audiocrosstalk_highbypass": {
         "message": "高周波バイパス"
     },
+    "audiocrosstalk_speakerdistance": {
+        "message": "スピーカー間の距離"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "ヘッド間の距離"
+    },
     "audiocompressor_title": {
         "message": "オーディオコンプレッサー"
     },

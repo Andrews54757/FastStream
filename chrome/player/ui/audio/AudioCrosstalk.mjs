@@ -1,6 +1,7 @@
 import {Localize} from '../../modules/Localize.mjs';
 import {Crosstalk} from '../../modules/crosstalk/Crosstalk.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
+import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 
 export class AudioCrosstalk {
@@ -109,6 +110,24 @@ export class AudioCrosstalk {
     this.updateCrosstalk();
   }
 
+  calculateCrosstalkDelay(speakerDistance, headDistance) {
+    const speedOfSound = 343.2; // m/s
+    const earToEarDistance = 17.5e-2; // m
+    const ratio = speakerDistance / headDistance / 2;
+
+    if (ratio > 1 || headDistance === 0) {
+      return null;
+    }
+
+    const delay = 1e6 * earToEarDistance/2 * (Math.asin(ratio) + ratio) / speedOfSound;
+
+    return Math.round(Utils.clamp(delay, 30, 150));
+  }
+
+  calculateCrosstalkDecayGain(delay) {
+    return Math.round(Utils.clamp(-(0.016667 * (delay - 17) + 1.8), -10, -1) * 100) / 100;
+  }
+
   setupCrosstalkControls() {
     this.ui.crosstalkControls.replaceChildren();
 
@@ -123,6 +142,21 @@ export class AudioCrosstalk {
     });
 
     this.crosstalkKnobs = {};
+
+    this.crosstalkKnobs.speakerdistance = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_speakerdistance'), 1, 100, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.speakerdistance) {
+        this.crosstalkConfig.speakerdistance = val;
+        this.crosstalkKnobs.microdelay.setSuggestedValue(this.calculateCrosstalkDelay(this.crosstalkConfig.speakerdistance, this.crosstalkConfig.headdistance));
+      }
+    }, 'cm');
+
+    this.crosstalkKnobs.headdistance = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_headdistance'), 1, 100, (val) => {
+      if (this.crosstalkConfig && val !== this.crosstalkConfig.headdistance) {
+        this.crosstalkConfig.headdistance = val;
+        this.crosstalkKnobs.microdelay.setSuggestedValue(this.calculateCrosstalkDelay(this.crosstalkConfig.speakerdistance, this.crosstalkConfig.headdistance));
+      }
+    }, 'cm');
+
 
     this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
@@ -142,6 +176,7 @@ export class AudioCrosstalk {
     this.crosstalkKnobs.microdelay = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 30, 150, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
         this.crosstalkConfig.microdelay = val;
+        this.crosstalkKnobs.decaygain.setSuggestedValue(this.calculateCrosstalkDecayGain(val));
         this.updateCrosstalk();
       }
     }, 'µs');
@@ -162,6 +197,8 @@ export class AudioCrosstalk {
       }
     }, 'Hz');
 
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.speakerdistance.container);
+    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.headdistance.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowbypass.container);
@@ -169,11 +206,16 @@ export class AudioCrosstalk {
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
     if (this.crosstalkConfig) {
+      this.crosstalkKnobs.speakerdistance.knob.val(this.crosstalkConfig.speakerdistance);
+      this.crosstalkKnobs.headdistance.knob.val(this.crosstalkConfig.headdistance);
+
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
       this.crosstalkKnobs.microdelay.knob.val(this.crosstalkConfig.microdelay);
       this.crosstalkKnobs.lowbypass.knob.val(this.crosstalkConfig.lowbypass);
       this.crosstalkKnobs.highbypass.knob.val(this.crosstalkConfig.highbypass);
+      this.crosstalkKnobs.microdelay.setSuggestedValue(this.calculateCrosstalkDelay(this.crosstalkConfig.speakerdistance, this.crosstalkConfig.headdistance));
+      this.crosstalkKnobs.decaygain.setSuggestedValue(this.calculateCrosstalkDecayGain(this.crosstalkConfig.microdelay));
     }
   }
 

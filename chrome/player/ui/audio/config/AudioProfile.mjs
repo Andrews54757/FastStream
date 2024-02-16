@@ -9,7 +9,7 @@ export class AudioProfile {
     this.equalizerNodes = [];
     this.mixerChannels = [];
     this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24, 1);
-    this.crosstalk = new AudioCrosstalkControl(false, -3, -3, 90, 250, 5000);
+    this.crosstalk = new AudioCrosstalkControl(false, -3.02, -3, 90, 250, 5000, 25, 71);
     this.label = `Profile ${id}`;
   }
 

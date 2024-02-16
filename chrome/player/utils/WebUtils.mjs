@@ -29,6 +29,7 @@ export class WebUtils {
     knobName.textContent = name;
     knobContainer.appendChild(knobName);
 
+
     const knobMinValueTick = this.create('div', null, 'knob_min_value_tick');
     knobContainer.appendChild(knobMinValueTick);
 
@@ -42,6 +43,15 @@ export class WebUtils {
     const knobMaxValueLabel = this.create('div', null, 'knob_max_value_label');
     knobMaxValueLabel.textContent = maxValue;
     knobContainer.appendChild(knobMaxValueLabel);
+
+    let suggestedValue = null;
+    let suggestedValueTracking = false;
+    let suggestedValueSet = false;
+    const knobSuggestedValueTick = this.create('div', null, 'knob_suggested_value_tick');
+    knobSuggestedValueTick.style.display = 'none';
+    const suggestedValueTickDot = this.create('div', null, 'knob_suggested_value_tick_dot');
+    knobSuggestedValueTick.appendChild(suggestedValueTickDot);
+    knobContainer.appendChild(knobSuggestedValueTick);
 
     const knobKnobContainer = this.create('div', null, 'knob_knob_container');
     knobContainer.appendChild(knobKnobContainer);
@@ -64,11 +74,26 @@ export class WebUtils {
       if (knobValue !== document.activeElement) {
         knobValue.textContent = knob.val().toFixed(decimals) + ' ' + units;
       }
-
       if (shouldCall && callback) {
+        checkValueIsSuggested();
         callback(knob.val());
       }
     });
+
+    function checkValueIsSuggested() {
+      const val = knob.val();
+      if (suggestedValue !== null && Math.abs(val - suggestedValue) < (maxValue - minValue) * 0.02) {
+        suggestedValueTracking = true;
+        suggestedValueTickDot.classList.add('tracking');
+        const prevFlag = shouldCall;
+        shouldCall = false;
+        knob.val(suggestedValue);
+        shouldCall = prevFlag;
+      } else {
+        suggestedValueTickDot.classList.remove('tracking');
+        suggestedValueTracking = false;
+      }
+    }
 
     knobValue.addEventListener('input', ()=>{
       const val = parseFloat(knobValue.textContent.replace(units, ''));
@@ -150,6 +175,29 @@ export class WebUtils {
     return {
       container: knobContainer,
       knob: knob,
+      setSuggestedValue: (val) => {
+        if (val !== null) {
+          knobSuggestedValueTick.style.display = '';
+          knobSuggestedValueTick.style.transform = `rotate(${(val - minValue) / (maxValue - minValue) * 270 + 45}deg)`;
+          if (suggestedValueTracking) {
+            const prevFlag = shouldCall;
+            shouldCall = false;
+            knob.val(val);
+            shouldCall = prevFlag;
+            if (shouldCall) callback(val);
+          }
+        } else {
+          knobSuggestedValueTick.style.display = 'none';
+        }
+        suggestedValue = val;
+        if (!suggestedValueSet) {
+          suggestedValueSet = true;
+          if (knob.val() === suggestedValue) {
+            suggestedValueTracking = true;
+            suggestedValueTickDot.classList.add('tracking');
+          }
+        }
+      },
     };
   }
 

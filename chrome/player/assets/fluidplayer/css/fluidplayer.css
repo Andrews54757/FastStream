@@ -2519,6 +2519,29 @@ body {
     top: calc(50% + 17px);
 }
 
+.knob_suggested_value_tick {
+    position: absolute;
+    width: 0px;
+    height: 34px;
+    top: 50%;
+    left: 50%;
+    transform-origin: 50% 0%;
+}
+.knob_suggested_value_tick_dot {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    bottom: 0px;
+    left: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    transform: translate(-50%, -50%);
+}
+
+.knob_suggested_value_tick_dot.tracking {
+    background-color: rgba(80, 220, 80, 1);
+}
+
 .knob_max_value_tick {
     transform: rotate(-45deg);
     left: calc(50% + 21px);

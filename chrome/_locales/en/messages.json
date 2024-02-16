@@ -600,6 +600,12 @@
     "audiocrosstalk_highbypass": {
         "message": "High Bypass"
     },
+    "audiocrosstalk_speakerdistance": {
+        "message": "Speaker Distance"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "Head Distance"
+    },
     "audiocompressor_title": {
         "message": "Audio Compressor"
     },
