@@ -143,20 +143,47 @@ export class AudioCrosstalk {
 
     this.crosstalkKnobs = {};
 
-    this.crosstalkKnobs.speakerdistance = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_speakerdistance'), 1, 100, (val) => {
+    const calculatorContainer = WebUtils.create('div', null, 'crosstalk_calculator');
+
+    const speakerDistanceContainer = WebUtils.create('div', null, 'crosstalk_calculator_input_container');
+    const speakerDistanceLabel = WebUtils.create('label', null, 'crosstalk_calculator_label');
+    speakerDistanceLabel.textContent = Localize.getMessage('audiocrosstalk_speakerdistance');
+    speakerDistanceContainer.appendChild(speakerDistanceLabel);
+    const speakerDistanceInput = WebUtils.create('input', null, 'crosstalk_calculator_input');
+    speakerDistanceContainer.appendChild(speakerDistanceInput);
+    calculatorContainer.appendChild(speakerDistanceContainer);
+
+    speakerDistanceInput.addEventListener('input', () => {
+      const val = parseFloat(speakerDistanceInput.value);
       if (this.crosstalkConfig && val !== this.crosstalkConfig.speakerdistance) {
         this.crosstalkConfig.speakerdistance = val;
         this.crosstalkKnobs.microdelay.setSuggestedValue(this.calculateCrosstalkDelay(this.crosstalkConfig.speakerdistance, this.crosstalkConfig.headdistance));
       }
-    }, 'cm');
+    });
 
-    this.crosstalkKnobs.headdistance = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_headdistance'), 1, 100, (val) => {
+    speakerDistanceInput.addEventListener('keydown', (e) => {
+      e.stopPropagation();
+    });
+
+    const headDistanceContainer = WebUtils.create('div', null, 'crosstalk_calculator_input_container');
+    const headDistanceLabel = WebUtils.create('label', null, 'crosstalk_calculator_label');
+    headDistanceLabel.textContent = Localize.getMessage('audiocrosstalk_headdistance');
+    headDistanceContainer.appendChild(headDistanceLabel);
+    const headDistanceInput = WebUtils.create('input', null, 'crosstalk_calculator_input');
+    headDistanceContainer.appendChild(headDistanceInput);
+    calculatorContainer.appendChild(headDistanceContainer);
+
+    headDistanceInput.addEventListener('input', () => {
+      const val = parseFloat(headDistanceInput.value);
       if (this.crosstalkConfig && val !== this.crosstalkConfig.headdistance) {
         this.crosstalkConfig.headdistance = val;
         this.crosstalkKnobs.microdelay.setSuggestedValue(this.calculateCrosstalkDelay(this.crosstalkConfig.speakerdistance, this.crosstalkConfig.headdistance));
       }
-    }, 'cm');
+    });
 
+    headDistanceInput.addEventListener('keydown', (e) => {
+      e.stopPropagation();
+    });
 
     this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
@@ -197,8 +224,7 @@ export class AudioCrosstalk {
       }
     }, 'Hz');
 
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.speakerdistance.container);
-    this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.headdistance.container);
+    this.ui.crosstalkControls.appendChild(calculatorContainer);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.microdelay.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.decaygain.container);
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.lowbypass.container);
@@ -206,8 +232,8 @@ export class AudioCrosstalk {
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
     if (this.crosstalkConfig) {
-      this.crosstalkKnobs.speakerdistance.knob.val(this.crosstalkConfig.speakerdistance);
-      this.crosstalkKnobs.headdistance.knob.val(this.crosstalkConfig.headdistance);
+      speakerDistanceInput.value = this.crosstalkConfig.speakerdistance;
+      headDistanceInput.value = this.crosstalkConfig.headdistance;
 
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
