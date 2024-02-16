@@ -232,8 +232,8 @@ export class AudioCrosstalk {
     this.ui.crosstalkControls.appendChild(this.crosstalkKnobs.centergain.container);
 
     if (this.crosstalkConfig) {
-      speakerDistanceInput.value = this.crosstalkConfig.speakerdistance;
-      headDistanceInput.value = this.crosstalkConfig.headdistance;
+      speakerDistanceInput.value = this.crosstalkConfig.speakerdistance + ' cm';
+      headDistanceInput.value = this.crosstalkConfig.headdistance + ' cm';
 
       this.crosstalkKnobs.decaygain.knob.val(this.crosstalkConfig.decaygain);
       this.crosstalkKnobs.centergain.knob.val(this.crosstalkConfig.centergain);
