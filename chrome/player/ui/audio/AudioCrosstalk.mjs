@@ -1,5 +1,5 @@
 import {Localize} from '../../modules/Localize.mjs';
-import {Crosstalk} from '../../modules/crosstalk/Crosstalk.mjs';
+import {Crosstalk} from '../../modules/crosstalk/crosstalk.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
