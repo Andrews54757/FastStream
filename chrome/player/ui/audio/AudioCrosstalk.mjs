@@ -54,7 +54,7 @@ export class AudioCrosstalk {
   getCrosstalkConfigObj() {
     return {
       microdelay: this.crosstalkConfig.microdelay,
-      decaygain: AudioUtils.dbToGain(this.crosstalkConfig.decaygain),
+      decaygain: AudioUtils.dbToGain(this.crosstalkConfig.decaygain / 1000),
       colorgain: AudioUtils.dbToGain(this.crosstalkConfig.colorgain),
       highbypass: this.crosstalkConfig.highbypass,
       lowbypass: this.crosstalkConfig.lowbypass,
@@ -121,7 +121,7 @@ export class AudioCrosstalk {
 
     return {
       microdelay: Utils.clamp(Math.round(dl / speedOfSound * 1e6), 30, 150),
-      decaygain: Utils.clamp(Math.round(AudioUtils.gainToDB(l1 / l2) * 100) / 100, -10, -0.01),
+      decaygain: Utils.clamp(Math.round(AudioUtils.gainToDB(l1 / l2) * 1000), -1000, -1),
     };
   }
 
@@ -188,12 +188,12 @@ export class AudioCrosstalk {
       e.stopPropagation();
     });
 
-    this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -10, -0.01, (val) => {
+    this.crosstalkKnobs.decaygain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_decaygain'), -1000, -1, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decaygain) {
         this.crosstalkConfig.decaygain = val;
         this.updateCrosstalk();
       }
-    }, 'dB');
+    }, 'mdB');
 
     this.crosstalkKnobs.colorgain = WebUtils.createKnob(Localize.getMessage('audiocrosstalk_colorgain'), 0, 20, (val) => {
       if (this.crosstalkConfig && val !== this.crosstalkConfig.colorgain) {
