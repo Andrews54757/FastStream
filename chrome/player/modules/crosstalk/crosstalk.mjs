@@ -2,10 +2,12 @@ import {Crossover} from './crossover.mjs';
 import {FFT} from './fft.mjs';
 
 const BUFFER_SIZE = 512;
+const SHIFT_AMOUNT = 128;
 /* eslint-disable camelcase */
 export class CrosstalkNode {
   constructor(audioContext, options) {
     this.cachedOptions = {};
+    this.currentConvolver = 0;
     this.audioContext = audioContext;
     this.fft = new FFT(BUFFER_SIZE * 2);
     this.configure(options);
@@ -109,13 +111,8 @@ export class CrosstalkNode {
 
       this.h_CIS = this.idft(H_CIS);
       this.h_CROSS = this.idft(H_CROSS);
-      const shiftAmount = 100;
-      this.rotateBuffer(this.h_CIS, shiftAmount);
-      this.rotateBuffer(this.h_CROSS, shiftAmount);
-
-      this.h_BYPASS = new Float32Array(BUFFER_SIZE);
-      this.h_BYPASS[0] = 1;
-      this.rotateBuffer(this.h_BYPASS, shiftAmount);
+      this.rotateBuffer(this.h_CIS, SHIFT_AMOUNT);
+      this.rotateBuffer(this.h_CROSS, SHIFT_AMOUNT);
 
       this.cutoffs = [];
       this.mappings = [];
@@ -235,11 +232,31 @@ export class CrosstalkNode {
     this.buffer_L.getChannelData(1).set(this.h_CROSS.subarray(0, BUFFER_SIZE));
     this.buffer_R.getChannelData(0).set(this.h_CROSS.subarray(0, BUFFER_SIZE));
     this.buffer_R.getChannelData(1).set(this.h_CIS.subarray(0, BUFFER_SIZE));
-    this.buffer_BYPASS.getChannelData(0).set(this.h_BYPASS);
-    this.buffer_BYPASS.getChannelData(1).set(this.h_BYPASS);
-    this.convolver_L.buffer = this.buffer_L;
-    this.convolver_R.buffer = this.buffer_R;
-    this.convolver_BYPASS.buffer = this.buffer_BYPASS;
+    const current = this.currentConvolver;
+    const other = (current + 1) % 2;
+    this.convolver_L[other].buffer = this.buffer_L;
+    this.convolver_R[other].buffer = this.buffer_R;
+
+    const crossover = this.crossover.getNode();
+    const splitter_L = this.splitter_L;
+    const splitter_R = this.splitter_R;
+
+    if (!this.switchTimeout) {
+      crossover.connect(this.convolver_L[other], 1);
+      crossover.connect(this.convolver_R[other], 1);
+    }
+
+    clearTimeout(this.switchTimeout);
+    this.switchTimeout = setTimeout(() => {
+      this.convolver_L[other].connect(splitter_L);
+      this.convolver_R[other].connect(splitter_R);
+
+      this.convolver_L[current].disconnect();
+      this.convolver_R[current].disconnect();
+
+      this.currentConvolver = other;
+      this.switchTimeout = null;
+    }, 100);
   }
 
   async init() {
@@ -265,28 +282,29 @@ export class CrosstalkNode {
     // create convolver nodes
     this.buffer_L = ctx.createBuffer(2, BUFFER_SIZE, ctx.sampleRate);
     this.buffer_R = ctx.createBuffer(2, BUFFER_SIZE, ctx.sampleRate);
-    this.buffer_BYPASS = ctx.createBuffer(2, BUFFER_SIZE, ctx.sampleRate);
+    const buffer_BYPASS = ctx.createBuffer(2, BUFFER_SIZE, ctx.sampleRate);
 
-    this.convolver_L = ctx.createConvolver();
-    this.convolver_R = ctx.createConvolver();
+    this.convolver_L = [ctx.createConvolver(), ctx.createConvolver()];
+    this.convolver_R = [ctx.createConvolver(), ctx.createConvolver()];
     this.convolver_BYPASS = ctx.createConvolver();
 
-    this.convolver_L.normalize = false;
-    this.convolver_R.normalize = false;
-    this.convolver_BYPASS.normalize = false;
-    this.convolver_BYPASS.channelInterpretation = this.convolver_L.channelInterpretation = this.convolver_R.channelInterpretation = 'discrete';
+    const convolvers = this.convolver_L.concat(this.convolver_R).concat([this.convolver_BYPASS]);
+    convolvers.forEach((convolver) => {
+      convolver.normalize = false;
+      convolver.channelInterpretation = 'discrete';
+    });
 
-    this.updateBuffers();
+    const h_BYPASS = new Float32Array(BUFFER_SIZE);
+    h_BYPASS[0] = 1;
+    this.rotateBuffer(h_BYPASS, SHIFT_AMOUNT);
+    buffer_BYPASS.getChannelData(0).set(h_BYPASS);
+    buffer_BYPASS.getChannelData(1).set(h_BYPASS);
+    this.convolver_BYPASS.buffer = buffer_BYPASS;
 
     const splitter_L = ctx.createChannelSplitter(2);
     const splitter_R = ctx.createChannelSplitter(2);
 
     this.crossover.getNode().connect(this.convolver_BYPASS, 0, 0);
-    this.crossover.getNode().connect(this.convolver_L, 1, 0);
-    this.crossover.getNode().connect(this.convolver_R, 1, 0);
-
-    this.convolver_L.connect(splitter_L);
-    this.convolver_R.connect(splitter_R);
 
     const bypassSplitter = ctx.createChannelSplitter(6);
     const bypassSplitter2 = ctx.createChannelSplitter(2);
@@ -304,12 +322,21 @@ export class CrosstalkNode {
     for (let i = 2; i < 6; i++) {
       bypassSplitter.connect(merger, i, i);
     }
+
+    this.splitter_L = splitter_L;
+    this.splitter_R = splitter_R;
+
+    this.updateBuffers();
   }
 
   destroy() {
     this.crossover.destroy();
-    this.convolver_L.disconnect();
-    this.convolver_R.disconnect();
+    this.convolver_L.forEach((convolver) => {
+      convolver.disconnect();
+    });
+    this.convolver_R.forEach((convolver) => {
+      convolver.disconnect();
+    });
     this.convolver_BYPASS.disconnect();
     this.input.disconnect();
     this.output.disconnect();
