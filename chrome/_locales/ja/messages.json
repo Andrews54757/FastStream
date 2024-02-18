@@ -588,8 +588,8 @@
     "audiocrosstalk_decaygain": {
         "message": "減衰"
     },
-    "audiocrosstalk_centergain": {
-        "message": "センターゲイン"
+    "audiocrosstalk_colorgain": {
+        "message": "色付け"
     },
     "audiocrosstalk_microdelay": {
         "message": "Delta T"

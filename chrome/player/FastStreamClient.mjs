@@ -384,12 +384,10 @@ export class FastStreamClient extends EventEmitter {
 
     this.audioContext = new AudioContext();
     this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-
     this.audioConfigManager.setupNodes();
 
     this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
     this.updateVolume();
-
 
     this.player.playbackRate = this.persistent.playbackRate;
 

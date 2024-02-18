@@ -588,8 +588,8 @@
     "audiocrosstalk_decaygain": {
         "message": "Decay"
     },
-    "audiocrosstalk_centergain": {
-        "message": "Center Gain"
+    "audiocrosstalk_colorgain": {
+        "message": "Max Coloration"
     },
     "audiocrosstalk_microdelay": {
         "message": "Delta T"
