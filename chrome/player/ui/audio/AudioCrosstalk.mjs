@@ -120,7 +120,7 @@ export class AudioCrosstalk {
     const dl = l2 - l1;
 
     return {
-      microdelay: Utils.clamp(Math.round(dl / speedOfSound * 1e6), 30, 1000),
+      microdelay: Utils.clamp(Math.round(dl / speedOfSound * 1e6), 30, 150),
       decaygain: Utils.clamp(Math.round(AudioUtils.gainToDB(l1 / l2) * 100) / 100, -10, -0.01),
     };
   }
