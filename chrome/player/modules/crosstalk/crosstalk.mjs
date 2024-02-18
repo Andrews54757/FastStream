@@ -188,34 +188,6 @@ export class CrosstalkNode {
     buffer.set(temp, 0);
   }
 
-  exportMatricesToMatlab() {
-    let str = 'H_CIS = [';
-    for (let i = 0; i < this.H_CIS.length; i += 2) {
-      str += this.H_CIS[i] + (this.H_CIS[i + 1] > 0 ? '+' : '-') + Math.abs(this.H_CIS[i + 1])+ 'i , ';
-    }
-    str += '];\n';
-
-    str += 'H_CROSS = [';
-    for (let i = 0; i < this.H_CROSS.length; i += 2) {
-      str += this.H_CROSS[i] + (this.H_CROSS[i + 1] > 0 ? '+' : '-') + Math.abs(this.H_CROSS[i + 1])+ 'i , ';
-    }
-    str += '];\n';
-
-    str += 'h_CROSS = [';
-    for (let i = 0; i < this.h_CROSS.length; i++) {
-      str += this.h_CROSS[i] + ', ';
-    }
-    str += '];\n';
-
-    str += 'h_CIS = [';
-    for (let i = 0; i < this.h_CIS.length; i++) {
-      str += this.h_CIS[i] + ', ';
-    }
-    str += '];\n';
-
-    console.log(str);
-  }
-
   updateBuffers() {
     this.buffer_L.getChannelData(0).set(this.h_CIS.subarray(0, BUFFER_SIZE));
     this.buffer_L.getChannelData(1).set(this.h_CROSS.subarray(0, BUFFER_SIZE));
