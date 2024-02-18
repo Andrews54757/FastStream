@@ -114,26 +114,6 @@ export class CrosstalkNode {
       this.rotateBuffer(this.h_CIS, SHIFT_AMOUNT);
       this.rotateBuffer(this.h_CROSS, SHIFT_AMOUNT);
 
-      this.cutoffs = [];
-      this.mappings = [];
-
-      this.cutoffs = [options.lowbypass, options.highbypass];
-      this.mappings = [0, 1, 0];
-
-      if (options.highbypass < options.lowbypass) {
-        this.cutoffs.pop();
-        this.mappings.pop();
-      }
-
-      // Check nyquist
-      for (let i = 0; i < this.cutoffs.length; i++) {
-        if (this.cutoffs[i] > fs / 2) {
-          this.cutoffs = this.cutoffs.slice(0, i);
-          this.mappings = this.mappings.slice(0, i + 1);
-          break;
-        }
-      }
-
       if (this.buffer_L) {
         this.updateBuffers();
       }
@@ -152,10 +132,19 @@ export class CrosstalkNode {
       this.mappings.pop();
     }
 
-    // Check nyquist
+    // check 20hz
+    for (let i = this.cutoffs.length - 1; i >= 0; i--) {
+      if (this.cutoffs[i] <= 20) {
+        this.cutoffs = this.cutoffs.slice(i + 1);
+        this.mappings = this.mappings.slice(i + 1);
+        break;
+      }
+    }
+
+    // Check nyquist and 20kHz
     const fs = this.audioContext.sampleRate;
     for (let i = 0; i < this.cutoffs.length; i++) {
-      if (this.cutoffs[i] > fs / 2) {
+      if (this.cutoffs[i] > fs / 2 || this.cutoffs[i] >= 20000) {
         this.cutoffs = this.cutoffs.slice(0, i);
         this.mappings = this.mappings.slice(0, i + 1);
         break;
