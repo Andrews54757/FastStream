@@ -360,60 +360,76 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async setSource(source) {
-    source = source.copy();
+    try {
+      source = source.copy();
 
-    const autoPlay = this.options.autoPlay;
+      const autoPlay = this.options.autoPlay;
 
-    console.log('setSource', source);
-    await this.resetPlayer();
-    this.source = source;
+      console.log('setSource', source);
+      await this.resetPlayer();
+      this.source = source;
 
-    const estimate = await navigator.storage.estimate();
-    this.storageAvailable = estimate.quota - estimate.usage;
+      const estimate = await navigator.storage.estimate();
+      this.storageAvailable = estimate.quota - estimate.usage;
 
-    this.player = await this.playerLoader.createPlayer(source.mode, this, {
-      qualityMultiplier: this.options.qualityMultiplier,
-    });
+      this.player = await this.playerLoader.createPlayer(source.mode, this, {
+        qualityMultiplier: this.options.qualityMultiplier,
+      });
 
-    await this.player.setup();
+      await this.player.setup();
 
-    this.bindPlayer(this.player);
+      this.bindPlayer(this.player);
 
-    await this.player.setSource(source);
-    this.interfaceController.addVideo(this.player.getVideo());
+      await this.player.setSource(source);
+      this.interfaceController.addVideo(this.player.getVideo());
 
-    this.audioContext = new AudioContext();
-    this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-    this.audioConfigManager.setupNodes();
+      this.audioContext = new AudioContext();
+      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+      this.audioConfigManager.setupNodes();
 
-    this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
-    this.updateVolume();
+      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
+      this.updateVolume();
 
-    this.player.playbackRate = this.persistent.playbackRate;
+      this.player.playbackRate = this.persistent.playbackRate;
 
-    this.setSeekSave(false);
-    this.currentTime = 0;
-    this.setSeekSave(true);
+      this.setSeekSave(false);
+      this.currentTime = 0;
+      this.setSeekSave(true);
 
-    this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
-      isPreview: true,
-    });
+      this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
+        isPreview: true,
+      });
 
-    await this.previewPlayer.setup();
-    this.bindPreviewPlayer(this.previewPlayer);
+      await this.previewPlayer.setup();
+      this.bindPreviewPlayer(this.previewPlayer);
 
 
-    await this.previewPlayer.setSource(this.player.getSource());
-    this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+      await this.previewPlayer.setSource(this.player.getSource());
+      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
 
-    await this.videoAnalyzer.setSource(this.player.getSource());
+      await this.videoAnalyzer.setSource(this.player.getSource());
 
-    this.updateCSSFilters();
-    this.interfaceController.updateToolVisibility();
+      this.updateCSSFilters();
 
-    if (autoPlay) {
-      this.play();
+      this.interfaceController.updateToolVisibility();
+
+      if (autoPlay) {
+        this.play();
+      }
+    } catch (e) {
+      const msg = 'Please send this error to the developer: ' + e.message + '\n' + e.stack;
+      const el = document.createElement('div');
+      el.style.position = 'fixed';
+      el.style.top = '0';
+      el.style.left = '0';
+      el.style.width = '100%';
+      el.style.height = '200px';
+      el.style.backgroundColor = 'white';
+      el.style.zIndex = '999999999';
+      el.innerText = msg;
+      document.body.appendChild(el);
     }
+
 
     if (this.progressMemory && this.options.storeProgress) {
       await this.loadProgressData(true);
