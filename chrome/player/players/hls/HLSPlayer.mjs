@@ -100,7 +100,7 @@ export default class HLSPlayer extends EventEmitter {
     }
 
     return {
-      canSave: this.readyState >= 3,
+      canSave: true,
       isComplete: !incomplete,
     };
   }
