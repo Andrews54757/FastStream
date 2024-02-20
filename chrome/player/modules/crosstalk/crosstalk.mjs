@@ -255,7 +255,6 @@ export class CrosstalkNode {
     const convolvers = this.convolver_L.concat(this.convolver_R).concat([this.convolver_BYPASS]);
     convolvers.forEach((convolver) => {
       convolver.normalize = false;
-      convolver.channelInterpretation = 'discrete';
     });
 
     const h_BYPASS = new Float32Array(BUFFER_SIZE);

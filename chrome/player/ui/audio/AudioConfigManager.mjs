@@ -427,11 +427,8 @@ export class AudioConfigManager extends EventEmitter {
     this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
 
-    this.audioGain = this.audioContext.createGain();
+    this.audioGain = this.audioCrosstalk.getOutputNode();
     this.audioGain.gain.value = 1;
-
-    this.audioCrosstalk.getOutputNode().connect(this.audioGain);
-
 
     if (DOMElements.audioConfigContainer.style.display !== 'none') {
       this.startRenderLoop();
