@@ -57,7 +57,7 @@ export class AudioChannelMixer {
     const channels = this.channelMixerConfig;
     if (!channels) return;
 
-    if (this.ui.mixer.checkVisibility()) {
+    if (this.ui.mixer.offsetParent !== null) {
       this.createAnalyzers();
     } else {
       this.destroyAnalyzers();

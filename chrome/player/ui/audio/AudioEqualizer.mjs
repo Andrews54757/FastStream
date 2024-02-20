@@ -182,7 +182,7 @@ export class AudioEqualizer {
 
   renderEqualizerSpectrum() {
     // check if ui is visible
-    if (this.ui.spectrumCanvas.checkVisibility()) {
+    if (this.ui.spectrumCanvas.offsetParent !== null) {
       this.setupAnalyzers();
     } else {
       this.destroyAnalyzers();
