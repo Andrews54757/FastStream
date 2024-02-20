@@ -113,11 +113,11 @@ export class AudioCrosstalk {
     this.crosstalkNode = null;
   }
 
-  setupNodes(audioContext) {
+  setupNodes(audioContext, inputNode) {
     this.removeCrosstalkNode();
 
     this.audioContext = audioContext;
-    this.inputNode = audioContext.createGain();
+    this.inputNode = inputNode;
     this.outputNode = audioContext.createGain();
 
     this.inputNode.connect(this.outputNode);

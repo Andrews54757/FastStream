@@ -420,13 +420,13 @@ export class AudioConfigManager extends EventEmitter {
     this.audioEqualizer.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioCompressor.setupNodes(this.audioContext, this.audioEqualizer.getOutputNode(), this.audioChannelMixer.getInputNode());
 
-    this.audioCrosstalk.setupNodes(this.audioContext);
+    this.audioCrosstalk.setupNodes(this.audioContext, this.audioChannelMixer.getOutputNode());
 
     if (this.audioSource) {
       this.audioSource.connect(this.audioEqualizer.getInputNode());
     }
     // this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
-    this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
+    // this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
 
     this.audioGain = this.audioCrosstalk.getOutputNode();
     this.audioGain.gain.value = 1;
