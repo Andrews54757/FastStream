@@ -417,7 +417,7 @@ export class FastStreamClient extends EventEmitter {
         this.play();
       }
     } catch (e) {
-      const msg = 'Please send this error to the developer: ' + e.message + '\n' + e.stack;
+      const msg = 'Please send this error to the developer at https://github.com/Andrews54757/FastStream/issues \n' + e.message + '\n' + e.stack;
       const el = document.createElement('div');
       el.style.position = 'fixed';
       el.style.top = '0';
@@ -431,7 +431,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
 
-    if (this.progressMemory && this.options.storeProgress) {
+    if (this.progressMemory && this.options.stofrogress) {
       await this.loadProgressData(true);
     }
   }
