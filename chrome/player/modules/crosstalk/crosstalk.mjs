@@ -1,7 +1,7 @@
 import {Crossover} from './crossover.mjs';
 import {FFT} from './fft.mjs';
 
-const IMPULSE_BUFFER_SIZE = 1024;
+const IMPULSE_BUFFER_SIZE = 512;
 const FREQUENCY_BUFFER_SIZE = IMPULSE_BUFFER_SIZE * 4;
 const SHIFT_AMOUNT = 128;
 
