@@ -341,6 +341,9 @@ export class AudioChannelMixer {
   }
 
   updateMixerNodes() {
+    if (!this.channelGains.length) {
+      return;
+    }
     const channels = this.channelMixerConfig;
 
     const soloChannel = channels.find((channel) => channel.solo);

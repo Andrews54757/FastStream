@@ -414,19 +414,32 @@ export class AudioConfigManager extends EventEmitter {
     this.audioContext = this.client.audioContext;
     this.audioSource = this.client.audioSource;
 
+    const splitter = this.audioContext.createChannelSplitter(6);
+    const merger = this.audioContext.createChannelMerger(6);
+
+    for (let i = 2; i < 6; i++) {
+      splitter.connect(merger, i, i);
+    }
+
+    const stereoPanner = this.audioContext.createStereoPanner();
+    stereoPanner.channelInterpretation = 'discrete';
+
+    if (this.audioSource) {
+      this.audioSource.connect(splitter);
+      this.audioSource.connect(stereoPanner);
+    }
+
     this.audioEqualizer.setupNodes(this.audioContext);
+
+    merger.connect(this.audioEqualizer.getInputNode());
+    stereoPanner.connect(this.audioEqualizer.getInputNode());
+
     this.audioChannelMixer.setupNodes(this.audioContext);
 
     this.audioEqualizer.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioCompressor.setupNodes(this.audioContext, this.audioEqualizer.getOutputNode(), this.audioChannelMixer.getInputNode());
 
     this.audioCrosstalk.setupNodes(this.audioContext, this.audioChannelMixer.getOutputNode());
-
-    if (this.audioSource) {
-      this.audioSource.connect(this.audioEqualizer.getInputNode());
-    }
-    // this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
-    // this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
 
     this.audioGain = this.audioCrosstalk.getOutputNode();
     this.audioGain.gain.value = 1;
