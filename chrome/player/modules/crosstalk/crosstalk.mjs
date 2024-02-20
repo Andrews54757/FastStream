@@ -49,7 +49,7 @@ export class CrosstalkNode {
     };
 
     const fs = this.audioContext.sampleRate;
-    options.tc = Math.round(options.microdelay * fs * 1e-6);
+    options.tc = options.microdelay * fs * 1e-6;
 
     const changedProperties = {
       tc: options.tc !== this.cachedOptions.tc,
