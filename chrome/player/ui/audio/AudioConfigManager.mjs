@@ -387,7 +387,6 @@ export class AudioConfigManager extends EventEmitter {
   renderLoop() {
     if (!this.shouldRunRenderLoop) {
       this.renderLoopRunning = false;
-      return;
     } else {
       requestAnimationFrame(() => {
         this.renderLoop();
@@ -416,19 +415,23 @@ export class AudioConfigManager extends EventEmitter {
     this.audioSource = this.client.audioSource;
 
     this.audioEqualizer.setupNodes(this.audioContext);
+    this.audioCompressor.setupNodes(this.audioContext);
+    this.audioChannelMixer.setupNodes(this.audioContext);
+    this.audioCrosstalk.setupNodes(this.audioContext);
+
     if (this.audioSource) {
       this.audioSource.connect(this.audioEqualizer.getInputNode());
     }
 
-    this.audioChannelMixer.setupNodes(this.audioContext);
-    this.audioEqualizer.getOutputNode().connect(this.audioChannelMixer.getInputNode());
-    this.audioCompressor.setupNodes(this.audioContext, this.audioEqualizer.getOutputNode(), this.audioChannelMixer.getInputNode());
+    this.audioEqualizer.getOutputNode().connect(this.audioCompressor.getInputNode());
+    this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
+    this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
 
     this.audioGain = this.audioContext.createGain();
     this.audioGain.gain.value = 1;
 
-    this.audioChannelMixer.getOutputNode().connect(this.audioGain);
-    this.audioCrosstalk.setupNodes(this.audioContext, this.audioChannelMixer.getOutputNode(), this.audioGain);
+    this.audioCrosstalk.getOutputNode().connect(this.audioGain);
+
 
     if (DOMElements.audioConfigContainer.style.display !== 'none') {
       this.startRenderLoop();

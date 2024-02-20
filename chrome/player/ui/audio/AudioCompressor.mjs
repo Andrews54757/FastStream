@@ -4,6 +4,8 @@ import {WebUtils} from '../../utils/WebUtils.mjs';
 
 export class AudioCompressor {
   constructor() {
+    this.inputNode = null;
+    this.outputNode = null;
     this.compressorNode = null;
     this.compressorGain = null;
     this.compressorConfig = null;
@@ -15,11 +17,11 @@ export class AudioCompressor {
   }
 
   getInputNode() {
-    return this.compressorNode;
+    return this.inputNode;
   }
 
   getOutputNode() {
-    return this.compressorGain;
+    return this.outputNode;
   }
 
   setCompressionConfig(config) {
@@ -77,15 +79,7 @@ export class AudioCompressor {
     this.ui.compressorToggle.classList.toggle('enabled', compressor.enabled);
 
     if (compressor.enabled) {
-      if (!this.compressorNode) {
-        this.sourceNode.disconnect(this.destinationNode);
-        this.compressorNode = this.audioContext.createDynamicsCompressor();
-        this.compressorGain = this.audioContext.createGain();
-        this.sourceNode.connect(this.compressorNode);
-        this.compressorNode.connect(this.compressorGain);
-        this.compressorGain.connect(this.destinationNode);
-      }
-
+      this.createCompressorNodes();
       this.compressorNode.threshold.value = compressor.threshold;
       this.compressorNode.knee.value = compressor.knee;
       this.compressorNode.ratio.value = compressor.ratio;
@@ -93,31 +87,60 @@ export class AudioCompressor {
       this.compressorNode.release.value = compressor.release;
       this.compressorGain.gain.value = compressor.gain;
     } else {
-      if (this.compressorNode) {
-        this.sourceNode.disconnect(this.compressorNode);
-        this.compressorNode.disconnect(this.compressorGain);
-        this.compressorNode = null;
-        this.compressorGain.disconnect(this.destinationNode);
-        this.compressorGain = null;
-        this.sourceNode.connect(this.destinationNode);
-      }
+      this.destroyCompressorNodes();
     }
   }
 
-  setupNodes(audioContext, sourceNode, destinationNode) {
-    if (this.audioContext !== audioContext) {
-      if (this.compressorNode) {
-        this.compressorNode.disconnect();
-        this.compressorNode = null;
-      }
-      if (this.compressorGain) {
-        this.compressorGain.disconnect();
-        this.compressorGain = null;
-      }
-    }
+  createCompressorNodes() {
+    if (this.compressorNode) return;
+
+    const audioContext = this.audioContext;
+
+    this.compressorMerger = audioContext.createChannelMerger(2);
+    this.compressorSplitter = audioContext.createChannelSplitter(2);
+    this.compressorNode = audioContext.createDynamicsCompressor();
+    this.compressorGain = audioContext.createGain();
+
+    this.inputNode.disconnect(this.outputNode, 0);
+    this.inputNode.disconnect(this.outputNode, 1);
+
+    this.inputNode.connect(this.compressorMerger, 0, 0);
+    this.inputNode.connect(this.compressorMerger, 1, 1);
+
+    this.compressorMerger.connect(this.compressorNode);
+    this.compressorNode.connect(this.compressorGain);
+
+    this.compressorGain.connect(this.compressorSplitter);
+    this.compressorSplitter.connect(this.outputNode, 0, 0);
+    this.compressorSplitter.connect(this.outputNode, 1, 1);
+  }
+
+  destroyCompressorNodes() {
+    if (!this.compressorNode) return;
+    this.inputNode.disconnect(this.compressorMerger);
+    this.compressorMerger.disconnect(this.compressorNode);
+    this.compressorNode.disconnect(this.compressorGain);
+    this.compressorGain.disconnect(this.compressorSplitter);
+    this.compressorSplitter.disconnect(this.outputNode);
+    this.inputNode.connect(this.outputNode, 0, 0);
+    this.inputNode.connect(this.outputNode, 1, 1);
+
+    this.compressorMerger = null;
+    this.compressorNode = null;
+    this.compressorGain = null;
+    this.compressorSplitter = null;
+  }
+
+  setupNodes(audioContext) {
+    this.destroyCompressorNodes();
+
     this.audioContext = audioContext;
-    this.sourceNode = sourceNode;
-    this.destinationNode = destinationNode;
+    this.inputNode = audioContext.createChannelSplitter(6);
+    this.outputNode = audioContext.createChannelMerger(6);
+
+    for (let i = 0; i < 6; i++) {
+      this.inputNode.connect(this.outputNode, i, i);
+    }
 
     this.updateCompressor();
   }

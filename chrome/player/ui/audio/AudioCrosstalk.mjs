@@ -16,11 +16,11 @@ export class AudioCrosstalk {
   }
 
   getInputNode() {
-    return this.crosstalkNode;
+    return this.inputNode;
   }
 
   getOutputNode() {
-    return this.crosstalkNode;
+    return this.outputNode;
   }
 
   setCrosstalkConfig(config) {
@@ -62,52 +62,65 @@ export class AudioCrosstalk {
   }
 
   async updateCrosstalk() {
-    if (!this.crosstalkConfig || this.settingUpCrosstalk) return;
+    if (!this.crosstalkConfig) return;
     const crosstalk = this.crosstalkConfig;
     this.ui.crosstalkToggle.textContent = crosstalk.enabled ? Localize.getMessage('audiocrosstalk_enabled') : Localize.getMessage('audiocrosstalk_disabled');
     this.ui.crosstalkToggle.classList.toggle('enabled', crosstalk.enabled);
 
     if (crosstalk.enabled) {
-      if (!this.crosstalkNode) {
-        this.crosstalkNode = new CrosstalkNode(this.audioContext, this.getCrosstalkConfigObj());
-
-        this.settingUpCrosstalk = true;
-        try {
-          await this.crosstalkNode.init();
-        } catch (e) {
-          this.settingUpCrosstalk = false;
-          this.crosstalkNode = null;
-          console.error('Failed to initialize crosstalk', e);
-          return;
-        }
-        this.settingUpCrosstalk = false;
-        this.sourceNode.disconnect(this.destinationNode);
-        this.sourceNode.connect(this.crosstalkNode.input);
-        this.crosstalkNode.output.connect(this.destinationNode);
-      } else {
-        this.crosstalkNode.configure(this.getCrosstalkConfigObj());
-      }
+      this.createCrosstalkNode();
+      this.crosstalkNode.configure(this.getCrosstalkConfigObj());
     } else {
-      if (this.crosstalkNode) {
-        this.sourceNode.disconnect(this.crosstalkNode.input);
-        this.crosstalkNode.output.disconnect(this.destinationNode);
-        this.sourceNode.connect(this.destinationNode);
-        this.crosstalkNode.destroy();
-        this.crosstalkNode = null;
-      }
+      this.removeCrosstalkNode();
     }
   }
 
-  setupNodes(audioContext, sourceNode, destinationNode) {
-    if (this.audioContext !== audioContext) {
-      if (this.crosstalkNode) {
-        this.crosstalkNode.destroy();
-        this.crosstalkNode = null;
-      }
+  async createCrosstalkNode() {
+    if (this.crosstalkNode) {
+      return;
     }
+
+    this.crosstalkNode = new CrosstalkNode(this.audioContext, this.getCrosstalkConfigObj());
+    const node = this.crosstalkNode;
+
+    try {
+      await this.crosstalkNode.init();
+    } catch (e) {
+      this.crosstalkNode = null;
+      console.error('Failed to initialize crosstalk', e);
+      return;
+    }
+
+    if (this.crosstalkNode !== node) {
+      node.destroy();
+      return;
+    }
+
+    this.inputNode.disconnect(this.outputNode);
+    this.inputNode.connect(this.crosstalkNode.input);
+    this.crosstalkNode.output.connect(this.outputNode);
+  }
+
+  removeCrosstalkNode() {
+    if (!this.crosstalkNode) {
+      return;
+    }
+
+    this.inputNode.disconnect(this.crosstalkNode.input);
+    this.crosstalkNode.output.disconnect(this.outputNode);
+    this.inputNode.connect(this.outputNode);
+    this.crosstalkNode.destroy();
+    this.crosstalkNode = null;
+  }
+
+  setupNodes(audioContext) {
+    this.removeCrosstalkNode();
+
     this.audioContext = audioContext;
-    this.sourceNode = sourceNode;
-    this.destinationNode = destinationNode;
+    this.inputNode = audioContext.createGain();
+    this.outputNode = audioContext.createGain();
+
+    this.inputNode.connect(this.outputNode);
 
     this.updateCrosstalk();
   }
@@ -139,7 +152,6 @@ export class AudioCrosstalk {
     WebUtils.setupTabIndex(this.ui.crosstalkToggle);
 
     this.ui.crosstalkToggle.addEventListener('click', () => {
-      if (this.settingUpCrosstalk) return;
       this.crosstalkConfig.enabled = !this.crosstalkConfig.enabled;
       this.updateCrosstalk();
     });

@@ -31,7 +31,7 @@ export class AudioChannelMixer {
   }
 
   getOutputNode() {
-    return this.finalAnalyser;
+    return this.finalGain;
   }
 
   setupUI() {
@@ -56,6 +56,12 @@ export class AudioChannelMixer {
   render() {
     const channels = this.channelMixerConfig;
     if (!channels) return;
+
+    if (this.ui.mixer.checkVisibility()) {
+      this.createAnalyzers();
+    } else {
+      this.destroyAnalyzers();
+    }
 
     channels.forEach((channel) => {
       const analyzer = this.channelAnalyzers[channel.id];
@@ -348,40 +354,50 @@ export class AudioChannelMixer {
     });
   }
 
+  createAnalyzers() {
+    if (this.channelAnalyzers.length > 0) {
+      return;
+    }
+
+    this.channelGains.forEach((gain) => {
+      const analyser = this.audioContext.createAnalyser();
+      analyser.fftSize = 32;
+      analyser.maxDecibels = -20;
+      this.channelAnalyzers.push(analyser);
+      gain.connect(analyser);
+    });
+  }
+
+  destroyAnalyzers() {
+    if (this.channelAnalyzers.length === 0) {
+      return;
+    }
+
+    this.channelGains.forEach((gain, i) => {
+      gain.disconnect(this.channelAnalyzers[i]);
+      this.channelAnalyzers[i].disconnect();
+    });
+    this.channelAnalyzers = [];
+  }
+
   setupNodes(audioContext) {
+    this.destroyAnalyzers();
     this.audioContext = audioContext;
     this.channelSplitter = this.audioContext.createChannelSplitter();
     this.channelMerger = this.audioContext.createChannelMerger();
 
     this.channelGains = [];
-    this.channelAnalyzers = [];
     for (let i = 0; i < 6; i++) {
       const gain = this.audioContext.createGain();
       this.channelGains.push(gain);
 
       this.channelSplitter.connect(gain, i);
-
-      const analyser = this.audioContext.createAnalyser();
-      analyser.fftSize = 32;
-      analyser.maxDecibels = -20;
-
-      this.channelAnalyzers.push(analyser);
-
-      gain.connect(analyser);
-
-      analyser.connect(this.channelMerger, 0, i);
+      gain.connect(this.channelMerger, 0, i);
     }
 
     this.finalGain = this.audioContext.createGain();
-    this.channelMerger.connect(this.finalGain);
-
-    this.finalAnalyser = this.audioContext.createAnalyser();
-    this.finalAnalyser.fftSize = 32;
-    this.finalAnalyser.maxDecibels = -20;
-    this.finalGain.connect(this.finalAnalyser);
-
     this.channelGains.push(this.finalGain);
-    this.channelAnalyzers.push(this.finalAnalyser);
+    this.channelMerger.connect(this.finalGain);
 
     this.refreshMixer();
   }
