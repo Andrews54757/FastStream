@@ -97,8 +97,8 @@ export class AudioCrosstalk {
     }
 
     this.inputNode.disconnect(this.outputNode);
-    this.inputNode.connect(this.crosstalkNode.input);
-    this.crosstalkNode.output.connect(this.outputNode);
+    this.inputNode.connect(this.crosstalkNode.getInputNode());
+    this.crosstalkNode.getOutputNode().connect(this.outputNode);
   }
 
   removeCrosstalkNode() {
@@ -106,8 +106,8 @@ export class AudioCrosstalk {
       return;
     }
 
-    this.inputNode.disconnect(this.crosstalkNode.input);
-    this.crosstalkNode.output.disconnect(this.outputNode);
+    this.inputNode.disconnect(this.crosstalkNode.getInputNode());
+    this.crosstalkNode.getOutputNode().disconnect(this.outputNode);
     this.inputNode.connect(this.outputNode);
     this.crosstalkNode.destroy();
     this.crosstalkNode = null;
