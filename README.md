@@ -31,7 +31,7 @@ Notes:
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work. Exception: FastStream will NOT work using Brave Browser due to [brave/brave-browser#30854](https://github.com/brave/brave-browser/issues/30854)
 
-Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox on the desktop is already a exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox for the desktop is already an exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist like me. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
 
 ## Installation For Chrome and Firefox
 
@@ -87,7 +87,5 @@ FastStream does not accept donations for the project as a whole. Please see the 
 Please see the [wiki](https://github.com/Andrews54757/FastStream/wiki/Technical-Details) for more information on the technical details!
   
 ## Disclaimer
-
-(I'm not a lawyer, don't take this as legal advice but do pay attention)
 
 While it may be possible for FastStream to save videos from any website as long as there is no DRM, that doesn't mean you have the legal right to do so if you don't own the content. Please be mindful of how you use this tool. FastStream should not be used to infringe copyright.
