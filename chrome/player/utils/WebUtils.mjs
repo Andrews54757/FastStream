@@ -396,7 +396,9 @@ export class WebUtils {
       });
 
       span.addEventListener('keydown', (e)=>{
-        if (e.key === 'Enter') {
+        if (e.key === 'Tab') {
+          return;
+        } else if (e.key === 'Enter') {
           span.blur();
           e.stopPropagation();
         }
