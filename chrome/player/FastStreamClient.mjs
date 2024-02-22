@@ -428,6 +428,8 @@ export class FastStreamClient extends EventEmitter {
       el.style.zIndex = '999999999';
       el.innerText = msg;
       document.body.appendChild(el);
+
+      console.error(e);
     }
 
 
