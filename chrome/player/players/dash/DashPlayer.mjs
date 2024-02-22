@@ -222,7 +222,11 @@ export default class DashPlayer extends EventEmitter {
 
   set currentTime(value) {
     this.video.currentTime = value;
-    this.dash.seek(value);
+    try {
+      this.dash.seek(value);
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   get currentTime() {
