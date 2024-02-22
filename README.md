@@ -16,8 +16,6 @@ The player currently supports:
 - DASH streams
 - Youtube (download not supported on Chrome unless manually installed, see Github)
 
-Should you like binging shows, the player also comes equipped with a custom video analysis system that runs in the background to identify intro/outro sequences based on repetitive scenes. Once they have been identified, you can skip them easily by pressing S.
-
 To use the player, simply:
 1. Go to any website you want with a video and toggle the extension on. Any video it detects will be automatically replaced with the FastStream player.
 2. Alternatively, you can also simply click on or navigate to a stream manifest file (m3u8/mpd) to begin playing.
