@@ -2,19 +2,19 @@
 
 # FastStream
 
-Tired of having to wait while videos buffer? Frustrated by a website's lack of accessibility features? This extension will replace videos on websites with a custom accessible video player designed for your convenience.
+Tired of having to wait while videos buffer? Frustrated by a website's lack of accessibility features? This extension will replace videos on websites with an accessible video player designed for your convenience.
 
 1. Automatic fragmentation and parallel requests for up to 6x faster download speeds. Watch videos without interruptions by predownloading the video in the background.
-2. Advanced subtitling features include: built-in OpenSubtitles support to find subtitles when they are not given, customizeable subtitle appearance to fit your needs, and an intuitive subtitle syncing tool to adjust subtitle timings on the fly.
+2. Advanced subtitling features include: customizeable subtitle appearance, built-in OpenSubtitles support to find subtitles on the internet, and an intuitive subtitle syncing tool to adjust subtitle timings on the fly.
 3. Adjustable audio dynamics (equalizer, compressor, mixer, volume booster), and video settings (brightness, contrast, hue, LMS daltonization for color blindness) for your unique audiovisual preferences.
 4. 20+ remappable keybinds and accessible tool buttons for easy control of the player.
 5. Available in multiple languages! Translated into Spanish and Japanese by the FastStream community. Support for more languages is coming soon!
 
 The player currently supports:
-- MP4 videos
-- HLS streams
-- DASH streams
-- Youtube (download not supported on Chrome unless manually installed, see Github)
+- MP4 videos (.mp4)
+- HLS streams (.m3u8)
+- DASH streams (.mpd)
+- Youtube (download not supported on Chrome unless manually installed due to Web Store policy)
 
 To use the player, simply:
 1. Go to any website you want with a video and toggle the extension on. Any video it detects will be automatically replaced with the FastStream player.
@@ -25,8 +25,8 @@ Notes:
 - Livestreams are not supported. They will not be supported in the near future.
 - This player will not function with DRM protected content. This is intended. Please be mindful of how you use this tool. FastStream should not be used to infringe copyright.
 - This player is still a work-in-progress. Please report any bugs to the Github issue tracker here: https://github.com/Andrews54757/FastStream/issues
-- For your privacy, this extension does not collect telemetry. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
-- We take accessibiliy seriously. If you need accommodations not available in the current version, please contact us and we will work on it ASAP. Also, please feel free to submit feature requests or suggestions on the Github issue tracker!
+- For your privacy, this extension **does not collect telemetry**. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
+- **We take accessibiliy concerns seriously**. If you need accommodations not available in the latest version, please contact us and we will work on it ASAP. Also, please feel free to submit feature requests or suggestions on the Github issue tracker!
 
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work. Exception: FastStream will NOT work using Brave Browser due to [brave/brave-browser#30854](https://github.com/brave/brave-browser/issues/30854)
