@@ -396,18 +396,19 @@ export class FastStreamClient extends EventEmitter {
       this.currentTime = 0;
       this.setSeekSave(true);
 
-      this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
-        isPreview: true,
-      });
+      if (this.player.getSource()) {
+        this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
+          isPreview: true,
+        });
 
-      await this.previewPlayer.setup();
-      this.bindPreviewPlayer(this.previewPlayer);
+        await this.previewPlayer.setup();
+        this.bindPreviewPlayer(this.previewPlayer);
 
+        await this.previewPlayer.setSource(this.player.getSource());
+        this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
 
-      await this.previewPlayer.setSource(this.player.getSource());
-      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
-
-      await this.videoAnalyzer.setSource(this.player.getSource());
+        await this.videoAnalyzer.setSource(this.player.getSource());
+      }
 
       this.updateCSSFilters();
 
