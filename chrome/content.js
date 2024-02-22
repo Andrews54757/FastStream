@@ -212,24 +212,7 @@ chrome.runtime.onMessage.addListener(
         OverridenYTKeys = true;
         return true;
       } else if (request.type === 'remove_players') {
-        iframeMap.forEach((iframeObj) => {
-          unmakeMiniPlayer(iframeObj);
-        });
-
-        players.forEach((player) => {
-          if (player.isYt) {
-            showYT(player.old);
-            player.iframe.parentNode.removeChild(player.iframe);
-          } else {
-            player.iframe.parentNode.replaceChild(player.old, player.iframe);
-          }
-
-          removePauseListeners(player.old);
-        });
-
-        players.length = 0;
-        FoundYTPlayer = null;
-        OverridenYTKeys = false;
+        removePlayers();
         sendResponse('ok');
       } else if (request.type === 'get_video_size') {
         getVideo().then((video) => {
@@ -238,6 +221,27 @@ chrome.runtime.onMessage.addListener(
         return true;
       }
     });
+
+function removePlayers() {
+  iframeMap.forEach((iframeObj) => {
+    unmakeMiniPlayer(iframeObj);
+  });
+
+  players.forEach((player) => {
+    if (player.isYt) {
+      showYT(player.old);
+      player.iframe.parentNode.removeChild(player.iframe);
+    } else {
+      player.iframe.parentNode.replaceChild(player.old, player.iframe);
+    }
+
+    removePauseListeners(player.old);
+  });
+
+  players.length = 0;
+  FoundYTPlayer = null;
+  OverridenYTKeys = false;
+}
 
 function updateMiniPlayer(iframeObj) {
   if (iframeObj.isMini) {
@@ -797,6 +801,24 @@ function get_yt_video_elements() {
   return elements;
 }
 
+function isLinkToDifferentPageOnWebsite(url) {
+  try {
+    url = new URL(url, window.location.href);
+  } catch (e) {
+    return false;
+  }
+
+  if (url.origin !== window.location.origin) {
+    return false;
+  }
+
+  if (url.pathname !== window.location.pathname) {
+    return true;
+  }
+
+  return false;
+}
+
 function getKeyString(e) {
   const metaPressed = e.metaKey && e.key !== 'Meta';
   const ctrlPressed = e.ctrlKey && e.key !== 'Control';
@@ -890,6 +912,26 @@ if (is_url_yt(window.location.href)) {
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
+    }
+  }, true);
+} else {
+  document.addEventListener('click', (e) => {
+    let current = e.target;
+    while (current) {
+      if (current.tagName === 'A') {
+        break;
+      }
+      current = current.parentElement;
+    }
+
+    if (!current || !current.href) {
+      return;
+    }
+
+    // check if href leads to different page and origin
+    const url = current.href;
+    if (isLinkToDifferentPageOnWebsite(url)) {
+      removePlayers();
     }
   }, true);
 }
