@@ -33,6 +33,8 @@ Notes:
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work. Exception: FastStream will NOT work using Brave Browser due to [brave/brave-browser#30854](https://github.com/brave/brave-browser/issues/30854)
 
+Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox on the desktop is already a exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+
 ## Installation For Chrome and Firefox
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
