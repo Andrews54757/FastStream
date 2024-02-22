@@ -19,7 +19,7 @@ export class CSSFilterUtils {
     }
 
     if (options.videoContrast !== 1) {
-      filters.push(`contrast(${toptions.videoContrast})`);
+      filters.push(`contrast(${options.videoContrast})`);
     }
 
     if (options.videoSaturation !== 1) {
