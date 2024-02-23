@@ -5,7 +5,7 @@
 Tired of having to wait while videos buffer? Frustrated by a website's lack of accessibility features? This extension will replace videos on websites with an accessible video player designed for your convenience.
 
 1. Automatic fragmentation and parallel requests for up to 6x faster download speeds. Watch videos without interruptions by predownloading the video in the background.
-2. Advanced subtitling features include: customizeable subtitle appearance, built-in OpenSubtitles support to find subtitles on the internet, and an intuitive subtitle syncing tool to adjust subtitle timings on the fly.
+2. Advanced subtitling features include: customizable subtitle appearance, built-in OpenSubtitles support to find subtitles on the internet, and an intuitive subtitle syncing tool to adjust subtitle timings on the fly.
 3. Adjustable audio dynamics (equalizer, compressor, mixer, volume booster), and video settings (brightness, contrast, hue, LMS daltonization for color blindness) for your unique audiovisual preferences.
 4. 20+ remappable keybinds and accessible tool buttons for easy control of the player.
 5. Available in multiple languages! Translated into Spanish and Japanese by the FastStream community. Support for more languages is coming soon!
