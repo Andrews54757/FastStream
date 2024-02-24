@@ -18,6 +18,7 @@ import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
 import {SecureMemory} from './modules/SecureMemory.mjs';
 import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
+import {AudioNodeTTS} from './modules/tts/tts.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -385,6 +386,7 @@ export class FastStreamClient extends EventEmitter {
 
       this.audioContext = new AudioContext();
       this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+
       this.audioConfigManager.setupNodes();
 
       this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
@@ -408,6 +410,23 @@ export class FastStreamClient extends EventEmitter {
         this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
 
         await this.videoAnalyzer.setSource(this.player.getSource());
+
+        if (this.tts) {
+          this.tts.destroy();
+        }
+
+        this.ttsPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this);
+
+        await this.ttsPlayer.setup();
+        await this.ttsPlayer.setSource(this.player.getSource());
+
+        this.ttsContext = new AudioContext();
+        this.ttsSource = this.ttsContext.createMediaElementSource(this.ttsPlayer.getVideo());
+        this.tts = new AudioNodeTTS(this.ttsContext, {});
+        this.tts.init().then(()=>{
+          console.log('TTS initialized');
+          this.ttsSource.connect(this.tts.getNode());
+        });
       }
 
       this.updateCSSFilters();
@@ -559,6 +578,13 @@ export class FastStreamClient extends EventEmitter {
       if (!this.shouldDownloadAll()) {
         if (this.fragments) this.freeFragments(this.fragments);
         if (this.audioFragments) this.freeFragments(this.audioFragments);
+      }
+
+      if (this.ttsPlayer) {
+        const target = this.currentTime + 5;
+        if (Math.abs(this.ttsPlayer.currentTime - target) > 0.5) {
+          this.ttsPlayer.currentTime = target;
+        }
       }
     }
 
@@ -946,11 +972,22 @@ export class FastStreamClient extends EventEmitter {
     if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
+
+    if (this.ttsPlayer) {
+      await this.ttsPlayer.play();
+      if (this.ttsContext && this.ttsContext.state === 'suspended') {
+        await this.ttsContext.resume();
+      }
+    }
   }
 
   async pause() {
     await this.player.pause();
     this.interfaceController.pause();
+
+    if (this.ttsPlayer) {
+      await this.ttsPlayer.pause();
+    }
   }
 
   undoSeek() {
@@ -1038,6 +1075,9 @@ export class FastStreamClient extends EventEmitter {
       }
       if (this.previewPlayer) {
         this.previewPlayer.currentLevel = level;
+      }
+      if (this.ttsPlayer) {
+        this.ttsPlayer.currentLevel = level;
       }
       this.videoAnalyzer.setLevel(level);
       this.previousLevel = level;
