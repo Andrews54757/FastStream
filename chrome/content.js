@@ -935,6 +935,15 @@ document.addEventListener('click', (e) => {
     try {
       const parsed = new URL(url);
       const searchParams = parsed.searchParams;
+      // check if it has v
+      if (searchParams.has('v')) {
+        // check if it matches current video
+        const videoID = searchParams.get('v');
+        const currentID = get_yt_identifier(window.location.href);
+        if (videoID !== currentID) {
+          return;
+        }
+      }
       if (searchParams.has('t')) {
         const time = searchParams.get('t');
         if (time.match(/^[0-9]+s$/)) {
