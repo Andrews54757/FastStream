@@ -185,7 +185,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
-  if (msg.type === 'transmit_key') {
+  if (msg.type === 'seek_to') {
+    // send to children
+    for (const i in tab.frames) {
+      if (Object.hasOwn(tab.frames, i)) {
+        const frame = tab.frames[i];
+        if (frame.parentId === sender.frameId) {
+          chrome.tabs.sendMessage(frame.tab.tabId, {
+            type: 'seek',
+            time: msg.time,
+          }, {
+            frameId: frame.frameId,
+          }, ()=>{
+            BackgroundUtils.checkMessageError('seek');
+          });
+        }
+      }
+    }
+  } else if (msg.type === 'transmit_key') {
     // send to children
     for (const i in tab.frames) {
       if (Object.hasOwn(tab.frames, i)) {

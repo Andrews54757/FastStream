@@ -914,25 +914,49 @@ if (is_url_yt(window.location.href)) {
       e.stopImmediatePropagation();
     }
   }, true);
-} else {
-  document.addEventListener('click', (e) => {
-    let current = e.target;
-    while (current) {
-      if (current.tagName === 'A') {
-        break;
-      }
-      current = current.parentElement;
+}
+document.addEventListener('click', (e) => {
+  let current = e.target;
+  while (current) {
+    if (current.tagName === 'A') {
+      break;
     }
+    current = current.parentElement;
+  }
 
-    if (!current || !current.href) {
+  if (!current || !current.href) {
+    return;
+  }
+
+  // check if href leads to different page and origin
+  const url = current.href;
+
+  if (is_url_yt(window.location.href)) {
+    try {
+      const parsed = new URL(url);
+      const searchParams = parsed.searchParams;
+      if (searchParams.has('t')) {
+        const time = searchParams.get('t');
+        if (time.match(/^[0-9]+s$/)) {
+          chrome.runtime.sendMessage({
+            type: 'seek_to',
+            time: parseInt(time),
+          });
+          if (OverridenYTKeys) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+          }
+        }
+      }
+    } catch (e) {
+      console.error(e);
       return;
     }
-
-    // check if href leads to different page and origin
-    const url = current.href;
+  } else {
     if (isLinkToDifferentPageOnWebsite(url)) {
       removePlayers();
     }
-  }, true);
-}
+  }
+}, true);
+
 

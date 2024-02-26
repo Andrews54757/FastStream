@@ -14,7 +14,9 @@ let optionSendTime = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
-        if (request.type === 'keypress') {
+        if (request.type === 'seek') {
+          if (window.fastStream) window.fastStream.currentTime = request.time;
+        } else if (request.type === 'keypress') {
           if (window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
         } else if (request.type === 'sendFrameId') {
           if (window.parent !== window) {
