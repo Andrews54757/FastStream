@@ -916,6 +916,10 @@ if (is_url_yt(window.location.href)) {
   }, true);
 }
 document.addEventListener('click', (e) => {
+  if (!e.isTrusted) {
+    return;
+  }
+
   let current = e.target;
   while (current) {
     if (current.tagName === 'A') {
