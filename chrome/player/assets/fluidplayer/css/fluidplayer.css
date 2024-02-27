@@ -7,6 +7,8 @@ body {
 
     --font-size-small: 16px;
     --font-size-medium: 18px;
+
+    --volume-block-width: 210px;
 }
 
 .fluid_video_wrapper {
@@ -421,7 +423,7 @@ body {
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:focus .fluid_control_volume_container,
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:hover .fluid_control_volume_container {
-    width: 210px;
+    width: var(--volume-block-width);
     visibility: visible;
 }
 
@@ -2629,6 +2631,7 @@ input.crosstalk_calculator_input {
     body {
         --font-size-small: 13px;
         --font-size-medium: 16px;
+        --volume-block-width: 150px;
     }
 
     .fluid_button {
@@ -2685,6 +2688,7 @@ input.crosstalk_calculator_input {
 
     body {
         --font-size-small: 9px;
+        --volume-block-width: 100px;
     }
 
     .fluid_button_soundwave,
