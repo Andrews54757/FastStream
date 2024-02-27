@@ -18,6 +18,8 @@ import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
 import {SecureMemory} from './modules/SecureMemory.mjs';
 import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
+import {Utils} from './utils/Utils.mjs';
+import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -54,6 +56,7 @@ export class FastStreamClient extends EventEmitter {
       seekStepSize: 0.2,
       defaultPlaybackRate: 1,
       qualityMultiplier: 1,
+      toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
     };
     this.persistent = {
       playing: false,
@@ -193,6 +196,11 @@ export class FastStreamClient extends EventEmitter {
     }
     if (this.interfaceController.miniPlayerActive) {
       this.interfaceController.requestMiniplayer(true);
+    }
+
+    if (options.toolSettings) {
+      this.options.toolSettings = options.toolSettings;
+      this.interfaceController.updateToolVisibility();
     }
   }
 

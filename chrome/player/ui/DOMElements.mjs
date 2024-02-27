@@ -70,4 +70,5 @@ export const DOMElements = {
 
   languageButton: document.querySelector('.mainplayer .fluid_control_language'),
   languageMenu: document.querySelector('.mainplayer .fluid_control_language .fluid_language_list'),
+  toolsContainer: document.querySelector('.mainplayer .fluid_controls_right'),
 };

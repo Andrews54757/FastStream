@@ -101,10 +101,10 @@ export class VideoQualityChanger extends EventEmitter {
     const levels = client.levels;
 
     if (!levels || levels.size <= 1) {
-      DOMElements.videoSource.style.display = 'none';
+      DOMElements.videoSource.classList.add('hidden');
       return;
     } else {
-      DOMElements.videoSource.style.display = '';
+      DOMElements.videoSource.classList.remove('hidden');
     }
 
     const currentLevel = client.currentLevel;

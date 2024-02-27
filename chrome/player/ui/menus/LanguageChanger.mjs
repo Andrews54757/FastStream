@@ -110,10 +110,10 @@ export class LanguageChanger extends EventEmitter {
     const videoTracks = tracks.video;
     const audioTracks = tracks.audio;
     if (videoTracks.length < 2 && audioTracks.length < 2) {
-      DOMElements.languageButton.style.display = 'none';
+      DOMElements.languageButton.classList.add('hidden');
       return;
     } else {
-      DOMElements.languageButton.style.display = '';
+      DOMElements.languageButton.classList.remove('hidden');
     }
 
     DOMElements.languageMenu.replaceChildren();

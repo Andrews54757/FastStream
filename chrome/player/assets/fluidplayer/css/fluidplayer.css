@@ -2626,6 +2626,10 @@ input.crosstalk_calculator_input {
     font-size: 14px;
 }
 
+.hidden {
+    display: none !important;
+}
+
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     body {

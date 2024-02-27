@@ -493,10 +493,59 @@ export class InterfaceController {
   }
 
   updateToolVisibility() {
-    DOMElements.pip.style.display = (this.client.player && document.pictureInPictureEnabled) ? 'inline-block' : 'none';
-    DOMElements.download.style.display = (this.client.player && !this.client.player.canSave().cantSave) ? 'inline-block' : 'none';
-    DOMElements.screenshot.style.display = this.client.player ? 'inline-block' : 'none';
-    DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
+    if (this.client.player && document.pictureInPictureEnabled) {
+      DOMElements.pip.classList.remove('hidden');
+    } else {
+      DOMElements.pip.classList.add('hidden');
+    }
+
+    if (this.client.player) {
+      DOMElements.screenshot.classList.remove('hidden');
+    } else {
+      DOMElements.screenshot.classList.add('hidden');
+    }
+
+    if (this.client.player && this.client.player.canSave().canSave) {
+      DOMElements.download.classList.remove('hidden');
+    } else {
+      DOMElements.download.classList.add('hidden');
+    }
+
+
+    const toolSettings = this.client.options.toolSettings;
+    const toolElements = {
+      pip: DOMElements.pip,
+      screenshot: DOMElements.screenshot,
+      download: DOMElements.download,
+      playrate: DOMElements.playbackRate,
+      fullscreen: DOMElements.fullscreen,
+      subtitles: DOMElements.subtitles,
+      audioconfig: DOMElements.audioConfigBtn,
+      sources: DOMElements.linkButton,
+      settings: DOMElements.settingsButton,
+      quality: DOMElements.videoSource,
+      languages: DOMElements.languageButton,
+    };
+
+    const elementSettingPairs = [];
+
+    for (const [tool, element] of Object.entries(toolElements)) {
+      if (toolSettings[tool].enabled) {
+        element.style.display = '';
+      } else {
+        element.style.display = 'none';
+      }
+
+      elementSettingPairs.push([element, toolSettings[tool].priority]);
+
+      element.remove();
+    }
+
+    elementSettingPairs.sort((a, b) => a[1] - b[1]);
+
+    for (const [element] of elementSettingPairs) {
+      DOMElements.toolsContainer.appendChild(element);
+    }
   }
 
   toggleHide() {
