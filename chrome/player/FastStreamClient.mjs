@@ -712,6 +712,7 @@ export class FastStreamClient extends EventEmitter {
   setLoop(start, end) {
     this.loopStart = start;
     this.loopEnd = end;
+    clearTimeout(this.loopTimeout);
     this.updateLoop();
   }
 
