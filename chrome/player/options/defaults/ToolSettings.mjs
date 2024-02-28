@@ -16,39 +16,39 @@ export const DefaultToolSettings = {
     'priority': 400,
   },
   'languages': {
-    'enabled': false,
-    'priority': 100,
+    'enabled': true,
+    'priority': 500,
   },
   'playrate': {
     'enabled': true,
-    'priority': 500,
+    'priority': 600,
   },
   'settings': {
     'enabled': true,
-    'priority': 600,
+    'priority': 700,
   },
   'download': {
-    'enabled': false,
-    'priority': 500,
+    'enabled': true,
+    'priority': 900,
   },
   'screenshot': {
     'enabled': false,
-    'priority': 300,
+    'priority': 200,
   },
   'pip': {
     'enabled': false,
-    'priority': 400,
+    'priority': 300,
   },
   'fullscreen': {
     'enabled': true,
-    'priority': 800,
+    'priority': 1000,
   },
   'more': {
     'enabled': true,
-    'priority': 700,
+    'priority': 800,
   },
   'loop': {
     'enabled': false,
-    'priority': 200,
+    'priority': 100,
   },
 };
