@@ -369,6 +369,9 @@
     "player_fullscreen_label": {
         "message": "フルスクリーン"
     },
+    "player_more_label": {
+        "message": "その他のツール"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },

@@ -369,6 +369,9 @@
     "player_fullscreen_label": {
         "message": "Fullscreen"
     },
+    "player_more_label": {
+        "message": "More tools"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Fragment Failed! Click to retry."
     },
