@@ -267,7 +267,16 @@ export class InterfaceController {
       e.stopPropagation();
     });
 
-    DOMElements.fullscreen.addEventListener('click', this.fullscreenToggle.bind(this));
+    DOMElements.fullscreen.addEventListener('click', (e)=>{
+      if (e.shiftKey) {
+        this.pipToggle();
+        return;
+      }
+      this.fullscreenToggle();
+      e.stopPropagation();
+      e.preventDefault();
+    });
+
     WebUtils.setupTabIndex(DOMElements.fullscreen);
 
     document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
