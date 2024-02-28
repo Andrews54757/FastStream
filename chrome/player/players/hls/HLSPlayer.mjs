@@ -315,6 +315,10 @@ export default class HLSPlayer extends EventEmitter {
   destroy() {
     this.fragmentRequester.destroy();
     this.hls.destroy();
+
+    VideoUtils.destroyVideo(this.video);
+    this.video = null;
+
     this.emit(DefaultPlayerEvents.DESTROYED);
   }
 

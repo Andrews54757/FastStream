@@ -75,4 +75,6 @@ export const DOMElements = {
   moreButton: document.querySelector('.mainplayer .fluid_control_more'),
   loopButton: document.querySelector('.mainplayer .fluid_control_loop'),
   loopMenu: document.querySelector('.mainplayer .loop_menu'),
+
+  dragDemoTutorial: document.querySelector('.mainplayer .fluid_controls_dragdemo'),
 };

@@ -53,7 +53,8 @@ export default class DirectVideoPlayer extends EventEmitter {
   }
 
   destroy() {
-    this.video.src = '';
+    VideoUtils.destroyVideo(this.video);
+    this.video = null;
 
     this.emit(DefaultPlayerEvents.DESTROYED);
   }

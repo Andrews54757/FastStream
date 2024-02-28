@@ -2733,6 +2733,20 @@ input.crosstalk_calculator_input {
     background-color: var(--menu-textbutton-hover-background-color);
 }
 
+.fluid_controls_dragdemo {
+    position: absolute;
+    right: 5px;
+    bottom: 50px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.fluid_controls_dragdemo > video {
+    height: 64px;
+}
+
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     body {

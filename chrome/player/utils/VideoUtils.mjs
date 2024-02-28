@@ -105,4 +105,14 @@ export class VideoUtils {
       emitter.emit(DefaultPlayerEvents.WAITING);
     });
   }
+
+  static destroyVideo(video) {
+    try {
+      video.pause();
+      video.removeAttribute('src');
+      video.load();
+    } catch (e) {
+      console.error(e);
+    }
+  }
 }

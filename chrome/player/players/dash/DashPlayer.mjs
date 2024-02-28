@@ -217,6 +217,10 @@ export default class DashPlayer extends EventEmitter {
 
     }
     this.dash = null;
+
+    VideoUtils.destroyVideo(this.video);
+    this.video = null;
+
     this.emit(DefaultPlayerEvents.DESTROYED);
   }
 

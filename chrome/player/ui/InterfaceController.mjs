@@ -13,6 +13,7 @@ import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
+import {VideoUtils} from '../utils/VideoUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -79,6 +80,7 @@ export class InterfaceController {
     this.optionsWindow = new OptionsWindow();
 
     this.setupDOM();
+    this.setupDragDemoTutorial();
   }
 
   closeAllMenus(e) {
@@ -501,6 +503,7 @@ export class InterfaceController {
   startReorderUI() {
     if (this.specialReorderModeEnabled) return;
     this.closeAllMenus();
+    this.closeDragDemoTutorial();
     this.specialReorderModeEnabled = true;
     DOMElements.toolsContainer.classList.add('reordering');
     DOMElements.disabledTools.classList.add('reordering');
@@ -1379,5 +1382,41 @@ export class InterfaceController {
         },
         450,
     );
+  }
+
+  setupDragDemoTutorial() {
+    Utils.getConfig('dragDemoTutorialSeen').then((seen) => {
+      if (!seen) {
+        this.showDragDemoTutorial();
+      }
+    });
+
+    DOMElements.dragDemoTutorial.addEventListener('click', (e) => {
+      DOMElements.dragDemoTutorial.style.display = 'none';
+      video.pause();
+      video.remove();
+      e.stopPropagation();
+    });
+  }
+
+  showDragDemoTutorial() {
+    if (DOMElements.dragDemoTutorial.style.display !== 'none' ) return;
+    DOMElements.dragDemoTutorial.style.display = '';
+    const video = document.createElement('video');
+    video.src = './assets/dragdemo.mp4';
+    video.muted = true;
+    video.autoplay = true;
+    video.loop = true;
+    DOMElements.dragDemoTutorial.appendChild(video);
+    WebUtils.setupTabIndex(DOMElements.dragDemoTutorial);
+  }
+
+  closeDragDemoTutorial() {
+    if (DOMElements.dragDemoTutorial.style.display !== '') return;
+    DOMElements.dragDemoTutorial.style.display = 'none';
+    VideoUtils.destroyVideo(DOMElements.dragDemoTutorial.children[0]);
+    DOMElements.dragDemoTutorial.replaceChildren();
+
+    Utils.setConfig('dragDemoTutorialSeen', true);
   }
 }
