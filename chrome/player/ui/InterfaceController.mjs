@@ -596,7 +596,7 @@ export class InterfaceController {
       DOMElements.screenshot.classList.add('hidden');
     }
 
-    if (this.client.player && this.client.player.canSave().canSave) {
+    if (this.client.player && !this.client.player.canSave().cantSave) {
       DOMElements.download.classList.remove('hidden');
     } else {
       DOMElements.download.classList.add('hidden');
@@ -655,6 +655,7 @@ export class InterfaceController {
       DOMElements.moreButton.classList.remove('hidden');
     } else {
       DOMElements.moreButton.classList.add('hidden');
+      DOMElements.disabledTools.classList.remove('visible');
     }
 
     if (DOMElements.toolsContainer.children.length === 0) {
