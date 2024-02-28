@@ -73,4 +73,6 @@ export const DOMElements = {
   toolsContainer: document.querySelector('.mainplayer .fluid_controls_right'),
   disabledTools: document.querySelector('.mainplayer .fluid_controls_disabled_tools'),
   moreButton: document.querySelector('.mainplayer .fluid_control_more'),
+  loopButton: document.querySelector('.mainplayer .fluid_control_loop'),
+  loopMenu: document.querySelector('.mainplayer .loop_menu'),
 };

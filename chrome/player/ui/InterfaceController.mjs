@@ -17,6 +17,7 @@ import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {LanguageChanger} from './menus/LanguageChanger.mjs';
+import {LoopMenu} from './menus/LoopMenu.mjs';
 import {PlaybackRateChanger} from './menus/PlaybackRateChanger.mjs';
 import {VideoQualityChanger} from './menus/VideoQualityChanger.mjs';
 import {OptionsWindow} from './OptionsWindow.mjs';
@@ -56,10 +57,14 @@ export class InterfaceController {
       this.client.setLanguageTrack(track);
     });
 
+    this.loopControls = new LoopMenu(this.client);
+    this.loopControls.setupUI();
+
     this.playbackRateChanger.on('open', this.closeAllMenus.bind(this));
     this.videoQualityChanger.on('open', this.closeAllMenus.bind(this));
     this.languageChanger.on('open', this.closeAllMenus.bind(this));
     this.subtitlesManager.on('open', this.closeAllMenus.bind(this));
+    this.loopControls.on('open', this.closeAllMenus.bind(this));
 
     this.progressBar = new ProgressBar(this.client);
     this.progressBar.on('enteredSkipSegment', (segment)=>{
@@ -82,6 +87,7 @@ export class InterfaceController {
     this.videoQualityChanger.closeUI();
     this.languageChanger.closeUI();
     this.subtitlesManager.closeUI();
+    this.loopControls.closeUI();
   }
 
   setStatusMessage(key, message, type, expiry) {
@@ -593,8 +599,10 @@ export class InterfaceController {
 
     if (this.client.player) {
       DOMElements.screenshot.classList.remove('hidden');
+      DOMElements.loopButton.classList.remove('hidden');
     } else {
       DOMElements.screenshot.classList.add('hidden');
+      DOMElements.loopButton.classList.add('hidden');
     }
 
     if (this.client.player && !this.client.player.canSave().cantSave) {
@@ -616,6 +624,7 @@ export class InterfaceController {
       settings: DOMElements.settingsButton,
       quality: DOMElements.videoSource,
       languages: DOMElements.languageButton,
+      loop: DOMElements.loopButton,
       more: DOMElements.moreButton,
     };
 

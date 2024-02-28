@@ -371,6 +371,21 @@
     "player_more_label": {
         "message": "Más utilidades"
     },
+    "player_loop_label": {
+        "message": "Repetir"
+    },
+    "loop_menu_start": {
+        "message": "Inicio"
+    },
+    "loop_menu_end": {
+        "message": "Fin"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Repetir Habilitado"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Repetir Deshabilitado"
+    },
     "player_fragment_failed_singular": {
         "message": "¡$1 fragmento falló! Haz clic para reintentar."
     },

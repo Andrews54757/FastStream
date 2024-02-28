@@ -101,6 +101,14 @@ export class PlaybackRateChanger extends EventEmitter {
         e.stopPropagation();
       }
     });
+
+    DOMElements.rateMenu.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+
+    DOMElements.rateMenu.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
   }
 
   shiftPlaybackRate(shift) {

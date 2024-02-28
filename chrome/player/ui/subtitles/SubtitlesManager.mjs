@@ -269,6 +269,14 @@ export class SubtitlesManager extends EventEmitter {
     window.addEventListener('resize', () => {
       this.checkTrackBounds();
     });
+
+    DOMElements.subtitlesMenu.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+
+    DOMElements.subtitlesMenu.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
   }
 
   createTrackEntryElements(i) {

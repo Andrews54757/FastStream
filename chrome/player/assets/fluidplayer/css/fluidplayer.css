@@ -1094,6 +1094,7 @@ body {
     background-color: var(--menu-textbutton-hover-background-color);
 }
 
+.loop_menu .option,
 .subtitles_options .option {
     position: relative;
     font-size: var(--font-size-small);
@@ -1102,6 +1103,7 @@ body {
     margin-bottom: 5px;
 }
 
+.loop_menu .option .label,
 .subtitles_options .option div {
     position: absolute;
     top: 50%;
@@ -1110,6 +1112,7 @@ body {
     right: 50%;
 }
 
+.loop_menu .option input,
 .subtitles_options .option input {
     border: 1px solid rgba(255, 255, 255, 0.3);
     background-color: rgba(0, 0, 0, 0.2);
@@ -1124,6 +1127,7 @@ body {
 
 }
 
+.loop_menu .option input:focus,
 .subtitles_options .option input:focus {
     outline: none;
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -2667,7 +2671,7 @@ input.crosstalk_calculator_input {
     background-color: rgba(71, 71, 71, 0.75);
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 10px;
+    padding: 5px;
     gap: 5px;
 }
 
@@ -2693,6 +2697,42 @@ input.crosstalk_calculator_input {
     max-height: calc(100vh - 185px);
 }
 
+.loop_menu {
+    width: 250px;
+    padding: 5px 0px;
+    font-size: var(--font-size-small);
+}
+
+.now_button {
+    position: absolute;
+    right: 50%;
+    width: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0px 10px;
+    line-height: 25px;
+    background-color: var(--menu-textbutton-background-color);
+    color: var(--menu-textbutton-text-color);
+    text-align: center;
+}
+
+.loop_menu_toggle_button {
+    display: inline-block;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: var(--menu-textbutton-background-color);
+    color: var(--menu-textbutton-text-color);
+    min-width: 120px;
+    max-width: 200px;
+    text-align: center;
+}
+
+.now_button:hover,
+.loop_menu_toggle_button:hover {
+    background-color: var(--menu-textbutton-hover-background-color);
+}
+
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     body {
@@ -2707,7 +2747,6 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_controls_disabled_tools {
-        padding: 5px;
         gap: 2px;
     }
 

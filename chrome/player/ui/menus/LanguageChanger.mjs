@@ -105,6 +105,14 @@ export class LanguageChanger extends EventEmitter {
       e.preventDefault();
       e.stopPropagation();
     });
+
+    DOMElements.languageMenu.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+
+    DOMElements.languageMenu.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
   }
 
   updateLanguageTracks(client) {

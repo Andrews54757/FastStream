@@ -29,15 +29,15 @@ export const DefaultToolSettings = {
   },
   'download': {
     'enabled': false,
-    'priority': 400,
+    'priority': 500,
   },
   'screenshot': {
     'enabled': false,
-    'priority': 200,
+    'priority': 300,
   },
   'pip': {
     'enabled': false,
-    'priority': 300,
+    'priority': 400,
   },
   'fullscreen': {
     'enabled': true,
@@ -46,5 +46,9 @@ export const DefaultToolSettings = {
   'more': {
     'enabled': true,
     'priority': 700,
+  },
+  'loop': {
+    'enabled': false,
+    'priority': 200,
   },
 };

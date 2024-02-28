@@ -372,6 +372,21 @@
     "player_more_label": {
         "message": "More tools"
     },
+    "player_loop_label": {
+        "message": "Loop"
+    },
+    "loop_menu_start": {
+        "message": "Start"
+    },
+    "loop_menu_end": {
+        "message": "End"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Loop Enabled"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Loop Disabled"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Fragment Failed! Click to retry."
     },

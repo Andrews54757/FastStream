@@ -97,6 +97,14 @@ export class VideoQualityChanger extends EventEmitter {
         e.stopPropagation();
       }
     });
+
+    DOMElements.videoSourceList.addEventListener('mousedown', (e) => {
+      e.stopPropagation();
+    });
+
+    DOMElements.videoSourceList.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
   }
 
   updateQualityLevels(client) {

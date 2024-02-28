@@ -83,6 +83,7 @@ export class FastStreamClient extends EventEmitter {
 
     this.player = null;
     this.previewPlayer = null;
+    this.loopTimeout = null;
     this.saveSeek = true;
     this.pastSeeks = [];
     this.pastUnseeks = [];
@@ -257,6 +258,7 @@ export class FastStreamClient extends EventEmitter {
   updateDuration() {
     this.interfaceController.durationChanged();
     this.updateHasDownloadSpace();
+    this.updateLoop();
   }
 
   updateTime(time) {
@@ -583,6 +585,18 @@ export class FastStreamClient extends EventEmitter {
     this.checkLevelChange();
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
+
+    if (this.shouldLoopManually) {
+      if (this.persistent.currentTime >= this.loopEnd) {
+        clearTimeout(this.loopTimeout);
+        this.currentTime = this.loopStart;
+      } else if (this.persistent.currentTime >= this.loopEnd - 5) {
+        clearTimeout(this.loopTimeout);
+        this.loopTimeout = setTimeout(() => {
+          this.currentTime = this.loopStart;
+        }, (this.loopEnd - this.persistent.currentTime) * 1000 / this.playbackRate);
+      }
+    }
   }
 
   predownloadFragments() {
@@ -678,6 +692,38 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  setLoop(start, end) {
+    this.loopStart = start;
+    this.loopEnd = end;
+    this.updateLoop();
+  }
+
+  updateLoop() {
+    if (!this.player) {
+      return;
+    }
+    const start = this.loopStart;
+    const end = this.loopEnd;
+
+    this.shouldLoopManually = false;
+
+    if (start === null || end === null) {
+      this.player.getVideo().loop = false;
+      return;
+    }
+
+    if (
+      (start <= 0 && (end > this.duration || end <= 0)) ||
+      end <= start
+    ) {
+      this.player.getVideo().loop = true;
+      return;
+    }
+
+    this.player.getVideo().loop = false;
+    this.shouldLoopManually = true;
+  }
+
   freeFragment(fragment) {
     this.downloadManager.removeFile(fragment.getContext());
     fragment.status = DownloadStatus.WAITING;
@@ -704,6 +750,9 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async resetPlayer() {
+    clearTimeout(this.loopTimeout);
+    this.loopTimeout = null;
+
     const promises = [];
     this.lastTime = 0;
 

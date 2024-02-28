@@ -372,6 +372,21 @@
     "player_more_label": {
         "message": "その他のツール"
     },
+    "player_loop_label": {
+        "message": "ループ"
+    },
+    "loop_menu_start": {
+        "message": "開始"
+    },
+    "loop_menu_end": {
+        "message": "終了"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "ループ有効"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "ループ無効"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },
