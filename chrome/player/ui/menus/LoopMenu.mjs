@@ -53,6 +53,7 @@ export class LoopMenu extends EventEmitter {
       }
       e.stopPropagation();
     });
+    WebUtils.setupTabIndex(DOMElements.loopButton);
 
     const timeSettings = this.loopTimeSettings;
 
