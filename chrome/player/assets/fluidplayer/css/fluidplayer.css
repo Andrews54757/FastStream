@@ -2693,10 +2693,6 @@ input.crosstalk_calculator_input {
     max-height: calc(100vh - 190px);
 }
 
-.expanded .fluid_controls_disabled_tools {
-    bottom: 130px;
-}
-
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     body {
