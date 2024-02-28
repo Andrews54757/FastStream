@@ -427,6 +427,7 @@ export class InterfaceController {
 
     DOMElements.playerContainer.addEventListener('click', (e) => {
       this.stopReorderUI();
+      DOMElements.disabledTools.classList.remove('visible');
     });
 
     const options = {
