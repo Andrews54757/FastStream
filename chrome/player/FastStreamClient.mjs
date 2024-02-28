@@ -83,6 +83,8 @@ export class FastStreamClient extends EventEmitter {
 
     this.player = null;
     this.previewPlayer = null;
+    this.loopStart = null;
+    this.loopEnd = null;
     this.loopTimeout = null;
     this.saveSeek = true;
     this.pastSeeks = [];
