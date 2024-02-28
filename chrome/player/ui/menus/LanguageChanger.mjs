@@ -9,7 +9,9 @@ export class LanguageChanger extends EventEmitter {
   }
 
   openUI(dontSetStayVisible = false) {
-    this.emit('open');
+    this.emit('open', {
+      target: DOMElements.languageButton,
+    });
 
     DOMElements.languageMenu.style.display = '';
     if (!dontSetStayVisible) {

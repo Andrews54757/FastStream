@@ -12,7 +12,9 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   openUI(dontSetStayVisible = false) {
-    this.emit('open');
+    this.emit('open', {
+      target: DOMElements.playbackRate,
+    });
 
     DOMElements.rateMenuContainer.style.display = '';
     this.scrollToPosition();

@@ -2658,6 +2658,7 @@ input.crosstalk_calculator_input {
 
 .fluid_controls_disabled_tools {
     display: none;
+    z-index: 9999999;
     flex-wrap: wrap;
     align-content: center;
     position: absolute;
@@ -2684,6 +2685,17 @@ input.crosstalk_calculator_input {
     justify-content: flex-end;
 }
 
+.fluid_controls_disabled_tools .menu_container {
+    max-height: calc(100vh - 110px);
+}
+
+.expanded .fluid_controls_disabled_tools .menu_container {
+    max-height: calc(100vh - 190px);
+}
+
+.expanded .fluid_controls_disabled_tools {
+    bottom: 130px;
+}
 
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {

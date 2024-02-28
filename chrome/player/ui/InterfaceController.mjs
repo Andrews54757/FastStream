@@ -74,7 +74,10 @@ export class InterfaceController {
     this.setupDOM();
   }
 
-  closeAllMenus() {
+  closeAllMenus(e) {
+    if (e && e.target && !DOMElements.disabledTools.contains(e.target)) {
+      DOMElements.disabledTools.classList.remove('visible');
+    }
     this.playbackRateChanger.closeUI();
     this.videoQualityChanger.closeUI();
     this.languageChanger.closeUI();
@@ -381,7 +384,12 @@ export class InterfaceController {
     });
 
     DOMElements.moreButton.addEventListener('click', (e) => {
-      DOMElements.disabledTools.classList.toggle('visible');
+      if (!DOMElements.disabledTools.classList.contains('visible')) {
+        this.closeAllMenus();
+        DOMElements.disabledTools.classList.add('visible');
+      } else {
+        DOMElements.disabledTools.classList.remove('visible');
+      }
       e.stopPropagation();
       e.preventDefault();
     });

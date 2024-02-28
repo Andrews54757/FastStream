@@ -9,7 +9,9 @@ export class VideoQualityChanger extends EventEmitter {
   }
 
   openUI(dontSetStayVisible = false) {
-    this.emit('open');
+    this.emit('open', {
+      target: DOMElements.videoSource,
+    });
 
     DOMElements.videoSourceList.style.display = '';
     if (!dontSetStayVisible) {

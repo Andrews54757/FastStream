@@ -133,7 +133,9 @@ export class SubtitlesManager extends EventEmitter {
   }
 
   openUI() {
-    this.emit('open');
+    this.emit('open', {
+      target: DOMElements.subtitles,
+    });
     DOMElements.subtitlesMenu.style.display = '';
   }
 
