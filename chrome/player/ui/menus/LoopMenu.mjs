@@ -1,6 +1,7 @@
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {Localize} from '../../modules/Localize.mjs';
+import {WebUtils} from '../../utils/WebUtils.mjs';
 
 export class LoopMenu extends EventEmitter {
   constructor(client) {
@@ -97,6 +98,7 @@ export class LoopMenu extends EventEmitter {
         this.loopTimeSettings[name] = input.value;
         this.updateLoop();
       });
+      WebUtils.setupTabIndex(nowButton);
       option.appendChild(nowButton);
 
       option.appendChild(input);
@@ -124,7 +126,7 @@ export class LoopMenu extends EventEmitter {
       this.updateLoop();
       e.stopPropagation();
     });
-
+    WebUtils.setupTabIndex(toggleLoopButton);
     loopButtonContainer.appendChild(toggleLoopButton);
 
     this.updateUI();
