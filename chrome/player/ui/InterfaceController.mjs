@@ -422,6 +422,19 @@ export class InterfaceController {
       this.stopReorderUI();
     });
 
+    const options = {
+      animation: 100,
+      group: 'reorder',
+      onStart: ()=>{
+        clearTimeout(this.reorderTimeout);
+      },
+      onEnd: (evt)=>{
+        this.checkToolsAndSave();
+      },
+    };
+    this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
+    this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
+
     const tools = Array.from(DOMElements.toolsContainer.children).concat(Array.from(DOMElements.disabledTools.children));
     tools.forEach((el) => {
       let skipClick = false;
@@ -470,15 +483,6 @@ export class InterfaceController {
     this.userIsReorderingTools = true;
     DOMElements.toolsContainer.classList.add('reordering');
     DOMElements.disabledTools.classList.add('reordering');
-    const options = {
-      animation: 100,
-      group: 'reorder',
-      onEnd: (evt)=>{
-        this.checkTools();
-      },
-    };
-    this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
-    this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
   }
 
   stopReorderUI() {
@@ -486,26 +490,6 @@ export class InterfaceController {
     this.userIsReorderingTools = false;
     DOMElements.toolsContainer.classList.remove('reordering');
     DOMElements.disabledTools.classList.remove('reordering');
-
-    this.reorderSortEnabled.destroy();
-    this.reorderSortDisabled.destroy();
-
-    this.reorderSortEnabled = null;
-    this.reorderSortDisabled = null;
-
-    Array.from(DOMElements.toolsContainer.children).forEach((el, i) => {
-      const tool = el.dataset.tool;
-      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
-      this.client.options.toolSettings[tool].enabled = true;
-    });
-
-    Array.from(DOMElements.disabledTools.children).forEach((el, i) => {
-      const tool = el.dataset.tool;
-      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
-      this.client.options.toolSettings[tool].enabled = false;
-    });
-
-    Utils.setConfig('toolSettings', JSON.stringify(this.client.options.toolSettings));
   }
 
   async handleVisibilityChange(isVisible) {
@@ -664,12 +648,26 @@ export class InterfaceController {
     }
   }
 
-  checkTools() {
+  checkToolsAndSave() {
     if (DOMElements.toolsContainer.children.length === 0) {
       this.moveMoreTool(DOMElements.disabledTools, DOMElements.toolsContainer);
     } else if (DOMElements.disabledTools.children.length === 0) {
       this.moveMoreTool(DOMElements.toolsContainer, DOMElements.disabledTools);
     }
+
+    Array.from(DOMElements.toolsContainer.children).forEach((el, i) => {
+      const tool = el.dataset.tool;
+      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
+      this.client.options.toolSettings[tool].enabled = true;
+    });
+
+    Array.from(DOMElements.disabledTools.children).forEach((el, i) => {
+      const tool = el.dataset.tool;
+      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
+      this.client.options.toolSettings[tool].enabled = false;
+    });
+
+    Utils.setConfig('toolSettings', JSON.stringify(this.client.options.toolSettings));
   }
 
   toggleHide() {
