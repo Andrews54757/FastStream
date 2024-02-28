@@ -1,6 +1,7 @@
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
+import {Sortable} from '../modules/sortable.mjs';
 import {streamSaver} from '../modules/StreamSaver.mjs';
 import {ClickActions} from '../options/defaults/ClickActions.mjs';
 import {MiniplayerPositions} from '../options/defaults/MiniplayerPositions.mjs';
@@ -379,6 +380,13 @@ export class InterfaceController {
       }
     });
 
+    DOMElements.moreButton.addEventListener('click', (e) => {
+      DOMElements.disabledTools.classList.toggle('visible');
+      e.stopPropagation();
+      e.preventDefault();
+    });
+    WebUtils.setupTabIndex(DOMElements.moreButton);
+
     const o = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio > 0.25 && !document.hidden) {
         this.handleVisibilityChange(true);
@@ -408,6 +416,96 @@ export class InterfaceController {
     });
 
     this.updateToolVisibility();
+
+
+    DOMElements.playerContainer.addEventListener('click', (e) => {
+      this.stopReorderUI();
+    });
+
+    const tools = Array.from(DOMElements.toolsContainer.children).concat(Array.from(DOMElements.disabledTools.children));
+    tools.forEach((el) => {
+      let skipClick = false;
+      const reorderMouseDown = (e) => {
+        if (this.userIsReorderingTools) return;
+
+        clearTimeout(this.reorderTimeout);
+        this.reorderTimeout = setTimeout(() => {
+          skipClick = true;
+          this.startReorderUI();
+        }, 800);
+      };
+
+      el.addEventListener('mousedown', (e) => {
+        reorderMouseDown(e);
+      });
+
+      el.addEventListener('mouseup', (e)=>{
+        clearTimeout(this.reorderTimeout);
+        if (skipClick) {
+          setTimeout(() => {
+            skipClick = false;
+          }, 100);
+        }
+      });
+
+      el.addEventListener('click', (e) => {
+        if (this.userIsReorderingTools) {
+          if (!skipClick) this.stopReorderUI();
+          e.preventDefault();
+          e.stopPropagation();
+        }
+      }, true);
+
+      el.addEventListener('focus', (e)=>{
+        if (this.userIsReorderingTools) {
+          e.stopPropagation();
+        }
+      }, true);
+    });
+  }
+
+  startReorderUI() {
+    if (this.userIsReorderingTools) return;
+    this.closeAllMenus();
+    this.userIsReorderingTools = true;
+    DOMElements.toolsContainer.classList.add('reordering');
+    DOMElements.disabledTools.classList.add('reordering');
+    const options = {
+      animation: 100,
+      group: 'reorder',
+      onEnd: (evt)=>{
+        this.checkTools();
+      },
+    };
+    this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
+    this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
+  }
+
+  stopReorderUI() {
+    if (!this.userIsReorderingTools) return;
+    this.userIsReorderingTools = false;
+    DOMElements.toolsContainer.classList.remove('reordering');
+    DOMElements.disabledTools.classList.remove('reordering');
+
+    this.reorderSortEnabled.destroy();
+    this.reorderSortDisabled.destroy();
+
+    this.reorderSortEnabled = null;
+    this.reorderSortDisabled = null;
+
+    Array.from(DOMElements.toolsContainer.children).forEach((el, i) => {
+      const tool = el.dataset.tool;
+      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
+      this.client.options.toolSettings[tool].enabled = true;
+    });
+
+    Array.from(DOMElements.disabledTools.children).forEach((el, i) => {
+      const tool = el.dataset.tool;
+      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
+      this.client.options.toolSettings[tool].enabled = false;
+    });
+
+    Utils.setConfig('toolSettings', JSON.stringify(this.client.options.toolSettings));
   }
 
   async handleVisibilityChange(isVisible) {
@@ -493,6 +591,8 @@ export class InterfaceController {
   }
 
   updateToolVisibility() {
+    DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
+
     if (this.client.player && document.pictureInPictureEnabled) {
       DOMElements.pip.classList.remove('hidden');
     } else {
@@ -525,26 +625,50 @@ export class InterfaceController {
       settings: DOMElements.settingsButton,
       quality: DOMElements.videoSource,
       languages: DOMElements.languageButton,
+      more: DOMElements.moreButton,
     };
 
-    const elementSettingPairs = [];
+    if (this.userIsReorderingTools) {
+      return;
+    }
+
+    const enabledToolPairs = [];
+    const disabledToolPairs = [];
 
     for (const [tool, element] of Object.entries(toolElements)) {
+      element.dataset.tool = tool;
       if (toolSettings[tool].enabled) {
-        element.style.display = '';
+        enabledToolPairs.push([element, toolSettings[tool]]);
       } else {
-        element.style.display = 'none';
+        disabledToolPairs.push([element, toolSettings[tool]]);
       }
-
-      elementSettingPairs.push([element, toolSettings[tool].priority]);
-
       element.remove();
     }
 
-    elementSettingPairs.sort((a, b) => a[1] - b[1]);
-
-    for (const [element] of elementSettingPairs) {
+    enabledToolPairs.sort((a, b) => a[1].priority - b[1].priority);
+    for (const [element] of enabledToolPairs) {
       DOMElements.toolsContainer.appendChild(element);
+    }
+
+    disabledToolPairs.sort((a, b) => a[1].priority - b[1].priority);
+    for (const [element] of disabledToolPairs) {
+      DOMElements.disabledTools.appendChild(element);
+    }
+  }
+
+  moveMoreTool(source, dest) {
+    const more = Array.from(source.children).find((el) => el.dataset.tool === 'more');
+    if (more) {
+      more.remove();
+      dest.appendChild(more);
+    }
+  }
+
+  checkTools() {
+    if (DOMElements.toolsContainer.children.length === 0) {
+      this.moveMoreTool(DOMElements.disabledTools, DOMElements.toolsContainer);
+    } else if (DOMElements.disabledTools.children.length === 0) {
+      this.moveMoreTool(DOMElements.toolsContainer, DOMElements.disabledTools);
     }
   }
 
@@ -632,6 +756,9 @@ export class InterfaceController {
 
     const dt = e.dataTransfer;
     const files = dt.files;
+    if (files.length === 0) {
+      return;
+    }
     const captions = [];
     const audioFormats = [
       'mp3',

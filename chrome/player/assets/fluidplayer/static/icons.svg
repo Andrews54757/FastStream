@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 48">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 72">
     <g>
         <use transform="translate(0,0)" href="#rect" width="24" height="24" />
         <use transform="translate(24,0)" href="#rect" width="24" height="24" />
@@ -22,6 +22,7 @@
         <use transform="translate(168,24)" href="#rect" width="24" height="24" />
         <use transform="translate(192,24)" href="#rect" width="24" height="24" />
 
+        <use transform="translate(0,48)" href="#rect" width="24" height="24" />
 
         <use transform="translate(0,0)" href="#play" width="24" height="24" />
         <use transform="translate(24,0)" href="#pause" width="24" height="24" />
@@ -46,6 +47,8 @@
         <use transform="translate(144,24)" href="#soundwave" width="24" height="24" />
         <use transform="translate(168,24)" href="#captions" width="24" height="24" />
         <use transform="translate(192,24)" href="#language" width="24" height="24" />
+      
+        <use transform="translate(0,48)" href="#more" width="24" height="24" />
     </g>
     <defs>
         <symbol id="speaker" viewBox="0 0 24 24" fill="currentColor">
@@ -123,6 +126,14 @@
         </symbol>
         <symbol id="rect" viewBox="0 0 24 24" stroke="currentColor">
             <rect x="0" y="0" width="24" height="24" fill="none" stroke-width="0.1"></rect>
+        </symbol>
+
+        <symbol id="more" viewBox="0 0 512 512" stroke="currentColor" fill="currentColor">
+            <circle cx="256" cy="256" r="26" />
+            <circle cx="346" cy="256" r="26" />
+            <circle cx="166" cy="256" r="26" />
+            <path d="M448,256c0-106-86-192-192-192S64,150,64,256s86,192,192,192S448,362,448,256Z"
+                stroke="currentColor" style="fill:none;stroke-width:48px" />
         </symbol>
     </defs>
 </svg>

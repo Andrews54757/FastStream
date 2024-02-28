@@ -107,6 +107,15 @@ export class FastStreamClient extends EventEmitter {
     if (this.progressMemory) {
       await this.progressMemory.pruneOld(Date.now() - 1000 * 60 * 60 * 24 * 365); // 1 year
     }
+
+    try {
+      Utils.loadAndParseOptions('toolSettings', DefaultToolSettings).then((settings) => {
+        this.options.toolSettings = settings;
+        this.interfaceController.updateToolVisibility();
+      });
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   shouldDownloadAll() {

@@ -43,4 +43,8 @@ export const DefaultToolSettings = {
     enabled: true,
     priority: 1100,
   },
+  more: {
+    enabled: false,
+    priority: 1200,
+  },
 };
