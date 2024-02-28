@@ -2658,12 +2658,12 @@ input.crosstalk_calculator_input {
 
 .fluid_controls_disabled_tools {
     display: none;
-    z-index: 9999999;
+    z-index: 888888;
     flex-wrap: wrap;
     align-content: center;
     position: absolute;
     right: 0px;
-    bottom: 50px;
+    bottom: 45px;
     background-color: rgba(71, 71, 71, 0.75);
     border-radius: 4px;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -2686,11 +2686,11 @@ input.crosstalk_calculator_input {
 }
 
 .fluid_controls_disabled_tools .menu_container {
-    max-height: calc(100vh - 110px);
+    max-height: calc(100vh - 105px);
 }
 
 .expanded .fluid_controls_disabled_tools .menu_container {
-    max-height: calc(100vh - 190px);
+    max-height: calc(100vh - 185px);
 }
 
 /* when screen is 700x or smaller */
