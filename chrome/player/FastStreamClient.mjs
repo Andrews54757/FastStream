@@ -567,6 +567,33 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  checkLoop() {
+    if (!this.player || this.loopStart >= this.duration) {
+      return;
+    }
+
+    if (this.shouldLoopManually) {
+      if (this.persistent.currentTime >= this.loopEnd) {
+        clearTimeout(this.loopTimeout);
+        this.currentTime = this.loopStart;
+      } else if (this.persistent.currentTime >= this.loopEnd - 5) {
+        clearTimeout(this.loopTimeout);
+        this.loopTimeout = setTimeout(() => {
+          this.currentTime = this.loopStart;
+        }, (this.loopEnd - this.persistent.currentTime) * 1000 / this.playbackRate);
+      }
+    } else if (this.player.getVideo().loop && this.loopStart > 0) {
+      clearTimeout(this.loopTimeout);
+      if (this.persistent.currentTime < this.loopStart) {
+        this.currentTime = this.loopStart;
+      } else if (this.persistent.currentTime > this.duration - 5) {
+        this.loopTimeout = setTimeout(() => {
+          this.checkLoop();
+        }, (this.duration - this.persistent.currentTime) * 1000 / this.playbackRate + 100);
+      }
+    }
+  }
+
   mainloop() {
     if (this.destroyed) return;
     setTimeout(this.mainloop.bind(this), 1000);
@@ -579,27 +606,14 @@ export class FastStreamClient extends EventEmitter {
         if (this.fragments) this.freeFragments(this.fragments);
         if (this.audioFragments) this.freeFragments(this.audioFragments);
       }
-
-      if (this.shouldLoopManually) {
-        if (this.persistent.currentTime >= this.loopEnd) {
-          clearTimeout(this.loopTimeout);
-          this.currentTime = this.loopStart;
-        } else if (this.persistent.currentTime >= this.loopEnd - 5) {
-          clearTimeout(this.loopTimeout);
-          this.loopTimeout = setTimeout(() => {
-            this.currentTime = this.loopStart;
-          }, (this.loopEnd - this.persistent.currentTime) * 1000 / this.playbackRate);
-        }
-      } else if (this.player.getVideo().loop && this.persistent.currentTime < this.loopStart) {
-        clearTimeout(this.loopTimeout);
-        this.currentTime = this.loopStart;
-      }
     }
 
     this.interfaceController.tick();
     this.checkLevelChange();
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
+
+    this.checkLoop();
   }
 
   predownloadFragments() {
@@ -725,6 +739,8 @@ export class FastStreamClient extends EventEmitter {
     }
 
     this.shouldLoopManually = true;
+
+    this.checkLoop();
   }
 
   freeFragment(fragment) {
