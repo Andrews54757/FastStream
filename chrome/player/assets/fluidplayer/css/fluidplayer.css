@@ -2626,12 +2626,13 @@ input.crosstalk_calculator_input {
     font-size: 14px;
 }
 
-.fluid_controls_right > .hidden {
+.fluid_controls_right:not(.reordering) > .hidden,
+.fluid_controls_disabled_tools:not(.reordering) > .hidden {
     display: none !important;
 }
 
-.fluid_controls_right.reordering > .hidden {
-    display: inherit !important;
+.fluid_controls_right.reordering > .hidden,
+.fluid_controls_disabled_tools.reordering > .hidden {
     opacity: 0.5;
 }
 
