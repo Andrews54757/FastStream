@@ -33,6 +33,8 @@ export class InterfaceController {
     this.lastTime = 0;
     this.lastSpeed = 0;
     this.mouseOverControls = false;
+    this.userIsReordering = false;
+    this.specialReorderModeEnabled = false;
     this.mouseActivityCooldown = 0;
 
     this.failed = false;
@@ -440,9 +442,11 @@ export class InterfaceController {
       animation: 100,
       group: 'reorder',
       onStart: ()=>{
+        this.userIsReordering = true;
         clearTimeout(this.reorderTimeout);
       },
       onEnd: (evt)=>{
+        this.userIsReordering = false;
         this.checkToolsAndSave();
       },
     };
@@ -453,7 +457,7 @@ export class InterfaceController {
     tools.forEach((el) => {
       let skipClick = false;
       const reorderMouseDown = (e) => {
-        if (this.userIsReorderingTools) return;
+        if (this.specialReorderModeEnabled) return;
 
         clearTimeout(this.reorderTimeout);
         this.reorderTimeout = setTimeout(() => {
@@ -476,7 +480,7 @@ export class InterfaceController {
       });
 
       el.addEventListener('click', (e) => {
-        if (this.userIsReorderingTools) {
+        if (this.specialReorderModeEnabled) {
           if (!skipClick) this.stopReorderUI();
           e.preventDefault();
           e.stopPropagation();
@@ -484,7 +488,7 @@ export class InterfaceController {
       }, true);
 
       el.addEventListener('focus', (e)=>{
-        if (this.userIsReorderingTools) {
+        if (this.specialReorderModeEnabled) {
           e.stopPropagation();
         }
       }, true);
@@ -492,16 +496,16 @@ export class InterfaceController {
   }
 
   startReorderUI() {
-    if (this.userIsReorderingTools) return;
+    if (this.specialReorderModeEnabled) return;
     this.closeAllMenus();
-    this.userIsReorderingTools = true;
+    this.specialReorderModeEnabled = true;
     DOMElements.toolsContainer.classList.add('reordering');
     DOMElements.disabledTools.classList.add('reordering');
   }
 
   stopReorderUI() {
-    if (!this.userIsReorderingTools) return;
-    this.userIsReorderingTools = false;
+    if (!this.specialReorderModeEnabled) return;
+    this.specialReorderModeEnabled = false;
     DOMElements.toolsContainer.classList.remove('reordering');
     DOMElements.disabledTools.classList.remove('reordering');
   }
@@ -628,7 +632,7 @@ export class InterfaceController {
       more: DOMElements.moreButton,
     };
 
-    if (this.userIsReorderingTools) {
+    if (this.specialReorderModeEnabled) {
       return;
     }
 
@@ -1123,7 +1127,7 @@ export class InterfaceController {
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.persistent.playing) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.persistent.playing && !this.specialReorderModeEnabled && !this.userIsReordering) {
         this.hideControlBar();
       }
     }, time || 2000);
