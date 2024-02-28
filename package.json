@@ -1,7 +1,7 @@
 {
   "name": "faststream",
   "version": "1.2.24",
-  "description": "Stream without buffering",
+  "description": "Stream videos without buffering",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node build.mjs"
