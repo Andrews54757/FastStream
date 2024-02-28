@@ -587,7 +587,7 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer.saveAnalyzerData();
 
     if (this.shouldLoopManually) {
-      if (this.persistent.currentTime >= this.loopEnd) {
+      if (this.persistent.currentTime >= this.loopEnd || this.persistent.currentTime < this.loopStart) {
         clearTimeout(this.loopTimeout);
         this.currentTime = this.loopStart;
       } else if (this.persistent.currentTime >= this.loopEnd - 5) {
@@ -712,15 +712,15 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
+    this.player.getVideo().loop = true;
+
     if (
       (start <= 0 && (end > this.duration || end <= 0)) ||
       end <= start
     ) {
-      this.player.getVideo().loop = true;
       return;
     }
 
-    this.player.getVideo().loop = false;
     this.shouldLoopManually = true;
   }
 
