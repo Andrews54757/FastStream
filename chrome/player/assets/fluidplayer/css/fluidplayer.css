@@ -2744,7 +2744,7 @@ input.crosstalk_calculator_input {
 }
 
 .fluid_controls_dragdemo > video {
-    height: 64px;
+    width: 290px;
 }
 
 /* when screen is 700x or smaller */
@@ -2820,6 +2820,10 @@ input.crosstalk_calculator_input {
     body {
         --font-size-small: 9px;
         --volume-block-width: 100px;
+    }
+
+    .fluid_controls_dragdemo > video {
+        width: 200px;
     }
 
     .fluid_controls_right:not(.reordering) > .fluid_button_soundwave,
