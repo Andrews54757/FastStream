@@ -417,7 +417,6 @@ export class InterfaceController {
 
     this.updateToolVisibility();
 
-
     DOMElements.playerContainer.addEventListener('click', (e) => {
       this.stopReorderUI();
     });
@@ -595,7 +594,6 @@ export class InterfaceController {
       DOMElements.download.classList.add('hidden');
     }
 
-
     const toolSettings = this.client.options.toolSettings;
     const toolElements = {
       pip: DOMElements.pip,
@@ -638,6 +636,24 @@ export class InterfaceController {
     for (const [element] of disabledToolPairs) {
       DOMElements.disabledTools.appendChild(element);
     }
+
+    this.checkMoreTool();
+  }
+
+  checkMoreTool() {
+    if (Array.from(DOMElements.disabledTools.children).some((el) => {
+      return !el.classList.contains('hidden');
+    })) {
+      DOMElements.moreButton.classList.remove('hidden');
+    } else {
+      DOMElements.moreButton.classList.add('hidden');
+    }
+
+    if (DOMElements.toolsContainer.children.length === 0) {
+      this.moveMoreTool(DOMElements.disabledTools, DOMElements.toolsContainer);
+    } else if (DOMElements.disabledTools.children.length === 0) {
+      this.moveMoreTool(DOMElements.toolsContainer, DOMElements.disabledTools);
+    }
   }
 
   moveMoreTool(source, dest) {
@@ -649,11 +665,7 @@ export class InterfaceController {
   }
 
   checkToolsAndSave() {
-    if (DOMElements.toolsContainer.children.length === 0) {
-      this.moveMoreTool(DOMElements.disabledTools, DOMElements.toolsContainer);
-    } else if (DOMElements.disabledTools.children.length === 0) {
-      this.moveMoreTool(DOMElements.toolsContainer, DOMElements.disabledTools);
-    }
+    this.checkMoreTool();
 
     Array.from(DOMElements.toolsContainer.children).forEach((el, i) => {
       const tool = el.dataset.tool;
