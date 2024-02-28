@@ -1392,9 +1392,7 @@ export class InterfaceController {
     });
 
     DOMElements.dragDemoTutorial.addEventListener('click', (e) => {
-      DOMElements.dragDemoTutorial.style.display = 'none';
-      video.pause();
-      video.remove();
+      this.closeDragDemoTutorial();
       e.stopPropagation();
     });
   }
