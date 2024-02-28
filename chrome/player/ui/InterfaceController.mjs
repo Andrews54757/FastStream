@@ -457,6 +457,9 @@ export class InterfaceController {
     tools.forEach((el) => {
       let skipClick = false;
       const reorderMouseDown = (e) => {
+        // check if left mouse button was pressed
+        if (e.button !== 0) return;
+
         if (this.specialReorderModeEnabled) return;
 
         clearTimeout(this.reorderTimeout);
