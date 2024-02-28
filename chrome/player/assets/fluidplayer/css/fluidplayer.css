@@ -2770,6 +2770,7 @@ input.crosstalk_calculator_input {
         right: 5px;
     }
 
+    .loop_menu,
     .subtitles_menu {
         width: 200px;
     }
@@ -2813,8 +2814,13 @@ input.crosstalk_calculator_input {
         display: none !important;
     }
 
+    .loop_menu,
     .subtitles_menu {
         width: 150px;
+    }
+
+    .now_button {
+        width: 12px;
     }
 
     .subtitles_menu.settings {
