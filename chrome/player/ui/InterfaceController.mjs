@@ -484,7 +484,7 @@ export class InterfaceController {
         reorderMouseDown(e);
       });
 
-      el.addEventListener('mouseup', (e)=>{
+      DOMElements.playerContainer.addEventListener('mouseup', (e)=>{
         clearTimeout(this.reorderTimeout);
         if (skipClick) {
           setTimeout(() => {
