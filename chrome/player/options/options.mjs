@@ -544,4 +544,4 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
 
-
+Utils.printWelcome(EnvUtils.getVersion());
