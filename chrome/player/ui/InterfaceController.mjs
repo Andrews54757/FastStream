@@ -292,6 +292,11 @@ export class InterfaceController {
       this.focusingControls = false;
       this.queueControlsHide();
     });
+
+    DOMElements.playerContainer.addEventListener('mouseleave', (e)=>{
+      this.queueControlsHide(1);
+    });
+
     let clickCount = 0;
     let clickTimeout = null;
     DOMElements.videoContainer.addEventListener('click', (e) => {
