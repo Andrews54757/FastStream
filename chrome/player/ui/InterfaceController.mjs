@@ -297,9 +297,52 @@ export class InterfaceController {
       this.queueControlsHide(1);
     });
 
+    let holdTimeout = null;
+    let lastSpeed = null;
+    let wasPlaying = false;
+    DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
+      if (e.button === 0) {
+        clearTimeout(holdTimeout);
+        holdTimeout = setTimeout(() => {
+          if (lastSpeed !== null || !this.client.player) {
+            return;
+          }
+          wasPlaying = this.persistent.playing;
+          lastSpeed = this.client.playbackRate;
+          this.client.playbackRate = lastSpeed * 2;
+
+          this.client.play();
+        }, 800);
+      }
+    });
+
+    const stopSpeedUp = () => {
+      if (lastSpeed !== null) {
+        this.client.playbackRate = lastSpeed;
+        lastSpeed = null;
+
+        if (!wasPlaying) {
+          this.client.pause();
+        }
+      }
+      clearTimeout(holdTimeout);
+    };
+
+    DOMElements.videoContainer.addEventListener('mouseup', (e)=>{
+      stopSpeedUp();
+    });
+
+    DOMElements.videoContainer.addEventListener('mouseleave', (e)=>{
+      stopSpeedUp();
+    });
+
     let clickCount = 0;
     let clickTimeout = null;
     DOMElements.videoContainer.addEventListener('click', (e) => {
+      if (lastSpeed !== null) {
+        return;
+      }
+
       if (this.isBigPlayButtonVisible()) {
         this.playPauseToggle();
         return;
