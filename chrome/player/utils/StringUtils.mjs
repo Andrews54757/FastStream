@@ -194,6 +194,63 @@ export class StringUtils {
     return Math.round(value * 100) / 100 + ' ' + unit;
   }
 
+  static getSizeString(size) {
+    if (size=== -1) {
+      return '∞ GB';
+    }
+
+    let unit = 'B';
+    if (size >= 1000) {
+      unit = 'KB';
+      size /= 1000;
+    }
+    if (size >= 1000) {
+      unit = 'MB';
+      size /= 1000;
+    }
+    if (size >= 1000) {
+      unit = 'GB';
+      size /= 1000;
+    }
+    if (size >= 1000) {
+      unit = 'TB';
+      size /= 1000;
+    }
+    return Math.round(size * 100) / 100 + ' ' + unit;
+  }
+
+  static getSizeValue(sizeStr) {
+    const float = parseFloat(sizeStr);
+    const unit = sizeStr.replace(float, '').trim();
+    if (
+      isNaN(float) ||
+      float < 0 ||
+      float === Infinity
+    ) {
+      return -1;
+    }
+
+    // Unit can be MB, Mb, etc...
+    const match = unit.match(/([a-oq-zA-Z]+)/);
+    const unit1 = match?.[1];
+
+    let multiplier = 1;
+
+    // Convert to bytes
+    if (unit1) {
+      const sci = ['b', 'k', 'm', 'g', 't', 'p', 'e', 'z', 'y'];
+      const split = unit1.split('');
+      if (sci.includes(split[0].toLowerCase())) {
+        multiplier *= 1000 ** sci.indexOf(split[0].toLowerCase());
+      } else {
+        // M default
+        multiplier *= 1000 ** 2;
+      }
+    }
+
+    return float * multiplier;
+  }
+
   static parseHTTPRange(range) {
     const match = range.match(/(\d+)-(\d+)?/);
     if (!match) return [undefined, undefined];

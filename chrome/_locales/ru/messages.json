@@ -756,6 +756,9 @@
     "options_general_targetspeed": {
         "message": "Целевая скорость предзагрузки"
     },
+    "options_general_maxsize": {
+        "message": "Максимальный размер предзагружаемого видео"
+    },
     "options_general_freeunused": {
         "message": "Выгружать неиспользуемые буферы каналов при изменении качества видео"
     },

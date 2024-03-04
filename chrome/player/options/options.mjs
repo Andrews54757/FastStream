@@ -24,6 +24,7 @@ const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
+const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
 const playbackRate = document.getElementById('playbackrate');
 const autoplayYoutube = document.getElementById('autoplayyt');
@@ -79,6 +80,7 @@ async function loadOptions(newOptions) {
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
+  maxSize.value = StringUtils.getSizeString(Options.maxSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   playbackRate.value = Options.playbackRate;
   qualityMultiplier.value = Options.qualityMultiplier;
@@ -338,6 +340,13 @@ maxSpeed.addEventListener('change', () => {
   // parse value, number unit/s
   Options.maxSpeed = StringUtils.getSpeedValue(maxSpeed.value);
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
+  optionChanged();
+});
+
+maxSize.addEventListener('change', () => {
+  // parse value, number unit
+  Options.maxSize = StringUtils.getSizeValue(maxSize.value);
+  maxSize.value = StringUtils.getSizeString(Options.maxSize);
   optionChanged();
 });
 

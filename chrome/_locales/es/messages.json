@@ -755,6 +755,9 @@
     "options_general_targetspeed": {
         "message": "Velocidad de descarga objetivo del predescargador"
     },
+    "options_general_maxsize": {
+        "message": "Tamaño máximo de video predescargado"
+    },
     "options_general_freeunused": {
         "message": "Libera los búferes de canal no utilizados al cambiar los niveles de calidad"
     },

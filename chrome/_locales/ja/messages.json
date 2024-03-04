@@ -756,6 +756,9 @@
     "options_general_targetspeed": {
         "message": "プリダウンローダーのターゲット速度"
     },
+    "options_general_maxsize": {
+        "message": "プリダウンローダーの最大サイズ"
+    },
     "options_general_freeunused": {
         "message": "品質レベル切り替え時に未使用のチャンネルバッファーを解放する"
     },

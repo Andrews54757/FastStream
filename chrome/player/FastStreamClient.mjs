@@ -30,6 +30,7 @@ export class FastStreamClient extends EventEmitter {
     this.options = {
       autoPlay: false,
       maxSpeed: -1,
+      maxSize: -1,
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 120,
@@ -170,6 +171,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
     this.options.maxSpeed = options.maxSpeed;
+    this.options.maxSize = options.maxSize;
     this.options.seekStepSize = options.seekStepSize;
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
@@ -214,6 +216,8 @@ export class FastStreamClient extends EventEmitter {
       this.options.toolSettings = options.toolSettings;
       this.interfaceController.updateToolVisibility();
     }
+
+    this.updateHasDownloadSpace();
   }
 
   updateCSSFilters() {
@@ -351,7 +355,10 @@ export class FastStreamClient extends EventEmitter {
       this.hasDownloadSpace = false;
     } else {
       if (level.bitrate && this.duration) {
-        const storageAvailable = (this.storageAvailable * 8) * 0.6;
+        let storageAvailable = (this.storageAvailable * 8) * 0.6;
+        if (this.options.maxSize > 0) {
+          storageAvailable = Math.min(storageAvailable, this.options.maxSize * 8);
+        }
         this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
       } else {
         this.hasDownloadSpace = true;

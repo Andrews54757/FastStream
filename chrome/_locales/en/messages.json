@@ -756,6 +756,9 @@
     "options_general_targetspeed": {
         "message": "Target download speed of predownloader"
     },
+    "options_general_maxsize": {
+        "message": "Maximum size of predownloaded video"
+    },
     "options_general_freeunused": {
         "message": "Free unused channel buffers when switching quality levels"
     },

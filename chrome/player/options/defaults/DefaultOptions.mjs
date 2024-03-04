@@ -27,6 +27,7 @@ export const DefaultOptions = {
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
   maxSpeed: -1,
+  maxSize: -1,
   seekStepSize: 2,
   playbackRate: 1,
   qualityMultiplier: 1.1,
