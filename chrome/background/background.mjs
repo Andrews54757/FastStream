@@ -132,7 +132,8 @@ async function onClicked(tab) {
         }
       }
     } else {
-      // chrome.tabs.remove(tab.id);
+      CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
+      updateTabIcon(CachedTabs[tab.id]);
     }
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
@@ -754,7 +755,7 @@ function sendSourcesToMainFramePlayers(frame) {
     // for each tab
     for (let i = 0; i < tabs.length; i++) {
       const tab = CachedTabs[tabs[i].id];
-      if (!tab) continue;
+      if (!tab || !tab.isOn) continue;
       // if the tab is a faststream tab
       if (tab.url.substring(0, PlayerURL.length) === PlayerURL && tab.frames?.[0]?.isFastStream) {
         const fastStreamFrame = tab.frames[0];
