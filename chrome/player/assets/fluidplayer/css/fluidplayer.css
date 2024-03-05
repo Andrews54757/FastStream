@@ -2747,6 +2747,12 @@ input.crosstalk_calculator_input {
     width: 290px;
 }
 
+@media screen and (max-width: 1000px) {
+    div:not(.controls_visible) .fluid_subtitles_container {
+        bottom: 0px;
+    }
+}
+
 /* when screen is 700x or smaller */
 @media screen and (max-width: 700px) {
     body {
@@ -2791,14 +2797,6 @@ input.crosstalk_calculator_input {
 
     .subtitles_menu.settings {
         width: 250px;
-    }
-
-    .fluid_subtitles_container {
-        bottom: 0px;
-    }
-
-    .controls_visible .fluid_subtitles_container {
-        bottom: 40px;
     }
 
     .rate_menu_container {
