@@ -328,9 +328,9 @@ export class InterfaceController {
       clearTimeout(holdTimeout);
     };
 
-    DOMElements.videoContainer.addEventListener('mouseup', (e)=>{
-      stopSpeedUp();
-    });
+    // DOMElements.videoContainer.addEventListener('mouseup', (e)=>{
+    //   stopSpeedUp();
+    // });
 
     DOMElements.videoContainer.addEventListener('mouseleave', (e)=>{
       stopSpeedUp();
@@ -339,7 +339,9 @@ export class InterfaceController {
     let clickCount = 0;
     let clickTimeout = null;
     DOMElements.videoContainer.addEventListener('click', (e) => {
+      clearTimeout(holdTimeout);
       if (lastSpeed !== null) {
+        stopSpeedUp();
         return;
       }
 
