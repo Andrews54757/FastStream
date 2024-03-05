@@ -462,7 +462,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
 
-    if (this.progressMemory && this.options.stofrogress) {
+    if (this.progressMemory && this.options.storeProgress) {
       await this.loadProgressData(true);
     }
   }
