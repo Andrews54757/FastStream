@@ -47,6 +47,10 @@ export class SubtitlesSettingsManager extends EventEmitter {
       e.stopPropagation();
     });
 
+    DOMElements.subtitlesOptionsList.addEventListener('click', (e) => {
+      Coloris.close();
+    }, true);
+
     this.updateSettingsUI();
   }
 
@@ -118,7 +122,6 @@ export class SubtitlesSettingsManager extends EventEmitter {
           }
         });
       }
-
       let timeout = null;
       input.addEventListener('keyup', () => {
         clearTimeout(timeout);
@@ -150,5 +153,6 @@ export class SubtitlesSettingsManager extends EventEmitter {
 
   closeUI() {
     DOMElements.subtitlesMenu.classList.remove('settings');
+    Coloris.close();
   }
 }
