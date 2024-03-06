@@ -386,6 +386,18 @@
     "loop_menu_toggle_disabled": {
         "message": "Repetir Deshabilitado"
     },
+    "loop_menu_gif_start": {
+        "message": "Grabando GIF a velocidad 2x..."
+    },
+    "loop_menu_gif_end": {
+        "message": "Finalizó la grabación del GIF. Ahora guardando..."
+    },
+    "loop_menu_gif_progress": {
+        "message": "Guardando GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "¡Finalizó el guardado del GIF!"
+    },
     "player_fragment_failed_singular": {
         "message": "¡$1 fragmento falló! Haz clic para reintentar."
     },

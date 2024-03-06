@@ -7,6 +7,7 @@ export const StatusTypes = {
   ERROR: 'error',
   SAVE_VIDEO: 'save-video',
   SAVE_SCREENSHOT: 'save-screenshot',
+  SAVE_GIF: 'save-gif',
   SUBTITLES: 'subtitles',
   CHAPTER: 'chapter',
 };
@@ -22,6 +23,7 @@ export class StatusManager {
 
     this.registerStatusLevel(StatusTypes.SAVE_VIDEO, 1);
     this.registerStatusLevel(StatusTypes.SAVE_SCREENSHOT, 1);
+    this.registerStatusLevel(StatusTypes.SAVE_GIF, 1);
     this.registerStatusLevel(StatusTypes.SUBTITLES, 1);
 
     this.registerStatusLevel(StatusTypes.CHAPTER, 2);

@@ -3,6 +3,7 @@ import {DOMElements} from '../DOMElements.mjs';
 import {Localize} from '../../modules/Localize.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
+import {GIF} from '../../modules/gif/gif.mjs';
 
 export class LoopMenu extends EventEmitter {
   constructor(client) {
@@ -85,13 +86,13 @@ export class LoopMenu extends EventEmitter {
         clearTimeout(timeout);
         timeout = setTimeout(() => {
           this.loopTimeSettings[name] = input.value;
-          this.updateLoop();
+          this.updateLoopAndGif();
         }, 200);
       });
 
       input.addEventListener('input', () => {
         this.loopTimeSettings[name] = input.value;
-        this.updateLoop();
+        this.updateLoopAndGif();
       });
       option.appendChild(label);
 
@@ -102,7 +103,7 @@ export class LoopMenu extends EventEmitter {
       nowButton.addEventListener('click', () => {
         input.value = this.currentTimeToTimecode(this.client.currentTime);
         this.loopTimeSettings[name] = input.value;
-        this.updateLoop();
+        this.updateLoopAndGif();
       });
       WebUtils.setupTabIndex(nowButton);
       option.appendChild(nowButton);
@@ -124,7 +125,7 @@ export class LoopMenu extends EventEmitter {
     toggleLoopButton.textContent = Localize.getMessage('loop_menu_toggle_' + (this.loopEnabled ? 'enabled' : 'disabled'));
     toggleLoopButton.addEventListener('click', (e) => {
       this.loopEnabled = !this.loopEnabled;
-      this.updateLoop();
+      this.updateLoopAndGif();
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(toggleLoopButton);
@@ -134,6 +135,9 @@ export class LoopMenu extends EventEmitter {
     gifButton.role = 'button';
     gifButton.classList.add('loop_menu_gif_button');
     gifButton.addEventListener('click', (e) => {
+      this.loopEnabled = true;
+      this.updateLoopAndGif();
+      this.recordGif();
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(gifButton);
@@ -143,7 +147,7 @@ export class LoopMenu extends EventEmitter {
     use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#gif');
     svg.appendChild(use);
     gifButton.appendChild(svg);
-    // loopButtonContainer.appendChild(gifButton);
+    loopButtonContainer.appendChild(gifButton);
 
     this.updateUI();
   }
@@ -156,9 +160,12 @@ export class LoopMenu extends EventEmitter {
     return hours * 3600 + minutes * 60 + seconds;
   }
 
-  updateLoop() {
+  updateLoopAndGif() {
     clearTimeout(this.loopTimeout);
     const player = this.client.player;
+    if (this.gifLoopRunning) {
+      this.stopGifRecording(true);
+    }
     if (this.loopEnabled && player) {
       this.loopStart = this.timecodeToSeconds(this.loopTimeSettings.start);
       this.loopEnd = this.timecodeToSeconds(this.loopTimeSettings.end);
@@ -214,6 +221,121 @@ export class LoopMenu extends EventEmitter {
     DOMElements.loopMenu.style.display = 'none';
   }
 
+  recordGif() {
+    if (!this.loopEnabled || this.gifLoopRunning) {
+      return;
+    }
+    this.gif = new GIF({
+      workers: 4,
+      quality: 4,
+      dither: false,
+    });
+
+    const player = this.client.player;
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = player.getVideo().videoWidth;
+    canvas.height = player.getVideo().videoHeight;
+
+    this.gifCanvas = canvas;
+    this.gifCtx = ctx;
+    this.lastTimeRecorded = null;
+
+    const loopStart = this.loopStart;
+
+    this.client.currentTime = Math.max(loopStart - 1, 0);
+    this.client.play();
+
+    this.previousPlaybackRate = this.client.playbackRate;
+    this.client.playbackRate = 3;
+
+    this.startGifRecording();
+  }
+
+  startGifRecording() {
+    console.log('start gif recording');
+    this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_start'), 'info');
+    this.recordingGif = true;
+    this.gifLoopRunning = true;
+    this.gifLoop();
+  }
+
+  stopGifRecording(abort) {
+    this.recordingGif = false;
+    if (abort && this.gif) {
+      this.gif.abort();
+      this.gif = null;
+    }
+  }
+
+  gifLoop() {
+    const player = this.client.player;
+    const currentTime = Math.floor(player.currentTime * 100) / 100;
+    const loopStart = this.loopStart;
+    let reachedEnd = false;
+    if (currentTime >= loopStart) {
+      const lastRecorded = this.lastTimeRecorded;
+
+      if (currentTime >= this.loopEnd || (lastRecorded !== null && currentTime < lastRecorded)) {
+        reachedEnd = true;
+      } else if (lastRecorded === null || currentTime - lastRecorded > 1/30) {
+        if (lastRecorded !== null && this.gif) {
+          this.gif.addFrame(this.gifCanvas, {
+            delay: Math.round((currentTime - lastRecorded) * 1000),
+            copy: true,
+          });
+        }
+
+        this.gifCtx.drawImage(player.getVideo(), 0, 0, this.gifCanvas.width, this.gifCanvas.height);
+        this.lastTimeRecorded = currentTime;
+      }
+    }
+
+    if (reachedEnd || !this.loopEnabled || !this.recordingGif) {
+      console.log('gif recording reached end');
+      this.gifLoopRunning = false;
+      this.loopEnabled = false;
+      this.client.pause();
+      this.client.playbackRate = this.previousPlaybackRate;
+      this.updateLoopAndGif();
+      this.finishGif();
+      return;
+    }
+    requestAnimationFrame(this.gifLoop.bind(this));
+  }
+
+  finishGif() {
+    this.recordingGif = false;
+    this.gifLoopRunning = false;
+    this.lastTimeRecorded = null;
+    this.gifCtx = null;
+    this.gifCanvas = null;
+
+    this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_end'), 'info');
+
+    const gif = this.gif;
+    if (gif) {
+      gif.on('progress', (p) => {
+        if (this.gif === gif) {
+          this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_progress', [Math.round(p * 1000) / 10]), 'info');
+        }
+      });
+      gif.on('finished', (blob) => {
+        this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_finished'), 'info', 5000);
+        gif.abort();
+        console.log('gif finished');
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'loop.gif';
+        a.click();
+        URL.revokeObjectURL(url);
+      });
+      gif.render();
+    }
+  }
+
   checkLoop() {
     const player = this.client.player;
     if (!player || !this.loopEnabled) {
@@ -223,6 +345,13 @@ export class LoopMenu extends EventEmitter {
     const currentTime = this.client.currentTime;
     const playbackRate = this.client.playbackRate;
 
+    if (this.gifLoopRunning) {
+      if (currentTime >= this.loopEnd) {
+        this.stopGifRecording();
+      }
+      return;
+    }
+
     if (currentTime >= this.loopEnd) {
       clearTimeout(this.loopTimeout);
       this.client.currentTime = this.loopStart;
@@ -231,7 +360,7 @@ export class LoopMenu extends EventEmitter {
       this.loopTimeout = setTimeout(() => {
         this.client.currentTime = this.loopStart;
       }, (this.loopEnd - currentTime) * 1000 / playbackRate);
-    } else if (this.loopStart > 0) {
+    } else if (this.loopStart > 0 && !this.gifLoopRunning) {
       clearTimeout(this.loopTimeout);
       if (currentTime < this.loopStart) {
         this.client.currentTime = this.loopStart;

@@ -387,6 +387,18 @@
     "loop_menu_toggle_disabled": {
         "message": "Loop Disabled"
     },
+    "loop_menu_gif_start": {
+        "message": "Recording GIF at 2x speed..."
+    },
+    "loop_menu_gif_end": {
+        "message": "Finished recording GIF. Now saving..."
+    },
+    "loop_menu_gif_progress": {
+        "message": "Saving GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "Finished saving GIF!"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Fragment Failed! Click to retry."
     },

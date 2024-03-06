@@ -387,6 +387,18 @@
     "loop_menu_toggle_disabled": {
         "message": "ループ無効"
     },
+    "loop_menu_gif_start": {
+        "message": "2倍速でGIFを録画中..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIFの録画が終了しました。現在保存中..."
+    },
+    "loop_menu_gif_progress": {
+        "message": "GIFを保存中 $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIFの保存が完了しました!"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },
