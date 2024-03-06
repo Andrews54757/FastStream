@@ -84,9 +84,6 @@ export class FastStreamClient extends EventEmitter {
 
     this.player = null;
     this.previewPlayer = null;
-    this.loopStart = null;
-    this.loopEnd = null;
-    this.loopTimeout = null;
     this.saveSeek = true;
     this.pastSeeks = [];
     this.pastUnseeks = [];
@@ -264,7 +261,6 @@ export class FastStreamClient extends EventEmitter {
   updateDuration() {
     this.interfaceController.durationChanged();
     this.updateHasDownloadSpace();
-    this.updateLoop();
   }
 
   updateTime(time) {
@@ -465,6 +461,8 @@ export class FastStreamClient extends EventEmitter {
     if (this.progressMemory && this.options.storeProgress) {
       await this.loadProgressData(true);
     }
+
+    this.emit('setsource', this);
   }
 
   async loadProgressData(changeTime = false) {
@@ -576,33 +574,6 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
-  checkLoop() {
-    if (!this.player || this.loopStart >= this.duration) {
-      return;
-    }
-
-    if (this.shouldLoopManually) {
-      if (this.persistent.currentTime >= this.loopEnd) {
-        clearTimeout(this.loopTimeout);
-        this.currentTime = this.loopStart;
-      } else if (this.persistent.currentTime >= this.loopEnd - 5) {
-        clearTimeout(this.loopTimeout);
-        this.loopTimeout = setTimeout(() => {
-          this.currentTime = this.loopStart;
-        }, (this.loopEnd - this.persistent.currentTime) * 1000 / this.playbackRate);
-      }
-    } else if (this.player.getVideo().loop && this.loopStart > 0) {
-      clearTimeout(this.loopTimeout);
-      if (this.persistent.currentTime < this.loopStart) {
-        this.currentTime = this.loopStart;
-      } else if (this.persistent.currentTime > this.duration - 5) {
-        this.loopTimeout = setTimeout(() => {
-          this.checkLoop();
-        }, (this.duration - this.persistent.currentTime) * 1000 / this.playbackRate + 100);
-      }
-    }
-  }
-
   mainloop() {
     if (this.destroyed) return;
     setTimeout(this.mainloop.bind(this), 1000);
@@ -622,7 +593,7 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
 
-    this.checkLoop();
+    this.emit('tick', this);
   }
 
   predownloadFragments() {
@@ -718,41 +689,6 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
-  setLoop(start, end) {
-    this.loopStart = start;
-    this.loopEnd = end;
-    clearTimeout(this.loopTimeout);
-    this.updateLoop();
-  }
-
-  updateLoop() {
-    if (!this.player) {
-      return;
-    }
-    const start = this.loopStart;
-    const end = this.loopEnd;
-
-    this.shouldLoopManually = false;
-
-    if (start === null || end === null) {
-      this.player.getVideo().loop = false;
-      return;
-    }
-
-    this.player.getVideo().loop = true;
-
-    if (
-      (start <= 0 && (end > this.duration || end <= 0)) ||
-      end <= start
-    ) {
-      return;
-    }
-
-    this.shouldLoopManually = true;
-
-    this.checkLoop();
-  }
-
   freeFragment(fragment) {
     this.downloadManager.removeFile(fragment.getContext());
     fragment.status = DownloadStatus.WAITING;
@@ -779,9 +715,6 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async resetPlayer() {
-    clearTimeout(this.loopTimeout);
-    this.loopTimeout = null;
-
     const promises = [];
     this.lastTime = 0;
 
