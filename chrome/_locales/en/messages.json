@@ -388,10 +388,13 @@
         "message": "Loop Disabled"
     },
     "loop_menu_gif_start": {
-        "message": "Recording GIF at 2x speed..."
+        "message": "Recording GIF at 4x speed..."
     },
     "loop_menu_gif_end": {
         "message": "Finished recording GIF. Now saving..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "Aborted GIF recording!"
     },
     "loop_menu_gif_progress": {
         "message": "Saving GIF $1%"

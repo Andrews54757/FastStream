@@ -387,10 +387,13 @@
         "message": "Repetir Deshabilitado"
     },
     "loop_menu_gif_start": {
-        "message": "Grabando GIF a velocidad 2x..."
+        "message": "Grabando GIF a velocidad 4x..."
     },
     "loop_menu_gif_end": {
         "message": "Finalizó la grabación del GIF. Ahora guardando..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "¡Grabación de GIF abortada!"
     },
     "loop_menu_gif_progress": {
         "message": "Guardando GIF $1%"

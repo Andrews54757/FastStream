@@ -248,7 +248,7 @@ export class LoopMenu extends EventEmitter {
     this.client.play();
 
     this.previousPlaybackRate = this.client.playbackRate;
-    this.client.playbackRate = 3;
+    this.client.playbackRate = 4;
 
     this.startGifRecording();
   }
@@ -266,6 +266,7 @@ export class LoopMenu extends EventEmitter {
     if (abort && this.gif) {
       this.gif.abort();
       this.gif = null;
+      this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_abort'), 'info', 5000);
     }
   }
 
@@ -312,10 +313,10 @@ export class LoopMenu extends EventEmitter {
     this.gifCtx = null;
     this.gifCanvas = null;
 
-    this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_end'), 'info');
 
     const gif = this.gif;
     if (gif) {
+      this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_end'), 'info', 5000);
       gif.on('progress', (p) => {
         if (this.gif === gif) {
           this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_progress', [Math.round(p * 1000) / 10]), 'info');

@@ -388,7 +388,7 @@
         "message": "Зацикливание отключено"
     },
     "loop_menu_gif_start": {
-        "message": "Запись GIF c ускорением 2x..."
+        "message": "Запись GIF c ускорением 4x..."
     },
     "loop_menu_gif_end": {
         "message": "Запись GIF завершена. Сохранение..."
@@ -398,6 +398,9 @@
     },
     "loop_menu_gif_finished": {
         "message": "Сохранение GIF завершено!"
+    },
+    "loop_menu_gif_abort": {
+        "message": "Запись GIF прервана!"
     },
     "player_fragment_failed_singular": {
         "message": "Ошибка $1 фрагмента! Нажмите для повтора"
