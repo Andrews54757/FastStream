@@ -2728,6 +2728,24 @@ input.crosstalk_calculator_input {
     text-align: center;
 }
 
+.loop_menu_gif_button {
+    display: flex;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    padding: 0px 5px;
+    background-color: var(--menu-textbutton-background-color);
+    color: var(--menu-textbutton-text-color);
+    text-align: center;
+}
+
+.loop_menu_gif_button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.loop_menu_gif_button:hover,
 .now_button:hover,
 .loop_menu_toggle_button:hover {
     background-color: var(--menu-textbutton-hover-background-color);

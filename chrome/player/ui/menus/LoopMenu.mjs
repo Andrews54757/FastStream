@@ -130,6 +130,21 @@ export class LoopMenu extends EventEmitter {
     WebUtils.setupTabIndex(toggleLoopButton);
     loopButtonContainer.appendChild(toggleLoopButton);
 
+    const gifButton = document.createElement('div');
+    gifButton.role = 'button';
+    gifButton.classList.add('loop_menu_gif_button');
+    gifButton.addEventListener('click', (e) => {
+      e.stopPropagation();
+    });
+    WebUtils.setupTabIndex(gifButton);
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#gif');
+    svg.appendChild(use);
+    gifButton.appendChild(svg);
+    // loopButtonContainer.appendChild(gifButton);
+
     this.updateUI();
   }
 
@@ -207,26 +222,19 @@ export class LoopMenu extends EventEmitter {
 
     const currentTime = this.client.currentTime;
     const playbackRate = this.client.playbackRate;
-    const duration = this.client.duration;
 
-    if (this.loopEnd < duration - 1) {
-      if (currentTime >= this.loopEnd) {
-        clearTimeout(this.loopTimeout);
+    if (currentTime >= this.loopEnd) {
+      clearTimeout(this.loopTimeout);
+      this.client.currentTime = this.loopStart;
+    } else if (currentTime >= this.loopEnd - 5 && currentTime < this.loopEnd - 0.5) {
+      clearTimeout(this.loopTimeout);
+      this.loopTimeout = setTimeout(() => {
         this.client.currentTime = this.loopStart;
-      } else if (currentTime >= this.loopEnd - 5 && currentTime < this.loopEnd - 0.5) {
-        clearTimeout(this.loopTimeout);
-        this.loopTimeout = setTimeout(() => {
-          this.client.currentTime = this.loopStart;
-        }, (this.loopEnd - currentTime) * 1000 / playbackRate);
-      }
-    } else if (this.player.getVideo().loop && this.loopStart > 0) {
+      }, (this.loopEnd - currentTime) * 1000 / playbackRate);
+    } else if (this.loopStart > 0) {
       clearTimeout(this.loopTimeout);
       if (currentTime < this.loopStart) {
-        this.currentTime = this.loopStart;
-      } else if (currentTime > duration - 5 && currentTime < duration - 0.5) {
-        this.loopTimeout = setTimeout(() => {
-          this.checkLoop();
-        }, (duration - currentTime) * 1000 / playbackRate + 100);
+        this.client.currentTime = this.loopStart;
       }
     }
   }

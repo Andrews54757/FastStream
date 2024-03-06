@@ -510,6 +510,7 @@ export class InterfaceController {
         this.userIsReordering = false;
         this.checkToolsAndSave();
       },
+      filter: '.menu_container, .rate_menu_container',
     };
     this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
     this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
