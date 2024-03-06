@@ -18,7 +18,7 @@ export class LoopMenu extends EventEmitter {
       end: '00:00:00.000',
     };
 
-    this.loopHandler = this.checkLoop.bind(this);
+    this.loopHandler = this.checkLoopLoop.bind(this);
   }
 
   currentTimeToTimecode(time) {
@@ -161,7 +161,6 @@ export class LoopMenu extends EventEmitter {
   }
 
   updateLoopAndGif() {
-    clearTimeout(this.loopTimeout);
     const player = this.client.player;
     if (this.gifLoopRunning) {
       this.stopGifRecording(true);
@@ -194,10 +193,9 @@ export class LoopMenu extends EventEmitter {
 
     if (this.loopEnabled) {
       player.getVideo().loop = true;
-      this.client.on('tick', this.loopHandler);
+      this.startLoopLoop();
     } else {
       player.getVideo().loop = false;
-      this.client.off('tick', this.loopHandler);
     }
   }
 
@@ -254,6 +252,9 @@ export class LoopMenu extends EventEmitter {
   }
 
   startGifRecording() {
+    if (this.gifLoopRunning) {
+      return;
+    }
     console.log('start gif recording');
     this.client.interfaceController.setStatusMessage('save-gif', Localize.getMessage('loop_menu_gif_start'), 'info');
     this.recordingGif = true;
@@ -337,14 +338,24 @@ export class LoopMenu extends EventEmitter {
     }
   }
 
-  checkLoop() {
+  startLoopLoop() {
+    if (this.loopLoopRunning) {
+      return;
+    }
+    this.loopLoopRunning = true;
+    this.checkLoopLoop();
+  }
+
+  checkLoopLoop() {
     const player = this.client.player;
     if (!player || !this.loopEnabled) {
+      this.loopLoopRunning = false;
       return;
     }
 
+    requestAnimationFrame(this.loopHandler);
+
     const currentTime = this.client.currentTime;
-    const playbackRate = this.client.playbackRate;
 
     if (this.gifLoopRunning) {
       if (currentTime >= this.loopEnd) {
@@ -354,15 +365,8 @@ export class LoopMenu extends EventEmitter {
     }
 
     if (currentTime >= this.loopEnd) {
-      clearTimeout(this.loopTimeout);
       this.client.currentTime = this.loopStart;
-    } else if (currentTime >= this.loopEnd - 5 && currentTime < this.loopEnd - 0.5) {
-      clearTimeout(this.loopTimeout);
-      this.loopTimeout = setTimeout(() => {
-        this.client.currentTime = this.loopStart;
-      }, (this.loopEnd - currentTime) * 1000 / playbackRate);
     } else if (this.loopStart > 0 && !this.gifLoopRunning) {
-      clearTimeout(this.loopTimeout);
       if (currentTime < this.loopStart) {
         this.client.currentTime = this.loopStart;
       }
