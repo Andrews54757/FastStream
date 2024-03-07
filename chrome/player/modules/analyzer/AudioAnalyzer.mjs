@@ -245,7 +245,7 @@ export class AudioAnalyzer extends EventEmitter {
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
     player.currentTime = Math.max(this.client.currentTime, 0);
-    player.playbackRate = 16;
+    player.playbackRate = 12;
     player.loop = true;
     player.play();
 
