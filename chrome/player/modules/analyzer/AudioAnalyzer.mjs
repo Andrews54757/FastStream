@@ -37,6 +37,21 @@ export class AudioAnalyzer extends EventEmitter {
   onVolumeFrameProcessed(time, volume) {
     const frame = Math.floor(time * this.outputRate);
     this.volumeBuffer[frame] = volume;
+    if (frame > 5 && !this.volumeBuffer[frame - 1]) {
+      // interpolate. Find last non-zero frame within 5 frames
+      let lastFrame = frame - 2;
+      while (lastFrame > frame - 5 && !this.volumeBuffer[lastFrame]) {
+        lastFrame--;
+      }
+
+      if (this.volumeBuffer[lastFrame]) {
+        const diff = frame - lastFrame;
+        const step = (volume - this.volumeBuffer[lastFrame]) / diff;
+        for (let i = lastFrame + 1; i < frame; i++) {
+          this.volumeBuffer[i] = this.volumeBuffer[lastFrame] + step * (i - lastFrame);
+        }
+      }
+    }
     this.emit('volume', time, volume);
   }
 
@@ -229,7 +244,7 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
-    player.currentTime = 0;
+    player.currentTime = Math.max(this.client.currentTime, 0);
     player.playbackRate = 16;
     player.loop = true;
     player.play();
