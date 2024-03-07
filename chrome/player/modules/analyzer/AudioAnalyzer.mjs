@@ -244,7 +244,7 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
-    player.currentTime = Math.max(this.client.currentTime, 0);
+    player.currentTime = this.client.currentTime;
     player.playbackRate = 12;
     player.loop = true;
     player.play();
@@ -304,7 +304,7 @@ export class AudioAnalyzer extends EventEmitter {
       }
 
       const time = player.currentTime;
-      const clientTime = Math.max(this.client.currentTime - 30, 0);
+      const clientTime = this.client.currentTime;
 
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
         currentRangeIndex = -1;
