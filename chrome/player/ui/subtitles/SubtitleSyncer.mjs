@@ -99,6 +99,8 @@ export class SubtitleSyncer extends EventEmitter {
     });
 
     document.addEventListener('mousemove', (e) => {
+      if (!this.client.player) return;
+      const video = this.client.player.getVideo();
       if (isGrabbingTrack) {
         const delta = e.clientX - grabStartTrack;
         grabStartTrack = e.clientX;
