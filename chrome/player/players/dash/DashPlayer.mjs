@@ -14,7 +14,7 @@ export default class DashPlayer extends EventEmitter {
     super();
     this.client = client;
     this.isPreview = options?.isPreview || false;
-    this.isAudioOnly = config?.isAudioOnly || false;
+    this.isAudioOnly = options?.isAudioOnly || false;
     this.qualityMultiplier = options?.qualityMultiplier || 1.1;
     this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
