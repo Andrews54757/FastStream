@@ -37,7 +37,7 @@ export class ProgressBar extends EventEmitter {
 
     this.audioAnalyzerMarker = document.createElement('div');
     this.audioAnalyzerMarker.classList.add('analyzer_marker');
-    this.audioAnalyzerMarker.style.backgroundColor = '#00bfff';
+    this.audioAnalyzerMarker.style.backgroundColor = '#ff0';
     DOMElements.markerContainer.appendChild(this.audioAnalyzerMarker);
     this.audioAnalyzerMarker.style.display = 'none';
 

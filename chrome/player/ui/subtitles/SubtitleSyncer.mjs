@@ -270,7 +270,7 @@ export class SubtitleSyncer extends EventEmitter {
 
       const barWidth = el.element.width / outputRate / 10;
       // set fill opacity
-      context.globalAlpha = 0.8;
+      context.globalAlpha = 0.9;
       // Draw volume bars using buffer
       for (let i = startFrame; i < endFrame; i++) {
         const volumeVal = (volumeBuffer[i] || 0);
