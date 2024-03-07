@@ -47,14 +47,12 @@ class Processor extends AudioWorkletProcessor {
     this._initialized = false;
     this._closed = false;
     this.init = async () => {
-      console.debug('initializing worklet');
       this.resampler = new Resampler({
         nativeSampleRate: sampleRate,
         targetSampleRate: 16000,
         targetFrameSize: this.options.frameSamples,
       });
       this._initialized = true;
-      console.debug('initialized worklet');
     };
 
     this.port.onmessage = (event) => {
@@ -82,7 +80,6 @@ class Processor extends AudioWorkletProcessor {
   }
 
   close() {
-    console.debug('closing worklet');
     this._closed = true;
   }
 }

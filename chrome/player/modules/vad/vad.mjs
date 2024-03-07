@@ -60,7 +60,6 @@ class Silero {
       console.debug('initializing vad');
       const modelArrayBuffer = await this.modelFetcher();
       this._session = await ort.InferenceSession.create(modelArrayBuffer);
-      console.log(this._session);
       this._sr = new this.ort.Tensor('int64', [16000n]);
       this.reset_state();
       console.debug('vad is initialized');
@@ -243,14 +242,12 @@ class AudioNodeVAD {
     this.frameProcessor.resume();
   };
 
-  stop() {
-    this.entryNode.disconnect();
-    this.entryNode = undefined;
+  destroy() {
+    this.entryNode.port.postMessage('close');
+    this.frameProcessor.pause();
+    this.entryNode = null;
   }
 
-  receive(node) {
-    node.connect(this.entryNode);
-  }
 
   async processFrame(frame) {
     const {probs, msg, audio} = await this.frameProcessor.process(frame);

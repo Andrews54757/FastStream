@@ -8,20 +8,9 @@ export class SubtitleSyncer extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.buffer = [];
     this.trackToSync = null;
     this.isSeeking = false;
-    this.options = {
-      onFrameProcessed: (prob) => {
-        this.onFrameProcessed(prob.isSpeech);
-      },
-
-      positiveSpeechThreshold: 1,
-      negativeSpeechThreshold: 1,
-      frameSamples: 1024,
-
-    };
-    this.rate = 16000 / this.options.frameSamples;
+    this.analyzerHandle = this.onAnalyzerFrameProcessed.bind(this);
     this.setup();
   }
 
@@ -31,6 +20,7 @@ export class SubtitleSyncer extends EventEmitter {
     this.client.interfaceController.subtitlesManager.renderSubtitles();
     this.onVideoTimeUpdate();
   }
+
   setup() {
     this.ui = {};
     this.ui.currentPosition = WebUtils.create('div', '', 'current_position_bar');
@@ -55,9 +45,11 @@ export class SubtitleSyncer extends EventEmitter {
     let shouldPlay = false;
 
     this.ui.timelineTicks.addEventListener('mousedown', (e) => {
+      if (!this.client.player) return;
+      const video = this.client.player.getVideo();
       isGrabbing = true;
       grabStart = e.clientX;
-      grabStartTime = this.video.currentTime;
+      grabStartTime = video.currentTime;
       this.isSeeking = true;
       shouldPlay = this.client.persistent.playing;
       if (this.client.persistent.playing) {
@@ -66,9 +58,11 @@ export class SubtitleSyncer extends EventEmitter {
     });
 
     document.addEventListener('mouseup', (e) => {
+      if (!this.client.player) return;
+      const video = this.client.player.getVideo();
       if (isGrabbing) {
         const delta = e.clientX - grabStart;
-        const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
+        const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * video.duration);
         this.client.currentTime = time;
         this.client.updateTime(time);
         this.isSeeking = false;
@@ -83,7 +77,7 @@ export class SubtitleSyncer extends EventEmitter {
     document.addEventListener('mousemove', (e) => {
       if (isGrabbing) {
         const delta = e.clientX - grabStart;
-        const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * this.video.duration);
+        const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * video.duration);
         this.client.currentTime = time;
         this.client.updateTime(time);
       }
@@ -106,20 +100,13 @@ export class SubtitleSyncer extends EventEmitter {
       if (isGrabbingTrack) {
         const delta = e.clientX - grabStartTrack;
         grabStartTrack = e.clientX;
-        this.trackToSync.shift(delta / this.ui.timelineTicks.clientWidth * this.video.duration);
+        this.trackToSync.shift(delta / this.ui.timelineTicks.clientWidth * video.duration);
         this.client.interfaceController.subtitlesManager.renderSubtitles();
       }
     });
   }
-  onFrameProcessed(isSpeechProb) {
-    if (!this.started || this.video.readyState < 4 || this.video.paused) return;
 
-    const time = this.video.currentTime;
-
-    const frame = Math.floor(time * this.rate);
-    this.buffer[frame] = isSpeechProb;
-    this.buffer[frame + 1] = isSpeechProb;
-
+  onAnalyzerFrameProcessed(time, isSpeechProb) {
     this.canvasElements.find((el) => {
       if (el.index * 10 <= time && (el.index + 1) * 10 > time) {
         el.cachedWidth = 0;
@@ -143,10 +130,6 @@ export class SubtitleSyncer extends EventEmitter {
   }
 
   reset() {
-    this.audioContext = null;
-    this.audioSource = null;
-    this.audioNodeVAD = null;
-    this.buffer.length = 0;
     this.lastUpdate = 0;
     this.ticklineElements = [];
     this.canvasElements = [];
@@ -162,24 +145,12 @@ export class SubtitleSyncer extends EventEmitter {
     const video = this.client.currentVideo;
     if (this.started || !video) return;
     this.started = true;
+    this.reset();
 
-    if (this.video !== video) {
-      this.reset();
-      this.video = video;
-      this.audioSource = this.client.audioSource;
-      this.audioContext = this.client.audioContext;
-
-
-      const frames = this.video.duration * this.rate;
-      for (let i = 0; i <= frames; i++) {
-        this.buffer.push(0);
-      }
-    }
-
-    const {VadJS} = await import('../../modules/vad/vad.mjs');
-    this.audioNodeVAD = await VadJS.AudioNodeVAD.new(this.audioContext, this.options);
-    this.audioNodeVAD.receive(this.audioSource);
-    this.audioNodeVAD.start();
+    this.client.audioAnalyzer.on('vad', this.analyzerHandle);
+    this.client.audioAnalyzer.on('volume', this.analyzerHandle);
+    this.client.audioAnalyzer.addVadDependent(this);
+    this.client.audioAnalyzer.addVolumeDependent(this);
 
     DOMElements.playerContainer.classList.add('expanded');
     this.client.interfaceController.runProgressLoop();
@@ -194,13 +165,15 @@ export class SubtitleSyncer extends EventEmitter {
   }
 
   renderSyncTimeline() {
-    if (!this.started) return;
+    if (!this.started || !this.client.player) return;
     const time = this.client.persistent.currentTime;
+
+    const video = this.client.player.getVideo();
 
     const timePerWidth = 60;
     const minTime = Math.floor(Math.max(0, time - timePerWidth / 2 - 5));
-    const maxTime = Math.ceil(Math.min(this.video.duration, time + timePerWidth / 2 + 5));
-    this.ui.timelineContainer.style.width = (this.video.duration / timePerWidth) * 100 + '%';
+    const maxTime = Math.ceil(Math.min(video.duration, time + timePerWidth / 2 + 5));
+    this.ui.timelineContainer.style.width = (video.duration / timePerWidth) * 100 + '%';
 
 
     let hasArr = new Array(maxTime - minTime).fill(false);
@@ -219,7 +192,7 @@ export class SubtitleSyncer extends EventEmitter {
       if (hasArr[tickTime - minTime]) continue;
 
       const el = WebUtils.create('div', '', 'timeline_tick');
-      el.style.left = tickTime / this.video.duration * 100 + '%';
+      el.style.left = tickTime / video.duration * 100 + '%';
       this.ui.timelineTicks.appendChild(el);
       this.ticklineElements.push({
         time: tickTime,
@@ -260,8 +233,8 @@ export class SubtitleSyncer extends EventEmitter {
       if (hasArr[canvIndex - minCanvIndex]) continue;
 
       const el = WebUtils.create('canvas', '', 'timeline_vod_canvas');
-      el.style.left = canvIndex * 10 / this.video.duration * 100 + '%';
-      el.style.width = 10 / this.video.duration * 100 + '%';
+      el.style.left = canvIndex * 10 / video.duration * 100 + '%';
+      el.style.width = 10 / video.duration * 100 + '%';
       el.height = 22 * window.devicePixelRatio;
       this.ui.timelineVOD.appendChild(el);
 
@@ -280,28 +253,43 @@ export class SubtitleSyncer extends EventEmitter {
       const index = el.index;
       const time = index * 10;
 
-      const startFrame = Math.floor(time * this.rate);
-      const endFrame = Math.floor(Math.min(time + 10, this.video.duration) * this.rate);
+      const audioAnalyzer = this.client.audioAnalyzer;
+      const outputRate = audioAnalyzer.getOutputRate();
+      const vadBuffer = audioAnalyzer.getVadData();
+      const volumeBuffer = audioAnalyzer.getVolumeData();
+      const startFrame = Math.floor(time * outputRate);
+      const endFrame = Math.floor(Math.min(time + 10, video.duration) * outputRate);
 
       const context = el.ctx;
       el.element.width = newWidth;
       context.clearRect(0, 0, el.element.width, el.element.height);
 
-      // Draw line using buffer
+      const barWidth = el.element.width / outputRate / 10;
+      // set fill opacity
+      context.globalAlpha = 0.8;
+      // Draw volume bars using buffer
+      for (let i = startFrame; i < endFrame; i++) {
+        const volumeVal = (volumeBuffer[i] || 0);
+        // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
+        const color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
+        context.fillStyle = color;
+        context.fillRect((i - startFrame) / (10 * outputRate) * el.element.width, (0.5 - volumeVal / 255 / 2) * el.element.height, barWidth / 2, (volumeVal / 255) * el.element.height);
+      }
+      context.globalAlpha = 1;
+
+      // Draw VAD line using buffer
       context.beginPath();
       context.strokeStyle = this.vadLineColor;
-      let val = (startFrame > 0) ? (1 - this.buffer[startFrame - 1]) : 1;
-      context.moveTo(0, val * el.element.height);
+      let vadVal = (startFrame > 0) ? (vadBuffer[startFrame - 1] || 0) : 0;
+      context.moveTo(0, (1 - vadVal / 255) * el.element.height);
       for (let i = startFrame; i < endFrame; i++) {
-        val = 1 - this.buffer[i];
-
-        context.lineTo((i - startFrame + 1) / (10 * this.rate) * el.element.width, val * el.element.height);
+        vadVal = (vadBuffer[i] || 0);
+        context.lineTo((i - startFrame + 1) / (10 * outputRate) * el.element.width, (1 - vadVal / 255) * el.element.height);
       }
       context.stroke();
     });
 
-    this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / this.video.duration * 100}%)`;
-
+    this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / video.duration * 100}%)`;
 
     const now = Date.now();
     if (now - this.lastUpdate >= 500) {
@@ -319,7 +307,7 @@ export class SubtitleSyncer extends EventEmitter {
         el.element.remove();
         return false;
       } else {
-        el.element.style.left = el.cue.startTime / this.video.duration * 100 + '%';
+        el.element.style.left = el.cue.startTime / video.duration * 100 + '%';
       }
       return true;
     });
@@ -329,8 +317,8 @@ export class SubtitleSyncer extends EventEmitter {
       if (this.trackElements.find((el) => el.cue === cue)) return;
 
       const el = WebUtils.create('div', '', 'timeline_track_cue');
-      el.style.left = cue.startTime / this.video.duration * 100 + '%';
-      el.style.width = (cue.endTime - cue.startTime) / this.video.duration * 100 + '%';
+      el.style.left = cue.startTime / video.duration * 100 + '%';
+      el.style.width = (cue.endTime - cue.startTime) / video.duration * 100 + '%';
       if (!cue.dom2) {
         cue.dom2 = WebVTT.convertCueToDOMTree(window, cue.text);
       }
@@ -349,13 +337,10 @@ export class SubtitleSyncer extends EventEmitter {
     if (!this.started) return;
     this.started = false;
 
-    const node = this.audioNodeVAD.getNode();
-    if (node) {
-      node.port.postMessage('close');
-      this.audioSource.disconnect(node);
-    }
-
-    this.audioNodeVAD = null;
+    this.client.audioAnalyzer.removeVadDependent(this);
+    this.client.audioAnalyzer.removeVolumeDependent(this);
+    this.client.audioAnalyzer.off('vad', this.analyzerHandle);
+    this.client.audioAnalyzer.off('volume', this.analyzerHandle);
 
     this.client.interfaceController.durationChanged();
     DOMElements.playerContainer.classList.remove('expanded');

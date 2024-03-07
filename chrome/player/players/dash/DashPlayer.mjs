@@ -13,9 +13,10 @@ export default class DashPlayer extends EventEmitter {
   constructor(client, options) {
     super();
     this.client = client;
-    this.video = document.createElement('video');
     this.isPreview = options?.isPreview || false;
+    this.isAudioOnly = config?.isAudioOnly || false;
     this.qualityMultiplier = options?.qualityMultiplier || 1.1;
+    this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
     this.fragmentRequester = new DashFragmentRequester(this);
 

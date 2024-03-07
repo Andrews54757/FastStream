@@ -14,10 +14,11 @@ export default class HLSPlayer extends EventEmitter {
     super();
     this.client = client;
     this.isPreview = config?.isPreview || false;
+    this.isAudioOnly = config?.isAudioOnly || false;
     this.qualityMultiplier = config?.qualityMultiplier || 1.1;
     this.source = null;
     this.fragmentRequester = new HLSFragmentRequester(this);
-    this.video = document.createElement('video');
+    this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
     if (!Hls.isSupported()) {
       throw new Error('HLS Not supported');
     }

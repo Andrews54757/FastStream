@@ -20,6 +20,7 @@ import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
+import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -76,6 +77,7 @@ export class FastStreamClient extends EventEmitter {
     this.downloadManager = new DownloadManager(this);
     this.sourcesBrowser = new SourcesBrowser(this);
     this.videoAnalyzer = new VideoAnalyzer(this);
+    this.audioAnalyzer = new AudioAnalyzer(this);
     this.audioConfigManager = new AudioConfigManager(this);
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
@@ -409,6 +411,7 @@ export class FastStreamClient extends EventEmitter {
 
       this.audioContext = new AudioContext();
       this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
       this.audioConfigManager.setupNodes();
 
       this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
@@ -767,6 +770,8 @@ export class FastStreamClient extends EventEmitter {
       this.audioSource.disconnect();
       this.audioSource = null;
     }
+
+    this.audioAnalyzer.reset();
 
     promises.push(this.downloadManager.reset());
     this.interfaceController.reset();

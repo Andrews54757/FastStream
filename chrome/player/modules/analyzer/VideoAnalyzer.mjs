@@ -295,6 +295,7 @@ export class VideoAnalyzer extends EventEmitter {
     player.currentTime = timeStart;
     player.playbackRate = 6;
     player.volume = 0;
+    player.muted = true;
     player.play();
 
 

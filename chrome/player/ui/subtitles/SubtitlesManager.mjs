@@ -576,6 +576,18 @@ export class SubtitlesManager extends EventEmitter {
     }
   }
 
+  getSubtitlesVisibleNow() {
+    const cachedElements = this.subtitleTrackDisplayElements;
+    return cachedElements.map((el, i) => {
+      return {
+        track: this.activeTracks[i],
+        visible: el.style.opacity !== '0',
+        text: el.textContent,
+        marginBottom: parseInt(el.parentElement.style.marginBottom),
+      };
+    });
+  }
+
   renderSubtitles() {
     const cachedElements = this.subtitleTrackDisplayElements;
     const tracks = this.activeTracks;
