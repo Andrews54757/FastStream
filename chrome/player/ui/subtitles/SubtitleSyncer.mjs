@@ -75,6 +75,8 @@ export class SubtitleSyncer extends EventEmitter {
     });
 
     document.addEventListener('mousemove', (e) => {
+      if (!this.client.player) return;
+      const video = this.client.player.getVideo();
       if (isGrabbing) {
         const delta = e.clientX - grabStart;
         const time = grabStartTime - (delta / this.ui.timelineTicks.clientWidth * video.duration);
@@ -151,6 +153,8 @@ export class SubtitleSyncer extends EventEmitter {
     this.client.audioAnalyzer.on('volume', this.analyzerHandle);
     this.client.audioAnalyzer.addVadDependent(this);
     this.client.audioAnalyzer.addVolumeDependent(this);
+    this.client.audioAnalyzer.addBackgroundDependent(this);
+    this.client.audioAnalyzer.updateBackgroundAnalyzer();
 
     DOMElements.playerContainer.classList.add('expanded');
     this.client.interfaceController.runProgressLoop();
@@ -339,6 +343,7 @@ export class SubtitleSyncer extends EventEmitter {
 
     this.client.audioAnalyzer.removeVadDependent(this);
     this.client.audioAnalyzer.removeVolumeDependent(this);
+    this.client.audioAnalyzer.removeBackgroundDependent(this);
     this.client.audioAnalyzer.off('vad', this.analyzerHandle);
     this.client.audioAnalyzer.off('volume', this.analyzerHandle);
 

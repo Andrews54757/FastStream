@@ -102,7 +102,7 @@ export class AudioAnalyzerNode extends EventEmitter {
       return;
     }
 
-    requestAnimationFrame(this.loopHandle);
+    setTimeout(this.loopHandle, Math.floor(1000 / 12 / this.audioElement.playbackRate));
   }
 
   destroy() {

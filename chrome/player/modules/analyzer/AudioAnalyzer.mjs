@@ -19,10 +19,12 @@ export class AudioAnalyzer extends EventEmitter {
 
     this.vadNeededBy = [];
     this.volumeNeededBy = [];
+    this.backgroundNeededBy = [];
 
     this.analyzerNodes = new Map();
 
     this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    this.backgroundDoneRanges = [];
     this.backgroundAnalyzerEnabled = true;
   }
 
@@ -70,6 +72,22 @@ export class AudioAnalyzer extends EventEmitter {
     this.sendConfigToAnalyzerNodes();
   }
 
+  addBackgroundDependent(dependent) {
+    if (this.backgroundNeededBy.includes(dependent)) return;
+    this.backgroundNeededBy.push(dependent);
+  }
+
+  removeBackgroundDependent(dependent) {
+    const index = this.backgroundNeededBy.indexOf(dependent);
+    if (index !== -1) {
+      this.backgroundNeededBy.splice(index, 1);
+    }
+
+    if (!this.shouldRunAnalyzerInBackground()) {
+      this.stopBackgroundAnalyzer();
+    }
+  }
+
   sendConfigToAnalyzerNodes() {
     const vad = this.vadNeededBy.length > 0;
     const volume = this.volumeNeededBy.length > 0;
@@ -83,6 +101,7 @@ export class AudioAnalyzer extends EventEmitter {
     try {
       this.vadBuffer = [];
       this.volumeBuffer = [];
+      this.backgroundDoneRanges = [];
 
       this.analyzerNodes.forEach((node) => {
         node.destroy();
@@ -125,7 +144,7 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   async startBackgroundAnalyzer() {
-    if (!this.client.player || this.backgroundAnalyzerStatus !== AnalyzerStatus.IDLE || !this.shouldRunAnalyzerInBackground()) {
+    if (!this.client.player || this.backgroundAnalyzerStatus !== AnalyzerStatus.IDLE) {
       return;
     }
 
@@ -143,7 +162,7 @@ export class AudioAnalyzer extends EventEmitter {
 
     console.log('[AudioAnalyzer] Starting background analyzer');
 
-    const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, (completed) => {
+    const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, this.backgroundDoneRanges, (completed) => {
       if (newSource === this.backgroundAnalyzerSource) {
         console.log('[AudioAnalyzer] Background analyzer finished', completed ? 'successfully' : 'with errors');
         this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
@@ -170,7 +189,7 @@ export class AudioAnalyzer extends EventEmitter {
     this.client.interfaceController.updateMarkers();
   }
 
-  async loadPlayer(source, onDone) {
+  async loadPlayer(source, doneRanges, onDone) {
     const player = await this.client.playerLoader.createPlayer(source.mode, this.client, {
       isAnalyzer: true,
       isAudioOnly: true,
@@ -196,7 +215,7 @@ export class AudioAnalyzer extends EventEmitter {
 
     const onLoadMeta = () => {
       player.off(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
-      this.runAnalyzerInBackground(player, (completed)=>{
+      this.runAnalyzerInBackground(player, doneRanges, (completed)=>{
         audioAnalyzerNode.destroy();
         audioSource.disconnect();
         audioContext.close();
@@ -209,7 +228,7 @@ export class AudioAnalyzer extends EventEmitter {
     return player;
   }
 
-  runAnalyzerInBackground(player, onDone) {
+  runAnalyzerInBackground(player, doneRanges, onDone) {
     player.currentTime = 0;
     player.playbackRate = 16;
     player.loop = true;
@@ -227,7 +246,10 @@ export class AudioAnalyzer extends EventEmitter {
 
     let pauseTimeout;
 
-    const doneRanges = [];
+    if (!doneRanges) {
+      doneRanges = [];
+    }
+
     let currentRange = null;
     let currentRangeIndex = 0;
 
@@ -267,7 +289,7 @@ export class AudioAnalyzer extends EventEmitter {
       }
 
       const time = player.currentTime;
-      const clientTime = this.client.currentTime;
+      const clientTime = Math.max(this.client.currentTime - 30, 0);
 
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
         currentRangeIndex = -1;
@@ -297,7 +319,7 @@ export class AudioAnalyzer extends EventEmitter {
         }
 
         // check if ranges need to merge (if they are close enough)
-        if (currentRangeIndex > 0 && currentRange.start - doneRanges[currentRangeIndex - 1].end < 8) {
+        if (currentRangeIndex > 0 && currentRange.start - doneRanges[currentRangeIndex - 1].end < 0) {
           doneRanges[currentRangeIndex - 1].end = Math.max(doneRanges[currentRangeIndex - 1].end, currentRange.end);
           doneRanges.splice(currentRangeIndex, 1);
           currentRangeIndex--;
@@ -305,7 +327,7 @@ export class AudioAnalyzer extends EventEmitter {
         }
       }
 
-      if (currentRangeIndex < doneRanges.length - 1 && doneRanges[currentRangeIndex + 1].start - currentRange.end < 8) {
+      if (currentRangeIndex < doneRanges.length - 1 && doneRanges[currentRangeIndex + 1].start - currentRange.end < 0) {
         currentRange.end = Math.max(currentRange.end, doneRanges[currentRangeIndex + 1].end);
         doneRanges.splice(currentRangeIndex + 1, 1);
       }
@@ -324,7 +346,7 @@ export class AudioAnalyzer extends EventEmitter {
       }
 
       if (clientTime < currentRange.start - 10 || clientTime > currentRange.end + 10) {
-        if (!currentClientRange || Math.min(clientTime + 60, player.duration) > currentClientRange.end + 10 || clientTime + 5 < currentClientRange.start) {
+        if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 10 || clientTime + 5 < currentClientRange.start) {
           console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
           player.currentTime = clientTime;
           currentRange = null;
@@ -337,6 +359,8 @@ export class AudioAnalyzer extends EventEmitter {
     };
 
     requestAnimationFrame(onAnimFrame);
+
+    return doneRanges;
   }
 
   getMarkerPosition() {
@@ -347,8 +371,10 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   shouldRunAnalyzerInBackground() {
-    return false;
-    return this.backgroundAnalyzerEnabled;
+    if (!this.backgroundAnalyzerEnabled) {
+      return false;
+    }
+    return this.backgroundNeededBy.length > 0;
   }
 
   enableBackground() {
@@ -357,6 +383,17 @@ export class AudioAnalyzer extends EventEmitter {
 
   disableBackground() {
     this.backgroundAnalyzerEnabled = false;
-    this.stopBackgroundAnalyzer();
+    this.audioAnalyzer.stopBackgroundAnalyzer();
+  }
+
+  /**
+   * Must only run on trusted events to ensure the player runs.
+   */
+  updateBackgroundAnalyzer() {
+    if (this.shouldRunAnalyzerInBackground()) {
+      this.startBackgroundAnalyzer();
+    } else {
+      this.stopBackgroundAnalyzer();
+    }
   }
 }

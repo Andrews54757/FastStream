@@ -985,7 +985,7 @@ export class FastStreamClient extends EventEmitter {
     if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
-    this.audioAnalyzer.startBackgroundAnalyzer();
+    this.audioAnalyzer.updateBackgroundAnalyzer();
   }
 
   async pause() {
