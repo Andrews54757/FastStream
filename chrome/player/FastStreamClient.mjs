@@ -366,6 +366,12 @@ export class FastStreamClient extends EventEmitter {
         this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
       }
     }
+
+    if (!this.hasDownloadSpace) {
+      this.audioAnalyzer.disableBackground();
+    } else {
+      this.audioAnalyzer.enableBackground();
+    }
   }
 
   async addSource(source, setSource = false) {
@@ -979,6 +985,7 @@ export class FastStreamClient extends EventEmitter {
     if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
+    this.audioAnalyzer.startBackgroundAnalyzer();
   }
 
   async pause() {

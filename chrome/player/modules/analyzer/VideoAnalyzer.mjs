@@ -282,9 +282,9 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   getMarkerPosition() {
-    if (this.introStatus === AnalyzerStatus.RUNNING) {
+    if (this.introStatus === AnalyzerStatus.RUNNING && this.introPlayer) {
       return this.introPlayer.currentTime;
-    } else if (this.outroStatus === AnalyzerStatus.RUNNING) {
+    } else if (this.outroStatus === AnalyzerStatus.RUNNING && this.outroPlayer) {
       return this.outroPlayer.currentTime;
     }
     return null;

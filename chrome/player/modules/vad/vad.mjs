@@ -243,6 +243,7 @@ class AudioNodeVAD {
   };
 
   destroy() {
+    console.debug('destroying vad');
     this.entryNode.port.postMessage('close');
     this.frameProcessor.pause();
     this.entryNode = null;

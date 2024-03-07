@@ -1,5 +1,13 @@
+import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {EventEmitter} from '../eventemitter.mjs';
 import {AudioAnalyzerNode} from './AudioAnalyzerNode.mjs';
+
+const AnalyzerStatus = {
+  IDLE: 'idle',
+  RUNNING: 'running',
+  FINISHED: 'finished',
+  FAILED: 'failed',
+};
 
 export class AudioAnalyzer extends EventEmitter {
   constructor(client) {
@@ -13,6 +21,9 @@ export class AudioAnalyzer extends EventEmitter {
     this.volumeNeededBy = [];
 
     this.analyzerNodes = new Map();
+
+    this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    this.backgroundAnalyzerEnabled = true;
   }
 
   onVadFrameProcessed(time, isSpeechProb) {
@@ -77,6 +88,8 @@ export class AudioAnalyzer extends EventEmitter {
         node.destroy();
       });
       this.analyzerNodes.clear();
+
+      this.stopBackgroundAnalyzer();
     } catch (e) {
       console.error(e);
     }
@@ -109,5 +122,241 @@ export class AudioAnalyzer extends EventEmitter {
       vad: this.vadNeededBy.length > 0,
       volume: this.volumeNeededBy.length > 0,
     });
+  }
+
+  async startBackgroundAnalyzer() {
+    if (!this.client.player || this.backgroundAnalyzerStatus !== AnalyzerStatus.IDLE || !this.shouldRunAnalyzerInBackground()) {
+      return;
+    }
+
+    const newSource = this.client.player.getSource();
+    if (this.backgroundAnalyzerSource === newSource) {
+      return;
+    }
+
+    this.backgroundAnalyzerSource = newSource;
+
+    if (this.backgroundAnalyzerPlayer) {
+      this.backgroundAnalyzerPlayer.destroy();
+      this.backgroundAnalyzerPlayer = null;
+    }
+
+    console.log('[AudioAnalyzer] Starting background analyzer');
+
+    const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, (completed) => {
+      if (newSource === this.backgroundAnalyzerSource) {
+        console.log('[AudioAnalyzer] Background analyzer finished', completed ? 'successfully' : 'with errors');
+        this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
+        this.client.interfaceController.updateMarkers();
+      }
+    });
+
+    if (newSource !== this.backgroundAnalyzerSource) {
+      backgroundAnalyzerPlayer.destroy();
+      return;
+    }
+
+    this.backgroundAnalyzerStatus = AnalyzerStatus.RUNNING;
+    this.backgroundAnalyzerPlayer = backgroundAnalyzerPlayer;
+  }
+
+  stopBackgroundAnalyzer() {
+    this.backgroundAnalyzerSource = null;
+    if (this.backgroundAnalyzerPlayer) {
+      this.backgroundAnalyzerPlayer.destroy();
+      this.backgroundAnalyzerPlayer = null;
+    }
+    this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    this.client.interfaceController.updateMarkers();
+  }
+
+  async loadPlayer(source, onDone) {
+    const player = await this.client.playerLoader.createPlayer(source.mode, this.client, {
+      isAnalyzer: true,
+      isAudioOnly: true,
+    });
+
+    await player.setup();
+
+    const audioAnalyzerNode = new AudioAnalyzerNode();
+    const audioContext = new AudioContext();
+    const audioSource = audioContext.createMediaElementSource(player.getVideo());
+    audioAnalyzerNode.attach(player.getVideo(), audioSource, audioContext);
+    audioAnalyzerNode.on('vad', this.onVadFrameProcessed.bind(this));
+    audioAnalyzerNode.on('volume', this.onVolumeFrameProcessed.bind(this));
+    audioAnalyzerNode.configure({
+      vad: false,
+      volume: true,
+    });
+
+    player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+      player.currentLevel = this.client.currentLevel;
+      player.load();
+    });
+
+    const onLoadMeta = () => {
+      player.off(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
+      this.runAnalyzerInBackground(player, (completed)=>{
+        audioAnalyzerNode.destroy();
+        audioSource.disconnect();
+        audioContext.close();
+        onDone(completed);
+      });
+    };
+
+    player.on(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
+    await player.setSource(source);
+    return player;
+  }
+
+  runAnalyzerInBackground(player, onDone) {
+    player.currentTime = 0;
+    player.playbackRate = 16;
+    player.loop = true;
+    player.play();
+
+    let destroyed = false;
+    let completed = false;
+    const context = player.createContext();
+    context.on(DefaultPlayerEvents.DESTROYED, () => {
+      context.destroy();
+      destroyed = true;
+      onDone(completed);
+    });
+
+
+    let pauseTimeout;
+
+    const doneRanges = [];
+    let currentRange = null;
+    let currentRangeIndex = 0;
+
+    let currentClientRange = null;
+
+    const onEnd = () => {
+      completed = true;
+      player.destroy();
+    };
+
+    context.on(DefaultPlayerEvents.ENDED, ()=>{
+      player.currentTime = 0;
+    });
+
+    const onAnimFrame = () => {
+      if (destroyed) {
+        return;
+      }
+
+      if (player.readyState >= 1 && player.paused) {
+        player.play();
+        player.currentTime = Math.max(player.currentTime - 1.5, 0);
+        console.log('[AudioAnalyzer] Resumed analyzer');
+      }
+      requestAnimationFrame(onAnimFrame);
+
+      clearTimeout(pauseTimeout);
+      pauseTimeout = setTimeout(() => {
+        if (!destroyed && player.readyState >= 1) {
+          player.pause();
+          console.log('[AudioAnalyzer] Paused analyzer');
+        }
+      }, 100);
+
+      if (player.readyState < 2) {
+        return;
+      }
+
+      const time = player.currentTime;
+      const clientTime = this.client.currentTime;
+
+      if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
+        currentRangeIndex = -1;
+        for (let i = 0; i < doneRanges.length; i++) {
+          if (doneRanges[i].start <= time && doneRanges[i].end >= time) {
+            currentRange = doneRanges[i];
+            currentRangeIndex = i;
+            break;
+          }
+        }
+
+        if (currentRangeIndex === -1) {
+          currentRange = {start: time, end: time};
+          // insert in order
+          currentRangeIndex = -1;
+          for (let i = 0; i < doneRanges.length; i++) {
+            if (doneRanges[i].start > time) {
+              doneRanges.splice(i, 0, currentRange);
+              currentRangeIndex = i;
+              break;
+            }
+          }
+          if (currentRangeIndex === -1) {
+            doneRanges.push(currentRange);
+            currentRangeIndex = doneRanges.length - 1;
+          }
+        }
+
+        // check if ranges need to merge (if they are close enough)
+        if (currentRangeIndex > 0 && currentRange.start - doneRanges[currentRangeIndex - 1].end < 8) {
+          doneRanges[currentRangeIndex - 1].end = Math.max(doneRanges[currentRangeIndex - 1].end, currentRange.end);
+          doneRanges.splice(currentRangeIndex, 1);
+          currentRangeIndex--;
+          currentRange = doneRanges[currentRangeIndex];
+        }
+      }
+
+      if (currentRangeIndex < doneRanges.length - 1 && doneRanges[currentRangeIndex + 1].start - currentRange.end < 8) {
+        currentRange.end = Math.max(currentRange.end, doneRanges[currentRangeIndex + 1].end);
+        doneRanges.splice(currentRangeIndex + 1, 1);
+      }
+
+
+      if (currentRange.end - currentRange.start >= player.duration - 10) {
+        onEnd();
+        return;
+      }
+
+      if (currentRange.end > time + 5) {
+        player.currentTime = currentRange.end - 5;
+        console.log('[AudioAnalyzer] Already analyzed range, seeking', player.currentTime, currentRange.end);
+      } else if (currentRange.end < time) {
+        currentRange.end = time;
+      }
+
+      if (clientTime < currentRange.start - 10 || clientTime > currentRange.end + 10) {
+        if (!currentClientRange || Math.min(clientTime + 60, player.duration) > currentClientRange.end + 10 || clientTime + 5 < currentClientRange.start) {
+          console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
+          player.currentTime = clientTime;
+          currentRange = null;
+        }
+      } else {
+        currentClientRange = currentRange;
+      }
+
+      this.client.interfaceController.updateMarkers();
+    };
+
+    requestAnimationFrame(onAnimFrame);
+  }
+
+  getMarkerPosition() {
+    if (this.backgroundAnalyzerPlayer && this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
+      return this.backgroundAnalyzerPlayer.currentTime;
+    }
+    return null;
+  }
+
+  shouldRunAnalyzerInBackground() {
+    return false;
+    return this.backgroundAnalyzerEnabled;
+  }
+
+  enableBackground() {
+    this.backgroundAnalyzerEnabled = true;
+  }
+
+  disableBackground() {
+    this.backgroundAnalyzerEnabled = false;
+    this.stopBackgroundAnalyzer();
   }
 }

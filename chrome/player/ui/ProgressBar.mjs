@@ -30,10 +30,16 @@ export class ProgressBar extends EventEmitter {
     DOMElements.markerContainer.appendChild(this.unseekMarker);
     this.unseekMarker.style.display = 'none';
 
-    this.analyzerMarker = document.createElement('div');
-    this.analyzerMarker.classList.add('analyzer_marker');
-    DOMElements.markerContainer.appendChild(this.analyzerMarker);
-    this.analyzerMarker.style.display = 'none';
+    this.videoAnalyzerMarker = document.createElement('div');
+    this.videoAnalyzerMarker.classList.add('analyzer_marker');
+    DOMElements.markerContainer.appendChild(this.videoAnalyzerMarker);
+    this.videoAnalyzerMarker.style.display = 'none';
+
+    this.audioAnalyzerMarker = document.createElement('div');
+    this.audioAnalyzerMarker.classList.add('analyzer_marker');
+    this.audioAnalyzerMarker.style.backgroundColor = '#00bfff';
+    DOMElements.markerContainer.appendChild(this.audioAnalyzerMarker);
+    this.audioAnalyzerMarker.style.display = 'none';
 
     DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
@@ -501,12 +507,20 @@ export class ProgressBar extends EventEmitter {
       this.unseekMarker.style.display = 'none';
     }
 
-    const analyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition(); ;
-    if (analyzerMarkerPosition !== null) {
-      this.analyzerMarker.style.left = (analyzerMarkerPosition / duration * 100) + '%';
-      this.analyzerMarker.style.display = '';
+    const videoAnalyzerMarkerPosition = this.client.videoAnalyzer.getMarkerPosition();
+    if (videoAnalyzerMarkerPosition !== null) {
+      this.videoAnalyzerMarker.style.left = (videoAnalyzerMarkerPosition / duration * 100) + '%';
+      this.videoAnalyzerMarker.style.display = '';
     } else {
-      this.analyzerMarker.style.display = 'none';
+      this.videoAnalyzerMarker.style.display = 'none';
+    }
+
+    const audioAnalyzerMarkerPosition = this.client.audioAnalyzer.getMarkerPosition();
+    if (audioAnalyzerMarkerPosition !== null) {
+      this.audioAnalyzerMarker.style.left = (audioAnalyzerMarkerPosition / duration * 100) + '%';
+      this.audioAnalyzerMarker.style.display = '';
+    } else {
+      this.audioAnalyzerMarker.style.display = 'none';
     }
   }
 }
