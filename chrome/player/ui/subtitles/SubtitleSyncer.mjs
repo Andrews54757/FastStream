@@ -93,11 +93,13 @@ export class SubtitleSyncer extends EventEmitter {
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     fineTimeControls.on('render', this.renderHandle);
     fineTimeControls.ui.timelineTrackContainer.appendChild(this.ui.timelineTrack);
+    fineTimeControls.ui.timelineVOD.style.height = '22px';
   }
 
   onClose() {
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     fineTimeControls.off('render', this.renderHandle);
+    fineTimeControls.ui.timelineVOD.style.height = '';
     this.ui.timelineTrack.remove();
   }
 

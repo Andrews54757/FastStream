@@ -264,8 +264,11 @@ export class FineTimeControls extends EventEmitter {
 
     this.canvasElements.forEach((el) => {
       const newWidth = el.element.clientWidth * window.devicePixelRatio;
-      if (el.cachedWidth === newWidth || newWidth === 0) return;
+      const newHeight = el.element.clientHeight * window.devicePixelRatio;
+      if (newWidth === 0) return;
+      if (el.cachedWidth === newWidth && el.cachedHeight === newHeight) return;
       el.cachedWidth = newWidth;
+      el.cachedHeight = newHeight;
       const index = el.index;
       const time = index * 10;
 
