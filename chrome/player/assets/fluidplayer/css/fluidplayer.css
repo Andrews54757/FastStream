@@ -853,7 +853,7 @@ body {
     z-index: 888888;
     position: absolute;
     right: 0px;
-    bottom: 36px;
+    bottom: 40px;
     white-space: normal;
     word-wrap: break-word;
     overflow-y: auto;
@@ -865,10 +865,12 @@ body {
     background-color: var(--menu-background-color);
 }
 
+.rate_menu_container,
 .menu_container {
     max-height: calc(100vh - 55px);
 }
 
+.expanded .rate_menu_container,
 .expanded .menu_container {
     max-height: calc(100vh - 135px);
 }
@@ -1522,9 +1524,16 @@ body {
     cursor: grab;
 }
 
-.timeline_track {
+.timeline_track_container {
     position: absolute;
     top: 52px;
+    left: 0px;
+    right: 0px;
+}
+
+.timeline_track {
+    position: absolute;
+    top: 0px;
     height: 30px;
     left: 0px;
     right: 0px;
@@ -1782,7 +1791,7 @@ body {
 
 .rate_menu_container {
     position: absolute;
-    bottom: 36px;
+    bottom: 40px;
     width: 60px;
     transform: translate(-50%, 0%);
     left: 13px;
@@ -2701,10 +2710,12 @@ input.crosstalk_calculator_input {
     justify-content: flex-end;
 }
 
+.fluid_controls_disabled_tools .rate_menu_container,
 .fluid_controls_disabled_tools .menu_container {
     max-height: calc(100vh - 105px);
 }
 
+.expanded .fluid_controls_disabled_tools .rate_menu_container,
 .expanded .fluid_controls_disabled_tools .menu_container {
     max-height: calc(100vh - 185px);
 }
@@ -2775,6 +2786,15 @@ input.crosstalk_calculator_input {
 
 .fluid_controls_dragdemo > video {
     width: 290px;
+}
+
+
+.rate_menu_options {
+    right: 48px;
+    width: 160px;
+    min-height: 170px;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 @media screen and (max-width: 1000px) {

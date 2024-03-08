@@ -16,7 +16,9 @@ export class PlaybackRateChanger extends EventEmitter {
       target: DOMElements.playbackRate,
     });
 
-    DOMElements.rateMenuContainer.style.display = '';
+    DOMElements.playbackRateMenuContainer.style.display = '';
+    DOMElements.playbackRateOptions.style.display = '';
+
     this.scrollToPosition();
     if (!dontSetStayVisible) {
       this.stayOpen = true;
@@ -29,12 +31,14 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   closeUI() {
-    DOMElements.rateMenuContainer.style.display = 'none';
+    DOMElements.playbackRateMenuContainer.style.display = 'none';
+    DOMElements.playbackRateOptions.style.display = 'none';
+
     this.stayOpen = false;
   }
 
   isVisible() {
-    return DOMElements.rateMenuContainer.style.display !== 'none';
+    return DOMElements.playbackRateMenuContainer.style.display !== 'none';
   }
 
   setupUI() {

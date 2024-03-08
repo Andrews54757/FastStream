@@ -17,6 +17,7 @@ import {VideoUtils} from '../utils/VideoUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {VideoSource} from '../VideoSource.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {FineTimeControls} from './FineTimeControls.mjs';
 import {LanguageChanger} from './menus/LanguageChanger.mjs';
 import {LoopMenu} from './menus/LoopMenu.mjs';
 import {PlaybackRateChanger} from './menus/PlaybackRateChanger.mjs';
@@ -39,6 +40,8 @@ export class InterfaceController {
     this.mouseActivityCooldown = 0;
 
     this.failed = false;
+
+    this.fineTimeControls = new FineTimeControls(this.client);
 
     this.subtitlesManager = new SubtitlesManager(this.client);
 
@@ -973,7 +976,7 @@ export class InterfaceController {
 
   durationChanged() {
     const duration = this.client.duration;
-    if (duration < 5 * 60 || this.subtitlesManager.subtitleSyncer.started) {
+    if (duration < 5 * 60 || this.fineTimeControls.started) {
       this.runProgressLoop();
     } else {
       this.stopProgressLoop();
@@ -1341,7 +1344,7 @@ export class InterfaceController {
     }
 
     this.subtitlesManager.renderSubtitles();
-    this.subtitlesManager.subtitleSyncer.onVideoTimeUpdate();
+    this.fineTimeControls.onVideoTimeUpdate();
     this.updateSkipSegments();
   }
 
@@ -1426,7 +1429,7 @@ export class InterfaceController {
   }
 
   isUserSeeking() {
-    return this.progressBar.isSeeking || this.subtitlesManager.subtitleSyncer.isSeeking;
+    return this.progressBar.isSeeking || this.fineTimeControls.isSeeking;
   }
 
   playPauseAnimation() {

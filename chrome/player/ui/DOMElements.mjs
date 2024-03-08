@@ -13,6 +13,7 @@ export const DOMElements = {
   videoSourceList: document.querySelector('.mainplayer .fluid_video_sources_list'),
   playbackRate: document.querySelector('.mainplayer .fluid_button_playback_rate'),
   playbackRateBanner: document.querySelector('.mainplayer .rate_menu_banner'),
+  playbackRateOptions: document.querySelector('.mainplayer .rate_menu_options'),
   download: document.querySelector('.mainplayer .fluid_button_download.main_download'),
   screenshot: document.querySelector('.mainplayer .fluid_button_screenshot'),
   pip: document.querySelector('.mainplayer .fluid_button_pip'),
@@ -52,7 +53,7 @@ export const DOMElements = {
   markerContainer: document.querySelector('.mainplayer .marker_container'),
 
   rateMenu: document.querySelector('.mainplayer .rate_menu'),
-  rateMenuContainer: document.querySelector('.mainplayer .rate_menu_container'),
+  playbackRateMenuContainer: document.querySelector('.mainplayer .rate_menu_container'),
 
   settingsButton: document.querySelector('.mainplayer .fluid_button_settings'),
 
