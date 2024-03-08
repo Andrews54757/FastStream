@@ -94,7 +94,7 @@ export class FineTimeControls extends EventEmitter {
     let grabStartTime = 0;
     let shouldPlay = false;
 
-    this.ui.timelineTicks.addEventListener('mousedown', (e) => {
+    const mouseDown = (e) => {
       if (!this.client.player) return;
       const video = this.client.player.getVideo();
       isGrabbing = true;
@@ -105,7 +105,9 @@ export class FineTimeControls extends EventEmitter {
       if (this.client.persistent.playing) {
         this.client.player.pause();
       }
-    });
+    };
+    this.ui.timelineTicks.addEventListener('mousedown', mouseDown);
+    this.ui.timelineVOD.addEventListener('mousedown', mouseDown);
 
     document.addEventListener('mouseup', (e) => {
       if (!this.client.player) return;
