@@ -77,6 +77,7 @@ Many thanks to the contributors of this project.
 
 - Dael (dael_io): Fixed Spanish translations
 - reindex-ot: Japanese translations
+- elfriob: Russian translations
 
 ## Funding & Donation Policy
 
