@@ -12,6 +12,7 @@ export const DOMElements = {
   videoSource: document.querySelector('.mainplayer .fluid_control_video_source'),
   videoSourceList: document.querySelector('.mainplayer .fluid_video_sources_list'),
   playbackRate: document.querySelector('.mainplayer .fluid_button_playback_rate'),
+  playbackRateBanner: document.querySelector('.mainplayer .rate_menu_banner'),
   download: document.querySelector('.mainplayer .fluid_button_download.main_download'),
   screenshot: document.querySelector('.mainplayer .fluid_button_screenshot'),
   pip: document.querySelector('.mainplayer .fluid_button_pip'),

@@ -125,6 +125,13 @@ export class PlaybackRateChanger extends EventEmitter {
     this.scrollToPosition();
     element.classList.add('rate-selected');
 
+    DOMElements.playbackRateBanner.textContent = this.playbackRate.toFixed(1).padStart(1, '0');
+    if (this.playbackRate === 1) {
+      DOMElements.playbackRateBanner.style.display = 'none';
+    } else {
+      DOMElements.playbackRateBanner.style.display = '';
+    }
+
     if (!noEmit) {
       this.emit('rateChanged', this.playbackRate);
     }

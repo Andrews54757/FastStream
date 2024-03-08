@@ -677,6 +677,18 @@ body {
     }
 }
 
+.rate_menu_banner {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-color: rgb(180,0,0);
+    font-weight: bold;
+    border-radius: 2px;
+    z-index: 2;
+    font-size: 9px;
+    padding: 1px 2px;
+}
+
 .fluid_button_video_source .fluid_video_sources_list,
 .fluid_button_language .fluid_language_list,
 .fluid_video_playback_rates {
