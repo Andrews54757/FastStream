@@ -2841,6 +2841,10 @@ input.crosstalk_calculator_input {
         width: 50px;
     }
 
+    .rate_menu_banner {
+        font-size: 6px;
+    }
+
 }
 
 @media screen and (max-width: 500px) {
