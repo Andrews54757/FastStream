@@ -9,7 +9,66 @@ export class FineTimeControls extends EventEmitter {
     this.client = client;
     this.isSeeking = false;
     this.analyzerHandle = this.onAnalyzerFrameProcessed.bind(this);
+
+    this.stateStack = [];
+
     this.setup();
+  }
+
+  pushState(onOpen, onClose, settings = {}) {
+    if (this.stateStack.length > 0) {
+      if (this.activeCloseFn) {
+        this.activeCloseFn();
+        this.activeCloseFn = null;
+        clearTimeout(this.closeTimeout);
+      }
+
+      this.stateStack[this.stateStack.length - 1].onClose();
+    }
+    this.stateStack.push({
+      onOpen,
+      onClose,
+      settings,
+    });
+    onOpen();
+    this.start();
+  }
+
+  removeState(onOpen) {
+    const index = this.stateStack.findIndex((state) => state.onOpen === onOpen);
+    if (index === -1) {
+      return false;
+    }
+
+    if (index === this.stateStack.length - 1) {
+      if (this.activeCloseFn) {
+        this.activeCloseFn();
+        this.activeCloseFn = null;
+        clearTimeout(this.closeTimeout);
+      }
+
+      const closeFn = this.stateStack[index].onClose;
+      if (this.stateStack.length > 1) {
+        closeFn();
+      } else {
+        this.activeCloseFn = closeFn;
+        this.closeTimeout = setTimeout(()=>{
+          if (closeFn === this.activeCloseFn) {
+            closeFn();
+            this.activeCloseFn = null;
+          }
+        }, 1000);
+      }
+      this.stateStack.pop();
+      if (this.stateStack.length > 0) {
+        this.stateStack[this.stateStack.length - 1].onOpen();
+      } else {
+        this.stop();
+      }
+    } else {
+      this.stateStack.splice(index, 1);
+    }
+    return true;
   }
 
   setup() {

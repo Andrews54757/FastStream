@@ -8,6 +8,10 @@ export class SubtitleSyncer extends EventEmitter {
     this.client = client;
     this.trackToSync = null;
     this.renderHandle = this.renderTracks.bind(this);
+    this.onOpenHandle = this.onOpen.bind(this);
+    this.onCloseHandle = this.onClose.bind(this);
+
+    this.setup();
   }
 
   shiftSubtitles(delta) {
@@ -19,10 +23,6 @@ export class SubtitleSyncer extends EventEmitter {
 
   setup() {
     this.ui = {};
-
-    this.fineTimeControls = this.client.interfaceController.fineTimeControls;
-
-    this.ui.timelineTrackContainer = this.client.interfaceController.fineTimeControls.ui.timelineTrackContainer;
 
     this.ui.timelineTrack = WebUtils.create('div', '', 'timeline_track');
 
@@ -75,29 +75,37 @@ export class SubtitleSyncer extends EventEmitter {
     this.lastUpdate = 0;
     this.trackElements = [];
     this.ui.timelineTrack.replaceChildren();
-    this.ui.timelineTrackContainer.appendChild(this.ui.timelineTrack);
-    this.fineTimeControls.on('render', this.renderHandle);
-    return this.fineTimeControls.start();
+
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    fineTimeControls.pushState(this.onOpenHandle, this.onCloseHandle);
   }
 
 
   async stop() {
     if (!this.started) return;
     this.started = false;
-    this.ui.timelineTrack.remove();
-    this.fineTimeControls.off('render', this.renderHandle);
-    this.fineTimeControls.stop();
+
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    fineTimeControls.removeState(this.onOpenHandle);
   }
 
-  renderTracks() {
+  onOpen() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    fineTimeControls.on('render', this.renderHandle);
+    fineTimeControls.ui.timelineTrackContainer.appendChild(this.ui.timelineTrack);
+  }
+
+  onClose() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    fineTimeControls.off('render', this.renderHandle);
+    this.ui.timelineTrack.remove();
+  }
+
+  renderTracks(minTime, maxTime) {
     if (!this.started || !this.client.player) return;
-    const time = this.client.persistent.currentTime;
 
     const video = this.client.player.getVideo();
 
-    const timePerWidth = 60;
-    const minTime = Math.floor(Math.max(0, time - timePerWidth / 2 - 5));
-    const maxTime = Math.ceil(Math.min(video.duration, time + timePerWidth / 2 + 5));
 
     const now = Date.now();
     if (now - this.lastUpdate >= 500) {
