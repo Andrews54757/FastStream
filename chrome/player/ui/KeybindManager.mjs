@@ -135,6 +135,10 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.subtitlesManager.subtitleSyncer.shiftSubtitles(-0.2);
     });
 
+    this.on('ToggleSubtitles', (e)=>{
+      this.client.interfaceController.subtitlesManager.toggleSubtitles();
+    });
+
     this.on('keybind', (keybind, e) => {
       // console.log("Keybind", keybind);
     });

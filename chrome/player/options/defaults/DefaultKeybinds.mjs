@@ -21,6 +21,7 @@ export const DefaultKeybinds = {
   'RemoveDownloader': 'Minus',
   'SkipIntroOutro': 'KeyS',
   'GoToStart': 'Digit0',
+  'ToggleSubtitles': 'KeyC',
   'SubtrackDelete': 'Delete',
   'SubtrackShiftRight': 'BracketRight',
   'SubtrackShiftLeft': 'BracketLeft',

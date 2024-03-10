@@ -86,6 +86,23 @@ export class SubtitlesManager extends EventEmitter {
     }
   }
 
+  toggleSubtitles() {
+    if (this.activeTracks.length === 0) {
+      if (this.lastActiveTracks) {
+        this.lastActiveTracks.forEach((track) => {
+          this.activateTrack(track);
+        });
+        this.lastActiveTracks = null;
+      } else {
+        this.activateTrack(this.tracks[0]);
+      }
+    } else {
+      this.lastActiveTracks = this.activeTracks.slice();
+      this.activeTracks.length = 0;
+      this.updateTrackList();
+    }
+  }
+
   clearTracks() {
     this.tracks.length = 0;
     this.activeTracks.length = 0;
