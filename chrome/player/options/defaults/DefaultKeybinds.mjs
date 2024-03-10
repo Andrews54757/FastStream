@@ -5,6 +5,7 @@ export const DefaultKeybinds = {
   'PictureInPicture': 'KeyP',
   'VolumeUp': 'ArrowUp',
   'VolumeDown': 'ArrowDown',
+  'Mute': 'KeyM',
   'SeekForward': 'ArrowRight',
   'SeekBackward': 'ArrowLeft',
   'SeekForwardSmall': 'Shift+ArrowRight',
