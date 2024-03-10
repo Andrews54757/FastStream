@@ -108,16 +108,12 @@ export function HLSLoaderFactory(player) {
             if (this.callbacks?.onProgress) this.callbacks.onProgress(stats, this.context, data, xhr);
           },
           onFail: (entry) => {
-            this.copyStats(entry.stats);
-            if (this.stats.timeout) {
-              if (this.callbacks) {
-                this.callbacks.onTimeout(this.stats, this.context);
-              }
-            } else {
-              if (this.callbacks) {
-                this.callbacks.onError(this.stats.error || {code: 520, text: 'Unknown'}, this.context, null);
-              }
-            }
+            setTimeout(() => {
+              this.copyStats(entry.stats);
+
+              this.stats.aborted = true;
+              if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
+            }, 1000);
           },
           onAbort: (entry) => {
             this.copyStats(entry.stats);
@@ -156,14 +152,12 @@ export function HLSLoaderFactory(player) {
           if (this.callbacks?.onProgress) this.callbacks.onProgress(stats, this.context, data, xhr);
         },
         onFail: (entry) => {
-          this.copyStats(entry.stats);
-          if (this.callbacks) {
-            if (this.stats.timeout) {
-              this.callbacks.onTimeout(this.stats, this.context);
-            } else {
-              this.callbacks.onError(this.stats.error || {code: 520, text: 'Unknown'}, this.context, null);
+          setTimeout(() => {
+            this.copyStats(entry.stats);
+            if (this.callbacks) {
+              if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
             }
-          }
+          }, 1000);
         },
         onAbort: (entry) => {
           this.copyStats(entry.stats);
