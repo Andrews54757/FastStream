@@ -398,7 +398,7 @@ export class AudioAnalyzer extends EventEmitter {
 
   disableBackground() {
     this.backgroundAnalyzerEnabled = false;
-    this.audioAnalyzer.stopBackgroundAnalyzer();
+    this.stopBackgroundAnalyzer();
   }
 
   /**
