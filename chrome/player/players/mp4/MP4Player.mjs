@@ -437,6 +437,9 @@ export default class MP4Player extends EventEmitter {
         onFail: (entry) => {
           reject(new Error('Failed to download fragment'));
         },
+        onAbort: (e) => {
+          reject(new Error('Aborted download'));
+        },
       }, null, priority);
     });
   }

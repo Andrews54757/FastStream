@@ -194,6 +194,9 @@ export default class DashPlayer extends EventEmitter {
         onFail: (e) => {
           reject(new Error('Failed to download fragment'));
         },
+        onAbort: (e) => {
+          reject(new Error('Aborted download'));
+        },
       }, null, priority);
     });
   }
