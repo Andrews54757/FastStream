@@ -247,7 +247,7 @@ export class AudioChannelMixer {
       if (e.deltaX !== 0) return; // ignore horizontal scrolling (for trackpad)
       e.preventDefault();
       e.stopPropagation();
-      const delta = Math.sign(e.deltaY);
+      const delta = Utils.clamp(e.deltaY, -1, 1);
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
       const db = AudioUtils.mixerPositionRatioToDB(ratio - delta * 0.05);
       els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;

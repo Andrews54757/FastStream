@@ -165,7 +165,7 @@ export class WebUtils {
       // reset the position in case knob moved
       knob.setPosition(container.offsetLeft, container.offsetTop);
 
-      const delta = -e.wheelDelta;
+      const delta = -Utils.clamp(e.wheelDelta, -1, 1);
       knob.doMouseScroll(delta, e.timeStamp, e.pageX, e.pageY);
 
       e.preventDefault();

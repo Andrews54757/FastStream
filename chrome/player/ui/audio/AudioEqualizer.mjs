@@ -384,7 +384,7 @@ export class AudioEqualizer {
       el.addEventListener('wheel', (e) => {
         // scroll for q
         e.preventDefault();
-        const delta = Math.sign(e.deltaY);
+        const delta = Utils.clamp(e.deltaY, -1, 1);
         const q = Utils.clamp(node.Q.value * Math.pow(1.1, delta), 0.0001, 1000);
         node.Q.value = q;
         this.equalizerConfig[i].q = q;

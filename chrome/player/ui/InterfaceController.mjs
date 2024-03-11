@@ -256,7 +256,7 @@ export class InterfaceController {
     });
 
     DOMElements.volumeBlock.addEventListener('wheel', (e) => {
-      this.client.volume = Math.max(0, Math.min(3, this.client.volume + e.deltaY * 0.01));
+      this.client.volume = Math.max(0, Math.min(3, this.client.volume + Utils.clamp(e.deltaY, -1, 1) * 0.01));
       e.preventDefault();
       e.stopPropagation();
     });
