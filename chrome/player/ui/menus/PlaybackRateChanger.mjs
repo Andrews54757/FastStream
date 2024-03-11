@@ -49,20 +49,30 @@ export class PlaybackRateChanger extends EventEmitter {
 
     DOMElements.rateMenu.appendChild(speedList);
 
+    let isMouseDown = false;
+    DOMElements.playbackRate.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+    }, true);
+
+    DOMElements.playbackRate.addEventListener('mouseup', (e) => {
+      isMouseDown = false;
+    }, true);
+
     DOMElements.playbackRate.addEventListener('focus', (e) => {
-      if (!this.isVisible()) {
+      if (!this.isVisible() && !isMouseDown) {
         this.openUI(true);
       }
     });
 
     DOMElements.playbackRate.addEventListener('blur', (e) => {
+      isMouseDown = false;
       if (!this.stayOpen) {
         this.closeUI();
       }
     });
 
     DOMElements.playbackRate.addEventListener('click', (e) => {
-      if (this.stayOpen) {
+      if (this.isVisible()) {
         this.closeUI();
       } else {
         this.openUI();

@@ -29,8 +29,19 @@ export class LanguageChanger extends EventEmitter {
   }
 
   setupUI() {
+    DOMElements.languageButton.tabIndex = 0;
+
+    let isMouseDown = false;
+    DOMElements.languageButton.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+    }, true);
+
+    DOMElements.languageButton.addEventListener('mouseup', (e) => {
+      isMouseDown = false;
+    }, true);
+
     DOMElements.languageButton.addEventListener('click', (e) => {
-      if (this.stayOpen) {
+      if (this.isVisible()) {
         this.closeUI();
       } else {
         this.openUI();
@@ -42,15 +53,15 @@ export class LanguageChanger extends EventEmitter {
       this.closeUI();
     });
 
-    DOMElements.languageButton.tabIndex = 0;
 
     DOMElements.languageButton.addEventListener('focus', ()=>{
-      if (!this.isVisible()) {
+      if (!this.isVisible() && !isMouseDown) {
         this.openUI(true);
       }
     });
 
     DOMElements.languageButton.addEventListener('blur', ()=>{
+      isMouseDown = false;
       if (!this.stayOpen) {
         this.closeUI();
       }

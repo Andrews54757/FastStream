@@ -29,8 +29,19 @@ export class VideoQualityChanger extends EventEmitter {
   }
 
   setupUI() {
+    DOMElements.videoSource.tabIndex = 0;
+
+    let isMouseDown = false;
+    DOMElements.videoSource.addEventListener('mousedown', (e) => {
+      isMouseDown = true;
+    }, true);
+
+    DOMElements.videoSource.addEventListener('mouseup', (e) => {
+      isMouseDown = false;
+    }, true);
+
     DOMElements.videoSource.addEventListener('click', (e) => {
-      if (this.stayOpen) {
+      if (this.isVisible()) {
         this.closeUI();
       } else {
         this.openUI();
@@ -42,15 +53,14 @@ export class VideoQualityChanger extends EventEmitter {
       this.closeUI();
     });
 
-    DOMElements.videoSource.tabIndex = 0;
-
     DOMElements.videoSource.addEventListener('focus', ()=>{
-      if (!this.isVisible()) {
+      if (!this.isVisible() && !isMouseDown) {
         this.openUI(true);
       }
     });
 
     DOMElements.videoSource.addEventListener('blur', ()=>{
+      isMouseDown = false;
       if (!this.stayOpen) {
         this.closeUI();
       }
