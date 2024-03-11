@@ -24,6 +24,19 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.toggleHide();
     });
 
+    this.on('NextChapter', (e) =>{
+      const chapters = this.client.chapters;
+      const time = this.client.currentTime;
+      const chapter = chapters.findIndex((chapter) => chapter.startTime <= time && chapter.endTime >= time);
+      if (chapter === -1) {
+        return;
+      }
+
+      if (chapter + 1 < chapters.length) {
+        this.client.currentTime = chapters[chapter + 1].startTime;
+      }
+    });
+
     this.on('GoToStart', (e) => {
       this.client.currentTime = 0;
     });

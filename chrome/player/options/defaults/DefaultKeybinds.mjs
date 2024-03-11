@@ -20,6 +20,7 @@ export const DefaultKeybinds = {
   'AddDownloader': 'Equal',
   'RemoveDownloader': 'Minus',
   'SkipIntroOutro': 'KeyS',
+  'NextChapter': 'None',
   'GoToStart': 'Digit0',
   'ToggleSubtitles': 'KeyC',
   'SubtrackDelete': 'Delete',
