@@ -23,11 +23,17 @@ export class ProgressBar extends EventEmitter {
   }
 
   onPreciseModeStart() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
 
+    fineTimeControls.ui.timelineVOD.style.height = '22px';
+    fineTimeControls.ui.timelineVOD.style.top = '52px';
   }
 
   onPreciseModeEnd() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
 
+    fineTimeControls.ui.timelineVOD.style.height = '';
+    fineTimeControls.ui.timelineVOD.style.top = '';
   }
 
   startPreciseMode() {
@@ -439,7 +445,7 @@ export class ProgressBar extends EventEmitter {
     }
 
     this.isSeeking = true;
-    this.showPreview();
+    this.hidePreview();
     this.client.savePosition();
     this.client.setSeekSave(false);
 
@@ -494,8 +500,8 @@ export class ProgressBar extends EventEmitter {
       this.endPreciseMode();
       this.isSeeking = false;
 
-      if (!this.isMouseOverProgressbar) {
-        this.hidePreview();
+      if (this.isMouseOverProgressbar) {
+        this.showPreview();
       }
 
       let clickedX = Math.min(Math.max(event.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
