@@ -178,6 +178,7 @@ export class AudioAnalyzer extends EventEmitter {
     console.log('[AudioAnalyzer] Starting background analyzer');
 
     const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, this.backgroundDoneRanges, (completed) => {
+      this.backgroundAnalyzerPlayer = null;
       if (newSource === this.backgroundAnalyzerSource) {
         console.log('[AudioAnalyzer] Background analyzer finished', completed ? 'successfully' : 'with errors');
         this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
@@ -360,8 +361,8 @@ export class AudioAnalyzer extends EventEmitter {
         currentRange.end = time;
       }
 
-      if (clientTime < currentRange.start - 10 || clientTime > currentRange.end + 10) {
-        if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 10 || clientTime + 5 < currentClientRange.start) {
+      if (clientTime < currentRange.start - 5 || clientTime > currentRange.end + 5) {
+        if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 5 || clientTime + 5 < currentClientRange.start) {
           console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
           player.currentTime = clientTime;
           currentRange = null;

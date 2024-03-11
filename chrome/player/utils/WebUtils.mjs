@@ -23,6 +23,10 @@ export class WebUtils {
     return elem.getBoundingClientRect().left;
   }
 
+  static getOffsetTop(elem) {
+    return elem.getBoundingClientRect().top;
+  }
+
   static createKnob(name, minValue, maxValue, callback, units = '') {
     const knobContainer = this.create('div', null, 'knob_container');
     const knobName = this.create('div', null, 'knob_name');

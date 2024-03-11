@@ -1019,6 +1019,41 @@ export class FastStreamClient extends EventEmitter {
     this.pastUnseeks.length = 0;
     this.interfaceController.updateMarkers();
   }
+
+  isRegionBuffered(start, end) {
+    const fragments = this.getFragments(this.currentLevel);
+    if (!fragments) {
+      return false;
+    }
+
+    let startFragmentIndex = 0;
+    for (let i = 0; i < fragments.length; i++) {
+      const fragment = fragments[i];
+      if (fragment.start <= start) {
+        startFragmentIndex = i;
+        break;
+      }
+    }
+
+    let endFragmentIndex = fragments.length - 1;
+    for (let i = startFragmentIndex; i < fragments.length; i++) {
+      const fragment = fragments[i];
+      if (fragment.end >= end) {
+        endFragmentIndex = i;
+        break;
+      }
+    }
+
+    for (let i = startFragmentIndex; i <= endFragmentIndex; i++) {
+      const fragment = fragments[i];
+      if (fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   set currentTime(value) {
     if (this.saveSeek) {
       this.savePosition();

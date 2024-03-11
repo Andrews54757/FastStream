@@ -969,9 +969,7 @@ export class InterfaceController {
       return;
     }
     window.requestAnimationFrame(this.progressLoop.bind(this));
-    if (!this.progressBar.isSeeking) {
-      this.client.updateTime(this.client.currentTime);
-    }
+    this.client.updateTime(this.client.currentTime);
   }
 
   durationChanged() {
@@ -1329,7 +1327,9 @@ export class InterfaceController {
 
   timeUpdated() {
     const duration = this.client.duration;
-    DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / duration, 0, 1) * 100 + '%';
+    if (!this.progressBar.isSeeking) {
+      DOMElements.currentProgress.style.width = Utils.clamp(this.persistent.currentTime / duration, 0, 1) * 100 + '%';
+    }
     DOMElements.duration.textContent = StringUtils.formatTime(this.persistent.currentTime) + ' / ' + StringUtils.formatTime(duration);
 
     const chapters = this.client.chapters;
