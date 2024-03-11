@@ -65,15 +65,16 @@ export class KeybindManager extends EventEmitter {
       this.client.setSeekSave(true);
     });
 
-    this.on('SeekForwardSmall', (e) => {
+    const frameStep = 1 / 30;
+    this.on('SeekForwardFrame', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize / 10;
+      this.client.currentTime += frameStep;
       this.client.setSeekSave(true);
     });
 
-    this.on('SeekBackwardSmall', (e) => {
+    this.on('SeekBackwardFrame', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize / 10;
+      this.client.currentTime += -frameStep;
       this.client.setSeekSave(true);
     });
 
