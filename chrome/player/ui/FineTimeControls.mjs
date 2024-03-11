@@ -16,13 +16,13 @@ export class FineTimeControls extends EventEmitter {
   }
 
   pushState(onOpen, onClose, settings = {}) {
-    if (this.stateStack.length > 0) {
-      if (this.activeCloseFn) {
-        this.activeCloseFn();
-        this.activeCloseFn = null;
-        clearTimeout(this.closeTimeout);
-      }
+    if (this.activeCloseFn) {
+      this.activeCloseFn();
+      this.activeCloseFn = null;
+      clearTimeout(this.closeTimeout);
+    }
 
+    if (this.stateStack.length > 0) {
       this.stateStack[this.stateStack.length - 1].onClose();
     }
     this.stateStack.push({
@@ -285,7 +285,7 @@ export class FineTimeControls extends EventEmitter {
       el.element.width = newWidth;
       context.clearRect(0, 0, el.element.width, el.element.height);
 
-      const barWidth = el.element.width / outputRate / 10;
+      const barWidth = Math.ceil(el.element.width / outputRate / 10);
       // set fill opacity
       context.globalAlpha = 0.9;
       // Draw volume bars using buffer
@@ -294,7 +294,7 @@ export class FineTimeControls extends EventEmitter {
         // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
         const color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
         context.fillStyle = color;
-        context.fillRect((i - startFrame) / (10 * outputRate) * el.element.width, (0.5 - volumeVal / 255 / 2) * el.element.height, barWidth / 2, (volumeVal / 255) * el.element.height);
+        context.fillRect((i - startFrame) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 255 / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil((volumeVal / 255) * el.element.height));
       }
       context.globalAlpha = 1;
 

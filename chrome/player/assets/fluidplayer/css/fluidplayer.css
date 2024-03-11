@@ -1564,6 +1564,7 @@ body {
     height: calc(100% - 22px);
     left: 0px;
     right: 0px;
+    transition: height 0.2s;
 }
 
 .timeline_ticks .timeline_tick {
