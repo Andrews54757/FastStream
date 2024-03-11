@@ -460,7 +460,7 @@ export class ProgressBar extends EventEmitter {
         }
         this.client.currentTime = newTime;
         this.client.updateTime(newTime);
-        DOMElements.currentProgress.style.width = Utils.clamp(timeBarX / totalWidth, 0, 1) * 100 + '%';
+        DOMElements.currentProgress.style.width = Utils.clamp(newTime / this.client.duration, 0, 1) * 100 + '%';
       }
     };
 
