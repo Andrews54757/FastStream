@@ -365,7 +365,8 @@ export class AudioChannelMixer {
     this.channelGains.forEach((gain) => {
       const analyser = this.audioContext.createAnalyser();
       analyser.fftSize = 32;
-      analyser.maxDecibels = -20;
+      analyser.maxDecibels = -10;
+      analyser.minDecibels = -80;
       this.channelAnalyzers.push(analyser);
       gain.connect(analyser);
     });

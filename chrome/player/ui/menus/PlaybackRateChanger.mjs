@@ -14,20 +14,21 @@ export class PlaybackRateChanger extends EventEmitter {
     this.onSilenceSkipperUICloseHandle = this.onSilenceSkipperUIClose.bind(this);
     this.onAudioMouseDownHandle = this.onAudioMouseDown.bind(this);
     this.silenceSkipperUIOpen = false;
-    this.audioThreshold = 0;
-
+    this.silenceSkipperActive = false;
+    this.silenceThreshold = 0;
+    this.audioPaddingStart = 0;
+    this.audioPaddingEnd = 0;
     this.setupOptionsUI();
   }
 
   onAudioMouseDown(e) {
     const startY = e.clientY;
-    const startThreshold = this.audioThreshold;
+    const startThreshold = this.silenceThreshold;
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     const onAudioMouseMove = (e) => {
       const diff = startY - e.clientY;
-      this.audioThreshold = Utils.clamp(startThreshold + diff / fineTimeControls.ui.timelineAudio.clientHeight, 0, 1);
-      this.ui.thresholdBar.style.bottom = this.audioThreshold * 100 + '%';
-      fineTimeControls.setAudioThreshold(this.audioThreshold);
+      this.silenceThreshold = Utils.clamp(startThreshold + diff / fineTimeControls.ui.timelineAudio.clientHeight, 0, 1);
+      this.updateSilenceSkipper();
     };
 
     const onAudioMouseUp = (e) => {
@@ -41,13 +42,22 @@ export class PlaybackRateChanger extends EventEmitter {
     e.preventDefault();
   }
 
+  updateSilenceSkipper() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+
+    this.ui.thresholdBar.style.bottom = this.silenceThreshold * 100 + '%';
+    if (fineTimeControls.isStateActive(this.onSilenceSkipperUIOpenHandle)) {
+      fineTimeControls.setAudioSilenceThreshold(this.silenceThreshold, this.audioPaddingStart, this.audioPaddingEnd);
+    }
+  }
+
   onSilenceSkipperUIOpen() {
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     fineTimeControls.ui.timelineAudioCanvasContainer.style.height = '200%';
     fineTimeControls.ui.timelineAudio.appendChild(this.ui.thresholdBar);
     fineTimeControls.ui.timelineAudio.addEventListener('mousedown', this.onAudioMouseDownHandle);
     fineTimeControls.ui.timelineAudio.style.cursor = 'ns-resize';
-    fineTimeControls.setAudioThreshold(this.audioThreshold);
+    this.updateSilenceSkipper();
 
     this.client.interfaceController.setStatusMessage('silence-skip', 'Drag pink line to set silence threshold', 'info');
   }
@@ -58,7 +68,7 @@ export class PlaybackRateChanger extends EventEmitter {
     fineTimeControls.ui.timelineAudio.removeChild(this.ui.thresholdBar);
     fineTimeControls.ui.timelineAudio.removeEventListener('mousedown', this.onAudioMouseDownHandle);
     fineTimeControls.ui.timelineAudio.style.cursor = '';
-    fineTimeControls.setAudioThreshold(null);
+    fineTimeControls.setAudioSilenceThreshold(null);
     this.client.interfaceController.setStatusMessage('silence-skip');
   }
 
@@ -82,10 +92,25 @@ export class PlaybackRateChanger extends EventEmitter {
     fineTimeControls.removeState(this.onSilenceSkipperUIOpenHandle);
   }
 
+  enableSilenceSkipper() {
+    if (this.silenceSkipperActive) {
+      return;
+    }
+    this.silenceSkipperActive = true;
+    this.openSilenceSkipperUI();
+  }
+
+  disableSilenceSkipper() {
+    if (!this.silenceSkipperActive) {
+      return;
+    }
+    this.silenceSkipperActive = false;
+    this.closeSilenceSkipperUI();
+  }
+
   setupOptionsUI() {
     this.ui = {};
     this.ui.thresholdBar = WebUtils.create('div', '', 'threshold_bar');
-    this.ui.thresholdBar.style.bottom = Utils.clamp(this.audioThreshold, 0, 1) * 100 + '%';
   }
   openUI(dontSetStayVisible = false) {
     this.emit('open', {

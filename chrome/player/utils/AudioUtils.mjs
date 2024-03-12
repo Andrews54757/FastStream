@@ -6,11 +6,11 @@ export class AudioUtils {
     const dataArray = new Uint8Array(bufferLength);
     analyser.getByteFrequencyData(dataArray);
 
-    let sum = 0;
+    let max = 0;
     for (let i = 0; i < bufferLength; i++) {
-      sum += dataArray[i];
+      max = Math.max(max, dataArray[i]);
     }
-    return sum / bufferLength / 255;
+    return max / 255;
   }
 
   static dbToGain(db) {

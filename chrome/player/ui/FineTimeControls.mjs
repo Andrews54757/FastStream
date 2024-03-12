@@ -14,7 +14,9 @@ export class FineTimeControls extends EventEmitter {
     this.renderFrames = false;
     this.renderVAD = false;
     this.renderVolume = true;
-    this.audioThreshold = null;
+    this.audioSilenceThreshold = null;
+    this.audioSilencePaddingStart = 0;
+    this.audioSilencePaddingEnd = 0;
 
     this.stateStack = [];
 
@@ -423,6 +425,37 @@ export class FineTimeControls extends EventEmitter {
       });
     }
 
+    const audioAnalyzer = this.client.audioAnalyzer;
+    const outputRate = audioAnalyzer.getOutputRate();
+    const vadBuffer = audioAnalyzer.getVadData();
+    const volumeBuffer = audioAnalyzer.getVolumeData();
+    const startFrame = Math.floor(minTime * outputRate);
+    const endFrame = Math.floor(maxTime * outputRate);
+
+    let silencedBitset;
+    if (this.audioSilenceThreshold !== null) {
+      silencedBitset = new Array(endFrame - startFrame).fill(true);
+      const paddingStart = Math.ceil(this.audioSilencePaddingStart * outputRate);
+      const paddingEnd = Math.ceil(this.audioSilencePaddingEnd * outputRate);
+      let cooldown = 0;
+      for (let i = startFrame; i < endFrame; i++) {
+        const volume = volumeBuffer[i];
+
+        if (volume === undefined || volume > this.audioSilenceThreshold * 255) {
+          silencedBitset[i - startFrame] = false;
+          if (cooldown === 0) {
+            for (let j = Math.max(0, i - paddingStart); j < i; j++) {
+              silencedBitset[j - startFrame] = false;
+            }
+          }
+          cooldown = paddingEnd;
+        } else if (cooldown > 0) {
+          silencedBitset[i - startFrame] = false;
+          cooldown--;
+        }
+      }
+    }
+
     this.canvasElements.forEach((el) => {
       const newWidth = el.element.clientWidth * window.devicePixelRatio;
       const newHeight = el.element.clientHeight * window.devicePixelRatio;
@@ -432,46 +465,55 @@ export class FineTimeControls extends EventEmitter {
       el.cachedHeight = newHeight;
       const index = el.index;
       const time = index * 10;
-
-      const audioAnalyzer = this.client.audioAnalyzer;
-      const outputRate = audioAnalyzer.getOutputRate();
-      const vadBuffer = audioAnalyzer.getVadData();
-      const volumeBuffer = audioAnalyzer.getVolumeData();
-      const startFrame = Math.floor(time * outputRate);
-      const endFrame = Math.floor(Math.min(time + 10, duration) * outputRate);
+      const startFrame2 = Math.floor(time * outputRate);
+      const endFrame2 = Math.floor(Math.min(time + 10, duration) * outputRate);
 
       const context = el.ctx;
       el.element.width = newWidth;
       context.clearRect(0, 0, el.element.width, el.element.height);
 
+      if (this.audioSilenceThreshold !== null) {
+        for (let i = startFrame2; i < endFrame2;) {
+          const startVal = silencedBitset[i - startFrame];
+          let end = i;
+          while (end < endFrame2 - 1 && startVal === silencedBitset[end - startFrame + 1]) {
+            end++;
+          }
+          if (startVal) {
+            context.fillStyle = 'rgba(255, 0, 0, 0.25)';
+          } else {
+            context.fillStyle = 'rgba(0, 255, 0, 0.25)';
+          }
+          context.fillRect((i - startFrame2) / (10 * outputRate) * el.element.width, 0, (end - i + 1) / (10 * outputRate) * el.element.width, el.element.height);
+          i = end + 1;
+        }
+      }
+
       if (this.renderVolume) {
         const barWidth = Math.ceil(el.element.width / outputRate / 10);
-        // set fill opacity
-        context.globalAlpha = 0.9;
         // Draw volume bars using buffer
-        for (let i = startFrame; i < endFrame; i++) {
+        for (let i = startFrame2; i < endFrame2; i++) {
           const volumeVal = (volumeBuffer[i] || 0);
           // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
           let color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
-          if (this.audioThreshold !== null && volumeVal <= this.audioThreshold * 255) {
+          if (this.audioSilenceThreshold !== null && volumeVal <= this.audioSilenceThreshold * 255) {
             // white grey
             color = 'rgb(200, 200, 200)';
           }
           context.fillStyle = color;
-          context.fillRect((i - startFrame) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 255 / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil((volumeVal / 255) * el.element.height));
+          context.fillRect((i - startFrame2) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 255 / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil((volumeVal / 255) * el.element.height));
         }
-        context.globalAlpha = 1;
       }
 
       if (this.renderVAD) {
       // Draw VAD line using buffer
         context.beginPath();
         context.strokeStyle = this.vadLineColor;
-        let vadVal = (startFrame > 0) ? (vadBuffer[startFrame - 1] || 0) : 0;
+        let vadVal = (startFrame2 > 0) ? (vadBuffer[startFrame2 - 1] || 0) : 0;
         context.moveTo(0, (1 - vadVal / 255) * el.element.height);
-        for (let i = startFrame; i < endFrame; i++) {
+        for (let i = startFrame2; i < endFrame2; i++) {
           vadVal = (vadBuffer[i] || 0);
-          context.lineTo((i - startFrame + 1) / (10 * outputRate) * el.element.width, (1 - vadVal / 255) * el.element.height);
+          context.lineTo((i - startFrame2 + 1) / (10 * outputRate) * el.element.width, (1 - vadVal / 255) * el.element.height);
         }
         context.stroke();
       }
@@ -533,8 +575,10 @@ export class FineTimeControls extends EventEmitter {
     this.resetAudio();
   }
 
-  setAudioThreshold(value) {
-    this.audioThreshold = value;
+  setAudioSilenceThreshold(threshold, paddingStart, paddingEnd) {
+    this.audioSilenceThreshold = threshold;
+    this.audioSilencePaddingStart = paddingStart || 0;
+    this.audioSilencePaddingEnd = paddingEnd || 0;
     this.resetAudio();
   }
 }

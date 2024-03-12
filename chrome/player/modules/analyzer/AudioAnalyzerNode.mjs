@@ -1,4 +1,5 @@
 /* eslint-disable new-cap */
+import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {EventEmitter} from '../eventemitter.mjs';
 import {VadJS} from '../vad/vad.mjs';
 
@@ -28,23 +29,9 @@ export class AudioAnalyzerNode extends EventEmitter {
   recordVolume() {
     const audioElement = this.audioElement;
     if (!this.volumeAnalyserNode || !audioElement || audioElement.readyState < 4 || audioElement.paused) return;
-    const volume = this.getVolume();
+    const volume = Math.floor(AudioUtils.getVolume(this.volumeAnalyserNode) * 255);
     const time = audioElement.currentTime - audioElement.playbackRate * (this.audioContext.outputLatency - this.audioContext.baseLatency) * 0.75;
     this.emit('volume', time, volume);
-  }
-
-  getVolume() {
-    const analyser = this.volumeAnalyserNode;
-    const bufferLength = analyser.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-    analyser.getByteFrequencyData(dataArray);
-
-    let volume = 0;
-    for (let i = 0; i < bufferLength; i++) {
-      volume += dataArray[i];
-    }
-
-    return Math.min(Math.round(volume / bufferLength * 2), 255);
   }
 
   startRecordingVolume() {
@@ -54,6 +41,7 @@ export class AudioAnalyzerNode extends EventEmitter {
     this.volumeAnalyserNode = analyser;
     analyser.fftSize = 32;
     analyser.maxDecibels = -20;
+    analyser.minDecibels = -100;
     analyser.smoothingTimeConstant = 0.2;
     this.audioSource.connect(analyser);
 
