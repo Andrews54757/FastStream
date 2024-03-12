@@ -255,7 +255,7 @@ export class FineTimeControls extends EventEmitter {
     const currentFrame = Math.floor(currentTime / outputRateInv);
     const video = this.client.player.getVideo();
 
-    const isCurrentFrameValid = video.readyState >= 2;
+    const isCurrentFrameValid = video.readyState >= 2 && !video.paused;
 
 
     const hasArr = new Array(maxFrameIndex - minFrameIndex).fill(false);
