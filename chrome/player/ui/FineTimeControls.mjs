@@ -355,7 +355,13 @@ export class FineTimeControls extends EventEmitter {
       }
     });
 
+
     if (isCurrentFrameValid) {
+      if (currentFrame === this.lastFrameRenderIndex && Math.abs(this.lastFrameRenderTime - currentTime) < 0.0435) { // 1/23
+        return;
+      }
+      this.lastFrameRenderIndex = currentFrame;
+      this.lastFrameRenderTime = currentTime;
       const aspect = video.videoWidth / video.videoHeight;
       const newWidth = Math.round(128 * aspect);
       if (this.currentFrameCanvas.width !== newWidth) {

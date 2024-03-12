@@ -226,7 +226,7 @@ export class PreviewFrameExtractor extends EventEmitter {
 
       requestAnimationFrame(onAnimFrame);
 
-      if (paused || player.readyState < 2) {
+      if (player.readyState < 2) {
         return;
       }
 
@@ -234,7 +234,7 @@ export class PreviewFrameExtractor extends EventEmitter {
 
       const frame = Math.floor(time / this.outputRateInv);
 
-      if (!this.frameBuffer[frame]) {
+      if (!paused && !this.frameBuffer[frame]) {
         this.extractorContext.drawImage(video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
         const url = this.extractorCanvas.toDataURL('image/png');
         // convert to blob
