@@ -369,13 +369,13 @@ export class FastStreamClient extends EventEmitter {
       }
     }
 
-    if (!this.hasDownloadSpace) {
-      this.audioAnalyzer.disableBackground();
-      this.frameExtractor.disableBackground();
-    } else {
-      this.audioAnalyzer.enableBackground();
-      this.frameExtractor.enableBackground();
-    }
+    // if (!this.hasDownloadSpace) {
+    //   this.audioAnalyzer.disableBackground();
+    //   this.frameExtractor.disableBackground();
+    // } else {
+    //   this.audioAnalyzer.enableBackground();
+    //   this.frameExtractor.enableBackground();
+    // }
   }
 
   async addSource(source, setSource = false) {
