@@ -445,7 +445,6 @@ export class ProgressBar extends EventEmitter {
     }
 
     this.isSeeking = true;
-    this.hidePreview();
     this.client.savePosition();
     this.client.setSeekSave(false);
 
@@ -471,6 +470,7 @@ export class ProgressBar extends EventEmitter {
     };
 
     const onProgressbarMouseMove = (event) => {
+      this.hidePreview();
       const currentY = Math.min(Math.max(event.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 50);
       const currentX = Math.min(Math.max(event.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
 
