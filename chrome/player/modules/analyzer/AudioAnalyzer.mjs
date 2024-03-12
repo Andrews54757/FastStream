@@ -249,8 +249,9 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
+    const offsetTarget = -35;
     const time = this.client.currentTime;
-    let offset = this.client.isRegionBuffered(time - 30, time) ? -30 : 0;
+    let offset = this.client.isRegionBuffered(time + offsetTarget, time) ? offsetTarget : 0;
     player.currentTime = Math.max(time + offset, 0);
     player.playbackRate = 12;
     player.loop = true;
@@ -274,8 +275,8 @@ export class AudioAnalyzer extends EventEmitter {
 
     let currentRange = null;
     let currentRangeIndex = 0;
-
     let currentClientRange = null;
+    let lastOffsetCalc = Date.now();
 
     const onEnd = () => {
       completed = true;
@@ -319,6 +320,12 @@ export class AudioAnalyzer extends EventEmitter {
 
       if (player.readyState < 2) {
         return;
+      }
+
+      const now = Date.now();
+      if (now - lastOffsetCalc > 1000) {
+        lastOffsetCalc = now;
+        offset = this.client.isRegionBuffered(clientTimeOriginal + offsetTarget, clientTimeOriginal) ? offsetTarget : 0;
       }
 
       const clientTime = Math.max(clientTimeOriginal + offset, 0);
@@ -385,7 +392,7 @@ export class AudioAnalyzer extends EventEmitter {
       if (clientTime < currentRange.start - 5 || clientTime > currentRange.end + 5) {
         if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 5 || clientTime + 5 < currentClientRange.start) {
           console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
-          offset = this.client.isRegionBuffered(clientTimeOriginal - 30, clientTimeOriginal) ? -30 : 0;
+          offset = this.client.isRegionBuffered(clientTimeOriginal + offsetTarget, clientTimeOriginal) ? offsetTarget : 0;
           player.currentTime = Math.max(clientTimeOriginal + offset, 0);
           currentRange = null;
         }

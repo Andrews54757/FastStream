@@ -4,11 +4,43 @@ import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 
 export class PlaybackRateChanger extends EventEmitter {
-  constructor() {
+  constructor(client) {
     super();
+    this.client = client;
     this.stayOpen = false;
     this.playbackRate = 1;
     this.playbackElements = [];
+    this.onSilenceSkipperUIOpenHandle = this.onSilenceSkipperUIOpen.bind(this);
+    this.onSilenceSkipperUICloseHandle = this.onSilenceSkipperUIClose.bind(this);
+    this.silenceSkipperUIOpen = false;
+  }
+
+  onSilenceSkipperUIOpen() {
+
+  }
+
+  onSilenceSkipperUIClose() {
+
+  }
+
+  openSilenceSkipperUI() {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    if (this.silenceSkipperUIOpen) {
+      fineTimeControls.prioritizeState(this.onSilenceSkipperUIOpenHandle);
+      return;
+    }
+    this.silenceSkipperUIOpen = true;
+    fineTimeControls.pushState(this.onSilenceSkipperUIOpenHandle, this.onSilenceSkipperUICloseHandle);
+  }
+
+  closeSilenceSkipperUI() {
+    if (!this.silenceSkipperUIOpen) {
+      return;
+    }
+    this.silenceSkipperUIOpen = false;
+
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
+    fineTimeControls.removeState(this.onSilenceSkipperUIOpenHandle);
   }
 
   openUI(dontSetStayVisible = false) {
@@ -121,6 +153,16 @@ export class PlaybackRateChanger extends EventEmitter {
     });
 
     DOMElements.rateMenu.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+    });
+
+    DOMElements.playbackRateOptions.addEventListener('click', (e) => {
+      const fineTimeControls = this.client.interfaceController.fineTimeControls;
+      if (this.silenceSkipperUIOpen && fineTimeControls.isStateActive(this.onSilenceSkipperUIOpenHandle)) {
+        this.closeSilenceSkipperUI();
+      } else {
+        this.openSilenceSkipperUI();
+      }
       e.stopPropagation();
     });
   }

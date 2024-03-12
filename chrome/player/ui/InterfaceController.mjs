@@ -46,7 +46,7 @@ export class InterfaceController {
 
     this.subtitlesManager = new SubtitlesManager(this.client);
 
-    this.playbackRateChanger = new PlaybackRateChanger();
+    this.playbackRateChanger = new PlaybackRateChanger(this.client);
     this.playbackRateChanger.setupUI();
     this.playbackRateChanger.on('rateChanged', (rate) => {
       this.client.playbackRate = rate;
@@ -578,6 +578,7 @@ export class InterfaceController {
         this.fineTimeControls.removeAll();
         this.progressBar.endPreciseMode();
         this.subtitlesManager.subtitleSyncer.stop();
+        this.playbackRateChanger.closeSilenceSkipperUI();
       } else if (currentY <= -5 - offset) {
         this.progressBar.startPreciseMode(true);
       }
