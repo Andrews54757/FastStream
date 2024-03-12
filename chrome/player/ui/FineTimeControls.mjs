@@ -453,6 +453,9 @@ export class FineTimeControls extends EventEmitter {
   }
 
   renderTimeline() {
+    if (!DOMElements.playerContainer.classList.contains('controls_visible')) {
+      return;
+    }
     if (!this.started || !this.client.player) return;
     const time = this.client.persistent.currentTime;
 
