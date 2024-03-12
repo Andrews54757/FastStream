@@ -64,7 +64,11 @@ export class AudioAnalyzerNode extends EventEmitter {
   stopRecordingVolume() {
     if (!this.volumeLoopShouldRun) return;
     this.volumeLoopShouldRun = false;
-    this.audioSource.disconnect(this.volumeAnalyserNode);
+    try {
+      this.audioSource.disconnect(this.volumeAnalyserNode);
+    } catch (e) {
+
+    }
     this.volumeAnalyserNode = null;
   }
 
@@ -88,7 +92,11 @@ export class AudioAnalyzerNode extends EventEmitter {
     this.vadShouldRun = false;
 
     if (this.vadNode) {
-      this.audioSource.disconnect(this.vadNode.getNode());
+      try {
+        this.audioSource.disconnect(this.vadNode.getNode());
+      } catch (e) {
+
+      }
       this.vadNode.destroy();
       this.vadNode = null;
     }

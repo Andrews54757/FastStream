@@ -88,6 +88,10 @@ export class FineTimeControls extends EventEmitter {
     this.ui.timelineContainer.appendChild(this.ui.timelineImages);
     this.ui.timelineImages.style.display = 'none';
 
+    this.currentFrameCanvas = document.createElement('canvas');
+    this.currentFrameCanvas.classList.add('timeline_frame');
+    this.currentFrameCtx = this.currentFrameCanvas.getContext('2d');
+
     this.ui.timelineVOD = WebUtils.create('div', '', 'timeline_vod');
     this.ui.timelineContainer.appendChild(this.ui.timelineVOD);
 
@@ -114,6 +118,7 @@ export class FineTimeControls extends EventEmitter {
     };
     this.ui.timelineTicks.addEventListener('mousedown', mouseDown);
     this.ui.timelineVOD.addEventListener('mousedown', mouseDown);
+    this.ui.timelineImages.addEventListener('mousedown', mouseDown);
 
     document.addEventListener('mouseup', (e) => {
       if (!this.client.player) return;
@@ -157,8 +162,11 @@ export class FineTimeControls extends EventEmitter {
   reset() {
     this.ticklineElements = [];
     this.canvasElements = [];
+    this.frameElements = [];
     this.ui.timelineTicks.replaceChildren();
     this.ui.timelineVOD.replaceChildren();
+    this.ui.timelineImages.replaceChildren();
+    this.ui.timelineImages.appendChild(this.currentFrameCanvas);
 
     this.vadLineColor = window.getComputedStyle(document.body).getPropertyValue('--timeline-vad-line-color');
   }
@@ -168,6 +176,10 @@ export class FineTimeControls extends EventEmitter {
     if (this.started || !video) return;
     this.started = true;
     this.reset();
+
+    const aspect = video.videoWidth / video.videoHeight;
+    this.currentFrameCanvas.height = 128;
+    this.currentFrameCanvas.width = this.currentFrameCanvas.height * aspect;
 
     this.client.audioAnalyzer.on('vad', this.analyzerHandle);
     this.client.audioAnalyzer.on('volume', this.analyzerHandle);
@@ -228,6 +240,87 @@ export class FineTimeControls extends EventEmitter {
       } else if (tickTime % 5 === 0) {
         el.classList.add('major');
       }
+    }
+  }
+
+  renderVideoFrames(duration, minTime, maxTime) {
+    const frameExtractor = this.client.frameExtractor;
+    const frameBuffer = frameExtractor.getFrameBuffer();
+    const outputRateInv = frameExtractor.getOutputRateInv();
+
+    const minFrameIndex = Math.floor(minTime / outputRateInv);
+    const maxFrameIndex = Math.ceil(maxTime / outputRateInv);
+
+    const currentTime = this.client.currentTime;
+    const currentFrame = Math.floor(currentTime / outputRateInv);
+    const video = this.client.player.getVideo();
+
+    const isCurrentFrameValid = video.readyState >= 2;
+
+
+    const hasArr = new Array(maxFrameIndex - minFrameIndex).fill(false);
+    this.frameElements = this.frameElements.filter((el) => {
+      if (el.index < minFrameIndex || el.index > maxFrameIndex) {
+        el.element.remove();
+        return false;
+      }
+      hasArr[el.index - minFrameIndex] = true;
+      return true;
+    });
+
+    for (let frameIndex = minFrameIndex; frameIndex < maxFrameIndex; frameIndex++) {
+      if (hasArr[frameIndex - minFrameIndex]) continue;
+
+      const el = WebUtils.create('img', '', 'timeline_frame');
+      el.style.left = frameIndex * outputRateInv / duration * 100 + '%';
+      el.style.width = outputRateInv / duration * 100 + '%';
+      el.style.display = 'none';
+      el.draggable = false;
+      this.ui.timelineImages.appendChild(el);
+
+      this.frameElements.push({
+        index: frameIndex,
+        element: el,
+        cachedSrc: null,
+      });
+    }
+
+    this.frameElements.forEach((el) => {
+      const index = el.index;
+
+
+      let src = index;
+      if (index < currentFrame) {
+        src++;
+      } else if (index === currentFrame && isCurrentFrameValid) {
+        src = -1;
+      }
+
+
+      if (el.cachedSrc === src) return;
+
+      if (src === -1) {
+        el.cachedSrc = src;
+        el.element.style.display = 'none';
+        return;
+      }
+
+      if (frameBuffer[src]) {
+        el.element.src = frameBuffer[src].url;
+        el.cachedSrc = src;
+        el.element.style.display = '';
+      } else {
+        el.element.style.display = 'none';
+      }
+    });
+
+    if (isCurrentFrameValid) {
+      this.currentFrameCtx.drawImage(video, 0, 0, this.currentFrameCanvas.width, this.currentFrameCanvas.height);
+      this.currentFrameCanvas.style.left = currentFrame * outputRateInv / duration * 100 + '%';
+      this.currentFrameCanvas.style.width = outputRateInv / duration * 100 + '%';
+      this.currentFrameCanvas.style.display = '';
+    } else {
+      this.currentFrameCanvas.style.display = 'none';
     }
   }
 
@@ -323,6 +416,10 @@ export class FineTimeControls extends EventEmitter {
     this.renderTicks(duration, maxTime, minTime);
     this.renderAudio(duration, minTime, maxTime);
 
+    if (this.renderFrames) {
+      this.renderVideoFrames(duration, minTime, maxTime);
+    }
+
     this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / duration * 100}%)`;
 
     this.emit('render', minTime, maxTime);
@@ -342,14 +439,16 @@ export class FineTimeControls extends EventEmitter {
     DOMElements.playerContainer.classList.remove('expanded');
   }
 
-  setRenderFrames(value) {
+  shouldRenderFrames(value) {
     if (this.renderFrames === value) return;
     this.renderFrames = value;
 
     if (value) {
       this.client.frameExtractor.addBackgroundDependent(this);
+      this.ui.timelineImages.style.display = '';
     } else {
       this.client.frameExtractor.removeBackgroundDependent(this);
+      this.ui.timelineImages.style.display = 'none';
     }
   }
 }

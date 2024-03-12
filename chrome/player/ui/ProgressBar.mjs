@@ -27,6 +27,7 @@ export class ProgressBar extends EventEmitter {
 
     fineTimeControls.ui.timelineVOD.style.height = '22px';
     fineTimeControls.ui.timelineVOD.style.top = '52px';
+    fineTimeControls.shouldRenderFrames(true);
   }
 
   onPreciseModeEnd() {
@@ -34,6 +35,7 @@ export class ProgressBar extends EventEmitter {
 
     fineTimeControls.ui.timelineVOD.style.height = '';
     fineTimeControls.ui.timelineVOD.style.top = '';
+    fineTimeControls.shouldRenderFrames(false);
   }
 
   startPreciseMode() {
@@ -503,7 +505,7 @@ export class ProgressBar extends EventEmitter {
       document.removeEventListener('touchmove', onProgressbarMouseMove);
       document.removeEventListener('mouseup', onProgressbarMouseUp);
       document.removeEventListener('touchend', onProgressbarMouseUp);
-      this.endPreciseMode();
+      // this.endPreciseMode();
       this.isSeeking = false;
 
       if (this.isMouseOverProgressbar) {

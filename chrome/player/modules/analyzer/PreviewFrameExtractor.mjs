@@ -12,7 +12,7 @@ export class PreviewFrameExtractor extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.outputRateInv = 5;
+    this.outputRateInv = 2;
     this.frameBuffer = [];
 
     this.backgroundNeededBy = [];
@@ -22,8 +22,6 @@ export class PreviewFrameExtractor extends EventEmitter {
     this.backgroundAnalyzerEnabled = true;
 
     this.extractorCanvas = document.createElement('canvas');
-    this.extractorCanvas.width = 32;
-    this.extractorCanvas.height = 32;
     this.extractorContext = this.extractorCanvas.getContext('2d');
   }
 
@@ -57,8 +55,12 @@ export class PreviewFrameExtractor extends EventEmitter {
 
   reset() {
     try {
+      this.frameBuffer.forEach((frame) => {
+        URL.revokeObjectURL(frame.url);
+      });
       this.frameBuffer = [];
       this.stopBackgroundAnalyzer();
+      this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
     } catch (e) {
       console.error(e);
     }
@@ -108,7 +110,9 @@ export class PreviewFrameExtractor extends EventEmitter {
       this.backgroundAnalyzerPlayer.destroy();
       this.backgroundAnalyzerPlayer = null;
     }
-    this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    if (this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
+      this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    }
     this.client.interfaceController.updateMarkers();
   }
 
@@ -142,6 +146,15 @@ export class PreviewFrameExtractor extends EventEmitter {
     player.currentTime = Math.max(time + offset, 0);
     player.volume = 0;
     player.muted = true;
+
+    const video = player.getVideo();
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
+    const aspect = videoWidth / videoHeight;
+    const height = 128;
+    const width = Math.round(height * aspect);
+    this.extractorCanvas.width = width;
+    this.extractorCanvas.height = height;
 
     let destroyed = false;
     let completed = false;
@@ -207,10 +220,20 @@ export class PreviewFrameExtractor extends EventEmitter {
       const frame = Math.floor(time / this.outputRateInv);
 
       if (!this.frameBuffer[frame]) {
-        this.extractorContext.clearRect(0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
-        this.extractorContext.drawImage(player.video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
+        this.extractorContext.drawImage(video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
         const url = this.extractorCanvas.toDataURL('image/png');
-        this.frameBuffer[frame] = url;
+        // convert to blob
+        const byteString = atob(url.split(',')[1]);
+        const buffer = new ArrayBuffer(byteString.length);
+        const array = new Uint8Array(buffer);
+        for (let i = 0; i < byteString.length; i++) {
+          array[i] = byteString.charCodeAt(i);
+        }
+        const blob = new Blob([buffer], {type: 'image/png'});
+        this.frameBuffer[frame] = {
+          blob,
+          url: URL.createObjectURL(blob),
+        };
       }
 
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
@@ -261,7 +284,7 @@ export class PreviewFrameExtractor extends EventEmitter {
       }
 
       let timeSet = false;
-      if (currentRange.end > time + 5) {
+      if (currentRange.end > time + 10) {
         player.currentTime = Math.floor((currentRange.end - 5) / this.outputRateInv) * this.outputRateInv;
         timeSet = true;
         console.log('[FrameExtractor] Already analyzed range, seeking', player.currentTime, currentRange.end);

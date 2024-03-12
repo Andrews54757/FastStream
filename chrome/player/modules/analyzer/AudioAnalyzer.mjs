@@ -124,6 +124,7 @@ export class AudioAnalyzer extends EventEmitter {
       this.analyzerNodes.clear();
 
       this.stopBackgroundAnalyzer();
+      this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
     } catch (e) {
       console.error(e);
     }
@@ -201,7 +202,9 @@ export class AudioAnalyzer extends EventEmitter {
       this.backgroundAnalyzerPlayer.destroy();
       this.backgroundAnalyzerPlayer = null;
     }
-    this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    if (this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
+      this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
+    }
     this.client.interfaceController.updateMarkers();
   }
 
@@ -360,7 +363,7 @@ export class AudioAnalyzer extends EventEmitter {
         return;
       }
 
-      if (currentRange.end > time + 5) {
+      if (currentRange.end > time + 10) {
         player.currentTime = currentRange.end - 5;
         console.log('[AudioAnalyzer] Already analyzed range, seeking', player.currentTime, currentRange.end);
       } else if (currentRange.end < time) {

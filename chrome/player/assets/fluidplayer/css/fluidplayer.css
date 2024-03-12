@@ -1612,9 +1612,11 @@ body {
     cursor: auto;
 }
 
+.timeline_frame,
 .timeline_vod_canvas {
     position: absolute;
     height: 100%;
+    user-select: none;
 }
 
 /* total width */
