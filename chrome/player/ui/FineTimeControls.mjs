@@ -14,6 +14,7 @@ export class FineTimeControls extends EventEmitter {
     this.renderFrames = false;
     this.renderVAD = false;
     this.renderVolume = true;
+    this.audioThreshold = null;
 
     this.stateStack = [];
 
@@ -126,8 +127,11 @@ export class FineTimeControls extends EventEmitter {
     this.currentFrameCanvas.height = 128;
     this.currentFrameCtx = this.currentFrameCanvas.getContext('2d');
 
-    this.ui.timelineVOD = WebUtils.create('div', '', 'timeline_vod');
-    this.ui.timelineContainer.appendChild(this.ui.timelineVOD);
+    this.ui.timelineAudio = WebUtils.create('div', '', 'timeline_audio');
+    this.ui.timelineContainer.appendChild(this.ui.timelineAudio);
+
+    this.ui.timelineAudioCanvasContainer = WebUtils.create('div', '', 'timeline_audio_canvas_container');
+    this.ui.timelineAudio.appendChild(this.ui.timelineAudioCanvasContainer);
 
     this.ui.timelineTrackContainer = WebUtils.create('div', '', 'timeline_track_container');
     this.ui.timelineContainer.appendChild(this.ui.timelineTrackContainer);
@@ -153,8 +157,8 @@ export class FineTimeControls extends EventEmitter {
       }
     };
     this.ui.timelineTicks.addEventListener('mousedown', mouseDown);
-    this.ui.timelineVOD.addEventListener('mousedown', mouseDown);
-    this.ui.timelineImages.addEventListener('mousedown', mouseDown);
+    // this.ui.timelineAudioCanvasContainer.addEventListener('mousedown', mouseDown);
+    // this.ui.timelineImages.addEventListener('mousedown', mouseDown);
 
     document.addEventListener('mouseup', (e) => {
       if (!this.client.player) return;
@@ -186,10 +190,14 @@ export class FineTimeControls extends EventEmitter {
   }
 
   onAnalyzerFrameProcessed(time, isSpeechProb) {
-    this.canvasElements.find((el) => {
-      if (el.index * 10 <= time && (el.index + 1) * 10 > time) {
+    const frame = Math.floor(time / 10);
+    const shouldDoPreviousFrame = (time - frame * 10) < 3;
+    let done = 0;
+    this.canvasElements.some((el) => {
+      if (el.index === frame || (shouldDoPreviousFrame && el.index === frame - 1)) {
         el.cachedWidth = 0;
-        return true;
+        done++;
+        return done === (shouldDoPreviousFrame ? 2 : 1);
       }
       return false;
     });
@@ -207,7 +215,7 @@ export class FineTimeControls extends EventEmitter {
 
   resetAudio() {
     this.canvasElements = [];
-    this.ui.timelineVOD.replaceChildren();
+    this.ui.timelineAudioCanvasContainer.replaceChildren();
   }
 
   async start() {
@@ -304,7 +312,7 @@ export class FineTimeControls extends EventEmitter {
     const currentFrame = Math.floor(currentTime / outputRateInv);
     const video = this.client.player.getVideo();
 
-    const isCurrentFrameValid = video.readyState >= 2 && !this.client.interfaceController.isUserSeeking();
+    const isCurrentFrameValid = video.readyState >= 2 && !this.client.interfaceController.isUserSeeking() && frameBuffer[currentFrame];
 
 
     const hasArr = new Array(maxFrameIndex - minFrameIndex).fill(false);
@@ -401,11 +409,11 @@ export class FineTimeControls extends EventEmitter {
     for (let canvIndex = minCanvIndex; canvIndex < maxCanvIndex; canvIndex++) {
       if (hasArr[canvIndex - minCanvIndex]) continue;
 
-      const el = WebUtils.create('canvas', '', 'timeline_vod_canvas');
+      const el = WebUtils.create('canvas', '', 'timeline_audio_canvas');
       el.style.left = canvIndex * 10 / duration * 100 + '%';
       el.style.width = 10 / duration * 100 + '%';
       el.height = 22 * window.devicePixelRatio;
-      this.ui.timelineVOD.appendChild(el);
+      this.ui.timelineAudioCanvasContainer.appendChild(el);
 
       this.canvasElements.push({
         index: canvIndex,
@@ -444,7 +452,11 @@ export class FineTimeControls extends EventEmitter {
         for (let i = startFrame; i < endFrame; i++) {
           const volumeVal = (volumeBuffer[i] || 0);
           // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
-          const color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
+          let color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
+          if (this.audioThreshold !== null && volumeVal <= this.audioThreshold * 255) {
+            // white grey
+            color = 'rgb(200, 200, 200)';
+          }
           context.fillStyle = color;
           context.fillRect((i - startFrame) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 255 / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil((volumeVal / 255) * el.element.height));
         }
@@ -518,6 +530,11 @@ export class FineTimeControls extends EventEmitter {
     } else {
       this.client.audioAnalyzer.removeVadDependent(this);
     }
+    this.resetAudio();
+  }
+
+  setAudioThreshold(value) {
+    this.audioThreshold = value;
     this.resetAudio();
   }
 }

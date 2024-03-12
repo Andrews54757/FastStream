@@ -37,10 +37,12 @@ export class AudioAnalyzer extends EventEmitter {
   onVolumeFrameProcessed(time, volume) {
     const frame = Math.floor(time * this.outputRate);
     this.volumeBuffer[frame] = volume;
-    if (frame > 5 && !this.volumeBuffer[frame - 1]) {
+    const interpMax = 8;
+    if (frame >= 2 && !this.volumeBuffer[frame - 1]) {
       // interpolate. Find last non-zero frame within 5 frames
       let lastFrame = frame - 2;
-      while (lastFrame > frame - 5 && !this.volumeBuffer[lastFrame]) {
+      const min = Math.max(0, frame - interpMax);
+      while (lastFrame > min && !this.volumeBuffer[lastFrame]) {
         lastFrame--;
       }
 
@@ -253,7 +255,7 @@ export class AudioAnalyzer extends EventEmitter {
     const time = this.client.currentTime;
     let offset = this.client.isRegionBuffered(time + offsetTarget, time) ? offsetTarget : 0;
     player.currentTime = Math.max(time + offset, 0);
-    player.playbackRate = 12;
+    player.playbackRate = 16;
     player.loop = true;
     player.play();
 

@@ -1,5 +1,4 @@
-import {Hls} from '../hls.mjs';
-const {TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer} = Hls.Muxers;
+import {TSDemuxer, MP4Remuxer, MP4Demuxer, AACDemuxer, MP3Demuxer, PassThroughRemuxer} from '../hls.mjs';
 
 const muxConfig = [{
   demux: MP4Demuxer,

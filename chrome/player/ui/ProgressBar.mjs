@@ -26,16 +26,16 @@ export class ProgressBar extends EventEmitter {
   onPreciseModeStart() {
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
 
-    fineTimeControls.ui.timelineVOD.style.height = '22px';
-    fineTimeControls.ui.timelineVOD.style.top = '52px';
+    fineTimeControls.ui.timelineAudio.style.height = '22px';
+    fineTimeControls.ui.timelineAudio.style.top = '52px';
     fineTimeControls.shouldRenderFrames(true);
   }
 
   onPreciseModeEnd() {
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
 
-    fineTimeControls.ui.timelineVOD.style.height = '';
-    fineTimeControls.ui.timelineVOD.style.top = '';
+    fineTimeControls.ui.timelineAudio.style.height = '';
+    fineTimeControls.ui.timelineAudio.style.top = '';
     fineTimeControls.shouldRenderFrames(false);
   }
 

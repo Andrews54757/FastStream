@@ -1558,13 +1558,36 @@ body {
     text-overflow: ellipsis;
 }
 
-.timeline_vod {
+.timeline_audio {
     position: absolute;
     top: 22px;
-    height: calc(100% - 22px);
+    height: 54px;
     left: 0px;
     right: 0px;
     transition: height 0.2s, top 0.2s;
+    overflow: hidden;
+}
+
+
+.timeline_audio_canvas_container {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    height: 100%;
+    transition: height 0.2s, top 0.2s;
+}
+
+.threshold_bar {
+    position: absolute;
+    height: 2px;
+    bottom: 0px;
+    background-color: rgba(255, 0, 217, 1);
+    left: 0px;
+    right: 0px;
+    border-radius: 1px;
+    z-index: 100;
+    transform: translate(0, 50%);
 }
 
 .timeline_images {
@@ -1613,7 +1636,7 @@ body {
 }
 
 .timeline_frame,
-.timeline_vod_canvas {
+.timeline_audio_canvas {
     position: absolute;
     user-select: none;
 }
@@ -1622,7 +1645,7 @@ body {
     max-height: 100%;
 }
 
-.timeline_vod_canvas {
+.timeline_audio_canvas {
     height: 100%;
 }
 

@@ -21,7 +21,7 @@ export class AudioAnalyzerNode extends EventEmitter {
     const isSpeechProb = Math.round(probs.isSpeech * 255);
     const audioElement = this.audioElement;
     if (!audioElement || audioElement.readyState < 4 || audioElement.paused) return;
-    const time = audioElement.currentTime;
+    const time = audioElement.currentTime - audioElement.playbackRate * (this.audioContext.outputLatency - this.audioContext.baseLatency);
     this.emit('vad', time, isSpeechProb);
   }
 
@@ -29,7 +29,7 @@ export class AudioAnalyzerNode extends EventEmitter {
     const audioElement = this.audioElement;
     if (!this.volumeAnalyserNode || !audioElement || audioElement.readyState < 4 || audioElement.paused) return;
     const volume = this.getVolume();
-    const time = audioElement.currentTime;
+    const time = audioElement.currentTime - audioElement.playbackRate * (this.audioContext.outputLatency - this.audioContext.baseLatency) * 0.75;
     this.emit('volume', time, volume);
   }
 
@@ -104,14 +104,14 @@ export class AudioAnalyzerNode extends EventEmitter {
   }
 
   volumeLoop() {
-    this.recordVolume();
-
     if (!this.volumeLoopShouldRun) {
       this.volumeLoopRunning = false;
       return;
     }
 
-    setTimeout(this.loopHandle, Math.floor(1000 / 12 / this.audioElement.playbackRate));
+    this.volumeLoopTimeout = setTimeout(this.loopHandle, Math.floor(64 / this.audioElement.playbackRate));
+
+    this.recordVolume();
   }
 
   destroy() {
