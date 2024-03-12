@@ -1,6 +1,5 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {EventEmitter} from '../eventemitter.mjs';
-import {AudioAnalyzerNode} from './AudioAnalyzerNode.mjs';
 
 const AnalyzerStatus = {
   IDLE: 'idle',
@@ -9,87 +8,40 @@ const AnalyzerStatus = {
   FAILED: 'failed',
 };
 
-export class AudioAnalyzer extends EventEmitter {
+export class PreviewFrameExtractor extends EventEmitter {
   constructor(client) {
     super();
     this.client = client;
-    this.outputRate = 10;
-    this.vadBuffer = [];
-    this.volumeBuffer = [];
+    this.outputRateInv = 5;
+    this.frameBuffer = [];
 
-    this.vadNeededBy = [];
-    this.volumeNeededBy = [];
     this.backgroundNeededBy = [];
-
-    this.analyzerNodes = new Map();
 
     this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
     this.backgroundDoneRanges = [];
     this.backgroundAnalyzerEnabled = true;
+
+    this.extractorCanvas = document.createElement('canvas');
+    this.extractorCanvas.width = 32;
+    this.extractorCanvas.height = 32;
+    this.extractorContext = this.extractorCanvas.getContext('2d');
   }
 
-  onVadFrameProcessed(time, isSpeechProb) {
-    const frame = Math.floor(time * this.outputRate);
-    this.vadBuffer[frame] = isSpeechProb;
-    this.emit('vad', time, isSpeechProb);
+  getFrameBuffer() {
+    return this.frameBuffer;
   }
 
-  onVolumeFrameProcessed(time, volume) {
-    const frame = Math.floor(time * this.outputRate);
-    this.volumeBuffer[frame] = volume;
-    if (frame > 5 && !this.volumeBuffer[frame - 1]) {
-      // interpolate. Find last non-zero frame within 5 frames
-      let lastFrame = frame - 2;
-      while (lastFrame > frame - 5 && !this.volumeBuffer[lastFrame]) {
-        lastFrame--;
-      }
-
-      if (this.volumeBuffer[lastFrame]) {
-        const diff = frame - lastFrame;
-        const step = (volume - this.volumeBuffer[lastFrame]) / diff;
-        for (let i = lastFrame + 1; i < frame; i++) {
-          this.volumeBuffer[i] = this.volumeBuffer[lastFrame] + step * (i - lastFrame);
-        }
-      }
-    }
-    this.emit('volume', time, volume);
-  }
-
-  addVadDependent(dependent) {
-    if (this.vadNeededBy.includes(dependent)) return;
-    this.vadNeededBy.push(dependent);
-
-    this.sendConfigToAnalyzerNodes();
-  }
-
-  removeVadDependent(dependent) {
-    const index = this.vadNeededBy.indexOf(dependent);
-    if (index !== -1) {
-      this.vadNeededBy.splice(index, 1);
-    }
-
-    this.sendConfigToAnalyzerNodes();
-  }
-
-  addVolumeDependent(dependent) {
-    if (this.volumeNeededBy.includes(dependent)) return;
-    this.volumeNeededBy.push(dependent);
-
-    this.sendConfigToAnalyzerNodes();
-  }
-
-  removeVolumeDependent(dependent) {
-    const index = this.volumeNeededBy.indexOf(dependent);
-    if (index !== -1) {
-      this.volumeNeededBy.splice(index, 1);
-    }
-
-    this.sendConfigToAnalyzerNodes();
+  getOutputRateInv() {
+    return this.outputRateInv;
   }
 
   addBackgroundDependent(dependent) {
     if (this.backgroundNeededBy.includes(dependent)) return;
     this.backgroundNeededBy.push(dependent);
+
+    if (this.shouldRunAnalyzerInBackground()) {
+      this.startBackgroundAnalyzer();
+    }
   }
 
   removeBackgroundDependent(dependent) {
@@ -103,60 +55,15 @@ export class AudioAnalyzer extends EventEmitter {
     }
   }
 
-  sendConfigToAnalyzerNodes() {
-    const vad = this.vadNeededBy.length > 0;
-    const volume = this.volumeNeededBy.length > 0;
-
-    this.analyzerNodes.forEach((node) => {
-      node.configure({vad, volume});
-    });
-  }
-
   reset() {
     try {
-      this.vadBuffer = [];
-      this.volumeBuffer = [];
-      this.backgroundDoneRanges = [];
-
-      this.analyzerNodes.forEach((node) => {
-        node.destroy();
-      });
-      this.analyzerNodes.clear();
-
+      this.frameBuffer = [];
       this.stopBackgroundAnalyzer();
     } catch (e) {
       console.error(e);
     }
   }
 
-  getVadData() {
-    return this.vadBuffer;
-  }
-
-  getVolumeData() {
-    return this.volumeBuffer;
-  }
-
-  getOutputRate() {
-    return this.outputRate;
-  }
-
-  setupAnalyzerNodeForMainPlayer(videoElement, audioSource, audioContext) {
-    if (this.analyzerNodes.has('main')) {
-      this.analyzerNodes.get('main').destroy();
-    }
-
-    const mainAnalyzerNode = new AudioAnalyzerNode();
-    this.analyzerNodes.set('main', mainAnalyzerNode);
-    mainAnalyzerNode.attach(videoElement, audioSource, audioContext);
-    mainAnalyzerNode.on('vad', this.onVadFrameProcessed.bind(this));
-    mainAnalyzerNode.on('volume', this.onVolumeFrameProcessed.bind(this));
-
-    mainAnalyzerNode.configure({
-      vad: this.vadNeededBy.length > 0,
-      volume: this.volumeNeededBy.length > 0,
-    });
-  }
 
   async startBackgroundAnalyzer() {
     if (!this.client.player || this.backgroundAnalyzerStatus !== AnalyzerStatus.IDLE) {
@@ -175,12 +82,12 @@ export class AudioAnalyzer extends EventEmitter {
       this.backgroundAnalyzerPlayer = null;
     }
 
-    console.log('[AudioAnalyzer] Starting background analyzer');
+    console.log('[FrameExtractor] Starting background analyzer');
 
     const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, this.backgroundDoneRanges, (completed) => {
       this.backgroundAnalyzerPlayer = null;
       if (newSource === this.backgroundAnalyzerSource) {
-        console.log('[AudioAnalyzer] Background analyzer finished', completed ? 'successfully' : 'with errors');
+        console.log('[FrameExtractor] Background analyzer finished', completed ? 'successfully' : 'with errors');
         this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
         this.client.interfaceController.updateMarkers();
       }
@@ -208,21 +115,9 @@ export class AudioAnalyzer extends EventEmitter {
   async loadPlayer(source, doneRanges, onDone) {
     const player = await this.client.playerLoader.createPlayer(source.mode, this.client, {
       isAnalyzer: true,
-      isAudioOnly: true,
     });
 
     await player.setup();
-
-    const audioAnalyzerNode = new AudioAnalyzerNode();
-    const audioContext = new AudioContext();
-    const audioSource = audioContext.createMediaElementSource(player.getVideo());
-    audioAnalyzerNode.attach(player.getVideo(), audioSource, audioContext);
-    audioAnalyzerNode.on('vad', this.onVadFrameProcessed.bind(this));
-    audioAnalyzerNode.on('volume', this.onVolumeFrameProcessed.bind(this));
-    audioAnalyzerNode.configure({
-      vad: false,
-      volume: true,
-    });
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
       player.currentLevel = this.client.currentLevel;
@@ -232,9 +127,6 @@ export class AudioAnalyzer extends EventEmitter {
     const onLoadMeta = () => {
       player.off(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
       this.runAnalyzerInBackground(player, doneRanges, (completed)=>{
-        audioAnalyzerNode.destroy();
-        audioSource.disconnect();
-        audioContext.close();
         onDone(completed);
       });
     };
@@ -245,12 +137,9 @@ export class AudioAnalyzer extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
-    const time = this.client.currentTime;
-    let offset = this.client.isRegionBuffered(time - 30, time) ? -30 : 0;
-    player.currentTime = Math.max(time + offset, 0);
-    player.playbackRate = 12;
-    player.loop = true;
-    player.play();
+    player.currentTime = this.client.currentTime;
+    player.volume = 0;
+    player.muted = true;
 
     let destroyed = false;
     let completed = false;
@@ -282,10 +171,11 @@ export class AudioAnalyzer extends EventEmitter {
       player.currentTime = 0;
     });
 
+    let paused = false;
     const pauseHandler = () => {
-      if (!destroyed && player.readyState >= 1) {
-        player.pause();
-        console.log('[AudioAnalyzer] Paused analyzer');
+      if (!destroyed && !paused ) {
+        paused = true;
+        console.log('[FrameExtractor] Paused analyzer');
       }
     };
 
@@ -294,11 +184,11 @@ export class AudioAnalyzer extends EventEmitter {
         return;
       }
 
-      if (player.readyState >= 1 && player.paused) {
-        player.play();
-        player.currentTime = Math.max(player.currentTime - 1.5, 0);
-        console.log('[AudioAnalyzer] Resumed analyzer');
+      if (player.readyState >= 1 && paused) {
+        paused = false;
+        console.log('[FrameExtractor] Resumed analyzer');
       }
+
       requestAnimationFrame(onAnimFrame);
 
       clearTimeout(pauseTimeout);
@@ -309,9 +199,16 @@ export class AudioAnalyzer extends EventEmitter {
       }
 
       const time = player.currentTime;
+      const clientTime = this.client.currentTime;
 
-      const clientTimeOriginal = this.client.currentTime;
-      const clientTime = Math.max(clientTimeOriginal + offset, 0);
+      const frame = Math.floor(time / this.outputRateInv);
+
+      if (!this.frameBuffer[frame]) {
+        this.extractorContext.clearRect(0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
+        this.extractorContext.drawImage(player.video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
+        const url = this.extractorCanvas.toDataURL('image/png');
+        this.frameBuffer[frame] = url;
+      }
 
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
         currentRangeIndex = -1;
@@ -360,22 +257,28 @@ export class AudioAnalyzer extends EventEmitter {
         return;
       }
 
+      let timeSet = false;
       if (currentRange.end > time + 5) {
-        player.currentTime = currentRange.end - 5;
-        console.log('[AudioAnalyzer] Already analyzed range, seeking', player.currentTime, currentRange.end);
+        player.currentTime = Math.floor((currentRange.end - 5) / this.outputRateInv) * this.outputRateInv;
+        timeSet = true;
+        console.log('[FrameExtractor] Already analyzed range, seeking', player.currentTime, currentRange.end);
       } else if (currentRange.end < time) {
         currentRange.end = time;
       }
 
       if (clientTime < currentRange.start - 5 || clientTime > currentRange.end + 5) {
         if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 5 || clientTime + 5 < currentClientRange.start) {
-          console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
-          offset = this.client.isRegionBuffered(clientTimeOriginal - 30, clientTimeOriginal) ? -30 : 0;
-          player.currentTime = clientTime;
+          console.log('[FrameExtractor] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
+          player.currentTime = Math.floor(clientTime / this.outputRateInv) * this.outputRateInv;
+          timeSet = true;
           currentRange = null;
         }
       } else {
         currentClientRange = currentRange;
+      }
+
+      if (!timeSet) {
+        player.currentTime = (1 + Math.floor(time / this.outputRateInv)) * this.outputRateInv;
       }
 
       this.client.interfaceController.updateMarkers();
@@ -402,6 +305,10 @@ export class AudioAnalyzer extends EventEmitter {
 
   enableBackground() {
     this.backgroundAnalyzerEnabled = true;
+
+    if (this.shouldRunAnalyzerInBackground()) {
+      this.startBackgroundAnalyzer();
+    }
   }
 
   disableBackground() {
@@ -409,14 +316,10 @@ export class AudioAnalyzer extends EventEmitter {
     this.stopBackgroundAnalyzer();
   }
 
-  /**
-   * Must only run on trusted events to ensure the player runs.
-   */
-  updateBackgroundAnalyzer() {
-    if (this.shouldRunAnalyzerInBackground()) {
-      this.startBackgroundAnalyzer();
-    } else {
-      this.stopBackgroundAnalyzer();
+  getMarkerPosition() {
+    if (this.backgroundAnalyzerPlayer && this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
+      return this.backgroundAnalyzerPlayer.currentTime;
     }
+    return null;
   }
 }

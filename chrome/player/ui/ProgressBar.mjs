@@ -78,6 +78,12 @@ export class ProgressBar extends EventEmitter {
     DOMElements.markerContainer.appendChild(this.audioAnalyzerMarker);
     this.audioAnalyzerMarker.style.display = 'none';
 
+    this.frameExtractorMarker = document.createElement('div');
+    this.frameExtractorMarker.classList.add('analyzer_marker');
+    this.frameExtractorMarker.style.backgroundColor = '#f00';
+    DOMElements.markerContainer.appendChild(this.frameExtractorMarker);
+    this.frameExtractorMarker.style.display = 'none';
+
     DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
     DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
@@ -583,6 +589,14 @@ export class ProgressBar extends EventEmitter {
       this.audioAnalyzerMarker.style.display = '';
     } else {
       this.audioAnalyzerMarker.style.display = 'none';
+    }
+
+    const frameExtractorMarkerPosition = this.client.frameExtractor.getMarkerPosition();
+    if (frameExtractorMarkerPosition !== null) {
+      this.frameExtractorMarker.style.left = (frameExtractorMarkerPosition / duration * 100) + '%';
+      this.frameExtractorMarker.style.display = '';
+    } else {
+      this.frameExtractorMarker.style.display = 'none';
     }
   }
 }

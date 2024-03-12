@@ -317,6 +317,14 @@ export class VideoAnalyzer extends EventEmitter {
     let lastTime = -1;
 
     let lastCalculate = Date.now();
+
+    const pauseHandler = () => {
+      if (!destroyed && player.readyState >= 1) {
+        player.pause();
+        console.log('[VideoAnalyzer] Paused analyzer');
+      }
+    };
+
     const onAnimFrame = () => {
       if (destroyed) {
         aligner.calculate();
@@ -330,12 +338,7 @@ export class VideoAnalyzer extends EventEmitter {
       requestAnimationFrame(onAnimFrame);
 
       clearTimeout(pauseTimeout);
-      pauseTimeout = setTimeout(() => {
-        if (!destroyed && player.readyState >= 1) {
-          player.pause();
-          console.log('[VideoAnalyzer] Paused analyzer');
-        }
-      }, 100);
+      pauseTimeout = setTimeout(pauseHandler, 100);
 
       if (player.readyState < 2) {
         return;

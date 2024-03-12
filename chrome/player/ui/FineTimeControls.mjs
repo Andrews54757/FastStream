@@ -10,6 +10,8 @@ export class FineTimeControls extends EventEmitter {
     this.isSeeking = false;
     this.analyzerHandle = this.onAnalyzerFrameProcessed.bind(this);
 
+    this.renderFrames = false;
+
     this.stateStack = [];
 
     this.setup();
@@ -81,6 +83,10 @@ export class FineTimeControls extends EventEmitter {
 
     this.ui.timelineTicks = WebUtils.create('div', '', 'timeline_ticks');
     this.ui.timelineContainer.appendChild(this.ui.timelineTicks);
+
+    this.ui.timelineImages = WebUtils.create('div', '', 'timeline_images');
+    this.ui.timelineContainer.appendChild(this.ui.timelineImages);
+    this.ui.timelineImages.style.display = 'none';
 
     this.ui.timelineVOD = WebUtils.create('div', '', 'timeline_vod');
     this.ui.timelineContainer.appendChild(this.ui.timelineVOD);
@@ -182,19 +188,8 @@ export class FineTimeControls extends EventEmitter {
     this.renderTimeline();
   }
 
-  renderTimeline() {
-    if (!this.started || !this.client.player) return;
-    const time = this.client.persistent.currentTime;
-
-    const video = this.client.player.getVideo();
-
-    const timePerWidth = 60;
-    const minTime = Math.floor(Math.max(0, time - timePerWidth / 2 - 5));
-    const maxTime = Math.ceil(Math.min(video.duration, time + timePerWidth / 2 + 5));
-    this.ui.timelineContainer.style.width = (video.duration / timePerWidth) * 100 + '%';
-
-
-    let hasArr = new Array(maxTime - minTime).fill(false);
+  renderTicks(duration, maxTime, minTime) {
+    const hasArr = new Array(maxTime - minTime).fill(false);
 
     this.ticklineElements = this.ticklineElements.filter((el) => {
       if (el.time < minTime || el.time > maxTime) {
@@ -210,7 +205,7 @@ export class FineTimeControls extends EventEmitter {
       if (hasArr[tickTime - minTime]) continue;
 
       const el = WebUtils.create('div', '', 'timeline_tick');
-      el.style.left = tickTime / video.duration * 100 + '%';
+      el.style.left = tickTime / duration * 100 + '%';
       this.ui.timelineTicks.appendChild(el);
       this.ticklineElements.push({
         time: tickTime,
@@ -234,10 +229,12 @@ export class FineTimeControls extends EventEmitter {
         el.classList.add('major');
       }
     }
+  }
 
+  renderAudio(duration, minTime, maxTime) {
     const minCanvIndex = Math.floor(minTime / 10);
     const maxCanvIndex = Math.ceil(maxTime / 10);
-    hasArr = new Array(maxCanvIndex - minCanvIndex).fill(false);
+    const hasArr = new Array(maxCanvIndex - minCanvIndex).fill(false);
     this.canvasElements = this.canvasElements.filter((el) => {
       if (el.index < minCanvIndex || el.index > maxCanvIndex) {
         el.element.remove();
@@ -251,8 +248,8 @@ export class FineTimeControls extends EventEmitter {
       if (hasArr[canvIndex - minCanvIndex]) continue;
 
       const el = WebUtils.create('canvas', '', 'timeline_vod_canvas');
-      el.style.left = canvIndex * 10 / video.duration * 100 + '%';
-      el.style.width = 10 / video.duration * 100 + '%';
+      el.style.left = canvIndex * 10 / duration * 100 + '%';
+      el.style.width = 10 / duration * 100 + '%';
       el.height = 22 * window.devicePixelRatio;
       this.ui.timelineVOD.appendChild(el);
 
@@ -279,7 +276,7 @@ export class FineTimeControls extends EventEmitter {
       const vadBuffer = audioAnalyzer.getVadData();
       const volumeBuffer = audioAnalyzer.getVolumeData();
       const startFrame = Math.floor(time * outputRate);
-      const endFrame = Math.floor(Math.min(time + 10, video.duration) * outputRate);
+      const endFrame = Math.floor(Math.min(time + 10, duration) * outputRate);
 
       const context = el.ctx;
       el.element.width = newWidth;
@@ -309,8 +306,24 @@ export class FineTimeControls extends EventEmitter {
       }
       context.stroke();
     });
+  }
 
-    this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / video.duration * 100}%)`;
+  renderTimeline() {
+    if (!this.started || !this.client.player) return;
+    const time = this.client.persistent.currentTime;
+
+    const video = this.client.player.getVideo();
+    const duration = video.duration;
+
+    const timePerWidth = 60;
+    const minTime = Math.floor(Math.max(0, time - timePerWidth / 2 - 5));
+    const maxTime = Math.ceil(Math.min(video.duration, time + timePerWidth / 2 + 5));
+    this.ui.timelineContainer.style.width = (video.duration / timePerWidth) * 100 + '%';
+
+    this.renderTicks(duration, maxTime, minTime);
+    this.renderAudio(duration, minTime, maxTime);
+
+    this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / duration * 100}%)`;
 
     this.emit('render', minTime, maxTime);
   }
@@ -327,5 +340,16 @@ export class FineTimeControls extends EventEmitter {
 
     this.client.interfaceController.durationChanged();
     DOMElements.playerContainer.classList.remove('expanded');
+  }
+
+  setRenderFrames(value) {
+    if (this.renderFrames === value) return;
+    this.renderFrames = value;
+
+    if (value) {
+      this.client.frameExtractor.addBackgroundDependent(this);
+    } else {
+      this.client.frameExtractor.removeBackgroundDependent(this);
+    }
   }
 }

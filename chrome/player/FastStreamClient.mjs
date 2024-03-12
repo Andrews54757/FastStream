@@ -21,6 +21,7 @@ import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
+import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -78,6 +79,7 @@ export class FastStreamClient extends EventEmitter {
     this.sourcesBrowser = new SourcesBrowser(this);
     this.videoAnalyzer = new VideoAnalyzer(this);
     this.audioAnalyzer = new AudioAnalyzer(this);
+    this.frameExtractor = new PreviewFrameExtractor(this);
     this.audioConfigManager = new AudioConfigManager(this);
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
@@ -369,8 +371,10 @@ export class FastStreamClient extends EventEmitter {
 
     if (!this.hasDownloadSpace) {
       this.audioAnalyzer.disableBackground();
+      this.frameExtractor.disableBackground();
     } else {
       this.audioAnalyzer.enableBackground();
+      this.frameExtractor.enableBackground();
     }
   }
 
@@ -778,6 +782,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     this.audioAnalyzer.reset();
+    this.frameExtractor.reset();
 
     promises.push(this.downloadManager.reset());
     this.interfaceController.reset();
@@ -1023,31 +1028,15 @@ export class FastStreamClient extends EventEmitter {
   isRegionBuffered(start, end) {
     const fragments = this.getFragments(this.currentLevel);
     if (!fragments) {
-      return false;
+      return true;
     }
 
-    let startFragmentIndex = 0;
     for (let i = 0; i < fragments.length; i++) {
       const fragment = fragments[i];
-      if (fragment.start <= start) {
-        startFragmentIndex = i;
-        break;
-      }
-    }
-
-    let endFragmentIndex = fragments.length - 1;
-    for (let i = startFragmentIndex; i < fragments.length; i++) {
-      const fragment = fragments[i];
-      if (fragment.end >= end) {
-        endFragmentIndex = i;
-        break;
-      }
-    }
-
-    for (let i = startFragmentIndex; i <= endFragmentIndex; i++) {
-      const fragment = fragments[i];
-      if (fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-        return false;
+      if (fragment.end >= start && fragment.start <= end) {
+        if (fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+          return false;
+        }
       }
     }
 

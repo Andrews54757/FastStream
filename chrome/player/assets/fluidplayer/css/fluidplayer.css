@@ -1567,6 +1567,14 @@ body {
     transition: height 0.2s, top 0.2s;
 }
 
+.timeline_images {
+    position: absolute;
+    top: 22px;
+    height: 22px;
+    left: 0px;
+    right: 0px;
+}
+
 .timeline_ticks .timeline_tick {
     position: absolute;
     width: 1px;
