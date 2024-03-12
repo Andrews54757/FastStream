@@ -234,7 +234,7 @@ export class PreviewFrameExtractor extends EventEmitter {
 
       const frame = Math.floor(time / this.outputRateInv);
 
-      if (!paused && !this.frameBuffer[frame]) {
+      if (!this.frameBuffer[frame]) {
         this.extractorContext.drawImage(video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
         const url = this.extractorCanvas.toDataURL('image/png');
         // convert to blob
@@ -319,7 +319,7 @@ export class PreviewFrameExtractor extends EventEmitter {
         currentClientRange = currentRange;
       }
 
-      if (!timeSet) {
+      if (!timeSet && !paused) {
         player.currentTime = (1 + Math.floor(time / this.outputRateInv)) * this.outputRateInv;
       }
 
