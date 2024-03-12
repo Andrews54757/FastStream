@@ -505,7 +505,7 @@ export class ProgressBar extends EventEmitter {
       document.removeEventListener('touchmove', onProgressbarMouseMove);
       document.removeEventListener('mouseup', onProgressbarMouseUp);
       document.removeEventListener('touchend', onProgressbarMouseUp);
-      // this.endPreciseMode();
+      this.endPreciseMode();
       this.isSeeking = false;
 
       if (this.isMouseOverProgressbar) {
