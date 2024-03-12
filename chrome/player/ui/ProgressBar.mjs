@@ -456,6 +456,11 @@ export class ProgressBar extends EventEmitter {
   }
 
   onProgressbarMouseDown(event) {
+    // check if left mouse button was pressed
+    if (event.button !== 0) {
+      return;
+    }
+
     let shouldPlay = false;
     if (this.client.persistent.playing) {
       this.client.player.pause();

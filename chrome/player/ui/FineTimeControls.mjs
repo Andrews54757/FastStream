@@ -113,6 +113,7 @@ export class FineTimeControls extends EventEmitter {
 
     this.currentFrameCanvas = document.createElement('canvas');
     this.currentFrameCanvas.classList.add('timeline_frame');
+    this.currentFrameCanvas.height = 128;
     this.currentFrameCtx = this.currentFrameCanvas.getContext('2d');
 
     this.ui.timelineVOD = WebUtils.create('div', '', 'timeline_vod');
@@ -128,6 +129,8 @@ export class FineTimeControls extends EventEmitter {
     let shouldPlay = false;
 
     const mouseDown = (e) => {
+      // check if left mouse button is pressed
+      if (e.button !== 0) return;
       if (!this.client.player) return;
       const video = this.client.player.getVideo();
       isGrabbing = true;
@@ -199,10 +202,6 @@ export class FineTimeControls extends EventEmitter {
     if (this.started || !video) return;
     this.started = true;
     this.reset();
-
-    const aspect = video.videoWidth / video.videoHeight;
-    this.currentFrameCanvas.height = 128;
-    this.currentFrameCanvas.width = this.currentFrameCanvas.height * aspect;
 
     this.client.audioAnalyzer.on('vad', this.analyzerHandle);
     this.client.audioAnalyzer.on('volume', this.analyzerHandle);
@@ -354,6 +353,12 @@ export class FineTimeControls extends EventEmitter {
     });
 
     if (isCurrentFrameValid) {
+      const aspect = video.videoWidth / video.videoHeight;
+      const newWidth = Math.round(128 * aspect);
+      if (this.currentFrameCanvas.width !== newWidth) {
+        this.currentFrameCanvas.width = newWidth;
+      }
+
       this.currentFrameCtx.drawImage(video, 0, 0, this.currentFrameCanvas.width, this.currentFrameCanvas.height);
       this.currentFrameCanvas.style.left = currentFrame * outputRateInv / duration * 100 + '%';
       this.currentFrameCanvas.style.width = outputRateInv / duration * 100 + '%';
