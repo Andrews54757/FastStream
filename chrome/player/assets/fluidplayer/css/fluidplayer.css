@@ -1615,8 +1615,15 @@ body {
 .timeline_frame,
 .timeline_vod_canvas {
     position: absolute;
-    height: 100%;
     user-select: none;
+}
+
+.timeline_frame {
+    max-height: 100%;
+}
+
+.timeline_vod_canvas {
+    height: 100%;
 }
 
 /* total width */
