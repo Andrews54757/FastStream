@@ -303,7 +303,6 @@ export class AudioAnalyzer extends EventEmitter {
       if (player.paused) {
         if (player.readyState >= 1 && Math.abs(time - clientTimeOriginal) <= 40) {
           player.play();
-          player.currentTime = Math.max(player.currentTime - 2, 0);
           console.log('[AudioAnalyzer] Resumed analyzer');
         }
       } else {
