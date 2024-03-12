@@ -23,6 +23,10 @@ export default class HLSPlayer extends EventEmitter {
       throw new Error('HLS Not supported');
     }
 
+    const workerLocation = 'modules/hls.worker.js';
+    const split = import.meta.url.split('/');
+    const basePath = split.slice(0, split.length - 3).join('/');
+    const workerPath = `${basePath}/${workerLocation}`;
     this.hls = new Hls({
       autoStartLoad: false,
       startPosition: -1,
@@ -44,6 +48,7 @@ export default class HLSPlayer extends EventEmitter {
       liveMaxLatencyDurationCount: Infinity,
       liveDurationInfinity: false,
       enableWorker: true,
+      workerPath: workerPath,
       enableSoftwareAES: true,
       startLevel: 5,
       startFragPrefetch: false,
