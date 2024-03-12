@@ -445,6 +445,8 @@ export class FastStreamClient extends EventEmitter {
         this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
 
         await this.videoAnalyzer.setSource(this.player.getSource());
+
+        this.frameExtractor.updateBackground();
       }
 
       this.updateCSSFilters();
@@ -1103,7 +1105,6 @@ export class FastStreamClient extends EventEmitter {
       if (this.previewPlayer) {
         this.previewPlayer.currentLevel = level;
       }
-      this.videoAnalyzer.setLevel(level);
       this.previousLevel = level;
       hasChanged = true;
     }
@@ -1120,6 +1121,9 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (hasChanged) {
+      this.videoAnalyzer.setLevel(level, audioLevel);
+      this.audioAnalyzer.setLevel(level, audioLevel);
+      this.frameExtractor.setLevel(level, audioLevel);
       this.resetFailed();
       this.updateQualityLevels();
     }

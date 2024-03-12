@@ -147,6 +147,7 @@ export class InterfaceController {
     DOMElements.playPauseButtonBigCircle.style.display = '';
     DOMElements.playerContainer.classList.add('controls_visible');
     this.updateToolVisibility();
+    this.fineTimeControls.reset();
   }
 
   failedToLoad(reason) {

@@ -37,9 +37,7 @@ export class PreviewFrameExtractor extends EventEmitter {
     if (this.backgroundNeededBy.includes(dependent)) return;
     this.backgroundNeededBy.push(dependent);
 
-    if (this.shouldRunAnalyzerInBackground()) {
-      this.startBackgroundAnalyzer();
-    }
+    this.updateBackground();
   }
 
   removeBackgroundDependent(dependent) {
@@ -48,7 +46,13 @@ export class PreviewFrameExtractor extends EventEmitter {
       this.backgroundNeededBy.splice(index, 1);
     }
 
-    if (!this.shouldRunAnalyzerInBackground()) {
+    this.updateBackground();
+  }
+
+  updateBackground() {
+    if (this.shouldRunAnalyzerInBackground()) {
+      this.startBackgroundAnalyzer();
+    } else {
       this.stopBackgroundAnalyzer();
     }
   }
@@ -59,6 +63,8 @@ export class PreviewFrameExtractor extends EventEmitter {
         URL.revokeObjectURL(frame.url);
       });
       this.frameBuffer = [];
+      this.backgroundAnalyzerSource = null;
+      this.backgroundDoneRanges = [];
       this.stopBackgroundAnalyzer();
       this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
     } catch (e) {
@@ -87,12 +93,12 @@ export class PreviewFrameExtractor extends EventEmitter {
     console.log('[FrameExtractor] Starting background analyzer');
 
     const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, this.backgroundDoneRanges, (completed) => {
-      this.backgroundAnalyzerPlayer = null;
-      if (newSource === this.backgroundAnalyzerSource) {
+      if (backgroundAnalyzerPlayer === this.backgroundAnalyzerPlayer) {
         console.log('[FrameExtractor] Background analyzer finished', completed ? 'successfully' : 'with errors');
         this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
         this.client.interfaceController.updateMarkers();
       }
+      this.backgroundAnalyzerPlayer = null;
     });
 
     if (newSource !== this.backgroundAnalyzerSource) {
@@ -107,8 +113,9 @@ export class PreviewFrameExtractor extends EventEmitter {
   stopBackgroundAnalyzer() {
     this.backgroundAnalyzerSource = null;
     if (this.backgroundAnalyzerPlayer) {
-      this.backgroundAnalyzerPlayer.destroy();
+      const player = this.backgroundAnalyzerPlayer;
       this.backgroundAnalyzerPlayer = null;
+      player.destroy();
     }
     if (this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
       this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
@@ -333,14 +340,19 @@ export class PreviewFrameExtractor extends EventEmitter {
   enableBackground() {
     this.backgroundAnalyzerEnabled = true;
 
-    if (this.shouldRunAnalyzerInBackground()) {
-      this.startBackgroundAnalyzer();
-    }
+    this.updateBackground();
   }
 
   disableBackground() {
     this.backgroundAnalyzerEnabled = false;
-    this.stopBackgroundAnalyzer();
+    this.updateBackground();
+  }
+
+  setLevel(level, audioLevel) {
+    if (this.backgroundAnalyzerPlayer) {
+      this.backgroundAnalyzerPlayer.currentLevel = level;
+      this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
+    }
   }
 
   getMarkerPosition() {

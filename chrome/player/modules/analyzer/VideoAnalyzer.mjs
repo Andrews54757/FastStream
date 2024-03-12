@@ -382,7 +382,7 @@ export class VideoAnalyzer extends EventEmitter {
     requestAnimationFrame(onAnimFrame);
   }
 
-  setLevel(level) {
+  setLevel(level, audioLevel) {
     this.destroyPlayers();
 
     if (this.introStatus === AnalyzerStatus.FAILED) {

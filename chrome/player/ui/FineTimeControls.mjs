@@ -9,6 +9,7 @@ export class FineTimeControls extends EventEmitter {
     this.client = client;
     this.isSeeking = false;
     this.analyzerHandle = this.onAnalyzerFrameProcessed.bind(this);
+    this.resetHandle = this.reset.bind(this);
 
     this.renderFrames = false;
 
@@ -205,6 +206,7 @@ export class FineTimeControls extends EventEmitter {
 
     this.client.audioAnalyzer.on('vad', this.analyzerHandle);
     this.client.audioAnalyzer.on('volume', this.analyzerHandle);
+    this.client.audioAnalyzer.on('audioLevelChanged', this.resetHandle);
     this.client.audioAnalyzer.addVadDependent(this);
     this.client.audioAnalyzer.addVolumeDependent(this);
     this.client.audioAnalyzer.addBackgroundDependent(this);
@@ -213,6 +215,21 @@ export class FineTimeControls extends EventEmitter {
     DOMElements.playerContainer.classList.add('expanded');
     this.client.interfaceController.runProgressLoop();
     this.renderTimeline();
+  }
+
+  async stop() {
+    if (!this.started) return;
+    this.started = false;
+
+    this.client.audioAnalyzer.removeVadDependent(this);
+    this.client.audioAnalyzer.removeVolumeDependent(this);
+    this.client.audioAnalyzer.removeBackgroundDependent(this);
+    this.client.audioAnalyzer.off('vad', this.analyzerHandle);
+    this.client.audioAnalyzer.off('volume', this.analyzerHandle);
+    this.client.audioAnalyzer.off('audioLevelChanged', this.resetHandle);
+
+    this.client.interfaceController.durationChanged();
+    DOMElements.playerContainer.classList.remove('expanded');
   }
 
   onVideoTimeUpdate() {
@@ -277,7 +294,7 @@ export class FineTimeControls extends EventEmitter {
     const currentFrame = Math.floor(currentTime / outputRateInv);
     const video = this.client.player.getVideo();
 
-    const isCurrentFrameValid = video.readyState >= 2 && !video.paused;
+    const isCurrentFrameValid = video.readyState >= 2 && !this.client.interfaceController.isUserSeeking();
 
 
     const hasArr = new Array(maxFrameIndex - minFrameIndex).fill(false);
@@ -445,20 +462,6 @@ export class FineTimeControls extends EventEmitter {
     this.ui.timelineContainer.style.transform = `translateX(${-(time - timePerWidth / 2) / duration * 100}%)`;
 
     this.emit('render', minTime, maxTime);
-  }
-
-  async stop() {
-    if (!this.started) return;
-    this.started = false;
-
-    this.client.audioAnalyzer.removeVadDependent(this);
-    this.client.audioAnalyzer.removeVolumeDependent(this);
-    this.client.audioAnalyzer.removeBackgroundDependent(this);
-    this.client.audioAnalyzer.off('vad', this.analyzerHandle);
-    this.client.audioAnalyzer.off('volume', this.analyzerHandle);
-
-    this.client.interfaceController.durationChanged();
-    DOMElements.playerContainer.classList.remove('expanded');
   }
 
   shouldRenderFrames(value) {

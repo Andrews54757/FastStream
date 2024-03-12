@@ -40,6 +40,10 @@ export class ProgressBar extends EventEmitter {
   }
 
   startPreciseMode(keepOpen = false) {
+    if (!this.client.player) {
+      return;
+    }
+
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     if (this.preciseMode) {
       fineTimeControls.prioritizeState(this.onPreciseModeStartHandle);

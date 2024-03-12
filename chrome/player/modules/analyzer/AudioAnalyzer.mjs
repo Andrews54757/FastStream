@@ -179,12 +179,12 @@ export class AudioAnalyzer extends EventEmitter {
     console.log('[AudioAnalyzer] Starting background analyzer');
 
     const backgroundAnalyzerPlayer = await this.loadPlayer(this.backgroundAnalyzerSource, this.backgroundDoneRanges, (completed) => {
-      this.backgroundAnalyzerPlayer = null;
-      if (newSource === this.backgroundAnalyzerSource) {
+      if (this.backgroundAnalyzerPlayer === backgroundAnalyzerPlayer) {
         console.log('[AudioAnalyzer] Background analyzer finished', completed ? 'successfully' : 'with errors');
         this.backgroundAnalyzerStatus = completed ? AnalyzerStatus.FINISHED : AnalyzerStatus.FAILED;
         this.client.interfaceController.updateMarkers();
       }
+      this.backgroundAnalyzerPlayer = null;
     });
 
     if (newSource !== this.backgroundAnalyzerSource) {
@@ -199,8 +199,9 @@ export class AudioAnalyzer extends EventEmitter {
   stopBackgroundAnalyzer() {
     this.backgroundAnalyzerSource = null;
     if (this.backgroundAnalyzerPlayer) {
-      this.backgroundAnalyzerPlayer.destroy();
+      const player = this.backgroundAnalyzerPlayer;
       this.backgroundAnalyzerPlayer = null;
+      player.destroy();
     }
     if (this.backgroundAnalyzerStatus === AnalyzerStatus.RUNNING) {
       this.backgroundAnalyzerStatus = AnalyzerStatus.IDLE;
@@ -316,6 +317,11 @@ export class AudioAnalyzer extends EventEmitter {
       const clientTimeOriginal = this.client.currentTime;
       const clientTime = Math.max(clientTimeOriginal + offset, 0);
 
+      if (doneRanges.length === 0) {
+        currentRange = null;
+        currentClientRange = null;
+      }
+
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
         currentRangeIndex = -1;
         for (let i = 0; i < doneRanges.length; i++) {
@@ -410,6 +416,23 @@ export class AudioAnalyzer extends EventEmitter {
   disableBackground() {
     this.backgroundAnalyzerEnabled = false;
     this.stopBackgroundAnalyzer();
+  }
+
+  setLevel(level, audioLevel) {
+    if (this.backgroundAnalyzerPlayer) {
+      const changed = this.backgroundAnalyzerPlayer.currentAudioLevel !== audioLevel;
+      this.backgroundAnalyzerPlayer.currentLevel = level;
+      this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
+      if (changed) {
+        this.backgroundDoneRanges.length = 0;
+        this.vadBuffer = [];
+        this.volumeBuffer = [];
+        if (this.backgroundAnalyzerStatus !== AnalyzerStatus.RUNNING) {
+          this.reset();
+        }
+        this.emit('audioLevelChanged', audioLevel);
+      }
+    }
   }
 
   /**

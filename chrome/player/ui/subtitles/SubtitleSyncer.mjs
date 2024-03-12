@@ -86,7 +86,6 @@ export class SubtitleSyncer extends EventEmitter {
     fineTimeControls.pushState(this.onOpenHandle, this.onCloseHandle);
   }
 
-
   async stop() {
     if (!this.started) return;
     this.started = false;
