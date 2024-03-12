@@ -37,6 +37,7 @@ export class InterfaceController {
     this.mouseOverControls = false;
     this.userIsReordering = false;
     this.specialReorderModeEnabled = false;
+    this.controlsVisible = true;
     this.mouseActivityCooldown = 0;
 
     this.failed = false;
@@ -1243,6 +1244,7 @@ export class InterfaceController {
 
   hideControlBar() {
     clearTimeout(this.hideControlBarTimeout);
+    this.controlsVisible = false;
     DOMElements.playerContainer.classList.remove('controls_visible');
     DOMElements.controlsContainer.classList.remove('fade_in');
     DOMElements.controlsContainer.classList.add('fade_out');
@@ -1250,6 +1252,7 @@ export class InterfaceController {
   }
 
   showControlBar() {
+    this.controlsVisible = true;
     DOMElements.playerContainer.classList.add('controls_visible');
     DOMElements.controlsContainer.classList.remove('fade_out');
     DOMElements.controlsContainer.classList.add('fade_in');

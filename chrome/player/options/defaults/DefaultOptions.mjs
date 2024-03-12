@@ -8,7 +8,7 @@ import {VisChangeActions} from './VisChangeActions.mjs';
 export const DefaultOptions = {
   playMP4URLs: false,
   playStreamURLs: EnvUtils.isExtension(),
-  analyzeVideos: EnvUtils.isExtension() && EnvUtils.hasComputationalResources(),
+  analyzeVideos: false,
   downloadAll: true,
   freeUnusedChannels: true,
   autoEnableBestSubtitles: false,
