@@ -76,6 +76,14 @@ export class FineTimeControls extends EventEmitter {
     return true;
   }
 
+  removeAll() {
+    if (this.stateStack.length === 0) {
+      return;
+    }
+    this.stateStack = [this.stateStack.pop()];
+    this.removeState(this.stateStack[0].onOpen);
+  }
+
   prioritizeState(onOpen) {
     const index = this.stateStack.findIndex((state) => state.onOpen === onOpen);
     if (index === -1) {
