@@ -371,7 +371,7 @@ export class AudioAnalyzer extends EventEmitter {
         if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 5 || clientTime + 5 < currentClientRange.start) {
           console.log('[AudioAnalyzer] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
           offset = this.client.isRegionBuffered(clientTimeOriginal - 30, clientTimeOriginal) ? -30 : 0;
-          player.currentTime = clientTime;
+          player.currentTime = Math.max(clientTimeOriginal + offset, 0);
           currentRange = null;
         }
       } else {

@@ -137,7 +137,9 @@ export class PreviewFrameExtractor extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, doneRanges, onDone) {
-    player.currentTime = this.client.currentTime;
+    const time = this.client.currentTime;
+    let offset = this.client.isRegionBuffered(time - 30, time) ? -30 : 0;
+    player.currentTime = Math.max(time + offset, 0);
     player.volume = 0;
     player.muted = true;
 
@@ -199,7 +201,8 @@ export class PreviewFrameExtractor extends EventEmitter {
       }
 
       const time = player.currentTime;
-      const clientTime = this.client.currentTime;
+      const clientTimeOriginal = this.client.currentTime;
+      const clientTime = Math.max(clientTimeOriginal + offset, 0);
 
       const frame = Math.floor(time / this.outputRateInv);
 
@@ -269,7 +272,8 @@ export class PreviewFrameExtractor extends EventEmitter {
       if (clientTime < currentRange.start - 5 || clientTime > currentRange.end + 5) {
         if (!currentClientRange || Math.min(clientTime + 90, player.duration) > currentClientRange.end + 5 || clientTime + 5 < currentClientRange.start) {
           console.log('[FrameExtractor] Client time is outside of analyzed region, seeking', clientTime, currentRange.start, currentRange.end);
-          player.currentTime = Math.floor(clientTime / this.outputRateInv) * this.outputRateInv;
+          offset = this.client.isRegionBuffered(clientTimeOriginal - 30, clientTimeOriginal) ? -30 : 0;
+          player.currentTime = Math.floor(Math.max(clientTimeOriginal + offset, 0) / this.outputRateInv) * this.outputRateInv;
           timeSet = true;
           currentRange = null;
         }
