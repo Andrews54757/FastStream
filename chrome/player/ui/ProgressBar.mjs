@@ -18,6 +18,7 @@ export class ProgressBar extends EventEmitter {
     this.isMouseOverProgressbar = false;
 
     this.preciseMode = false;
+    this.keepPreciseModeOpen = false;
     this.onPreciseModeStartHandle = this.onPreciseModeStart.bind(this);
     this.onPreciseModeEndHandle = this.onPreciseModeEnd.bind(this);
   }
@@ -38,13 +39,17 @@ export class ProgressBar extends EventEmitter {
     fineTimeControls.shouldRenderFrames(false);
   }
 
-  startPreciseMode() {
+  startPreciseMode(keepOpen = false) {
+    const fineTimeControls = this.client.interfaceController.fineTimeControls;
     if (this.preciseMode) {
+      fineTimeControls.prioritizeState(this.onPreciseModeStartHandle);
       return;
     }
 
+    if (keepOpen) {
+      this.keepPreciseModeOpen = true;
+    }
     this.preciseMode = true;
-    const fineTimeControls = this.client.interfaceController.fineTimeControls;
     fineTimeControls.pushState(this.onPreciseModeStartHandle, this.onPreciseModeEndHandle);
   }
 
@@ -53,6 +58,7 @@ export class ProgressBar extends EventEmitter {
       return;
     }
     this.preciseMode = false;
+    this.keepPreciseModeOpen = false;
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     fineTimeControls.removeState(this.onPreciseModeStartHandle);
   }
@@ -481,19 +487,18 @@ export class ProgressBar extends EventEmitter {
       this.hidePreview();
       const currentY = Math.min(Math.max(event.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 50);
       const currentX = Math.min(Math.max(event.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
-
-      if (this.preciseMode) {
-        if (currentY > 40) {
-          preciseSavedTime = null;
-          preciseSavedPosition = null;
+      const isExpanded = DOMElements.playerContainer.classList.contains('expanded');
+      const offset = isExpanded ? 0 : 80;
+      if ((this.preciseMode || preciseSavedPosition !== null) && currentY > 20) {
+        preciseSavedTime = null;
+        preciseSavedPosition = null;
+        if (!this.keepPreciseModeOpen) {
           this.endPreciseMode();
         }
-      } else {
-        if (currentY <= -85) {
-          preciseSavedTime = this.client.currentTime;
-          preciseSavedPosition = currentX;
-          this.startPreciseMode();
-        }
+      } else if (preciseSavedPosition === null && currentY <= -10 - offset) {
+        preciseSavedTime = this.client.currentTime;
+        preciseSavedPosition = currentX;
+        this.startPreciseMode();
       }
 
       initialPosition = NaN; // mouse up will fire after the move, we don't want to trigger the initial position in the event of iOS
@@ -505,7 +510,9 @@ export class ProgressBar extends EventEmitter {
       document.removeEventListener('touchmove', onProgressbarMouseMove);
       document.removeEventListener('mouseup', onProgressbarMouseUp);
       document.removeEventListener('touchend', onProgressbarMouseUp);
-      this.endPreciseMode();
+      if (!this.keepPreciseModeOpen) {
+        this.endPreciseMode();
+      }
       this.isSeeking = false;
 
       if (this.isMouseOverProgressbar) {

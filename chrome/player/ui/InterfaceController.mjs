@@ -561,6 +561,29 @@ export class InterfaceController {
         }
       }, true);
     });
+
+
+    const mouseUpHandler = (e) => {
+      document.removeEventListener('mousemove', mouseMoveHandler);
+      document.removeEventListener('mouseup', mouseUpHandler);
+    };
+
+    const mouseMoveHandler = (e) => {
+      const currentY = Math.min(Math.max(e.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 100);
+      const isExpanded = DOMElements.playerContainer.classList.contains('expanded');
+      const offset = isExpanded ? 0 : 80;
+      if (currentY > 50) {
+        this.progressBar.endPreciseMode();
+        this.subtitlesManager.subtitleSyncer.stop();
+      } else if (currentY <= -5 - offset) {
+        this.progressBar.startPreciseMode(true);
+      }
+    };
+
+    DOMElements.controlsLeft.addEventListener('mousedown', (e) => {
+      document.addEventListener('mousemove', mouseMoveHandler);
+      document.addEventListener('mouseup', mouseUpHandler);
+    });
   }
 
   startReorderUI() {

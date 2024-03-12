@@ -52,7 +52,13 @@ export class SubtitleSyncer extends EventEmitter {
   }
 
   toggleTrack(track, removeOnly = false) {
-    if (this.trackToSync === track) {
+    if (this.started && this.trackToSync === track) {
+      const fineTimeControls = this.client.interfaceController.fineTimeControls;
+      if (!fineTimeControls.isStateActive(this.onOpenHandle)) {
+        fineTimeControls.prioritizeState(this.onOpenHandle);
+        return;
+      }
+
       this.trackToSync = null;
       this.stop();
     } else if (!removeOnly) {

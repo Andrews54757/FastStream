@@ -73,6 +73,28 @@ export class FineTimeControls extends EventEmitter {
     return true;
   }
 
+  prioritizeState(onOpen) {
+    const index = this.stateStack.findIndex((state) => state.onOpen === onOpen);
+    if (index === -1) {
+      return false;
+    }
+
+    if (index === this.stateStack.length - 1) {
+      return true;
+    }
+
+    const state = this.stateStack.splice(index, 1)[0];
+    this.pushState(state.onOpen, state.onClose, state.settings);
+    return true;
+  }
+
+  isStateActive(onOpen) {
+    if (this.stateStack.length === 0) {
+      return false;
+    }
+    return this.stateStack[this.stateStack.length - 1].onOpen === onOpen;
+  }
+
   setup() {
     this.ui = {};
     this.ui.currentPosition = WebUtils.create('div', '', 'current_position_bar');

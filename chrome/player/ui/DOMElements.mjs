@@ -2,6 +2,7 @@ export const DOMElements = {
   playerContainer: document.querySelector('.mainplayer'),
   videoContainer: document.querySelector('.mainplayer .video-container'),
   controlsContainer: document.querySelector('.mainplayer .fluid_controls_container'),
+  controlsLeft: document.querySelector('.mainplayer .fluid_controls_left'),
   playPauseButton: document.querySelector('.mainplayer .fluid_control_playpause'),
   playPauseButtonBig: document.querySelector('.mainplayer .fluid_control_playpause_big'),
   playPauseButtonBigCircle: document.querySelector('.mainplayer .fluid_control_playpause_big_circle'),
