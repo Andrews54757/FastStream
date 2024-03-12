@@ -297,24 +297,31 @@ export class AudioAnalyzer extends EventEmitter {
       if (destroyed) {
         return;
       }
+      const time = player.currentTime;
+      const clientTimeOriginal = this.client.currentTime;
 
-      if (player.readyState >= 1 && player.paused) {
-        player.play();
-        player.currentTime = Math.max(player.currentTime - 1.5, 0);
-        console.log('[AudioAnalyzer] Resumed analyzer');
+      if (player.paused) {
+        if (player.readyState >= 1 && Math.abs(time - clientTimeOriginal) <= 40) {
+          player.play();
+          player.currentTime = Math.max(player.currentTime - 2, 0);
+          console.log('[AudioAnalyzer] Resumed analyzer');
+        }
+      } else {
+        if (Math.abs(time - clientTimeOriginal) > 60) {
+          player.pause();
+          console.log('[AudioAnalyzer] Outside of bounds, pausing');
+        }
       }
-      requestAnimationFrame(onAnimFrame);
 
       clearTimeout(pauseTimeout);
       pauseTimeout = setTimeout(pauseHandler, 100);
+
+      requestAnimationFrame(onAnimFrame);
 
       if (player.readyState < 2) {
         return;
       }
 
-      const time = player.currentTime;
-
-      const clientTimeOriginal = this.client.currentTime;
       const clientTime = Math.max(clientTimeOriginal + offset, 0);
 
       if (doneRanges.length === 0) {

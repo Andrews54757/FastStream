@@ -206,22 +206,30 @@ export class PreviewFrameExtractor extends EventEmitter {
         return;
       }
 
-      if (player.readyState >= 1 && paused) {
-        paused = false;
-        console.log('[FrameExtractor] Resumed analyzer');
-      }
+      const time = player.currentTime;
+      const clientTimeOriginal = this.client.currentTime;
 
-      requestAnimationFrame(onAnimFrame);
+      if (paused) {
+        if (player.readyState >= 1 && Math.abs(time - clientTimeOriginal) <= 40) {
+          paused = false;
+          console.log('[FrameExtractor] Resumed analyzer');
+        }
+      } else {
+        if (Math.abs(time - clientTimeOriginal) > 60) {
+          paused = true;
+          console.log('[FrameExtractor] Outside of bounds, pausing');
+        }
+      }
 
       clearTimeout(pauseTimeout);
       pauseTimeout = setTimeout(pauseHandler, 100);
 
-      if (player.readyState < 2) {
+      requestAnimationFrame(onAnimFrame);
+
+      if (paused || player.readyState < 2) {
         return;
       }
 
-      const time = player.currentTime;
-      const clientTimeOriginal = this.client.currentTime;
       const clientTime = Math.max(clientTimeOriginal + offset, 0);
 
       const frame = Math.floor(time / this.outputRateInv);
