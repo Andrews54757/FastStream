@@ -87,6 +87,7 @@ export class HLSFragmentRequester {
         let data;
         try {
           data = await entry.getDataFromBlob();
+          fragment.dataSize = entry.dataSize;
         } catch (e) {
           console.error(e);
           fragment.status = DownloadStatus.DOWNLOAD_FAILED;

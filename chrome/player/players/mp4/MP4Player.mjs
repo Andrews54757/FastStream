@@ -708,10 +708,18 @@ export default class MP4Player extends EventEmitter {
       lastFrag = frags.length;
     }
 
+    if (!options.partialSave) {
+      for (let i = 0; i < lastFrag; i++) {
+        const frag = frags[i];
+        frag.addReference();
+      }
+    }
+
     for (let i = 0; i < lastFrag; i++) {
       const frag = frags[i];
       if (!options.partialSave) {
         await this.downloadFragment(frag, -1);
+        frag.removeReference();
       }
       if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
         const entry = this.client.downloadManager.getEntry(frag.getContext());

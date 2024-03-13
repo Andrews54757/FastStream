@@ -350,31 +350,54 @@ export class FastStreamClient extends EventEmitter {
   }
 
   updateHasDownloadSpace() {
-    this.hasDownloadSpace = false;
     const levels = this.levels;
     if (!levels) return;
 
     const currentLevel = this.currentLevel;
     const level = levels.get(currentLevel);
-
     if (!level) return;
 
     if (EnvUtils.isIncognito()) {
-      this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_incognito_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
-      this.hasDownloadSpace = false;
+      if (this.hasDownloadSpace) {
+        this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_incognito_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
+        this.hasDownloadSpace = false;
+      }
     } else {
-      if (level.bitrate && this.duration) {
+      let bitrate = level.bitrate;
+      const fragments = this.fragments;
+      if (fragments) {
+        let count = 0;
+        let size = 0;
+        let totalDuration = 0;
+        fragments.forEach((fragment) => {
+          if (fragment && fragment.dataSize !== null) {
+            count++;
+            size += fragment.dataSize;
+            totalDuration += fragment.duration;
+          }
+        });
+
+        if (count > 4) {
+          bitrate = size / totalDuration * 8;
+        }
+      }
+      if (bitrate && this.duration) {
         let storageAvailable = (this.storageAvailable * 8) * 0.6;
         if (this.options.maxVideoSize > 0) {
           storageAvailable = Math.min(storageAvailable, this.options.maxVideoSize * 8);
         }
-        this.hasDownloadSpace = (level.bitrate * this.duration) < storageAvailable;
+        const newHasDownloadSpace = (bitrate * this.duration) * (this.hasDownloadSpace ? 1 : 1.1) < storageAvailable;
+        if (!newHasDownloadSpace && this.hasDownloadSpace) {
+          fragments.forEach((fragment) => {
+            if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+              fragment.addReference(); // Don't free already downloaded fragments
+            }
+          });
+          this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
+        }
+        this.hasDownloadSpace = newHasDownloadSpace;
       } else {
         this.hasDownloadSpace = true;
-      }
-
-      if (!this.hasDownloadSpace) {
-        this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);
       }
     }
 
@@ -616,7 +639,7 @@ export class FastStreamClient extends EventEmitter {
     this.checkLevelChange();
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
-
+    this.updateHasDownloadSpace();
     this.emit('tick', this);
   }
 
@@ -659,7 +682,9 @@ export class FastStreamClient extends EventEmitter {
       }
     }
 
-    if (!hasDownloaded && this.videoAnalyzer.isRunning()) {
+    if (!hasDownloaded && (
+      this.videoAnalyzer.isRunning() || this.interfaceController.makingDownload
+    )) {
       hasDownloaded = this.predownloadReservedFragments();
     }
     return hasDownloaded;

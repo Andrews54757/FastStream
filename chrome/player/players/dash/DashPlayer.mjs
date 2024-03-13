@@ -410,10 +410,12 @@ export default class DashPlayer extends EventEmitter {
     }
 
     zippedFragments.forEach((data) => {
+      data.fragment.addReference();
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           await this.downloadFragment(data.fragment, -1);
         }
+        data.fragment.removeReference();
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
     });

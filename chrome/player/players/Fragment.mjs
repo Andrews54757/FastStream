@@ -9,6 +9,7 @@ export class Fragment {
     this.end = -1;
     this.duration = 0;
     this.references = 0;
+    this.dataSize = null;
   }
 
   addReference() {
