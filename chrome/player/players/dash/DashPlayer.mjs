@@ -119,14 +119,13 @@ export default class DashPlayer extends EventEmitter {
     if (!processor) {
       return;
     }
-    const streamIndex = processor.getStreamInfo().index;
     const mediaInfo = processor.getMediaInfo();
     const segmentsController = processor.getSegmentsController();
     const dashHandler = processor.getDashHandler();
     if (rep.hasInitialization()) {
       const init = dashHandler.getInitRequest(mediaInfo, rep);
       if (init) {
-        init.level = this.getLevelIdentifier(streamIndex, mediaInfo.index, rep.index);
+        init.level = this.getLevelIdentifier(rep.path[0], rep.path[1], rep.path[2]);
         init.index = -1;
         init.startTime = init.duration = 0;
         if (!this.client.getFragment(init.level, -1)) {
@@ -139,7 +138,7 @@ export default class DashPlayer extends EventEmitter {
         return dashHandler._getRequestForSegment(mediaInfo, segment);
       });
       segments.forEach((request) => {
-        request.level = this.getLevelIdentifier(streamIndex, mediaInfo.index, rep.index);
+        request.level = this.getLevelIdentifier(rep.path[0], rep.path[1], rep.path[2]);
         const fragment = new DashFragment(request);
         if (!this.client.getFragment(fragment.level, fragment.sn)) {
           this.client.makeFragment(fragment.level, fragment.sn, fragment);
@@ -148,18 +147,19 @@ export default class DashPlayer extends EventEmitter {
     }
   }
 
-  getLevelIdentifier(streamIndex, mediaIndex, repIndex) {
-    return streamIndex + ':' + mediaIndex + ':' + repIndex;
+  getLevelIdentifier(streamIndex, adaptationIndex, repIndex) {
+    return `${streamIndex}:${adaptationIndex}:${repIndex}`;
   }
 
   getLevelIndexes(identifier) {
     const indexes = identifier.split(':');
     return {
       streamIndex: parseInt(indexes[0]),
-      mediaIndex: parseInt(indexes[1]),
+      adaptationIndex: parseInt(indexes[1]),
       repIndex: parseInt(indexes[2]),
     };
   }
+
   load() {
 
   }
@@ -268,24 +268,41 @@ export default class DashPlayer extends EventEmitter {
     if (!processor) {
       return -1;
     }
-    return this.getLevelIdentifier(processor.getStreamInfo().index, processor.getMediaInfo().index, processor.getRepresentationController().getCurrentRepresentation().index);
+    const path = processor.getRepresentationController().getCurrentRepresentation().path;
+    return this.getLevelIdentifier(path[0], path[1], path[2]);
+  }
+
+  getRepresentation(identifier) {
+    const {streamIndex, adaptationIndex, repIndex} = this.getLevelIndexes(identifier);
+
+    const processor = this.getProcessor(adaptationIndex);
+    if (!processor) {
+      return null;
+    }
+
+    const rep = processor.getMediaInfo().representations[repIndex];
+    if (rep.path[0] === streamIndex && rep.path[1] === adaptationIndex && rep.path[2] === repIndex) {
+      return rep;
+    }
+    return null;
+  }
+
+  getProcessor(adaptationIndex) {
+    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    for (let i = 0; i < processors.length; i++) {
+      const processor = processors[i];
+      if (processor.getMediaInfo().index === adaptationIndex) {
+        return processor;
+      }
+    }
+    return null;
   }
 
   set currentLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      const tracks = this.dash.getTracksFor('video');
-      const {mediaIndex, repIndex} = this.getLevelIndexes(value);
-      const track = tracks.find((track) => {
-        return track.index === mediaIndex;
-      });
-      if (!track) {
-        console.warn('Could not find video track', value);
-      }
-      this.desiredVideoLevel = value;
-
-      this.dash.setCurrentTrack(track, true, repIndex);
-      this.dash.setQualityFor('video', repIndex, true);
+      const rep = this.getRepresentation(value);
+      this.dash.setRepresentationForTypeById('video', rep.id, true);
     } catch (e) {
       console.warn(e);
     }
@@ -296,22 +313,18 @@ export default class DashPlayer extends EventEmitter {
     if (!processor) {
       return -1;
     }
-    return this.getLevelIdentifier(processor.getStreamInfo().index, processor.getMediaInfo().index, processor.getRepresentationController().getCurrentRepresentation().index);
+    const path = processor.getRepresentationController().getCurrentRepresentation().path;
+    return this.getLevelIdentifier(path[0], path[1], path[2]);
   }
 
   set currentAudioLevel(value) {
     if (typeof value !== 'string') return;
-    const tracks = this.dash.getTracksFor('audio');
-    const {mediaIndex, repIndex} = this.getLevelIndexes(value);
-    const track = tracks.find((track) => {
-      return track.index === mediaIndex;
-    });
-    if (!track) {
-      console.warn('Could not find audio track', value);
+    try {
+      const rep = this.getRepresentation(value);
+      this.dash.setRepresentationForTypeById('audio', rep.id, true);
+    } catch (e) {
+      console.warn(e);
     }
-    this.desiredAudioLevel = value;
-    this.dash.setCurrentTrack(track);
-    this.dash.setQualityFor('audio', repIndex, true);
   }
 
   get duration() {
