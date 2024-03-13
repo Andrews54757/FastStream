@@ -777,9 +777,6 @@
     "options_general_maxsize": {
         "message": "Maximum size of predownloaded video"
     },
-    "options_general_freeunused": {
-        "message": "Free unused channel buffers when switching quality levels"
-    },
     "options_general_analyze": {
         "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
     },

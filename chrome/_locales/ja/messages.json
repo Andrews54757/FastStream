@@ -777,9 +777,6 @@
     "options_general_maxsize": {
         "message": "プリダウンローダーの最大サイズ"
     },
-    "options_general_freeunused": {
-        "message": "品質レベル切り替え時に未使用のチャンネルバッファーを解放する"
-    },
     "options_general_analyze": {
         "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },

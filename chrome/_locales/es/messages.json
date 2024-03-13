@@ -776,9 +776,6 @@
     "options_general_maxsize": {
         "message": "Tamaño máximo de video predescargado"
     },
-    "options_general_freeunused": {
-        "message": "Libera los búferes de canal no utilizados al cambiar los niveles de calidad"
-    },
     "options_general_analyze": {
         "message": "Analiza automáticamente videos secuenciales para intros\/outros\n(desactiva si tienes problemas de rendimiento de CPU)"
     },

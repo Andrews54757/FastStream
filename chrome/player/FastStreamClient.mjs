@@ -184,7 +184,6 @@ export class FastStreamClient extends EventEmitter {
 
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
-    this.options.freeUnusedChannels = options.freeUnusedChannels;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
     this.options.maxSpeed = options.maxSpeed;
     this.options.maxSize = options.maxSize;
