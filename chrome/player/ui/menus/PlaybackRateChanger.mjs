@@ -156,9 +156,13 @@ export class PlaybackRateChanger extends EventEmitter {
     this.client.audioAnalyzer.addBackgroundDependent(this);
 
     if (this.shouldSkipSilence(this.client.currentTime)) {
-      this.silenceSkipSpeed = this.playbackRate;
+      if (this.playbackRate > this.regularSpeed) {
+        this.silenceSkipSpeed = this.playbackRate;
+      }
     } else {
-      this.regularSpeed = this.playbackRate;
+      if (this.playbackRate < this.silenceSkipSpeed) {
+        this.regularSpeed = this.playbackRate;
+      }
     }
 
     if (!this.silenceSkipperLoopRunning) {
@@ -339,9 +343,13 @@ export class PlaybackRateChanger extends EventEmitter {
 
       if (this.silenceSkipperActive) {
         if (this.shouldSkipSilence(this.client.currentTime)) {
-          this.silenceSkipSpeed = this.playbackRate;
+          if (this.playbackRate > this.regularSpeed) {
+            this.silenceSkipSpeed = this.playbackRate;
+          }
         } else {
-          this.regularSpeed = this.playbackRate;
+          if (this.playbackRate < this.silenceSkipSpeed) {
+            this.regularSpeed = this.playbackRate;
+          }
         }
       }
     }
