@@ -798,9 +798,6 @@
     "options_general_seekstep": {
         "message": "Размер шага перемотки горячими клавишами (секунды)"
     },
-    "options_general_playbackrate": {
-        "message": "Скорость воспроизведения по умолчанию"
-    },
     "options_general_autoplayyt": {
         "message": "Автовоспроизведение на YouTube"
     },

@@ -27,8 +27,34 @@ export class PlaybackRateChanger extends EventEmitter {
     this.setupOptionsUI();
 
     this.silenceSkipperLoopHandle = this.silenceSkipperLoop.bind(this);
+
+    this.loadState();
   }
 
+  async saveState() {
+    const state = {
+      playbackRate: this.silenceSkipperActive ? this.regularSpeed : this.playbackRate,
+      silenceSkipSpeed: this.silenceSkipSpeed,
+      audioPaddingStart: this.audioPaddingStart,
+      audioPaddingEnd: this.audioPaddingEnd,
+    };
+
+    return Utils.setConfig('playbackRateConfig', JSON.stringify(state));
+  }
+
+  async loadState() {
+    const state = await Utils.loadAndParseOptions('playbackRateConfig', {
+      playbackRate: 1,
+      silenceSkipSpeed: this.maxPlaybackRate,
+      audioPaddingStart: 0.25,
+      audioPaddingEnd: 0.25,
+    });
+
+    this.client.playbackRate = state.playbackRate;
+    this.silenceSkipSpeed = state.silenceSkipSpeed;
+    this.audioPaddingStart = state.audioPaddingStart;
+    this.audioPaddingEnd = state.audioPaddingEnd;
+  }
 
   onAudioMouseDown(e) {
     const startY = e.clientY;
@@ -354,6 +380,8 @@ export class PlaybackRateChanger extends EventEmitter {
           }
         }
       }
+
+      this.saveState();
     }
   }
 }

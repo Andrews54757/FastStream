@@ -798,9 +798,6 @@
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
     },
-    "options_general_playbackrate": {
-        "message": "Default playback rate"
-    },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos"
     },

@@ -798,9 +798,6 @@
     "options_general_seekstep": {
         "message": "シークキーバインドのベースステップサイズ (秒)"
     },
-    "options_general_playbackrate": {
-        "message": "デフォルトの再生速度"
-    },
     "options_general_autoplayyt": {
         "message": "YouTube 動画の自動再生"
     },

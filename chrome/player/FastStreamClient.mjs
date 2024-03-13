@@ -57,7 +57,6 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       seekStepSize: 0.2,
-      defaultPlaybackRate: 1,
       qualityMultiplier: 1,
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
     };
@@ -95,6 +94,22 @@ export class FastStreamClient extends EventEmitter {
     this.audioContext = new AudioContext();
     this.audioConfigManager.setupNodes();
     this.mainloop();
+
+    this.loadVolumeState();
+  }
+
+  async loadVolumeState() {
+    const state = await Utils.loadAndParseOptions('volumeState', {
+      volume: 1,
+    });
+    this.persistent.volume = state.volume;
+    this.updateVolume();
+  }
+
+  async saveVolumeState() {
+    await Utils.setConfig('volumeState', JSON.stringify({
+      volume: this.volume,
+    }));
   }
 
   async setup() {
@@ -192,11 +207,6 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
 
     this.options.qualityMultiplier = options.qualityMultiplier;
-
-    if (this.persistent.playbackRate === this.options.defaultPlaybackRate) {
-      this.playbackRate = options.playbackRate;
-    }
-    this.options.defaultPlaybackRate = options.playbackRate;
 
     this.updateCSSFilters();
 
@@ -1163,6 +1173,7 @@ export class FastStreamClient extends EventEmitter {
   set volume(value) {
     this.persistent.volume = value;
     this.updateVolume();
+    this.saveVolumeState();
   }
 
   get playbackRate() {

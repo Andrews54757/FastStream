@@ -26,7 +26,6 @@ const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
-const playbackRate = document.getElementById('playbackrate');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const qualityMultiplier = document.getElementById('qualitymultiplier');
 const importButton = document.getElementById('import');
@@ -82,7 +81,6 @@ async function loadOptions(newOptions) {
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
-  playbackRate.value = Options.playbackRate;
   qualityMultiplier.value = Options.qualityMultiplier;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
@@ -352,11 +350,6 @@ maxSize.addEventListener('change', () => {
 
 seekStepSize.addEventListener('change', () => {
   Options.seekStepSize = parseFloat(seekStepSize.value);
-  optionChanged();
-});
-
-playbackRate.addEventListener('change', () => {
-  Options.playbackRate = parseFloat(playbackRate.value) || 1;
   optionChanged();
 });
 

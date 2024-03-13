@@ -29,7 +29,6 @@ export const DefaultOptions = {
   maxSpeed: -1,
   maxSize: -1,
   seekStepSize: 2,
-  playbackRate: 1,
   qualityMultiplier: 1.1,
   singleClickAction: ClickActions.HIDE_CONTROLS,
   doubleClickAction: ClickActions.PLAY_PAUSE,
