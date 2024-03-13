@@ -318,6 +318,9 @@
     "player_subtitlesmenu_resynctool_label": {
         "message": "Resync Tool"
     },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Drag subtitles to resync"
+    },
     "player_subtitlesmenu_savetool_label": {
         "message": "Save subtitle file"
     },

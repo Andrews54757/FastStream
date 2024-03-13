@@ -317,6 +317,9 @@
     "player_subtitlesmenu_resynctool_label": {
         "message": "Herramienta de Resincronización"
     },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Arrastra los subtítulos para resincronizar"
+    },
     "player_subtitlesmenu_savetool_label": {
         "message": "Guardar archivo de subtítulos"
     },

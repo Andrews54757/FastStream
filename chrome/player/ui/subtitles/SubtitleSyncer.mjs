@@ -1,3 +1,4 @@
+import {Localize} from '../../modules/Localize.mjs';
 import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {WebVTT} from '../../modules/vtt.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
@@ -101,7 +102,7 @@ export class SubtitleSyncer extends EventEmitter {
     fineTimeControls.ui.timelineAudio.style.height = '22px';
     fineTimeControls.shouldRenderVAD(true);
 
-    this.client.interfaceController.setStatusMessage('subtitles', 'Drag subtitles to resync', 'info', 5000);
+    this.client.interfaceController.setStatusMessage('subtitles', Localize.getMessage('player_subtitlesmenu_resynctool_instructions'), 'info', 5000);
   }
 
   onClose() {

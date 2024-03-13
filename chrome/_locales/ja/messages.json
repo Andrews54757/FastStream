@@ -318,6 +318,9 @@
     "player_subtitlesmenu_resynctool_label": {
         "message": "再同期ツール"
     },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "字幕をドラッグして再同期してください"
+    },
     "player_subtitlesmenu_savetool_label": {
         "message": "字幕ファイルを保存"
     },
