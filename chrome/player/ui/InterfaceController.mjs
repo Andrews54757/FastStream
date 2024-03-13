@@ -1001,7 +1001,7 @@ export class InterfaceController {
 
   durationChanged() {
     const duration = this.client.duration;
-    if (duration < 5 * 60 || this.fineTimeControls.started) {
+    if (duration < (5 * 60 * this.client.playbackRate) || this.fineTimeControls.started) {
       this.runProgressLoop();
     } else {
       this.stopProgressLoop();
@@ -1322,6 +1322,7 @@ export class InterfaceController {
 
   updatePlaybackRate() {
     this.playbackRateChanger.setPlaybackRate(this.persistent.playbackRate, true);
+    this.durationChanged();
   }
 
   updateLanguageTracks() {
