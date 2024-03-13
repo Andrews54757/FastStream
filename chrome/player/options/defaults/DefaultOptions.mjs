@@ -7,7 +7,7 @@ import {VisChangeActions} from './VisChangeActions.mjs';
 
 export const DefaultOptions = {
   playMP4URLs: false,
-  playStreamURLs: EnvUtils.isExtension(),
+  playStreamURLs: false,
   analyzeVideos: false,
   downloadAll: true,
   freeUnusedChannels: true,
