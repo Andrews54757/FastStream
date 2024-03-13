@@ -382,7 +382,7 @@ export class FineTimeControls extends EventEmitter {
       this.lastFrameRenderIndex = currentFrame;
       this.lastFrameRenderTime = currentTime;
       const aspect = video.videoWidth / video.videoHeight;
-      const newWidth = Math.round(128 * aspect);
+      const newWidth = Math.round(64 * aspect);
       if (this.currentFrameCanvas.width !== newWidth) {
         this.currentFrameCanvas.width = newWidth;
       }
@@ -430,8 +430,8 @@ export class FineTimeControls extends EventEmitter {
     const outputRate = audioAnalyzer.getOutputRate();
     const vadBuffer = audioAnalyzer.getVadData();
     const volumeBuffer = audioAnalyzer.getVolumeData();
-    const startFrame = Math.floor(minTime * outputRate);
-    const endFrame = Math.floor(maxTime * outputRate);
+    const startFrame = Math.floor(minCanvIndex * 10 * outputRate);
+    const endFrame = Math.floor(maxCanvIndex * 10 * outputRate);
 
     const minDB = -80;
     const maxDB = 0;
@@ -487,7 +487,7 @@ export class FineTimeControls extends EventEmitter {
           if (startVal) {
             context.fillStyle = 'rgba(255, 0, 0, 0.25)';
           } else {
-            context.fillStyle = 'rgba(0, 255, 0, 0.25)';
+            context.fillStyle = 'rgba(0, 200, 0, 0.25)';
           }
           context.fillRect((i - startFrame2) / (10 * outputRate) * el.element.width, 0, (end - i + 1) / (10 * outputRate) * el.element.width, el.element.height);
           i = end + 1;

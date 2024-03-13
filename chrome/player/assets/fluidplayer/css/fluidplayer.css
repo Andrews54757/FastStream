@@ -2829,15 +2829,6 @@ input.crosstalk_calculator_input {
     width: 290px;
 }
 
-
-.rate_menu_options {
-    right: 48px;
-    width: 160px;
-    min-height: 170px;
-    border-radius: 4px;
-    box-sizing: border-box;
-}
-
 @media screen and (max-width: 1000px) {
     div:not(.controls_visible) .fluid_subtitles_container {
         bottom: 0px;

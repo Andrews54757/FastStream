@@ -100,6 +100,8 @@ export class SubtitleSyncer extends EventEmitter {
     fineTimeControls.ui.timelineTrackContainer.appendChild(this.ui.timelineTrack);
     fineTimeControls.ui.timelineAudio.style.height = '22px';
     fineTimeControls.shouldRenderVAD(true);
+
+    this.client.interfaceController.setStatusMessage('subtitles', 'Drag subtitles to resync', 'info', 5000);
   }
 
   onClose() {
@@ -108,6 +110,8 @@ export class SubtitleSyncer extends EventEmitter {
     fineTimeControls.ui.timelineAudio.style.height = '';
     this.ui.timelineTrack.remove();
     fineTimeControls.shouldRenderVAD(false);
+
+    this.client.interfaceController.setStatusMessage('subtitles');
   }
 
   renderTracks(minTime, maxTime) {

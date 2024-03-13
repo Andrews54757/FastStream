@@ -159,7 +159,7 @@ export class PreviewFrameExtractor extends EventEmitter {
     const videoWidth = video.videoWidth;
     const videoHeight = video.videoHeight;
     const aspect = videoWidth / videoHeight;
-    const height = 128;
+    const height = 64;
     const width = Math.round(height * aspect);
     this.extractorCanvas.width = width;
     this.extractorCanvas.height = height;

@@ -1171,7 +1171,12 @@ export class FastStreamClient extends EventEmitter {
 
   set playbackRate(value) {
     this.persistent.playbackRate = value;
-    if (this.player) this.player.playbackRate = value;
+    if (this.player) {
+      this.player.playbackRate = value;
+
+      // Fix for chrome desync bug
+      this.player.currentTime = this.player.currentTime;
+    }
     this.interfaceController.updatePlaybackRate();
   }
 

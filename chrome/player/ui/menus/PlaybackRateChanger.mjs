@@ -13,13 +13,20 @@ export class PlaybackRateChanger extends EventEmitter {
     this.onSilenceSkipperUIOpenHandle = this.onSilenceSkipperUIOpen.bind(this);
     this.onSilenceSkipperUICloseHandle = this.onSilenceSkipperUIClose.bind(this);
     this.onAudioMouseDownHandle = this.onAudioMouseDown.bind(this);
+    this.minDB = -80;
+    this.maxDB = 0;
     this.silenceSkipperUIOpen = false;
     this.silenceSkipperActive = false;
+    this.silenceSkipSpeed = 16;
+    this.regularSpeed = 1;
     this.silenceThreshold = 0;
-    this.audioPaddingStart = 0;
-    this.audioPaddingEnd = 0;
+    this.audioPaddingStart = 0.25;
+    this.audioPaddingEnd = 0.25;
     this.setupOptionsUI();
+
+    this.silenceSkipperLoopHandle = this.silenceSkipperLoop.bind(this);
   }
+
 
   onAudioMouseDown(e) {
     const startY = e.clientY;
@@ -61,7 +68,7 @@ export class PlaybackRateChanger extends EventEmitter {
     fineTimeControls.ui.timelineAudio.style.cursor = 'ns-resize';
     this.updateSilenceSkipper();
 
-    this.client.interfaceController.setStatusMessage('silence-skip', 'Drag pink line to set silence threshold', 'info');
+    this.client.interfaceController.setStatusMessage('silence-skip', 'Drag pink line to set silence threshold', 'info', 5000);
   }
 
   onSilenceSkipperUIClose() {
@@ -75,6 +82,8 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   openSilenceSkipperUI() {
+    if (!this.client.player) return;
+
     const fineTimeControls = this.client.interfaceController.fineTimeControls;
     if (this.silenceSkipperUIOpen) {
       fineTimeControls.prioritizeState(this.onSilenceSkipperUIOpenHandle);
@@ -94,12 +103,68 @@ export class PlaybackRateChanger extends EventEmitter {
     fineTimeControls.removeState(this.onSilenceSkipperUIOpenHandle);
   }
 
+
+  silenceSkipperLoop() {
+    if (!this.silenceSkipperActive) {
+      this.silenceSkipperLoopRunning = false;
+      return;
+    }
+    const playbackRate = this.client.playbackRate;
+    setTimeout(this.silenceSkipperLoopHandle, 100 / playbackRate);
+
+    if (!this.client.player) return;
+
+
+    const time = this.client.currentTime;
+    if (this.shouldSkipSilence(time)) {
+      if (playbackRate !== this.silenceSkipSpeed) {
+        this.client.playbackRate = this.silenceSkipSpeed;
+      }
+    } else {
+      if (playbackRate !== this.regularSpeed) {
+        this.client.playbackRate = this.regularSpeed;
+      }
+    }
+  }
+
+  shouldSkipSilence(time) {
+    const minDB = -80;
+    const maxDB = 0;
+    const dbRange = maxDB - minDB;
+
+    const volumeBuffer = this.client.audioAnalyzer.getVolumeData();
+    const outputRate = this.client.audioAnalyzer.getOutputRate();
+    const minIndex = Math.floor((time - this.audioPaddingStart) * outputRate);
+    const maxIndex = Math.floor((time + this.audioPaddingEnd) * outputRate);
+    for (let i = minIndex; i < maxIndex; i++) {
+      if (volumeBuffer[i] === undefined) continue;
+      const volume = Utils.clamp((volumeBuffer[i] - minDB) / dbRange, 0, 1);
+      if (volume > this.silenceThreshold) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   enableSilenceSkipper() {
-    if (this.silenceSkipperActive) {
+    if (this.silenceSkipperActive || !this.client.player) {
       return;
     }
     this.silenceSkipperActive = true;
     this.openSilenceSkipperUI();
+    this.client.audioAnalyzer.addVolumeDependent(this);
+    this.client.audioAnalyzer.addBackgroundDependent(this);
+
+    if (this.shouldSkipSilence(this.client.currentTime)) {
+      this.silenceSkipSpeed = this.playbackRate;
+    } else {
+      this.regularSpeed = this.playbackRate;
+    }
+
+    if (!this.silenceSkipperLoopRunning) {
+      this.silenceSkipperLoopRunning = true;
+      this.silenceSkipperLoop();
+    }
   }
 
   disableSilenceSkipper() {
@@ -107,7 +172,22 @@ export class PlaybackRateChanger extends EventEmitter {
       return;
     }
     this.silenceSkipperActive = false;
+    this.client.audioAnalyzer.removeVolumeDependent(this);
+    this.client.audioAnalyzer.removeBackgroundDependent(this);
     this.closeSilenceSkipperUI();
+  }
+
+  toggleSilenceSkipper() {
+    if (this.silenceSkipperActive) {
+      const fineTimeControls = this.client.interfaceController.fineTimeControls;
+      if (!fineTimeControls.isStateActive(this.onSilenceSkipperUIOpenHandle)) {
+        this.openSilenceSkipperUI();
+        return;
+      }
+      this.disableSilenceSkipper();
+    } else {
+      this.enableSilenceSkipper();
+    }
   }
 
   setupOptionsUI() {
@@ -120,7 +200,6 @@ export class PlaybackRateChanger extends EventEmitter {
     });
 
     DOMElements.playbackRateMenuContainer.style.display = '';
-    DOMElements.playbackRateOptions.style.display = '';
 
     this.scrollToPosition();
     if (!dontSetStayVisible) {
@@ -135,8 +214,6 @@ export class PlaybackRateChanger extends EventEmitter {
 
   closeUI() {
     DOMElements.playbackRateMenuContainer.style.display = 'none';
-    DOMElements.playbackRateOptions.style.display = 'none';
-
     this.stayOpen = false;
   }
 
@@ -175,6 +252,12 @@ export class PlaybackRateChanger extends EventEmitter {
     });
 
     DOMElements.playbackRate.addEventListener('click', (e) => {
+      if (e.shiftKey) {
+        this.toggleSilenceSkipper();
+        e.stopPropagation();
+        return;
+      }
+
       if (this.isVisible()) {
         this.closeUI();
       } else {
@@ -189,11 +272,13 @@ export class PlaybackRateChanger extends EventEmitter {
 
     WebUtils.setupTabIndex(DOMElements.playbackRate);
 
-    for (let i = 1; i <= 80; i += 1) {
+    for (let i = 1; i <= 160; i += 1) {
       ((i) => {
         const el = document.createElement('div');
         els.push(el);
-        el.textContent = ((i + 0.1) / 10).toString().substring(0, 3);
+        const val = Math.floor(i / 10);
+        const dec = i % 10;
+        el.textContent = `${val}.${dec}`;
 
         el.addEventListener('click', (e) => {
           this.setPlaybackRate(i / 10);
@@ -226,16 +311,6 @@ export class PlaybackRateChanger extends EventEmitter {
     DOMElements.rateMenu.addEventListener('mouseup', (e) => {
       e.stopPropagation();
     });
-
-    DOMElements.playbackRateOptions.addEventListener('click', (e) => {
-      const fineTimeControls = this.client.interfaceController.fineTimeControls;
-      if (this.silenceSkipperUIOpen && fineTimeControls.isStateActive(this.onSilenceSkipperUIOpenHandle)) {
-        this.closeSilenceSkipperUI();
-      } else {
-        this.openSilenceSkipperUI();
-      }
-      e.stopPropagation();
-    });
   }
 
   shiftPlaybackRate(shift) {
@@ -243,7 +318,7 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   setPlaybackRate(rate, noEmit = false) {
-    this.playbackRate = Utils.clamp(rate, 0.1, 8);
+    this.playbackRate = Utils.clamp(rate, 0.1, 16);
     this.playbackElements.forEach((el) => {
       el.classList.remove('rate-selected');
     });
@@ -261,6 +336,14 @@ export class PlaybackRateChanger extends EventEmitter {
 
     if (!noEmit) {
       this.emit('rateChanged', this.playbackRate);
+
+      if (this.silenceSkipperActive) {
+        if (this.shouldSkipSilence(this.client.currentTime)) {
+          this.silenceSkipSpeed = this.playbackRate;
+        } else {
+          this.regularSpeed = this.playbackRate;
+        }
+      }
     }
   }
 }
