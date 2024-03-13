@@ -27,6 +27,13 @@ Notes:
 - This player is still a work-in-progress. Please report any bugs to the Github issue tracker here: https://github.com/Andrews54757/FastStream/issues
 - For your privacy, this extension **does not collect telemetry**. Nor does it require additional resources from the internet to function. It will work fully offline. Feel free to browse the codebase on Github.
 - **We take accessibility concerns seriously**. If you need accommodations not available in the latest version, please contact us and we will work on it ASAP. Also, please feel free to submit feature requests or suggestions on the Github issue tracker!
+- The default maximum size for pre-buffering is 1GB. This can be changed in the settings page. Please be mindful of your computer's storage space when changing this setting. Browsers will offload data in the RAM to the SSD if the video is too large. Frequently pre-buffering large videos can reduce the lifespan of your SSD.
+
+## Demo
+
+See the player in action without installing the extension! Tested on Chrome and Firefox. Note: Some features (OpenSubtitles/header override) are not available without installation.
+
+[Web Version + Big Buck Bunny](https://faststream.online/player/#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
@@ -38,12 +45,6 @@ Please note that there are no plans to make FastStream mobile compatible any tim
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
 
 It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/faststream/)
-
-## Demo
-
-See the player in action without installing the extension! Tested on Chrome and Firefox. Note: Some features (OpenSubtitles/header override) are not available without installation.
-
-[Web Version + Big Buck Bunny](https://faststream.online/player/#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
 ## Manual Installation For Chrome
 The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:

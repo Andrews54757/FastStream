@@ -26,7 +26,7 @@ export const DefaultOptions = {
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
   maxSpeed: -1,
-  maxSize: 2000000000, // 2GB max size
+  maxVideoSize: 1000000000, // 1GB max size
   seekStepSize: 2,
   qualityMultiplier: 1.1,
   singleClickAction: ClickActions.HIDE_CONTROLS,

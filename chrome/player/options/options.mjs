@@ -77,7 +77,7 @@ async function loadOptions(newOptions) {
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
-  maxSize.value = StringUtils.getSizeString(Options.maxSize);
+  maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   qualityMultiplier.value = Options.qualityMultiplier;
   customSourcePatterns.value = Options.customSourcePatterns || '';
@@ -336,8 +336,8 @@ maxSpeed.addEventListener('change', () => {
 
 maxSize.addEventListener('change', () => {
   // parse value, number unit
-  Options.maxSize = StringUtils.getSizeValue(maxSize.value);
-  maxSize.value = StringUtils.getSizeString(Options.maxSize);
+  Options.maxVideoSize = StringUtils.getSizeValue(maxSize.value);
+  maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   optionChanged();
 });
 
