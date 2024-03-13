@@ -507,7 +507,7 @@ export default class MP4Player extends EventEmitter {
     }
 
     this.currentFragments.forEach((frag) => {
-      frag.removeReference();
+      frag.removeReference(3);
     });
 
     this.currentFragments.length = 0;
