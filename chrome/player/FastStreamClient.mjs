@@ -32,7 +32,7 @@ export class FastStreamClient extends EventEmitter {
     this.options = {
       autoPlay: false,
       maxSpeed: -1,
-      maxVideoSize: 1000000000, // 1GB max size
+      maxVideoSize: 5000000000, // 5GB max size
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 180,
