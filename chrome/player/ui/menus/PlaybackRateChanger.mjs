@@ -34,10 +34,12 @@ export class PlaybackRateChanger extends EventEmitter {
     const onAudioMouseUp = (e) => {
       document.removeEventListener('mousemove', onAudioMouseMove);
       document.removeEventListener('mouseup', onAudioMouseUp);
+      document.removeEventListener('mouseleave', onAudioMouseUp);
     };
 
     document.addEventListener('mousemove', onAudioMouseMove);
     document.addEventListener('mouseup', onAudioMouseUp);
+    document.addEventListener('mouseleave', onAudioMouseUp);
     e.stopPropagation();
     e.preventDefault();
   }

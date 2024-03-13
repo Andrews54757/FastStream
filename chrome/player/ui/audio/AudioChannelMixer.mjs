@@ -83,7 +83,12 @@ export class AudioChannelMixer {
 
       ctx.clearRect(0, 0, width, height);
 
-      const volume = AudioUtils.getVolume(analyzer);
+      const minDB = -60;
+      const maxDB = 10;
+      const dbRange = maxDB - minDB;
+      const lastVolume = analyzer._lastVolume || 0;
+      const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
+      analyzer._lastVolume = volume;
       const yScale = height;
 
       const rectHeight = height / 50;
@@ -364,9 +369,7 @@ export class AudioChannelMixer {
 
     this.channelGains.forEach((gain) => {
       const analyser = this.audioContext.createAnalyser();
-      analyser.fftSize = 32;
-      analyser.maxDecibels = -10;
-      analyser.minDecibels = -80;
+      analyser.fftSize = 256;
       this.channelAnalyzers.push(analyser);
       gain.connect(analyser);
     });

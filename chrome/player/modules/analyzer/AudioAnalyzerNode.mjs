@@ -29,7 +29,7 @@ export class AudioAnalyzerNode extends EventEmitter {
   recordVolume() {
     const audioElement = this.audioElement;
     if (!this.volumeAnalyserNode || !audioElement || audioElement.readyState < 4 || audioElement.paused) return;
-    const volume = Math.floor(AudioUtils.getVolume(this.volumeAnalyserNode) * 255);
+    const volume = AudioUtils.getVolume(this.volumeAnalyserNode);
     const time = audioElement.currentTime - audioElement.playbackRate * (this.audioContext.outputLatency - this.audioContext.baseLatency) * 0.75;
     this.emit('volume', time, volume);
   }
@@ -39,10 +39,7 @@ export class AudioAnalyzerNode extends EventEmitter {
     this.volumeLoopShouldRun = true;
     const analyser = this.audioContext.createAnalyser();
     this.volumeAnalyserNode = analyser;
-    analyser.fftSize = 32;
-    analyser.maxDecibels = -20;
-    analyser.minDecibels = -100;
-    analyser.smoothingTimeConstant = 0.2;
+    analyser.fftSize = 256;
     this.audioSource.connect(analyser);
 
     if (this.volumeLoopRunning) return;

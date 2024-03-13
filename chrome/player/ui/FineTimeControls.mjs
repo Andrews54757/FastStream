@@ -2,6 +2,7 @@ import {EventEmitter} from '../modules/eventemitter.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
+import {Utils} from '../utils/Utils.mjs';
 
 export class FineTimeControls extends EventEmitter {
   constructor(client) {
@@ -432,6 +433,10 @@ export class FineTimeControls extends EventEmitter {
     const startFrame = Math.floor(minTime * outputRate);
     const endFrame = Math.floor(maxTime * outputRate);
 
+    const minDB = -80;
+    const maxDB = 0;
+    const dbRange = maxDB - minDB;
+
     let silencedBitset;
     if (this.audioSilenceThreshold !== null) {
       silencedBitset = new Array(endFrame - startFrame).fill(true);
@@ -441,7 +446,7 @@ export class FineTimeControls extends EventEmitter {
       for (let i = startFrame; i < endFrame; i++) {
         const volume = volumeBuffer[i];
 
-        if (volume === undefined || volume > this.audioSilenceThreshold * 255) {
+        if (volume === undefined || Utils.clamp((volume - minDB) / dbRange, 0, 1) > this.audioSilenceThreshold) {
           silencedBitset[i - startFrame] = false;
           if (cooldown === 0) {
             for (let j = Math.max(0, i - paddingStart); j < i; j++) {
@@ -493,7 +498,7 @@ export class FineTimeControls extends EventEmitter {
         const barWidth = Math.ceil(el.element.width / outputRate / 10);
         // Draw volume bars using buffer
         for (let i = startFrame2; i < endFrame2; i++) {
-          const volumeVal = (volumeBuffer[i] || 0);
+          const volumeVal = volumeBuffer[i] === undefined ? 0 : Utils.clamp((volumeBuffer[i] - minDB) / dbRange, 0, 1) * 255;
           // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
           let color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
           if (this.audioSilenceThreshold !== null && volumeVal <= this.audioSilenceThreshold * 255) {
