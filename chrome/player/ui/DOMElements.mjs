@@ -20,6 +20,7 @@ export const DOMElements = {
   duration: document.querySelector('.mainplayer .fluid_control_duration'),
   muteBtn: document.querySelector('.mainplayer .fluid_control_mute'),
   volumeBlock: document.querySelector('.mainplayer .volume_block'),
+  volumeBanner: document.querySelector('.mainplayer .volume_banner'),
   volumeControlBar: document.querySelector('.mainplayer .fluid_control_volume'),
   volumeContainer: document.querySelector('.mainplayer .fluid_control_volume_container'),
   currentVolumeText: document.querySelector('.mainplayer .current_volume_text'),

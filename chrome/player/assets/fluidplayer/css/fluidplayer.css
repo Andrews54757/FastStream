@@ -677,15 +677,16 @@ body {
     }
 }
 
+.volume_banner,
 .rate_menu_banner {
     position: absolute;
     bottom: 0px;
     right: 0px;
     background-color: rgb(180,0,0);
-    font-weight: bold;
+    font-weight: medium;
     border-radius: 2px;
     z-index: 2;
-    font-size: 9px;
+    font-size: 8px;
     padding: 1px 2px;
 }
 
@@ -2893,6 +2894,7 @@ input.crosstalk_calculator_input {
         width: 50px;
     }
 
+    .volume_banner,
     .rate_menu_banner {
         font-size: 6px;
     }

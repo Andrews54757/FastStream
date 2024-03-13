@@ -1353,6 +1353,13 @@ export class InterfaceController {
 
     currentVolumeTag.style.width = (volume * 100) / 3 + '%';
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
+
+    DOMElements.volumeBanner.textContent = Math.round(volume * 100) + '%';
+    if (volume === 1 || volume === 0) {
+      DOMElements.volumeBanner.style.display = 'none';
+    } else {
+      DOMElements.volumeBanner.style.display = '';
+    }
   }
 
   timeUpdated() {
