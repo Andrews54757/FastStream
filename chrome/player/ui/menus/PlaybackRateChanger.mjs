@@ -139,7 +139,7 @@ export class PlaybackRateChanger extends EventEmitter {
     for (let i = minIndex; i < maxIndex; i++) {
       if (volumeBuffer[i] === undefined) continue;
       const volume = Utils.clamp((volumeBuffer[i] - minDB) / dbRange, 0, 1);
-      if (volume > this.silenceThreshold) {
+      if (volume >= this.silenceThreshold) {
         return false;
       }
     }

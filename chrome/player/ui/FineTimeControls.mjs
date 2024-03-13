@@ -446,7 +446,7 @@ export class FineTimeControls extends EventEmitter {
       for (let i = startFrame; i < endFrame; i++) {
         const volume = volumeBuffer[i];
 
-        if (volume === undefined || Utils.clamp((volume - minDB) / dbRange, 0, 1) > this.audioSilenceThreshold) {
+        if (volume === undefined || Utils.clamp((volume - minDB) / dbRange, 0, 1) >= this.audioSilenceThreshold) {
           silencedBitset[i - startFrame] = false;
           if (cooldown === 0) {
             for (let j = Math.max(0, i - paddingStart); j < i; j++) {
