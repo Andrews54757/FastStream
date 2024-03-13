@@ -465,7 +465,6 @@ export class InterfaceController {
         DOMElements.disabledTools.classList.remove('visible');
       }
       e.stopPropagation();
-      e.preventDefault();
     });
     WebUtils.setupTabIndex(DOMElements.moreButton);
 
@@ -552,7 +551,6 @@ export class InterfaceController {
       el.addEventListener('click', (e) => {
         if (this.specialReorderModeEnabled) {
           if (!skipClick) this.stopReorderUI();
-          e.preventDefault();
           e.stopPropagation();
         }
       }, true);
