@@ -228,7 +228,7 @@ body {
 }
 
 /* Duration */
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_fluid_control_duration {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_duration {
     display: inline-block;
     vertical-align: top;
     height: 24px;
@@ -239,6 +239,7 @@ body {
     text-decoration: none;
     line-height: 22px;
     padding: 0px 2px;
+    user-select: text;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container {
@@ -2864,7 +2865,7 @@ input.crosstalk_calculator_input {
     }
 
     .status_message,
-    .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_fluid_control_duration {
+    .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_duration {
         font-size: 13px;
     }
 
