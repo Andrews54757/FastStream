@@ -390,7 +390,7 @@ export class FastStreamClient extends EventEmitter {
         if (!newHasDownloadSpace && this.hasDownloadSpace) {
           fragments.forEach((fragment) => {
             if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-              fragment.addReference(); // Don't free already downloaded fragments
+              fragment.addReference(1); // Don't free already downloaded fragments
             }
           });
           this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);

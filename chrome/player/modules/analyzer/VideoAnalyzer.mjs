@@ -203,7 +203,7 @@ export class VideoAnalyzer extends EventEmitter {
 
   dereferenceFragments(fragments) {
     for (let i = 0; i < fragments.length; i++) {
-      fragments[i].removeReference();
+      fragments[i].removeReference(0);
     }
     fragments.length = 0;
   }
@@ -228,7 +228,7 @@ export class VideoAnalyzer extends EventEmitter {
       if (fragments[i].end > timeEnd) {
         break;
       }
-      fragments[i].addReference();
+      fragments[i].addReference(0);
       reserved.push(fragments[i]);
     }
     return reserved;

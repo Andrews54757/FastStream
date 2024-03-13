@@ -351,7 +351,7 @@ export default class MP4Player extends EventEmitter {
 
       if (frag.end < time - this.options.backBufferLength) {
         this.currentFragments.splice(i, 1);
-        frag.removeReference();
+        frag.removeReference(3);
         i--;
       }
     }
@@ -402,7 +402,7 @@ export default class MP4Player extends EventEmitter {
             // console.log("append", frag)
             this.mp4box.appendBuffer(data);
             this.currentFragments.push(frag);
-            frag.addReference();
+            frag.addReference(3);
             this.runLoad();
           },
           onProgress: (stats, context, data, xhr) => {
@@ -711,34 +711,43 @@ export default class MP4Player extends EventEmitter {
     if (!options.partialSave) {
       for (let i = 0; i < lastFrag; i++) {
         const frag = frags[i];
-        frag.addReference();
+        frag.addReference(2);
       }
     }
 
-    for (let i = 0; i < lastFrag; i++) {
-      const frag = frags[i];
-      if (!options.partialSave) {
-        await this.downloadFragment(frag, -1);
-        frag.removeReference();
-      }
-      if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-        const entry = this.client.downloadManager.getEntry(frag.getContext());
-        await writer.write(new Uint8Array(await entry.getDataFromBlob()));
-      } else {
-        await writer.write(emptyTemplate);
+    try {
+      for (let i = 0; i < lastFrag; i++) {
+        const frag = frags[i];
+        if (!options.partialSave) {
+          await this.downloadFragment(frag, -1);
+          frag.removeReference(2);
+        }
+        if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
+          const entry = this.client.downloadManager.getEntry(frag.getContext());
+          await writer.write(new Uint8Array(await entry.getDataFromBlob()));
+        } else {
+          await writer.write(emptyTemplate);
+        }
+
+        if (options.onProgress) {
+          options.onProgress(i / lastFrag);
+        }
       }
 
-      if (options.onProgress) {
-        options.onProgress(i / lastFrag);
+      writer.close();
+
+      return {
+        extension: 'mp4',
+        blob: null,
+      };
+    } catch (e) {
+      for (let i = 0; i < lastFrag; i++) {
+        const frag = frags[i];
+        frag.removeReference(2);
       }
+      writer.abort();
+      throw e;
     }
-
-    writer.close();
-
-    return {
-      extension: 'mp4',
-      blob: null,
-    };
   }
 
   get volume() {

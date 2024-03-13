@@ -410,12 +410,12 @@ export default class DashPlayer extends EventEmitter {
     }
 
     zippedFragments.forEach((data) => {
-      data.fragment.addReference();
+      data.fragment.addReference(2);
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           await this.downloadFragment(data.fragment, -1);
         }
-        data.fragment.removeReference();
+        data.fragment.removeReference(2);
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
     });
@@ -442,12 +442,19 @@ export default class DashPlayer extends EventEmitter {
       }
     });
 
-    const blob = await dash2mp4.convert(videoDuration, videoInitSegmentData, audioDuration, audioInitSegmentData, zippedFragments);
+    try {
+      const blob = await dash2mp4.convert(videoDuration, videoInitSegmentData, audioDuration, audioInitSegmentData, zippedFragments);
 
-    return {
-      extension: 'mp4',
-      blob: blob,
-    };
+      return {
+        extension: 'mp4',
+        blob: blob,
+      };
+    } catch (e) {
+      zippedFragments.forEach((data) => {
+        data.fragment.removeReference(2);
+      });
+      throw e;
+    }
   }
 
   get volume() {

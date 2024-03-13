@@ -124,12 +124,12 @@ export default class HLSPlayer extends EventEmitter {
     }
 
     zippedFragments.forEach((data) => {
-      data.fragment.addReference();
+      data.fragment.addReference(2);
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           await this.downloadFragment(data.fragment, -1);
         }
-        data.fragment.removeReference();
+        data.fragment.removeReference(2);
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
     });
@@ -148,41 +148,48 @@ export default class HLSPlayer extends EventEmitter {
       audioLevelInitData = new Uint8Array(await this.client.downloadManager.getEntry(audioFragments[-1].getContext()).getDataFromBlob());
     }
 
-    if (levelInitData && audioLevelInitData) {
-      const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
+    try {
+      if (levelInitData && audioLevelInitData) {
+        const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
 
-      const dash2mp4 = new DASH2MP4();
+        const dash2mp4 = new DASH2MP4();
 
-      dash2mp4.on('progress', (progress) => {
-        if (options?.onProgress) {
-          options.onProgress(progress);
+        dash2mp4.on('progress', (progress) => {
+          if (options?.onProgress) {
+            options.onProgress(progress);
+          }
+        });
+
+        const blob = await dash2mp4.convert(level.details.totalduration, levelInitData.buffer, audioLevel.details.totalduration, audioLevelInitData.buffer, zippedFragments);
+
+        return {
+          extension: 'mp4',
+          blob: blob,
+        };
+      } else {
+        if (levelInitData || audioLevelInitData) {
+          console.warn('Unexpected init data');
         }
-      });
+        const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
+        const hls2mp4 = new HLS2MP4();
 
-      const blob = await dash2mp4.convert(level.details.totalduration, levelInitData.buffer, audioLevel.details.totalduration, audioLevelInitData.buffer, zippedFragments);
+        hls2mp4.on('progress', (progress) => {
+          if (options?.onProgress) {
+            options.onProgress(progress);
+          }
+        });
+        const blob = await hls2mp4.convert(level, levelInitData, audioLevel, audioLevelInitData, zippedFragments);
 
-      return {
-        extension: 'mp4',
-        blob: blob,
-      };
-    } else {
-      if (levelInitData || audioLevelInitData) {
-        console.warn('Unexpected init data');
+        return {
+          extension: 'mp4',
+          blob: blob,
+        };
       }
-      const {HLS2MP4} = await import('../../modules/hls2mp4/hls2mp4.mjs');
-      const hls2mp4 = new HLS2MP4();
-
-      hls2mp4.on('progress', (progress) => {
-        if (options?.onProgress) {
-          options.onProgress(progress);
-        }
+    } catch (e) {
+      zippedFragments.forEach((data) => {
+        data.fragment.removeReference(2);
       });
-      const blob = await hls2mp4.convert(level, levelInitData, audioLevel, audioLevelInitData, zippedFragments);
-
-      return {
-        extension: 'mp4',
-        blob: blob,
-      };
+      throw e;
     }
   }
 

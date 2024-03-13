@@ -8,20 +8,25 @@ export class Fragment {
     this.start = -1;
     this.end = -1;
     this.duration = 0;
-    this.references = 0;
+    this.references = [];
     this.dataSize = null;
   }
 
-  addReference() {
-    this.references++;
+  addReference(id) {
+    if (!this.references.includes(id)) {
+      this.references.push(id);
+    }
   }
 
-  removeReference() {
-    this.references--;
+  removeReference(id) {
+    const index = this.references.indexOf(id);
+    if (index !== -1) {
+      this.references.splice(index, 1);
+    }
   }
 
   canFree() {
-    return this.references <= 0;
+    return this.references.length <= 0;
   }
 
   getContext() {
