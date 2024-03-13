@@ -1,4 +1,5 @@
 import {EventEmitter} from '../../modules/eventemitter.mjs';
+import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
@@ -17,7 +18,7 @@ export class PlaybackRateChanger extends EventEmitter {
     this.maxDB = 0;
     this.silenceSkipperUIOpen = false;
     this.silenceSkipperActive = false;
-    this.silenceSkipSpeed = 16;
+    this.silenceSkipSpeed = EnvUtils.isChrome() ? 16 : 8; // Firefox mutes audio if playback rate is too high
     this.regularSpeed = 1;
     this.silenceThreshold = 0;
     this.audioPaddingStart = 0.25;

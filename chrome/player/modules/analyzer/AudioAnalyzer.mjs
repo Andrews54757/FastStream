@@ -1,4 +1,5 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
+import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {EventEmitter} from '../eventemitter.mjs';
 import {AudioAnalyzerNode} from './AudioAnalyzerNode.mjs';
 
@@ -220,7 +221,9 @@ export class AudioAnalyzer extends EventEmitter {
     await player.setup();
 
     const audioAnalyzerNode = new AudioAnalyzerNode();
-    const audioContext = new AudioContext();
+    const audioContext = new AudioContext({
+      sinkId: {type: 'none'},
+    });
     const audioSource = audioContext.createMediaElementSource(player.getVideo());
     audioAnalyzerNode.attach(player.getVideo(), audioSource, audioContext);
     audioAnalyzerNode.on('vad', this.onVadFrameProcessed.bind(this));
@@ -255,7 +258,7 @@ export class AudioAnalyzer extends EventEmitter {
     const time = this.client.currentTime;
     let offset = this.client.isRegionBuffered(time + offsetTarget, time) ? offsetTarget : 0;
     player.currentTime = Math.max(time + offset, 0);
-    player.playbackRate = 16;
+    player.playbackRate = EnvUtils.isChrome() ? 16 : 8; // Firefox mutes audio at high playback rates
     player.loop = true;
     player.play();
 
