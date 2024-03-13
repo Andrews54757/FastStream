@@ -10,6 +10,7 @@ export class PlaybackRateChanger extends EventEmitter {
     this.client = client;
     this.stayOpen = false;
     this.playbackRate = 1;
+    this.maxPlaybackRate = EnvUtils.isChrome() ? 16 : 8;
     this.playbackElements = [];
     this.onSilenceSkipperUIOpenHandle = this.onSilenceSkipperUIOpen.bind(this);
     this.onSilenceSkipperUICloseHandle = this.onSilenceSkipperUIClose.bind(this);
@@ -18,7 +19,7 @@ export class PlaybackRateChanger extends EventEmitter {
     this.maxDB = 0;
     this.silenceSkipperUIOpen = false;
     this.silenceSkipperActive = false;
-    this.silenceSkipSpeed = EnvUtils.isChrome() ? 16 : 8; // Firefox mutes audio if playback rate is too high
+    this.silenceSkipSpeed = this.maxPlaybackRate; // Firefox mutes audio if playback rate is too high
     this.regularSpeed = 1;
     this.silenceThreshold = 0;
     this.audioPaddingStart = 0.25;
@@ -277,7 +278,7 @@ export class PlaybackRateChanger extends EventEmitter {
 
     WebUtils.setupTabIndex(DOMElements.playbackRate);
 
-    for (let i = 1; i <= 160; i += 1) {
+    for (let i = 1; i <= this.maxPlaybackRate * 10; i += 1) {
       ((i) => {
         const el = document.createElement('div');
         els.push(el);
@@ -323,7 +324,7 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   setPlaybackRate(rate, noEmit = false) {
-    this.playbackRate = Utils.clamp(rate, 0.1, 16);
+    this.playbackRate = Utils.clamp(rate, 0.1, this.maxPlaybackRate);
     this.playbackElements.forEach((el) => {
       el.classList.remove('rate-selected');
     });
