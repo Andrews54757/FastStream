@@ -747,12 +747,6 @@ chrome.runtime.sendMessage({
   url: window.location.href,
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-  chrome.runtime.sendMessage({
-    type: 'loaded',
-  });
-});
-
 // eslint-disable-next-line camelcase
 function is_url_yt(urlStr) {
   const url = new URL(urlStr);
@@ -839,6 +833,12 @@ function isActiveElementEditable() {
   }
   return false;
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  chrome.runtime.sendMessage({
+    type: 'loaded',
+  });
+});
 
 if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations) => {

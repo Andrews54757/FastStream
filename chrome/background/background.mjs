@@ -364,6 +364,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     frame.ready = true;
 
     sendSources(frame);
+  } else if (msg.type === 'detected_source') {
+    const mode = URLUtils.getModeFromExtension(msg.ext);
+    const headers = msg.headers || {};
+    onSourceRecieved({
+      url: msg.url,
+      requestId: -1,
+      customHeaders: headers,
+    }, frame, mode);
   } else {
     return;
   }
@@ -783,7 +791,7 @@ async function onSourceRecieved(details, frame, mode) {
 
   const url = details.url;
   if (getSourceFromURL(frame, url)) return;
-  addSource(frame, url, mode, frame.requestHeaders[details.requestId]);
+  addSource(frame, url, mode, details.customHeaders || frame.requestHeaders[details.requestId]);
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
       sub.forEach((s) => {
