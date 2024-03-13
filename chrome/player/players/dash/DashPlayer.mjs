@@ -49,7 +49,7 @@ export default class DashPlayer extends EventEmitter {
         },
       },
       // 'debug': {
-      //   'logLevel': DashJS.Debug.LOG_LEVEL_INFO,
+      //   'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
       // },
     });
 
@@ -86,13 +86,13 @@ export default class DashPlayer extends EventEmitter {
     });
 
     this.dash.on('initFragmentNeeded', ()=>{
-      if (this.desiredVideoLevel && this.currentLevel !== this.desiredVideoLevel) {
-        this.currentLevel = this.desiredVideoLevel;
-      }
+      // if (this.desiredVideoLevel && this.currentLevel !== this.desiredVideoLevel) {
+      //   this.currentLevel = this.desiredVideoLevel;
+      // }
 
-      if (this.desiredAudioLevel && this.currentAudioLevel !== this.desiredAudioLevel) {
-        this.currentAudioLevel = this.desiredAudioLevel;
-      }
+      // if (this.desiredAudioLevel && this.currentAudioLevel !== this.desiredAudioLevel) {
+      //   this.currentAudioLevel = this.desiredAudioLevel;
+      // }
     });
 
     this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
@@ -251,8 +251,16 @@ export default class DashPlayer extends EventEmitter {
 
   get levels() {
     const tracks = this.dash.getTracksFor('video');
-    const currentLang = this.dash.getCurrentTrackFor('video')?.lang || navigator.language || 'en';
+    const currentLang = this.getCurrentLang();
     return TrackFilter.getLevelList(tracks, currentLang);
+  }
+
+  getCurrentLang() {
+    try {
+      return this.dash.getCurrentTrackFor('video')?.lang || navigator.language || 'en';
+    } catch (e) {
+      return navigator.language || 'en';
+    }
   }
 
   get currentLevel() {
@@ -275,7 +283,8 @@ export default class DashPlayer extends EventEmitter {
         console.warn('Could not find video track', value);
       }
       this.desiredVideoLevel = value;
-      this.dash.setCurrentTrack(track);
+
+      this.dash.setCurrentTrack(track, true, repIndex);
       this.dash.setQualityFor('video', repIndex, true);
     } catch (e) {
       console.warn(e);

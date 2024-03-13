@@ -11865,7 +11865,7 @@ let dash;
      */
   
   
-    function selectMediaInfo(newMediaInfo) {
+    function selectMediaInfo(newMediaInfo, customQuality = undefined) {
       if (newMediaInfo !== mediaInfo && (!newMediaInfo || !mediaInfo || newMediaInfo.type === mediaInfo.type)) {
         mediaInfo = newMediaInfo;
       }
@@ -11880,20 +11880,24 @@ let dash;
         var quality, averageThroughput;
         var bitrate = null;
   
-        if ((realAdaptation === null || realAdaptation.id !== newRealAdaptation.id) && type !== Constants/* default.TEXT */.Z.TEXT) {
-          averageThroughput = abrController.getThroughputHistory().getAverageThroughput(type, isDynamic);
-          bitrate = averageThroughput || abrController.getInitialBitrateFor(type, streamInfo.id);
-          quality = abrController.getQualityForBitrate(mediaInfo, bitrate, streamInfo.id);
+        if (customQuality !== undefined) {
+          quality = customQuality;
         } else {
-          quality = abrController.getQualityFor(type, streamInfo.id);
-        }
-  
-        if (minIdx !== undefined && quality < minIdx) {
-          quality = minIdx;
-        }
-  
-        if (quality > maxQuality) {
-          quality = maxQuality;
+          if ((realAdaptation === null || realAdaptation.id !== newRealAdaptation.id) && type !== Constants/* default.TEXT */.Z.TEXT) {
+            averageThroughput = abrController.getThroughputHistory().getAverageThroughput(type, isDynamic);
+            bitrate = averageThroughput || abrController.getInitialBitrateFor(type, streamInfo.id);
+            quality = abrController.getQualityForBitrate(mediaInfo, bitrate, streamInfo.id);
+          } else {
+            quality = abrController.getQualityFor(type, streamInfo.id);
+          }
+
+          if (minIdx !== undefined && quality < minIdx) {
+            quality = minIdx;
+          }
+    
+          if (quality > maxQuality) {
+            quality = maxQuality;
+          }
         }
   
         mediaInfo.representations = voRepresentations;
@@ -17769,7 +17773,7 @@ let dash;
           manifestUpdater.refreshManifest();
         }
       } else {
-        processor.selectMediaInfo(mediaInfo).then(function () {
+        processor.selectMediaInfo(mediaInfo, e.customQuality).then(function () {
           if (mediaInfo.type === Constants/* default.VIDEO */.Z.VIDEO || mediaInfo.type === Constants/* default.AUDIO */.Z.AUDIO) {
             abrController.updateTopQualityIndex(mediaInfo);
           }
@@ -24015,8 +24019,7 @@ let dash;
      */
   
   
-    function setTrack(track) {
-      var noSettingsSave = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    function setTrack(track, noSettingsSave = false, customQuality) {
       if (!track || !track.streamInfo) return;
       var type = track.type;
       var streamInfo = track.streamInfo;
@@ -24029,6 +24032,7 @@ let dash;
         eventBus.trigger(Events/* default.CURRENT_TRACK_CHANGED */.Z.CURRENT_TRACK_CHANGED, {
           oldMediaInfo: current,
           newMediaInfo: track,
+          customQuality,
           switchMode: settings.get().streaming.trackSwitchMode[type]
         }, {
           streamId: id
@@ -29651,7 +29655,7 @@ let dash;
       (0,SupervisorTools/* checkInteger */.SE)(newQuality);
       var topQualityIdx = getMaxAllowedIndexFor(type, streamId);
   
-      if (newQuality !== oldQuality && newQuality >= 0 && newQuality <= topQualityIdx) {
+      if ((reason?.forceReplace || newQuality !== oldQuality) && newQuality >= 0 && newQuality <= topQualityIdx) {
         _changeQuality(type, oldQuality, newQuality, topQualityIdx, reason, streamId);
       }
     }
@@ -40958,14 +40962,13 @@ let dash;
      */
   
   
-    function setCurrentTrack(track) {
-      var noSettingsSave = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+    function setCurrentTrack(track, noSettingsSave = false, customQuality) {
   
       if (!streamingInitialized) {
         throw STREAMING_NOT_INITIALIZED_ERROR;
       }
   
-      mediaController.setTrack(track, noSettingsSave);
+      mediaController.setTrack(track, noSettingsSave, customQuality);
     }
     /*
     ---------------------------------------------------------------------------

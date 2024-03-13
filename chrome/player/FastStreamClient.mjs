@@ -675,7 +675,9 @@ export class FastStreamClient extends EventEmitter {
       }
 
       hasDownloaded = true;
-      this.player.downloadFragment(nextDownload);
+      this.player.downloadFragment(nextDownload).catch((e) => {
+
+      });
       nextDownload = this.getNextToDownload();
       if (index++ > 10000) {
         throw new Error('Infinite loop detected');
@@ -691,28 +693,37 @@ export class FastStreamClient extends EventEmitter {
   }
 
   predownloadReservedFragments() {
-    const fragments = this.getReservedFragments(this.fragments);
-    const audioFragments = this.getReservedFragments(this.audioFragments);
+    const fragments = this.getWaitingReservedFragments(this.fragments);
+    const audioFragments = this.getWaitingReservedFragments(this.audioFragments);
 
-    if (audioFragments.length) {
-      let currentVideoIndex = 0;
-      audioFragments.forEach((fragment) => {
-        const videoFragment = fragments[currentVideoIndex];
-        while (videoFragment && videoFragment.start < fragment.start) {
-          currentVideoIndex++;
+    let hasDownloaded = false;
+
+    if (audioFragments.length > 0 && (
+      fragments.length === 0 || fragments[0].start > audioFragments[0].start
+    )) {
+      audioFragments.every((fragment) => {
+        if (!this.downloadManager.canGetFile(fragment.getContext())) {
+          return false;
         }
+        this.player.downloadFragment(fragment).catch((e) => {
 
-        fragments.splice(currentVideoIndex, 0, fragment);
+        });
+        hasDownloaded = true;
+        return true;
       });
     }
 
-    let hasDownloaded = false;
+    if (hasDownloaded) {
+      return true;
+    }
 
     fragments.every((fragment) => {
       if (!this.downloadManager.canGetFile(fragment.getContext())) {
         return false;
       }
-      this.player.downloadFragment(fragment);
+      this.player.downloadFragment(fragment).catch((e) => {
+
+      });
       hasDownloaded = true;
       return true;
     });
@@ -720,7 +731,7 @@ export class FastStreamClient extends EventEmitter {
     return hasDownloaded;
   }
 
-  getReservedFragments(fragments) {
+  getWaitingReservedFragments(fragments) {
     if (!fragments) return [];
     return fragments.filter((fragment) => {
       return fragment && fragment.status === DownloadStatus.WAITING && !fragment.canFree();
