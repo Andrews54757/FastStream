@@ -153,6 +153,32 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.subtitlesManager.toggleSubtitles();
     });
 
+    let flipIndex = 0;
+    let rotateIndex = 0;
+
+    const updateVideoTransform = () => {
+      const video = this.client.player.getVideo();
+      const str = [];
+      if (flipIndex !== 0) {
+        str.push(`scaleX(${flipIndex % 2 === 0 ? 1 : -1}) scaleY(${flipIndex > 1 ? -1 : 1})`);
+      }
+
+      if (rotateIndex !== 0) {
+        str.push(`rotate(${rotateIndex * 90}deg)`);
+      }
+
+      video.style.transform = str.join(' ');
+    };
+    this.on('FlipVideo', (e) => {
+      flipIndex = (flipIndex + 1) % 4;
+      updateVideoTransform();
+    });
+
+    this.on('RotateVideo', (e) => {
+      rotateIndex = (rotateIndex + 1) % 4;
+      updateVideoTransform();
+    });
+
     this.on('keybind', (keybind, e) => {
       // console.log("Keybind", keybind);
     });

@@ -28,4 +28,6 @@ export const DefaultKeybinds = {
   'SubtrackShiftLeft': 'BracketLeft',
   'SubtrackDownload': 'KeyD',
   'SubtrackToggleResync': 'KeyR',
+  'FlipVideo': 'None',
+  'RotateVideo': 'None',
 };
