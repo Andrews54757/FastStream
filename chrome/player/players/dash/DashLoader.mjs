@@ -25,16 +25,13 @@ export function DASHLoaderFactory(player) {
           request(httpRequest);
           return;
         }
-        const streamLevel = representation.path[0];
-        const adaptationIndex = representation.path[1];
-        const repIndex = representation.path[2];
         let segmentIndex = requestObj.index;
 
         if (requestObj.type === 'InitializationSegment') {
           segmentIndex = -1;
         }
 
-        const identifier = player.getLevelIdentifier(streamLevel, adaptationIndex, repIndex);
+        const identifier = representation.id;
         const frag = player.client.getFragment(identifier, segmentIndex);
         if (!frag) {
           console.warn('Fragment not found', requestObj, identifier, player.client.getFragments(identifier));

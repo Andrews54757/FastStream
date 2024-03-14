@@ -13443,7 +13443,7 @@ module.exports = posix;
               buffer = 'attribValue'
               break
           }
-          
+
           if (c === ';') {
             parser[buffer] += parseEntity(parser)
             parser.entity = ''
@@ -28897,7 +28897,7 @@ function StreamProcessor(config) {
 
         // Update Representation Controller with the new data
         var voRepresentations = abrController.getPossibleVoRepresentations(currentMediaInfo, false);
-        currentMediaInfo.representations = voRepresentations;
+        newMediaInfo.representations = voRepresentations;
         var representationId = targetRepresentation.id;
         return representationController.updateData(voRepresentations, currentMediaInfo.isFragmented, representationId).then(function () {
           _onDataUpdateCompleted();
@@ -58122,7 +58122,7 @@ function MediaController() {
 
     // If we have a custom function that selects the track we use this one
     if (customInitialTrackSelectionFunction && typeof customInitialTrackSelectionFunction === 'function') {
-      tmpArr = customInitialTrackSelectionFunction(tracks);
+      tmpArr = customInitialTrackSelectionFunction(mediaInfos);
     } else {
       throw new Error('No valid initial track selection function found!');
     }
@@ -60156,6 +60156,39 @@ function tXml_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) 
  */
 
 /**
+ * Entities that are used in XML
+ */
+var XML_ENTITIES = {
+  '&amp;': '&',
+  '&gt;': '>',
+  '&lt;': '<',
+  '&quot;': '"',
+  '&apos;': "'"
+};
+
+/**
+ * Translates XML entities to their respective characters.
+ * @param {Object} entitiesList 
+ * @param {String} str 
+ * @returns {String}
+ */
+function translateEntities(entitiesList, str) {
+  var entitySplit = str.split(/(&[a-zA-Z0-9]+;)/);
+  if (entitySplit.length <= 1) {
+    // No entities. Skip the rest of the function.
+    return str;
+  }
+  for (var i = 1; i < entitySplit.length; i += 2) {
+    var entity = entitySplit[i];
+    if (entitiesList.hasOwnProperty(entity)) {
+      entitySplit[i] = entitiesList[entity];
+    }
+  }
+  return entitySplit.join('');
+}
+;
+
+/**
  * parseXML / html into a DOM Object. with no validation and some failur tolerance
  * @param {string} S your XML to parse
  * @param {TParseOptions} [options]  all other options:
@@ -60294,7 +60327,7 @@ function tXml_parse(S, options) {
     if (tagName === 'S') {
       return parseInt(value);
     }
-    var attrValue = value;
+    var attrValue = translateEntities(XML_ENTITIES, value);
     attrMatchers.forEach(function (matcher) {
       if (matcher.test(tagName, attrName, value)) {
         attrValue = matcher.converter(value);
@@ -60311,7 +60344,7 @@ function tXml_parse(S, options) {
     var start = pos;
     pos = S.indexOf(openBracket, pos) - 1;
     if (pos === -2) pos = S.length;
-    return S.slice(start, pos + 1);
+    return translateEntities(XML_ENTITIES, S.slice(start, pos + 1));
   }
   /**
    *    returns text until the first nonAlphabetic letter
@@ -76720,13 +76753,25 @@ function MediaPlayer() {
         thumbnailController.setTrackById(id);
       }
     } else {
-      var representation = activeStream.getRepresentationForTypeById(type, id);
+      var representation = getRepresentationById(type, id);
       if (representation) {
         abrController.setPlaybackQuality(type, streamController.getActiveStreamInfo(), representation, {
           forceReplace: forceReplace
         });
       }
     }
+  }
+  function getRepresentationById(type, id) {
+    var tracks = getTracksFor(type);
+    for (var i = 0; i < tracks.length; i++) {
+      var reps = getRepresentations(tracks[i]);
+      for (var j = 0; j < reps.length; j++) {
+        if (reps[j].id === id) {
+          return reps[j];
+        }
+      }
+    }
+    return null;
   }
 
   /**
@@ -76782,6 +76827,9 @@ function MediaPlayer() {
     }
     var stream = streamId ? streamController.getStreamById(streamId) : getActiveStream();
     return stream ? stream.getRepresentationsByType(type) : [];
+  }
+  function getRepresentations(mediaInfo) {
+    return abrController.getPossibleVoRepresentations(mediaInfo, true);
   }
 
   /**
@@ -77830,6 +77878,7 @@ function MediaPlayer() {
     getProtectionController: getProtectionController,
     getCurrentRepresentationForType: getCurrentRepresentationForType,
     getRepresentationsByType: getRepresentationsByType,
+    getRepresentations: getRepresentations,
     getSettings: getSettings,
     getSource: getSource,
     getStreamController: getStreamController,

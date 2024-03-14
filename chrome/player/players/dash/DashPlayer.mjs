@@ -85,16 +85,6 @@ export default class DashPlayer extends EventEmitter {
       this.extractAllFragments();
     });
 
-    this.dash.on('initFragmentNeeded', ()=>{
-      // if (this.desiredVideoLevel && this.currentLevel !== this.desiredVideoLevel) {
-      //   this.currentLevel = this.desiredVideoLevel;
-      // }
-
-      // if (this.desiredAudioLevel && this.currentAudioLevel !== this.desiredAudioLevel) {
-      //   this.currentAudioLevel = this.desiredAudioLevel;
-      // }
-    });
-
     this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
       this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
     });
@@ -125,7 +115,7 @@ export default class DashPlayer extends EventEmitter {
     if (rep.hasInitialization()) {
       const init = dashHandler.getInitRequest(mediaInfo, rep);
       if (init) {
-        init.level = this.getLevelIdentifier(rep.path[0], rep.path[1], rep.path[2]);
+        init.level = rep.id;
         init.index = -1;
         init.startTime = init.duration = 0;
         if (!this.client.getFragment(init.level, -1)) {
@@ -138,26 +128,13 @@ export default class DashPlayer extends EventEmitter {
         return dashHandler._getRequestForSegment(mediaInfo, segment);
       });
       segments.forEach((request) => {
-        request.level = this.getLevelIdentifier(rep.path[0], rep.path[1], rep.path[2]);
+        request.level = rep.id;
         const fragment = new DashFragment(request);
         if (!this.client.getFragment(fragment.level, fragment.sn)) {
           this.client.makeFragment(fragment.level, fragment.sn, fragment);
         }
       });
     }
-  }
-
-  getLevelIdentifier(streamIndex, adaptationIndex, repIndex) {
-    return `${streamIndex}:${adaptationIndex}:${repIndex}`;
-  }
-
-  getLevelIndexes(identifier) {
-    const indexes = identifier.split(':');
-    return {
-      streamIndex: parseInt(indexes[0]),
-      adaptationIndex: parseInt(indexes[1]),
-      repIndex: parseInt(indexes[2]),
-    };
   }
 
   load() {
@@ -250,9 +227,14 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get levels() {
-    const tracks = this.dash.getTracksFor('video');
-    const currentLang = this.getCurrentLang();
-    return TrackFilter.getLevelList(tracks, currentLang);
+    try {
+      const tracks = this.dash.getTracksFor('video');
+      const currentLang = this.getCurrentLang();
+      return TrackFilter.getLevelList(tracks, currentLang);
+    } catch (e) {
+      console.warn(e);
+      return new Map();
+    }
   }
 
   getCurrentLang() {
@@ -261,30 +243,6 @@ export default class DashPlayer extends EventEmitter {
     } catch (e) {
       return navigator.language || 'en';
     }
-  }
-
-  get currentLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
-    if (!processor) {
-      return -1;
-    }
-    const path = processor.getRepresentationController().getCurrentRepresentation().path;
-    return this.getLevelIdentifier(path[0], path[1], path[2]);
-  }
-
-  getRepresentation(identifier) {
-    const {streamIndex, adaptationIndex, repIndex} = this.getLevelIndexes(identifier);
-
-    const processor = this.getProcessor(adaptationIndex);
-    if (!processor) {
-      return null;
-    }
-
-    const rep = processor.getMediaInfo().representations[repIndex];
-    if (rep.path[0] === streamIndex && rep.path[1] === adaptationIndex && rep.path[2] === repIndex) {
-      return rep;
-    }
-    return null;
   }
 
   getProcessor(adaptationIndex) {
@@ -298,11 +256,18 @@ export default class DashPlayer extends EventEmitter {
     return null;
   }
 
+  get currentLevel() {
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
+    if (!processor) {
+      return -1;
+    }
+    return processor.getRepresentationController().getCurrentRepresentation().id;
+  }
+
   set currentLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      const rep = this.getRepresentation(value);
-      this.dash.setRepresentationForTypeById('video', rep.id, true);
+      this.dash.setRepresentationForTypeById('video', value, true);
     } catch (e) {
       console.warn(e);
     }
@@ -313,15 +278,13 @@ export default class DashPlayer extends EventEmitter {
     if (!processor) {
       return -1;
     }
-    const path = processor.getRepresentationController().getCurrentRepresentation().path;
-    return this.getLevelIdentifier(path[0], path[1], path[2]);
+    return processor.getRepresentationController().getCurrentRepresentation().id;
   }
 
   set currentAudioLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      const rep = this.getRepresentation(value);
-      this.dash.setRepresentationForTypeById('audio', rep.id, true);
+      this.dash.setRepresentationForTypeById('audio', value, true);
     } catch (e) {
       console.warn(e);
     }
