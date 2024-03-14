@@ -48,7 +48,7 @@ export function DASHLoaderFactory(player) {
 
           },
           onFail: (entry) => {
-            httpRequest.customData.onFail(entry);
+            httpRequest.customData.onAbort(entry);
           },
           onAbort: (entry) => {
             httpRequest.customData.onAbort(entry);
