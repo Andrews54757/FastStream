@@ -40,14 +40,6 @@ export function DASHLoaderFactory(player) {
           return;
         }
 
-        // if (representation !== frag.request.representation) {
-        //   console.log(representation, frag.request.representation);
-        //   // throw new Error("URL mismatch");
-        //   request(httpRequest);
-        //   return;
-        // }
-
-        // console.log("frag found", frag, requestObj)
         httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (entry, data) => {
             httpRequest.customData.onSuccess(data, entry.responseURL);
@@ -102,7 +94,6 @@ export function DASHLoaderFactory(player) {
         },
       };
 
-      //   console.log('context', context, httpRequest.customData.request);
       const loader = player.getClient().downloadManager.getFile(context, {
         onSuccess: async (entry, xhr) => {
           const data = await entry.getDataFromBlob();
