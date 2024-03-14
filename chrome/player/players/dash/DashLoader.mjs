@@ -6,8 +6,9 @@ export function DASHLoaderFactory(player) {
     cfg = cfg || {};
 
     function load(httpRequest) {
-      if (httpRequest.request.type === 'InitializationSegment' ||
-                httpRequest.request.type === 'MediaSegment') {
+      const requestObj = httpRequest.customData.request;
+      if (requestObj.type === 'InitializationSegment' ||
+                requestObj.type === 'MediaSegment') {
         loadFragmentInternal(httpRequest);
         return;
       }
@@ -18,43 +19,39 @@ export function DASHLoaderFactory(player) {
 
     function loadFragmentInternal(httpRequest) {
       try {
-        if (!httpRequest.request.mediaInfo) {
-          //   console.error("No mediainfo", httpRequest.request);
+        const requestObj = httpRequest.customData.request;
+        const representation = requestObj.representation;
+        if (!representation) {
           request(httpRequest);
           return;
         }
-        const streamLevel = httpRequest.request.mediaInfo.streamInfo.index;
-        const trackIndex = httpRequest.request.mediaInfo.index;
-        const qualityIndex = httpRequest.request.quality;
-        let segmentIndex = httpRequest.request.index;
+        let segmentIndex = requestObj.index;
 
-        if (httpRequest.request.type === 'InitializationSegment') {
+        if (requestObj.type === 'InitializationSegment') {
           segmentIndex = -1;
         }
 
-
-        const identifier = player.getLevelIdentifier(streamLevel, trackIndex, qualityIndex);
+        const identifier = representation.id;
         const frag = player.client.getFragment(identifier, segmentIndex);
         if (!frag) {
-          console.warn('Fragment not found', httpRequest.request, identifier, player.client.getFragments(identifier));
+          console.warn('Fragment not found', requestObj, identifier, player.client.getFragments(identifier));
           // throw new Error("Fragment not found");
           request(httpRequest);
           return;
         }
 
-        // console.log("frag found", frag, httpRequest.request)
         httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (entry, data) => {
-            httpRequest.onSuccess(data, entry.responseURL);
+            httpRequest.customData.onSuccess(data, entry.responseURL);
           },
           onProgress: (stats, context, data, xhr) => {
 
           },
           onFail: (entry) => {
-            httpRequest.onFail(entry);
+            httpRequest.customData.onFail(entry);
           },
           onAbort: (entry) => {
-            httpRequest.onAbort(entry);
+            httpRequest.customData.onAbort(entry);
           },
         }, null, 1000);
       } catch (e) {
@@ -64,7 +61,7 @@ export function DASHLoaderFactory(player) {
 
     function request(httpRequest) {
       // Variables will be used in the callback functions
-      const request = httpRequest.request;
+      const request = httpRequest.customData.request;
 
       let rangeStart = undefined;
       let rangeEnd = undefined;
@@ -77,11 +74,10 @@ export function DASHLoaderFactory(player) {
           rangeStart = start;
           rangeEnd = end + 1;
         }
+        delete httpRequest.headers.Range;
       }
-
-      //  console.log("request",request, httpRequest.request.range, rangeStart, rangeEnd, httpRequest.request.mediaInfo.representations)
       const context = {
-        url: httpRequest.url,
+        url: decodeURI(httpRequest.url),
         method: httpRequest.method || 'GET',
         responseType: request.responseType,
         rangeStart: rangeStart,
@@ -101,16 +97,16 @@ export function DASHLoaderFactory(player) {
       const loader = player.getClient().downloadManager.getFile(context, {
         onSuccess: async (entry, xhr) => {
           const data = await entry.getDataFromBlob();
-          httpRequest.onSuccess(data, entry.responseURL);
+          httpRequest.customData.onSuccess(data, entry.responseURL);
         },
         onProgress: (stats, context, data, xhr)=> {
 
         },
         onFail: (entry)=> {
-          httpRequest.onFail(entry);
+          httpRequest.customData.onFail(entry);
         },
         onAbort: (entry) => {
-          httpRequest.onAbort(entry);
+          httpRequest.customData.onAbort(entry);
         },
       });
 

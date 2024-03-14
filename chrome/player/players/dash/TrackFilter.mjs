@@ -110,7 +110,6 @@ export class TrackFilter {
         tracks = langTracks;
       }
     }
-
     return tracks;
   }
 
@@ -182,7 +181,7 @@ export class TrackFilter {
           byQualityLevel.set(key, arr);
         }
         arr.push({
-          level: ([track.streamInfo.index, track.index, qualityIndex]).join(':'),
+          level: data.id,
           bitrate: data.bandwidth,
           width: data.width,
           height: data.height,

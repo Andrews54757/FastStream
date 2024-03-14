@@ -1,10 +1,9 @@
 import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
-import {Hls} from '../hls.mjs';
+import {AvcVideoParser, Mp4Sample} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
-const {ExpGolomb, Mp4Sample} = Hls.Muxers;
 
 export class DASH2MP4 extends EventEmitter {
   constructor() {
@@ -136,8 +135,8 @@ export class DASH2MP4 extends EventEmitter {
           this.videoTrack.sps.push(sps.nalu);
         });
         const sps = this.videoTrack.sps[0];
-        const expGolombDecoder = new ExpGolomb(sps);
-        const config = expGolombDecoder.readSPS();
+        const decoder = new AvcVideoParser();
+        const config = decoder.readSPS(sps);
 
         this.videoTrack.pixelRatio = config.pixelRatio;
         this.videoTrack.width = config.width;
