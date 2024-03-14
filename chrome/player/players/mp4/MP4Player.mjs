@@ -1,5 +1,6 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
+import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
 import {EmitterCancel, EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {MP4Box} from '../../modules/mp4box.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -351,7 +352,7 @@ export default class MP4Player extends EventEmitter {
 
       if (frag.end < time - this.options.backBufferLength) {
         this.currentFragments.splice(i, 1);
-        frag.removeReference(3);
+        frag.removeReference(ReferenceTypes.MP4PLAYER);
         i--;
       }
     }
@@ -392,17 +393,18 @@ export default class MP4Player extends EventEmitter {
               if (!rangeHeader) {
                 console.log(entry.responseHeaders);
                 this.running = false;
+                this.emit(DefaultPlayerEvents.ERROR, 'No content range');
                 throw new Error('No content length');
+              } else {
+                this.fileLength = parseInt(rangeHeader.split('/')[1]);
               }
-
-              this.fileLength = parseInt(rangeHeader.split('/')[1]);
 
               this.initializeFragments();
             }
             // console.log("append", frag)
             this.mp4box.appendBuffer(data);
             this.currentFragments.push(frag);
-            frag.addReference(3);
+            frag.addReference(ReferenceTypes.MP4PLAYER, true);
             this.runLoad();
           },
           onProgress: (stats, context, data, xhr) => {
@@ -507,7 +509,7 @@ export default class MP4Player extends EventEmitter {
     }
 
     this.currentFragments.forEach((frag) => {
-      frag.removeReference(3);
+      frag.removeReference(ReferenceTypes.MP4PLAYER);
     });
 
     this.currentFragments.length = 0;
@@ -711,7 +713,7 @@ export default class MP4Player extends EventEmitter {
     if (!options.partialSave) {
       for (let i = 0; i < lastFrag; i++) {
         const frag = frags[i];
-        frag.addReference(2);
+        frag.addReference(ReferenceTypes.SAVER);
       }
     }
 
@@ -720,7 +722,7 @@ export default class MP4Player extends EventEmitter {
         const frag = frags[i];
         if (!options.partialSave) {
           await this.downloadFragment(frag, -1);
-          frag.removeReference(2);
+          frag.removeReference(ReferenceTypes.SAVER);
         }
         if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {
           const entry = this.client.downloadManager.getEntry(frag.getContext());
@@ -743,7 +745,7 @@ export default class MP4Player extends EventEmitter {
     } catch (e) {
       for (let i = 0; i < lastFrag; i++) {
         const frag = frags[i];
-        frag.removeReference(2);
+        frag.removeReference(ReferenceTypes.SAVER);
       }
       writer.abort();
       throw e;

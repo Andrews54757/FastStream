@@ -1,5 +1,6 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
+import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Hls} from '../../modules/hls.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -124,12 +125,12 @@ export default class HLSPlayer extends EventEmitter {
     }
 
     zippedFragments.forEach((data) => {
-      data.fragment.addReference(2);
+      data.fragment.addReference(ReferenceTypes.SAVER);
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           await this.downloadFragment(data.fragment, -1);
         }
-        data.fragment.removeReference(2);
+        data.fragment.removeReference(ReferenceTypes.SAVER);
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
     });
@@ -187,7 +188,7 @@ export default class HLSPlayer extends EventEmitter {
       }
     } catch (e) {
       zippedFragments.forEach((data) => {
-        data.fragment.removeReference(2);
+        data.fragment.removeReference(ReferenceTypes.SAVER);
       });
       throw e;
     }

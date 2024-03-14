@@ -22,6 +22,7 @@ import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
+import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
 
 
 export class FastStreamClient extends EventEmitter {
@@ -390,7 +391,7 @@ export class FastStreamClient extends EventEmitter {
         if (!newHasDownloadSpace && this.hasDownloadSpace) {
           fragments.forEach((fragment) => {
             if (fragment && fragment.status === DownloadStatus.DOWNLOAD_COMPLETE) {
-              fragment.addReference(1); // Don't free already downloaded fragments
+              fragment.addReference(ReferenceTypes.GRANDFATHERED); // Don't free already downloaded fragments
             }
           });
           this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [this.options.bufferBehind + this.options.bufferAhead]), 'warning', 5000);

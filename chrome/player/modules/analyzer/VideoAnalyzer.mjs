@@ -5,6 +5,7 @@ import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {EventEmitter} from '../eventemitter.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {VideoAligner} from './VideoAligner.mjs';
+import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
 
 const AnalyzerStatus = {
   IDLE: 'idle',
@@ -203,7 +204,7 @@ export class VideoAnalyzer extends EventEmitter {
 
   dereferenceFragments(fragments) {
     for (let i = 0; i < fragments.length; i++) {
-      fragments[i].removeReference(0);
+      fragments[i].removeReference(ReferenceTypes.ANALYZER);
     }
     fragments.length = 0;
   }
@@ -228,7 +229,7 @@ export class VideoAnalyzer extends EventEmitter {
       if (fragments[i].end > timeEnd) {
         break;
       }
-      fragments[i].addReference(0);
+      fragments[i].addReference(ReferenceTypes.ANALYZER);
       reserved.push(fragments[i]);
     }
     return reserved;

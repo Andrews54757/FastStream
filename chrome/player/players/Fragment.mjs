@@ -12,8 +12,8 @@ export class Fragment {
     this.dataSize = null;
   }
 
-  addReference(id) {
-    if (!this.references.includes(id)) {
+  addReference(id, duplicate = false) {
+    if (duplicate || !this.references.includes(id)) {
       this.references.push(id);
     }
   }
