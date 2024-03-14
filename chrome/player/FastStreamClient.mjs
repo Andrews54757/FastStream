@@ -838,7 +838,7 @@ export class FastStreamClient extends EventEmitter {
     this.persistent.buffering = false;
 
     this.storageAvailable = 0;
-    this.hasDownloadSpace = false;
+    this.hasDownloadSpace = true;
     this.previousLevel = -1;
     this.previousAudioLevel = -1;
 
