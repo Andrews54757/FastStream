@@ -39,6 +39,7 @@ export class AudioAnalyzer extends EventEmitter {
     const frame = Math.floor(time * this.outputRate);
     this.volumeBuffer[frame] = volume;
     const interpMax = 8;
+    let interp = 0;
     if (frame >= 2 && !this.volumeBuffer[frame - 1]) {
       // interpolate. Find last non-zero frame within 5 frames
       let lastFrame = frame - 2;
@@ -46,8 +47,8 @@ export class AudioAnalyzer extends EventEmitter {
       while (lastFrame > min && !this.volumeBuffer[lastFrame]) {
         lastFrame--;
       }
-
       if (this.volumeBuffer[lastFrame]) {
+        interp = frame - lastFrame - 1;
         const diff = frame - lastFrame;
         const step = (volume - this.volumeBuffer[lastFrame]) / diff;
         for (let i = lastFrame + 1; i < frame; i++) {
@@ -55,7 +56,7 @@ export class AudioAnalyzer extends EventEmitter {
         }
       }
     }
-    this.emit('volume', time, volume);
+    this.emit('volume', time, volume, interp);
   }
 
   addVadDependent(dependent) {
