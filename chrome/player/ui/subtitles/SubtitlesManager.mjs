@@ -278,7 +278,6 @@ export class SubtitlesManager extends EventEmitter {
 
     DOMElements.subtitlesMenu.addEventListener('click', (e) => {
       e.stopPropagation();
-      e.preventDefault();
     });
 
     window.addEventListener('resize', () => {
@@ -307,7 +306,6 @@ export class SubtitlesManager extends EventEmitter {
         this.activateTrack(track);
       }
       e.stopPropagation();
-      e.preventDefault();
     });
 
     WebUtils.setupTabIndex(trackElement);

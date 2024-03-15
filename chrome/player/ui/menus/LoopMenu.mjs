@@ -48,7 +48,6 @@ export class LoopMenu extends EventEmitter {
 
     DOMElements.loopMenu.addEventListener('click', (e) => {
       e.stopPropagation();
-      e.preventDefault();
     });
 
     DOMElements.loopButton.addEventListener('click', (e) => {

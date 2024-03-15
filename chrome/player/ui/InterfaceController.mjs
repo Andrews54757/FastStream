@@ -279,7 +279,6 @@ export class InterfaceController {
       }
       this.fullscreenToggle();
       e.stopPropagation();
-      e.preventDefault();
     });
 
     WebUtils.setupTabIndex(DOMElements.fullscreen);
@@ -515,6 +514,7 @@ export class InterfaceController {
         this.checkToolsAndSave();
       },
       filter: '.menu_container, .rate_menu_container',
+      preventOnFilter: false,
     };
     this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
     this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
