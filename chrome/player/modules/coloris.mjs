@@ -1,3 +1,4 @@
+/* eslint-disable */
 /* !
 * Copyright (c) 2021 Momo Bassit.
 * Licensed under the MIT License (MIT)

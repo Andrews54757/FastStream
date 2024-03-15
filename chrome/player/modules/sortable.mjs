@@ -1,3 +1,4 @@
+/* eslint-disable */
 /** !
  * Sortable 1.15.2
  * @author	RubaXa   <trash@rubaxa.org>
