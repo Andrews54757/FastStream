@@ -493,6 +493,7 @@ export class InterfaceController {
         '#d56062',
       ],
       alpha: true,
+      focusInput: false,
     });
 
     this.updateToolVisibility();
