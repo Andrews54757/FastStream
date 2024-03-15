@@ -28975,10 +28975,11 @@ function StreamProcessor(config) {
     scheduleController.clearScheduleTimer();
 
     // Informing ScheduleController about AS switch
-    scheduleController.setSwitchTrack(true);
+    // scheduleController.setSwitchTrack(true);
     var newMediaInfo = newRepresentation.mediaInfo;
     currentMediaInfo = newMediaInfo;
     selectMediaInfo(newMediaInfo, newRepresentation).then(function () {
+      prepareTrackSwitch();
       _handleDifferentSwitchTypes(e, newRepresentation);
     });
   }
