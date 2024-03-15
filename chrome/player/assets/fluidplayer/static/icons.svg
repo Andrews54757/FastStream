@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 72">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 48">
     <g>
         <use transform="translate(0,0)" href="#rect" width="24" height="24" />
         <use transform="translate(24,0)" href="#rect" width="24" height="24" />
@@ -21,17 +21,6 @@
         <use transform="translate(144,24)" href="#rect" width="24" height="24" />
         <use transform="translate(168,24)" href="#rect" width="24" height="24" />
         <use transform="translate(192,24)" href="#rect" width="24" height="24" />
-
-        <use transform="translate(0,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(24,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(48,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(72,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(96,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(120,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(144,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(168,48)" href="#rect" width="24" height="24" />
-        <use transform="translate(192,48)" href="#rect" width="24" height="24" />
-
 
         <use transform="translate(0,0)" href="#play" width="24" height="24" />
         <use transform="translate(24,0)" href="#pause" width="24" height="24" />
@@ -56,11 +45,7 @@
         <use transform="translate(144,24)" href="#soundwave" width="24" height="24" />
         <use transform="translate(168,24)" href="#captions" width="24" height="24" />
         <use transform="translate(192,24)" href="#language" width="24" height="24" />
-      
-        <use transform="translate(0,48)" href="#more" width="24" height="24" />
-        <use transform="translate(24,48)" href="#loop" width="24" height="24" />
-        <use transform="translate(48,48)" href="#gif" width="24" height="24" />
-    </g>
+   </g>
     <defs>
         <symbol id="speaker" viewBox="0 0 24 24" fill="currentColor">
             <path transform="translate(0,0)"
@@ -137,22 +122,6 @@
         </symbol>
         <symbol id="rect" viewBox="0 0 24 24" stroke="currentColor">
             <rect x="0" y="0" width="24" height="24" fill="none" stroke-width="0.1"></rect>
-        </symbol>
-
-        <symbol id="more" viewBox="0 0 512 512" stroke="currentColor" fill="currentColor">
-            <circle cx="256" cy="256" r="26" />
-            <circle cx="346" cy="256" r="26" />
-            <circle cx="166" cy="256" r="26" />
-            <path d="M448,256c0-106-86-192-192-192S64,150,64,256s86,192,192,192S448,362,448,256Z"
-                stroke="currentColor" style="fill:none;stroke-width:48px" />
-        </symbol>
-        <symbol id="loop" viewBox="0 0 32 32" fill="currentColor">
-            <path d="M 25 21.225 c 0 0.8071 -0.333 1.135 -1 1.135 h -16 v -3.8575 l -4.688 5.6725 l 4.625 5.5963 l 0.063 -3.7813 h 18 c 1.104 0 2 -1.0842 2 -2.42 v -10.4108 l -3 3.63 v 4.4359 z M 7 11.395 c 0 -0.8071 0.333 -1.135 1 -1.135 h 16 v 3.8575 l 4.688 -5.6725 l -4.625 -5.5963 l -0.063 3.7813 h -18 c -1.104 0 -2 1.0842 -2 2.42 v 10.4108 l 3 -3.63 v -4.4359 z"></path>
-        </symbol>
-
-        <symbol id="gif" viewBox="0 0 24 24" fill="currentColor">
-            <!-- Uploaded to: SVG Repo, www.svgrepo.com by Microsoft, MIT License -->
-            <path d="M 18.75 3.5005 C 20.5449 3.5005 22 4.9556 22 6.7505 L 22 17.2531 C 22 19.048 20.5449 20.5031 18.75 20.5031 L 5.25 20.5031 C 3.4551 20.5031 2 19.048 2 17.2531 L 2 6.7505 C 2 4.9556 3.4551 3.5005 5.25 3.5005 L 18.75 3.5005 Z M 8.0146 8.8719 C 6.3884 8.8719 5.261 10.2817 5.261 11.9943 C 5.261 13.7076 6.3886 15.1203 8.0146 15.1203 C 8.9024 15.1203 9.7177 14.6932 10.1263 13.9064 L 10.2025 13.7442 L 10.226 13.6745 L 10.244 13.5999 L 10.244 13.5999 L 10.2516 13.5169 L 10.2518 11.9962 L 10.245 11.9038 C 10.2054 11.6359 9.9957 11.4235 9.7292 11.3795 L 9.6268 11.3712 L 8.6252 11.3712 L 8.5329 11.378 C 8.265 11.4177 8.0525 11.6273 8.0086 11.8938 L 8.0002 11.9962 L 8.007 12.0886 C 8.0467 12.3564 8.2563 12.5689 8.5228 12.6128 L 8.6252 12.6212 L 9.001 12.6209 L 9.001 13.3549 L 8.9948 13.3695 C 8.8061 13.6904 8.4432 13.8703 8.0146 13.8703 C 7.1487 13.8703 6.511 13.0713 6.511 11.9943 C 6.511 10.9183 7.1479 10.1219 8.0146 10.1219 C 8.436 10.1219 8.6758 10.1681 8.9757 10.3121 C 9.2868 10.4616 9.6602 10.3304 9.8096 10.0193 C 9.959 9.7081 9.8279 9.3348 9.5168 9.1853 C 9.0335 8.9533 8.6115 8.8719 8.0146 8.8719 Z M 12.6289 8.9939 C 12.3151 8.9939 12.0554 9.2252 12.0107 9.5266 L 12.0039 9.6189 L 12.0039 14.3811 L 12.0107 14.4734 C 12.0554 14.7748 12.3151 15.0061 12.6289 15.0061 C 12.9427 15.0061 13.2025 14.7748 13.2472 14.4734 L 13.2539 14.3811 L 13.2539 9.6189 L 13.2472 9.5266 C 13.2025 9.2252 12.9427 8.9939 12.6289 8.9939 Z M 17.6222 9.0008 L 15.6248 8.9939 C 15.311 8.9929 15.0504 9.2232 15.0047 9.5244 L 14.9976 9.6168 L 14.9976 14.365 L 15.0044 14.4573 C 15.0441 14.7252 15.2537 14.9377 15.5202 14.9816 L 15.6226 14.99 L 15.715 14.9832 C 15.9829 14.9435 16.1953 14.7338 16.2393 14.4673 L 16.2476 14.365 L 16.247 13.2499 L 17.37 13.2504 L 17.4624 13.2436 C 17.7303 13.2039 17.9427 12.9943 17.9867 12.7278 L 17.995 12.6254 L 17.9882 12.533 C 17.9485 12.2651 17.7389 12.0527 17.4724 12.0087 L 17.37 12.0004 L 16.247 11.9999 L 16.247 10.2449 L 17.6178 10.2508 L 17.7102 10.2444 C 18.0118 10.2008 18.2439 9.9418 18.245 9.628 C 18.2461 9.3142 18.0157 9.0536 17.7145 9.0079 L 17.6222 9.0008 L 15.6248 8.9939 L 17.6222 9.0008 Z"></path>
         </symbol>
     </defs>
 </svg>

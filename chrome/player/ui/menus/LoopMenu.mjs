@@ -143,7 +143,7 @@ export class LoopMenu extends EventEmitter {
 
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#gif');
+    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons2.svg#gif');
     svg.appendChild(use);
     gifButton.appendChild(svg);
     loopButtonContainer.appendChild(gifButton);
