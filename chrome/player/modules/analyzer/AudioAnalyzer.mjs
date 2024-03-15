@@ -382,7 +382,7 @@ export class AudioAnalyzer extends EventEmitter {
       }
 
 
-      if (currentRange.end - currentRange.start >= player.duration - 10) {
+      if (currentRange.end - currentRange.start >= player.duration - 5) {
         onEnd();
         return;
       }
