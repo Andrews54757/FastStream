@@ -16,6 +16,7 @@ export default class DashPlayer extends EventEmitter {
     this.client = client;
     this.isPreview = options?.isPreview || false;
     this.isAudioOnly = options?.isAudioOnly || false;
+    this.isAnalyzer = options?.isAnalyzer || false;
     this.qualityMultiplier = options?.qualityMultiplier || 1.1;
     this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
@@ -33,7 +34,7 @@ export default class DashPlayer extends EventEmitter {
     const emitterRelay = new EmitterRelay([preEvents, this]);
     VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
-    this.dash.updateSettings({
+    const newSettings = {
       'streaming': {
         abr: {
           autoSwitchBitrate: {audio: false, video: false},
@@ -49,10 +50,15 @@ export default class DashPlayer extends EventEmitter {
           defaultEnabled: false,
         },
       },
-      // 'debug': {
-      //   'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
-      // },
-    });
+    };
+
+    if (!this.isPreview && !this.isAnalyzer) {
+      newSettings.debug ={
+        'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
+      };
+    }
+
+    this.dash.updateSettings(newSettings);
 
     this.dash.setCustomInitialTrackSelectionFunction((tracks)=>{
       const lang = navigator.language || 'en';

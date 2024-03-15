@@ -33,7 +33,7 @@ export class VideoUtils {
 
 
     video.addEventListener(DefaultPlayerEvents.ERROR, (event) => {
-      emitter.emit(DefaultPlayerEvents.ERROR);
+      emitter.emit(DefaultPlayerEvents.ERROR, event);
     });
 
 
