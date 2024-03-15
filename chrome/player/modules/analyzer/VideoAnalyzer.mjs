@@ -279,6 +279,11 @@ export class VideoAnalyzer extends EventEmitter {
       return false;
     }
 
+    const video = this.client.player?.getVideo();
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+      return false;
+    }
+
     return true;
   }
 

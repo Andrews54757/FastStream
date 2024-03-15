@@ -78,6 +78,11 @@ export class PreviewFrameExtractor extends EventEmitter {
       return;
     }
 
+    const video = this.client.player?.getVideo();
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+      return;
+    }
+
     const newSource = this.client.player.getSource();
     if (this.backgroundAnalyzerSource === newSource) {
       return;
