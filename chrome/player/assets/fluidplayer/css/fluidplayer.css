@@ -1140,7 +1140,7 @@ body {
     right: 10px;
     left: 50%;
     font-size: var(--font-size-small);
-
+    width: calc(50% - 15px);
 }
 
 .loop_menu .option input:focus,
