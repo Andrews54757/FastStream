@@ -52,11 +52,11 @@ export default class DashPlayer extends EventEmitter {
       },
     };
 
-    if (!this.isPreview && !this.isAnalyzer) {
-      newSettings.debug ={
-        'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
-      };
-    }
+    // if (!this.isPreview && !this.isAnalyzer) {
+    //   newSettings.debug ={
+    //     'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
+    //   };
+    // }
 
     this.dash.updateSettings(newSettings);
 
