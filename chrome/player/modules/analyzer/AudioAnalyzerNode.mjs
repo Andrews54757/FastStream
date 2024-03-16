@@ -62,7 +62,7 @@ export class AudioAnalyzerNode extends EventEmitter {
     this.vadShouldRun = true;
 
     if (this.vadNode) return;
-    const VadJS = await import('../vad/vad.mjs');
+    const {VadJS} = await import('../vad/vad.mjs');
     this.vadNode = await VadJS.AudioNodeVAD.new(this.audioContext, this.vadOptions);
     if (this.vadShouldRun) {
       this.audioSource.connect(this.vadNode.getNode());
