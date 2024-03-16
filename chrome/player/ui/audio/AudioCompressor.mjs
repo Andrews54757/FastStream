@@ -1,6 +1,7 @@
 import {Localize} from '../../modules/Localize.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {createKnob} from '../components/Knob.mjs';
 
 export class AudioCompressor {
   constructor() {
@@ -167,7 +168,7 @@ export class AudioCompressor {
 
     this.compressorKnobs = {};
 
-    this.compressorKnobs.threshold = WebUtils.createKnob(Localize.getMessage('audiocompressor_threshold'), -80, 0, (val) => {
+    this.compressorKnobs.threshold = createKnob(Localize.getMessage('audiocompressor_threshold'), -80, 0, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.threshold) {
         this.compressorConfig.threshold = val;
         this.updateCompressor();
@@ -175,15 +176,16 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.threshold.container);
 
-    this.compressorKnobs.knee = WebUtils.createKnob(Localize.getMessage('audiocompressor_knee'), 0, 40, (val) => {
+    this.compressorKnobs.knee = createKnob(Localize.getMessage('audiocompressor_knee'), 0, 40, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.knee) {
         this.compressorConfig.knee = val;
         this.updateCompressor();
       }
     }, 'dB');
+
     this.ui.compressorControls.appendChild(this.compressorKnobs.knee.container);
 
-    this.compressorKnobs.ratio = WebUtils.createKnob(Localize.getMessage('audiocompressor_ratio'), 1, 20, (val) => {
+    this.compressorKnobs.ratio = createKnob(Localize.getMessage('audiocompressor_ratio'), 1, 20, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.ratio) {
         this.compressorConfig.ratio = val;
         this.updateCompressor();
@@ -191,7 +193,7 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.ratio.container);
 
-    this.compressorKnobs.attack = WebUtils.createKnob(Localize.getMessage('audiocompressor_attack'), 0, 1, (val) => {
+    this.compressorKnobs.attack = createKnob(Localize.getMessage('audiocompressor_attack'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.attack) {
         this.compressorConfig.attack = val;
         this.updateCompressor();
@@ -199,7 +201,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.attack.container);
 
-    this.compressorKnobs.release = WebUtils.createKnob(Localize.getMessage('audiocompressor_release'), 0, 1, (val) => {
+    this.compressorKnobs.release = createKnob(Localize.getMessage('audiocompressor_release'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.release) {
         this.compressorConfig.release = val;
         this.updateCompressor();
@@ -207,7 +209,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.release.container);
 
-    this.compressorKnobs.gain = WebUtils.createKnob(Localize.getMessage('audiocompressor_gain'), 0, 20, (val) => {
+    this.compressorKnobs.gain = createKnob(Localize.getMessage('audiocompressor_gain'), 0, 20, (val) => {
       if (this.compressorConfig && AudioUtils.dbToGain(val) !== this.compressorConfig.gain) {
         this.compressorConfig.gain = AudioUtils.dbToGain(val);
         this.updateCompressor();

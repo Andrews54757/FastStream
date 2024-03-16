@@ -6,6 +6,7 @@ import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {createDropdown} from './components/Dropdown.mjs';
 
 export class SourcesBrowser {
   constructor(client) {
@@ -59,7 +60,7 @@ export class SourcesBrowser {
       modes[PlayerModes.ACCELERATED_YT] = Localize.getMessage('player_source_accelyt');
     }
 
-    const sourceMode = WebUtils.createDropdown(source.mode, Localize.getMessage('player_source_mode'), modes, (val) => {
+    const sourceMode = createDropdown(source.mode, Localize.getMessage('player_source_mode'), modes, (val) => {
       source.mode = val;
       this.updateSources();
     });
