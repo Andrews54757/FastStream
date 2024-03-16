@@ -1,4 +1,3 @@
-import {ConvolutionXTC} from './convolution.mjs';
 import {CrossoverNode} from './crossover.mjs';
 /* eslint-disable camelcase */
 export class CrosstalkNode {
@@ -99,6 +98,7 @@ export class CrosstalkNode {
       numOutputs: 2,
     });
 
+    const ConvolutionXTC = await import('./convolution.mjs');
     this.xtc = new ConvolutionXTC(ctx, this.cachedOptions);
 
     await this.crossover.init();
