@@ -297,7 +297,6 @@ export class VideoAnalyzer extends EventEmitter {
   }
 
   runAnalyzerInBackground(player, aligner, timeStart, timeEnd, onDone) {
-    //  document.body.appendChild(player.video);
     player.currentTime = timeStart;
     player.playbackRate = 6;
     player.volume = 0;
@@ -313,6 +312,13 @@ export class VideoAnalyzer extends EventEmitter {
       destroyed = true;
       onDone(completed);
     });
+
+    const video = player.getVideo();
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
+      console.error('[VideoAnalyzer] Invalid video dimensions');
+      player.destroy();
+      return;
+    }
 
     context.on(DefaultPlayerEvents.ENDED, () => {
       completed = true;
