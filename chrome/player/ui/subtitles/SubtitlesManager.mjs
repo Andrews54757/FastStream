@@ -319,11 +319,8 @@ export class SubtitlesManager extends EventEmitter {
     resyncTool.className = 'fluid_button fluid_button_wand subtitle-resync-tool subtitle-tool';
     trackElement.appendChild(resyncTool);
     // svg use
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#hourglass');
-    svg.appendChild(use);
-    resyncTool.appendChild(svg);
+    const svgIconHourglass = WebUtils.createSVGIcon('assets/fluidplayer/static/icons.svg#hourglass');
+    resyncTool.appendChild(svgIconHourglass);
 
     resyncTool.addEventListener('click', (e) => {
       this.subtitleSyncer.toggleTrack(this.tracks[i]);
@@ -335,11 +332,8 @@ export class SubtitlesManager extends EventEmitter {
     downloadTrack.className = 'fluid_button fluid_button_download subtitle-download-tool subtitle-tool';
 
     // svg use
-    const svg2 = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const use2 = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use2.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#download');
-    svg2.appendChild(use2);
-    downloadTrack.appendChild(svg2);
+    const svgIconDownload = WebUtils.createSVGIcon('assets/fluidplayer/static/icons.svg#download');
+    downloadTrack.appendChild(svgIconDownload);
 
     trackElement.appendChild(downloadTrack);
 
