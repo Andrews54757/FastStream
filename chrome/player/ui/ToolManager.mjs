@@ -1,6 +1,7 @@
 import {Sortable} from '../modules/sortable.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {VideoUtils} from '../utils/VideoUtils.mjs';
+import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
 export class ToolManager {
