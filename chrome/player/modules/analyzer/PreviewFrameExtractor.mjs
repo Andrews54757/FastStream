@@ -61,7 +61,7 @@ export class PreviewFrameExtractor extends EventEmitter {
 
   reset() {
     try {
-      if (!SHOULD_STORE_AS_BLOB) {
+      if (SHOULD_STORE_AS_BLOB) {
         this.frameBuffer.forEach((frame) => {
           URL.revokeObjectURL(frame.url);
         });
