@@ -10,6 +10,7 @@ export class AudioCompressor {
     this.compressorNode = null;
     this.compressorGain = null;
     this.compressorConfig = null;
+    this.renderCache = {};
     this.setupUI();
   }
 
@@ -298,26 +299,51 @@ export class AudioCompressor {
     const height = this.ui.compressorGraphCanvas.clientHeight * window.devicePixelRatio;
 
     if (width === 0 || height === 0) return;
-
-    this.ui.compressorGraphCanvas.width = width;
-    this.ui.compressorGraphCanvas.height = height;
-
     const ctx = this.ui.compressorGraphCtx;
 
-    ctx.clearRect(0, 0, width, height);
 
     // draw line
     const minDB = -80;
     const maxDB = 0;
+    const rangeDB = maxDB - minDB;
+
+
+    const reduction = this.compressorNode ? this.compressorNode.reduction : 0;
+    const threshold = this.compressorConfig.threshold;
+    const knee = this.compressorConfig.knee;
+
+    if (
+      this.renderCache.width === width &&
+      this.renderCache.height === height &&
+      this.renderCache.reduction === reduction &&
+      this.renderCache.threshold === threshold &&
+      this.renderCache.knee === knee
+    ) {
+      return;
+    }
+
+    if (this.renderCache.width !== width || this.renderCache.height !== height) {
+      this.ui.compressorGraphCanvas.width = width;
+      this.ui.compressorGraphCanvas.height = height;
+    }
+
+    this.renderCache.width = width;
+    this.renderCache.height = height;
+    this.renderCache.reduction = reduction;
+    this.renderCache.threshold = threshold;
+    this.renderCache.knee = knee;
+
+    ctx.clearRect(0, 0, width, height);
 
     ctx.beginPath();
     ctx.strokeStyle = 'green';
     ctx.lineWidth = 2;
+    // Draw response line
     for (let x = 0; x < width; x++) {
-      const db = minDB + (maxDB - minDB) * x / width;
+      const db = minDB + rangeDB * x / width;
       const newDB = this.getCompressorNewDBfromOldDB(db);
 
-      const y = height - (newDB - minDB) * height / (maxDB - minDB);
+      const y = height - (newDB - minDB) * height / rangeDB;
 
       if (x === 0) {
         ctx.moveTo(x, y);
@@ -331,32 +357,28 @@ export class AudioCompressor {
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(230, 0, 0, 0.7)';
     ctx.lineWidth = 1;
-    const threshold = this.compressorConfig.threshold;
-    const x = (threshold - minDB) * width / (maxDB - minDB);
+    const x = (threshold - minDB) * width / rangeDB;
     ctx.moveTo(x, 0);
     ctx.lineTo(x, height);
     ctx.stroke();
 
     // draw knee line
-    const knee = this.compressorConfig.knee;
     if (knee > 0) {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 200, 255, 0.7)';
       ctx.lineWidth = 1;
-      const x2 = (threshold + knee - minDB) * width / (maxDB - minDB);
+      const x2 = (threshold + knee - minDB) * width / rangeDB;
       ctx.moveTo(x2, 0);
       ctx.lineTo(x2, height);
       ctx.stroke();
     }
 
-
-    if (this.compressorNode) {
+    if (reduction > 0) {
       // reduction line
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 200, 0, 0.7)';
       ctx.lineWidth = 1;
-      const reduction = this.compressorNode.reduction;
-      const y = height - (reduction - minDB) * height / (maxDB - minDB);
+      const y = height - (reduction - minDB) * height / rangeDB;
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
       ctx.stroke();

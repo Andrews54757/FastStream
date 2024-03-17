@@ -13,7 +13,6 @@ export function DASHLoaderFactory(player) {
         return;
       }
 
-      // console.log(httpRequest.request)
       request(httpRequest);
     }
 
