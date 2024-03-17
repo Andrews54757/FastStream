@@ -433,7 +433,15 @@ export class FastStreamClient extends EventEmitter {
 
       await this.player.setSource(source);
       this.interfaceController.addVideo(this.player.getVideo());
+
+      this.audioContext = new AudioContext();
+      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
+      this.audioConfigManager.setupNodes();
+
+      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
       this.setVolume(this.persistent.volume);
+
       this.player.playbackRate = this.persistent.playbackRate;
 
       this.setSeekSave(false);
@@ -1014,15 +1022,7 @@ export class FastStreamClient extends EventEmitter {
     // Everything below will only run if browser allows playing the video
     // (e.g. not blocked by autoplay policy)
     this.interfaceController.play();
-    if (!this.audioContext) {
-      this.audioContext = new AudioContext();
-      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
-      this.audioConfigManager.setupNodes();
-
-      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
-      this.setVolume(this.persistent.volume);
-    } else if (this.audioContext && this.audioContext.state === 'suspended') {
+    if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
     this.audioAnalyzer.updateBackgroundAnalyzer();
