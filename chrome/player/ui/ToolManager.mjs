@@ -1,4 +1,6 @@
+import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Sortable} from '../modules/sortable.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {VideoUtils} from '../utils/VideoUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
@@ -128,6 +130,12 @@ export class ToolManager {
       DOMElements.download.classList.remove('hidden');
     } else {
       DOMElements.download.classList.add('hidden');
+    }
+
+    if (EnvUtils.isSafari() && this.client.player && this.client.player.getSource().mode !== PlayerModes.DIRECT ) {
+      DOMElements.audioConfigBtn.classList.add('hidden');
+    } else {
+      DOMElements.audioConfigBtn.classList.remove('hidden');
     }
 
     const toolSettings = this.client.options.toolSettings;

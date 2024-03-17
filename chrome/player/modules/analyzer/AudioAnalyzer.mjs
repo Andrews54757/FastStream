@@ -168,6 +168,11 @@ export class AudioAnalyzer extends EventEmitter {
       return;
     }
 
+    if (EnvUtils.isSafari()) {
+      console.log('[AudioAnalyzer] Background analyzer is not supported on Safari');
+      return;
+    }
+
     const newSource = this.client.player.getSource();
     if (this.backgroundAnalyzerSource === newSource) {
       return;
@@ -233,12 +238,6 @@ export class AudioAnalyzer extends EventEmitter {
       vad: false,
       volume: true,
     });
-
-    // Required for Safari
-    // const muteNode = audioContext.createGain();
-    // muteNode.gain.value = 0;
-    // audioSource.connect(muteNode);
-    // muteNode.connect(audioContext.destination);
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
       player.currentLevel = this.client.currentLevel;
