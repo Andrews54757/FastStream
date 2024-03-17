@@ -90,12 +90,9 @@ export class ToolManager {
       const isExpanded = DOMElements.playerContainer.classList.contains('expanded');
       const offset = isExpanded ? 0 : 80;
       if (currentY > 50) {
-        this.fineTimeControls.removeAll();
-        this.progressBar.endPreciseMode();
-        this.subtitlesManager.subtitleSyncer.stop();
-        this.playbackRateChanger.closeSilenceSkipperUI();
+        this.interfaceController.closeTimeline();
       } else if (currentY <= -5 - offset) {
-        this.progressBar.startPreciseMode(true);
+        this.interfaceController.openTimeline();
       }
     };
 

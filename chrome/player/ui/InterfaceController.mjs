@@ -91,6 +91,17 @@ export class InterfaceController {
     this.toolManager.updateToolVisibility();
   }
 
+  openTimeline() {
+    this.progressBar.startPreciseMode(true);
+  }
+
+  closeTimeline() {
+    this.fineTimeControls.removeAll();
+    this.progressBar.endPreciseMode();
+    this.subtitlesManager.subtitleSyncer.stop();
+    this.playbackRateChanger.closeSilenceSkipperUI();
+  }
+
   closeAllMenus(e) {
     if (e && e.target && !DOMElements.disabledTools.contains(e.target)) {
       DOMElements.disabledTools.classList.remove('visible');
