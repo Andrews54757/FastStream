@@ -234,6 +234,12 @@ export class AudioAnalyzer extends EventEmitter {
       volume: true,
     });
 
+    // Required for Safari
+    // const muteNode = audioContext.createGain();
+    // muteNode.gain.value = 0;
+    // audioSource.connect(muteNode);
+    // muteNode.connect(audioContext.destination);
+
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
       player.currentLevel = this.client.currentLevel;
       player.load();

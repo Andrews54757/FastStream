@@ -75,6 +75,8 @@ export class VolumeControls extends EventEmitter {
           this.setVolume(3);
         } else if (newVolume > 0.92 && newVolume < 1.08) {
           this.setVolume(1);
+        } else {
+          this.setVolume(newVolume);
         }
       }
     };

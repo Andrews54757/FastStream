@@ -433,15 +433,7 @@ export class FastStreamClient extends EventEmitter {
 
       await this.player.setSource(source);
       this.interfaceController.addVideo(this.player.getVideo());
-
-      this.audioContext = new AudioContext();
-      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
-      this.audioConfigManager.setupNodes();
-
-      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
       this.setVolume(this.persistent.volume);
-
       this.player.playbackRate = this.persistent.playbackRate;
 
       this.setSeekSave(false);
@@ -1015,9 +1007,22 @@ export class FastStreamClient extends EventEmitter {
     if (!this.player) {
       throw new Error('No source is loaded!');
     }
+
+    // Will throw if browser blocks autoplay
     await this.player.play();
+
+    // Everything below will only run if browser allows playing the video
+    // (e.g. not blocked by autoplay policy)
     this.interfaceController.play();
-    if (this.audioContext && this.audioContext.state === 'suspended') {
+    if (!this.audioContext) {
+      this.audioContext = new AudioContext();
+      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
+      this.audioConfigManager.setupNodes();
+
+      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
+      this.setVolume(this.persistent.volume);
+    } else if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
     this.audioAnalyzer.updateBackgroundAnalyzer();
@@ -1179,8 +1184,13 @@ export class FastStreamClient extends EventEmitter {
 
   setVolume(volume) {
     this.persistent.volume = volume;
-    if (this.player) this.player.volume = 1;
-    this.audioConfigManager.updateVolume(volume);
+    if (volume > 1) {
+      if (this.player) this.player.volume = 1;
+      this.audioConfigManager.updateVolume(volume);
+    } else {
+      if (this.player) this.player.volume = volume;
+      this.audioConfigManager.updateVolume(1);
+    }
   }
 
   get volume() {
