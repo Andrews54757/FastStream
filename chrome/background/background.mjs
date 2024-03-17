@@ -856,10 +856,10 @@ async function openPlayersWithSources(tabid) {
 const webRequestPerms = ['requestHeaders'];
 const webRequestPerms2 = [];
 
-// SPLICER:FIREFOX:REMOVE_START
-webRequestPerms.push('extraHeaders');
-webRequestPerms2.push('extraHeaders');
-// SPLICER:FIREFOX:REMOVE_END
+if (EnvUtils.isChrome()) {
+  webRequestPerms.push('extraHeaders');
+  webRequestPerms2.push('extraHeaders');
+}
 
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   const frame = getOrCreateFrame(details);
