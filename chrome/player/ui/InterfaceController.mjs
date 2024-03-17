@@ -43,10 +43,10 @@ export class InterfaceController {
     this.subtitlesManager = new SubtitlesManager(this.client);
 
     this.playbackRateChanger = new PlaybackRateChanger(this.client);
-    this.playbackRateChanger.setupUI();
     this.playbackRateChanger.on('rateChanged', (rate) => {
       this.client.playbackRate = rate;
     });
+    this.playbackRateChanger.setupUI();
 
     this.videoQualityChanger = new VideoQualityChanger();
     this.videoQualityChanger.setupUI();
