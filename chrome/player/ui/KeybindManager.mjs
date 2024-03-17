@@ -50,7 +50,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('Mute', (e)=>{
-      this.client.interfaceController.muteToggle();
+      this.client.interfaceController.volumeControls.muteToggle();
     });
 
     this.on('SeekForward', (e) => {
