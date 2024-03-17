@@ -135,6 +135,7 @@ export default class DashPlayer extends EventEmitter {
         return dashHandler._getRequestForSegment(mediaInfo, segment);
       });
       segments.forEach((request) => {
+        if (!request) return;
         request.level = rep.id;
         const fragment = new DashFragment(request);
         if (!this.client.getFragment(fragment.level, fragment.sn)) {
