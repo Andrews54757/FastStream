@@ -19,6 +19,7 @@ import {SaveManager} from './SaveManager.mjs';
 import {StatusManager} from './StatusManager.mjs';
 import {SubtitlesManager} from './subtitles/SubtitlesManager.mjs';
 import {ToolManager} from './ToolManager.mjs';
+import {VolumeControls} from './VolumeControls.mjs';
 
 export class InterfaceController {
   constructor(client) {
@@ -77,6 +78,12 @@ export class InterfaceController {
       this.queueControlsHide(5000);
     });
     this.progressBar.setupUI();
+
+    this.volumeControls = new VolumeControls(this.client);
+    this.volumeControls.on('volume', (volume)=>{
+      this.client.setVolume(volume);
+    });
+    this.volumeControls.setupUI();
 
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
@@ -249,28 +256,6 @@ export class InterfaceController {
   }
 
   setupDOM() {
-    DOMElements.volumeContainer.addEventListener('mousedown', this.onVolumeBarMouseDown.bind(this));
-    DOMElements.muteBtn.addEventListener('click', this.muteToggle.bind(this));
-    DOMElements.volumeBlock.tabIndex = 0;
-    DOMElements.volumeBlock.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        this.muteToggle();
-        e.stopPropagation();
-      } else if (e.key === 'ArrowLeft') {
-        this.client.volume = Math.max(0, this.client.volume - 0.1);
-        e.stopPropagation();
-      } else if (e.key === 'ArrowRight') {
-        this.client.volume = Math.min(3, this.client.volume + 0.1);
-        e.stopPropagation();
-      }
-    });
-
-    DOMElements.volumeBlock.addEventListener('wheel', (e) => {
-      this.client.volume = Math.max(0, Math.min(3, this.client.volume + Utils.clamp(e.deltaY, -1, 1) * 0.01));
-      e.preventDefault();
-      e.stopPropagation();
-    });
-
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.playPauseButton);
 
@@ -756,65 +741,6 @@ export class InterfaceController {
     DOMElements.controlsContainer.classList.add('fade_in');
   }
 
-  muteToggle() {
-    if (0 !== this.persistent.volume && !this.persistent.muted) {
-      this.persistent.volume = 0;
-      this.persistent.muted = true;
-    } else {
-      this.persistent.volume = this.persistent.latestVolume;
-      this.persistent.muted = false;
-    }
-    this.client.volume = this.persistent.volume;
-  }
-
-  onVolumeBarMouseDown(event) {
-    const shiftVolume = (volumeBarX) => {
-      const totalWidth = DOMElements.volumeControlBar.clientWidth;
-
-      if (totalWidth) {
-        let newVolume = volumeBarX / totalWidth * 3;
-
-        if (newVolume < 0.05) {
-          newVolume = 0;
-          this.persistent.muted = true;
-        } else if (newVolume > 2.95) {
-          newVolume = 3;
-        }
-
-        if (newVolume > 0.92 && newVolume < 1.08) {
-          newVolume = 1;
-        }
-
-        if (this.persistent.muted && newVolume > 0) {
-          this.persistent.muted = false;
-        }
-        this.client.volume = newVolume;
-      }
-    };
-
-    const onVolumeBarMouseMove = (event) => {
-      const currentX = event.clientX - WebUtils.getOffsetLeft(DOMElements.volumeContainer) - 10;
-      shiftVolume(currentX);
-    };
-
-    const onVolumeBarMouseUp = (event) => {
-      document.removeEventListener('mousemove', onVolumeBarMouseMove);
-      document.removeEventListener('touchmove', onVolumeBarMouseMove);
-      document.removeEventListener('mouseup', onVolumeBarMouseUp);
-      document.removeEventListener('touchend', onVolumeBarMouseUp);
-
-      const currentX = event.clientX - WebUtils.getOffsetLeft(DOMElements.volumeContainer) - 10;
-
-      if (!isNaN(currentX)) {
-        shiftVolume(currentX);
-      }
-    };
-
-    document.addEventListener('mouseup', onVolumeBarMouseUp);
-    document.addEventListener('touchend', onVolumeBarMouseUp);
-    document.addEventListener('mousemove', onVolumeBarMouseMove);
-    document.addEventListener('touchmove', onVolumeBarMouseMove);
-  }
 
   updatePlaybackRate() {
     this.playbackRateChanger.setPlaybackRate(this.persistent.playbackRate, true);
@@ -829,33 +755,8 @@ export class InterfaceController {
     this.videoQualityChanger.updateQualityLevels(this.client);
   }
 
-  updateVolumeBar() {
-    const currentVolumeTag = DOMElements.currentVolume;
-    const muteButtonTag = DOMElements.muteBtn;
-
-    const volume = this.persistent.volume;
-
-    if (0 !== volume) {
-      this.persistent.latestVolume = volume;
-      this.persistent.muted = false;
-    } else {
-      this.persistent.muted = true;
-    }
-    if (this.persistent.muted) {
-      muteButtonTag.classList.add('muted');
-    } else {
-      muteButtonTag.classList.remove('muted');
-    }
-
-    currentVolumeTag.style.width = (volume * 100) / 3 + '%';
-    DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
-
-    DOMElements.volumeBanner.textContent = Math.round(volume * 100) + '%';
-    if (volume === 1 || volume === 0) {
-      DOMElements.volumeBanner.style.display = 'none';
-    } else {
-      DOMElements.volumeBanner.style.display = '';
-    }
+  setVolume(volume) {
+    this.volumeControls.setVolume(volume);
   }
 
   timeUpdated() {
