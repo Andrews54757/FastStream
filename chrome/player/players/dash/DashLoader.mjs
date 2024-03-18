@@ -68,7 +68,9 @@ export function DASHLoaderFactory(player) {
           },
         }, null, 1000);
 
-        activeRequests.push(httpRequest._loader);
+        if (segmentIndex !== -1) {
+          activeRequests.push(httpRequest._loader);
+        }
       } catch (e) {
         console.error(e);
       }
