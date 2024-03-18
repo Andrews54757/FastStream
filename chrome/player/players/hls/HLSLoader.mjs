@@ -122,6 +122,8 @@ export function HLSLoaderFactory(player) {
           },
 
         }, this.config, 1000);
+
+        player.lastRequest = this.loader;
       } catch (e) {
         console.error(e);
       }

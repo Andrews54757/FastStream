@@ -517,26 +517,10 @@ export default class MP4Player extends EventEmitter {
     if (!noLoad) this.runLoad();
   }
 
-  isBuffered(time) {
-    if (this.video.buffered.length === 0) return false;
-
-    if (this.video.buffered.length > 1) {
-      console.log('More than one buffered range', this.video.buffered);
-    }
-
-    const buffered = this.video.buffered;
-    const currentTime = time;
-    for (let i = 0; i < buffered.length; i++) {
-      if (currentTime >= buffered.start(i) && currentTime <= buffered.end(i)) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   set currentTime(value) {
     this.video.currentTime = value;
-    if (!this.isBuffered(value)) {
+
+    if (!VideoUtils.isBuffered(this.buffered, value)) {
       this.resetHLS();
     }
   }

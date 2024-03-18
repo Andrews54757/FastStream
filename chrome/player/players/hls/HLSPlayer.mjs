@@ -342,6 +342,11 @@ export default class HLSPlayer extends EventEmitter {
 
   set currentTime(value) {
     this.video.currentTime = value;
+
+    if (this.lastRequest && !VideoUtils.isBuffered(this.video.buffered, value)) {
+      this.lastRequest.abort();
+      this.lastRequest = null;
+    }
   }
 
   get currentTime() {

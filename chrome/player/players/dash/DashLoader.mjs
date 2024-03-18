@@ -53,6 +53,8 @@ export function DASHLoaderFactory(player) {
             httpRequest.customData.onAbort(entry);
           },
         }, null, 1000);
+
+        player.lastRequest = httpRequest._loader;
       } catch (e) {
         console.error(e);
       }

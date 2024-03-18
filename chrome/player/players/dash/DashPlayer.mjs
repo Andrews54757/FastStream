@@ -220,6 +220,10 @@ export default class DashPlayer extends EventEmitter {
     } catch (e) {
       console.warn(e);
     }
+    if (this.lastRequest && !VideoUtils.isBuffered(this.video.buffered, value)) {
+      this.lastRequest.abort();
+      this.lastRequest = null;
+    }
   }
 
   get currentTime() {

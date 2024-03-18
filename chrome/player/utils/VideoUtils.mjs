@@ -115,4 +115,15 @@ export class VideoUtils {
       console.error(e);
     }
   }
+
+  static isBuffered(buffered, time) {
+    if (buffered.length === 0) return false;
+    const currentTime = time;
+    for (let i = 0; i < buffered.length; i++) {
+      if (currentTime >= buffered.start(i) && currentTime <= buffered.end(i)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
