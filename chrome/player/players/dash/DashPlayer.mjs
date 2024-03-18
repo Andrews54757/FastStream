@@ -216,17 +216,17 @@ export default class DashPlayer extends EventEmitter {
   }
 
   set currentTime(value) {
-    // if (this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
-    //   this.activeRequests.forEach((loader) => {
-    //     loader.abort();
-    //   });
-    //   this.activeRequests.length = 0;
-    //   console.log('Aborted requests');
-    // }
+    if (this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
+      this.activeRequests.forEach((loader) => {
+        loader.abort();
+      });
+      this.activeRequests.length = 0;
+      console.log('Aborted requests');
+    }
 
     this.video.currentTime = value;
     try {
-      this.dash.seek(value);
+      // this.dash.seek(value);
     } catch (e) {
       console.warn(e);
     }
