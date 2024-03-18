@@ -40,6 +40,7 @@ const miniSize = document.getElementById('minisize');
 const miniPos = document.getElementById('minipos');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
+const previewEnabled = document.getElementById('previewenabled');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -79,6 +80,7 @@ async function loadOptions(newOptions) {
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
+  previewEnabled.checked = !!Options.previewEnabled;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
@@ -319,6 +321,11 @@ analyzeVideos.addEventListener('change', () => {
 
 downloadAll.addEventListener('change', () => {
   Options.downloadAll = downloadAll.checked;
+  optionChanged();
+});
+
+previewEnabled.addEventListener('change', () => {
+  Options.previewEnabled = previewEnabled.checked;
   optionChanged();
 });
 

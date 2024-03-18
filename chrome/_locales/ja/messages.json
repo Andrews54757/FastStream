@@ -777,6 +777,9 @@
     "options_general_maxsize": {
         "message": "プリダウンローダーの最大サイズ"
     },
+    "options_general_previewenabled": {
+        "message": "タイムライン上でマウスを移動するとプレビューが表示されます"
+    },
     "options_general_analyze": {
         "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },

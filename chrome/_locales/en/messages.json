@@ -777,6 +777,9 @@
     "options_general_maxsize": {
         "message": "Maximum size of predownloaded video"
     },
+    "options_general_previewenabled": {
+        "message": "Show preview when hovering over the timeline"
+    },
     "options_general_analyze": {
         "message": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)"
     },

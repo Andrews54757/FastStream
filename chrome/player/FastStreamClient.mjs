@@ -42,6 +42,7 @@ export class FastStreamClient extends EventEmitter {
       downloadAll: false,
       freeUnusedChannels: true,
       storeProgress: false,
+      previewEnabled: true,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -187,6 +188,17 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoHueRotate = options.videoHueRotate;
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
+    this.options.previewEnabled = options.previewEnabled;
+
+    if (this.options.previewEnabled) {
+      this.setupPreviewPlayer();
+    } else {
+      if (this.previewPlayer) {
+        this.previewPlayer.destroy();
+        this.previewPlayer = null;
+        this.interfaceController.resetPreviewVideo();
+      }
+    }
 
     this.options.qualityMultiplier = options.qualityMultiplier;
 
@@ -411,6 +423,10 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async setupPreviewPlayer() {
+    if (this.previewPlayer || !this.options.previewEnabled) {
+      return;
+    }
+
     if (this.player.getSource()) {
       this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
         isPreview: true,
@@ -420,8 +436,8 @@ export class FastStreamClient extends EventEmitter {
       this.bindPreviewPlayer(this.previewPlayer);
 
       await this.previewPlayer.setSource(this.player.getSource());
-      this.interfaceController.resetPreviewVideo();
       this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+      this.updateCSSFilters();
     }
   }
 

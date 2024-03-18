@@ -10,6 +10,7 @@ export const DefaultOptions = {
   playStreamURLs: false,
   analyzeVideos: false,
   downloadAll: true,
+  previewEnabled: true,
   autoEnableBestSubtitles: false,
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
