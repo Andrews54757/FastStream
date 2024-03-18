@@ -191,7 +191,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.previewEnabled = options.previewEnabled;
 
     if (this.options.previewEnabled) {
-      this.setupPreviewPlayer();
+      this.setupPreviewPlayer().catch((e) => {
+        console.error(e);
+      });
     } else {
       if (this.previewPlayer) {
         this.previewPlayer.destroy();
