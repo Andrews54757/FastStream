@@ -226,7 +226,6 @@ export default class DashPlayer extends EventEmitter {
         loader.abort();
       });
       this.activeRequests.length = 0;
-      console.log('Aborted requests');
     }
 
     this.video.currentTime = value;
