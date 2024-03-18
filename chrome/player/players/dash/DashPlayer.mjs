@@ -24,6 +24,8 @@ export default class DashPlayer extends EventEmitter {
 
     this.desiredVideoLevel = null;
     this.desiredAudioLevel = null;
+
+    this.activeRequests = [];
   }
 
   async setup() {
@@ -52,7 +54,7 @@ export default class DashPlayer extends EventEmitter {
       },
     };
 
-    // if (!this.isPreview && !this.isAnalyzer) {
+    // if (this.isPreview) {
     //   newSettings.debug ={
     //     'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
     //   };
@@ -214,15 +216,19 @@ export default class DashPlayer extends EventEmitter {
   }
 
   set currentTime(value) {
+    // if (this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
+    //   this.activeRequests.forEach((loader) => {
+    //     loader.abort();
+    //   });
+    //   this.activeRequests.length = 0;
+    //   console.log('Aborted requests');
+    // }
+
     this.video.currentTime = value;
     try {
       this.dash.seek(value);
     } catch (e) {
       console.warn(e);
-    }
-    if (this.lastRequest && !VideoUtils.isBuffered(this.video.buffered, value)) {
-      this.lastRequest.abort();
-      this.lastRequest = null;
     }
   }
 

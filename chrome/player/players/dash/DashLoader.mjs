@@ -39,22 +39,36 @@ export function DASHLoaderFactory(player) {
           return;
         }
 
+        const activeRequests = player.activeRequests;
+
         httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (entry, data) => {
             httpRequest.customData.onSuccess(data, entry.responseURL);
+            const index = activeRequests.indexOf(httpRequest._loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
           onProgress: (stats, context, data, xhr) => {
 
           },
           onFail: (entry) => {
             httpRequest.customData.onAbort(entry);
+            const index = activeRequests.indexOf(httpRequest._loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
           onAbort: (entry) => {
             httpRequest.customData.onAbort(entry);
+            const index = activeRequests.indexOf(httpRequest._loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
         }, null, 1000);
 
-        player.lastRequest = httpRequest._loader;
+        activeRequests.push(httpRequest._loader);
       } catch (e) {
         console.error(e);
       }

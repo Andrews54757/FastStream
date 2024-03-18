@@ -1008,6 +1008,9 @@ export class FastStreamClient extends EventEmitter {
 
     this.previewContext.on(DefaultPlayerEvents.ERROR, (e) => {
       console.log('Preview player error', e);
+      this.previewPlayer.destroy();
+      this.previewPlayer = null;
+      this.interfaceController.resetPreviewVideo();
     });
   }
 
