@@ -423,7 +423,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   async setupPreviewPlayer() {
-    if (this.previewPlayer || !this.options.previewEnabled) {
+    if (!this.player || this.previewPlayer || !this.options.previewEnabled) {
       return;
     }
 
