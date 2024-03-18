@@ -96,11 +96,18 @@ export function HLSLoaderFactory(player) {
           this.loadNonFragmentInternal();
           return;
         }
-        this.loader = player.fragmentRequester.requestFragment(frag, {
+
+        const activeRequests = player.activeRequests;
+
+        const loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (response, stats, context, xhr) => {
             this.copyStats(stats);
             if (this.callbacks) {
               this.callbacks.onSuccess(response, this.stats, this.context, xhr);
+            }
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
             }
           },
           onProgress: (stats, context, data, xhr) => {
@@ -114,16 +121,30 @@ export function HLSLoaderFactory(player) {
               this.stats.aborted = true;
               if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
             }, 1000);
+
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
           onAbort: (entry) => {
             this.copyStats(entry.stats);
             this.stats.aborted = true;
             if (this.callbacks?.onAbort) this.callbacks.onAbort(this.stats, this.context, null, null);
+
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
 
         }, this.config, 1000);
 
-        player.lastRequest = this.loader;
+        this.loader = loader;
+
+        if (sn !== -1) {
+          activeRequests.push(loader);
+        }
       } catch (e) {
         console.error(e);
       }

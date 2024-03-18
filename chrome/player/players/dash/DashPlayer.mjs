@@ -52,6 +52,11 @@ export default class DashPlayer extends EventEmitter {
           defaultEnabled: false,
         },
       },
+      'errors': {
+        recoverAttempts: {
+          mediaErrorDecode: 1000000,
+        },
+      },
     };
 
     // if (this.isPreview) {
@@ -216,7 +221,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   set currentTime(value) {
-    if (this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
+    if (this.isPreview && this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
       this.activeRequests.forEach((loader) => {
         loader.abort();
       });

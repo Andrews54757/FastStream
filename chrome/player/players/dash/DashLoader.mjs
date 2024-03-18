@@ -41,10 +41,10 @@ export function DASHLoaderFactory(player) {
 
         const activeRequests = player.activeRequests;
 
-        httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
+        const loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (entry, data) => {
             httpRequest.customData.onSuccess(data, entry.responseURL);
-            const index = activeRequests.indexOf(httpRequest._loader);
+            const index = activeRequests.indexOf(loader);
             if (index > -1) {
               activeRequests.splice(index, 1);
             }
@@ -54,22 +54,25 @@ export function DASHLoaderFactory(player) {
           },
           onFail: (entry) => {
             httpRequest.customData.onAbort(entry);
-            const index = activeRequests.indexOf(httpRequest._loader);
+            const index = activeRequests.indexOf(loader);
             if (index > -1) {
               activeRequests.splice(index, 1);
             }
           },
           onAbort: (entry) => {
             httpRequest.customData.onAbort(entry);
-            const index = activeRequests.indexOf(httpRequest._loader);
+            const index = activeRequests.indexOf(loader);
             if (index > -1) {
               activeRequests.splice(index, 1);
             }
           },
         }, null, 1000);
 
+
+        httpRequest._loader = loader;
+
         if (segmentIndex !== -1) {
-          activeRequests.push(httpRequest._loader);
+          activeRequests.push(loader);
         }
       } catch (e) {
         console.error(e);

@@ -410,6 +410,21 @@ export class FastStreamClient extends EventEmitter {
     this.options.autoPlay = value;
   }
 
+  async setupPreviewPlayer() {
+    if (this.player.getSource()) {
+      this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
+        isPreview: true,
+      });
+
+      await this.previewPlayer.setup();
+      this.bindPreviewPlayer(this.previewPlayer);
+
+      await this.previewPlayer.setSource(this.player.getSource());
+      this.interfaceController.resetPreviewVideo();
+      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+    }
+  }
+
   async setSource(source) {
     try {
       source = source.copy();
@@ -449,15 +464,7 @@ export class FastStreamClient extends EventEmitter {
       this.setSeekSave(true);
 
       if (this.player.getSource()) {
-        this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
-          isPreview: true,
-        });
-
-        await this.previewPlayer.setup();
-        this.bindPreviewPlayer(this.previewPlayer);
-
-        await this.previewPlayer.setSource(this.player.getSource());
-        this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+        await this.setupPreviewPlayer();
 
         await this.videoAnalyzer.setSource(this.player.getSource());
 
@@ -1011,6 +1018,11 @@ export class FastStreamClient extends EventEmitter {
       this.previewPlayer.destroy();
       this.previewPlayer = null;
       this.interfaceController.resetPreviewVideo();
+
+      if (!this.interfaceController.failed) {
+        console.error('Reloading preview player');
+        this.setupPreviewPlayer();
+      }
     });
   }
 
