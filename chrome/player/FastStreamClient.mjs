@@ -1038,6 +1038,11 @@ export class FastStreamClient extends EventEmitter {
       this.interfaceController.resetPreviewVideo();
 
       if (!this.interfaceController.failed) {
+        const now = Date.now();
+        if (this.lastPreviewReload && now - this.lastPreviewReload < 1000) {
+          return;
+        }
+        this.lastPreviewReload = now;
         console.error('Reloading preview player');
         this.setupPreviewPlayer();
       }
