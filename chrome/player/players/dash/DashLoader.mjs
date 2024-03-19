@@ -68,6 +68,9 @@ export function DASHLoaderFactory(player) {
           },
         }, null, 1000);
 
+        httpRequest.customData.abort = () => {
+          loader.abort();
+        };
 
         httpRequest._loader = loader;
 
@@ -129,6 +132,10 @@ export function DASHLoaderFactory(player) {
           httpRequest.customData.onAbort(entry);
         },
       });
+
+      httpRequest.customData.abort = () => {
+        loader.abort();
+      };
 
       httpRequest._loader = loader;
     }

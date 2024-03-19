@@ -221,12 +221,12 @@ export default class DashPlayer extends EventEmitter {
   }
 
   set currentTime(value) {
-    if (this.isPreview && this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
-      this.activeRequests.forEach((loader) => {
-        loader.abort();
-      });
-      this.activeRequests.length = 0;
-    }
+    // if (this.isPreview && this.activeRequests.length > 0 && !VideoUtils.isBuffered(this.video.buffered, value)) {
+    //   this.activeRequests.forEach((loader) => {
+    //     loader.abort();
+    //   });
+    //   this.activeRequests.length = 0;
+    // }
 
     this.video.currentTime = value;
     try {
