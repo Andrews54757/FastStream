@@ -347,6 +347,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         }
       }
     }
+
+    checkURLMatch(frame);
   } else if (msg.type === 'loaded') {
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'init',
@@ -427,6 +429,19 @@ function checkYTURL(frame) {
       url: url,
       requestId: -1,
     }, frame, PlayerModes.ACCELERATED_YT);
+  }
+}
+
+function checkURLMatch(frame) {
+  const url = frame.url;
+  const ext = CustomSourcePatternsMatcher.match(url);
+  if (ext) {
+    const mode = URLUtils.getModeFromExtension(ext);
+    if (!mode) return;
+    onSourceRecieved({
+      url: url,
+      requestId: -1,
+    }, frame, mode);
   }
 }
 
