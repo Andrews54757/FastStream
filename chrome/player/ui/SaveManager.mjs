@@ -302,7 +302,7 @@ export class SaveManager {
       return track;
     }))).forEach((track) => {
       const returnedTrack = this.client.loadSubtitleTrack(track);
-      this.subtitlesManager.activateTrack(returnedTrack);
+      this.client.interfaceController.subtitlesManager.activateTrack(returnedTrack);
     });
 
     this.client.play();
