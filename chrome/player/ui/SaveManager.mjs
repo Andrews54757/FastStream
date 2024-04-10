@@ -218,6 +218,8 @@ export class SaveManager {
       'wav',
       'm4a',
       'm4r',
+      'mkv',
+      'webm',
     ];
 
     const subtitleFormats = [
