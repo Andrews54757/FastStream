@@ -1,4 +1,51 @@
 export class SubtitleUtils {
+  static translateXMLEntities(str) {
+    const entitiesList = {
+      '&amp;': '&',
+      '&gt;': '>',
+      '&lt;': '<',
+      '&quot;': '"',
+      '&apos;': '\'',
+    };
+
+    const entitySplit = str.split(/(&[#a-zA-Z0-9]+;)/);
+    if (entitySplit.length <= 1) { // No entities. Skip the rest of the function.
+      return str;
+    }
+
+    for (let i = 1; i < entitySplit.length; i += 2) {
+      const reference = entitySplit[i];
+
+      /*
+       * Check if it is a character reference of the form
+       * /&#[0-9]+;/ - Encoded in decimal, or
+       * /&#x[0-9a-fA-F]+;/ - Encoded in hexadecimal
+       * See https://www.w3.org/TR/xml/#sec-references
+       */
+      if (reference.charAt(1) === '#') {
+        let code;
+        if (reference.charAt(2) === 'x') { // Hexadecimal
+          code = parseInt(reference.substring(3, reference.length - 1), 16);
+        } else { // Decimal
+          code = parseInt(reference.substring(2, reference.length - 1), 10);
+        }
+
+        // Translate into string according to ISO/IEC 10646
+        if (!isNaN(code) && code >= 0 && code <= 0x10FFFF) {
+          entitySplit[i] = String.fromCodePoint(code);
+        }
+      }
+      /*
+       * Translate entity references using a dictionary.
+       */
+      else if (entitiesList.hasOwnProperty(reference)) {
+        entitySplit[i] = entitiesList[reference];
+      }
+    }
+
+    return entitySplit.join('');
+  }
+
   static srt2webvtt(data) {
     // remove dos newlines
     let srt = data.replace(/\r+/g, '');
@@ -26,7 +73,7 @@ export class SubtitleUtils {
       const start = parseFloat(cue.getAttribute('start'));
       const dur = parseFloat(cue.getAttribute('dur'));
       const end = start + dur;
-      const text = cue.textContent;
+      const text = this.translateXMLEntities(cue.textContent);
       result.push((i + 1) + '\n' + this.vttTimeFormat(start) + ' --> ' + this.vttTimeFormat(end) + '\n' + text);
     }
     return result.join('\n\n');
