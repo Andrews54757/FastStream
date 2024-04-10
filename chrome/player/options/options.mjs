@@ -454,6 +454,9 @@ function optionChanged() {
   }
 }
 
+const versionDiv = document.getElementById('version');
+versionDiv.textContent = `FastStream v${EnvUtils.getVersion()}`;
+
 if (EnvUtils.isExtension()) {
   // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
