@@ -87,7 +87,7 @@ export class CrosstalkNode {
     this.input.channelInterpretation = 'speakers';
     this.input.channelCount = 2;
     this.input.channelCountMode = 'explicit';
-    this.input.gain.value = 1.2;
+    // this.input.gain.value = 1.2;
 
     const merger = ctx.createChannelMerger(2);
     this.output = merger;
