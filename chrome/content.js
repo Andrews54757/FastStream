@@ -447,9 +447,9 @@ function get_yt_identifier(urlStr) {
 
 function updatePlayerStyles() {
   players.forEach((player) => {
-    if (player.fillScreen) return;
+    if (player.fillScreen || player.isWindowedFullscreen) return;
 
-    updatePlayerStyle(player.old, player.iframe, player.isYt, player.isWindowedFullscreen);
+    updatePlayerStyle(player.old, player.iframe, player.isYt);
     if (player.isPlaceholder) {
       player.iframe.style.setProperty('background-color', 'black', 'important');
     }
