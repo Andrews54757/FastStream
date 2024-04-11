@@ -255,6 +255,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse(result);
     });
     return true;
+  } else if (msg.type === 'request_windowed_fullscreen') {
+    handleFullScreenRequest(frame, {
+      type: 'windowed_fullscreen',
+      force: msg.force,
+    }).then((result) => {
+      sendResponse(result);
+    });
+    return true;
   } else if (msg.type === 'request_miniplayer') {
     handleFullScreenRequest(frame, {
       type: 'miniplayer',

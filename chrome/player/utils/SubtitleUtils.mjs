@@ -15,13 +15,6 @@ export class SubtitleUtils {
 
     for (let i = 1; i < entitySplit.length; i += 2) {
       const reference = entitySplit[i];
-
-      /*
-       * Check if it is a character reference of the form
-       * /&#[0-9]+;/ - Encoded in decimal, or
-       * /&#x[0-9a-fA-F]+;/ - Encoded in hexadecimal
-       * See https://www.w3.org/TR/xml/#sec-references
-       */
       if (reference.charAt(1) === '#') {
         let code;
         if (reference.charAt(2) === 'x') { // Hexadecimal
@@ -34,11 +27,7 @@ export class SubtitleUtils {
         if (!isNaN(code) && code >= 0 && code <= 0x10FFFF) {
           entitySplit[i] = String.fromCodePoint(code);
         }
-      }
-      /*
-       * Translate entity references using a dictionary.
-       */
-      else if (entitiesList.hasOwnProperty(reference)) {
+      } else if (entitiesList.hasOwnProperty(reference)) {
         entitySplit[i] = entitiesList[reference];
       }
     }

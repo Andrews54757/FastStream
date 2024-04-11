@@ -372,6 +372,9 @@
     "player_fullscreen_label": {
         "message": "Fullscreen"
     },
+    "player_windowed_fullscreen_label": {
+        "message": "Windowed Fullscreen"
+    },
     "player_more_label": {
         "message": "More tools"
     },

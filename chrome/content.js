@@ -18,7 +18,7 @@ window.addEventListener('message', (e) => {
             id: dt.id,
             iframe: iframes[i],
             isMini: false,
-            isFullscreen: false,
+            isWindowedFullscreen: false,
             placeholder: null,
             oldStyle: '',
           });
@@ -33,6 +33,30 @@ chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
       if (request.type === 'ping') {
         sendResponse('pong');
+      } else if (request.type === 'windowed_fullscreen') {
+        const iframeObj = iframeMap.get(request.frameId);
+        if (!iframeObj) {
+          sendResponse('no_element');
+          throw new Error('No element found for frame id ' + request.frameId);
+        }
+
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+
+        if (iframeObj.isMini) {
+          unmakeMiniPlayer(iframeObj);
+        }
+
+        if (request.force === undefined || request.force !== iframeObj.isWindowedFullscreen) {
+          windowedFullscreenToggle(iframeObj);
+        }
+
+        if (iframeObj.isWindowedFullscreen) {
+          sendResponse('enter');
+        } else {
+          sendResponse('exit');
+        }
       } else if (request.type === 'miniplayer') {
         const iframeObj = iframeMap.get(request.frameId);
         if (!iframeObj) {
@@ -43,7 +67,7 @@ chrome.runtime.onMessage.addListener(
         iframeObj.miniSize = request.size;
         iframeObj.miniStyles = request.styles;
 
-        if (document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
+        if (iframeObj.isWindowedFullscreen || document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
           updateMiniPlayer(iframeObj);
         } else {
           toggleMiniPlayer(iframeObj, request.size);
@@ -195,6 +219,7 @@ chrome.runtime.onMessage.addListener(
               old: video.highest,
               isYt,
               fillScreen: playerFillsScreen,
+              isWindowedFullscreen: false,
             });
             console.log('replacing video with iframe');
             sendResponse('replace');
@@ -341,6 +366,48 @@ function toggleMiniPlayer(iframeObj) {
   }
 }
 
+function windowedFullscreenToggle(iframeObj) {
+  if (!iframeObj.isWindowedFullscreen) {
+    iframeObj.isWindowedFullscreen = true;
+    iframeObj.oldStyle = iframeObj.iframe.getAttribute('style') || '';
+    players.forEach((player) => {
+      if (player.iframe === iframeObj.iframe) {
+        player.isWindowedFullscreen = true;
+      }
+    });
+
+    fillScreenIframe(iframeObj.iframe);
+  } else {
+    iframeObj.isWindowedFullscreen = false;
+    iframeObj.iframe.setAttribute('style', iframeObj.oldStyle);
+    players.forEach((player) => {
+      if (player.iframe === iframeObj.iframe) {
+        player.isWindowedFullscreen = false;
+      }
+    });
+    updatePlayerStyles();
+  }
+}
+
+function fillScreenIframe(iframe) {
+  iframe.setAttribute('style', `
+    position: fixed !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 0px !important;
+    z-index: 2147483647 !important;
+    border: none !important;
+    outline: none !important;
+    top: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    bottom: 0px !important;
+    right: 0px !important;
+  `);
+}
+
 document.addEventListener('fullscreenchange', () => {
   chrome.runtime.sendMessage({
     type: 'fullscreen_change_init',
@@ -380,24 +447,24 @@ function updatePlayerStyles() {
   players.forEach((player) => {
     if (player.fillScreen) return;
 
-    updatePlayerStyle(player.old, player.iframe, player.isYt);
+    updatePlayerStyle(player.old, player.iframe, player.isYt, player.isWindowedFullscreen);
     if (player.isPlaceholder) {
       player.iframe.style.setProperty('background-color', 'black', 'important');
     }
   });
 }
 
-function updatePlayerStyle(old, iframe, isYt) {
+function updatePlayerStyle(old, iframe, isYt, fillScreen) {
   const parent = iframe.parentNode;
   iframe.style.display = 'none';
   if (isYt) {
     showYT(old);
-    updateIframeStyle(old, iframe, isYt);
+    updateIframeStyle(old, iframe, isYt, fillScreen);
     hideYT(old);
   } else {
     parent.insertBefore(old, iframe);
     transferId(iframe, old);
-    updateIframeStyle(old, iframe, isYt);
+    updateIframeStyle(old, iframe, isYt, fillScreen);
     parent.removeChild(old);
   }
 }
@@ -429,20 +496,7 @@ function removePauseListeners(element) {
 
 function updateIframeStyle(old, iframe, isYt, fillScreen) {
   if (fillScreen) {
-    iframe.setAttribute('style', `
-      position: fixed !important;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      padding: 0px !important;
-      z-index: 2147483647 !important;
-      border: none !important;
-      outline: none !important;
-      top: 0px !important;
-      left: 0px !important;
-      width: 100% !important;
-      height: 100% !important;
-    `);
+    fillScreenIframe(iframe);
     return;
   }
 

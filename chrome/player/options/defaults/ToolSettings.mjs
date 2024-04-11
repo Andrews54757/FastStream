@@ -43,6 +43,10 @@ export const DefaultToolSettings = {
     'enabled': true,
     'priority': 1000,
   },
+  'windowedfs': {
+    'enabled': false,
+    'priority': 400,
+  },
   'more': {
     'enabled': true,
     'priority': 800,

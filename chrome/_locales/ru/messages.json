@@ -372,6 +372,9 @@
     "player_fullscreen_label": {
         "message": "Во весь экран"
     },
+    "player_windowed_fullscreen_label": {
+        "message": "Оконный режим"
+    },
     "player_more_label": {
         "message": "Другие инструменты"
     },

@@ -372,6 +372,9 @@
     "player_fullscreen_label": {
         "message": "フルスクリーン"
     },
+    "player_windowed_fullscreen_label": {
+        "message": "ウィンドウ化されたフルスクリーン"
+    },
     "player_more_label": {
         "message": "その他のツール"
     },

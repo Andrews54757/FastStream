@@ -371,6 +371,9 @@
     "player_fullscreen_label": {
         "message": "Pantalla completa"
     },
+    "player_windowed_fullscreen_label": {
+        "message": "Pantalla completa de ventana"
+    },
     "player_more_label": {
         "message": "Más utilidades"
     },

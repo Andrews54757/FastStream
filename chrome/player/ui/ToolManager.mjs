@@ -132,6 +132,12 @@ export class ToolManager {
       DOMElements.download.classList.add('hidden');
     }
 
+    if (this.client.player && window.self !== window.top) {
+      DOMElements.windowedFullscreen.classList.remove('hidden');
+    } else {
+      DOMElements.windowedFullscreen.classList.add('hidden');
+    }
+
     if (EnvUtils.isSafari() && this.client.player && this.client.player.getSource().mode !== PlayerModes.DIRECT ) {
       DOMElements.audioConfigBtn.classList.add('hidden');
     } else {
@@ -145,6 +151,7 @@ export class ToolManager {
       download: DOMElements.download,
       playrate: DOMElements.playbackRate,
       fullscreen: DOMElements.fullscreen,
+      windowedfs: DOMElements.windowedFullscreen,
       subtitles: DOMElements.subtitles,
       audioconfig: DOMElements.audioConfigBtn,
       sources: DOMElements.linkButton,
