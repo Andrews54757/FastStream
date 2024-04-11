@@ -385,7 +385,9 @@ function windowedFullscreenToggle(iframeObj) {
         player.isWindowedFullscreen = false;
       }
     });
-    updatePlayerStyles();
+    setTimeout(() => {
+      updatePlayerStyles();
+    }, 1000);
   }
 }
 
