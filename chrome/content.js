@@ -2,6 +2,7 @@ let FoundYTPlayer = null;
 let OverridenYTKeys = false;
 const iframeMap = new Map();
 const players = [];
+const elementsHiddenByFillscreen = [];
 window.addEventListener('message', (e) => {
   if (typeof e.data !== 'object') {
     return;
@@ -252,6 +253,8 @@ function removePlayers() {
     unmakeMiniPlayer(iframeObj);
   });
 
+  undoFillScreenIframe();
+
   players.forEach((player) => {
     if (player.isYt) {
       showYT(player.old);
@@ -385,13 +388,47 @@ function windowedFullscreenToggle(iframeObj) {
         player.isWindowedFullscreen = false;
       }
     });
+    undoFillScreenIframe();
     setTimeout(() => {
       updatePlayerStyles();
     }, 1000);
   }
 }
 
+function undoFillScreenIframe() {
+  elementsHiddenByFillscreen.forEach((element) => {
+    element.style.display = element.dataset.olddisplay;
+  });
+  elementsHiddenByFillscreen.length = 0;
+}
+
 function fillScreenIframe(iframe) {
+  const elementsToHide = [];
+
+  // Gather all elements not parents of the iframe
+  const elements = document.querySelectorAll('*');
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (element === iframe) {
+      continue;
+    }
+
+    if (element.contains(iframe)) {
+      continue;
+    }
+
+    elementsToHide.push(element);
+  }
+
+  elementsToHide.forEach((element) => {
+    if (element === iframe) {
+      return;
+    }
+    element.dataset.olddisplay = element.style.display;
+    element.style.setProperty('display', 'none', 'important');
+    elementsHiddenByFillscreen.push(element);
+  });
+
   iframe.setAttribute('style', `
     position: fixed !important;
     display: block !important;
