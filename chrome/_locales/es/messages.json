@@ -3,7 +3,7 @@
         "message": "Reproductor de Video FastStream"
     },
     "extension_description": {
-        "message": "Reproduce videos en línea sin interrupciones, un excelente reproductor de video y acelerador de descargas todo en uno."
+        "message": "Transmisión sin almacenamiento en búfer. Soluciona los reproductores de video deficientes en Internet."
     },
     "extension_toggle_label": {
         "message": "Alternar FastStream"

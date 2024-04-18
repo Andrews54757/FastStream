@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Stream without buffering, a great video player and download accelerator all in one."
+        "message": "バッファリングなしでストリーム。インターネット上の悪質なビデオプレーヤーを修正します。"
     },
     "extension_toggle_label": {
         "message": "FastStream に切り替える"

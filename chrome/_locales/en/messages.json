@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Stream without buffering, a great video player and download accelerator all in one."
+        "message": "Stream without buffering. Fix bad video players on the internet."
     },
     "extension_toggle_label": {
         "message": "Toggle FastStream"

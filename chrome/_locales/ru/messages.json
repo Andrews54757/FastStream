@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Потоковая передача без буферизации, отличный видеоплеер и ускоритель загрузки - всё в одном."
+        "message": "Трансляция без буферизации. Исправьте плохие видеоплееры в интернете."
     },
     "extension_toggle_label": {
         "message": "Переключить FastStream"
