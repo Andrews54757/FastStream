@@ -69,11 +69,11 @@ export class VolumeControls extends EventEmitter {
       if (totalWidth) {
         const newVolume = volumeBarX / totalWidth * 3;
 
-        if (newVolume < 0.05) {
+        if (newVolume < 0.025) {
           this.setVolume(0);
-        } else if (newVolume > 2.95) {
+        } else if (newVolume > 2.975) {
           this.setVolume(3);
-        } else if (newVolume > 0.92 && newVolume < 1.08) {
+        } else if (newVolume > 0.975 && newVolume < 1.025) {
           this.setVolume(1);
         } else {
           this.setVolume(newVolume);
