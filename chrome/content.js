@@ -206,7 +206,7 @@ chrome.runtime.onMessage.addListener(
             iframe.allow = 'autoplay; fullscreen; picture-in-picture';
 
             // replace element
-            pauseAllWithin(video.highest);
+            const watcher = pauseAllWithin(video.highest);
 
             if (isYt) {
               video.highest.parentNode.insertBefore(iframe, video.highest);
@@ -217,6 +217,7 @@ chrome.runtime.onMessage.addListener(
 
             players.push({
               iframe,
+              watcher,
               old: video.highest,
               isYt,
               fillScreen: playerFillsScreen,
@@ -263,7 +264,7 @@ function removePlayers() {
       player.iframe.parentNode.replaceChild(player.old, player.iframe);
     }
 
-    removePauseListeners(player.old);
+    removePauseListeners(player.old, player.watcher);
   });
 
   players.length = 0;
@@ -524,13 +525,35 @@ function pauseAllWithin(element) {
 
     video.addEventListener('play', pauseOnPlay);
   });
+
+  // Add mutation observer to pause videos added later
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        const addedNodes = Array.from(mutation.addedNodes);
+        addedNodes.forEach((node) => {
+          if (node.tagName === 'VIDEO') {
+            node.pause();
+            node.addEventListener('play', pauseOnPlay);
+          }
+        });
+      }
+    });
+  });
+  observer.observe(element, {childList: true, subtree: true});
+
+  return {
+    observer,
+  };
 }
 
-function removePauseListeners(element) {
+function removePauseListeners(element, watcher) {
   const videos = querySelectorAllIncludingShadows('video', element);
   videos.forEach((video) => {
     video.removeEventListener('play', pauseOnPlay);
   });
+
+  watcher.observer.disconnect();
 }
 
 function updateIframeStyle(old, iframe, isYt, fillScreen) {
