@@ -998,6 +998,10 @@ if (is_url_yt(window.location.href)) {
       return;
     }
 
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+      return;
+    }
+
     chrome.runtime.sendMessage({
       type: 'transmit_key',
       key: getKeyString(e),
@@ -1014,6 +1018,10 @@ if (is_url_yt(window.location.href)) {
       return;
     }
 
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+      return;
+    }
+
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -1022,6 +1030,10 @@ if (is_url_yt(window.location.href)) {
 
   document.addEventListener('keypress', (e) => {
     if (isActiveElementEditable()) {
+      return;
+    }
+
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
       return;
     }
 
