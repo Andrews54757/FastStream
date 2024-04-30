@@ -1107,7 +1107,7 @@ export class FastStreamClient extends EventEmitter {
 
     for (let i = 0; i < fragments.length; i++) {
       const fragment = fragments[i];
-      if (fragment.end >= start && fragment.start <= end) {
+      if (fragment && fragment.end >= start && fragment.start <= end) {
         if (fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           return false;
         }
