@@ -179,6 +179,10 @@ export class KeybindManager extends EventEmitter {
       updateVideoTransform();
     });
 
+    this.on('WindowedFullscreen', (e) => {
+      this.client.interfaceController.toggleWindowedFullscreen();
+    });
+
     this.on('keybind', (keybind, e) => {
       // console.log("Keybind", keybind);
     });
