@@ -26,6 +26,7 @@
         <use transform="translate(24,0)" href="#loop" width="24" height="24" />
         <use transform="translate(48,0)" href="#gif" width="24" height="24" />
         <use transform="translate(72,0)" href="#windowed-fs" width="24" height="24" />
+		<use transform="translate(96,0)" href="#update-notif" width="24" height="24" />
     </g>
     <defs>
         <symbol id="rect" viewBox="0 0 24 24" stroke="currentColor">
@@ -52,7 +53,9 @@
             
             <path d="M 4.4 3.7 H 19.25 C 20.6 3.7 21.95 5.05 21.95 6.4 V 17.2 C 21.95 18.55 20.6 19.9 19.25 19.9 H 4.4 C 3.05 19.9 1.7 18.55 1.7 17.2 V 6.4 C 1.7 5.05 3.05 3.7 4.4 3.7 M 19.25 6.4 H 4.4 V 17.2 H 19.25 V 6.4"/>
         </symbol>
-     
-  
+		<symbol id="update-notif" viewBox="0 0 100 100" stroke="currentColor" fill="currentColor">
+            <circle cx="6" cy="45" r="5" />
+			<path d="M 2 35 V 9 L 10 9 L 10 35 L 2 35" />
+		</symbol>
     </defs>
 </svg>

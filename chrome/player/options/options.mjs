@@ -515,6 +515,7 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
   const updatebox = document.getElementById('updatebox');
   const updatetext = document.getElementById('updatetext');
+  const updatenotif = parent.document.getElementById('updatenotif');
 
   chrome.storage.local.get({
     updateData: '{}',
@@ -536,6 +537,7 @@ if (EnvUtils.isExtension()) {
     if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
       updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
       updatebox.style.display = 'block';
+	  updatenotif.style.display = 'block';
     }
   });
 
