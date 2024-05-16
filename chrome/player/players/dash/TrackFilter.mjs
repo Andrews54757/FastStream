@@ -132,7 +132,7 @@ export class TrackFilter {
     });
   }
 
-  static uniqueLanguages(tracks, qualityMultiplier) {
+  static uniqueLanguages(tracks, defaultQuality) {
     tracks = this.filterTracksByCodec(tracks);
 
     const languageMap = new Map();
@@ -154,7 +154,7 @@ export class TrackFilter {
       if (langTracks.length > 1) {
         if (langTracks[0].type === 'video') {
           const levelList = this.getLevelList(langTracks, langTracks[0].lang);
-          const chosenQuality = Utils.selectQuality(levelList, qualityMultiplier);
+          const chosenQuality = Utils.selectQuality(levelList, defaultQuality);
           langTracks = [levelList.get(chosenQuality).track];
         } else {
           langTracks = this.prioritizeMP4Tracks(langTracks);
@@ -231,7 +231,7 @@ export class TrackFilter {
     return map;
   }
 
-  static filterTracks(tracks, lang, qualityMultiplier) {
+  static filterTracks(tracks, lang, defaultQuality) {
     if (tracks.length > 1) {
       tracks = this.filterTracksByCodec(tracks);
     }
@@ -247,7 +247,7 @@ export class TrackFilter {
     if (tracks.length > 1) {
       if (tracks[0].type === 'video') {
         const levelList = this.getLevelList(tracks, lang);
-        const chosenQuality = Utils.selectQuality(levelList, qualityMultiplier);
+        const chosenQuality = Utils.selectQuality(levelList, defaultQuality);
         tracks = [levelList.get(chosenQuality).track];
       } else {
         tracks = this.prioritizeMP4Tracks(tracks);

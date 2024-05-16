@@ -805,7 +805,7 @@
         "message": "YouTube 動画の自動再生"
     },
     "options_general_quality": {
-        "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
+        "message": "動画の品質"
     },
     "options_general_clickaction": {
         "message": "シングルクリック時のアクション"

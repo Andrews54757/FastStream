@@ -60,7 +60,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       seekStepSize: 0.2,
-      qualityMultiplier: 1,
+      defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
     };
     this.persistent = {
@@ -203,7 +203,7 @@ export class FastStreamClient extends EventEmitter {
       }
     }
 
-    this.options.qualityMultiplier = options.qualityMultiplier;
+    this.options.defaultQuality = options.defaultQuality;
 
     this.updateCSSFilters();
 
@@ -457,9 +457,7 @@ export class FastStreamClient extends EventEmitter {
       const estimate = await navigator.storage.estimate();
       this.storageAvailable = estimate.quota - estimate.usage;
 
-      this.player = await this.playerLoader.createPlayer(source.mode, this, {
-        qualityMultiplier: this.options.qualityMultiplier,
-      });
+      this.player = await this.playerLoader.createPlayer(source.mode, this, {});
 
       await this.player.setup();
 

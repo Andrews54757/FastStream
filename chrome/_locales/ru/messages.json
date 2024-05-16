@@ -805,7 +805,7 @@
         "message": "Автовоспроизведение на YouTube"
     },
     "options_general_quality": {
-        "message": "Множитель качества для алгоритма выбора качества (чем выше, тем выше качество)"
+        "message": "Качество видео"
     },
     "options_general_clickaction": {
         "message": "Действие по одиночному клику"

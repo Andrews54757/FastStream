@@ -11,13 +11,13 @@ import {DASHLoaderFactory} from './DashLoader.mjs';
 import {TrackFilter} from './TrackFilter.mjs';
 
 export default class DashPlayer extends EventEmitter {
-  constructor(client, options) {
+  constructor(client, config) {
     super();
     this.client = client;
-    this.isPreview = options?.isPreview || false;
-    this.isAudioOnly = options?.isAudioOnly || false;
-    this.isAnalyzer = options?.isAnalyzer || false;
-    this.qualityMultiplier = options?.qualityMultiplier || 1.1;
+    this.isPreview = config?.isPreview || false;
+    this.isAudioOnly = config?.isAudioOnly || false;
+    this.isAnalyzer = config?.isAnalyzer || false;
+    this.defaultQuality = client.options.defaultQuality || 'Auto';
     this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
     this.fragmentRequester = new DashFragmentRequester(this);
@@ -69,7 +69,7 @@ export default class DashPlayer extends EventEmitter {
 
     this.dash.setCustomInitialTrackSelectionFunction((tracks)=>{
       const lang = navigator.language || 'en';
-      return TrackFilter.filterTracks(tracks, lang, this.qualityMultiplier);
+      return TrackFilter.filterTracks(tracks, lang, this.defaultQuality);
     });
 
     this.dash.on('needkey', (e) => {
@@ -82,7 +82,7 @@ export default class DashPlayer extends EventEmitter {
       if (initAlready) return;
       initAlready = true;
 
-      const level = Utils.selectQuality(this.levels, this.qualityMultiplier);
+      const level = Utils.selectQuality(this.levels, this.defaultQuality);
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
     };
 
@@ -309,7 +309,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get videoTracks() {
-    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'), this.qualityMultiplier);
+    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'), this.defaultQuality);
   }
 
   get languageTracks() {

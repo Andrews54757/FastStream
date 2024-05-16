@@ -805,7 +805,7 @@
         "message": "Autoplay YouTube videos"
     },
     "options_general_quality": {
-        "message": "Quality multiplier factor for quality selection algorithm (higher will choose higher quality)"
+        "message": "Default video quality"
     },
     "options_general_clickaction": {
         "message": "Single click action"

@@ -14,6 +14,7 @@ export const DefaultOptions = {
   autoEnableBestSubtitles: false,
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
+  defaultQuality: `Auto`,
   autoEnableURLs: [],
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
@@ -29,7 +30,6 @@ export const DefaultOptions = {
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
-  qualityMultiplier: 1.1,
   singleClickAction: ClickActions.HIDE_CONTROLS,
   doubleClickAction: ClickActions.PLAY_PAUSE,
   tripleClickAction: ClickActions.FULLSCREEN,

@@ -804,7 +804,7 @@
         "message": "Reproducir automáticamente videos de YouTube incrustados"
     },
     "options_general_quality": {
-        "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
+        "message": "Calidad de video predeterminada"
     },
     "options_general_clickaction": {
         "message": "Acción de clic"
