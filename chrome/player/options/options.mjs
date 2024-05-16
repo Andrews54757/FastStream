@@ -515,7 +515,7 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
   const updatebox = document.getElementById('updatebox');
   const updatetext = document.getElementById('updatetext');
-  const updatenotif = parent.document.getElementById('updatenotif');
+  const updatenotif = parent.document ? parent.document.getElementById('update_notif_banner') : null;
 
   chrome.storage.local.get({
     updateData: '{}',
@@ -534,10 +534,10 @@ if (EnvUtils.isExtension()) {
     const currentVersion = EnvUtils.getVersion();
     const latestVersion = data.latestVersion;
     const ignoreVersion = data.ignoreVersion;
-    if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
+    if (true || latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
       updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
       updatebox.style.display = 'block';
-      updatenotif.style.display = 'block';
+      if (updatenotif) updatenotif.style.display = 'block';
     }
   });
 
@@ -549,7 +549,7 @@ if (EnvUtils.isExtension()) {
 
   document.getElementById('noupdate').addEventListener('click', (e) => {
     updatebox.style.display = 'none';
-    updatenotif.style.display = 'none';
+    if (updatenotif) updatenotif.style.display = 'none';
     chrome.storage.local.get('updateData', (result) => {
       const data = result?.updateData ? JSON.parse(result.updateData) : {};
       data.ignoreVersion = data.latestVersion;

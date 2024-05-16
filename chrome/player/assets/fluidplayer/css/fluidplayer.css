@@ -679,7 +679,8 @@ body {
 }
 
 .volume_banner,
-.rate_menu_banner {
+.rate_menu_banner,
+#update_notif_banner {
     position: absolute;
     bottom: 0px;
     right: 0px;
@@ -689,6 +690,14 @@ body {
     z-index: 2;
     font-size: 8px;
     padding: 1px 2px;
+}
+
+#update_notif_banner {
+    color: yellow;
+    background: none;
+    font-weight: bold;
+    font-size: 12px;
+    padding: 0px;
 }
 
 .fluid_button_video_source .fluid_video_sources_list,
