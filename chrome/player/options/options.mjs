@@ -534,7 +534,7 @@ if (EnvUtils.isExtension()) {
     const currentVersion = EnvUtils.getVersion();
     const latestVersion = data.latestVersion;
     const ignoreVersion = data.ignoreVersion;
-    if (true || latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
+    if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
       updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
       updatebox.style.display = 'block';
       if (updatenotif) updatenotif.style.display = 'block';
