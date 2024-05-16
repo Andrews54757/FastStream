@@ -537,7 +537,7 @@ if (EnvUtils.isExtension()) {
     if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
       updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
       updatebox.style.display = 'block';
-	  updatenotif.style.display = 'block';
+      updatenotif.style.display = 'block';
     }
   });
 
@@ -549,6 +549,7 @@ if (EnvUtils.isExtension()) {
 
   document.getElementById('noupdate').addEventListener('click', (e) => {
     updatebox.style.display = 'none';
+    updatenotif.style.display = 'none';
     chrome.storage.local.get('updateData', (result) => {
       const data = result?.updateData ? JSON.parse(result.updateData) : {};
       data.ignoreVersion = data.latestVersion;
