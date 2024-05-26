@@ -993,12 +993,20 @@ if (is_url_yt(window.location.href)) {
     'KeyC', // captions
   ];
 
+  const TransmitBlacklist = [
+    'ArrowUp', 'ArrowDown', // Scroll
+  ];
+
   document.addEventListener('keydown', (e) => {
     if (isActiveElementEditable()) {
       return;
     }
 
     if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+      return;
+    }
+
+    if (TransmitBlacklist.includes(e.code)) {
       return;
     }
 
