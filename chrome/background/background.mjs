@@ -685,14 +685,18 @@ function sendSources(frame) {
 }
 
 function getOrCreateFrame(details) {
-  if (!CachedTabs[details.tabId]) CachedTabs[details.tabId] = new TabHolder(details.tabId);
-  const tab = CachedTabs[details.tabId];
+  const tabId = details.tabId;
+  const frameId = details.frameId;
+  const parentFrameId = details.parentFrameId;
 
-  if (!tab.frames[details.frameId]) tab.addFrame(details.frameId, details.parentFrameId);
-  const frame = tab.frames[details.frameId];
+  if (!CachedTabs[tabId]) CachedTabs[tabId] = new TabHolder(tabId);
+  const tab = CachedTabs[tabId];
 
-  if (details.parentFrameId !== frame.parentId) {
-    frame.parentId = details.parentFrameId;
+  if (!tab.frames[frameId]) tab.addFrame(frameId, parentFrameId);
+  const frame = tab.frames[frameId];
+
+  if (parentFrameId !== undefined) {
+    frame.parentId = parentFrameId;
   }
 
   return frame;
@@ -702,11 +706,15 @@ function isSubtitles(ext) {
 }
 
 async function scrapeCaptionsTags(frame) {
+  const tabId = frame.tab.tabId;
+  const frameId = frame.frameId;
+  if (tabId < 0) return null;
+
   return new Promise((resolve, reject) => {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
+    chrome.tabs.sendMessage(tabId, {
       type: 'scrape_captions',
     }, {
-      frameId: frame.frameId,
+      frameId: frameId,
     }, (sub) => {
       BackgroundUtils.checkMessageError('scrape_captions');
       resolve(sub);
@@ -815,6 +823,7 @@ async function onSourceRecieved(details, frame, mode) {
   const url = details.url;
   if (getSourceFromURL(frame, url)) return;
   addSource(frame, url, mode, details.customHeaders || frame.requestHeaders[details.requestId]);
+
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
       sub.forEach((s) => {
