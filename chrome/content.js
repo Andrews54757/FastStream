@@ -580,7 +580,12 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
     iframe.style.setProperty('display', 'block', 'important');
   }
 
-  iframe.style.position = styles.position;
+  if (styles.position !== 'static') {
+    iframe.style.position = styles.position;
+  } else {
+    iframe.style.position = 'relative';
+  }
+
   if (!isYt) {
     transferId(old, iframe);
   }

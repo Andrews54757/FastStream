@@ -821,8 +821,41 @@ async function onSourceRecieved(details, frame, mode) {
   }
 
   const url = details.url;
+  const customHeaders = details.customHeaders || frame.requestHeaders[details.requestId];
+
   if (getSourceFromURL(frame, url)) return;
-  addSource(frame, url, mode, details.customHeaders || frame.requestHeaders[details.requestId]);
+
+  // Check if service worker
+  if (frame.tab.tabId < 0 && details.initiator) {
+    // get current frame
+    const currentFrame = await new Promise((resolve, reject) => {
+      chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
+        ctabs.every((tab) => {
+          const tabObj = CachedTabs[tab.id];
+          if (!tabObj) return true;
+          for (const i in tabObj.frames) {
+            if (!Object.hasOwn(tabObj.frames, i)) continue;
+            const f = tabObj.frames[i];
+            if (!f?.url) continue;
+            const furl = f.url;
+            if (furl.length >= details.initiator.length && furl.substring(0, details.initiator.length) === details.initiator) {
+              resolve(f);
+              return false;
+            }
+          }
+          return true;
+        });
+      }).catch((e) => {
+        resolve(null);
+      });
+    });
+
+    if (currentFrame) {
+      frame = currentFrame;
+    }
+  }
+
+  addSource(frame, url, mode, customHeaders);
 
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
