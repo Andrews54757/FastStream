@@ -414,7 +414,11 @@ function fillScreenIframe(iframe) {
       continue;
     }
 
-    if (element.contains(iframe)) {
+    if (element.contains(iframe) ||
+      element.tagName === 'BODY' ||
+      element.tagName === 'HTML' ||
+      element.tagName === 'HEAD'
+    ) {
       continue;
     }
 
