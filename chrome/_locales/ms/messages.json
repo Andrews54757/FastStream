@@ -205,10 +205,10 @@
         "message": "Carian OpenSubtitles"
     },
     "player_opensubtitles_closebtn_label": {
-        "message": "Close OpenSubtitles search window"
+        "message": "Tutup tingkap carian OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
-        "message": "Search by title, filename, etc..."
+        "message": "Cari mengikut tajuk, nama fail, dsb..."
     },
     "player_opensubtitles_searchbtn": {
         "message": "Carian"
