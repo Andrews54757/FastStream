@@ -139,55 +139,55 @@
         "message": "Akses tab API"
     },
     "perms_page_breakdown_perm5d": {
-        "message": "FastStream needs to be able to send messages between players and content scripts in each tab."
+        "message": "FastStream perlu boleh menghantar mesej antara pemain dan skrip kandungan dalam setiap tab."
     },
     "perms_page_breakdown_perm5r1": {
-        "message": "Sending sources to players from the background script."
+        "message": "Menghantar sumber kepada pemain daripada skrip latar belakang."
     },
     "perms_page_granted": {
-        "message": "Granted"
+        "message": "Dibenarkan"
     },
     "perms_page_notgranted": {
-        "message": "Not Granted, click to grant"
+        "message": "Tidak Diberikan, klik untuk memberikan"
     },
     "player_skipintro": {
-        "message": "Skip Intro"
+        "message": "Langkau Pengenalan"
     },
     "player_skipoutro": {
-        "message": "Skip Outro"
+        "message": "Langkau Lain"
     },
     "player_hidecontrols": {
-        "message": "Hide Controls"
+        "message": "Sembunyikan Kawalan"
     },
     "player_loading": {
-        "message": "Loading..."
+        "message": "Memuatkan..."
     },
     "player_nosource_header": {
-        "message": "No source is loaded!"
+        "message": "Tiada sumber dimuatkan!"
     },
     "player_nosource_instruction1": {
-        "message": "Drag and drop a video file to play it."
+        "message": "Seret dan lepaskan fail video untuk memainkannya."
     },
     "player_nosource_instruction2p1": {
-        "message": "Click"
+        "message": "Klik"
     },
     "player_nosource_instruction2p2": {
-        "message": "to load sources detected from other tabs."
+        "message": "untuk memuatkan sumber yang dikesan daripada tab lain."
     },
     "player_playpause_label": {
-        "message": "Play or pause video"
+        "message": "Mainkan atau jeda video"
     },
     "player_mute_label": {
-        "message": "Mute audio"
+        "message": "Redamkan audio"
     },
     "player_timestamp_label": {
-        "message": "Timestamp"
+        "message": "Cap masa"
     },
     "player_sourcesbrowser_title": {
-        "message": "Sources Browser"
+        "message": "Sumber Pelayar"
     },
     "player_sourcesbrowser_toggle_label": {
-        "message": "Toggle sources browser"
+        "message": "Togol penyemak imbas sumber"
     },
     "player_sourcesbrowser_closebtn_label": {
         "message": "Close sources browser"
