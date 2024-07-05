@@ -118,25 +118,25 @@
     },
 
     "perms_page_breakdown_perm3h": {
-        "message": "Access the declarativeNetRequest API"
+        "message": "Akses API declarativeNetRequest"
     },
     "perms_page_breakdown_perm3d": {
-        "message": "FastStream needs to be able to modify HTTP headers of select requests in order to:"
+        "message": "FastStream perlu boleh mengubah suai pengepala HTTP permintaan terpilih untuk:"
     },
     "perms_page_breakdown_perm3r1": {
-        "message": "Override headers for video sources."
+        "message": "Gantikan pengepala untuk sumber video."
     },
     "perms_page_breakdown_perm4h": {
-        "message": "Store data on your browser"
+        "message": "Simpan data pada penyemak imbas anda"
     },
     "perms_page_breakdown_perm4d": {
-        "message": "FastStream needs to be able to store data in your browser so that it can remember your settings."
+        "message": "FastStream perlu boleh menyimpan data dalam penyemak imbas anda supaya ia boleh mengingati tetapan anda."
     },
     "perms_page_breakdown_perm4r1": {
-        "message": "General extension options."
+        "message": "Pilihan sambungan am."
     },
     "perms_page_breakdown_perm5h": {
-        "message": "Access the tabs API"
+        "message": "Akses tab API"
     },
     "perms_page_breakdown_perm5d": {
         "message": "FastStream needs to be able to send messages between players and content scripts in each tab."
