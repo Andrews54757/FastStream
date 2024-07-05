@@ -1,120 +1,120 @@
 {
     "extension_name": {
-        "message": "FastStream Video Player"
+        "message": "Pemain Video FastStream"
     },
     "extension_description": {
-        "message": "Stream without buffering. Fix bad video players on the internet."
+        "message": "Strim tanpa penimbalan. Betulkan pemain video yang buruk di Internet."
     },
     "extension_toggle_label": {
-        "message": "Toggle FastStream"
+        "message": "Togol FastStream"
     },
     "welcome_page_title": {
-        "message": "Welcome to FastStream"
+        "message": "Selamat datang ke FastStream"
     },
     "welcome_page_usage_header": {
-        "message": "Usage"
+        "message": "Penggunaan"
     },
     "welcome_page_usage_content0": {
-        "message": "There are four ways to use FastStream"
+        "message": "Terdapat empat cara untuk menggunakan FastStream"
     },
     "welcome_page_usage_content1": {
-        "message": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream"
+        "message": "Anda boleh pergi ke tapak web dengan strim video dan hidupkan strim pantas dengan mengklik pada ikon. Mainkan strim dan pelanggan akan digantikan secara automatik dengan FastStream"
     },
     "welcome_page_usage_content2": {
-        "message": "You can go to a new tab, and press the extension icon to go to the player."
+        "message": "Anda boleh pergi ke tab baharu dan tekan ikon sambungan untuk pergi ke pemain."
     },
     "welcome_page_usage_content3": {
-        "message": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it."
+        "message": "Jika anda mempunyai pilihan yang didayakan, pergi ke url mp4/mpd/m3u8 dan pemain akan memainkannya."
     },
     "welcome_page_usage_content4": {
-        "message": "Keep the player open in a new tab and it will collect sources as you browse elsewhere."
+        "message": "Pastikan pemain dibuka dalam tab baharu dan ia akan mengumpul sumber semasa anda menyemak imbas di tempat lain."
     },
     "welcome_page_usage_end": {
-        "message": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions."
+        "message": "Terima kasih kerana memasang FastStream! Sila maklumkan kepada kami jika anda mempunyai sebarang isu atau cadangan."
     },
     "welcome_page_keybinds_header": {
-        "message": "Default Keyboard Controls"
+        "message": "Kawalan Papan Kekunci Lalai"
     },
     "welcome_page_keybinds_content0": {
-        "message": "You can change these keybinds in extension settings"
+        "message": "Anda boleh menukar ikatan kekunci ini dalam tetapan sambungan"
     },
     "welcome_page_keybinds_content1": {
-        "message": "arrow keys - 1 second seek forward/back"
+        "message": "kekunci anak panah - 1 saat mencari ke hadapan/belakang"
     },
     "welcome_page_keybinds_content2": {
-        "message": "keys - 10 second seek forward/back"
+        "message": "kekunci - 10 saat mencari ke hadapan/belakang"
     },
     "welcome_page_keybinds_content3": {
-        "message": "key - Undo seek"
+        "message": "kunci - Buat asal carian"
     },
     "welcome_page_keybinds_content4": {
-        "message": "arrow keys - 10% volume up/down"
+        "message": "kekunci anak panah - 10% kelantangan atas/bawah"
     },
     "welcome_page_keybinds_content5": {
-        "message": "- Full screen"
+        "message": "- Skrin penuh"
     },
     "welcome_page_keybinds_content6": {
-        "message": "- Add/decrease concurrent requests"
+        "message": "- Tambah/kurangkan permintaan serentak"
     },
     "welcome_page_keybinds_content7": {
-        "message": "- Force retry key - use this to re-attempt failed downloads"
+        "message": "- Kekunci cuba semula paksa - gunakan ini untuk mencuba semula muat turun yang gagal"
     },
     "welcome_page_keybinds_content8": {
-        "message": "- Skip intro/outro if applicable"
+        "message": "- Langkau intro/outro jika berkenaan"
     },
     "welcome_page_keybinds_content9": {
-        "message": "- Hide/show player"
+        "message": "- Sembunyikan/tunjukkan pemain"
     },
     "perms_page_title": {
-        "message": "FastStream Permissions"
+        "message": "Keizinan FastStream"
     },
     "perms_page_about_header": {
-        "message": "About the Permissions Required by FastStream"
+        "message": "Mengenai Kebenaran yang Diperlukan oleh FastStream"
     },
     "perms_page_about_content0": {
-        "message": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality."
+        "message": "Untuk membolehkan sambungan berfungsi, ia perlu mempunyai kebenaran tertentu. Kebenaran ini hanya digunakan untuk fungsi asas."
     },
     "perms_page_about_content1": {
-        "message": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to."
+        "message": "FastStream tidak mengumpul sebarang data daripada anda. Ia tidak menjejaki anda. Ia tidak menghantar sebarang data ke mana-mana pelayan. Ia tidak mempunyai pelayan untuk menghantar data."
     },
     "perms_page_about_content2": {
-        "message": "Don't trust me? FastStream has its source available on"
+        "message": "Jangan percaya saya? FastStream mempunyai sumbernya tersedia di"
     },
     "perms_page_about_content3": {
-        "message": "You can look through the code yourself, or manually install your very own custom build by following the instructions."
+        "message": "Anda boleh melihat sendiri kod tersebut, atau memasang binaan tersuai anda sendiri secara manual dengan mengikut arahan."
     },
     "perms_page_breakdown_header": {
-        "message": "Breakdown of Permissions"
+        "message": "Pecahan Keizinan"
     },
     "perms_page_breakdown_content0": {
-        "message": "Here is a breakdown of the permissions FastStream requires, and why it needs them."
+        "message": "Berikut ialah pecahan kebenaran yang diperlukan oleh FastStream, dan sebab ia memerlukannya."
     },
     "perms_page_breakdown_content1": {
-        "message": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance."
+        "message": "Nota: Contoh yang dipautkan mungkin merujuk kepada versi kod yang lebih lama, tetapi intipatinya mestilah sama secara keseluruhan. Senarai ini tidak lengkap, item dipesan mengikut kepentingan."
     },
     "perms_page_breakdown_perm1h": {
-        "message": "Be able to access and modify all websites"
+        "message": "Dapat mengakses dan mengubah suai semua tapak web"
     },
     "perms_page_breakdown_perm1d": {
-        "message": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:"
+        "message": "FastStream perlu boleh mengakses semua tapak web supaya ia boleh menyuntik pemain ke dalam laman web secara langsung. Ia menyuntik skrip kandungan ke dalam tapak web yang anda lawati untuk:"
     },
     "perms_page_breakdown_perm1r1": {
-        "message": "Identify the largest visible video element to replace with the player."
+        "message": "Kenal pasti elemen video terbesar yang boleh dilihat untuk digantikan dengan pemain."
     },
     "perms_page_breakdown_perm1r2": {
-        "message": "Enable fullscreen permissions when the player is injected into a frame."
+        "message": "Dayakan kebenaran skrin penuh apabila pemain disuntik ke dalam bingkai."
     },
     "perms_page_breakdown_perm1r3": {
-        "message": "Scrape subtitle <track> elements from the page."
+        "message": "Kikis sari kata <track> elemen daripada halaman."
     },
     "perms_page_breakdown_perm2h": {
-        "message": "Access the webRequest API"
+        "message": "Akses API webRequest"
     },
     "perms_page_breakdown_perm2d": {
-        "message": "FastStream needs to be able to intercept HTTP requests to video sources in order to:"
+        "message": "FastStream perlu dapat memintas permintaan HTTP kepada sumber video untuk:"
     },
     "perms_page_breakdown_perm2r1": {
-        "message": "Identify video sources"
+        "message": "Kenal pasti sumber video"
     },
 
     "perms_page_breakdown_perm3h": {
