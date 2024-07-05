@@ -190,19 +190,19 @@
         "message": "Togol penyemak imbas sumber"
     },
     "player_sourcesbrowser_closebtn_label": {
-        "message": "Close sources browser"
+        "message": "Tutup penyemak imbas sumber"
     },
     "player_audioconfig_title": {
-        "message": "Audio Configuration"
+        "message": "Konfigurasi Audio"
     },
     "player_audioconfig_toggle_label": {
-        "message": "Toggle audio config window"
+        "message": "Togol tetingkap konfigurasi audio"
     },
     "player_audioconfig_toggle_closebtn_label": {
-        "message": "Close audio config window"
+        "message": "Tutup tetingkap konfigurasi audio"
     },
     "player_opensubtitles_title": {
-        "message": "OpenSubtitles Search"
+        "message": "Carian OpenSubtitles"
     },
     "player_opensubtitles_closebtn_label": {
         "message": "Close OpenSubtitles search window"
@@ -211,58 +211,58 @@
         "message": "Search by title, filename, etc..."
     },
     "player_opensubtitles_searchbtn": {
-        "message": "Search"
+        "message": "Carian"
     },
     "player_opensubtitles_seasonnum": {
-        "message": "Season #"
+        "message": "Musim #"
     },
     "player_opensubtitles_episodenum": {
-        "message": "Episode #"
+        "message": "Episod #"
     },
     "player_opensubtitles_type_all": {
-        "message": "All"
+        "message": "Semua"
     },
     "player_opensubtitles_type_movie": {
-        "message": "Movie"
+        "message": "Filem"
     },
     "player_opensubtitles_type_episode": {
-        "message": "Episode"
+        "message": "Episod"
     },
     "player_opensubtitles_language": {
-        "message": "Language"
+        "message": "Bahasa"
     },
     "player_opensubtitles_year": {
-        "message": "Year"
+        "message": "Tahun"
     },
     "player_opensubtitles_sortby": {
-        "message": "Sort By"
+        "message": "Disusun mengikut"
     },
     "player_opensubtitles_sortby_downloads": {
-        "message": "Downloads"
+        "message": "Muat turun"
     },
     "player_opensubtitles_sortby_date": {
-        "message": "Upload Date"
+        "message": "Tarikh Muat naik"
     },
     "player_opensubtitles_sortby_rating": {
-        "message": "Rating"
+        "message": "Penilaian"
     },
     "player_opensubtitles_sortby_votes": {
-        "message": "Votes"
+        "message": "Undian"
     },
     "player_opensubtitles_sort": {
-        "message": "Sort"
+        "message": "Disusun"
     },
     "player_opensubtitles_sort_desc": {
-        "message": "Descending"
+        "message": "Menurun"
     },
     "player_opensubtitles_sort_asc": {
-        "message": "Ascending"
+        "message": "Menaik"
     },
     "player_opensubtitles_searching": {
-        "message": "Searching..."
+        "message": "Mencari..."
     },
     "player_opensubtitles_error": {
-        "message": "Error: $1"
+        "message": "Ralat: $1"
     },
     "player_opensubtitles_disabled": {
         "message": "Cannot set proper headers! Install the extension to use this feature!"
