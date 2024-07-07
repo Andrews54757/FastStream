@@ -105,7 +105,7 @@
         "message": "Dayakan kebenaran skrin penuh apabila pemain disuntik ke dalam bingkai."
     },
     "perms_page_breakdown_perm1r3": {
-        "message": "Kikis sari kata <track> elemen daripada halaman."
+        "message": "Kikis Sarikata <track> elemen daripada halaman."
     },
     "perms_page_breakdown_perm2h": {
         "message": "Akses API webRequest"
@@ -265,67 +265,67 @@
         "message": "Ralat: $1"
     },
     "player_opensubtitles_disabled": {
-        "message": "Cannot set proper headers! Install the extension to use this feature!"
+        "message": "Tidak dapat menetapkan pengepala yang betul! Pasang sambungan untuk menggunakan ciri ini!"
     },
     "player_opensubtitles_error_down": {
-        "message": "OpenSubtitles is down!"
+        "message": "OpenSubtitles sudah tidak berfungsi!"
     },
     "player_opensubtitles_down_alert": {
-        "message": "OpenSubtitles download failed! Their servers are probably down!"
+        "message": "Muat turun OpenSubtitles gagal! Pelayan mereka mungkin tidak berfungsi!"
     },
     "player_opensubtitles_noresults": {
-        "message": "No results found!"
+        "message": "Tiada keputusan dijumpai!"
     },
     "player_opensubtitles_quota": {
-        "message": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1"
+        "message": "OpenSubtitles mengehadkan muat turun sarikata! Anda tiada lagi muat turun yang tinggal! Kuota anda ditetapkan semula $1"
     },
     "player_opensubtitles_askopen": {
-        "message": "Would you like to open the OpenSubtitles website to download the subtitle file manually?"
+        "message": "Adakah anda ingin membuka laman web OpenSubtitles untuk memuat turun fail sarikata secara manual?"
     },
     "player_subtitlesmenu_toggle_label": {
-        "message": "Toggle subtitles menu"
+        "message": "Togol menu sarikata"
     },
     "player_subtitlesmenu_backbtn": {
-        "message": "Back"
+        "message": "Kembali"
     },
     "player_subtitlesmenu_settings": {
-        "message": "Subtitle Settings"
+        "message": "Tetapan sarikata"
     },
     "player_subtitlesmenu_testbtn": {
-        "message": "Test Subtitles"
+        "message": "Cuba sarikata"
     },
     "player_subtitlesmenu_testbtn_stop": {
-        "message": "Stop Testing"
+        "message": "Henti Percubaan"
     },
     "player_subtitlesmenu_uploadbtn": {
-        "message": "Upload File"
+        "message": "Muatnaik Fail"
     },
     "player_subtitlesmenu_urlbtn": {
-        "message": "From URL"
+        "message": "Dari URL"
     },
     "player_subtitlesmenu_urlprompt": {
-        "message": "Enter URL"
+        "message": "Masuk URL"
     },
     "player_subtitlesmenu_searchbtn": {
-        "message": "Search OpenSubtitles"
+        "message": "Carian OpenSubtitles"
     },
     "player_subtitlesmenu_clearbtn": {
-        "message": "Clear Subtitles"
+        "message": "Kosongkan Sarikata"
     },
     "player_subtitlesmenu_settingsbtn": {
-        "message": "Subtitle Settings"
+        "message": "Tetapan Sarikata"
     },
     "player_subtitlesmenu_resynctool_label": {
-        "message": "Resync Tool"
+        "message": "Alat Segerakkan Semula"
     },
     "player_subtitlesmenu_resynctool_instructions": {
-        "message": "Drag subtitles to resync"
+        "message": "Seret sarikata untuk disegerakkan semula"
     },
     "player_subtitlesmenu_savetool_label": {
-        "message": "Save subtitle file"
+        "message": "Simpan fail sarikata"
     },
     "player_subtitlesmenu_removetool_label": {
-        "message": "Remove subtitle track"
+        "message": "Alih keluar trek sarikata"
     },
     "player_subtitlesmenu_shifttool_label": {
         "message": "Shift subtitles $1s"
