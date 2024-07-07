@@ -328,19 +328,19 @@
         "message": "Alih keluar trek sarikata"
     },
     "player_subtitlesmenu_shifttool_label": {
-        "message": "Shift subtitles $1s"
+        "message": "Alihkan sarikata $1s"
     },
     "player_subtitlesmenu_shifttool_message": {
-        "message": "Shifted subtitles $1s"
+        "message": "sarikata dialihkan $1s"
     },
     "player_testsubtitle": {
-        "message": "This is a test subtitle"
+        "message": "Ini adalah sarikata ujian"
     },
     "player_qualitymenu_label": {
-        "message": "Video quality"
+        "message": "Kualiti Video "
     },
     "player_languagemenu_label": {
-        "message": "Language selection"
+        "message": "Pilihan Bahasa"
     },
     "player_languagemenu_video": {
         "message": "Video"
@@ -349,94 +349,94 @@
         "message": "Audio"
     },
     "player_playbackrate_label": {
-        "message": "Playback rate"
+        "message": "Kadar main balik"
     },
     "player_settings_title": {
-        "message": "FastStream Settings"
+        "message": "Tetapan FastStream"
     },
     "player_settings_closebtn_label": {
-        "message": "Close settings window"
+        "message": "Tutup tetingkap tetapan"
     },
     "player_settings_label": {
-        "message": "Settings"
+        "message": "Tetapan"
     },
     "player_savevideo_label": {
-        "message": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer."
+        "message": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal."
     },
     "player_screenshot_label": {
-        "message": "Take screenshot"
+        "message": "Ambil tangkapan skrin"
     },
     "player_pip_label": {
-        "message": "Picture in picture"
+        "message": "Gambar dalam gambar"
     },
     "player_fullscreen_label": {
-        "message": "Fullscreen"
+        "message": "Skrin penuh"
     },
     "player_windowed_fullscreen_label": {
-        "message": "Windowed Fullscreen"
+        "message": "Skrin Penuh Bertingkap"
     },
     "player_more_label": {
-        "message": "More tools"
+        "message": "Lebih banyak alat"
     },
     "player_loop_label": {
-        "message": "Loop"
+        "message": "Gelung"
     },
     "loop_menu_start": {
-        "message": "Start"
+        "message": "Mula"
     },
     "loop_menu_end": {
-        "message": "End"
+        "message": "Tamat"
     },
     "loop_menu_toggle_enabled": {
-        "message": "Loop Enabled"
+        "message": "Gelung Didayakan"
     },
     "loop_menu_toggle_disabled": {
-        "message": "Loop Disabled"
+        "message": "Gelung Dilumpuhkan"
     },
     "loop_menu_gif_start": {
-        "message": "Recording GIF at 4x speed..."
+        "message": "Merakam GIF pada kelajuan 4x..."
     },
     "loop_menu_gif_end": {
-        "message": "Finished recording GIF. Now saving..."
+        "message": "Selesai merakam GIF. Sekarang menyimpan..."
     },
     "loop_menu_gif_abort": {
-        "message": "Aborted GIF recording!"
+        "message": "Rakaman GIF dihentikan!"
     },
     "loop_menu_gif_progress": {
-        "message": "Saving GIF $1%"
+        "message": "Menyimpan GIF $1%"
     },
     "loop_menu_gif_finished": {
-        "message": "Finished saving GIF!"
+        "message": "Selesai menyimpan GIF!"
     },
     "player_fragment_failed_singular": {
-        "message": "$1 Fragment Failed! Click to retry."
+        "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
     },
     "player_fragment_failed_plural": {
-        "message": "$1 Fragments Failed! Click to retry."
+        "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
     },
     "player_fragment_allbuffered": {
-        "message": "100% Buffered"
+        "message": "100% Ditimbal"
     },
     "player_welcometext": {
-        "message": "Welcome to FastStream v$1!"
+        "message": "Selamat datang ke FastStream v$1!"
     },
     "player_nosource_alert": {
-        "message": "No source is loaded!"
+        "message": "Tiada sumber dimuatkan!"
     },
     "player_archive_loading": {
-        "message": "Loading archive... $1%"
+        "message": "Memuatkan arkib... $1%"
     },
     "player_archive_loaded": {
-        "message": "Loaded archive!"
+        "message": "Arkib dimuatkan!"
     },
     "player_archive_fail": {
-        "message": "Failed to load archive!"
+        "message": "Gagal memuatkan arkib!"
     },
     "player_filename_prompt": {
-        "message": "Enter a name for the file"
+        "message": "Masukkan nama untuk fail"
     },
     "player_screenshot_saving": {
-        "message": "Taking screenshot..."
+        "message": "Mengambil tangkapan skrin..."
     },
     "player_screenshot_saved": {
         "message": "Screenshot saved!"
