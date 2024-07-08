@@ -76,6 +76,13 @@ Files with `dist` in the name are for Chrome & Firefox's stores. Files with `lib
 
 Many thanks to the contributors of this project.
 
+#### Full-time
+- Andrews54757: Lead developer
+
+#### Part-time
+- ChromiaCat: Update notify icon (PR #142)
+
+#### Translators
 - Dael (dael_io): Fixed Spanish translations
 - reindex-ot: Japanese translations
 - elfriob: Russian translations
