@@ -439,37 +439,37 @@
         "message": "Mengambil tangkapan skrin..."
     },
     "player_screenshot_saved": {
-        "message": "Screenshot saved!"
+        "message": "Tangkapan skrin disimpan!"
     },
     "player_screenshot_fail": {
-        "message": "Failed to take screenshot!"
+        "message": "Gagal untuk tangkapan Skrin!"
     },
     "player_savevideo_inprogress_alert": {
-        "message": "Already making save!"
+        "message": "Sudah membuat simpanan!"
     },
     "player_savevideo_unsupported": {
-        "message": "Saving is not supported for this video!"
+        "message": "Penyimpanan tidak disokong untuk video ini!"
     },
     "player_savevideo_partial_confirm": {
-        "message": "Video has not finished downloading yet! Are you sure you want to save it?"
+        "message": "Video belum selesai dimuat turun! Adakah anda pasti mahu menyimpannya?"
     },
     "player_savevideo_incognito_confirm": {
-        "message": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?"
+        "message": "Mod Inkognito akan menggunakan RAM untuk menimbal video. Komputer anda mungkin tidak mempunyai memori yang mencukupi untuk menyimpan keseluruhan video!\nAdakah anda pasti mahu meneruskan?"
     },
     "player_savevideo_start": {
-        "message": "Making save..."
+        "message": "Membuat penjimatan..."
     },
     "player_savevideo_progress": {
-        "message": "Saving $1%"
+        "message": "Menyimpan $1%"
     },
     "player_savevideo_fail": {
-        "message": "Failed to save video!"
+        "message": "Gagal menyimpan video!"
     },
     "player_savevideo_failed_ask_archive": {
-        "message": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it"
+        "message": "Gagal menyimpan video!\nAdakah anda mahu mengarkibkan storan penimbal pemain sebaliknya?\n- Seret dan lepaskan fail arkib pada pemain untuk memuatkannya"
     },
     "player_savevideo_complete": {
-        "message": "Save complete!"
+        "message": "Selesai disimpan!"
     },
     "player_archiver_progress": {
         "message": "Archiving $1%"
