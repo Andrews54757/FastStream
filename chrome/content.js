@@ -201,7 +201,7 @@ chrome.runtime.onMessage.addListener(
             const iframe = document.createElement('iframe');
             iframe.src = request.url;
             updateIframeStyle(video.highest, iframe, isYt, playerFillsScreen);
-
+            iframe.id = "player";
             iframe.allowFullscreen = true;
             iframe.allow = 'autoplay; fullscreen; picture-in-picture';
 
