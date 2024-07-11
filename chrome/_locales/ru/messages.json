@@ -375,6 +375,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
     },
+    "player_skip_forward_label": {
+        "message": "Пропустить вперёд 10с"
+    },
+    "player_skip_backward_label": {
+        "message": "Пропустить назад 10с"
+    },
     "player_more_label": {
         "message": "Другие инструменты"
     },
@@ -800,6 +806,9 @@
     },
     "options_general_seekstep": {
         "message": "Размер шага перемотки горячими клавишами (секунды)"
+    },
+    "options_general_replace_delay": {
+        "message": "Задержка перед автоматической заменой плеера (мс)"
     },
     "options_general_autoplayyt": {
         "message": "Автовоспроизведение на YouTube"

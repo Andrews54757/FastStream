@@ -374,6 +374,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Pantalla completa de ventana"
     },
+    "player_skip_forward_label": {
+        "message": "Saltar adelante 10s"
+    },
+    "player_skip_backward_label": {
+        "message": "Saltar hacia atrás 10s"
+    },
     "player_more_label": {
         "message": "Más utilidades"
     },
@@ -799,6 +805,9 @@
     },
     "options_general_seekstep": {
         "message": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)"
+    },
+    "options_general_replace_delay": {
+        "message": "Retraso antes de reemplazar auto (ms)"
     },
     "options_general_autoplayyt": {
         "message": "Reproducir automáticamente videos de YouTube incrustados"

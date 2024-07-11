@@ -877,7 +877,7 @@ async function onSourceRecieved(details, frame, mode) {
       if (frame.tab.isOn) {
         openPlayer(frame);
       }
-    }, mode === PlayerModes.ACCELERATED_MP4 ? 1500 : 200);
+    }, Options.replaceDelay);
   }
 
   sendSourcesToMainFramePlayers(frame);

@@ -375,6 +375,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Windowed Fullscreen"
     },
+    "player_skip_forward_label": {
+        "message": "Skip forward 10s"
+    },
+    "player_skip_backward_label": {
+        "message": "Skip backward 10s"
+    },
     "player_more_label": {
         "message": "More tools"
     },
@@ -800,6 +806,9 @@
     },
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
+    },
+    "options_general_replace_delay": {
+        "message": "Delay before auto-replacing player (ms)"
     },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos"
