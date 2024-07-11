@@ -210,7 +210,6 @@ chrome.runtime.onMessage.addListener(
 
             if (isYt) {
               video.highest.parentNode.insertBefore(iframe, video.highest);
-              iframe.id = 'player'; // For #167
               hideYT(video.highest);
             } else {
               video.highest.parentNode.replaceChild(iframe, video.highest);
