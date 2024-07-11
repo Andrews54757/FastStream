@@ -800,6 +800,9 @@
     "options_general_seekstep": {
         "message": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)"
     },
+    "options_general_replace_delay": {
+        "message": "Retraso antes de reemplazar auto (ms)"
+    },
     "options_general_autoplayyt": {
         "message": "Reproducir automáticamente videos de YouTube incrustados"
     },

@@ -801,6 +801,9 @@
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
     },
+    "options_general_replace_delay": {
+        "message": "Delay before auto-replacing player (ms)"
+    },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos"
     },

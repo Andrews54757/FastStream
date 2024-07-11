@@ -6,6 +6,7 @@ import {MiniplayerPositions} from './MiniplayerPositions.mjs';
 import {VisChangeActions} from './VisChangeActions.mjs';
 
 export const DefaultOptions = {
+  replaceDelay: 500,
   playMP4URLs: false,
   playStreamURLs: false,
   analyzeVideos: false,

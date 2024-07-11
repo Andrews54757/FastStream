@@ -801,6 +801,9 @@
     "options_general_seekstep": {
         "message": "シークキーバインドのベースステップサイズ (秒)"
     },
+    "options_general_replace_delay": {
+        "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
+    },
     "options_general_autoplayyt": {
         "message": "YouTube 動画の自動再生"
     },
