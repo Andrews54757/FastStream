@@ -375,6 +375,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Skrin Penuh Bertingkap"
     },
+    "player_skip_forward_label": {
+        "message": "Skip forward 10s"
+    },
+    "player_skip_backward_label": {
+        "message": "Skip backward 10s"
+    },
     "player_more_label": {
         "message": "Lebih banyak alat"
     },
