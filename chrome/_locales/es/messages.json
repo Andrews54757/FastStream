@@ -374,6 +374,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Pantalla completa de ventana"
     },
+    "player_skip_forward_label": {
+        "message": "Saltar adelante 10s"
+    },
+    "player_skip_backward_label": {
+        "message": "Saltar hacia atrás 10s"
+    },
     "player_more_label": {
         "message": "Más utilidades"
     },

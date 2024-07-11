@@ -459,6 +459,24 @@ export class InterfaceController {
       }
     });
 
+    DOMElements.skipForwardButton.addEventListener('click', (e) => {
+      this.client.setSeekSave(false);
+      this.client.currentTime += 10;
+      this.client.setSeekSave(true);
+      e.stopPropagation();
+    });
+
+    WebUtils.setupTabIndex(DOMElements.skipForwardButton);
+
+    DOMElements.skipBackwardButton.addEventListener('click', (e) => {
+      this.client.setSeekSave(false);
+      this.client.currentTime += -10;
+      this.client.setSeekSave(true);
+      e.stopPropagation();
+    });
+
+    WebUtils.setupTabIndex(DOMElements.skipBackwardButton);
+
     DOMElements.moreButton.addEventListener('click', (e) => {
       if (!DOMElements.disabledTools.classList.contains('visible')) {
         this.closeAllMenus();

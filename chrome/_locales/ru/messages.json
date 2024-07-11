@@ -375,6 +375,12 @@
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
     },
+    "player_skip_forward_label": {
+        "message": "Пропустить вперёд 10с"
+    },
+    "player_skip_backward_label": {
+        "message": "Пропустить назад 10с"
+    },
     "player_more_label": {
         "message": "Другие инструменты"
     },
