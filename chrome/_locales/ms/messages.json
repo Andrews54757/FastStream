@@ -538,82 +538,82 @@
         "message": "Hapus"
     },
     "player_source_headers_label": {
-        "message": "Header override input"
+        "message": "Input mengatasi pengepala"
     },
     "player_source_headers_placeholder": {
-        "message": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
+        "message": "Nama Pengepala: Nilai Pengepala\nNama Pengepala2: Nilai Pengepala2"
     },
     "player_source_nonelisted": {
-        "message": "No Sources Listed"
+        "message": "Tiada Senarai Sumber"
     },
     "player_source_onelisted": {
-        "message": "1 Source Listed"
+        "message": "1 Senarai Sumber"
     },
     "player_source_multilisted": {
-        "message": "$1 Sources Listed"
+        "message": "$1 Senarai Sumber"
     },
     "player_source_addbtn": {
-        "message": "Add Source"
+        "message": "Masukkan Sumber"
     },
     "player_source_clearbtn": {
-        "message": "Clear Sources"
+        "message": "Kosongkan Sumber"
     },
     "player_audioconfig_duplicate_profile": {
-        "message": "(loaded from file on $1)"
+        "message": "(dimuatkan daripada fail pada $1)"
     },
     "player_audioconfig_create_profile": {
-        "message": "Create new profile"
+        "message": "Ciptakan profil baru"
     },
     "player_audioconfig_import_profile": {
-        "message": "Import profiles from file"
+        "message": "Import profil daripada fail"
     },
     "player_audioconfig_import_invalid": {
-        "message": "Invalid profile file"
+        "message": "Fail profil tidak sah"
     },
     "player_audioconfig_profile": {
-        "message": "Profile"
+        "message": "Profil"
     },
     "player_audioconfig_profile_unnamed": {
-        "message": "Unnamed Profile"
+        "message": "Profil Tanpa Nama"
     },
     "player_audioconfig_profile_load": {
-        "message": "Load Profile"
+        "message": "Muat Profile"
     },
     "player_audioconfig_profile_loaded": {
-        "message": "Loaded Profile!"
+        "message": "Profil Dimuatkan!"
     },
     "player_audioconfig_profile_save": {
-        "message": "Save Profile"
+        "message": "Simpan Profil"
     },
     "player_audioconfig_profile_saving": {
-        "message": "Saving..."
+        "message": "Menyimpan..."
     },
     "player_audioconfig_profile_saved": {
-        "message": "Saved Profile!"
+        "message": "Profil Disimpan!"
     },
     "player_audioconfig_profile_download": {
-        "message": "Download Profile"
+        "message": "Muat turun Profil"
     },
     "player_audioconfig_profile_downloaded": {
-        "message": "Downloaded!"
+        "message": "Dimuat turun!"
     },
     "player_audioconfig_profile_delete": {
-        "message": "Delete"
+        "message": "Hapus"
     },
     "player_audioconfig_profile_deleting": {
-        "message": "Deleting..."
+        "message": "Menghapus..."
     },
     "player_audioconfig_profile_deleted": {
-        "message": "Deleted!"
+        "message": "Dihapuskan!"
     },
     "audiomixer_title": {
-        "message": "Audio Channel Mixer"
+        "message": "Pengadun Saluran Audio"
     },
     "audiomixer_solo_label": {
         "message": "Solo"
     },
     "audiomixer_mute_label": {
-        "message": "Mute"
+        "message": "Bisu"
     },
     "audiocrosstalk_title": {
         "message": "Audio Crosstalk Correction"
