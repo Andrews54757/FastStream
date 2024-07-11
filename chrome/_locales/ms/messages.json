@@ -472,70 +472,70 @@
         "message": "Selesai disimpan!"
     },
     "player_archiver_progress": {
-        "message": "Archiving $1%"
+        "message": "Mengarkib $1%"
     },
     "player_archiver_saved": {
-        "message": "Archive saved!"
+        "message": "Arkib disimpan!"
     },
     "player_quality_current": {
         "message": "(current)"
     },
     "player_buffer_incognito_warning": {
-        "message": "Not enough space to predownload in incognito mode, will buffer $1s"
+        "message": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1s"
     },
     "player_buffer_storage_warning": {
-        "message": "Video size exceeds limits, will buffer $1s"
+        "message": "Saiz video melebihi had, akan menimbal $1s"
     },
     "player_error_drm": {
-        "message": "Failed to load! DRM is not supported!"
+        "message": "Gagal memuatkan! DRM tidak disokong!"
     },
     "player_error_load": {
-        "message": "Failed to load video!"
+        "message": "Gagal memuatkan video!"
     },
     "player_source_autodetect": {
-        "message": "Auto Detect"
+        "message": "Auto Mengesan"
     },
     "player_source_direct": {
-        "message": "Direct"
+        "message": "Terus"
     },
     "player_source_accelmp4": {
-        "message": "Accelerated MP4"
+        "message": "MP4 dipercepatkan"
     },
     "player_source_accelhls": {
-        "message": "Accelerated HLS"
+        "message": "HLS dipercepatkan"
     },
     "player_source_acceldash": {
-        "message": "Accelerated DASH"
+        "message": "DASH dipercepatkan"
     },
     "player_source_accelyt": {
-        "message": "Accelerated YouTube"
+        "message": "YouTube dipercepatkan"
     },
     "player_source_mode": {
-        "message": "Mode"
+        "message": "Mod"
     },
     "player_source_url_placeholder": {
-        "message": "Source URL"
+        "message": "Sumber URL"
     },
     "player_source_headerbtn": {
-        "message": "Header Override ($1)"
+        "message": "Tajuk diganti ($1)"
     },
     "player_source_headerbtn_label": {
-        "message": "Toggle header override input"
+        "message": "Togol input ganti pengepala"
     },
     "player_source_headerbtn_disabled": {
-        "message": "Header Override (Extension Only)"
+        "message": "Tajuk diganti (Sambungan Sahaja)"
     },
     "player_source_playbtn": {
-        "message": "Play"
+        "message": "Main"
     },
     "player_source_playbtn_playing": {
-        "message": "Playing"
+        "message": "Bermain"
     },
     "player_source_playbtn_loading": {
-        "message": "Loading..."
+        "message": "Memuatkan..."
     },
     "player_source_deletebtn": {
-        "message": "Delete"
+        "message": "Hapus"
     },
     "player_source_headers_label": {
         "message": "Header override input"
