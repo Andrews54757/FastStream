@@ -6,13 +6,16 @@ import {MiniplayerPositions} from './MiniplayerPositions.mjs';
 import {VisChangeActions} from './VisChangeActions.mjs';
 
 export const DefaultOptions = {
+  replaceDelay: 500,
   playMP4URLs: false,
   playStreamURLs: false,
   analyzeVideos: false,
   downloadAll: true,
+  previewEnabled: true,
   autoEnableBestSubtitles: false,
-  storeProgress: false,
+  storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
+  defaultQuality: `Auto`,
   autoEnableURLs: [],
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
@@ -28,7 +31,6 @@ export const DefaultOptions = {
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
-  qualityMultiplier: 1.1,
   singleClickAction: ClickActions.HIDE_CONTROLS,
   doubleClickAction: ClickActions.PLAY_PAUSE,
   tripleClickAction: ClickActions.FULLSCREEN,

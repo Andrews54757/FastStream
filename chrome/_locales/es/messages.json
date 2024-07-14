@@ -3,7 +3,7 @@
         "message": "Reproductor de Video FastStream"
     },
     "extension_description": {
-        "message": "Reproduce videos en línea sin interrupciones, un excelente reproductor de video y acelerador de descargas todo en uno."
+        "message": "Transmisión sin almacenamiento en búfer. Soluciona los reproductores de video deficientes en Internet."
     },
     "extension_toggle_label": {
         "message": "Alternar FastStream"
@@ -370,6 +370,15 @@
     },
     "player_fullscreen_label": {
         "message": "Pantalla completa"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Pantalla completa de ventana"
+    },
+    "player_skip_forward_label": {
+        "message": "Saltar adelante 10s"
+    },
+    "player_skip_backward_label": {
+        "message": "Saltar hacia atrás 10s"
     },
     "player_more_label": {
         "message": "Más utilidades"
@@ -776,6 +785,9 @@
     "options_general_maxsize": {
         "message": "Tamaño máximo de video predescargado"
     },
+    "options_general_previewenabled": {
+        "message": "Muestra la vista previa al pasar el cursor sobre la línea de tiempo"
+    },
     "options_general_analyze": {
         "message": "Analiza automáticamente videos secuenciales para intros\/outros\n(desactiva si tienes problemas de rendimiento de CPU)"
     },
@@ -794,11 +806,14 @@
     "options_general_seekstep": {
         "message": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)"
     },
+    "options_general_replace_delay": {
+        "message": "Retraso antes de reemplazar auto (ms)"
+    },
     "options_general_autoplayyt": {
         "message": "Reproducir automáticamente videos de YouTube incrustados"
     },
     "options_general_quality": {
-        "message": "Factor multiplicador de calidad para el algoritmo de selección de calidad (mayor elegirá mayor calidad)"
+        "message": "Calidad de video predeterminada"
     },
     "options_general_clickaction": {
         "message": "Acción de clic"

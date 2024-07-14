@@ -13,11 +13,11 @@ export const DefaultToolSettings = {
   },
   'quality': {
     'enabled': true,
-    'priority': 400,
+    'priority': 500,
   },
   'languages': {
     'enabled': true,
-    'priority': 500,
+    'priority': 400,
   },
   'playrate': {
     'enabled': true,
@@ -43,6 +43,10 @@ export const DefaultToolSettings = {
     'enabled': true,
     'priority': 1000,
   },
+  'windowedfs': {
+    'enabled': false,
+    'priority': 400,
+  },
   'more': {
     'enabled': true,
     'priority': 800,
@@ -50,5 +54,13 @@ export const DefaultToolSettings = {
   'loop': {
     'enabled': false,
     'priority': 100,
+  },
+  'forward': {
+    'enabled': false,
+    'priority': 600,
+  },
+  'backward': {
+    'enabled': false,
+    'priority': 500,
   },
 };

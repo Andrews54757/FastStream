@@ -1,6 +1,7 @@
 import {Localize} from '../../modules/Localize.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {createKnob} from '../components/Knob.mjs';
 
 export class AudioCompressor {
   constructor() {
@@ -9,6 +10,7 @@ export class AudioCompressor {
     this.compressorNode = null;
     this.compressorGain = null;
     this.compressorConfig = null;
+    this.renderCache = {};
     this.setupUI();
   }
 
@@ -167,7 +169,7 @@ export class AudioCompressor {
 
     this.compressorKnobs = {};
 
-    this.compressorKnobs.threshold = WebUtils.createKnob(Localize.getMessage('audiocompressor_threshold'), -80, 0, (val) => {
+    this.compressorKnobs.threshold = createKnob(Localize.getMessage('audiocompressor_threshold'), -80, 0, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.threshold) {
         this.compressorConfig.threshold = val;
         this.updateCompressor();
@@ -175,15 +177,16 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.threshold.container);
 
-    this.compressorKnobs.knee = WebUtils.createKnob(Localize.getMessage('audiocompressor_knee'), 0, 40, (val) => {
+    this.compressorKnobs.knee = createKnob(Localize.getMessage('audiocompressor_knee'), 0, 40, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.knee) {
         this.compressorConfig.knee = val;
         this.updateCompressor();
       }
     }, 'dB');
+
     this.ui.compressorControls.appendChild(this.compressorKnobs.knee.container);
 
-    this.compressorKnobs.ratio = WebUtils.createKnob(Localize.getMessage('audiocompressor_ratio'), 1, 20, (val) => {
+    this.compressorKnobs.ratio = createKnob(Localize.getMessage('audiocompressor_ratio'), 1, 20, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.ratio) {
         this.compressorConfig.ratio = val;
         this.updateCompressor();
@@ -191,7 +194,7 @@ export class AudioCompressor {
     }, 'dB');
     this.ui.compressorControls.appendChild(this.compressorKnobs.ratio.container);
 
-    this.compressorKnobs.attack = WebUtils.createKnob(Localize.getMessage('audiocompressor_attack'), 0, 1, (val) => {
+    this.compressorKnobs.attack = createKnob(Localize.getMessage('audiocompressor_attack'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.attack) {
         this.compressorConfig.attack = val;
         this.updateCompressor();
@@ -199,7 +202,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.attack.container);
 
-    this.compressorKnobs.release = WebUtils.createKnob(Localize.getMessage('audiocompressor_release'), 0, 1, (val) => {
+    this.compressorKnobs.release = createKnob(Localize.getMessage('audiocompressor_release'), 0, 1, (val) => {
       if (this.compressorConfig && val !== this.compressorConfig.release) {
         this.compressorConfig.release = val;
         this.updateCompressor();
@@ -207,7 +210,7 @@ export class AudioCompressor {
     }, 's');
     this.ui.compressorControls.appendChild(this.compressorKnobs.release.container);
 
-    this.compressorKnobs.gain = WebUtils.createKnob(Localize.getMessage('audiocompressor_gain'), 0, 20, (val) => {
+    this.compressorKnobs.gain = createKnob(Localize.getMessage('audiocompressor_gain'), 0, 20, (val) => {
       if (this.compressorConfig && AudioUtils.dbToGain(val) !== this.compressorConfig.gain) {
         this.compressorConfig.gain = AudioUtils.dbToGain(val);
         this.updateCompressor();
@@ -296,26 +299,51 @@ export class AudioCompressor {
     const height = this.ui.compressorGraphCanvas.clientHeight * window.devicePixelRatio;
 
     if (width === 0 || height === 0) return;
-
-    this.ui.compressorGraphCanvas.width = width;
-    this.ui.compressorGraphCanvas.height = height;
-
     const ctx = this.ui.compressorGraphCtx;
 
-    ctx.clearRect(0, 0, width, height);
 
     // draw line
     const minDB = -80;
     const maxDB = 0;
+    const rangeDB = maxDB - minDB;
+
+
+    const reduction = this.compressorNode ? this.compressorNode.reduction : 0;
+    const threshold = this.compressorConfig.threshold;
+    const knee = this.compressorConfig.knee;
+
+    if (
+      this.renderCache.width === width &&
+      this.renderCache.height === height &&
+      this.renderCache.reduction === reduction &&
+      this.renderCache.threshold === threshold &&
+      this.renderCache.knee === knee
+    ) {
+      return;
+    }
+
+    if (this.renderCache.width !== width || this.renderCache.height !== height) {
+      this.ui.compressorGraphCanvas.width = width;
+      this.ui.compressorGraphCanvas.height = height;
+    }
+
+    this.renderCache.width = width;
+    this.renderCache.height = height;
+    this.renderCache.reduction = reduction;
+    this.renderCache.threshold = threshold;
+    this.renderCache.knee = knee;
+
+    ctx.clearRect(0, 0, width, height);
 
     ctx.beginPath();
     ctx.strokeStyle = 'green';
     ctx.lineWidth = 2;
+    // Draw response line
     for (let x = 0; x < width; x++) {
-      const db = minDB + (maxDB - minDB) * x / width;
+      const db = minDB + rangeDB * x / width;
       const newDB = this.getCompressorNewDBfromOldDB(db);
 
-      const y = height - (newDB - minDB) * height / (maxDB - minDB);
+      const y = height - (newDB - minDB) * height / rangeDB;
 
       if (x === 0) {
         ctx.moveTo(x, y);
@@ -329,32 +357,28 @@ export class AudioCompressor {
     ctx.beginPath();
     ctx.strokeStyle = 'rgba(230, 0, 0, 0.7)';
     ctx.lineWidth = 1;
-    const threshold = this.compressorConfig.threshold;
-    const x = (threshold - minDB) * width / (maxDB - minDB);
+    const x = (threshold - minDB) * width / rangeDB;
     ctx.moveTo(x, 0);
     ctx.lineTo(x, height);
     ctx.stroke();
 
     // draw knee line
-    const knee = this.compressorConfig.knee;
     if (knee > 0) {
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 200, 255, 0.7)';
       ctx.lineWidth = 1;
-      const x2 = (threshold + knee - minDB) * width / (maxDB - minDB);
+      const x2 = (threshold + knee - minDB) * width / rangeDB;
       ctx.moveTo(x2, 0);
       ctx.lineTo(x2, height);
       ctx.stroke();
     }
 
-
-    if (this.compressorNode) {
+    if (reduction !== 0) {
       // reduction line
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(0, 200, 0, 0.7)';
       ctx.lineWidth = 1;
-      const reduction = this.compressorNode.reduction;
-      const y = height - (reduction - minDB) * height / (maxDB - minDB);
+      const y = height - (reduction - minDB) * height / rangeDB;
       ctx.moveTo(0, y);
       ctx.lineTo(width, y);
       ctx.stroke();

@@ -192,9 +192,9 @@ export class FineTimeControls extends EventEmitter {
     });
   }
 
-  onAnalyzerFrameProcessed(time, isSpeechProb) {
+  onAnalyzerFrameProcessed(time, isSpeechProb, interpolated = 0) {
     const frame = Math.floor(time / 10);
-    const shouldDoPreviousFrame = (time - frame * 10) < 3;
+    const shouldDoPreviousFrame = interpolated > 0 && (time - frame * 10) < 2;
     let done = 0;
     this.canvasElements.some((el) => {
       if (el.index === frame || (shouldDoPreviousFrame && el.index === frame - 1)) {

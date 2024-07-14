@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Потоковая передача без буферизации, отличный видеоплеер и ускоритель загрузки - всё в одном."
+        "message": "Трансляция без буферизации. Исправьте плохие видеоплееры в интернете."
     },
     "extension_toggle_label": {
         "message": "Переключить FastStream"
@@ -371,6 +371,15 @@
     },
     "player_fullscreen_label": {
         "message": "Во весь экран"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Оконный режим"
+    },
+    "player_skip_forward_label": {
+        "message": "Пропустить вперёд 10с"
+    },
+    "player_skip_backward_label": {
+        "message": "Пропустить назад 10с"
     },
     "player_more_label": {
         "message": "Другие инструменты"
@@ -777,6 +786,9 @@
     "options_general_maxsize": {
         "message": "Максимальный размер предзагружаемого видео"
     },
+    "options_general_previewenabled": {
+        "message": "При наведении на временную шкалу отображается предварительный просмотр"
+    },
     "options_general_analyze": {
         "message": "Анализировать последовательные видео на наличие вступлений/окончаний\n(Отключите, при проблемах с производительностью)"
     },
@@ -795,11 +807,14 @@
     "options_general_seekstep": {
         "message": "Размер шага перемотки горячими клавишами (секунды)"
     },
+    "options_general_replace_delay": {
+        "message": "Задержка перед автоматической заменой плеера (мс)"
+    },
     "options_general_autoplayyt": {
         "message": "Автовоспроизведение на YouTube"
     },
     "options_general_quality": {
-        "message": "Множитель качества для алгоритма выбора качества (чем выше, тем выше качество)"
+        "message": "Качество видео"
     },
     "options_general_clickaction": {
         "message": "Действие по одиночному клику"

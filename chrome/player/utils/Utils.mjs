@@ -117,33 +117,58 @@ export class Utils {
     });
   }
 
-  static selectQuality(levels, qualityMultiplier) {
+  static selectQuality(levels, defaultQuality) {
     let max = -1;
     let maxLevel = undefined;
     let min = Number.MAX_SAFE_INTEGER;
     let minLevel = undefined;
-    // Get best quality but within screen resolution
-    levels.forEach((level, key) => {
-      if (level.bitrate > max) {
-        if (level.width > window.innerWidth * window.devicePixelRatio * qualityMultiplier && level.height > window.innerHeight * window.devicePixelRatio * qualityMultiplier) {
 
-        } else {
-          max = level.bitrate;
-          maxLevel = key;
+    if (defaultQuality === 'Auto') {
+      const qualityMultiplier = 1.1;
+
+      // Get best quality but within screen resolution
+      levels.forEach((level, key) => {
+        if (level.bitrate > max) {
+          if (level.width > window.innerWidth * window.devicePixelRatio * qualityMultiplier && level.height > window.innerHeight * window.devicePixelRatio * qualityMultiplier) {
+
+          } else {
+            max = level.bitrate;
+            maxLevel = key;
+          }
         }
+
+        if (level.bitrate < min) {
+          min = level.bitrate;
+          minLevel = key;
+        }
+      });
+
+      if (maxLevel === undefined) {
+        maxLevel = minLevel;
       }
 
-      if (level.bitrate < min) {
-        min = level.bitrate;
-        minLevel = key;
-      }
-    });
+      return maxLevel;
+    } else {
+      const desiredHeight = parseInt(defaultQuality.replace('p', ''));
+      const list = [];
+      levels.forEach((level, key) => {
+        list.push({
+          key,
+          level,
+          diff: Math.abs(level.height - desiredHeight),
+        });
+      });
 
-    if (maxLevel === undefined) {
-      maxLevel = minLevel;
+      // Sort by height difference and then by bitrate. Choose highest bitrate if multiple have the same height difference
+      list.sort((a, b) => {
+        if (a.diff === b.diff) {
+          return a.level.bitrate - b.level.bitrate;
+        }
+        return a.diff - b.diff;
+      });
+
+      return list[0].key;
     }
-
-    return maxLevel;
   }
 
   static printWelcome(version) {

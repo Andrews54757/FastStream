@@ -281,6 +281,7 @@ let Events = /*#__PURE__*/function (Events) {
   Events["AUDIO_TRACK_SWITCHED"] = "hlsAudioTrackSwitched";
   Events["AUDIO_TRACK_LOADING"] = "hlsAudioTrackLoading";
   Events["AUDIO_TRACK_LOADED"] = "hlsAudioTrackLoaded";
+  Events["AUDIO_TRACK_UPDATED"] = "hlsAudioTrackUpdated";
   Events["SUBTITLE_TRACKS_UPDATED"] = "hlsSubtitleTracksUpdated";
   Events["SUBTITLE_TRACKS_CLEARED"] = "hlsSubtitleTracksCleared";
   Events["SUBTITLE_TRACK_SWITCH"] = "hlsSubtitleTrackSwitch";
@@ -16984,6 +16985,10 @@ class AudioStreamController extends BaseStreamController {
     }
     track.details = newDetails;
     this.levelLastLoaded = track;
+    this.hls.trigger(Events.AUDIO_TRACK_UPDATED, {
+      details: newDetails,
+      level: trackId
+    });
 
     // compute start position if we are aligned with the main playlist
     if (!this.startFragRequested && (this.mainDetails || !newDetails.live)) {
@@ -29590,4 +29595,4 @@ class Hls {
 }
 Hls.defaultConfig = void 0;
 
-export { AACDemuxer, AbrController, AttrList, AvcVideoParser, HevcVideoParser, AudioStreamController, AudioTrackController, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, ExpGolomb, FPSController, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, MP3Demuxer, MP4Demuxer, MP4Remuxer, MetadataSchema, Mp4Sample, NetworkErrorAction, Part, PassThroughRemuxer, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TSDemuxer, TimelineController, Hls as default, getMediaSource, isMSESupported, isSupported };
+export { AACDemuxer, AvcVideoParser, AbrController, AttrList, AudioStreamController, AudioTrackController, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, ExpGolomb, FPSController, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, MP3Demuxer, MP4Demuxer, MP4Remuxer, MetadataSchema, Mp4Sample, NetworkErrorAction, Part, PassThroughRemuxer, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TSDemuxer, TimelineController, Hls as default, getMediaSource, isMSESupported, isSupported };

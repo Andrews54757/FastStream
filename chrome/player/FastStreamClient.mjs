@@ -24,6 +24,7 @@ import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
 
+const SET_VOLUME_USING_NODE = !EnvUtils.isSafari();
 
 export class FastStreamClient extends EventEmitter {
   constructor() {
@@ -42,6 +43,7 @@ export class FastStreamClient extends EventEmitter {
       downloadAll: false,
       freeUnusedChannels: true,
       storeProgress: false,
+      previewEnabled: true,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -58,7 +60,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       seekStepSize: 0.2,
-      qualityMultiplier: 1,
+      defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
     };
     this.persistent = {
@@ -67,7 +69,6 @@ export class FastStreamClient extends EventEmitter {
       currentTime: 0,
       volume: 1,
       muted: false,
-      latestVolume: 1,
       playbackRate: 1,
     };
 
@@ -84,7 +85,6 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
     });
-    this.interfaceController.updateVolumeBar();
 
     this.player = null;
     this.previewPlayer = null;
@@ -95,22 +95,6 @@ export class FastStreamClient extends EventEmitter {
     this.audioContext = new AudioContext();
     this.audioConfigManager.setupNodes();
     this.mainloop();
-
-    this.loadVolumeState();
-  }
-
-  async loadVolumeState() {
-    const state = await Utils.loadAndParseOptions('volumeState', {
-      volume: 1,
-    });
-    this.persistent.volume = state.volume;
-    this.updateVolume();
-  }
-
-  async saveVolumeState() {
-    await Utils.setConfig('volumeState', JSON.stringify({
-      volume: this.volume,
-    }));
   }
 
   async setup() {
@@ -205,8 +189,21 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoHueRotate = options.videoHueRotate;
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
+    this.options.previewEnabled = options.previewEnabled;
 
-    this.options.qualityMultiplier = options.qualityMultiplier;
+    if (this.options.previewEnabled) {
+      this.setupPreviewPlayer().catch((e) => {
+        console.error(e);
+      });
+    } else {
+      if (this.previewPlayer) {
+        this.previewPlayer.destroy();
+        this.previewPlayer = null;
+        this.interfaceController.resetPreviewVideo();
+      }
+    }
+
+    this.options.defaultQuality = options.defaultQuality;
 
     this.updateCSSFilters();
 
@@ -428,6 +425,25 @@ export class FastStreamClient extends EventEmitter {
     this.options.autoPlay = value;
   }
 
+  async setupPreviewPlayer() {
+    if (!this.player || this.previewPlayer || !this.options.previewEnabled) {
+      return;
+    }
+
+    if (this.player.getSource()) {
+      this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
+        isPreview: true,
+      });
+
+      await this.previewPlayer.setup();
+      this.bindPreviewPlayer(this.previewPlayer);
+
+      await this.previewPlayer.setSource(this.player.getSource());
+      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+      this.updateCSSFilters();
+    }
+  }
+
   async setSource(source) {
     try {
       source = source.copy();
@@ -441,9 +457,7 @@ export class FastStreamClient extends EventEmitter {
       const estimate = await navigator.storage.estimate();
       this.storageAvailable = estimate.quota - estimate.usage;
 
-      this.player = await this.playerLoader.createPlayer(source.mode, this, {
-        qualityMultiplier: this.options.qualityMultiplier,
-      });
+      this.player = await this.playerLoader.createPlayer(source.mode, this, {});
 
       await this.player.setup();
 
@@ -458,7 +472,7 @@ export class FastStreamClient extends EventEmitter {
       this.audioConfigManager.setupNodes();
 
       this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
-      this.updateVolume();
+      this.setVolume(this.persistent.volume);
 
       this.player.playbackRate = this.persistent.playbackRate;
 
@@ -467,15 +481,7 @@ export class FastStreamClient extends EventEmitter {
       this.setSeekSave(true);
 
       if (this.player.getSource()) {
-        this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
-          isPreview: true,
-        });
-
-        await this.previewPlayer.setup();
-        this.bindPreviewPlayer(this.previewPlayer);
-
-        await this.previewPlayer.setSource(this.player.getSource());
-        this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
+        await this.setupPreviewPlayer();
 
         await this.videoAnalyzer.setSource(this.player.getSource());
 
@@ -1026,6 +1032,19 @@ export class FastStreamClient extends EventEmitter {
 
     this.previewContext.on(DefaultPlayerEvents.ERROR, (e) => {
       console.log('Preview player error', e);
+      this.previewPlayer.destroy();
+      this.previewPlayer = null;
+      this.interfaceController.resetPreviewVideo();
+
+      if (!this.interfaceController.failed) {
+        const now = Date.now();
+        if (this.lastPreviewReload && now - this.lastPreviewReload < 1000) {
+          return;
+        }
+        this.lastPreviewReload = now;
+        console.error('Reloading preview player');
+        this.setupPreviewPlayer();
+      }
     });
   }
 
@@ -1033,7 +1052,12 @@ export class FastStreamClient extends EventEmitter {
     if (!this.player) {
       throw new Error('No source is loaded!');
     }
+
+    // Will throw if browser blocks autoplay
     await this.player.play();
+
+    // Everything below will only run if browser allows playing the video
+    // (e.g. not blocked by autoplay policy)
     this.interfaceController.play();
     if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
@@ -1081,7 +1105,7 @@ export class FastStreamClient extends EventEmitter {
 
     for (let i = 0; i < fragments.length; i++) {
       const fragment = fragments[i];
-      if (fragment.end >= start && fragment.start <= end) {
+      if (fragment && fragment.end >= start && fragment.start <= end) {
         if (fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
           return false;
         }
@@ -1195,11 +1219,15 @@ export class FastStreamClient extends EventEmitter {
     return this.fragmentsStore[level];
   }
 
-  updateVolume() {
-    const value = this.persistent.volume;
-    if (this.player) this.player.volume = 1;
-    this.audioConfigManager.updateVolume(value);
-    this.interfaceController.updateVolumeBar();
+  setVolume(volume) {
+    this.persistent.volume = volume;
+    if (SET_VOLUME_USING_NODE || volume > 1) {
+      if (this.player) this.player.volume = 1;
+      this.audioConfigManager.updateVolume(volume);
+    } else {
+      if (this.player) this.player.volume = volume;
+      this.audioConfigManager.updateVolume(1);
+    }
   }
 
   get volume() {
@@ -1207,9 +1235,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   set volume(value) {
-    this.persistent.volume = value;
-    this.updateVolume();
-    this.saveVolumeState();
+    this.interfaceController.setVolume(value);
   }
 
   get playbackRate() {

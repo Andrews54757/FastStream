@@ -2,6 +2,7 @@ let FoundYTPlayer = null;
 let OverridenYTKeys = false;
 const iframeMap = new Map();
 const players = [];
+const elementsHiddenByFillscreen = [];
 window.addEventListener('message', (e) => {
   if (typeof e.data !== 'object') {
     return;
@@ -18,7 +19,7 @@ window.addEventListener('message', (e) => {
             id: dt.id,
             iframe: iframes[i],
             isMini: false,
-            isFullscreen: false,
+            isWindowedFullscreen: false,
             placeholder: null,
             oldStyle: '',
           });
@@ -33,6 +34,30 @@ chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
       if (request.type === 'ping') {
         sendResponse('pong');
+      } else if (request.type === 'windowed_fullscreen') {
+        const iframeObj = iframeMap.get(request.frameId);
+        if (!iframeObj) {
+          sendResponse('no_element');
+          throw new Error('No element found for frame id ' + request.frameId);
+        }
+
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
+
+        if (iframeObj.isMini) {
+          unmakeMiniPlayer(iframeObj);
+        }
+
+        if (request.force === undefined || request.force !== iframeObj.isWindowedFullscreen) {
+          windowedFullscreenToggle(iframeObj);
+        }
+
+        if (iframeObj.isWindowedFullscreen) {
+          sendResponse('enter');
+        } else {
+          sendResponse('exit');
+        }
       } else if (request.type === 'miniplayer') {
         const iframeObj = iframeMap.get(request.frameId);
         if (!iframeObj) {
@@ -43,7 +68,7 @@ chrome.runtime.onMessage.addListener(
         iframeObj.miniSize = request.size;
         iframeObj.miniStyles = request.styles;
 
-        if (document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
+        if (iframeObj.isWindowedFullscreen || document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
           updateMiniPlayer(iframeObj);
         } else {
           toggleMiniPlayer(iframeObj, request.size);
@@ -181,7 +206,7 @@ chrome.runtime.onMessage.addListener(
             iframe.allow = 'autoplay; fullscreen; picture-in-picture';
 
             // replace element
-            pauseAllWithin(video.highest);
+            const watcher = pauseAllWithin(video.highest);
 
             if (isYt) {
               video.highest.parentNode.insertBefore(iframe, video.highest);
@@ -192,9 +217,11 @@ chrome.runtime.onMessage.addListener(
 
             players.push({
               iframe,
+              watcher,
               old: video.highest,
               isYt,
               fillScreen: playerFillsScreen,
+              isWindowedFullscreen: false,
             });
             console.log('replacing video with iframe');
             sendResponse('replace');
@@ -227,6 +254,8 @@ function removePlayers() {
     unmakeMiniPlayer(iframeObj);
   });
 
+  undoFillScreenIframe();
+
   players.forEach((player) => {
     if (player.isYt) {
       showYT(player.old);
@@ -235,7 +264,7 @@ function removePlayers() {
       player.iframe.parentNode.replaceChild(player.old, player.iframe);
     }
 
-    removePauseListeners(player.old);
+    removePauseListeners(player.old, player.watcher);
   });
 
   players.length = 0;
@@ -341,6 +370,88 @@ function toggleMiniPlayer(iframeObj) {
   }
 }
 
+function windowedFullscreenToggle(iframeObj) {
+  if (!iframeObj.isWindowedFullscreen) {
+    iframeObj.isWindowedFullscreen = true;
+    iframeObj.oldStyle = iframeObj.iframe.getAttribute('style') || '';
+    players.forEach((player) => {
+      if (player.iframe === iframeObj.iframe) {
+        player.isWindowedFullscreen = true;
+      }
+    });
+
+    fillScreenIframe(iframeObj.iframe);
+  } else {
+    iframeObj.isWindowedFullscreen = false;
+    iframeObj.iframe.setAttribute('style', iframeObj.oldStyle);
+    players.forEach((player) => {
+      if (player.iframe === iframeObj.iframe) {
+        player.isWindowedFullscreen = false;
+      }
+    });
+    undoFillScreenIframe();
+    setTimeout(() => {
+      updatePlayerStyles();
+    }, 1000);
+  }
+}
+
+function undoFillScreenIframe() {
+  elementsHiddenByFillscreen.forEach((element) => {
+    element.style.display = element.dataset.olddisplay;
+  });
+  elementsHiddenByFillscreen.length = 0;
+}
+
+function fillScreenIframe(iframe) {
+  const elementsToHide = [];
+
+  // Gather all elements not parents of the iframe
+  const elements = document.querySelectorAll('*');
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    if (element === iframe) {
+      continue;
+    }
+
+    if (element.contains(iframe) ||
+      element.tagName === 'BODY' ||
+      element.tagName === 'HTML' ||
+      element.tagName === 'HEAD'
+    ) {
+      continue;
+    }
+
+    elementsToHide.push(element);
+  }
+
+  elementsToHide.forEach((element) => {
+    if (element === iframe) {
+      return;
+    }
+    element.dataset.olddisplay = element.style.display;
+    element.style.setProperty('display', 'none', 'important');
+    elementsHiddenByFillscreen.push(element);
+  });
+
+  iframe.setAttribute('style', `
+    position: fixed !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    padding: 0px !important;
+    z-index: 2147483647 !important;
+    border: none !important;
+    outline: none !important;
+    top: 0px !important;
+    left: 0px !important;
+    width: 100% !important;
+    height: 100% !important;
+    bottom: 0px !important;
+    right: 0px !important;
+  `);
+}
+
 document.addEventListener('fullscreenchange', () => {
   chrome.runtime.sendMessage({
     type: 'fullscreen_change_init',
@@ -378,7 +489,7 @@ function get_yt_identifier(urlStr) {
 
 function updatePlayerStyles() {
   players.forEach((player) => {
-    if (player.fillScreen) return;
+    if (player.fillScreen || player.isWindowedFullscreen) return;
 
     updatePlayerStyle(player.old, player.iframe, player.isYt);
     if (player.isPlaceholder) {
@@ -387,17 +498,17 @@ function updatePlayerStyles() {
   });
 }
 
-function updatePlayerStyle(old, iframe, isYt) {
+function updatePlayerStyle(old, iframe, isYt, fillScreen) {
   const parent = iframe.parentNode;
   iframe.style.display = 'none';
   if (isYt) {
     showYT(old);
-    updateIframeStyle(old, iframe, isYt);
+    updateIframeStyle(old, iframe, isYt, fillScreen);
     hideYT(old);
   } else {
     parent.insertBefore(old, iframe);
     transferId(iframe, old);
-    updateIframeStyle(old, iframe, isYt);
+    updateIframeStyle(old, iframe, isYt, fillScreen);
     parent.removeChild(old);
   }
 }
@@ -418,31 +529,40 @@ function pauseAllWithin(element) {
 
     video.addEventListener('play', pauseOnPlay);
   });
+
+  // Add mutation observer to pause videos added later
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        const addedNodes = Array.from(mutation.addedNodes);
+        addedNodes.forEach((node) => {
+          if (node.tagName === 'VIDEO') {
+            node.pause();
+            node.addEventListener('play', pauseOnPlay);
+          }
+        });
+      }
+    });
+  });
+  observer.observe(element, {childList: true, subtree: true});
+
+  return {
+    observer,
+  };
 }
 
-function removePauseListeners(element) {
+function removePauseListeners(element, watcher) {
   const videos = querySelectorAllIncludingShadows('video', element);
   videos.forEach((video) => {
     video.removeEventListener('play', pauseOnPlay);
   });
+
+  watcher.observer.disconnect();
 }
 
 function updateIframeStyle(old, iframe, isYt, fillScreen) {
   if (fillScreen) {
-    iframe.setAttribute('style', `
-      position: fixed !important;
-      display: block !important;
-      visibility: visible !important;
-      opacity: 1 !important;
-      padding: 0px !important;
-      z-index: 2147483647 !important;
-      border: none !important;
-      outline: none !important;
-      top: 0px !important;
-      left: 0px !important;
-      width: 100% !important;
-      height: 100% !important;
-    `);
+    fillScreenIframe(iframe);
     return;
   }
 
@@ -464,7 +584,12 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
     iframe.style.setProperty('display', 'block', 'important');
   }
 
-  iframe.style.position = styles.position;
+  if (styles.position !== 'static') {
+    iframe.style.position = styles.position;
+  } else {
+    iframe.style.position = 'relative';
+  }
+
   if (!isYt) {
     transferId(old, iframe);
   }
@@ -877,8 +1002,20 @@ if (is_url_yt(window.location.href)) {
     'KeyC', // captions
   ];
 
+  const TransmitBlacklist = [
+    'ArrowUp', 'ArrowDown', // Scroll
+  ];
+
   document.addEventListener('keydown', (e) => {
     if (isActiveElementEditable()) {
+      return;
+    }
+
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+      return;
+    }
+
+    if (TransmitBlacklist.includes(e.code)) {
       return;
     }
 
@@ -898,6 +1035,10 @@ if (is_url_yt(window.location.href)) {
       return;
     }
 
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
+      return;
+    }
+
     if (OverridenYTKeys && OverrideList.includes(e.code)) {
       e.preventDefault();
       e.stopImmediatePropagation();
@@ -906,6 +1047,10 @@ if (is_url_yt(window.location.href)) {
 
   document.addEventListener('keypress', (e) => {
     if (isActiveElementEditable()) {
+      return;
+    }
+
+    if (e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) {
       return;
     }
 

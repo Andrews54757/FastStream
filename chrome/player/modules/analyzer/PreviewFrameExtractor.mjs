@@ -8,6 +8,8 @@ const AnalyzerStatus = {
   FAILED: 'failed',
 };
 
+const SHOULD_STORE_AS_BLOB = true;
+
 export class PreviewFrameExtractor extends EventEmitter {
   constructor(client) {
     super();
@@ -59,9 +61,11 @@ export class PreviewFrameExtractor extends EventEmitter {
 
   reset() {
     try {
-      this.frameBuffer.forEach((frame) => {
-        URL.revokeObjectURL(frame.url);
-      });
+      if (SHOULD_STORE_AS_BLOB) {
+        this.frameBuffer.forEach((frame) => {
+          URL.revokeObjectURL(frame.url);
+        });
+      }
       this.frameBuffer = [];
       this.backgroundAnalyzerSource = null;
       this.backgroundDoneRanges = [];
@@ -75,6 +79,11 @@ export class PreviewFrameExtractor extends EventEmitter {
 
   async startBackgroundAnalyzer() {
     if (!this.client.player || this.backgroundAnalyzerStatus !== AnalyzerStatus.IDLE) {
+      return;
+    }
+
+    const video = this.client.player?.getVideo();
+    if (!video || video.videoWidth === 0 || video.videoHeight === 0) {
       return;
     }
 
@@ -173,6 +182,11 @@ export class PreviewFrameExtractor extends EventEmitter {
       onDone(completed);
     });
 
+    if (videoWidth === 0 || videoHeight === 0) {
+      console.error('[FrameExtractor] Invalid video dimensions');
+      player.destroy();
+      return;
+    }
 
     let pauseTimeout;
 
@@ -244,18 +258,24 @@ export class PreviewFrameExtractor extends EventEmitter {
       if (!this.frameBuffer[frame]) {
         this.extractorContext.drawImage(video, 0, 0, this.extractorCanvas.width, this.extractorCanvas.height);
         const url = this.extractorCanvas.toDataURL('image/png');
-        // convert to blob
-        const byteString = atob(url.split(',')[1]);
-        const buffer = new ArrayBuffer(byteString.length);
-        const array = new Uint8Array(buffer);
-        for (let i = 0; i < byteString.length; i++) {
-          array[i] = byteString.charCodeAt(i);
+        if (SHOULD_STORE_AS_BLOB) {
+          // convert to blob
+          const byteString = atob(url.split(',')[1]);
+          const buffer = new ArrayBuffer(byteString.length);
+          const array = new Uint8Array(buffer);
+          for (let i = 0; i < byteString.length; i++) {
+            array[i] = byteString.charCodeAt(i);
+          }
+          const blob = new Blob([buffer], {type: 'image/png'});
+          this.frameBuffer[frame] = {
+            blob,
+            url: URL.createObjectURL(blob),
+          };
+        } else {
+          this.frameBuffer[frame] = {
+            url,
+          };
         }
-        const blob = new Blob([buffer], {type: 'image/png'});
-        this.frameBuffer[frame] = {
-          blob,
-          url: URL.createObjectURL(blob),
-        };
       }
 
       if (!currentRange || time < currentRange.start || time > currentRange.end + 16) {
@@ -300,7 +320,7 @@ export class PreviewFrameExtractor extends EventEmitter {
       }
 
 
-      if (currentRange.end - currentRange.start >= player.duration - 10) {
+      if (currentRange.end - currentRange.start >= player.duration - 5) {
         onEnd();
         return;
       }

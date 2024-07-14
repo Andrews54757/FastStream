@@ -48,7 +48,6 @@ export class LoopMenu extends EventEmitter {
 
     DOMElements.loopMenu.addEventListener('click', (e) => {
       e.stopPropagation();
-      e.preventDefault();
     });
 
     DOMElements.loopButton.addEventListener('click', (e) => {
@@ -142,11 +141,8 @@ export class LoopMenu extends EventEmitter {
     });
     WebUtils.setupTabIndex(gifButton);
 
-    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-    use.setAttributeNS('http://www.w3.org/1999/xlink', 'href', 'assets/fluidplayer/static/icons.svg#gif');
-    svg.appendChild(use);
-    gifButton.appendChild(svg);
+    const svgIcon = WebUtils.createSVGIcon('assets/fluidplayer/static/icons2.svg#gif');
+    gifButton.appendChild(svgIcon);
     loopButtonContainer.appendChild(gifButton);
 
     this.updateUI();

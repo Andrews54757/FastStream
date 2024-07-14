@@ -11,18 +11,21 @@ import {DASHLoaderFactory} from './DashLoader.mjs';
 import {TrackFilter} from './TrackFilter.mjs';
 
 export default class DashPlayer extends EventEmitter {
-  constructor(client, options) {
+  constructor(client, config) {
     super();
     this.client = client;
-    this.isPreview = options?.isPreview || false;
-    this.isAudioOnly = options?.isAudioOnly || false;
-    this.qualityMultiplier = options?.qualityMultiplier || 1.1;
+    this.isPreview = config?.isPreview || false;
+    this.isAudioOnly = config?.isAudioOnly || false;
+    this.isAnalyzer = config?.isAnalyzer || false;
+    this.defaultQuality = client.options.defaultQuality || 'Auto';
     this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
     this.fragmentRequester = new DashFragmentRequester(this);
 
     this.desiredVideoLevel = null;
     this.desiredAudioLevel = null;
+
+    this.activeRequests = [];
   }
 
   async setup() {
@@ -33,7 +36,7 @@ export default class DashPlayer extends EventEmitter {
     const emitterRelay = new EmitterRelay([preEvents, this]);
     VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
-    this.dash.updateSettings({
+    const newSettings = {
       'streaming': {
         abr: {
           autoSwitchBitrate: {audio: false, video: false},
@@ -49,14 +52,24 @@ export default class DashPlayer extends EventEmitter {
           defaultEnabled: false,
         },
       },
-      // 'debug': {
-      //   'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
-      // },
-    });
+      'errors': {
+        recoverAttempts: {
+          mediaErrorDecode: 1000000,
+        },
+      },
+    };
+
+    // if (this.isPreview) {
+    //   newSettings.debug ={
+    //     'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
+    //   };
+    // }
+
+    this.dash.updateSettings(newSettings);
 
     this.dash.setCustomInitialTrackSelectionFunction((tracks)=>{
       const lang = navigator.language || 'en';
-      return TrackFilter.filterTracks(tracks, lang, this.qualityMultiplier);
+      return TrackFilter.filterTracks(tracks, lang, this.defaultQuality);
     });
 
     this.dash.on('needkey', (e) => {
@@ -69,7 +82,7 @@ export default class DashPlayer extends EventEmitter {
       if (initAlready) return;
       initAlready = true;
 
-      const level = Utils.selectQuality(this.levels, this.qualityMultiplier);
+      const level = Utils.selectQuality(this.levels, this.defaultQuality);
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
     };
 
@@ -129,6 +142,7 @@ export default class DashPlayer extends EventEmitter {
         return dashHandler._getRequestForSegment(mediaInfo, segment);
       });
       segments.forEach((request) => {
+        if (!request) return;
         request.level = rep.id;
         const fragment = new DashFragment(request);
         if (!this.client.getFragment(fragment.level, fragment.sn)) {
@@ -208,11 +222,6 @@ export default class DashPlayer extends EventEmitter {
 
   set currentTime(value) {
     this.video.currentTime = value;
-    try {
-      this.dash.seek(value);
-    } catch (e) {
-      console.warn(e);
-    }
   }
 
   get currentTime() {
@@ -300,7 +309,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get videoTracks() {
-    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'), this.qualityMultiplier);
+    return TrackFilter.uniqueLanguages(this.dash.getTracksFor('video'), this.defaultQuality);
   }
 
   get languageTracks() {

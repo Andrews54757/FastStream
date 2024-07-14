@@ -50,7 +50,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('Mute', (e)=>{
-      this.client.interfaceController.muteToggle();
+      this.client.interfaceController.volumeControls.muteToggle();
     });
 
     this.on('SeekForward', (e) => {
@@ -177,6 +177,10 @@ export class KeybindManager extends EventEmitter {
     this.on('RotateVideo', (e) => {
       rotateIndex = (rotateIndex + 1) % 4;
       updateVideoTransform();
+    });
+
+    this.on('WindowedFullscreen', (e) => {
+      this.client.interfaceController.toggleWindowedFullscreen();
     });
 
     this.on('keybind', (keybind, e) => {

@@ -48,6 +48,15 @@ export class VideoSource {
       this.headers = headers || {};
     }
 
+    // Check if referer is set and origin is not set
+    if (this.headers.Referer && !this.headers.Origin) {
+      try {
+        this.headers.Origin = new URL(this.headers.Referer).origin;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     this.headers = this.filterHeaders(this.headers);
     this.defaultLevelInfo = null;
   }

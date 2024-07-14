@@ -13,6 +13,7 @@ import {MiniplayerPositions} from './defaults/MiniplayerPositions.mjs';
 import {DefaultSubtitlesSettings} from './defaults/DefaultSubtitlesSettings.mjs';
 import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
+import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -26,7 +27,7 @@ const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
 const autoplayYoutube = document.getElementById('autoplayyt');
-const qualityMultiplier = document.getElementById('qualitymultiplier');
+const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
 const clickAction = document.getElementById('clickaction');
@@ -40,6 +41,8 @@ const miniSize = document.getElementById('minisize');
 const miniPos = document.getElementById('minipos');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
+const previewEnabled = document.getElementById('previewenabled');
+const replaceDelay = document.getElementById('replacedelay');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -66,6 +69,11 @@ if (!EnvUtils.isExtension()) {
   miniSize.disabled = true;
 }
 
+if (EnvUtils.isSafari()) {
+  daltonizerType.disabled = true;
+  daltonizerStrength.disabled = true;
+}
+
 async function loadOptions(newOptions) {
   newOptions = newOptions || await Utils.getOptionsFromStorage();
   Options = newOptions;
@@ -74,15 +82,16 @@ async function loadOptions(newOptions) {
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
+  previewEnabled.checked = !!Options.previewEnabled;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
-  qualityMultiplier.value = Options.qualityMultiplier;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
+  replaceDelay.value = Options.replaceDelay;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -90,6 +99,8 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
+  setSelectMenuValue(qualityMenu, Options.defaultQuality);
+
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
   } else {
@@ -131,7 +142,7 @@ function createSelectMenu(container, options, selected, localPrefix, callback) {
   for (const option of options) {
     const optionElement = document.createElement('option');
     optionElement.value = option;
-    optionElement.textContent = Localize.getMessage(localPrefix + '_' + option);
+    optionElement.textContent = localPrefix !== null ? Localize.getMessage(localPrefix + '_' + option) : option;
     if (option === selected) {
       optionElement.selected = true;
     }
@@ -186,6 +197,11 @@ createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visCh
 
 createSelectMenu(miniPos, Object.values(MiniplayerPositions), Options.miniPos, 'options_general_minipos', (e) => {
   Options.miniPos = e.target.value;
+  optionChanged();
+});
+
+createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQuality, null, (e) => {
+  Options.defaultQuality = e.target.value;
   optionChanged();
 });
 
@@ -317,6 +333,11 @@ downloadAll.addEventListener('change', () => {
   optionChanged();
 });
 
+previewEnabled.addEventListener('change', () => {
+  Options.previewEnabled = previewEnabled.checked;
+  optionChanged();
+});
+
 storeProgress.addEventListener('change', () => {
   Options.storeProgress = storeProgress.checked;
   optionChanged();
@@ -346,8 +367,8 @@ seekStepSize.addEventListener('change', () => {
   optionChanged();
 });
 
-qualityMultiplier.addEventListener('change', () => {
-  Options.qualityMultiplier = Math.max(parseFloat(qualityMultiplier.value) || 1, 0.01);
+replaceDelay.addEventListener('change', () => {
+  Options.replaceDelay = parseInt(replaceDelay.value);
   optionChanged();
 });
 
@@ -442,6 +463,9 @@ function optionChanged() {
   }
 }
 
+const versionDiv = document.getElementById('version');
+versionDiv.textContent = `FastStream v${EnvUtils.getVersion()}`;
+
 if (EnvUtils.isExtension()) {
   // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -469,11 +493,13 @@ if (EnvUtils.isExtension()) {
     });
     ratebox.style.display = 'none';
 
-    let url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
+    let url;
 
-    // SPLICER:FIREFOX:REMOVE_START
-    url = 'https://chromewebstore.google.com/u/1/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
-    // SPLICER:FIREFOX:REMOVE_END
+    if (EnvUtils.isChrome()) {
+      url = 'https://chromewebstore.google.com/u/1/detail/faststream-video-player/kkeakohpadmbldjaiggikmnldlfkdfog/reviews';
+    } else {
+      url = 'https://addons.mozilla.org/en-US/firefox/addon/faststream/reviews/';
+    }
 
     chrome?.tabs?.create({
       url,
@@ -496,6 +522,7 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
   const updatebox = document.getElementById('updatebox');
   const updatetext = document.getElementById('updatetext');
+  const updatenotif = parent.document ? parent.document.getElementById('update_notif_banner') : null;
 
   chrome.storage.local.get({
     updateData: '{}',
@@ -517,6 +544,7 @@ if (EnvUtils.isExtension()) {
     if (latestVersion && UpdateChecker.compareVersions(currentVersion, latestVersion) && latestVersion !== ignoreVersion) {
       updatetext.textContent = Localize.getMessage('options_update_body', [latestVersion, currentVersion]);
       updatebox.style.display = 'block';
+      if (updatenotif) updatenotif.style.display = 'block';
     }
   });
 
@@ -528,6 +556,7 @@ if (EnvUtils.isExtension()) {
 
   document.getElementById('noupdate').addEventListener('click', (e) => {
     updatebox.style.display = 'none';
+    if (updatenotif) updatenotif.style.display = 'none';
     chrome.storage.local.get('updateData', (result) => {
       const data = result?.updateData ? JSON.parse(result.updateData) : {};
       data.ignoreVersion = data.latestVersion;

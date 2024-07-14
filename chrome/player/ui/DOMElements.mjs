@@ -9,6 +9,7 @@ export const DOMElements = {
   progressContainer: document.querySelector('.mainplayer .fluid_controls_progress_container'),
   currentProgress: document.querySelector('.mainplayer .fluid_controls_currentprogress'),
   fullscreen: document.querySelector('.mainplayer .fluid_control_fullscreen'),
+  windowedFullscreen: document.querySelector('.mainplayer .fluid_control_windowed_fullscreen'),
   subtitles: document.querySelector('.mainplayer .fluid_control_subtitles'),
   videoSource: document.querySelector('.mainplayer .fluid_control_video_source'),
   videoSourceList: document.querySelector('.mainplayer .fluid_video_sources_list'),
@@ -78,6 +79,8 @@ export const DOMElements = {
   moreButton: document.querySelector('.mainplayer .fluid_control_more'),
   loopButton: document.querySelector('.mainplayer .fluid_control_loop'),
   loopMenu: document.querySelector('.mainplayer .loop_menu'),
+  skipForwardButton: document.querySelector('.mainplayer .fluid_control_skip_forward'),
+  skipBackwardButton: document.querySelector('.mainplayer .fluid_control_skip_backward'),
 
   dragDemoTutorial: document.querySelector('.mainplayer .fluid_controls_dragdemo'),
 };

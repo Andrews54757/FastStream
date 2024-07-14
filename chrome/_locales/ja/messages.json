@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Stream without buffering, a great video player and download accelerator all in one."
+        "message": "バッファリングなしでストリーム。インターネット上の悪質なビデオプレーヤーを修正します。"
     },
     "extension_toggle_label": {
         "message": "FastStream に切り替える"
@@ -371,6 +371,15 @@
     },
     "player_fullscreen_label": {
         "message": "フルスクリーン"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "ウィンドウ化されたフルスクリーン"
+    },
+    "player_skip_forward_label": {
+        "message": "10秒進む"
+    },
+    "player_skip_backward_label": {
+        "message": "10秒戻る"
     },
     "player_more_label": {
         "message": "その他のツール"
@@ -777,6 +786,9 @@
     "options_general_maxsize": {
         "message": "プリダウンローダーの最大サイズ"
     },
+    "options_general_previewenabled": {
+        "message": "タイムライン上でマウスを移動するとプレビューが表示されます"
+    },
     "options_general_analyze": {
         "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },
@@ -795,11 +807,14 @@
     "options_general_seekstep": {
         "message": "シークキーバインドのベースステップサイズ (秒)"
     },
+    "options_general_replace_delay": {
+        "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
+    },
     "options_general_autoplayyt": {
         "message": "YouTube 動画の自動再生"
     },
     "options_general_quality": {
-        "message": "品質選択アルゴリズムの品質倍率係数 (高いほど高品質を選択します)"
+        "message": "動画の品質"
     },
     "options_general_clickaction": {
         "message": "シングルクリック時のアクション"

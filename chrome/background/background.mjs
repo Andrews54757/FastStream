@@ -255,6 +255,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse(result);
     });
     return true;
+  } else if (msg.type === 'request_windowed_fullscreen') {
+    handleFullScreenRequest(frame, {
+      type: 'windowed_fullscreen',
+      force: msg.force,
+    }).then((result) => {
+      sendResponse(result);
+    });
+    return true;
   } else if (msg.type === 'request_miniplayer') {
     handleFullScreenRequest(frame, {
       type: 'miniplayer',
@@ -347,6 +355,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         }
       }
     }
+
+    checkURLMatch(frame);
   } else if (msg.type === 'loaded') {
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'init',
@@ -427,6 +437,19 @@ function checkYTURL(frame) {
       url: url,
       requestId: -1,
     }, frame, PlayerModes.ACCELERATED_YT);
+  }
+}
+
+function checkURLMatch(frame) {
+  const url = frame.url;
+  const ext = CustomSourcePatternsMatcher.match(url);
+  if (ext) {
+    const mode = URLUtils.getModeFromExtension(ext);
+    if (!mode) return;
+    onSourceRecieved({
+      url: url,
+      requestId: -1,
+    }, frame, mode);
   }
 }
 
@@ -662,14 +685,18 @@ function sendSources(frame) {
 }
 
 function getOrCreateFrame(details) {
-  if (!CachedTabs[details.tabId]) CachedTabs[details.tabId] = new TabHolder(details.tabId);
-  const tab = CachedTabs[details.tabId];
+  const tabId = details.tabId;
+  const frameId = details.frameId;
+  const parentFrameId = details.parentFrameId;
 
-  if (!tab.frames[details.frameId]) tab.addFrame(details.frameId, details.parentFrameId);
-  const frame = tab.frames[details.frameId];
+  if (!CachedTabs[tabId]) CachedTabs[tabId] = new TabHolder(tabId);
+  const tab = CachedTabs[tabId];
 
-  if (details.parentFrameId !== frame.parentId) {
-    frame.parentId = details.parentFrameId;
+  if (!tab.frames[frameId]) tab.addFrame(frameId, parentFrameId);
+  const frame = tab.frames[frameId];
+
+  if (parentFrameId !== undefined) {
+    frame.parentId = parentFrameId;
   }
 
   return frame;
@@ -679,11 +706,15 @@ function isSubtitles(ext) {
 }
 
 async function scrapeCaptionsTags(frame) {
+  const tabId = frame.tab.tabId;
+  const frameId = frame.frameId;
+  if (tabId < 0) return null;
+
   return new Promise((resolve, reject) => {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
+    chrome.tabs.sendMessage(tabId, {
       type: 'scrape_captions',
     }, {
-      frameId: frame.frameId,
+      frameId: frameId,
     }, (sub) => {
       BackgroundUtils.checkMessageError('scrape_captions');
       resolve(sub);
@@ -790,8 +821,42 @@ async function onSourceRecieved(details, frame, mode) {
   }
 
   const url = details.url;
+  const customHeaders = details.customHeaders || frame.requestHeaders[details.requestId];
+
   if (getSourceFromURL(frame, url)) return;
-  addSource(frame, url, mode, details.customHeaders || frame.requestHeaders[details.requestId]);
+
+  // Check if service worker
+  if (frame.tab.tabId < 0 && details.initiator) {
+    // get current frame
+    const currentFrame = await new Promise((resolve, reject) => {
+      chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
+        ctabs.every((tab) => {
+          const tabObj = CachedTabs[tab.id];
+          if (!tabObj) return true;
+          for (const i in tabObj.frames) {
+            if (!Object.hasOwn(tabObj.frames, i)) continue;
+            const f = tabObj.frames[i];
+            if (!f?.url) continue;
+            const furl = f.url;
+            if (furl.length >= details.initiator.length && furl.substring(0, details.initiator.length) === details.initiator) {
+              resolve(f);
+              return false;
+            }
+          }
+          return true;
+        });
+      }).catch((e) => {
+        resolve(null);
+      });
+    });
+
+    if (currentFrame) {
+      frame = currentFrame;
+    }
+  }
+
+  addSource(frame, url, mode, customHeaders);
+
   await scrapeCaptionsTags(frame).then((sub) => {
     if (sub) {
       sub.forEach((s) => {
@@ -812,7 +877,7 @@ async function onSourceRecieved(details, frame, mode) {
       if (frame.tab.isOn) {
         openPlayer(frame);
       }
-    }, mode === PlayerModes.ACCELERATED_MP4 ? 1500 : 200);
+    }, Options.replaceDelay);
   }
 
   sendSourcesToMainFramePlayers(frame);
@@ -856,10 +921,10 @@ async function openPlayersWithSources(tabid) {
 const webRequestPerms = ['requestHeaders'];
 const webRequestPerms2 = [];
 
-// SPLICER:FIREFOX:REMOVE_START
-webRequestPerms.push('extraHeaders');
-webRequestPerms2.push('extraHeaders');
-// SPLICER:FIREFOX:REMOVE_END
+if (EnvUtils.isChrome()) {
+  webRequestPerms.push('extraHeaders');
+  webRequestPerms2.push('extraHeaders');
+}
 
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   const frame = getOrCreateFrame(details);

@@ -18751,7 +18751,13 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  *            enableManifestTimescaleMismatchFix: false,
  *            capabilities: {
  *               filterUnsupportedEssentialProperties: true,
- *               supportedEssentialProperties: Constants.THUMBNAILS_SCHEME_ID_URIS,
+ *               supportedEssentialProperties: [
+                    { schemeIdUri: Constants.FONT_DOWNLOAD_DVB_SCHEME },
+                    { schemeIdUri: Constants.COLOUR_PRIMARIES_SCHEME_ID_URI, value: /5|6/ },
+                    { schemeIdUri: Constants.MATRIX_COEFFICIENTS_SCHEME_ID_URI, value: /5|6/ },
+                    { schemeIdUri: Constants.TRANSFER_CHARACTERISTICS_SCHEME_ID_URI, value: '6' },
+                    ...Constants.THUMBNAILS_SCHEME_ID_URIS.map(ep => { return { 'schemeIdUri': ep }; })
+                ],
  *               useMediaCapabilitiesApi: false
  *            },
  *            timeShiftBuffer: {
@@ -19327,7 +19333,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
  * @typedef {Object} Capabilities
  * @property {boolean} [filterUnsupportedEssentialProperties=true]
  * Enable to filter all the AdaptationSets and Representations which contain an unsupported \<EssentialProperty\> element.
- * @property {Array.<string>} [supportedEssentialProperties=Constants.THUMBNAILS_SCHEME_ID_URIS]
+ * @property {Array.<string>} [supportedEssentialProperties]
  * List of supported \<EssentialProperty\> elements
  * @property {boolean} [useMediaCapabilitiesApi=false]
  * Enable to use the MediaCapabilities API to check whether codecs are supported. If disabled MSE.isTypeSupported will be used instead.
@@ -19709,7 +19715,22 @@ function Settings() {
       enableManifestTimescaleMismatchFix: false,
       capabilities: {
         filterUnsupportedEssentialProperties: true,
-        supportedEssentialProperties: [_streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.FONT_DOWNLOAD_DVB_SCHEME].concat(_toConsumableArray(_streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.THUMBNAILS_SCHEME_ID_URIS)),
+        supportedEssentialProperties: [{
+          schemeIdUri: _streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.FONT_DOWNLOAD_DVB_SCHEME
+        }, {
+          schemeIdUri: _streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.COLOUR_PRIMARIES_SCHEME_ID_URI,
+          value: /5|6/
+        }, {
+          schemeIdUri: _streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.MATRIX_COEFFICIENTS_SCHEME_ID_URI,
+          value: /5|6/
+        }, {
+          schemeIdUri: _streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.TRANSFER_CHARACTERISTICS_SCHEME_ID_URI,
+          value: '6'
+        }].concat(_toConsumableArray(_streaming_constants_Constants_js__WEBPACK_IMPORTED_MODULE_3__/* ["default"] */ .Z.THUMBNAILS_SCHEME_ID_URIS.map(function (ep) {
+          return {
+            'schemeIdUri': ep
+          };
+        }))),
         useMediaCapabilitiesApi: false
       },
       timeShiftBuffer: {
@@ -19951,7 +19972,7 @@ function Settings() {
     for (var n in source) {
       if (source.hasOwnProperty(n)) {
         if (dest.hasOwnProperty(n)) {
-          if (_typeof(source[n]) === 'object' && !(source[n] instanceof Array) && source[n] !== null) {
+          if (_typeof(source[n]) === 'object' && !(source[n] instanceof RegExp) && !(source[n] instanceof Array) && source[n] !== null) {
             mixinSettings(source[n], dest[n], path.slice() + n + '.');
           } else {
             dest[n] = _Utils_js__WEBPACK_IMPORTED_MODULE_1__/* ["default"] */ .Z.clone(source[n]);
@@ -20096,6 +20117,9 @@ var Utils = /*#__PURE__*/function () {
         return src; // anything
       }
 
+      if (src instanceof RegExp) {
+        return new RegExp(src);
+      }
       var r;
       if (src instanceof Array) {
         // array
@@ -28951,10 +28975,11 @@ function StreamProcessor(config) {
     scheduleController.clearScheduleTimer();
 
     // Informing ScheduleController about AS switch
-    scheduleController.setSwitchTrack(true);
+    // scheduleController.setSwitchTrack(true);
     var newMediaInfo = newRepresentation.mediaInfo;
     currentMediaInfo = newMediaInfo;
     selectMediaInfo(newMediaInfo, newRepresentation).then(function () {
+      prepareTrackSwitch();
       _handleDifferentSwitchTypes(e, newRepresentation);
     });
   }
@@ -31041,6 +31066,21 @@ var DescriptorType = /*#__PURE__*/function () {
           this.dvbFontFamily = data[DashConstants/* default */.Z.DVB_FONTFAMILY];
         }
       }
+    }
+  }, {
+    key: "inArray",
+    value: function inArray(arr) {
+      var _this = this;
+      if (arr) {
+        return arr.some(function (entry) {
+          return _this.schemeIdUri === entry.schemeIdUri && (_this.value ? _this.value.match(entry.value) :
+          // check if provided value matches RegExp
+          ''.match(entry.value) // check if RegExp allows absent value   
+          );
+        });
+      }
+
+      return false;
     }
   }]);
   return DescriptorType;
@@ -60156,7 +60196,8 @@ function tXml_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) 
  */
 
 /**
- * Entities that are used in XML
+ * Predefined general entities used in XML
+ * See https://www.w3.org/TR/xml/#sec-predefined-ent
  */
 var XML_ENTITIES = {
   '&amp;': '&',
@@ -60167,21 +60208,45 @@ var XML_ENTITIES = {
 };
 
 /**
- * Translates XML entities to their respective characters.
+ * Translates XML entities and character references to their respective characters.
  * @param {Object} entitiesList 
  * @param {String} str 
  * @returns {String}
  */
-function translateEntities(entitiesList, str) {
-  var entitySplit = str.split(/(&[a-zA-Z0-9]+;)/);
+function translateEntitiesAndCharacterReferences(entitiesList, str) {
+  var entitySplit = str.split(/(&[#a-zA-Z0-9]+;)/);
   if (entitySplit.length <= 1) {
     // No entities. Skip the rest of the function.
     return str;
   }
   for (var i = 1; i < entitySplit.length; i += 2) {
-    var entity = entitySplit[i];
-    if (entitiesList.hasOwnProperty(entity)) {
-      entitySplit[i] = entitiesList[entity];
+    var reference = entitySplit[i];
+
+    /*
+     * Check if it is a character reference of the form
+     * /&#[0-9]+;/ - Encoded in decimal, or
+     * /&#x[0-9a-fA-F]+;/ - Encoded in hexadecimal
+     * See https://www.w3.org/TR/xml/#sec-references
+     */
+    if (reference.charAt(1) === '#') {
+      var code = void 0;
+      if (reference.charAt(2) === 'x') {
+        // Hexadecimal
+        code = parseInt(reference.substring(3, reference.length - 1), 16);
+      } else {
+        // Decimal
+        code = parseInt(reference.substring(2, reference.length - 1), 10);
+      }
+
+      // Translate into string according to ISO/IEC 10646
+      if (!isNaN(code) && code >= 0 && code <= 0x10FFFF) {
+        entitySplit[i] = String.fromCodePoint(code);
+      }
+    }
+    /*
+     * Translate entity references using a dictionary.
+     */else if (entitiesList.hasOwnProperty(reference)) {
+      entitySplit[i] = entitiesList[reference];
     }
   }
   return entitySplit.join('');
@@ -60327,7 +60392,7 @@ function tXml_parse(S, options) {
     if (tagName === 'S') {
       return parseInt(value);
     }
-    var attrValue = translateEntities(XML_ENTITIES, value);
+    var attrValue = translateEntitiesAndCharacterReferences(XML_ENTITIES, value);
     attrMatchers.forEach(function (matcher) {
       if (matcher.test(tagName, attrName, value)) {
         attrValue = matcher.converter(value);
@@ -60344,7 +60409,7 @@ function tXml_parse(S, options) {
     var start = pos;
     pos = S.indexOf(openBracket, pos) - 1;
     if (pos === -2) pos = S.length;
-    return translateEntities(XML_ENTITIES, S.slice(start, pos + 1));
+    return translateEntitiesAndCharacterReferences(XML_ENTITIES, S.slice(start, pos + 1));
   }
   /**
    *    returns text until the first nonAlphabetic letter
@@ -78682,6 +78747,9 @@ var mediaPlayerEvents = new MediaPlayerEvents();
   SUPPLEMENTAL_PROPERTY_DVB_LL_SCHEME: 'urn:dvb:dash:lowlatency:critical:2019',
   THUMBNAILS_SCHEME_ID_URIS: ['http://dashif.org/thumbnail_tile', 'http://dashif.org/guidelines/thumbnail_tile'],
   FONT_DOWNLOAD_DVB_SCHEME: 'urn:dvb:dash:fontdownload:2014',
+  COLOUR_PRIMARIES_SCHEME_ID_URI: 'urn:mpeg:mpegB:cicp:ColourPrimaries',
+  MATRIX_COEFFICIENTS_SCHEME_ID_URI: 'urn:mpeg:mpegB:cicp:MatrixCoefficients',
+  TRANSFER_CHARACTERISTICS_SCHEME_ID_URI: 'urn:mpeg:mpegB:cicp:TransferCharacteristics',
   XML: 'XML',
   ARRAY_BUFFER: 'ArrayBuffer',
   DVB_REPORTING_URL: 'dvb:reportingUrl',
@@ -86573,17 +86641,13 @@ function Capabilities() {
 
   /**
    * Check if a specific EssentialProperty is supported
-   * @param {object} ep
+   * @param {DescriptorType} ep
    * @return {boolean}
    */
   function supportsEssentialProperty(ep) {
     var supportedEssentialProps = settings.get().streaming.capabilities.supportedEssentialProperties;
     try {
-      var whitelist = ['urn:mpeg:mpegB:cicp:TransferCharacteristics', 'urn:mpeg:mpegB:cicp:ColourPrimaries', 'urn:mpeg:mpegB:cicp:MatrixCoefficients'];
-      if (whitelist.indexOf(ep.schemeIdUri) !== -1) {
-        return true;
-      }
-      return supportedEssentialProps.indexOf(ep.schemeIdUri) !== -1;
+      return ep.inArray(supportedEssentialProps);
     } catch (e) {
       return true;
     }
@@ -87340,4 +87404,5 @@ __webpack_exports__ = __webpack_exports__["default"];
 /******/ })()
 ;
 });
+//# sourceMappingURL=dash.all.min.js.map
 export const DashJS = dash;

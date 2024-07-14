@@ -13,7 +13,6 @@ export function DASHLoaderFactory(player) {
         return;
       }
 
-      // console.log(httpRequest.request)
       request(httpRequest);
     }
 
@@ -40,20 +39,44 @@ export function DASHLoaderFactory(player) {
           return;
         }
 
-        httpRequest._loader = player.fragmentRequester.requestFragment(frag, {
+        const activeRequests = player.activeRequests;
+
+        const loader = player.fragmentRequester.requestFragment(frag, {
           onSuccess: (entry, data) => {
             httpRequest.customData.onSuccess(data, entry.responseURL);
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
           onProgress: (stats, context, data, xhr) => {
 
           },
           onFail: (entry) => {
             httpRequest.customData.onAbort(entry);
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
           onAbort: (entry) => {
             httpRequest.customData.onAbort(entry);
+            const index = activeRequests.indexOf(loader);
+            if (index > -1) {
+              activeRequests.splice(index, 1);
+            }
           },
         }, null, 1000);
+
+        httpRequest.customData.abort = () => {
+          loader.abort();
+        };
+
+        httpRequest._loader = loader;
+
+        if (segmentIndex !== -1) {
+          activeRequests.push(loader);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -109,6 +132,10 @@ export function DASHLoaderFactory(player) {
           httpRequest.customData.onAbort(entry);
         },
       });
+
+      httpRequest.customData.abort = () => {
+        loader.abort();
+      };
 
       httpRequest._loader = loader;
     }
