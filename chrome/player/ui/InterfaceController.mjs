@@ -44,6 +44,7 @@ export class InterfaceController {
 
     this.playbackRateChanger = new PlaybackRateChanger(this.client);
     this.playbackRateChanger.on('rateChanged', (rate) => {
+      this.playbackRateChanger.closeUI();
       this.client.playbackRate = rate;
     });
     this.playbackRateChanger.setupUI();
@@ -51,12 +52,14 @@ export class InterfaceController {
     this.videoQualityChanger = new VideoQualityChanger();
     this.videoQualityChanger.setupUI();
     this.videoQualityChanger.on('qualityChanged', (level) => {
+      this.videoQualityChanger.closeUI();
       this.client.currentLevel = level;
     });
 
     this.languageChanger = new LanguageChanger();
     this.languageChanger.setupUI();
     this.languageChanger.on('languageChanged', (track) => {
+      this.languageChanger.closeUI();
       this.client.setLanguageTrack(track);
     });
 
