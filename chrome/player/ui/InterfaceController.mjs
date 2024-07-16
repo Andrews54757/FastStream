@@ -778,8 +778,8 @@ export class InterfaceController {
   }
 
 
-  updatePlaybackRate() {
-    this.playbackRateChanger.setPlaybackRate(this.persistent.playbackRate, true);
+  updatePlaybackRate(playbackRate) {
+    this.playbackRateChanger.setPlaybackRate(playbackRate, true);
     this.durationChanged();
   }
 

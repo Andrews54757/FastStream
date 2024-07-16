@@ -44,6 +44,7 @@ export class FastStreamClient extends EventEmitter {
       freeUnusedChannels: true,
       storeProgress: false,
       previewEnabled: true,
+      rememberPlaybackRate: true,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -190,6 +191,11 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
     this.options.previewEnabled = options.previewEnabled;
+
+    this.options.rememberPlaybackRate = options.rememberPlaybackRate;
+    if (!this.options.rememberPlaybackRate) {
+      this.persistent.playbackRate = 1;
+    }
 
     if (this.options.previewEnabled) {
       this.setupPreviewPlayer().catch((e) => {
@@ -475,6 +481,7 @@ export class FastStreamClient extends EventEmitter {
       this.setVolume(this.persistent.volume);
 
       this.player.playbackRate = this.persistent.playbackRate;
+      this.interfaceController.updatePlaybackRate(this.player.playbackRate);
 
       this.setSeekSave(false);
       this.currentTime = 0;
@@ -1243,11 +1250,15 @@ export class FastStreamClient extends EventEmitter {
   }
 
   set playbackRate(value) {
-    this.persistent.playbackRate = value;
+    if (this.options.rememberPlaybackRate) {
+      this.persistent.playbackRate = value;
+    }
+
     if (this.player) {
       this.player.playbackRate = value;
     }
-    this.interfaceController.updatePlaybackRate();
+
+    this.interfaceController.updatePlaybackRate(value);
   }
 
   get currentVideo() {

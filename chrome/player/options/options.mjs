@@ -43,6 +43,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
+const rememberPlaybackRate = document.getElementById('rememberplaybackrate')
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -92,6 +93,7 @@ async function loadOptions(newOptions) {
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
+  rememberPlaybackRate.checked = !!Options.rememberPlaybackRate;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -374,6 +376,11 @@ replaceDelay.addEventListener('change', () => {
 
 miniSize.addEventListener('change', () => {
   Options.miniSize = Math.min(Math.max(parseFloat(miniSize.value) || 0.25, 0.01), 1);
+  optionChanged();
+});
+
+rememberPlaybackRate.addEventListener('change', () => {
+  Options.rememberPlaybackRate = rememberPlaybackRate.checked;
   optionChanged();
 });
 
