@@ -580,7 +580,7 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
   iframe.style.setProperty('padding', '0px', 'important');
   iframe.style.setProperty('opacity', '1', 'important');
   iframe.style.setProperty('visibility', 'visible', 'important');
-  if (styles.display === 'none') {
+  if (styles.display === 'none' || isYt) {
     iframe.style.setProperty('display', 'block', 'important');
   }
 
@@ -592,6 +592,8 @@ function updateIframeStyle(old, iframe, isYt, fillScreen) {
 
   if (!isYt) {
     transferId(old, iframe);
+  } else {
+    iframe.id = 'player';
   }
 
   iframe.style.zIndex = styles.zIndex;
