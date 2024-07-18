@@ -89,6 +89,10 @@ export class InterfaceController {
     this.optionsWindow = new OptionsWindow();
 
     this.setupDOM();
+
+    chrome.runtime.sendMessage({
+      type: 'create_context_menu',
+    });
   }
 
   updateToolVisibility() {

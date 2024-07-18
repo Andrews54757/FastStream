@@ -382,6 +382,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       requestId: -1,
       customHeaders: headers,
     }, frame, mode);
+  } else if (msg.type === 'create_context_menu') {
+    tryCreateContextMenu();
+    sendResponse('ok');
+    return true;
   } else {
     return;
   }
@@ -997,6 +1001,10 @@ chrome.tabs.onRemoved.addListener((tabid, removed) => {
 });
 
 chrome.tabs.onActivated.addListener(() => {
+  tryCreateContextMenu();
+});
+
+function tryCreateContextMenu() {
   chrome.tabs.query({
     active: true,
   }, (tabs) => {
@@ -1022,7 +1030,7 @@ chrome.tabs.onActivated.addListener(() => {
       });
     });
   });
-});
+}
 
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
   if (CachedTabs[tabid]) {
