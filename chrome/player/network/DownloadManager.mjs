@@ -19,6 +19,7 @@ export class DownloadManager {
     this.speedTestCount = 0;
     this.testing = true;
     this.lastSpeed = 0;
+    this.lastFailed = 0;
 
     this.failed = 0;
 
@@ -199,13 +200,16 @@ export class DownloadManager {
   }
 
   onDownloaderFinished(downloader, entry) {
-    if (navigator.onLine && entry.status === DownloadStatus.DOWNLOAD_FAILED && !entry.aborted &&
-      this.downloaders.length > 1) {
-      const ind = this.downloaders.indexOf(downloader);
-      if (ind !== -1) {
-        this.downloaders.splice(ind, 1);
-        this.client.resetFailed();
-        console.log('Downloader failed, removing downloader and trying again');
+    if (navigator.onLine && entry.status === DownloadStatus.DOWNLOAD_FAILED && !entry.aborted) {
+      this.lastFailed = Date.now();
+
+      if (this.downloaders.length > 1) {
+        const ind = this.downloaders.indexOf(downloader);
+        if (ind !== -1) {
+          this.downloaders.splice(ind, 1);
+          this.client.resetFailed();
+          console.log('Downloader failed, removing downloader and trying again');
+        }
       }
     }
 
@@ -267,6 +271,15 @@ export class DownloadManager {
     if (this.queue[0].status !== DownloadStatus.ENQUEUED) {
       this.queue.shift();
       this.queueNext();
+      return;
+    }
+
+    const failCooldown = 1000;
+    if (this.lastFailed + failCooldown > Date.now()) {
+      if (this.failCooldown) clearTimeout(this.failCooldown);
+      this.failCooldown = setTimeout(() => {
+        this.queueNext();
+      }, failCooldown + 100);
       return;
     }
 
