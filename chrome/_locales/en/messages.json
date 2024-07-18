@@ -144,6 +144,15 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Sending sources to players from the background script."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Access the contextMenus API"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "FastStream needs to be able to create context menu entries."
+    },
+    "perms_page_breakdown_perm6r1": {
+        "message": "Copy the video URL at the current time for YouTube."
+    },
     "perms_page_granted": {
         "message": "Granted"
     },

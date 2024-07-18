@@ -51,8 +51,7 @@
     "tabs",
     "webRequest",
     "declarativeNetRequest",
-    "contextMenus",
-    "clipboardWrite"
+    "contextMenus"
   ],
   "host_permissions": [
     "<all_urls>"
