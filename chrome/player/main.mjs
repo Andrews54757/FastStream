@@ -44,6 +44,14 @@ if (EnvUtils.isExtension()) {
         } else if (request.type === 'sources' && window.fastStream) {
           recieveSources(request, sendResponse);
           return true;
+        } else if (request.type === 'copy_current_time') {
+          window.parent.postMessage({
+            type: 'copy_clipboard',
+            text: `https://youtu.be/${request.videoId}?t=${Math.floor(window.fastStream.persistent.currentTime)}`,
+          }, '*');
+
+          sendResponse('ok');
+          return true;
         } else {
           return;
         }

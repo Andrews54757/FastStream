@@ -23,6 +23,7 @@ import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
+import {PlayerModes} from './enums/PlayerModes.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari();
 
@@ -511,24 +512,42 @@ export class FastStreamClient extends EventEmitter {
       console.error(e);
     }
 
+    let newTime = 0;
+    if (source.mode === PlayerModes.ACCELERATED_YT) {
+      const url = new URL(source.url);
+      const timeString = url.searchParams.get('t')?.replace('s', '') ?? url.searchParams.get('start') ?? '0';
+      newTime = Number(timeString);
 
-    if (this.progressMemory && this.options.storeProgress) {
+      if (newTime > 0) {
+        await this.loadProgressData(true, newTime);
+      }
+    }
+
+    if (newTime === 0 && this.progressMemory && this.options.storeProgress) {
       await this.loadProgressData(true);
     }
 
     this.emit('setsource', this);
   }
 
-  async loadProgressData(changeTime = false) {
+  async loadProgressData(changeTime = false, targetTime = undefined) {
     if (this.progressDataLoading || this.progressData) {
       return;
     }
 
     this.progressDataLoading = true;
-    this.progressHashesCache = await this.progressMemory.getHashes(this.player.getSource().identifier);
-    this.progressData = (await this.progressMemory.getFile(this.progressHashesCache)) || {
-      lastTime: 0,
-    };
+
+    let lastTime = 0;
+    if (targetTime) {
+      lastTime = targetTime;
+    } else {
+      this.progressHashesCache = await this.progressMemory.getHashes(this.player.getSource().identifier);
+      this.progressData = (await this.progressMemory.getFile(this.progressHashesCache)) || {
+        lastTime: 0,
+      };
+
+      lastTime = this.progressData.lastTime;
+    }
 
     if (!changeTime) {
       this.progressDataLoading = false;
@@ -542,10 +561,9 @@ export class FastStreamClient extends EventEmitter {
       clearInterval(interval);
       this.context.off(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
 
-      if (!this.progressDataLoading || !this.progressData) return;
+      if (!this.progressDataLoading) return;
       this.progressDataLoading = false;
 
-      const lastTime = this.progressData.lastTime;
       if (lastTime && lastTime < this.duration - 5) {
         this.setSeekSave(false);
         this.currentTime = lastTime;

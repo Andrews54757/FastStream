@@ -938,5 +938,8 @@
     },
     "subtitles_settings_defaultLanguage": {
         "message": "Language"
+    },
+    "context_copy_video_url": {
+        "message": "Copy video URL at current time"
     }
 }

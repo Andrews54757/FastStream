@@ -996,6 +996,34 @@ chrome.tabs.onRemoved.addListener((tabid, removed) => {
   delete CachedTabs[tabid];
 });
 
+chrome.tabs.onActivated.addListener(() => {
+  chrome.tabs.query({
+    active: true,
+  }, (tabs) => {
+    const [tab] = tabs;
+    if (!tab) return;
+
+    chrome.contextMenus.removeAll();
+    if (!URLUtils.is_url_yt_watch(tab.url) || !CachedTabs[tab.id]) return;
+
+    chrome.contextMenus.create({
+      id: 'fast-stream-copy-video-url',
+      title: chrome.i18n.getMessage('context_copy_video_url'),
+      contexts: ['video'],
+    });
+
+    chrome.contextMenus.onClicked.addListener((event) => {
+      const videoId = URLUtils.get_yt_identifier(event.pageUrl);
+      if (!videoId) return;
+
+      chrome.tabs.sendMessage(tab.id, {
+        type: 'copy_current_time',
+        videoId,
+      });
+    });
+  });
+});
+
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
   if (CachedTabs[tabid]) {
     if (changeInfo.url) {

@@ -27,6 +27,9 @@ window.addEventListener('message', (e) => {
         }
       }
       break;
+    case 'copy_clipboard':
+      navigator.clipboard.writeText(dt.text);
+      break;
   }
 });
 
