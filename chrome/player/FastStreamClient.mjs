@@ -278,7 +278,7 @@ export class FastStreamClient extends EventEmitter {
     this.persistent.currentTime = time;
     this.interfaceController.timeUpdated();
 
-    if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime) {
+    if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime && !this.progressDataLoading) {
       const now = Date.now();
       if (now - this.lastProgressSave > 1000) {
         this.lastProgressSave = now;
