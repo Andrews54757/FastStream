@@ -52,7 +52,12 @@ for (let i = 0; i < header.number_of_entries; i++) {
     fs.writeFileSync(`${outputDir}/${i}.bin`, data);
   }
 
-  console.log(`Entry ${i}: Size: ${dataSize}, URL: ${entryHeader.url}`);
+  let urlTrun = entryHeader.url;
+  if (urlTrun.length > 30) {
+    urlTrun = urlTrun.substring(0, 30) + '...';
+  }
+
+  console.log(`Entry ${i}: Size: ${dataSize}, URL: ${urlTrun}`);
 }
 
 // read entries
