@@ -14,6 +14,7 @@ export const DefaultOptions = {
   previewEnabled: true,
   autoEnableBestSubtitles: false,
   storeProgress: true,
+  rememberPlaybackRate: true,
   autoplayYoutube: EnvUtils.isExtension(),
   defaultQuality: `Auto`,
   autoEnableURLs: [],
