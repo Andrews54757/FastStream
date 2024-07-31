@@ -78,6 +78,12 @@ export class SourcesBrowser {
           console.error(e);
         }
       }
+
+      source.parseHeadersParam();
+      sourceHeadersBtn.textContent = Localize.getMessage('player_source_headerbtn', [Object.keys(source.headers).length]);
+      headersInput.value = URLUtils.objToHeadersString(source.headers);
+      Array.from(sourceMode.children[1].children).find((el) => el.dataset.val === source.mode)?.click();
+      sourceURL.value = source.url;
     });
 
     sourceURL.addEventListener('keydown', (e) => {
@@ -104,6 +110,43 @@ export class SourcesBrowser {
 
     WebUtils.setupTabIndex(sourceHeadersBtn);
     sourceContainer.appendChild(sourceHeadersBtn);
+
+    const sourceCopyBtn = WebUtils.create('div', null, 'linkui-source-copy-button');
+    sourceCopyBtn.textContent = Localize.getMessage('player_source_copybtn');
+    sourceCopyBtn.title = Localize.getMessage('player_source_copybtn_label');
+    sourceCopyBtn.addEventListener('click', (e) => {
+      let copyURL = '';
+      if (source.mode === PlayerModes.ACCELERATED_YT) {
+        copyURL = `https://youtu.be/${URLUtils.get_yt_identifier(source.url)}`;
+      } else {
+        try {
+          const url = new URL(source.url);
+          if (source.countHeaders() > 0) {
+            const headers = JSON.stringify(source.headers);
+            url.searchParams.set('faststream-headers', headers);
+          }
+          url.searchParams.set('faststream-mode', source.mode);
+          copyURL = url.toString();
+        } catch (e) {
+        }
+      }
+
+      const input = document.createElement('input');
+      input.value = copyURL;
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+
+      sourceCopyBtn.textContent = Localize.getMessage('player_source_copybtn_copied');
+      setTimeout(() => {
+        sourceCopyBtn.textContent = Localize.getMessage('player_source_copybtn');
+      }, 1000);
+    });
+    WebUtils.setupTabIndex(sourceCopyBtn);
+    sourceContainer.appendChild(sourceCopyBtn);
+
 
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
@@ -148,6 +191,13 @@ export class SourcesBrowser {
       source.headers = URLUtils.headersStringToObj(headersInput.value);
       sourceHeadersBtn.textContent = Localize.getMessage('player_source_headerbtn', [Object.keys(source.headers).length]);
       this.updateSources();
+    });
+
+    headersInput.addEventListener('change', (e) => {
+      if (URLUtils.validateHeadersString(headersInput.value)) {
+        source.headers = URLUtils.headersStringToObj(headersInput.value);
+        headersInput.value = URLUtils.objToHeadersString(source.headers);
+      }
     });
 
     headersInput.addEventListener('keydown', (e) => {

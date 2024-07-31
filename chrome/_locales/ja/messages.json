@@ -498,6 +498,18 @@
     "player_error_load": {
         "message": "動画の読み込みに失敗しました!"
     },
+    "source_copied": {
+        "message":  "URL をクリップボードにコピーしました!"
+    },
+    "player_source_copybtn": {
+        "message": "コピー"
+    },
+    "player_source_copybtn_label": {
+        "message": "ソースの URL、ヘッダー、モードをクリップボードにコピー"
+    },
+    "player_source_copybtn_copied": {
+        "message": "コピー済み!"
+    },
     "player_source_autodetect": {
         "message": "自動検出"
     },

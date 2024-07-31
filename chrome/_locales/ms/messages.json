@@ -498,6 +498,18 @@
     "player_error_load": {
         "message": "Gagal memuatkan video!"
     },
+    "source_copied": {
+        "message": "URL disalin ke papan keratan!"
+    },
+    "player_source_copybtn": {
+        "message": "Salin"
+    },
+    "player_source_copybtn_label": {
+        "message": "Salin URL sumber, pengepala, dan mod ke papan keratan"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Disalin!"
+    },
     "player_source_autodetect": {
         "message": "Auto Mengesan"
     },

@@ -239,7 +239,7 @@ body {
     text-decoration: none;
     line-height: 22px;
     padding: 0px 2px;
-    user-select: text;
+    cursor: pointer;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container {
@@ -1440,6 +1440,7 @@ body {
 }
 
 .linkui-source-headers-button,
+.linkui-source-copy-button,
 .linkui-source-set-button,
 .linkui-source-delete-button {
     display: inline-block;
@@ -1456,6 +1457,7 @@ body {
 }
 
 .linkui-source-headers-button:hover,
+.linkui-source-copy-button:hover,
 .linkui-source-set-button:hover {
     background-color: var(--popwindow-button-hover-background-color);
 }

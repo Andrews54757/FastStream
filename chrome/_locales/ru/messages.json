@@ -498,6 +498,18 @@
     "player_error_load": {
         "message": "Не удалось загрузить видео!"
     },
+    "source_copied": {
+        "message": "Скопировано!"
+    },
+    "player_source_copybtn": {
+        "message": "Копировать"
+    },
+    "player_source_copybtn_label": {
+        "message": "Копировать адрес источника, заголовки и режим в буфер обмена"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Скопировано!"
+    },
     "player_source_autodetect": {
         "message": "Автоопределение"
     },

@@ -276,7 +276,10 @@ async function setup() {
       mode = PlayerModes.DIRECT;
     }
 
-    window.fastStream.addSource(new VideoSource(url, {}, mode), true).then(() => {
+    const source = new VideoSource(url, {}, mode);
+    source.parseHeadersParam();
+
+    window.fastStream.addSource(source, true).then(() => {
 
     });
   }

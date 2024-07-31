@@ -1,3 +1,4 @@
+import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {ClickActions} from '../options/defaults/ClickActions.mjs';
@@ -5,6 +6,7 @@ import {MiniplayerPositions} from '../options/defaults/MiniplayerPositions.mjs';
 import {VisChangeActions} from '../options/defaults/VisChangeActions.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
+import {URLUtils} from '../utils/URLUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -16,7 +18,7 @@ import {VideoQualityChanger} from './menus/VideoQualityChanger.mjs';
 import {OptionsWindow} from './OptionsWindow.mjs';
 import {ProgressBar} from './ProgressBar.mjs';
 import {SaveManager} from './SaveManager.mjs';
-import {StatusManager} from './StatusManager.mjs';
+import {StatusManager, StatusTypes} from './StatusManager.mjs';
 import {SubtitlesManager} from './subtitles/SubtitlesManager.mjs';
 import {ToolManager} from './ToolManager.mjs';
 import {VolumeControls} from './VolumeControls.mjs';
@@ -487,6 +489,45 @@ export class InterfaceController {
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(DOMElements.moreButton);
+
+    DOMElements.duration.addEventListener('click', (e) => {
+      let copyURL = '';
+      if (this.client.source) {
+        const source = this.client.source;
+        if (source.mode === PlayerModes.ACCELERATED_YT) {
+          copyURL = `https://youtu.be/${URLUtils.get_yt_identifier(source.url)}`;
+          if (e.shiftKey) {
+            copyURL += `?t=${Math.floor(this.client.currentTime)}`;
+          }
+        } else {
+          try {
+            const url = new URL(source.url);
+            if (source.countHeaders() > 0) {
+              const headers = JSON.stringify(source.headers);
+              url.searchParams.set('faststream-headers', headers);
+            }
+            url.searchParams.set('faststream-mode', source.mode);
+            if (e.shiftKey) {
+              url.searchParams.set('faststream-timestamp', Math.floor(this.client.currentTime).toString());
+            }
+            copyURL = url.toString();
+          } catch (e) {
+          }
+        }
+      }
+
+      const input = document.createElement('input');
+      input.value = copyURL;
+      document.body.appendChild(input);
+      input.focus();
+      input.select();
+      document.execCommand('copy');
+      document.body.removeChild(input);
+
+      this.setStatusMessage(StatusTypes.COPY, Localize.getMessage('source_copied'), 'info', 2000);
+    });
+    WebUtils.setupTabIndex(DOMElements.duration);
+
 
     const o = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio > 0.25 && !document.hidden) {

@@ -23,6 +23,8 @@ import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
+import {PlayerModes} from './enums/PlayerModes.mjs';
+import {URLUtils} from './utils/URLUtils.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari();
 
@@ -159,14 +161,6 @@ export class FastStreamClient extends EventEmitter {
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
 
-    if (options.storeProgress !== this.options.storeProgress) {
-      if (options.storeProgress) {
-        if (this.progressMemory && this.player) {
-          this.loadProgressData(false);
-        }
-      }
-    }
-
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
@@ -190,6 +184,8 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
     this.options.previewEnabled = options.previewEnabled;
+
+    this.loadProgressData();
 
     if (this.options.previewEnabled) {
       this.setupPreviewPlayer().catch((e) => {
@@ -278,7 +274,7 @@ export class FastStreamClient extends EventEmitter {
     this.persistent.currentTime = time;
     this.interfaceController.timeUpdated();
 
-    if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime && !this.progressDataLoading) {
+    if (this.options.storeProgress && this.progressData && time !== this.progressData.lastTime && !this.disableProgressSave) {
       const now = Date.now();
       if (now - this.lastProgressSave > 1000) {
         this.lastProgressSave = now;
@@ -448,6 +444,37 @@ export class FastStreamClient extends EventEmitter {
     try {
       source = source.copy();
 
+      let timeFromURL = null;
+      if (source.mode === PlayerModes.ACCELERATED_YT) {
+        timeFromURL = URLUtils.get_param(source.url, 't') || URLUtils.get_param(source.url, 'start');
+        timeFromURL = timeFromURL.replace('s', '');
+        timeFromURL = parseInt(timeFromURL);
+      } else {
+        timeFromURL = URLUtils.get_param(source.url, 'faststream-timestamp');
+        timeFromURL = parseInt(timeFromURL);
+      }
+
+      if (isNaN(timeFromURL)) {
+        timeFromURL = null;
+      }
+
+      // Strip out the timestamp from the URL
+      if (timeFromURL !== null) {
+        try {
+          const url = new URL(source.url);
+          url.searchParams.delete('faststream-timestamp');
+          source.url = url.toString();
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      if (timeFromURL === null) {
+        timeFromURL = URLUtils.get_param(window.location.href, 'faststream-timestamp');
+        timeFromURL = parseInt(timeFromURL);
+      }
+
+
       const autoPlay = this.options.autoPlay;
 
       console.log('setSource', source);
@@ -462,6 +489,14 @@ export class FastStreamClient extends EventEmitter {
       await this.player.setup();
 
       this.bindPlayer(this.player);
+
+      if (!this.initPromise) {
+        this.initPromise = this.setupInitHook();
+        this.initPromise.then(() => {
+          this.initPromise = null;
+        });
+      }
+
 
       await this.player.setSource(source);
       this.interfaceController.addVideo(this.player.getVideo());
@@ -495,6 +530,31 @@ export class FastStreamClient extends EventEmitter {
       if (autoPlay) {
         this.play();
       }
+
+
+      this.loadProgressData().then(async () => {
+        this.disableProgressSave = true;
+
+        // Wait for the player to be ready
+        if (this.initPromise) {
+          await this.initPromise;
+        }
+
+        if (timeFromURL) {
+          this.setSeekSave(false);
+          this.currentTime = timeFromURL || 0;
+          this.setSeekSave(true);
+        } else if (this.options.storeProgress && this.progressData) {
+          const lastTime = this.progressData.lastTime;
+          if (lastTime && lastTime < this.duration - 5) {
+            this.setSeekSave(false);
+            this.currentTime = lastTime;
+            this.setSeekSave(true);
+          }
+        }
+
+        this.disableProgressSave = false;
+      });
     } catch (e) {
       const msg = 'Please send this error to the developer at https://github.com/Andrews54757/FastStream/issues \n' + e + '\n' + e.stack;
       const el = document.createElement('div');
@@ -511,58 +571,43 @@ export class FastStreamClient extends EventEmitter {
       console.error(e);
     }
 
-
-    if (this.progressMemory && this.options.storeProgress) {
-      await this.loadProgressData(true);
-    }
-
     this.emit('setsource', this);
   }
 
-  async loadProgressData(changeTime = false) {
-    if (this.progressDataLoading || this.progressData) {
+
+  setupInitHook() {
+    return new Promise((resolve) => {
+      let interval = 0;
+
+      const hook = () => {
+        if (!this.duration || !this.currentVideo || this.currentVideo.readyState === 0) return;
+        clearInterval(interval);
+        this.context.off(DefaultPlayerEvents.DURATIONCHANGE, hook);
+        resolve();
+      };
+
+      interval = setInterval(hook, 1000);
+
+      this.context.on(DefaultPlayerEvents.DURATIONCHANGE, hook);
+      hook();
+    });
+  }
+
+  async loadProgressData() {
+    if (!this.options.storeProgress || !this.player || this.disableProgressSave || this.progressData || !this.progressMemory) {
       return;
     }
 
-    this.progressDataLoading = true;
+    this.disableProgressSave = true;
     this.progressHashesCache = await this.progressMemory.getHashes(this.player.getSource().identifier);
     this.progressData = (await this.progressMemory.getFile(this.progressHashesCache)) || {
       lastTime: 0,
     };
-
-    if (!changeTime) {
-      this.progressDataLoading = false;
-      return;
-    }
-
-    let interval = 0;
-
-    const changeTimeFn = () =>{
-      if (!this.duration || !this.currentVideo || this.currentVideo.readyState === 0) return;
-      clearInterval(interval);
-      this.context.off(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
-
-      if (!this.progressDataLoading || !this.progressData) return;
-      this.progressDataLoading = false;
-
-      const lastTime = this.progressData.lastTime;
-      if (lastTime && lastTime < this.duration - 5) {
-        this.setSeekSave(false);
-        this.currentTime = lastTime;
-        this.setSeekSave(true);
-      }
-    };
-
-    interval = setInterval(() => {
-      changeTimeFn();
-    }, 1000);
-
-    this.context.on(DefaultPlayerEvents.DURATIONCHANGE, changeTimeFn);
-    changeTimeFn();
+    this.disableProgressSave = false;
   }
 
   async saveProgressData() {
-    if (this.progressDataLoading || !this.progressData) {
+    if (this.disableProgressSave || !this.progressData) {
       return;
     }
 
@@ -790,7 +835,7 @@ export class FastStreamClient extends EventEmitter {
     this.pastUnseeks.length = 0;
     this.progressHashesCache = null;
     this.progressData = null;
-    this.progressDataLoading = false;
+    this.disableProgressSave = false;
     this.lastProgressSave = 0;
     if (this.context) {
       this.context.destroy();

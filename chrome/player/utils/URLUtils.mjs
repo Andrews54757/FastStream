@@ -59,6 +59,14 @@ export class URLUtils {
     }
   }
 
+  static get_param(url, name) {
+    try {
+      const urlObj = new URL(url);
+      return urlObj.searchParams.get(name);
+    } catch (e) {
+      return null;
+    }
+  }
   static strip_queryhash(url) {
     return url.split(/[#?]/)[0];
   }
@@ -109,7 +117,14 @@ export class URLUtils {
     let str = '';
     for (const name in obj) {
       if (Object.hasOwn(obj, name)) {
-        str += `${name.toLowerCase()}: ${obj[name]}\n`;
+        let cased = name;
+        // Pascal case
+        cased = cased.replace(/\w+/g,
+            (w) =>{
+              return w[0].toUpperCase() + w.slice(1).toLowerCase();
+            });
+
+        str += `${cased}: ${obj[name]}\n`;
       }
     }
     return str;

@@ -497,6 +497,18 @@
     "player_error_load": {
         "message": "¡Error al cargar el video!"
     },
+    "source_copied": {
+        "message": "¡URL copiada al portapapeles!"
+    },
+    "player_source_copybtn": {
+        "message": "Copiar"
+    },
+    "player_source_copybtn_label": {
+        "message": "Copiar URL de origen, encabezados y modo al portapapeles"
+    },
+    "player_source_copybtn_copied": {
+        "message": "¡Copiado!"
+    },
     "player_source_autodetect": {
         "message": "Detección Auto"
     },

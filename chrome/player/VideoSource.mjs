@@ -21,11 +21,6 @@ const headerBlacklist = [
   'cookie',
 ];
 
-const redirectHeaders = [
-  'origin',
-  'referer',
-];
-
 
 export class VideoSource {
   constructor(source, headers, mode) {
@@ -61,6 +56,41 @@ export class VideoSource {
     this.defaultLevelInfo = null;
   }
 
+  /**
+   * Should only be called when the source is trusted.
+   */
+  parseHeadersParam() {
+    try {
+      const url = new URL(this.url);
+      const headers = url.searchParams.get('faststream-headers');
+      if (headers) {
+        const parsedHeaders = JSON.parse(headers);
+        for (const key in parsedHeaders) {
+          if (Object.hasOwn(parsedHeaders, key)) {
+            this.headers[key] = parsedHeaders[key];
+          }
+        }
+        this.headers = this.filterHeaders(this.headers);
+        url.searchParams.delete('faststream-headers');
+        this.url = url.toString();
+      }
+
+      const mode = url.searchParams.get('faststream-mode');
+      if (mode) {
+        if (Object.values(PlayerModes).includes(mode)) {
+          this.mode = mode;
+        }
+        url.searchParams.delete('faststream-mode');
+        this.url = url.toString();
+      }
+    } catch (e) {
+    }
+  }
+
+  countHeaders() {
+    return Object.keys(this.headers).length;
+  }
+
   fromFile(file) {
     this.url = URL.createObjectURL(file);
     this.identifier = file.name;
@@ -81,12 +111,7 @@ export class VideoSource {
       if (headerBlacklist.includes(key.toLowerCase())) {
         continue;
       }
-
-      if (redirectHeaders.includes(key.toLowerCase())) {
-        filteredHeaders['x-faststream-setheader-' + key.toLowerCase()] = headers[key];
-      } else {
-        filteredHeaders[key.toLowerCase()] = headers[key];
-      }
+      filteredHeaders[key.toLowerCase()] = headers[key];
     }
     return filteredHeaders;
   }

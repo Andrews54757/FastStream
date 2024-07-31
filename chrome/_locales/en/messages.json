@@ -498,6 +498,18 @@
     "player_error_load": {
         "message": "Failed to load video!"
     },
+    "source_copied": {
+        "message": "Copied URL to clipboard!"
+    },
+    "player_source_copybtn": {
+        "message": "Copy"
+    },
+    "player_source_copybtn_label": {
+        "message": "Copy source URL, headers, and mode to clipboard"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Copied!"
+    },
     "player_source_autodetect": {
         "message": "Auto Detect"
     },

@@ -10,6 +10,7 @@ export const StatusTypes = {
   SAVE_GIF: 'save-gif',
   SILENCE_SKIP: 'silence-skip',
   SUBTITLES: 'subtitles',
+  COPY: 'copy',
   CHAPTER: 'chapter',
 };
 
@@ -27,6 +28,7 @@ export class StatusManager {
     this.registerStatusLevel(StatusTypes.SAVE_GIF, 1);
     this.registerStatusLevel(StatusTypes.SILENCE_SKIP, 1);
     this.registerStatusLevel(StatusTypes.SUBTITLES, 1);
+    this.registerStatusLevel(StatusTypes.COPY, 1);
 
     this.registerStatusLevel(StatusTypes.CHAPTER, 2);
   }

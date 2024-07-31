@@ -1,6 +1,11 @@
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 
+const redirectHeaders = [
+  'origin',
+  'referer',
+];
+
 export class XHRLoader {
   constructor() {
     this.callbacks = [];
@@ -99,17 +104,17 @@ export class XHRLoader {
         const customHeaderCommands = [];
         for (const header in headers) {
           if (!Object.hasOwn(headers, header)) continue;
-          const name = header;
-          if (name.substring(0, 13) === 'x-faststream-') {
-            const command = name.substring(13);
-            const ind = command.indexOf('-');
-            const key = command.substring(0, ind);
-            const headerName = command.substring(ind + 1);
-            if (key === 'setheader') {
-              customHeaderCommands.push({operation: 'set', header: headerName, value: headers[header]});
-            } else if (key === 'removeheader') {
-              customHeaderCommands.push({operation: 'remove', header: headerName});
-            }
+          const name = header.toLowerCase();
+          if (redirectHeaders.includes(name)) {
+            // const command = name.substring(13);
+            // const ind = command.indexOf('-');
+            // const key = command.substring(0, ind);
+            // const headerName = command.substring(ind + 1);
+            // if (key === 'setheader') {
+            customHeaderCommands.push({operation: 'set', header, value: headers[header]});
+            // } else if (key === 'removeheader') {
+            //   customHeaderCommands.push({operation: 'remove', header: headerName});
+            // }
           } else {
             xhr.setRequestHeader(header, headers[header]);
           }
