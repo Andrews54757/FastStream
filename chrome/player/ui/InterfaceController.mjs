@@ -496,9 +496,7 @@ export class InterfaceController {
         const source = this.client.source;
         if (source.mode === PlayerModes.ACCELERATED_YT) {
           copyURL = `https://youtu.be/${URLUtils.get_yt_identifier(source.url)}`;
-          if (e.shiftKey) {
-            copyURL += `?t=${Math.floor(this.client.currentTime)}`;
-          }
+          copyURL += `?t=${Math.floor(this.client.currentTime)}`;
         } else {
           try {
             const url = new URL(source.url);
@@ -507,9 +505,7 @@ export class InterfaceController {
               url.searchParams.set('faststream-headers', headers);
             }
             url.searchParams.set('faststream-mode', source.mode);
-            if (e.shiftKey) {
-              url.searchParams.set('faststream-timestamp', Math.floor(this.client.currentTime).toString());
-            }
+            url.searchParams.set('faststream-timestamp', Math.floor(this.client.currentTime).toString());
             copyURL = url.toString();
           } catch (e) {
           }
