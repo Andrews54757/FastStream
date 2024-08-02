@@ -36,7 +36,7 @@
     },
     {
       "matches": [
-        "https://www.facebook.com/reel/*"
+        "https://www.facebook.com/*"
       ],
       "all_frames": true,
       "run_at": "document_end",
