@@ -948,6 +948,17 @@ chrome.webRequest.onHeadersReceived.addListener(
         return; // Client or server error. Ignore it
       }
 
+      // Exclude urls from facebook.
+      const initiatorBlacklist = [
+        'https://www.facebook.com',
+      ];
+      if (details.initiator &&
+        initiatorBlacklist.some((a) => {
+          return details.initiator.startsWith(a);
+        })) {
+        return;
+      }
+
       const output = CustomSourcePatternsMatcher.match(url);
       if (output) {
         ext = output;
