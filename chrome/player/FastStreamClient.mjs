@@ -446,7 +446,7 @@ export class FastStreamClient extends EventEmitter {
 
       let timeFromURL = null;
       if (source.mode === PlayerModes.ACCELERATED_YT) {
-        timeFromURL = URLUtils.get_param(source.url, 't') || URLUtils.get_param(source.url, 'start');
+        timeFromURL = URLUtils.get_param(source.url, 't') || URLUtils.get_param(source.url, 'start') || '';
         timeFromURL = timeFromURL.replace('s', '');
         timeFromURL = parseInt(timeFromURL);
       } else {
