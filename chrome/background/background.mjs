@@ -951,6 +951,7 @@ chrome.webRequest.onHeadersReceived.addListener(
       // Exclude urls from facebook.
       const initiatorBlacklist = [
         'https://www.facebook.com',
+        'https://www.instagram.com',
       ];
       if (details.initiator &&
         initiatorBlacklist.some((a) => {
