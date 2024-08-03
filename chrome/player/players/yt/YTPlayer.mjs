@@ -31,6 +31,8 @@ export default class YTPlayer extends DashPlayer {
         return url;
       });
       this.oldSource = source;
+      source.headers['origin'] = 'https://www.youtube.com';
+      source.headers['referer'] = 'https://www.youtube.com/';
       const blob = new Blob([manifest], {
         type: 'application/dash+xml',
       });
