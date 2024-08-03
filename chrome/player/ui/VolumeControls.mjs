@@ -86,7 +86,7 @@ export class VolumeControls extends EventEmitter {
       const totalWidth = DOMElements.volumeControlBar.clientWidth;
 
       if (totalWidth) {
-        const newVolume = volumeBarX / totalWidth * 3;
+        const newVolume = volumeBarX / totalWidth * MAX_VOLUME;
 
         if (newVolume < 0.025) {
           this.setVolume(0);
