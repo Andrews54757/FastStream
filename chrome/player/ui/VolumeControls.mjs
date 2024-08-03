@@ -4,6 +4,12 @@ import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
+const MAX_VOLUME = EnvUtils.isWebAudioSupported() ? 3 : 1;
+
+if (!EnvUtils.isWebAudioSupported()) {
+  DOMElements.volumeUnity.style.display = 'none';
+}
+
 export class VolumeControls extends EventEmitter {
   constructor(client) {
     super();
@@ -43,6 +49,14 @@ export class VolumeControls extends EventEmitter {
   }
 
   setVolume(volume, dontSave = false) {
+    if (volume < 0) {
+      volume = 0;
+    }
+
+    if (volume > MAX_VOLUME) {
+      volume = max;
+    }
+
     if (volume === 0 && this.volume !== 0) {
       this.previousVolume = this.volume;
     }
@@ -120,7 +134,7 @@ export class VolumeControls extends EventEmitter {
       muteButtonTag.classList.remove('muted');
     }
 
-    currentVolumeTag.style.width = (volume * 100) / 3 + '%';
+    currentVolumeTag.style.width = (volume * 100) / MAX_VOLUME + '%';
     DOMElements.currentVolumeText.textContent = Math.round(volume * 100) + '%';
 
     DOMElements.volumeBanner.textContent = Math.round(volume * 100) + '%';

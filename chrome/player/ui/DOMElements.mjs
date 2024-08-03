@@ -24,6 +24,7 @@ export const DOMElements = {
   volumeBanner: document.querySelector('.mainplayer .volume_banner'),
   volumeControlBar: document.querySelector('.mainplayer .fluid_control_volume'),
   volumeContainer: document.querySelector('.mainplayer .fluid_control_volume_container'),
+  volumeUnity: document.querySelector('.mainplayer .unity_volume_marker'),
   currentVolumeText: document.querySelector('.mainplayer .current_volume_text'),
   currentVolume: document.querySelector('.mainplayer .fluid_control_currentvolume'),
   currentVolumePos: document.querySelector('.mainplayer .fluid_control_volume_currentpos'),

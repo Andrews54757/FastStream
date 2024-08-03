@@ -11,10 +11,7 @@ import DashPlayer from '../dash/DashPlayer.mjs';
 Log.setLevel(
     Log.Level.WARNING,
     Log.Level.ERROR,
-    Log.Level.INFO,
-    Log.Level.DEBUG,
 );
-
 
 export default class YTPlayer extends DashPlayer {
   constructor(client, options) {

@@ -26,7 +26,7 @@ import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {URLUtils} from './utils/URLUtils.mjs';
 
-const SET_VOLUME_USING_NODE = !EnvUtils.isSafari();
+const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
 export class FastStreamClient extends EventEmitter {
   constructor() {
@@ -83,7 +83,12 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer = new VideoAnalyzer(this);
     this.audioAnalyzer = new AudioAnalyzer(this);
     this.frameExtractor = new PreviewFrameExtractor(this);
-    this.audioConfigManager = new AudioConfigManager(this);
+    if (EnvUtils.isWebAudioSupported()) {
+      this.audioConfigManager = new AudioConfigManager(this);
+      this.audioContext = new AudioContext();
+      this.audioConfigManager.setupNodes();
+    }
+
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
     });
@@ -94,8 +99,6 @@ export class FastStreamClient extends EventEmitter {
     this.pastSeeks = [];
     this.pastUnseeks = [];
     this.fragmentsStore = {};
-    this.audioContext = new AudioContext();
-    this.audioConfigManager.setupNodes();
     this.mainloop();
   }
 
@@ -501,12 +504,14 @@ export class FastStreamClient extends EventEmitter {
       await this.player.setSource(source);
       this.interfaceController.addVideo(this.player.getVideo());
 
-      this.audioContext = new AudioContext();
-      this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-      this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
-      this.audioConfigManager.setupNodes();
+      if (EnvUtils.isWebAudioSupported()) {
+        this.audioContext = new AudioContext();
+        this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
+        this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
+        this.audioConfigManager.setupNodes();
+        this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
+      }
 
-      this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
       this.setVolume(this.persistent.volume);
 
       this.player.playbackRate = this.persistent.playbackRate;
@@ -1266,12 +1271,12 @@ export class FastStreamClient extends EventEmitter {
 
   setVolume(volume) {
     this.persistent.volume = volume;
-    if (SET_VOLUME_USING_NODE || volume > 1) {
+    if (SET_VOLUME_USING_NODE || (volume > 1 && EnvUtils.isWebAudioSupported())) {
       if (this.player) this.player.volume = 1;
       this.audioConfigManager.updateVolume(volume);
     } else {
       if (this.player) this.player.volume = volume;
-      this.audioConfigManager.updateVolume(1);
+      if (EnvUtils.isWebAudioSupported()) this.audioConfigManager.updateVolume(1);
     }
   }
 

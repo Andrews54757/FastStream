@@ -41,4 +41,8 @@ export class EnvUtils {
   static isMacOS() {
     return navigator.userAgent.indexOf('Mac OS') !== -1;
   }
+
+  static isWebAudioSupported() {
+    return !!window.AudioContext;
+  }
 }
