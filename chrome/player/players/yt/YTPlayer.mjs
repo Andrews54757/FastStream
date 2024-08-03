@@ -137,7 +137,7 @@ export default class YTPlayer extends DashPlayer {
 
   async getVideoInfo(identifier, tvMode = false) {
     const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
-    const mode = tvMode ? ClientType.TV_EMBEDDED : ClientType.ANDROID;
+    const mode = tvMode ? ClientType.TV_EMBEDDED : ClientType.IOS;
     const youtube = await Innertube.create({
       cache,
       fetch: this.youtubeFetch.bind(this),
