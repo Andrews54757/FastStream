@@ -1,12 +1,20 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
+import {ClientType, Innertube, UniversalCache, Log} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
+
+Log.setLevel(
+    Log.Level.WARNING,
+    Log.Level.ERROR,
+    Log.Level.INFO,
+    Log.Level.DEBUG,
+);
+
 
 export default class YTPlayer extends DashPlayer {
   constructor(client, options) {
@@ -128,14 +136,14 @@ export default class YTPlayer extends DashPlayer {
   }
 
   async getVideoInfo(identifier, tvMode = false) {
-    const cache = (await IndexedDBManager.isSupportedAndAvailable()) ? new UniversalCache() : undefined;
+    const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
     const youtube = await Innertube.create({
       cache,
       fetch: this.youtubeFetch.bind(this),
       clientType: tvMode ? ClientType.TV_EMBEDDED : ClientType.WEB,
     });
 
-    return youtube.getInfo(identifier, tvMode ? 'TV_EMBEDDED' : 'WEB');
+    return youtube.getInfo(identifier, tvMode ? 'TV_EMBEDDED' : 'ANDROID');
   }
 
   fetchSponsorBlock(identifier) {
