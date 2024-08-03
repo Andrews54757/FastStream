@@ -1,4 +1,5 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
@@ -29,7 +30,11 @@ export class VolumeControls extends EventEmitter {
     });
 
     DOMElements.volumeBlock.addEventListener('wheel', (e) => {
-      this.setVolume(Math.max(0, Math.min(3, this.client.volume + Utils.clamp(e.deltaY, -1, 1) * 0.01)));
+      let delta = e.deltaY;
+      if (!EnvUtils.isMacOS()) {
+        delta = -delta;
+      }
+      this.setVolume(Math.max(0, Math.min(3, this.client.volume + Utils.clamp(delta, -1, 1) * 0.01)));
       e.preventDefault();
       e.stopPropagation();
     });

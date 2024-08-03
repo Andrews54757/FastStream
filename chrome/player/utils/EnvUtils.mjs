@@ -37,4 +37,8 @@ export class EnvUtils {
   static isIncognito() {
     return this.isExtension() ? chrome.extension.inIncognitoContext : false;
   }
+
+  static isMacOS() {
+    return navigator.userAgent.indexOf('Mac OS') !== -1;
+  }
 }
