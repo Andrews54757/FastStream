@@ -5,6 +5,9 @@ import {AvcVideoParser, Mp4Sample} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
 
+const VideoCodecs = ['avc1', 'avc2', 'avc3', 'avc4', 'av01', 'dav1', 'hvc1', 'hev1', 'hvt1', 'lhe1', 'dvh1', 'dvhe', 'vvc1', 'vvi1', 'vvs1', 'vvcN', 'vp08', 'vp09', 'avs3', 'j2ki', 'mjp2', 'mjpg', 'uncv'];
+const AudioCodecs = ['mp4a', 'ac-3', 'ac-4', 'ec-3', 'Opus', 'mha1', 'mha2', 'mhm1', 'mhm2'];
+
 export class DASH2MP4 extends EventEmitter {
   constructor() {
     super();
@@ -128,9 +131,7 @@ export class DASH2MP4 extends EventEmitter {
         };
 
         const toCopy = trak.mdia.minf.stbl.stsd.entries.find((e) => {
-          return e.type === 'avc1' || e.type === 'avc2' || e.type === 'avc3' || e.type === 'avc4' ||
-                  e.type === 'hev1' || e.type === 'hvc1' || e.type === 'dvh1' || e.type === 'dvhe' ||
-                  e.type === 'vp09' || e.type === 'av01';
+          return VideoCodecs.includes(e.type);
         });
 
         if (!toCopy) {
@@ -154,17 +155,20 @@ export class DASH2MP4 extends EventEmitter {
       if (file.moov) {
         const trak = file.moov.traks[0];
         const timescale = trak.mdia.mdhd.timescale;
-        const mp4a = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'mp4a');
+        const toCopy = trak.mdia.minf.stbl.stsd.entries.find((e) => {
+          return AudioCodecs.includes(e.type);
+        });
+
         this.audioTrack = {
           type: 'audio',
           id: 2,
           timescale: timescale,
           duration: audioDuration,
           segmentCodec: null,
-          codec: mp4a.getCodec(),
-          esds: mp4a.esds.data,
-          channelCount: mp4a.channel_count,
-          sampleRate: mp4a.samplerate,
+          // codec: mp4a.getCodec(),
+          // esds: mp4a.esds.data,
+          // channelCount: mp4a.channel_count,
+          // sampleRate: mp4a.samplerate,
           samples: [],
           chunks: [],
           use64Offsets: false,
@@ -172,6 +176,15 @@ export class DASH2MP4 extends EventEmitter {
           elst: [],
           trexs: file.moov?.mvex?.trexs || [],
         };
+
+        if (!toCopy) {
+          throw new Error('Audio codec not supported!');
+        }
+
+        const stream = new DataStream();
+        stream.endianness = DataStream.BIG_ENDIAN;
+        toCopy.write(stream);
+        this.audioTrack.codecBuffer = stream.buffer;
       } else {
         throw new Error('Audio is not an mp4!');
       }
