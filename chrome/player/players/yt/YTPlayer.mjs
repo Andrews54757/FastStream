@@ -13,6 +13,7 @@ Log.setLevel(
     Log.Level.ERROR,
 );
 
+const CurrentUA = `com.google.ios.youtube/18.06.35 (iPhone; CPU iPhone OS 14_4 like Mac OS X; en_US)`;
 export default class YTPlayer extends DashPlayer {
   constructor(client, options) {
     super(client, options);
@@ -41,8 +42,16 @@ export default class YTPlayer extends DashPlayer {
       });
       const uri = URL.createObjectURL(blob);
       this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
-      this.source.headers['origin'] = 'https://www.youtube.com';
-      this.source.headers['referer'] = 'https://www.youtube.com/';
+      // this.source.headers['origin'] = 'https://www.youtube.com';
+      // this.source.headers['referer'] = 'https://www.youtube.com/';
+      this.source.headers['user-agent'] = CurrentUA;
+      this.source.headers['sec-ch-ua'] = false;
+      this.source.headers['sec-ch-ua-mobile'] = false;
+      this.source.headers['sec-ch-ua-platform'] = false;
+      this.source.headers['sec-fetch-site'] = false;
+      this.source.headers['sec-fetch-mode'] = false;
+      this.source.headers['sec-fetch-dest'] = false;
+      this.source.headers['x-client-data'] = false;
       this.source.identifier = 'yt-' + identifier;
     } catch (e) {
       console.error(e);
@@ -82,38 +91,44 @@ export default class YTPlayer extends DashPlayer {
                       input.headers :
                       new Headers();
 
-    const redirectHeaders = [
+    const removeHeaders = [
       'user-agent',
       'origin',
       'referer',
+      'sec-fetch-site',
+      'sec-fetch-mode',
+      'sec-fetch-dest',
+      'sec-ch-ua',
+      'sec-ch-ua-mobile',
+      'sec-ch-ua-platform',
     ];
       // now serialize the headers
     let headersArr = [...headers];
     const customHeaderCommands = [];
     headersArr = headersArr.filter((header) => {
       const name = header[0];
-      const value = header[1];
-      if (redirectHeaders.includes(name.toLowerCase())) {
-        customHeaderCommands.push({
-          operation: 'set',
-          header: name,
-          value,
-        });
+      if (removeHeaders.includes(name.toLowerCase())) {
         return false;
       }
       return true;
     });
-    const newHeaders = new Headers(headersArr);
-    if (!customHeaderCommands.find((c) => c.header === 'origin')) {
-      customHeaderCommands.push({
-        operation: 'remove',
-        header: 'origin',
-      });
-    }
 
-    customHeaderCommands.push({
-      operation: 'remove',
-      header: 'x-client-data',
+
+    const newHeaders = new Headers(headersArr);
+
+    removeHeaders.forEach((header) => {
+      if (header === 'user-agent') {
+        customHeaderCommands.push({
+          operation: 'set',
+          header: header,
+          value: CurrentUA,
+        });
+      } else {
+        customHeaderCommands.push({
+          operation: 'remove',
+          header: header,
+        });
+      }
     });
 
     if (EnvUtils.isExtension()) {

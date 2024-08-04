@@ -4,6 +4,14 @@ import {URLUtils} from '../utils/URLUtils.mjs';
 const redirectHeaders = [
   'origin',
   'referer',
+  'user-agent',
+  'sec-fetch-site',
+  'sec-fetch-mode',
+  'sec-fetch-dest',
+  'sec-ch-ua',
+  'sec-ch-ua-mobile',
+  'sec-ch-ua-platform',
+  'x-client-data',
 ];
 
 export class XHRLoader {
@@ -106,15 +114,11 @@ export class XHRLoader {
           if (!Object.hasOwn(headers, header)) continue;
           const name = header.toLowerCase();
           if (redirectHeaders.includes(name)) {
-            // const command = name.substring(13);
-            // const ind = command.indexOf('-');
-            // const key = command.substring(0, ind);
-            // const headerName = command.substring(ind + 1);
-            // if (key === 'setheader') {
-            customHeaderCommands.push({operation: 'set', header, value: headers[header]});
-            // } else if (key === 'removeheader') {
-            //   customHeaderCommands.push({operation: 'remove', header: headerName});
-            // }
+            if (headers[header] === false) {
+              customHeaderCommands.push({operation: 'remove', header});
+            } else {
+              customHeaderCommands.push({operation: 'set', header, value: headers[header]});
+            }
           } else {
             xhr.setRequestHeader(header, headers[header]);
           }
