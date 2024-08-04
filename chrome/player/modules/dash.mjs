@@ -17986,7 +17986,7 @@ function config (name) {
 /***/ (function(__unused_webpack___webpack_module__, __unused_webpack___webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var _src_streaming_MediaPlayer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1674);
+/* harmony import */ var _src_streaming_MediaPlayer_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(987);
 /* harmony import */ var _src_core_FactoryMaker_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(145);
 /* harmony import */ var _src_core_Debug_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4267);
 /* harmony import */ var _src_core_Version_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(6514);
@@ -20234,6 +20234,12 @@ var Utils = /*#__PURE__*/function () {
       }
     }
   }, {
+    key: "getHostFromUrl",
+    value: function getHostFromUrl(urlString) {
+      var url = new URL(urlString);
+      return url.host;
+    }
+  }, {
     key: "parseUserAgent",
     value: function parseUserAgent() {
       var ua = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
@@ -20842,7 +20848,7 @@ var UTCTiming = /*#__PURE__*/_createClass(function UTCTiming() {
 
 /***/ }),
 
-/***/ 1674:
+/***/ 987:
 /***/ (function(__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -28973,9 +28979,6 @@ function StreamProcessor(config) {
 
     // Stop scheduling until we are done with preparing the quality switch
     scheduleController.clearScheduleTimer();
-
-    // Informing ScheduleController about AS switch
-    // scheduleController.setSwitchTrack(true);
     var newMediaInfo = newRepresentation.mediaInfo;
     currentMediaInfo = newMediaInfo;
     selectMediaInfo(newMediaInfo, newRepresentation).then(function () {
@@ -35253,6 +35256,77 @@ CmsdModel.__dashjs_factory_name = 'CmsdModel';
 /* harmony default export */ var models_CmsdModel = (FactoryMaker/* default */.Z.getSingletonFactory(CmsdModel));
 // EXTERNAL MODULE: ./src/streaming/models/CustomParametersModel.js
 var CustomParametersModel = __webpack_require__(592);
+;// CONCATENATED MODULE: ./src/streaming/controllers/CommonAccessTokenController.js
+/**
+ * The copyright in this software is being made available under the BSD License,
+ * included below. This software may be subject to other third party and contributor
+ * rights, including patent rights, and no such rights are granted under this license.
+ *
+ * Copyright (c) 2013, Dash Industry Forum.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+ *  * Redistributions of source code must retain the above copyright notice, this
+ *  list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above copyright notice,
+ *  this list of conditions and the following disclaimer in the documentation and/or
+ *  other materials provided with the distribution.
+ *  * Neither the name of Dash Industry Forum nor the names of its
+ *  contributors may be used to endorse or promote products derived from this software
+ *  without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS AS IS AND ANY
+ *  EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ *  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ *  IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+ *  INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ *  NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ *  PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ *  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *  ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+
+
+function CommonAccessTokenController() {
+  var instance, hostTokenMap;
+  function processResponseHeaders(httpResponse) {
+    if (!httpResponse || !httpResponse.headers || !httpResponse.request || !httpResponse.request.url) {
+      return;
+    }
+    var commonAccessTokenHeader = httpResponse.headers[Constants/* default */.Z.COMMON_ACCESS_TOKEN_HEADER];
+    var host = Utils/* default */.Z.getHostFromUrl(httpResponse.request.url);
+    hostTokenMap[host] = commonAccessTokenHeader;
+  }
+  function getCommonAccessTokenForUrl(url) {
+    if (!url) {
+      return null;
+    }
+    var host = Utils/* default */.Z.getHostFromUrl(url);
+    return hostTokenMap[host] ? hostTokenMap[host] : null;
+  }
+  function setup() {
+    _resetInitialSettings();
+  }
+  function reset() {
+    _resetInitialSettings();
+  }
+  function _resetInitialSettings() {
+    hostTokenMap = {};
+  }
+  instance = {
+    reset: reset,
+    processResponseHeaders: processResponseHeaders,
+    getCommonAccessTokenForUrl: getCommonAccessTokenForUrl
+  };
+  setup();
+  return instance;
+}
+CommonAccessTokenController.__dashjs_factory_name = 'CommonAccessTokenController';
+/* harmony default export */ var controllers_CommonAccessTokenController = (FactoryMaker/* default */.Z.getSingletonFactory(CommonAccessTokenController));
 ;// CONCATENATED MODULE: ./src/streaming/net/HTTPLoader.js
 function HTTPLoader_typeof(o) { "@babel/helpers - typeof"; return HTTPLoader_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, HTTPLoader_typeof(o); }
 function _defineProperty(obj, key, value) { key = HTTPLoader_toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -35303,6 +35377,7 @@ function HTTPLoader_toPrimitive(input, hint) { if (HTTPLoader_typeof(input) !== 
 
 
 
+
 /**
  * @module HTTPLoader
  * @ignore
@@ -35320,7 +35395,7 @@ function HTTPLoader(cfg) {
   var requestTimeout = cfg.requestTimeout || 0;
   var eventBus = (0,EventBus/* default */.Z)(context).getInstance();
   var settings = (0,Settings/* default */.Z)(context).getInstance();
-  var instance, httpRequests, delayedRequests, retryRequests, downloadErrorToRequestTypeMap, cmcdModel, cmsdModel, xhrLoader, fetchLoader, customParametersModel, logger;
+  var instance, httpRequests, delayedRequests, retryRequests, downloadErrorToRequestTypeMap, cmcdModel, cmsdModel, xhrLoader, fetchLoader, customParametersModel, commonAccessTokenController, logger;
   function setup() {
     var _downloadErrorToReque;
     logger = (0,Debug/* default */.Z)(context).getInstance().getLogger(instance);
@@ -35330,7 +35405,16 @@ function HTTPLoader(cfg) {
     cmcdModel = models_CmcdModel(context).getInstance();
     cmsdModel = models_CmsdModel(context).getInstance();
     customParametersModel = (0,CustomParametersModel/* default */.Z)(context).getInstance();
+    commonAccessTokenController = controllers_CommonAccessTokenController(context).getInstance();
     downloadErrorToRequestTypeMap = (_downloadErrorToReque = {}, _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.MPD_TYPE, errors.DOWNLOAD_ERROR_ID_MANIFEST_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.XLINK_EXPANSION_TYPE, errors.DOWNLOAD_ERROR_ID_XLINK_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.INIT_SEGMENT_TYPE, errors.DOWNLOAD_ERROR_ID_INITIALIZATION_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.MEDIA_SEGMENT_TYPE, errors.DOWNLOAD_ERROR_ID_CONTENT_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.INDEX_SEGMENT_TYPE, errors.DOWNLOAD_ERROR_ID_CONTENT_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.BITSTREAM_SWITCHING_SEGMENT_TYPE, errors.DOWNLOAD_ERROR_ID_CONTENT_CODE), _defineProperty(_downloadErrorToReque, HTTPRequest/* HTTPRequest */.w.OTHER_TYPE, errors.DOWNLOAD_ERROR_ID_CONTENT_CODE), _downloadErrorToReque);
+  }
+  function setConfig(config) {
+    if (!config) {
+      return;
+    }
+    if (config.commonAccessTokenController) {
+      commonAccessTokenController = config.commonAccessTokenController;
+    }
   }
 
   /**
@@ -35432,6 +35516,7 @@ function HTTPLoader(cfg) {
       requestObject.endDate = new Date();
       requestObject.firstByteDate = requestObject.firstByteDate || requestStartTime;
       httpResponse.resourceTiming.responseEnd = requestObject.endDate.getTime();
+      commonAccessTokenController.processResponseHeaders(httpResponse);
 
       // If enabled the ResourceTimingApi we add the corresponding information to the request object.
       // These values are more accurate and can be used by the ThroughputController later
@@ -35814,6 +35899,12 @@ function HTTPLoader(cfg) {
       });
       request.url = Utils/* default */.Z.addAditionalQueryParameterToUrl(request.url, queryParams);
     }
+
+    // Add headers from CommonAccessToken
+    var commonAccessToken = commonAccessTokenController.getCommonAccessTokenForUrl(request.url);
+    if (commonAccessToken) {
+      request.headers[Constants/* default */.Z.COMMON_ACCESS_TOKEN_HEADER] = commonAccessToken;
+    }
   }
 
   /**
@@ -35875,7 +35966,8 @@ function HTTPLoader(cfg) {
   }
   instance = {
     load: load,
-    abort: abort
+    abort: abort,
+    setConfig: setConfig
   };
   setup();
   return instance;
@@ -37969,7 +38061,7 @@ function Stream(config) {
     if (type === Constants/* default */.Z.TEXT || type === Constants/* default */.Z.IMAGE) {
       return true;
     }
-    if (!!mediaInfo.contentProtection && !capabilities.supportsEncryptedMedia()) {
+    if (!!mediaInfo.contentProtection && mediaInfo.contentProtection.length > 0 && !capabilities.supportsEncryptedMedia()) {
       errHandler.error(new DashJSError/* default */.Z(errors_Errors.CAPABILITY_MEDIAKEYS_ERROR_CODE, errors_Errors.CAPABILITY_MEDIAKEYS_ERROR_MESSAGE));
       return false;
     }
@@ -78807,7 +78899,8 @@ var mediaPlayerEvents = new MediaPlayerEvents();
    *  @memberof Constants#
    *  @static
    */
-  ID3_SCHEME_ID_URI: 'https://aomedia.org/emsg/ID3'
+  ID3_SCHEME_ID_URI: 'https://aomedia.org/emsg/ID3',
+  COMMON_ACCESS_TOKEN_HEADER: 'common-access-token'
 });
 
 /***/ }),
@@ -87229,8 +87322,8 @@ var index_mediaplayerOnly = __webpack_require__(3114);
 var MetricsReporting = __webpack_require__(95);
 // EXTERNAL MODULE: ./src/streaming/protection/Protection.js + 26 modules
 var Protection = __webpack_require__(4395);
-// EXTERNAL MODULE: ./src/streaming/MediaPlayer.js + 260 modules
-var MediaPlayer = __webpack_require__(1674);
+// EXTERNAL MODULE: ./src/streaming/MediaPlayer.js + 261 modules
+var MediaPlayer = __webpack_require__(987);
 ;// CONCATENATED MODULE: ./src/streaming/MediaPlayerFactory.js
 
 function MediaPlayerFactory() {
@@ -87404,5 +87497,4 @@ __webpack_exports__ = __webpack_exports__["default"];
 /******/ })()
 ;
 });
-//# sourceMappingURL=dash.all.min.js.map
 export const DashJS = dash;
