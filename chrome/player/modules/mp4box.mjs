@@ -301,7 +301,7 @@ It's like a file-like DataView on steroids.
 @param {?Number} byteOffset Offset from arrayBuffer beginning for the DataStream.
 @param {?Boolean} endianness DataStream.BIG_ENDIAN or DataStream.LITTLE_ENDIAN (the default).
 */
-var DataStream = function (arrayBuffer, byteOffset, endianness) {
+export const DataStream = function (arrayBuffer, byteOffset, endianness) {
     this._byteOffset = byteOffset || 0;
     if (arrayBuffer instanceof ArrayBuffer) {
         this.buffer = arrayBuffer;

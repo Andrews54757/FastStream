@@ -1,5 +1,5 @@
 import {EventEmitter} from '../eventemitter.mjs';
-import {MP4Box} from '../mp4box.mjs';
+import {MP4Box, DataStream} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
 import {AvcVideoParser, Mp4Sample} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
@@ -127,30 +127,20 @@ export class DASH2MP4 extends EventEmitter {
           trexs: file.moov?.mvex?.trexs || [],
         };
 
-        const avcC = trak.mdia.minf.stbl.stsd.entries.find((e) => e.type === 'avc1').avcC;
-        avcC.PPS.forEach((pps) => {
-          this.videoTrack.pps.push(pps.nalu);
+        const toCopy = trak.mdia.minf.stbl.stsd.entries.find((e) => {
+          return e.type === 'avc1' || e.type === 'avc2' || e.type === 'avc3' || e.type === 'avc4' ||
+                  e.type === 'hev1' || e.type === 'hvc1' || e.type === 'dvh1' || e.type === 'dvhe' ||
+                  e.type === 'vp09' || e.type === 'av01';
         });
-        avcC.SPS.forEach((sps) => {
-          this.videoTrack.sps.push(sps.nalu);
-        });
-        const sps = this.videoTrack.sps[0];
-        const decoder = new AvcVideoParser();
-        const config = decoder.readSPS(sps);
 
-        this.videoTrack.pixelRatio = config.pixelRatio;
-        this.videoTrack.width = config.width;
-        this.videoTrack.height = config.height;
-        const codecarray = sps.subarray(1, 4);
-        let codecstring = 'avc1.';
-        for (let i = 0; i < 3; i++) {
-          let h = codecarray[i].toString(16);
-          if (h.length < 2) {
-            h = '0' + h;
-          }
-          codecstring += h;
+        if (!toCopy) {
+          throw new Error('Video codec not supported!');
         }
-        this.videoTrack.codec = codecstring;
+
+        const stream = new DataStream();
+        stream.endianness = DataStream.BIG_ENDIAN;
+        toCopy.write(stream);
+        this.videoTrack.codecBuffer = stream.buffer;
       } else {
         throw new Error('Video is not an mp4!');
       }

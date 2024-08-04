@@ -638,6 +638,9 @@ export class MP4 {
       0x00, 0x00]));
   }
   static stsd(track) {
+    if (track.codecBuffer) {
+      return MP4.box(MP4.types.stsd, MP4.STSD, new Uint8Array(track.codecBuffer));
+    }
     if (track.type === 'audio') {
       if (track.segmentCodec === 'mp3' && track.codec === 'mp3') {
         return MP4.box(MP4.types.stsd, MP4.STSD, MP4.mp3(track));
