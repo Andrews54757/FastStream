@@ -168,7 +168,7 @@ export class WEBMMerger extends EventEmitter {
         codec: 'avc1.42001f',
         width: videoTrack.width,
         height: videoTrack.height,
-        bitrate: 1e6,
+      //  bitrate: 1e6,
       };
 
       const support = await VideoDecoder.isConfigSupported(decoderConfig);
@@ -255,7 +255,7 @@ export class WEBMMerger extends EventEmitter {
         codec: 'mp4a.40.2',
         sampleRate: 44100,
         numberOfChannels: audioTrack.channels,
-        bitrate: 128000,
+        // bitrate: 128000,
       };
 
       console.log(decoderConfig, encoderConfig);
