@@ -69,6 +69,7 @@ if (!EnvUtils.isExtension()) {
   autoEnableURLSInput.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
+  ytclient.disabled = true;
 }
 
 if (EnvUtils.isSafari()) {
