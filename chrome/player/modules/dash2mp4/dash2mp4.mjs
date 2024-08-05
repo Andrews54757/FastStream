@@ -1,7 +1,7 @@
 import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box, DataStream} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
-import {AvcVideoParser, Mp4Sample} from '../hls.mjs';
+import {Mp4Sample} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
 
