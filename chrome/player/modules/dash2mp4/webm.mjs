@@ -1,4 +1,27 @@
 /* eslint-disable */
+/*
+MIT License
+
+Copyright (c) 2016 Flare Media Player
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 
 class Track {
   loadMeta(meta) {
@@ -1541,23 +1564,23 @@ export class JsWebm {
     let start = 3;
     let end = start + firstLength;
 
-    this.audioPackets.push({
-      data: headerParser.buffer.slice(start, end),
-      timestamp: -1,
-    });
+    // this.audioPackets.push({
+    //   data: headerParser.buffer.slice(start, end),
+    //   timestamp: -1,
+    // });
     start = end;
     end = start + secondLength;
 
-    this.audioPackets.push({
-      data: headerParser.buffer.slice(start, end),
-      timestamp: -1,
-    });
+    // this.audioPackets.push({
+    //   data: headerParser.buffer.slice(start, end),
+    //   timestamp: -1,
+    // });
     start = end;
     end = start + thirdLength;
-    this.audioPackets.push({
-      data: headerParser.buffer.slice(start, end),
-      timestamp: -1,
-    });
+    // this.audioPackets.push({
+    //   data: headerParser.buffer.slice(start, end),
+    //   timestamp: -1,
+    // });
     this.audioTrack = trackEntry;
   }
 
@@ -1575,6 +1598,7 @@ export class JsWebm {
   }
 
   demux() {
+    let lastPointer = this.dataInterface.overallPointer;;
     switch (this.state) {
       case STATE_INITIAL:
         this.initDemuxer();
@@ -1593,6 +1617,8 @@ export class JsWebm {
         console.warn('INVALID STATE');
           // fill this out
     }
+
+    return lastPointer < this.dataInterface.overallPointer;
   }
 
   /**
@@ -2259,7 +2285,10 @@ class SimpleBlock {
   }
 
   loadTrack() {
-    this.track = this.trackEntries[this.trackNumber - 1];
+    this.track = this.trackEntries.find((track) => track.trackNumber === this.trackNumber);
+    if (!this.track) {
+      throw 'INVALID TRACK NUMBER';
+    }
   }
 
   load() {
@@ -2345,6 +2374,7 @@ class SimpleBlock {
             this.audioPackets.push({// This could be improved
               data: tempFrame.slice(i * this.fixedFrameLength, i * this.fixedFrameLength + this.fixedFrameLength),
               timestamp: timeStamp,
+              isKeyframe: this.keyFrame,
             });
           }
         }
@@ -2429,6 +2459,7 @@ class SimpleBlock {
             this.audioPackets.push({// This could be improved
               data: tempFrame.slice(start, end),
               timestamp: timeStamp,
+              isKeyframe: this.keyFrame,
             });
           }
 
@@ -2491,6 +2522,7 @@ class SimpleBlock {
           this.audioPackets.push({// This could be improved
             data: tempFrame,
             timestamp: timeStamp,
+            isKeyframe: this.keyFrame,
           });
         }
 
@@ -3060,3 +3092,5 @@ class Tracks {
     }
   }
 }
+
+window.JsWebm = JsWebm;
