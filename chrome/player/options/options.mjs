@@ -14,6 +14,7 @@ import {DefaultSubtitlesSettings} from './defaults/DefaultSubtitlesSettings.mjs'
 import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
+import {YoutubeClients} from '../enums/YoutubeClients.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -43,6 +44,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
+const ytclient = document.getElementById('ytclient');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -100,6 +102,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
+  setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -202,6 +205,11 @@ createSelectMenu(miniPos, Object.values(MiniplayerPositions), Options.miniPos, '
 
 createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQuality, null, (e) => {
   Options.defaultQuality = e.target.value;
+  optionChanged();
+});
+
+createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient, null, (e) => {
+  Options.defaultYoutubeClient = e.target.value;
   optionChanged();
 });
 

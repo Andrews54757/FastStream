@@ -867,6 +867,9 @@
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },
+    "options_general_ytclient": {
+        "message": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)"
+    },
     "options_general_minipos": {
         "message": "ミニプレーヤーの位置"
     },

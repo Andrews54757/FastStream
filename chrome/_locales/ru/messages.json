@@ -864,6 +864,9 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Мини-плеер"
     },
+    "options_general_ytclient": {
+        "message": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
+    },
     "options_general_minipos": {
         "message": "Положение мини-плеера"
     },

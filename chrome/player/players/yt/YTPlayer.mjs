@@ -13,12 +13,15 @@ Log.setLevel(
     Log.Level.ERROR,
 );
 
-const USE_IOS = true;
-
 const CurrentUA = `com.google.ios.youtube/18.06.35 (iPhone; CPU iPhone OS 14_4 like Mac OS X; en_US)`;
 export default class YTPlayer extends DashPlayer {
   constructor(client, options) {
     super(client, options);
+    if (options?.defaultClient) {
+      this.defaultClient = ClientType[options.defaultClient];
+    } else {
+      this.defaultClient = ClientType.IOS;
+    }
   }
 
   async setSource(source) {
@@ -44,7 +47,7 @@ export default class YTPlayer extends DashPlayer {
       });
       const uri = URL.createObjectURL(blob);
       this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
-      if (USE_IOS) {
+      if (this.videoInfo.client_type === ClientType.IOS) {
         this.source.headers['user-agent'] = CurrentUA;
         this.source.headers['sec-ch-ua'] = false;
         this.source.headers['sec-ch-ua-mobile'] = false;
@@ -220,14 +223,16 @@ export default class YTPlayer extends DashPlayer {
 
   async getVideoInfo(identifier, tvMode = false) {
     const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
-    const mode = tvMode ? ClientType.TV_EMBEDDED : (USE_IOS ? ClientType.IOS : ClientType.WEB);
+    const mode = tvMode ? ClientType.TV_EMBEDDED : this.defaultClient;
     const youtube = await Innertube.create({
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       clientType: mode,
     });
 
-    return youtube.getInfo(identifier, mode);
+    const info = await youtube.getInfo(identifier, mode);
+    info.client_type = mode;
+    return info;
   }
 
   fetchSponsorBlock(identifier) {

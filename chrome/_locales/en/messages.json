@@ -885,6 +885,9 @@
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
     },
+    "options_general_ytclient": {
+        "message": "YT client to use. Try changing if you have issues."
+    },
     "options_export_header": {
         "message": "Import/Export Settings"
     },

@@ -863,6 +863,9 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Alternar miniplayer"
     },
+    "options_general_ytclient": {
+        "message": "Cliente de YouTube. Intente cambiar si tiene problemas."
+    },
     "options_general_minipos": {
         "message": "Posición del miniplayer"
     },
