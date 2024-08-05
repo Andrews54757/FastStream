@@ -4,7 +4,16 @@ import {BlobManager} from '../../utils/BlobManager.mjs';
 import {JsWebm} from './webm.mjs';
 import {Muxer, StreamTarget} from './mp4-muxer.mjs';
 
-export class WEBMMerger extends EventEmitter {
+/**
+ * Recode Merger
+ *
+ * Re-encodes video and audio to MP4. Can be very slow.
+ *
+ * Currently supports WebM input only.
+ *
+ * REQUIRES WebCodecs. Not supported in Firefox.
+ */
+export class RecodeMerger extends EventEmitter {
   constructor() {
     super();
     this.blobManager = new FSBlob();
@@ -513,7 +522,7 @@ export class WEBMMerger extends EventEmitter {
     });
   }
 
-  async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, zippedFragments) {
+  async convert(videoMimeType, videoDuration, videoInitSegment, audioMimeType, audioDuration, audioInitSegment, zippedFragments) {
     // Check webcodec support
     if (!window.VideoDecoder || !window.VideoEncoder || !window.AudioDecoder || !window.AudioEncoder) {
       throw new Error('Webcodecs not supported');
