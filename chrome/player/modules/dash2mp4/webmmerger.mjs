@@ -514,6 +514,11 @@ export class WEBMMerger extends EventEmitter {
   }
 
   async convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, zippedFragments) {
+    // Check webcodec support
+    if (!window.VideoDecoder || !window.VideoEncoder || !window.AudioDecoder || !window.AudioEncoder) {
+      throw new Error('Webcodecs not supported');
+    }
+
     await this.setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment);
 
     let lastProgress = 0;
