@@ -1,6 +1,5 @@
 import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Merger} from './mp4merger.mjs';
-import {Reencoder} from '../reencoder/reencoder.mjs';
 
 export class DASH2MP4 extends EventEmitter {
   constructor() {
@@ -16,6 +15,7 @@ export class DASH2MP4 extends EventEmitter {
       });
       return await this.converter.convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, zippedFragments);
     } catch (e) {
+      const {Reencoder} = await import('../reencoder/reencoder.mjs');
       this.converter = new Reencoder();
       this.converter.on('progress', (progress) => {
         this.emit('progress', progress);
