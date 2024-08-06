@@ -161,8 +161,13 @@ export class SaveManager {
         this.downloadCancel = null;
         DOMElements.saveNotifBanner.style.display = 'none';
 
-        if (confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
-          this.dumpBuffer(name);
+        if (e.message === 'Cancelled') {
+          console.error(e);
+          this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelled'), 'info', 2000);
+        } else {
+          if (confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
+            this.dumpBuffer(name);
+          }
         }
         return;
       }
@@ -174,11 +179,6 @@ export class SaveManager {
       if (this.downloadURL) {
         URL.revokeObjectURL(this.downloadURL);
         this.downloadURL = null;
-      }
-
-      if (!result || result.cancelled) {
-        this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelled'), 'info', 2000);
-        return;
       }
 
       this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_complete'), 'info', 2000);

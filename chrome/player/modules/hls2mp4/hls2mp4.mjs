@@ -298,7 +298,7 @@ export class HLS2MP4 extends EventEmitter {
       if (this.cancelled) {
         this.destroy();
         this.blobManager.close();
-        return null;
+        throw new Error('Cancelled');
       }
       if (zippedFragments[i].track === 0) {
         await this.pushFragment(zippedFragments[i]);

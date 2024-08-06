@@ -167,7 +167,6 @@ export default class HLSPlayer extends EventEmitter {
         return {
           extension: 'mp4',
           blob: blob,
-          cancelled: mp4merger.cancelled,
         };
       } else {
         if (levelInitData || audioLevelInitData) {

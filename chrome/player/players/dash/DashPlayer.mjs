@@ -446,7 +446,6 @@ export default class DashPlayer extends EventEmitter {
       return {
         extension: 'mp4',
         blob: blob,
-        cancelled: dash2mp4.cancelled,
       };
     } catch (e) {
       zippedFragments.forEach((data) => {

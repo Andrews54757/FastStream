@@ -742,14 +742,7 @@ export default class MP4Player extends EventEmitter {
         frag.removeReference(ReferenceTypes.SAVER);
       }
       writer.abort();
-      if (e.message !== 'Cancelled') {
-        throw e;
-      }
-      return {
-        extension: 'mp4',
-        blob: null,
-        cancelled: true,
-      };
+      throw e;
     }
   }
 
