@@ -465,6 +465,12 @@
     "player_savevideo_reencode": {
         "message": "Сохранение потребует повторного кодирования. Это может занять много времени. Вы хотите продолжить?"
     },
+    "player_savevideo_cancelling": {
+        "message": "Отмена…"
+    },
+    "player_savevideo_cancelled": {
+        "message": "Сохранение отменено!"
+    },
     "player_savevideo_start": {
         "message": "Сохранение…"
     },

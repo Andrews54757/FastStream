@@ -465,6 +465,12 @@
     "player_savevideo_reencode": {
         "message": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?"
     },
+    "player_savevideo_cancelling": {
+        "message": "Membatalkan simpanan..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Simpanan dibatalkan!"
+    },
     "player_savevideo_start": {
         "message": "Membuat penjimatan..."
     },

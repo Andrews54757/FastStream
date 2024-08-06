@@ -464,6 +464,12 @@
     "player_savevideo_reencode": {
         "message": "Guardar requerirá re-codificación. Esto puede llevar mucho tiempo. ¿Quieres proceder?"
     },
+    "player_savevideo_cancelling": {
+        "message": "Cancelando..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "¡Cancelado!"
+    },
     "player_savevideo_start": {
         "message": "Guardando..."
     },

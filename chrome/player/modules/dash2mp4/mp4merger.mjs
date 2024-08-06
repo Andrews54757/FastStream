@@ -9,9 +9,18 @@ const VideoCodecs = ['avc1', 'avc2', 'avc3', 'avc4', 'av01', 'dav1', 'hvc1', 'he
 const AudioCodecs = ['mp4a', 'ac-3', 'ac-4', 'ec-3', 'Opus', 'mha1', 'mha2', 'mhm1', 'mhm2'];
 
 export class MP4Merger extends EventEmitter {
-  constructor() {
+  constructor(registerCancel) {
     super();
     this.blobManager = new FSBlob();
+    if (registerCancel) {
+      registerCancel(() => {
+        this.cancel();
+      });
+    }
+  }
+
+  cancel() {
+    this.cancelled = true;
   }
 
   arrayEquals(a, b) {
@@ -276,6 +285,11 @@ export class MP4Merger extends EventEmitter {
 
     let lastProgress = 0;
     for (let i = 0; i < zippedFragments.length; i++) {
+      if (this.cancelled) {
+        this.destroy();
+        this.blobManager.close();
+        return null;
+      }
       if (zippedFragments[i].track === 0) {
         await this.pushFragment(this.videoTrack, zippedFragments[i]);
       } else {

@@ -429,7 +429,7 @@ export default class DashPlayer extends EventEmitter {
 
     const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
 
-    const dash2mp4 = new DASH2MP4();
+    const dash2mp4 = new DASH2MP4(options.registerCancel);
 
     dash2mp4.on('progress', (progress) => {
       if (options?.onProgress) {
@@ -446,6 +446,7 @@ export default class DashPlayer extends EventEmitter {
       return {
         extension: 'mp4',
         blob: blob,
+        cancelled: dash2mp4.cancelled,
       };
     } catch (e) {
       zippedFragments.forEach((data) => {

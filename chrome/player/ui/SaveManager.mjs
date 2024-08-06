@@ -78,7 +78,12 @@ export class SaveManager {
     }
 
     if (this.makingDownload) {
-      alert(Localize.getMessage('player_savevideo_inprogress_alert'));
+      if (this.downloadCancel) {
+        this.downloadCancel();
+        this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelling'), 'info');
+      } else {
+        alert(Localize.getMessage('player_savevideo_inprogress_alert'));
+      }
       return;
     }
 
@@ -138,6 +143,9 @@ export class SaveManager {
           onProgress: (progress) => {
             this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_progress', [Math.floor(progress * 100)]), 'info');
           },
+          registerCancel: (cancel) => {
+            this.downloadCancel = cancel;
+          },
           filestream,
           partialSave: doPartial,
         });
@@ -147,18 +155,28 @@ export class SaveManager {
         console.error(e);
         this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_fail'), 'error', 2000);
         this.makingDownload = false;
+        this.downloadCancel = null;
 
         if (confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
           this.dumpBuffer(name);
         }
         return;
       }
-      this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_complete'), 'info', 2000);
+
+      this.downloadCancel = null;
       this.makingDownload = false;
+
       if (this.downloadURL) {
         URL.revokeObjectURL(this.downloadURL);
         this.downloadURL = null;
       }
+
+      if (!result || result.cancelled) {
+        this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelled'), 'info', 2000);
+        return;
+      }
+
+      this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_complete'), 'info', 2000);
 
       if (!canStream) {
         url = URL.createObjectURL(result.blob);

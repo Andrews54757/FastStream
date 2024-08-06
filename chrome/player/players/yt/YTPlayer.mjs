@@ -340,6 +340,7 @@ export default class YTPlayer extends DashPlayer {
     try {
       return await super.saveVideo(options);
     } catch (e) {
+      options.registerCancel(null); // Not cancellable
       console.warn(e);
       const stream = await this.videoInfo.download({
         type: 'video+audio',

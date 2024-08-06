@@ -465,6 +465,12 @@
     "player_savevideo_reencode": {
         "message": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?"
     },
+    "player_savevideo_cancelling": {
+        "message": "キャンセル中..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "保存がキャンセルされました!"
+    },
     "player_savevideo_start": {
         "message": "保存中..."
     },

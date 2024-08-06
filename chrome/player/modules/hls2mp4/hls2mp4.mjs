@@ -5,9 +5,18 @@ import Transmuxer from './transmuxer.mjs';
 
 
 export class HLS2MP4 extends EventEmitter {
-  constructor() {
+  constructor(registerCancel) {
     super();
     this.blobManager = new FSBlob();
+    if (registerCancel) {
+      registerCancel(() => {
+        this.cancel();
+      });
+    }
+  }
+
+  cancel() {
+    this.cancelled = true;
   }
 
   arrayEquals(a, b) {
@@ -286,6 +295,11 @@ export class HLS2MP4 extends EventEmitter {
 
     let lastProgress = 0;
     for (let i = 0; i < zippedFragments.length; i++) {
+      if (this.cancelled) {
+        this.destroy();
+        this.blobManager.close();
+        return null;
+      }
       if (zippedFragments[i].track === 0) {
         await this.pushFragment(zippedFragments[i]);
       } else {

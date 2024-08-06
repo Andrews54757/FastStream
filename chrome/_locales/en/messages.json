@@ -465,6 +465,12 @@
     "player_savevideo_reencode": {
         "message": "Saving will require re-encoding. This may take a long time. Do you want to proceed?"
     },
+    "player_savevideo_cancelling": {
+        "message": "Cancelling save..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Save cancelled!"
+    },
     "player_savevideo_start": {
         "message": "Making save..."
     },
