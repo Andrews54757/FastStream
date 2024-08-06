@@ -80,6 +80,7 @@ export class SaveManager {
     if (this.makingDownload) {
       if (this.downloadCancel) {
         this.downloadCancel();
+        DOMElements.saveNotifBanner.style.color = 'gold';
         this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelling'), 'info');
       } else {
         alert(Localize.getMessage('player_savevideo_inprogress_alert'));
@@ -138,6 +139,7 @@ export class SaveManager {
       this.makingDownload = true;
       this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_start'), 'info');
       DOMElements.saveNotifBanner.style.display = '';
+      DOMElements.saveNotifBanner.style.color = '';
       try {
         const start = performance.now();
         result = await player.saveVideo({
