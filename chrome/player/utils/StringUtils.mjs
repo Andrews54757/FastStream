@@ -103,6 +103,14 @@ export class StringUtils {
     return (hours ? (hours + ':') : '') + strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
   }
 
+  static formatDuration(duration) {
+    const hours = Math.floor(duration / 3600);
+    duration = duration - hours * 3600;
+    const minutes = Math.floor(duration / 60);
+    const seconds = Math.floor(duration - minutes * 60);
+    return (hours ? (hours + 'h ') : '') + (minutes ? (minutes + 'm ') : '') + seconds + 's';
+  }
+
   static formatFrequency(freq) {
     if (freq > 1000) {
       return (freq / 1000).toFixed(1) + 'k';

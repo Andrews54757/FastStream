@@ -496,10 +496,10 @@
         "message": "(current)"
     },
     "player_buffer_incognito_warning": {
-        "message": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1s"
+        "message": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1"
     },
     "player_buffer_storage_warning": {
-        "message": "Saiz video melebihi had, akan menimbal $1s"
+        "message": "Saiz video melebihi had, akan menimbal $1"
     },
     "player_error_drm": {
         "message": "Gagal memuatkan! DRM tidak disokong!"

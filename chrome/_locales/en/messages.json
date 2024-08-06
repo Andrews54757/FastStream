@@ -496,10 +496,10 @@
         "message": "(current)"
     },
     "player_buffer_incognito_warning": {
-        "message": "Not enough space to predownload in incognito mode, will buffer $1s"
+        "message": "Not enough space to predownload in incognito mode, will buffer $1"
     },
     "player_buffer_storage_warning": {
-        "message": "Video size exceeds limits, will buffer $1s"
+        "message": "Video size exceeds limits, will buffer $1"
     },
     "player_error_drm": {
         "message": "Failed to load! DRM is not supported!"

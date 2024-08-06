@@ -495,10 +495,10 @@
         "message": "(actual)"
     },
     "player_buffer_incognito_warning": {
-        "message": "No hay suficiente espacio para predescargar en modo incógnito, se almacenará en búfer $1s"
+        "message": "No hay suficiente espacio para predescargar en modo incógnito, se almacenará en búfer $1"
     },
     "player_buffer_storage_warning": {
-        "message": "El tamaño del video excede los límites, se almacenará en búfer durante $1s"
+        "message": "El tamaño del video excede los límites, se almacenará en búfer durante $1"
     },
     "player_error_drm": {
         "message": "¡Error al cargar! ¡DRM no es compatible!"
