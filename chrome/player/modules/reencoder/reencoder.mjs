@@ -1,8 +1,9 @@
 import {EventEmitter} from '../eventemitter.mjs';
 import {FSBlob} from '../FSBlob.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
-import {JsWebm} from './webm.mjs';
 import {Muxer, StreamTarget} from './mp4-muxer.mjs';
+import {MP4Demuxer, WebMDemuxer} from './demuxers.mjs';
+import {Localize} from '../Localize.mjs';
 
 /**
  * Recode Merger
@@ -13,7 +14,7 @@ import {Muxer, StreamTarget} from './mp4-muxer.mjs';
  *
  * REQUIRES WebCodecs. Not supported in Firefox.
  */
-export class RecodeMerger extends EventEmitter {
+export class Reencoder extends EventEmitter {
   constructor() {
     super();
     this.blobManager = new FSBlob();
@@ -36,108 +37,55 @@ export class RecodeMerger extends EventEmitter {
     return true;
   }
 
-  async pushVideoFragment(fragData) {
+  async pushFragment(fragData, demuxer) {
     const entry = await fragData.getEntry();
     const blob = await entry.getData();
     const data = await BlobManager.getDataFromBlob(blob, 'arraybuffer');
-    const demuxer = this.videoDemuxer;
 
-    demuxer.queueData(data);
+    demuxer.appendBuffer(data);
+    const videoChunks = demuxer.getVideoChunks();
+    const audioChunks = demuxer.getAudioChunks();
+    demuxer.clearChunks();
 
-    let count = 0;
-    while (demuxer.demux()) {
-      count++;
-      if (count > 10000) {
-        throw new Error('too many iterations');
-      }
-    }
-
-    const packets = demuxer.videoPackets;
-
-    for (let i = 0; i < packets.length - 1; i++) {
-      const packet = packets[i];
-      const nextPacket = packets[i + 1];
-      const currentTimestamp = Math.floor(packet.timestamp * 1000000);
-      const nextTimestamp = Math.floor(nextPacket.timestamp * 1000000);
-      const chunk = new EncodedVideoChunk({
-        type: packet.isKeyframe ? 'key' : 'delta',
-        timestamp: currentTimestamp,
-        duration: nextTimestamp - currentTimestamp,
-        data: packet.data,
-      });
-
+    videoChunks.forEach((chunk) => {
       this.videoDecoder.decode(chunk);
-    }
-
-    // Remove all but the last packet
-    packets.splice(0, packets.length - 1);
-
-    this.waitEncodeVideoPromise = new Promise((resolve) => {
-      this.resolveWaitEncodeVideoPromise = resolve;
     });
 
-    await this.waitEncodeVideoPromise;
+    audioChunks.forEach((chunk) => {
+      this.audioDecoder.decode(chunk);
+    });
 
-    if (
-      this.videoEncoder.state !== 'configured' ||
+    const waitEncodePromise = new Promise((resolve) => {
+      this.resolveRecodePromise = resolve;
+    });
+
+    await waitEncodePromise;
+
+    if (this.videoEncoder) {
+      if (
+        this.videoEncoder.state !== 'configured' ||
         this.videoDecoder.state !== 'configured'
-    ) {
-      throw new Error('Video encoder/decoder has been closed!');
-    }
-  }
-
-  async pushAudioFragment(fragData) {
-    const entry = await fragData.getEntry();
-    const blob = await entry.getData();
-    const data = await BlobManager.getDataFromBlob(blob, 'arraybuffer');
-    const demuxer = this.audioDemuxer;
-
-    demuxer.queueData(data);
-
-    let count = 0;
-    while (demuxer.demux()) {
-      count++;
-      if (count > 10000) {
-        throw new Error('too many iterations');
+      ) {
+        throw new Error('Video encoder/decoder has been closed!');
       }
     }
 
-    const packets = demuxer.audioPackets;
-
-    for (let i = 0; i < packets.length - 1; i++) {
-      const packet = packets[i];
-      const nextPacket = packets[i + 1];
-      const currentTimestamp = Math.floor(packet.timestamp * 1000000);
-      const nextTimestamp = Math.floor(nextPacket.timestamp * 1000000);
-      const chunk = new EncodedAudioChunk({
-        type: packet.isKeyframe ? 'key' : 'delta',
-        timestamp: currentTimestamp,
-        duration: nextTimestamp - currentTimestamp,
-        data: packet.data,
-      });
-
-      this.audioDecoder.decode(chunk);
-    }
-
-    // Remove all but the last packet
-    packets.splice(0, packets.length - 1);
-
-    this.waitEncodeAudioPromise = new Promise((resolve) => {
-      this.resolveWaitEncodeAudioPromise = resolve;
-    });
-
-    await this.waitEncodeAudioPromise;
-
-    if (
-      this.audioEncoder.state !== 'configured' ||
+    if (this.audioEncoder) {
+      if (
+        this.audioEncoder.state !== 'configured' ||
         this.audioDecoder.state !== 'configured' ||
         !this.resamplerWorker
-    ) {
-      throw new Error('Audio encoder/decoder/resampler has been closed!');
+      ) {
+        throw new Error('Audio encoder/decoder/resampler has been closed!');
+      }
+    }
+
+    if (!this.videoEncoder && !this.audioEncoder) {
+      throw new Error('No video or audio encoder');
     }
   }
 
-  async setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment) {
+  async setup(videoMimeType, videoDuration, videoInitSegment, audioMimeType, audioDuration, audioInitSegment) {
     if (!videoDuration && !audioDuration) {
       throw new Error('no video or audio');
     }
@@ -146,38 +94,53 @@ export class RecodeMerger extends EventEmitter {
     let audioOutput;
     if (videoDuration) {
       this.videoDuration = videoDuration;
-      const demuxer = this.videoDemuxer = new JsWebm();
-      demuxer.queueData(videoInitSegment);
+      this.videoDemuxer = videoMimeType.includes('webm') ? new WebMDemuxer() : new MP4Demuxer();
+      this.videoDemuxer.initialize(videoInitSegment);
+    }
 
-      let count = 0;
-      while (demuxer.demux()) {
-        count++;
-        if (count > 10000) {
-          throw new Error('too many iterations');
+    const requeue = (e) => {
+      if (this.audioEncoder) {
+        if (this.audioDecoder.decodeQueueSize >= 10) {
+          return;
+        }
+
+        if (this.audioEncoder.encodeQueueSize >= 10) {
+          return;
+        }
+
+        if (this.resamplerWorkerTasks >= 500) {
+          return;
         }
       }
-      demuxer.validateMetadata();
 
-      const videoTrack = demuxer.videoTrack;
-      const decoderConfig = {
-        codec: demuxer.videoCodec,
-        codedWidth: videoTrack.width,
-        codedHeight: videoTrack.height,
-        displayAspectWidth: videoTrack.displayWidth,
-        displayAspectHeight: videoTrack.displayHeight,
+      if (this.videoEncoder) {
+        if (this.videoDecoder.decodeQueueSize >= 10) {
+          return;
+        }
+
+        if (this.videoEncoder.encodeQueueSize >= 10) {
+          return;
+        }
+      }
+
+      if (this.resolveRecodePromise) {
+        this.resolveRecodePromise();
+        this.resolveRecodePromise = null;
+      }
+    };
+
+    if (this.videoDemuxer && this.videoDemuxer.getVideoDecoderConfig()) {
+      const decoderConfig = this.videoDemuxer.getVideoDecoderConfig();
+      const encoderConfig = {
+        codec: 'avc1.4d003e',
+        width: decoderConfig.codedWidth,
+        height: decoderConfig.codedHeight,
       };
 
       videoOutput = {
         codec: 'avc',
-        width: videoTrack.width,
-        height: videoTrack.height,
-      };
-
-      const encoderConfig = {
-        codec: 'avc1.42001f',
-        width: videoTrack.width,
-        height: videoTrack.height,
-      //  bitrate: 1e6,
+        width: decoderConfig.codedWidth,
+        height: decoderConfig.codedHeight,
       };
 
       const support = await VideoDecoder.isConfigSupported(decoderConfig);
@@ -189,14 +152,6 @@ export class RecodeMerger extends EventEmitter {
       if (!support2) {
         throw new Error('unsupported output video codec');
       }
-
-
-      const requeue = (e) => {
-        if (this.videoDecoder && this.videoDecoder.decodeQueueSize < 10 && this.videoEncoder.encodeQueueSize < 10 && this.resolveWaitEncodeVideoPromise) {
-          this.resolveWaitEncodeVideoPromise();
-          this.resolveWaitEncodeVideoPromise = null;
-        }
-      };
 
       this.videoEncoder = new VideoEncoder({
         output: (chunk, meta) => {
@@ -222,52 +177,35 @@ export class RecodeMerger extends EventEmitter {
           this.videoDecoder.close();
         },
       });
-
-
-      // this.videoDecoder.addEventListener('dequeue', requeue);
-      // this.videoEncoder.addEventListener('dequeue', requeue);
-
       this.videoDecoder.configure(decoderConfig);
     }
 
+    const videoHasAudio = this.videoDemuxer && this.videoDemuxer.getAudioDecoderConfig();
     if (audioDuration) {
-      this.audioDuration = audioDuration;
-      this.audioDemuxer = new JsWebm();
-      this.audioDemuxer.queueData(audioInitSegment);
-
-      let count = 0;
-      while (this.audioDemuxer.demux()) {
-        count++;
-        if (count > 10000) {
-          throw new Error('too many iterations');
-        }
+      if (videoHasAudio) {
+        throw new Error('Video already has audio');
       }
 
-      this.audioDemuxer.validateMetadata();
+      this.audioDuration = audioDuration;
+      this.audioDemuxer = audioMimeType.includes('webm') ? new WebMDemuxer() : new MP4Demuxer();
+      this.audioDemuxer.initialize(audioInitSegment);
+    }
 
-      const audioTrack = this.audioDemuxer.audioTrack;
-
-      const decoderConfig = {
-        codec: this.audioDemuxer.audioCodec,
-        description: audioTrack.codecPrivate,
-        sampleRate: audioTrack.rate,
-        numberOfChannels: audioTrack.channels,
-      };
-
-      audioOutput = {
-        codec: 'aac',
-        sampleRate: audioTrack.rate,
-        numberOfChannels: audioTrack.channels,
-      };
+    if (videoHasAudio || (this.audioDemuxer && this.audioDemuxer.getAudioDecoderConfig())) {
+      const decoderConfig = this.audioDemuxer ? this.audioDemuxer.getAudioDecoderConfig() : this.videoDemuxer.getAudioDecoderConfig();
 
       const encoderConfig = {
         codec: 'mp4a.40.2',
         sampleRate: 44100,
-        numberOfChannels: audioTrack.channels,
-        // bitrate: 128000,
+        numberOfChannels: decoderConfig.numberOfChannels,
       };
 
-      console.log(decoderConfig, encoderConfig);
+      audioOutput = {
+        codec: 'aac',
+        sampleRate: decoderConfig.sampleRate,
+        numberOfChannels: decoderConfig.numberOfChannels,
+      };
+
       const support = await AudioDecoder.isConfigSupported(decoderConfig);
       if (!support) {
         throw new Error('unsupported input audio codec');
@@ -277,28 +215,6 @@ export class RecodeMerger extends EventEmitter {
       if (!support2) {
         throw new Error('unsupported output video codec');
       }
-
-      const requeue = (e) => {
-        if (!this.audioDecoder) {
-          return;
-        }
-        if (this.audioDecoder.decodeQueueSize >= 5) {
-          return;
-        }
-
-        if (this.audioEncoder.encodeQueueSize >= 5) {
-          return;
-        }
-
-        if (this.resamplerWorkerTasks >= 500) {
-          return;
-        }
-
-        if (this.resolveWaitEncodeAudioPromise) {
-          this.resolveWaitEncodeAudioPromise();
-          this.resolveWaitEncodeAudioPromise = null;
-        }
-      };
 
       this.audioEncoder = new AudioEncoder({
         output: (chunk, meta) => {
@@ -324,13 +240,12 @@ export class RecodeMerger extends EventEmitter {
         type: 'module',
       });
 
-
       this.resamplerWorkerTasks = 0;
       this.resamplerWorker.postMessage({
         type: 'init',
-        oldSampleRate: audioTrack.rate,
+        oldSampleRate: decoderConfig.sampleRate,
         newSampleRate: encoderConfig.sampleRate,
-        numChannels: audioTrack.channels,
+        numChannels: decoderConfig.numberOfChannels,
       });
 
       this.resamplerWorker.addEventListener('message', (event) => {
@@ -369,10 +284,6 @@ export class RecodeMerger extends EventEmitter {
           this.audioDecoder.close();
         },
       });
-
-      // this.audioDecoder.addEventListener('dequeue', requeue);
-      // this.audioEncoder.addEventListener('dequeue', requeue);
-
       this.audioDecoder.configure(decoderConfig);
     }
     this.chunks = [];
@@ -447,18 +358,10 @@ export class RecodeMerger extends EventEmitter {
   async finalize() {
     if (this.audioDecoder) {
       // Process last packet
-      const demuxer = this.audioDemuxer;
-      const packet = demuxer.audioPackets[0];
-      const currentTimestamp = Math.floor(packet.timestamp * 1000000);
-      const nextTimestamp = Math.floor(this.audioDuration * 1000000);
-
-      const chunk = new EncodedAudioChunk({
-        type: packet.isKeyframe ? 'key' : 'delta',
-        timestamp: currentTimestamp,
-        duration: nextTimestamp - currentTimestamp,
-        data: packet.data,
+      const left = this.audioDemuxer.getAudioChunks(this.audioDuration);
+      left.forEach((chunk) => {
+        this.audioDecoder.decode(chunk);
       });
-      this.audioDecoder.decode(chunk);
 
       await this.audioDecoder.flush();
 
@@ -475,21 +378,12 @@ export class RecodeMerger extends EventEmitter {
       await this.audioEncoder.flush();
     }
 
-
     if (this.videoDecoder) {
       // Process last packet
-      const demuxer = this.videoDemuxer;
-      const packet = demuxer.videoPackets[0];
-      const currentTimestamp = Math.floor(packet.timestamp * 1000000);
-      const nextTimestamp = Math.floor(this.videoDuration * 1000000);
-
-      const chunk = new EncodedVideoChunk({
-        type: packet.isKeyframe ? 'key' : 'delta',
-        timestamp: currentTimestamp,
-        duration: nextTimestamp - currentTimestamp,
-        data: packet.data,
+      const left = this.videoDemuxer.getVideoChunks(this.videoDuration);
+      left.forEach((chunk) => {
+        this.videoDecoder.decode(chunk);
       });
-      this.videoDecoder.decode(chunk);
 
       await this.videoDecoder.flush();
       await this.videoEncoder.flush();
@@ -528,14 +422,19 @@ export class RecodeMerger extends EventEmitter {
       throw new Error('Webcodecs not supported');
     }
 
-    await this.setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment);
+    const answer = confirm(Localize.getMessage('player_savevideo_reencode'));
+    if (!answer) {
+      throw new Error('User cancelled conversion');
+    }
+
+    await this.setup(videoMimeType, videoDuration, videoInitSegment, audioMimeType, audioDuration, audioInitSegment);
 
     let lastProgress = 0;
     for (let i = 0; i < zippedFragments.length; i++) {
       if (zippedFragments[i].track === 0) {
-        await this.pushVideoFragment(zippedFragments[i]);
+        await this.pushFragment(zippedFragments[i], this.videoDemuxer);
       } else {
-        await this.pushAudioFragment(zippedFragments[i]);
+        await this.pushFragment(zippedFragments[i], this.audioDemuxer);
       }
       const newProgress = Math.floor((i + 1) / zippedFragments.length * 100);
       if (newProgress !== lastProgress) {

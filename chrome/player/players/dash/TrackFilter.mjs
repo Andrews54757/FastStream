@@ -81,6 +81,7 @@ export class TrackFilter {
   }
 
   static isTrackMP4(track) {
+    return false;
     return track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4';
   }
 

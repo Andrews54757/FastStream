@@ -462,6 +462,9 @@
     "player_savevideo_incognito_confirm": {
         "message": "Mod Inkognito akan menggunakan RAM untuk menimbal video. Komputer anda mungkin tidak mempunyai memori yang mencukupi untuk menyimpan keseluruhan video!\nAdakah anda pasti mahu meneruskan?"
     },
+    "player_savevideo_reencode": {
+        "message": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?"
+    },
     "player_savevideo_start": {
         "message": "Membuat penjimatan..."
     },

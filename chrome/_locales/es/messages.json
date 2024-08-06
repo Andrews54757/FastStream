@@ -461,6 +461,9 @@
     "player_savevideo_incognito_confirm": {
         "message": "El Modo Incógnito utilizará la RAM para almacenar en búfer los videos. ¡Es posible que tu computadora no tenga suficiente memoria para guardar el video completo!\n¿Estás seguro de que quieres proceder?"
     },
+    "player_savevideo_reencode": {
+        "message": "Guardar requerirá re-codificación. Esto puede llevar mucho tiempo. ¿Quieres proceder?"
+    },
     "player_savevideo_start": {
         "message": "Guardando..."
     },

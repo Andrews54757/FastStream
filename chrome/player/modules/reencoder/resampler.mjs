@@ -288,41 +288,41 @@ export class StatefulResampler {
         newBuffer[i] = this.interpolate(i - tailStart, samples);
       }
 
-      // // Run filter
-      // this.filter.reset();
-      // for (let i = 0; i < newBuffer.length; i++) {
-      //   newBuffer[i] = this.filter.filter(newBuffer[i]);
-      // }
+      // Run filter
+      this.filter.reset();
+      for (let i = 0; i < newBuffer.length; i++) {
+        newBuffer[i] = this.filter.filter(newBuffer[i]);
+      }
 
-      // // Reverse filter
-      // this.filter.reset();
-      // for (let i = newBuffer.length - 1; i >= 0; i--) {
-      //   newBuffer[i] = this.filter.filter(newBuffer[i]);
-      // }
+      // Reverse filter
+      this.filter.reset();
+      for (let i = newBuffer.length - 1; i >= 0; i--) {
+        newBuffer[i] = this.filter.filter(newBuffer[i]);
+      }
 
       return newBuffer.slice(tailStart, newBuffer.length - tailEnd);
     } else {
-      // // Run filter
-      // this.filter.reset();
-      // for (let i = 0; i < samples.length; i++) {
-      //   if (!samples[i]) {
-      //     continue;
-      //   }
-      //   for (let j = 0; j < samples[i].length; j++) {
-      //     samples[i][j] = this.filter.filter(samples[i][j]);
-      //   }
-      // }
+      // Run filter
+      this.filter.reset();
+      for (let i = 0; i < samples.length; i++) {
+        if (!samples[i]) {
+          continue;
+        }
+        for (let j = 0; j < samples[i].length; j++) {
+          samples[i][j] = this.filter.filter(samples[i][j]);
+        }
+      }
 
-      // // Reverse filter
-      // this.filter.reset();
-      // for (let i = samples.length - 1; i >= 0; i--) {
-      //   if (!samples[i]) {
-      //     continue;
-      //   }
-      //   for (let j = samples[i].length - 1; j >= 0; j--) {
-      //     samples[i][j] = this.filter.filter(samples[i][j]);
-      //   }
-      // }
+      // Reverse filter
+      this.filter.reset();
+      for (let i = samples.length - 1; i >= 0; i--) {
+        if (!samples[i]) {
+          continue;
+        }
+        for (let j = samples[i].length - 1; j >= 0; j--) {
+          samples[i][j] = this.filter.filter(samples[i][j]);
+        }
+      }
 
       const newBuffer = new Float64Array(newSampleLen);
       for (let i = 0; i < newBuffer.length; i++) {

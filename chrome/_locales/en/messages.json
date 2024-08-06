@@ -462,6 +462,9 @@
     "player_savevideo_incognito_confirm": {
         "message": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?"
     },
+    "player_savevideo_reencode": {
+        "message": "Saving will require re-encoding. This may take a long time. Do you want to proceed?"
+    },
     "player_savevideo_start": {
         "message": "Making save..."
     },

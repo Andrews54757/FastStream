@@ -150,22 +150,19 @@ export default class HLSPlayer extends EventEmitter {
       audioLevelInitData = new Uint8Array(await this.client.downloadManager.getEntry(audioFragments[-1].getContext()).getDataFromBlob());
     }
 
-    const videoMimeType = '';
-    const audioMimeType = '';
-
     try {
       if (levelInitData && audioLevelInitData) {
-        const {DASH2MP4} = await import('../../modules/dash2mp4/dash2mp4.mjs');
+        const {MP4Merger} = await import('../../modules/dash2mp4/mp4merger.mjs');
 
-        const dash2mp4 = new DASH2MP4();
+        const mp4merger = new MP4Merger();
 
-        dash2mp4.on('progress', (progress) => {
+        mp4merger.on('progress', (progress) => {
           if (options?.onProgress) {
             options.onProgress(progress);
           }
         });
 
-        const blob = await dash2mp4.convert(videoMimeType, level.details.totalduration, levelInitData.buffer, audioMimeType, audioLevel.details.totalduration, audioLevelInitData.buffer, zippedFragments);
+        const blob = await mp4merger.convert(level.details.totalduration, levelInitData.buffer, audioLevel.details.totalduration, audioLevelInitData.buffer, zippedFragments);
 
         return {
           extension: 'mp4',

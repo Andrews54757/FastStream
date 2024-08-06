@@ -462,6 +462,9 @@
     "player_savevideo_incognito_confirm": {
         "message": "シークレットモードでは、RAM を使用して動画をバッファーします。コンピューターに動画全体を保存するのに必要なメモリがない可能性があります。\n続行してもよろしいですか?"
     },
+    "player_savevideo_reencode": {
+        "message": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?"
+    },
     "player_savevideo_start": {
         "message": "保存中..."
     },
