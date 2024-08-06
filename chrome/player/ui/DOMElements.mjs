@@ -16,6 +16,7 @@ export const DOMElements = {
   playbackRate: document.querySelector('.mainplayer .fluid_button_playback_rate'),
   playbackRateBanner: document.querySelector('.mainplayer .rate_menu_banner'),
   download: document.querySelector('.mainplayer .fluid_button_download.main_download'),
+  saveNotifBanner: document.querySelector('#save_notif_banner'),
   screenshot: document.querySelector('.mainplayer .fluid_button_screenshot'),
   pip: document.querySelector('.mainplayer .fluid_button_pip'),
   duration: document.querySelector('.mainplayer .fluid_control_duration'),

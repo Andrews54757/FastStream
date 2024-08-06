@@ -137,6 +137,7 @@ export class SaveManager {
       let result;
       this.makingDownload = true;
       this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_start'), 'info');
+      DOMElements.saveNotifBanner.style.display = '';
       try {
         const start = performance.now();
         result = await player.saveVideo({
@@ -156,6 +157,7 @@ export class SaveManager {
         this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_fail'), 'error', 2000);
         this.makingDownload = false;
         this.downloadCancel = null;
+        DOMElements.saveNotifBanner.style.display = 'none';
 
         if (confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
           this.dumpBuffer(name);
@@ -163,6 +165,7 @@ export class SaveManager {
         return;
       }
 
+      DOMElements.saveNotifBanner.style.display = 'none';
       this.downloadCancel = null;
       this.makingDownload = false;
 
