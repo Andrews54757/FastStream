@@ -414,7 +414,7 @@ export class FastStreamClient extends EventEmitter {
           const timestr = StringUtils.formatDuration(this.persistent.bufferBehind + this.persistent.bufferAhead);
           this.interfaceController.setStatusMessage('info', Localize.getMessage('player_buffer_storage_warning', [timestr]), 'warning', 5000);
         } else if (bufferAhead > 0) {
-          this.persistent.bufferAhead = Math.min(bufferAhead, this.persistent.bufferAhead);
+          this.persistent.bufferAhead = Math.max(Math.min(bufferAhead, this.persistent.bufferAhead), this.options.bufferAhead);
         }
         this.hasDownloadSpace = newHasDownloadSpace;
       } else {
