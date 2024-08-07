@@ -8,6 +8,7 @@ export class WebUtils {
 
   static setupTabIndex(element) {
     element.tabIndex = 0;
+    element.role = 'button';
     element.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         element.click();
