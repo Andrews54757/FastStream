@@ -74,7 +74,7 @@ export class LoopMenu extends EventEmitter {
       input.name = name;
       input.type = 'text';
       input.value = value;
-
+      input.ariaLabel = label.textContent;
       input.setAttribute('autocomplete', 'off');
       input.setAttribute('autocorrect', 'off');
       input.setAttribute('autocapitalize', 'off');

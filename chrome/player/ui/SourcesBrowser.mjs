@@ -40,6 +40,7 @@ export class SourcesBrowser {
     const sourceURL = WebUtils.create('input', null, 'text_input linkui-source-url');
     sourceURL.value = source.url;
     sourceURL.placeholder = Localize.getMessage('player_source_url_placeholder');
+    sourceURL.ariaLabel = sourceURL.placeholder;
     sourceURL.addEventListener('input', (e) => {
       source.url = sourceURL.value;
       this.updateSources();
@@ -180,6 +181,7 @@ export class SourcesBrowser {
     headersInput.setAttribute('spellcheck', false);
     headersInput.name = Localize.getMessage('player_source_headers_label');
     headersInput.placeholder = Localize.getMessage('player_source_headers_placeholder');
+    headersInput.ariaLabel = headersInput.placeholder;
     headersInput.value = URLUtils.objToHeadersString(source.headers);
     headersInput.addEventListener('input', (e) => {
       if (URLUtils.validateHeadersString(headersInput.value)) {

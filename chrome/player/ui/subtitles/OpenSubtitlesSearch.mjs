@@ -80,6 +80,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     const searchInput = WebUtils.create('input', null, 'text_input');
     searchInput.placeholder = Localize.getMessage('player_opensubtitles_search_placeholder');
     searchInput.classList.add('subtitle-search-input');
+    searchInput.ariaLabel = searchInput.placeholder;
     searchInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
@@ -98,6 +99,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     seasonInput.placeholder = Localize.getMessage('player_opensubtitles_seasonnum');
     seasonInput.classList.add('subtitle-season-input');
     seasonInput.style.display = 'none';
+    seasonInput.ariaLabel = seasonInput.placeholder;
     seasonInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
@@ -106,6 +108,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     episodeInput.placeholder = Localize.getMessage('player_opensubtitles_episodenum');
     episodeInput.classList.add('subtitle-episode-input');
     episodeInput.style.display = 'none';
+    episodeInput.ariaLabel = episodeInput.placeholder;
     episodeInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
@@ -136,6 +139,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     const languageInput = WebUtils.create('input', null, 'text_input');
     languageInput.placeholder = Localize.getMessage('player_opensubtitles_language');
     languageInput.classList.add('subtitle-language-input');
+    languageInput.ariaLabel = languageInput.placeholder;
     this.subui.searchContainer.appendChild(languageInput);
     this.subui.languageInput = languageInput;
     languageInput.addEventListener('keydown', (e) => {
@@ -145,6 +149,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     const yearInput = WebUtils.create('input', null, 'text_input');
     yearInput.placeholder = Localize.getMessage('player_opensubtitles_year');
     yearInput.classList.add('subtitle-year-input');
+    yearInput.ariaLabel = yearInput.placeholder;
     this.subui.searchContainer.appendChild(yearInput);
     yearInput.addEventListener('keydown', (e) => {
       e.stopPropagation();

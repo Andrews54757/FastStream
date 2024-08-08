@@ -107,6 +107,7 @@ export class SubtitlesSettingsManager extends EventEmitter {
       input.name = key;
       input.type = 'text';
       input.value = this.settings[key];
+      input.ariaLabel = label.textContent;
 
       input.setAttribute('autocomplete', 'off');
       input.setAttribute('autocorrect', 'off');

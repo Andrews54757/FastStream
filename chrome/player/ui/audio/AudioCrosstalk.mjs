@@ -166,6 +166,7 @@ export class AudioCrosstalk {
     speakerDistanceLabel.textContent = Localize.getMessage('audiocrosstalk_speakerdistance');
     speakerDistanceContainer.appendChild(speakerDistanceLabel);
     const speakerDistanceInput = WebUtils.create('input', null, 'crosstalk_calculator_input');
+    speakerDistanceInput.ariaLabel = speakerDistanceLabel.textContent;
     speakerDistanceContainer.appendChild(speakerDistanceInput);
     calculatorContainer.appendChild(speakerDistanceContainer);
 
@@ -186,6 +187,7 @@ export class AudioCrosstalk {
     headDistanceLabel.textContent = Localize.getMessage('audiocrosstalk_headdistance');
     headDistanceContainer.appendChild(headDistanceLabel);
     const headDistanceInput = WebUtils.create('input', null, 'crosstalk_calculator_input');
+    headDistanceInput.ariaLabel = headDistanceLabel.textContent;
     headDistanceContainer.appendChild(headDistanceInput);
     calculatorContainer.appendChild(headDistanceContainer);
 

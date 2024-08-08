@@ -301,3 +301,59 @@ async function setup() {
 setup().catch((e)=>{
   console.error(e);
 });
+
+// SPLICER:EXTENSION:REMOVE_START
+// Detect wave extension and fix positioning so it works
+// Watch for an iframe element added to body with an id wave_sidebar_container
+// When it is added, move the player to the right
+const observer = new MutationObserver((mutations) => {
+  mutations.forEach((mutation) => {
+    mutation.addedNodes.forEach((node) => {
+      if (node.id === 'wave_sidebar_container') {
+        doWaveFix();
+      }
+    });
+
+    mutation.removedNodes.forEach((node) => {
+      if (node.id === 'wave_sidebar_container') {
+        undoWaveFix();
+      }
+    });
+  });
+});
+
+observer.observe(document.body, {
+  childList: true,
+});
+
+
+function doWaveFix() {
+  const player = document.querySelector('.mainplayer');
+  if (player) {
+    player.style.left = '380px';
+    player.style.width = 'calc(100% - 380px)';
+  }
+
+  const waveTopbar = document.querySelector('#wave5topbar');
+  if (waveTopbar) {
+    const topbarHeight = waveTopbar.clientHeight;
+    player.style.height = `calc(100% - ${topbarHeight}px)`;
+
+    const observer = new ResizeObserver((entries) => {
+      const topbarHeight = waveTopbar.clientHeight;
+      player.style.height = `calc(100% - ${topbarHeight}px)`;
+    });
+
+    observer.observe(waveTopbar);
+  }
+}
+
+function undoWaveFix() {
+  const player = document.querySelector('.mainplayer');
+  if (player) {
+    player.style.left = '';
+    player.style.width = '';
+    player.style.height = '';
+  }
+}
+// SPLICER:EXTENSION:REMOVE_END
