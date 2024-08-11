@@ -72,14 +72,12 @@ In order to create bundles for Chrome and Firefox, you need to build FastStream 
 
 Files with `dist` in the name are for Chrome & Firefox's stores. Files with `libre` are for manual installation. The `dist` versions will have reduced featuresets to comply with store policies.
 
-## Contributors
+## Credits
 
 Many thanks to the contributors of this project.
 
-#### Full-time
+#### Developers
 - Andrews54757: Lead developer
-
-#### Part-time
 - ChromiaCat: Update notify icon (PR #142)
 
 #### Translators
@@ -87,6 +85,16 @@ Many thanks to the contributors of this project.
 - reindex-ot: Japanese translations
 - elfriob: Russian translations
 - Justryuz: Malay translations
+
+#### Open Source Libraries
+
+- [hls.js](https://github.com/video-dev/hls.js): Used for HLS playback
+- [dash.js](https://github.com/Dash-Industry-Forum/dash.js): Used for DASH playback
+- [mp4box.js](https://github.com/gpac/mp4box.js): Used for automatic fragmentation of mp4 files
+- [youtube.js](https://github.com/LuanRT/YouTube.js): Used for Youtube playback
+- [vtt.js](https://github.com/mozilla/vtt.js): Used for parsing VTT subtitles
+- [jswebm](https://github.com/jscodec/jswebm): Used for demuxing webm files
+- And some more! Check the `chrome/player/modules` directory for more information.
 
 ## Funding & Donation Policy
 
