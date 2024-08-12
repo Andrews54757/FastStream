@@ -28,7 +28,7 @@ import {URLUtils} from './utils/URLUtils.mjs';
 import {YoutubeClients} from './enums/YoutubeClients.mjs';
 import {StringUtils} from './utils/StringUtils.mjs';
 
-const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
+const SET_VOLUME_USING_NODE = false; // !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
 export class FastStreamClient extends EventEmitter {
   constructor() {
@@ -91,7 +91,7 @@ export class FastStreamClient extends EventEmitter {
     if (EnvUtils.isWebAudioSupported()) {
       this.audioConfigManager = new AudioConfigManager(this);
       this.audioContext = new AudioContext();
-      this.audioConfigManager.setupNodes();
+      this.audioConfigManager.setupNodes(this.audioContext);
     }
 
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
@@ -536,7 +536,8 @@ export class FastStreamClient extends EventEmitter {
         this.audioContext = new AudioContext();
         this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
         this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
-        this.audioConfigManager.setupNodes();
+        this.audioConfigManager.setupNodes(this.audioContext);
+        this.audioConfigManager.getInputNode().connectFrom(this.audioSource);
         this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
       }
 
@@ -563,7 +564,6 @@ export class FastStreamClient extends EventEmitter {
       if (autoPlay) {
         this.play();
       }
-
 
       this.loadProgressData().then(async () => {
         this.disableProgressSave = true;

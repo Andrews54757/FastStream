@@ -3,11 +3,14 @@ import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioChannelControl} from './config/AudioChannelControl.mjs';
+import {VirtualAudioNode} from './VirtualAudioNode.mjs';
 
 
-export class AudioChannelMixer {
+export class AudioChannelMixer extends AbstractAudioModule {
   constructor() {
+    super('AudioChannelMixer');
     this.channelSplitter = null;
     this.channelMerger = null;
     this.channelGains = [];
@@ -25,14 +28,6 @@ export class AudioChannelMixer {
   setChannelMixerConfig(config) {
     this.channelMixerConfig = config;
     this.refreshMixer();
-  }
-
-  getInputNode() {
-    return this.channelSplitter;
-  }
-
-  getOutputNode() {
-    return this.finalGain;
   }
 
   setupUI() {
@@ -53,6 +48,10 @@ export class AudioChannelMixer {
     this.ui.mixerContainer.appendChild(this.ui.master);
   }
 
+  needsAnalyzer() {
+    return this.ui.mixer.offsetParent !== null;
+  }
+
 
   render() {
     const channels = this.channelMixerConfig;
@@ -64,82 +63,79 @@ export class AudioChannelMixer {
       this.destroyAnalyzers();
     }
 
-    channels.forEach((channel) => {
-      const analyzer = this.channelAnalyzers[channel.id];
-      const els = this.mixerChannelElements[channel.id];
-
-      if (!analyzer || !els) {
-        return;
-      }
-
-      const canvas = els.volumeMeter;
-      const ctx = els.volumeMeterCtx;
-
-      const width = canvas.clientWidth * window.devicePixelRatio;
-      const height = canvas.clientHeight * window.devicePixelRatio;
-      if (width === 0 || height === 0) return;
-
-      canvas.width = width;
-      canvas.height = height;
-
-      ctx.clearRect(0, 0, width, height);
-
-      const minDB = -60;
-      const maxDB = 10;
-      const dbRange = maxDB - minDB;
-      const lastVolume = analyzer._lastVolume || 0;
-      const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
-      analyzer._lastVolume = volume;
-      const yScale = height;
-
-      const rectHeight = height / 50;
-      const volHeight = volume * yScale;
-
-      const rectCount = Math.ceil(volHeight / rectHeight);
-      const now = Date.now();
-
-      if (!els.peak || rectCount > els.peak) {
-        els.peak = rectCount;
-        els.peakTime = now;
-      }
-
-      for (let i = 0; i < rectCount; i++) {
-        const y = height - i * rectHeight;
-
-
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
-        ctx.fillRect(0, y, width, rectHeight);
-
-        const color = `rgb(${Utils.clamp(i * 7, 0, 255)}, ${Utils.clamp(255 - i * 7, 0, 255)}, 0)`;
-        ctx.fillStyle = color;
-        ctx.fillRect(0, y + 1, width, rectHeight - 2);
-      }
-
-      const timeDiff = now - els.peakTime;
-
-      // Code snippet from https://github.com/kevincennis/Mix.js/blob/master/src/js/views/app.views.track.js
-      // MIT License
-      /**
-       * The MIT License (MIT)
-       * Copyright (c) 2014 Kevin Ennis
-       * https://github.com/kevincennis/Mix.js/blob/master/LICENSE
-       */
-      if ( timeDiff < 1000 && els.peak >= 1 ) {
-        // for first 650 ms, use full alpha, then fade out
-        const freshness = timeDiff < 650 ? 1 : 1 - ( ( timeDiff - 650 ) / 350 );
-        ctx.fillStyle = 'rgba(238,119,85,' + freshness + ')';
-        ctx.fillRect(0, height - els.peak * rectHeight - 1, width, 1);
-      } else {
-        els.peak = 0;
-        els.peakTime = now;
-      }
+    channels.forEach((channel, i) => {
+      if (i === 6) return;
+      this.renderChannel(this.channelAnalyzers[channel.id], this.mixerChannelElements[channel.id]);
     });
+
+    this.renderChannel(this.masterAnalyser, this.mixerChannelElements[6]);
   }
 
-  setChannelGain(channel, gain) {
-    channel.gain = gain;
-    if (this.channelGains && this.channelGains[channel.id]) {
-      this.channelGains[channel.id].gain.value = gain;
+  renderChannel(analyzer, els) {
+    if (!analyzer || !els) {
+      return;
+    }
+
+    const canvas = els.volumeMeter;
+    const ctx = els.volumeMeterCtx;
+
+    const width = canvas.clientWidth * window.devicePixelRatio;
+    const height = canvas.clientHeight * window.devicePixelRatio;
+    if (width === 0 || height === 0) return;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    ctx.clearRect(0, 0, width, height);
+
+    const minDB = -60;
+    const maxDB = 10;
+    const dbRange = maxDB - minDB;
+    const lastVolume = analyzer._lastVolume || 0;
+    const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
+    analyzer._lastVolume = volume;
+    const yScale = height;
+
+    const rectHeight = height / 50;
+    const volHeight = volume * yScale;
+
+    const rectCount = Math.ceil(volHeight / rectHeight);
+    const now = Date.now();
+
+    if (!els.peak || rectCount > els.peak) {
+      els.peak = rectCount;
+      els.peakTime = now;
+    }
+
+    for (let i = 0; i < rectCount; i++) {
+      const y = height - i * rectHeight;
+
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillRect(0, y, width, rectHeight);
+
+      const color = `rgb(${Utils.clamp(i * 7, 0, 255)}, ${Utils.clamp(255 - i * 7, 0, 255)}, 0)`;
+      ctx.fillStyle = color;
+      ctx.fillRect(0, y + 1, width, rectHeight - 2);
+    }
+
+    const timeDiff = now - els.peakTime;
+
+    // Code snippet from https://github.com/kevincennis/Mix.js/blob/master/src/js/views/app.views.track.js
+    // MIT License
+    /**
+     * The MIT License (MIT)
+     * Copyright (c) 2014 Kevin Ennis
+     * https://github.com/kevincennis/Mix.js/blob/master/LICENSE
+     */
+    if ( timeDiff < 1000 && els.peak >= 1 ) {
+      // for first 650 ms, use full alpha, then fade out
+      const freshness = timeDiff < 650 ? 1 : 1 - ( ( timeDiff - 650 ) / 350 );
+      ctx.fillStyle = 'rgba(238,119,85,' + freshness + ')';
+      ctx.fillRect(0, height - els.peak * rectHeight - 1, width, 1);
+    } else {
+      els.peak = 0;
+      els.peakTime = now;
     }
   }
 
@@ -231,7 +227,8 @@ export class AudioChannelMixer {
 
       const db = AudioUtils.mixerPositionRatioToDB(newYPercent / 100);
       els.volumeHandle.style.top = `${newYPercent}%`;
-      this.setChannelGain(channel, AudioUtils.dbToGain(db));
+      channel.gain = AudioUtils.dbToGain(db);
+      this.updateNodes();
     };
 
     const mouseUp = (e) => {
@@ -260,13 +257,14 @@ export class AudioChannelMixer {
       const ratio = parseFloat(els.volumeHandle.style.top) / 100;
       const db = AudioUtils.mixerPositionRatioToDB(ratio - delta * 0.05);
       els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;
-      this.setChannelGain(channel, AudioUtils.dbToGain(db));
+      channel.gain = AudioUtils.dbToGain(db);
+      this.updateNodes();
     });
 
     const toggleMute = () => {
       channel.muted = !channel.muted;
       els.muteButton.classList.toggle('active', channel.mute);
-      this.updateMixerNodes();
+      this.updateNodes();
     };
 
     const toggleSolo = () => {
@@ -280,7 +278,7 @@ export class AudioChannelMixer {
 
       channel.solo = !channel.solo;
       els.soloButton.classList.toggle('active', channel.solo);
-      this.updateMixerNodes();
+      this.updateNodes();
     };
 
 
@@ -291,14 +289,16 @@ export class AudioChannelMixer {
         e.preventDefault();
         const db = AudioUtils.mixerPositionRatioToDB(ratio - 0.025);
         els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;
-        this.setChannelGain(channel, AudioUtils.dbToGain(db));
+        channel.gain = AudioUtils.dbToGain(db);
+        this.updateNodes();
       } else if (e.key === 'ArrowDown') {
         e.stopPropagation();
         e.preventDefault();
 
         const db = AudioUtils.mixerPositionRatioToDB(ratio + 0.025);
         els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;
-        this.setChannelGain(channel, AudioUtils.dbToGain(db));
+        channel.gain = AudioUtils.dbToGain(db);
+        this.updateNodes();
       } else if (e.key === 'm') {
         e.stopPropagation();
         e.preventDefault();
@@ -339,37 +339,25 @@ export class AudioChannelMixer {
       const channel = mixerChannels[i];
       const els = this.createMixerChannel(channel);
       this.ui.channels.appendChild(els.container);
-      this.mixerChannelElements.push(els);
+      this.mixerChannelElements[i] = els;
     }
 
     const els = this.createMixerChannel(mixerChannels[6]);
     this.ui.master.appendChild(els.container);
-    this.mixerChannelElements.push(els);
-
-    this.updateMixerNodes();
+    this.mixerChannelElements[6] = els;
+    this.updateNodes();
   }
 
-  updateMixerNodes() {
-    if (!this.channelGains.length) {
-      return;
-    }
-    const channels = this.channelMixerConfig;
-
-    const soloChannel = channels.find((channel) => channel.solo);
-
-    channels.forEach((channel, i) => {
-      if (soloChannel && channel !== soloChannel && channel.id !== 6) {
-        this.channelGains[channel.id].gain.value = 0;
-      } else {
-        this.channelGains[channel.id].gain.value = channel.muted ? 0 : channel.gain;
-      }
-    });
+  needsUpscaler() {
+    return this.channelSplitter !== null;
   }
 
   createAnalyzers() {
-    if (this.channelAnalyzers.length > 0) {
+    if (this.channelAnalyzers.length > 0 || !this.needsAnalyzer()) {
       return;
     }
+
+    this.updateNodes();
 
     this.channelGains.forEach((gain) => {
       const analyser = this.audioContext.createAnalyser();
@@ -377,39 +365,128 @@ export class AudioChannelMixer {
       this.channelAnalyzers.push(analyser);
       gain.connect(analyser);
     });
+
+    this.masterAnalyser = this.audioContext.createAnalyser();
+    this.masterAnalyser.fftSize = 256;
+    this.getOutputNode().connect(this.masterAnalyser);
   }
 
-  destroyAnalyzers() {
+  destroyAnalyzers(skipDisconnect = false) {
     if (this.channelAnalyzers.length === 0) {
       return;
     }
 
-    this.channelGains.forEach((gain, i) => {
-      gain.disconnect(this.channelAnalyzers[i]);
-      this.channelAnalyzers[i].disconnect();
-    });
+    if (!skipDisconnect) {
+      this.channelGains.forEach((gain, i) => {
+        gain.disconnect(this.channelAnalyzers[i]);
+        this.channelAnalyzers[i].disconnect();
+      });
+
+      this.getOutputNode().disconnect(this.masterAnalyser);
+      this.masterAnalyser.disconnect();
+    }
+
     this.channelAnalyzers = [];
+    this.masterAnalyser = null;
+
+    this.updateNodes();
+  }
+
+  getChannelGainsFromConfig() {
+    if (!this.channelMixerConfig) {
+      return null;
+    }
+
+    const channels = this.channelMixerConfig;
+    const soloChannel = channels.find((channel) => channel.solo);
+
+    return channels.map((channel, i) => {
+      if (soloChannel && channel !== soloChannel && channel.id !== 6) {
+        return 0;
+      } else {
+        return channel.muted ? 0 : channel.gain;
+      }
+    });
   }
 
   setupNodes(audioContext) {
-    this.destroyAnalyzers();
-    this.audioContext = audioContext;
-    this.channelSplitter = this.audioContext.createChannelSplitter();
-    this.channelMerger = this.audioContext.createChannelMerger();
+    super.setupNodes(audioContext);
 
+    this.destroyAnalyzers(true);
+
+    this.postMerger = new VirtualAudioNode('AudioChannelMixer postMerger');
+
+    this.getInputNode().connect(this.postMerger);
+    this.postMerger.connect(this.getOutputNode());
+
+    this.channelSplitter = null;
+    this.channelMerger = null;
     this.channelGains = [];
-    for (let i = 0; i < 6; i++) {
-      const gain = this.audioContext.createGain();
-      this.channelGains.push(gain);
+    this.finalGain = null;
+  }
 
-      this.channelSplitter.connect(gain, i);
-      gain.connect(this.channelMerger, 0, i);
+  updateNodes() {
+    if (!this.audioContext) return;
+
+    const gains = this.getChannelGainsFromConfig();
+    if (!gains) {
+      return;
     }
 
-    this.finalGain = this.audioContext.createGain();
-    this.channelGains.push(this.finalGain);
-    this.channelMerger.connect(this.finalGain);
+    const hasNonUnityMasterGain = gains[6] !== 1;
+    if (hasNonUnityMasterGain) {
+      if (!this.finalGain) {
+        this.finalGain = this.audioContext.createGain();
+        this.postMerger.disconnect(this.getOutputNode());
+        this.postMerger.connect(this.finalGain);
+        this.getOutputNode().connectFrom(this.finalGain);
+      }
+      this.finalGain.gain.value = gains[6];
+    } else {
+      if (this.finalGain) {
+        this.postMerger.disconnect(this.finalGain);
+        this.getOutputNode().disconnectFrom(this.finalGain);
+        this.finalGain = null;
+        this.postMerger.connect(this.getOutputNode());
+      }
+    }
 
-    this.refreshMixer();
+    const hasNonUnityChannelGains = gains.slice(0, 6).some((gain) => gain !== 1);
+    if (hasNonUnityChannelGains || this.needsAnalyzer()) {
+      if (!this.channelSplitter) {
+        this.channelSplitter = this.audioContext.createChannelSplitter();
+        this.channelMerger = this.audioContext.createChannelMerger();
+        this.getInputNode().disconnect(this.postMerger);
+        this.getInputNode().connect(this.channelSplitter);
+        this.postMerger.connectFrom(this.channelMerger);
+        for (let i = 0; i < 6; i++) {
+          const gain = this.audioContext.createGain();
+          this.channelGains[i] = gain;
+          this.channelSplitter.connect(gain, i);
+          gain.connect(this.channelMerger, 0, i);
+        }
+      }
+
+      for (let i = 0; i < 6; i++) {
+        this.channelGains[i].gain.value = gains[i];
+      }
+    } else {
+      if (this.channelSplitter) {
+        this.getInputNode().disconnect(this.channelSplitter);
+        this.postMerger.disconnectFrom(this.channelMerger);
+        this.getInputNode().connect(this.postMerger);
+
+        this.channelGains.forEach((gain) => {
+          gain.disconnect();
+        });
+
+        this.channelSplitter.disconnect();
+        this.channelMerger.disconnect();
+
+        this.channelSplitter = null;
+        this.channelMerger = null;
+        this.channelGains = [];
+      }
+    }
   }
 }

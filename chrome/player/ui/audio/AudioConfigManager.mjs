@@ -1,19 +1,20 @@
 import {Localize} from '../../modules/Localize.mjs';
-import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {createDropdown} from '../components/Dropdown.mjs';
+import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioChannelMixer} from './AudioChannelMixer.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioCrosstalk} from './AudioCrosstalk.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
+import {AudioGain} from './AudioGain.mjs';
 import {AudioProfile} from './config/AudioProfile.mjs';
 
-export class AudioConfigManager extends EventEmitter {
+export class AudioConfigManager extends AbstractAudioModule {
   constructor(client) {
-    super();
+    super('AudioConfigManager');
     this.client = client;
     this.profiles = [];
     this.ui = {};
@@ -25,7 +26,7 @@ export class AudioConfigManager extends EventEmitter {
     this.audioCompressor = new AudioCompressor();
     this.audioChannelMixer = new AudioChannelMixer();
     this.audioCrosstalk = new AudioCrosstalk();
-
+    this.finalGain = new AudioGain();
 
     this.setupUI();
     this.loadProfilesFromStorage();
@@ -411,50 +412,24 @@ export class AudioConfigManager extends EventEmitter {
     this.shouldRunRenderLoop = false;
   }
 
-  setupNodes() {
-    this.audioContext = this.client.audioContext;
-    this.audioSource = this.client.audioSource;
-
-    const splitter = this.audioContext.createChannelSplitter(6);
-    const merger = this.audioContext.createChannelMerger(6);
-
-    for (let i = 2; i < 6; i++) {
-      splitter.connect(merger, i, i);
-    }
-
-    const stereoPanner = this.audioContext.createStereoPanner();
-    stereoPanner.channelInterpretation = 'discrete';
-
-    if (this.audioSource) {
-      this.audioSource.connect(splitter);
-      this.audioSource.connect(stereoPanner);
-    }
+  setupNodes(audioContext) {
+    super.setupNodes(audioContext);
 
     this.audioEqualizer.setupNodes(this.audioContext);
-
-    merger.connect(this.audioEqualizer.getInputNode());
-    stereoPanner.connect(this.audioEqualizer.getInputNode());
-
+    this.audioCompressor.setupNodes(this.audioContext);
     this.audioChannelMixer.setupNodes(this.audioContext);
+    this.audioCrosstalk.setupNodes(this.audioContext);
+    this.finalGain.setupNodes(this.audioContext);
 
-    this.audioEqualizer.getOutputNode().connect(this.audioChannelMixer.getInputNode());
-    this.audioCompressor.setupNodes(this.audioContext, this.audioEqualizer.getOutputNode(), this.audioChannelMixer.getInputNode());
-
-    this.audioCrosstalk.setupNodes(this.audioContext, this.audioChannelMixer.getOutputNode());
-
-    this.audioGain = this.audioCrosstalk.getOutputNode();
-    this.audioGain.gain.value = 1;
-
-    if (DOMElements.audioConfigContainer.style.display !== 'none') {
-      this.startRenderLoop();
-    }
+    this.getInputNode().connect(this.audioEqualizer.getInputNode());
+    this.audioEqualizer.getOutputNode().connect(this.audioCompressor.getInputNode());
+    this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
+    this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
+    this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
+    this.finalGain.getOutputNode().connect(this.getOutputNode());
   }
 
   updateVolume(value) {
-    if (this.audioGain) this.audioGain.gain.value = value;
-  }
-
-  getOutputNode() {
-    return this.audioGain;
+    this.finalGain.setGain(value);
   }
 }

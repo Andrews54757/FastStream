@@ -4,9 +4,11 @@ import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {createKnob} from '../components/Knob.mjs';
+import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 
-export class AudioCrosstalk {
+export class AudioCrosstalk extends AbstractAudioModule {
   constructor() {
+    super('AudioCrosstalk');
     this.crosstalkNode = null;
     this.crosstalkConfig = null;
     this.setupUI();
@@ -14,14 +16,6 @@ export class AudioCrosstalk {
 
   getElement() {
     return this.ui.crosstalk;
-  }
-
-  getInputNode() {
-    return this.inputNode;
-  }
-
-  getOutputNode() {
-    return this.outputNode;
   }
 
   setCrosstalkConfig(config) {
@@ -97,9 +91,9 @@ export class AudioCrosstalk {
       return;
     }
 
-    this.inputNode.disconnect(this.outputNode);
-    this.inputNode.connect(this.crosstalkNode.getInputNode());
-    this.crosstalkNode.getOutputNode().connect(this.outputNode);
+    this.getInputNode().disconnect(this.getOutputNode());
+    this.getInputNode().connect(this.crosstalkNode.getInputNode());
+    this.getOutputNode().connectFrom(this.crosstalkNode.getOutputNode());
   }
 
   removeCrosstalkNode() {
@@ -107,23 +101,26 @@ export class AudioCrosstalk {
       return;
     }
 
-    this.inputNode.disconnect(this.crosstalkNode.getInputNode());
-    this.crosstalkNode.getOutputNode().disconnect(this.outputNode);
-    this.inputNode.connect(this.outputNode);
+    this.getInputNode().disconnect(this.crosstalkNode.getInputNode());
+    this.getOutputNode().disconnectFrom(this.crosstalkNode.getOutputNode());
+    this.getInputNode().connect(this.getOutputNode());
     this.crosstalkNode.destroy();
     this.crosstalkNode = null;
   }
 
-  setupNodes(audioContext, inputNode) {
-    this.removeCrosstalkNode();
-
-    this.audioContext = audioContext;
-    this.inputNode = inputNode;
-    this.outputNode = audioContext.createGain();
-
-    this.inputNode.connect(this.outputNode);
+  setupNodes(audioContext) {
+    super.setupNodes(audioContext);
+    if (this.crosstalkNode) {
+      this.crosstalkNode.destroy();
+      this.crosstalkNode = null;
+    }
+    this.getInputNode().connect(this.getOutputNode());
 
     this.updateCrosstalk();
+  }
+
+  needsUpscaler() {
+    return this.crosstalkConfig && this.crosstalkConfig.enabled;
   }
 
   calculateCrosstalkDelayAndDecay(speakerDistance, headDistance) {

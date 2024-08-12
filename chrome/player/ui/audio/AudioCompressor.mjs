@@ -2,11 +2,11 @@ import {Localize} from '../../modules/Localize.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {createKnob} from '../components/Knob.mjs';
+import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 
-export class AudioCompressor {
+export class AudioCompressor extends AbstractAudioModule {
   constructor() {
-    this.inputNode = null;
-    this.outputNode = null;
+    super('AudioCompressor');
     this.compressorNode = null;
     this.compressorGain = null;
     this.compressorConfig = null;
@@ -16,14 +16,6 @@ export class AudioCompressor {
 
   getElement() {
     return this.ui.compressor;
-  }
-
-  getInputNode() {
-    return this.inputNode;
-  }
-
-  getOutputNode() {
-    return this.outputNode;
   }
 
   setCompressionConfig(config) {
@@ -119,23 +111,24 @@ export class AudioCompressor {
     this.compressorSplitter.connect(this.mergerNode, 0, 0);
     this.compressorSplitter.connect(this.mergerNode, 1, 1);
 
-    this.inputNode.disconnect(this.outputNode);
-    this.inputNode.connect(this.splitterNode);
-    this.mergerNode.connect(this.outputNode);
+    this.getInputNode().disconnect(this.getOutputNode());
+    this.getInputNode().connect(this.splitterNode);
+    this.getOutputNode().connectFrom(this.mergerNode);
   }
 
-  destroyCompressorNodes() {
+  destroyCompressorNodes(skipDisconnect = false) {
     if (!this.compressorNode) return;
 
-    this.inputNode.disconnect(this.splitterNode);
-    this.splitterNode.disconnect(this.compressorMerger);
-    this.compressorMerger.disconnect(this.compressorNode);
-    this.compressorNode.disconnect(this.compressorGain);
-    this.compressorGain.disconnect(this.compressorSplitter);
-    this.compressorSplitter.disconnect(this.mergerNode);
-    this.mergerNode.disconnect(this.outputNode);
-
-    this.inputNode.connect(this.outputNode);
+    if (!skipDisconnect) {
+      this.getInputNode().disconnect(this.splitterNode);
+      this.splitterNode.disconnect(this.compressorMerger);
+      this.compressorMerger.disconnect(this.compressorNode);
+      this.compressorNode.disconnect(this.compressorGain);
+      this.compressorGain.disconnect(this.compressorSplitter);
+      this.compressorSplitter.disconnect(this.mergerNode);
+      this.getOutputNode().disconnectFrom(this.mergerNode);
+      this.getInputNode().connect(this.getOutputNode());
+    }
 
     this.splitterNode = null;
     this.mergerNode = null;
@@ -145,13 +138,14 @@ export class AudioCompressor {
     this.compressorSplitter = null;
   }
 
-  setupNodes(audioContext, inputNode, outputNode) {
-    this.destroyCompressorNodes();
+  needsUpscaler() {
+    return this.compressorConfig && this.compressorConfig.enabled;
+  }
 
-    this.inputNode = inputNode;
-    this.outputNode = outputNode;
-    this.audioContext = audioContext;
-
+  setupNodes(audioContext) {
+    super.setupNodes(audioContext);
+    this.getInputNode().connect(this.getOutputNode());
+    this.destroyCompressorNodes(true);
     this.updateCompressor();
   }
 
