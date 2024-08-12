@@ -3,21 +3,20 @@ import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 export class MonoUpscaler extends AbstractAudioModule {
   constructor() {
     super('MonoUpscaler');
-    this.bypassed = true;
+    this.enabled = false;
   }
 
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
     this.getInputNode().connect(this.getOutputNode());
-
-    if (!this.bypassed) {
-      this.disable();
-      this.enable();
-    }
+    this.splitter = null;
+    this.merger = null;
+    this.stereoPanner = null;
+    this.enabled = false;
   }
 
   enable() {
-    if (this.bypassed || !this.audioContext) {
+    if (this.enabled || !this.audioContext) {
       return;
     }
 
@@ -36,11 +35,11 @@ export class MonoUpscaler extends AbstractAudioModule {
     this.getInputNode().connect(this.stereoPanner);
     this.getOutputNode().connectFrom(this.merger);
 
-    this.bypassed = false;
+    this.enabled = true;
   }
 
   disable() {
-    if (!this.bypassed) {
+    if (!this.enabled) {
       return;
     }
 
@@ -58,6 +57,6 @@ export class MonoUpscaler extends AbstractAudioModule {
     this.merger = null;
     this.stereoPanner = null;
 
-    this.bypassed = true;
+    this.enabled = false;
   }
 }

@@ -14,6 +14,10 @@ export class AudioCompressor extends AbstractAudioModule {
     this.setupUI();
   }
 
+  needsUpscaler() {
+    return this.compressorConfig && this.compressorConfig.enabled;
+  }
+
   getElement() {
     return this.ui.compressor;
   }
@@ -22,6 +26,7 @@ export class AudioCompressor extends AbstractAudioModule {
     this.compressorConfig = config;
     this.setupCompressorControls();
     this.updateCompressor();
+    this.emit('upscale');
   }
 
   setupUI() {
@@ -138,10 +143,6 @@ export class AudioCompressor extends AbstractAudioModule {
     this.compressorSplitter = null;
   }
 
-  needsUpscaler() {
-    return this.compressorConfig && this.compressorConfig.enabled;
-  }
-
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
     this.getInputNode().connect(this.getOutputNode());
@@ -159,6 +160,7 @@ export class AudioCompressor extends AbstractAudioModule {
     this.ui.compressorToggle.addEventListener('click', () => {
       this.compressorConfig.enabled = !this.compressorConfig.enabled;
       this.updateCompressor();
+      this.emit('upscale');
     });
 
     this.compressorKnobs = {};

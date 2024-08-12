@@ -21,6 +21,10 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.setupUI();
   }
 
+  needsUpscaler() {
+    return this.channelSplitter !== null;
+  }
+
   getElement() {
     return this.ui.mixer;
   }
@@ -348,10 +352,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.updateNodes();
   }
 
-  needsUpscaler() {
-    return this.channelSplitter !== null;
-  }
-
   createAnalyzers() {
     if (this.channelAnalyzers.length > 0 || !this.needsAnalyzer()) {
       return;
@@ -465,6 +465,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
           this.channelSplitter.connect(gain, i);
           gain.connect(this.channelMerger, 0, i);
         }
+        this.emit('upscale');
       }
 
       for (let i = 0; i < 6; i++) {
@@ -486,6 +487,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
         this.channelSplitter = null;
         this.channelMerger = null;
         this.channelGains = [];
+        this.emit('upscale');
       }
     }
   }

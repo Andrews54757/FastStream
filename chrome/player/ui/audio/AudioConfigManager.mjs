@@ -10,6 +10,7 @@ import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioCrosstalk} from './AudioCrosstalk.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
 import {AudioGain} from './AudioGain.mjs';
+import {MonoUpscaler} from './MonoUpscaler.mjs';
 import {AudioProfile} from './config/AudioProfile.mjs';
 
 export class AudioConfigManager extends AbstractAudioModule {
@@ -22,11 +23,23 @@ export class AudioConfigManager extends AbstractAudioModule {
 
     this.renderLoopRunning = false;
     this.shouldRunRenderLoop = false;
+    this.audioUpscaler = new MonoUpscaler();
     this.audioEqualizer = new AudioEqualizer();
     this.audioCompressor = new AudioCompressor();
     this.audioChannelMixer = new AudioChannelMixer();
     this.audioCrosstalk = new AudioCrosstalk();
     this.finalGain = new AudioGain();
+
+    const upscale = () => {
+      if (this.audioCompressor.needsUpscaler() || this.audioChannelMixer.needsUpscaler() || this.audioCrosstalk.needsUpscaler()) {
+        this.audioUpscaler.enable();
+      } else {
+        this.audioUpscaler.disable();
+      }
+    };
+    this.audioCompressor.on('upscale', upscale);
+    this.audioChannelMixer.on('upscale', upscale);
+    this.audioCrosstalk.on('upscale', upscale);
 
     this.setupUI();
     this.loadProfilesFromStorage();
@@ -415,13 +428,15 @@ export class AudioConfigManager extends AbstractAudioModule {
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
 
+    this.audioUpscaler.setupNodes(this.audioContext);
     this.audioEqualizer.setupNodes(this.audioContext);
     this.audioCompressor.setupNodes(this.audioContext);
     this.audioChannelMixer.setupNodes(this.audioContext);
     this.audioCrosstalk.setupNodes(this.audioContext);
     this.finalGain.setupNodes(this.audioContext);
 
-    this.getInputNode().connect(this.audioEqualizer.getInputNode());
+    this.getInputNode().connect(this.audioUpscaler.getInputNode());
+    this.audioUpscaler.getOutputNode().connect(this.audioEqualizer.getInputNode());
     this.audioEqualizer.getOutputNode().connect(this.audioCompressor.getInputNode());
     this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());

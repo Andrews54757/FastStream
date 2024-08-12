@@ -14,6 +14,10 @@ export class AudioCrosstalk extends AbstractAudioModule {
     this.setupUI();
   }
 
+  needsUpscaler() {
+    return this.crosstalkConfig && this.crosstalkConfig.enabled;
+  }
+
   getElement() {
     return this.ui.crosstalk;
   }
@@ -22,6 +26,7 @@ export class AudioCrosstalk extends AbstractAudioModule {
     this.crosstalkConfig = config;
     this.setupCrosstalkControls();
     this.updateCrosstalk();
+    this.emit('upscale');
   }
 
   setupUI() {
@@ -119,10 +124,6 @@ export class AudioCrosstalk extends AbstractAudioModule {
     this.updateCrosstalk();
   }
 
-  needsUpscaler() {
-    return this.crosstalkConfig && this.crosstalkConfig.enabled;
-  }
-
   calculateCrosstalkDelayAndDecay(speakerDistance, headDistance) {
     const speedOfSound = 34320; // cm/s
     const earToEarDistance = 17.5; // cm
@@ -152,6 +153,7 @@ export class AudioCrosstalk extends AbstractAudioModule {
     this.ui.crosstalkToggle.addEventListener('click', () => {
       this.crosstalkConfig.enabled = !this.crosstalkConfig.enabled;
       this.updateCrosstalk();
+      this.emit('upscale');
     });
 
     this.crosstalkKnobs = {};

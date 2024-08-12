@@ -36,10 +36,6 @@ export class AudioEqualizer extends AbstractAudioModule {
     }
   }
 
-  needsUpscaler() {
-    return this.equalizerNodes.length !== 0;
-  }
-
   setEqualizerConfig(config) {
     this.equalizerConfig = config;
     this.refreshEQNodes();

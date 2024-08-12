@@ -7,7 +7,7 @@ export class AbstractAudioModule extends EventEmitter {
     this.audioContext = null;
     this.inputNode = null;
     this.outputNode = null;
-    this.name = name;
+    this.name = name || 'AbstractAudioModule';
   }
 
   setupNodes(audioContext) {
