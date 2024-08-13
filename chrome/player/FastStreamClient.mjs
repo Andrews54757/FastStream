@@ -587,6 +587,10 @@ export class FastStreamClient extends EventEmitter {
         }
 
         this.disableProgressSave = false;
+
+        if (autoPlay) {
+          this.play();
+        }
       });
     } catch (e) {
       const msg = 'Please send this error to the developer at https://github.com/Andrews54757/FastStream/issues \n' + e + '\n' + e.stack;
