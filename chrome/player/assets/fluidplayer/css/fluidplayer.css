@@ -2354,7 +2354,7 @@ body {
     height: 40px;
     border-radius: 4px;
     transform: translate(-50%, -50%);
-    opacity: 0.9;
+    opacity: 0.8;
     cursor: grab;
 }
 

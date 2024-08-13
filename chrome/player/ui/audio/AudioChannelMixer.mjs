@@ -92,8 +92,8 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     ctx.clearRect(0, 0, width, height);
 
-    const minDB = -60;
-    const maxDB = 10;
+    const minDB = -40;
+    const maxDB = 20;
     const dbRange = maxDB - minDB;
     const lastVolume = analyzer._lastVolume || 0;
     const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
