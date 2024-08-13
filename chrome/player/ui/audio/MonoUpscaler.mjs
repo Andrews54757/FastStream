@@ -34,6 +34,7 @@ export class MonoUpscaler extends AbstractAudioModule {
     this.getInputNode().connect(this.splitter);
     this.getInputNode().connect(this.stereoPanner);
     this.getOutputNode().connectFrom(this.merger);
+    this.getOutputNode().connectFrom(this.stereoPanner);
 
     this.enabled = true;
   }
@@ -46,6 +47,7 @@ export class MonoUpscaler extends AbstractAudioModule {
     this.getInputNode().disconnect(this.splitter);
     this.getInputNode().disconnect(this.stereoPanner);
     this.getOutputNode().disconnectFrom(this.merger);
+    this.getOutputNode().disconnectFrom(this.stereoPanner);
 
     this.getInputNode().connect(this.getOutputNode());
 
