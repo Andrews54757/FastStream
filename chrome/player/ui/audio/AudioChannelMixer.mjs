@@ -216,10 +216,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       els.soloButton.style.display = 'none';
       els.muteButton.textContent = Localize.getMessage('audiomixer_mono');
       els.muteButton.title = els.muteButton.textContent;
-
-      if (channel.mono) {
-        els.muteButton.classList.add('active');
-      }
+      els.muteButton.classList.toggle('active', channel.mono);
     } else {
       els.soloButton.classList.toggle('active', channel.solo);
       els.muteButton.classList.toggle('active', channel.muted);
