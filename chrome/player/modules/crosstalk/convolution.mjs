@@ -1,3 +1,4 @@
+import {VirtualAudioNode} from '../../ui/audio/VirtualAudioNode.mjs';
 import {FFT} from './fft.mjs';
 
 const IMPULSE_BUFFER_SIZE = 512;
@@ -7,11 +8,19 @@ const SHIFT_AMOUNT = 128;
 /* eslint-disable camelcase */
 export class ConvolutionXTC {
   constructor(audioContext, options) {
+    this.audioContext = audioContext;
     this.cachedOptions = {};
     this.currentConvolver = 0;
-    this.audioContext = audioContext;
     this.fft = new FFT(FREQUENCY_BUFFER_SIZE);
     this.configure(options);
+  }
+
+  getInputNode() {
+    return this.inputNode;
+  }
+
+  getOutputNode() {
+    return this.outputNode;
   }
 
   idft(X) {
@@ -117,60 +126,55 @@ export class ConvolutionXTC {
     this.h_CROSS = this.idft(H_CROSS);
     this.rotateBuffer(this.h_CIS, SHIFT_AMOUNT);
     this.rotateBuffer(this.h_CROSS, SHIFT_AMOUNT);
-    if (this.buffer_L) {
+    if (this.buffer_XTC) {
       this.updateBuffers();
     }
   }
 
   updateBuffers() {
-    this.buffer_L.copyToChannel(this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE), 0);
-    this.buffer_L.copyToChannel(this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE), 1);
-    this.buffer_R.copyToChannel(this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE), 0);
-    this.buffer_R.copyToChannel(this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE), 1);
+    this.buffer_XTC.copyToChannel(this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE), 0);
+    this.buffer_XTC.copyToChannel(this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE), 1);
+    this.buffer_XTC.copyToChannel(this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE), 2);
+    this.buffer_XTC.copyToChannel(this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE), 3);
     const current = this.currentConvolver;
     const other = (current + 1) % 2;
-    this.convolver_L[other].buffer = this.buffer_L;
-    this.convolver_R[other].buffer = this.buffer_R;
-
-    const splitter_L = this.splitter_L;
-    const splitter_R = this.splitter_R;
+    this.convolvers_XTC[other].buffer = this.buffer_XTC;
 
     if (!this.switchTimeout) {
-      this.input.connect(this.convolver_L[other], 1);
-      this.input.connect(this.convolver_R[other], 1);
+      this.getInputNode().connect(this.convolvers_XTC[other], 1);
     }
 
     clearTimeout(this.switchTimeout);
     this.switchTimeout = setTimeout(() => {
-      this.convolver_L[other].connect(splitter_L);
-      this.convolver_R[other].connect(splitter_R);
+      this.getOutputNode().connectFrom(this.convolvers_XTC[other]);
+      try {
+        this.getInputNode().disconnect(this.convolvers_XTC[current]);
+      } catch (e) {
 
-      this.convolver_L[current].disconnect();
-      this.convolver_R[current].disconnect();
+      }
+      try {
+        this.getOutputNode().disconnectFrom(this.convolvers_XTC[current]);
+      } catch (e) {
+
+      }
 
       this.currentConvolver = other;
       this.switchTimeout = null;
     }, 100);
   }
 
-  async init(input) {
-    // Create splitter and merger nodes
+  async init(inputCrossoverNode) {
+    this.inputNode = inputCrossoverNode;
+    this.outputNode = new VirtualAudioNode('ConvolutionXTC Output');
     const ctx = this.audioContext;
-    this.input = input;
-
-    const merger = ctx.createChannelMerger(2);
-    this.output = merger;
-
     // create convolver nodes
-    this.buffer_L = ctx.createBuffer(2, IMPULSE_BUFFER_SIZE, ctx.sampleRate);
-    this.buffer_R = ctx.createBuffer(2, IMPULSE_BUFFER_SIZE, ctx.sampleRate);
-    const buffer_BYPASS = ctx.createBuffer(2, IMPULSE_BUFFER_SIZE, ctx.sampleRate);
+    this.buffer_XTC = ctx.createBuffer(4, IMPULSE_BUFFER_SIZE, ctx.sampleRate);
+    this.buffer_BYPASS = ctx.createBuffer(1, IMPULSE_BUFFER_SIZE, ctx.sampleRate);
 
-    this.convolver_L = [ctx.createConvolver(), ctx.createConvolver()];
-    this.convolver_R = [ctx.createConvolver(), ctx.createConvolver()];
+    this.convolvers_XTC = [ctx.createConvolver(), ctx.createConvolver()];
     this.convolver_BYPASS = ctx.createConvolver();
 
-    const convolvers = this.convolver_L.concat(this.convolver_R).concat([this.convolver_BYPASS]);
+    const convolvers = this.convolvers_XTC.concat([this.convolver_BYPASS]);
     convolvers.forEach((convolver) => {
       convolver.normalize = false;
     });
@@ -178,48 +182,22 @@ export class ConvolutionXTC {
     const h_BYPASS = new Float32Array(IMPULSE_BUFFER_SIZE);
     h_BYPASS[0] = 1;
     this.rotateBuffer(h_BYPASS, SHIFT_AMOUNT);
-    buffer_BYPASS.getChannelData(0).set(h_BYPASS);
-    buffer_BYPASS.getChannelData(1).set(h_BYPASS);
-    this.convolver_BYPASS.buffer = buffer_BYPASS;
+    this.buffer_BYPASS.getChannelData(0).set(h_BYPASS);
+    this.convolver_BYPASS.buffer = this.buffer_BYPASS;
 
-    const splitter_L = ctx.createChannelSplitter(2);
-    const splitter_R = ctx.createChannelSplitter(2);
-
-    this.input.connect(this.convolver_BYPASS, 0);
-    const bypassSplitter = ctx.createChannelSplitter(2);
-
-    this.convolver_BYPASS.connect(bypassSplitter);
-
-    splitter_L.connect(merger, 0, 0);
-    splitter_L.connect(merger, 1, 0);
-    splitter_R.connect(merger, 0, 1);
-    splitter_R.connect(merger, 1, 1);
-    bypassSplitter.connect(merger, 0, 0);
-    bypassSplitter.connect(merger, 1, 1);
-
-    this.splitter_L = splitter_L;
-    this.splitter_R = splitter_R;
+    this.getInputNode().connect(this.convolver_BYPASS, 0);
+    this.getOutputNode().connectFrom(this.convolver_BYPASS);
 
     this.updateBuffers();
-  }
-
-  getOutputNode() {
-    return this.output;
   }
 
   destroy() {
     clearTimeout(this.switchTimeout);
     this.switchTimeout = null;
-    this.input.disconnect();
-    this.convolver_L.forEach((convolver) => {
-      convolver.disconnect();
-    });
-    this.convolver_R.forEach((convolver) => {
+    this.getInputNode().disconnect();
+    this.convolvers_XTC.forEach((convolver) => {
       convolver.disconnect();
     });
     this.convolver_BYPASS.disconnect();
-    this.splitter_L.disconnect();
-    this.splitter_R.disconnect();
-    this.output.disconnect();
   }
 }
