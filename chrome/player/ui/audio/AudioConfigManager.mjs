@@ -31,6 +31,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.finalGain = new AudioGain();
 
     const upscale = () => {
+      return; // Webaudio is bugged
       if (this.audioCompressor.needsUpscaler() || this.audioChannelMixer.needsUpscaler() || this.audioCrosstalk.needsUpscaler()) {
         this.audioUpscaler.enable();
       } else {
@@ -442,6 +443,9 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
     this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
     this.finalGain.getOutputNode().connect(this.getOutputNode());
+
+    // IDK why but webaudio is bugged
+    this.audioUpscaler.enable();
   }
 
   updateVolume(value) {
