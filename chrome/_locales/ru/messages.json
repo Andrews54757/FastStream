@@ -642,6 +642,9 @@
     "audiomixer_mute_label": {
         "message": "Отключить звук"
     },
+    "audiomixer_mono": {
+        "message": "Моно"
+    },
     "audiocrosstalk_title": {
         "message": "Коррекция перекрёстных помех"
     },

@@ -642,6 +642,9 @@
     "audiomixer_mute_label": {
         "message": "消音"
     },
+    "audiomixer_mono": {
+        "message": "モノ"
+    },
     "audiocrosstalk_title": {
         "message": "オーディオクロストーク補正"
     },

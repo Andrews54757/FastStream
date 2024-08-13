@@ -214,6 +214,8 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     if (channel.id === 6) { // master
       els.soloButton.style.display = 'none';
+      els.muteButton.textContent = Localize.getMessage('audiomixer_mono');
+      els.muteButton.title = els.muteButton.textContent;
     }
 
     const zeroPos = AudioUtils.mixerDBToPositionRatio(0);
@@ -266,8 +268,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
     });
 
     const toggleMute = () => {
-      channel.muted = !channel.muted;
-      els.muteButton.classList.toggle('active', channel.mute);
+      if (channel.id === 6) { // master
+        channel.mono = !channel.mono;
+        els.muteButton.classList.toggle('active', channel.mute);
+      } else {
+        channel.muted = !channel.muted;
+        els.muteButton.classList.toggle('active', channel.mute);
+      }
       this.updateNodes();
     };
 
@@ -434,7 +441,8 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     const hasNonUnityMasterGain = gains[6] !== 1;
-    if (hasNonUnityMasterGain) {
+    const isMono = this.channelMixerConfig[6].mono;
+    if (hasNonUnityMasterGain || isMono) {
       if (!this.finalGain) {
         this.finalGain = this.audioContext.createGain();
         this.postMerger.disconnect(this.getOutputNode());
@@ -442,6 +450,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
         this.getOutputNode().connectFrom(this.finalGain);
       }
       this.finalGain.gain.value = gains[6];
+
+      if (isMono) {
+        this.finalGain.channelCount = 1;
+        this.finalGain.channelCountMode = 'explicit';
+      } else {
+        this.finalGain.channelCountMode = 'max';
+      }
     } else {
       if (this.finalGain) {
         this.postMerger.disconnect(this.finalGain);

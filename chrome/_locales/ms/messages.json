@@ -642,6 +642,9 @@
     "audiomixer_mute_label": {
         "message": "Bisu"
     },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
     "audiocrosstalk_title": {
         "message": "Audio Crosstalk Correction"
     },

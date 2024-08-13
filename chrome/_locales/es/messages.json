@@ -641,6 +641,9 @@
     "audiomixer_mute_label": {
         "message": "Silenciar"
     },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
     "audiocrosstalk_title": {
         "message": "Corrección de Crosstalk de Audio"
     },

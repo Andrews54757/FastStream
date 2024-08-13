@@ -1,22 +1,39 @@
 
 export class AudioChannelControl {
-  constructor(channelId, gain, muted, solo) {
+  constructor(channelId, gain, mutedOrMono, solo) {
     this.id = parseInt(channelId);
     this.gain = parseFloat(gain);
-    this.muted = muted;
-    this.solo = solo;
+
+    if (this.id === 6) {
+      this.mono = mutedOrMono;
+    } else {
+      this.muted = mutedOrMono;
+      this.solo = solo;
+    }
   }
 
   static fromObj(obj) {
-    return new AudioChannelControl(obj.id === 'master' ? 6 : obj.id, obj.gain, obj.muted, obj.solo);
+    if (obj.id === 'master') {
+      return new AudioChannelControl(6, obj.gain, obj.mono, null);
+    } else {
+      return new AudioChannelControl(obj.id, obj.gain, obj.muted, obj.solo);
+    }
   }
 
   toObj() {
-    return {
-      id: this.id === 6 ? 'master' : this.id,
-      gain: this.gain,
-      muted: this.muted,
-      solo: this.solo,
-    };
+    if (this.id === 6) {
+      return {
+        id: 'master',
+        gain: this.gain,
+        mono: this.mono,
+      };
+    } else {
+      return {
+        id: this.id,
+        gain: this.gain,
+        muted: this.muted,
+        solo: this.solo,
+      };
+    }
   }
 }
