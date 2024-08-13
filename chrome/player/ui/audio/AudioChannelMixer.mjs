@@ -216,6 +216,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
       els.soloButton.style.display = 'none';
       els.muteButton.textContent = Localize.getMessage('audiomixer_mono');
       els.muteButton.title = els.muteButton.textContent;
+
+      if (channel.mono) {
+        els.muteButton.classList.add('active');
+      }
+    } else {
+      els.soloButton.classList.toggle('active', channel.solo);
+      els.muteButton.classList.toggle('active', channel.muted);
     }
 
     const zeroPos = AudioUtils.mixerDBToPositionRatio(0);
@@ -270,7 +277,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     const toggleMute = () => {
       if (channel.id === 6) { // master
         channel.mono = !channel.mono;
-        els.muteButton.classList.toggle('active', channel.mute);
+        els.muteButton.classList.toggle('active', channel.mono);
       } else {
         channel.muted = !channel.muted;
         els.muteButton.classList.toggle('active', channel.mute);
