@@ -1,6 +1,6 @@
 {
   "name": "faststream",
-  "version": "1.3.20",
+  "version": "1.3.20.1",
   "description": "Stream videos without buffering. Fix bad video players on the internet.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
