@@ -77,7 +77,7 @@ export class ConvolutionXTC {
 
   configure(options) {
     const g = options.g;
-    const tc = options.tc;
+    const tc = Math.round(options.tc);
     const y = options.y;
 
     if (this.cachedOptions.g === g && this.cachedOptions.tc === tc && this.cachedOptions.y === y) {
