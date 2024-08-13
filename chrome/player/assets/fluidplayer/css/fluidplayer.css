@@ -2606,6 +2606,7 @@ input.crosstalk_calculator_input {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    opacity: 0.9;
 }
 
 .knob_knob {
