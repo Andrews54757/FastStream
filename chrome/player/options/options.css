@@ -6,6 +6,9 @@ body {
     min-width: 450px;
 }
 
+#version {
+    user-select: text;
+}
 
 /* total width */
 ::-webkit-scrollbar {
