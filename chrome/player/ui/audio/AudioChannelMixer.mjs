@@ -434,6 +434,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.channelMerger = null;
     this.channelGains = [];
     this.finalGain = null;
+    this.refreshMixer();
   }
 
   updateNodes() {
