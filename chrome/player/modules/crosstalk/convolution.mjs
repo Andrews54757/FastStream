@@ -46,20 +46,20 @@ export class ConvolutionXTC {
     return [rN * Math.cos(thetaN), rN * Math.sin(thetaN)];
   }
 
-  calculateH(g, z, B) {
+  calculateH(g, omegatc, B) {
+    const x1 = [Math.cos(omegatc), Math.sin(omegatc)];
+    const x2 = [Math.cos(2 * omegatc), Math.sin(2 * omegatc)];
+    const x3 = [Math.cos(3 * omegatc), Math.sin(3 * omegatc)];
+    const x4 = [Math.cos(4 * omegatc), Math.sin(4 * omegatc)];
     const gg = g * g;
-    const [z_r, z_i] = z;
-    const [zz_r, zz_i] = this.complexMultiply(z, z);
+
     const gbb1 = Math.pow(gg + B, 2) + 2*B + 1;
-    const num1 = [zz_r*gg - z_r*(B + 1), zz_i*gg - z_i*(B + 1)];
-    const den = [zz_r*gg + gg - z_r*gbb1, zz_i*gg - z_i*gbb1];
+    const den = [gg*x4[0] + gg - x2[0] * gbb1, gg*x4[1] - x2[1] * gbb1];
+    const num1 = [gg*x4[0] - (B + 1) * x2[0], gg*x4[1] - (B + 1) * x2[1]];
+    const ggb = g*(gg + B);
+    const num2 = [g*x1[0] - ggb*x3[0], g*x1[1] - ggb*x3[1]];
+
     const [a, b] = this.complexDivide(num1, den);
-    const [z12_r, z12_i] = this.complexPower(z, 1/2);
-    const [z12n_r, z12n_i] = this.complexPower(z, -1/2);
-    const num2 = this.complexMultiply(
-        z,
-        [g*z12n_r - g*(gg + B)*z12_r, g*z12n_i - g*(gg + B)*z12_i],
-    );
     const [c, d] = this.complexDivide(num2, den);
 
     return [a, b, c, d];
@@ -73,6 +73,12 @@ export class ConvolutionXTC {
     const temp = buffer.slice(-amount);
     buffer.copyWithin(amount, 0, buffer.length - amount);
     buffer.set(temp, 0);
+  }
+
+  printBuffers() {
+    const h_cis_str = 'h_CIS = [' + this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
+    const h_cross_str = 'h_CROSS = [' + this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
+    console.log(h_cis_str + '\n' + h_cross_str);
   }
 
   configure(options) {
@@ -93,10 +99,9 @@ export class ConvolutionXTC {
     const H_CIS = new Float32Array(n * 2);
     const H_CROSS = new Float32Array(n * 2);
 
-    const B_P = 0.0005;
+    const B_P = 0;
     for (let k = 0; k < n; k++) {
       const omegatc = 2 * Math.PI * k / n * tc;
-      const z = [Math.cos(2 * omegatc), Math.sin(2 * omegatc)];
       const cos = Math.cos(omegatc);
       const cm_I = Math.sqrt(gg - 2*g*cos + 1);
       const cm_II = Math.sqrt(gg + 2*g*cos + 1);
@@ -104,13 +109,13 @@ export class ConvolutionXTC {
 
       let H;
       if (sp < y) {
-        H = this.calculateH(g, z, B_P);
+        H = this.calculateH(g, omegatc, B_P);
       } else if (cm_I < cm_II) {
         const B_I = -gg + 2*g*cos + cm_I / y - 1;
-        H = this.calculateH(g, z, B_I);
+        H = this.calculateH(g, omegatc, B_I);
       } else {
         const B_II = -gg - 2*g*cos + cm_II / y - 1;
-        H = this.calculateH(g, z, B_II);
+        H = this.calculateH(g, omegatc, B_II);
       }
 
       H_CIS[k * 2] = H[0];
