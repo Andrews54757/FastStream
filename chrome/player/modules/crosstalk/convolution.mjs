@@ -75,40 +75,6 @@ export class ConvolutionXTC {
     buffer.set(temp, 0);
   }
 
-  printBuffers() {
-    const h_cis_str = 'h_CIS = [' + this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
-    const h_cross_str = 'h_CROSS = [' + this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
-
-    const H_CIS = [];
-    const H_CROSS = [];
-
-    for (let k = 0; k < FREQUENCY_BUFFER_SIZE*2; k+=2) {
-      // x +/- i0*y
-      const x = this.H_CIS[k];
-      const y = this.H_CIS[k + 1];
-      // H_CIS.push(x + ' + 0i*' + y);
-      if (y < 0) {
-        H_CIS.push(x + ' - ' + Math.abs(y) + 'i');
-      } else {
-        H_CIS.push(x + ' + ' + y + 'i');
-      }
-      const x2 = this.H_CROSS[k];
-      const y2 = this.H_CROSS[k + 1];
-      // H_CROSS.push(x2 + ' + 0i*' + y2);
-      if (y2 < 0) {
-        H_CROSS.push(x2 + ' - ' + Math.abs(y2) + 'i');
-      } else {
-        H_CROSS.push(x2 + ' + ' + y2 + 'i');
-      }
-    }
-
-    const H_cis_str = 'H_CIS = [' + H_CIS.join(', ') + '];';
-    const H_cross_str = 'H_CROSS = [' + H_CROSS.join(', ') + '];';
-
-    const REGIONS_str = 'REGIONS = [' + this.REGIONS.join(', ') + '];';
-    console.log(h_cis_str + '\n' + h_cross_str + '\n' + H_cis_str + '\n' + H_cross_str + '\n' + REGIONS_str);
-  }
-
   configure(options) {
     const g = options.g;
     const tc = Math.round(options.tc);
