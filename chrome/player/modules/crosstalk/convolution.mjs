@@ -94,7 +94,6 @@ export class ConvolutionXTC {
     const H_CROSS = new Float32Array(n * 2);
 
     const B_P = 0;
-    const REGIONS = new Uint8Array(n);
     for (let k = 0; k < n; k++) {
       const omegatc = 2 * Math.PI * k / n * tc;
       const cos = Math.cos(omegatc);
@@ -105,15 +104,12 @@ export class ConvolutionXTC {
       let H;
       if (sp < y) {
         H = this.calculateH(g, omegatc, B_P);
-        REGIONS[k] = 0;
       } else if (cm_I < cm_II) {
         const B_I = -gg + 2*g*cos + cm_I / y - 1;
         H = this.calculateH(g, omegatc, B_I);
-        REGIONS[k] = 1;
       } else {
         const B_II = -gg - 2*g*cos + cm_II / y - 1;
         H = this.calculateH(g, omegatc, B_II);
-        REGIONS[k] = 2;
       }
 
       H_CIS[k * 2] = H[0];
@@ -124,7 +120,6 @@ export class ConvolutionXTC {
 
     this.H_CIS = H_CIS;
     this.H_CROSS = H_CROSS;
-    this.REGIONS = REGIONS;
 
     this.h_CIS = this.idft(H_CIS);
     this.h_CROSS = this.idft(H_CROSS);
