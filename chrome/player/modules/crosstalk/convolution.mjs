@@ -1,9 +1,9 @@
 import {VirtualAudioNode} from '../../ui/audio/VirtualAudioNode.mjs';
 import {FFT} from './fft.mjs';
 
-const IMPULSE_BUFFER_SIZE = 512;
+const IMPULSE_BUFFER_SIZE = 1024;
 const FREQUENCY_BUFFER_SIZE = IMPULSE_BUFFER_SIZE * 4;
-const SHIFT_AMOUNT = 128;
+const SHIFT_AMOUNT = 256;
 
 /* eslint-disable camelcase */
 export class ConvolutionXTC {
@@ -78,7 +78,35 @@ export class ConvolutionXTC {
   printBuffers() {
     const h_cis_str = 'h_CIS = [' + this.h_CIS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
     const h_cross_str = 'h_CROSS = [' + this.h_CROSS.subarray(0, IMPULSE_BUFFER_SIZE).join(', ') + '];';
-    console.log(h_cis_str + '\n' + h_cross_str);
+
+    const H_CIS = [];
+    const H_CROSS = [];
+
+    for (let k = 0; k < FREQUENCY_BUFFER_SIZE*2; k+=2) {
+      // x +/- i0*y
+      const x = this.H_CIS[k];
+      const y = this.H_CIS[k + 1];
+      // H_CIS.push(x + ' + 0i*' + y);
+      if (y < 0) {
+        H_CIS.push(x + ' - ' + Math.abs(y) + 'i');
+      } else {
+        H_CIS.push(x + ' + ' + y + 'i');
+      }
+      const x2 = this.H_CROSS[k];
+      const y2 = this.H_CROSS[k + 1];
+      // H_CROSS.push(x2 + ' + 0i*' + y2);
+      if (y2 < 0) {
+        H_CROSS.push(x2 + ' - ' + Math.abs(y2) + 'i');
+      } else {
+        H_CROSS.push(x2 + ' + ' + y2 + 'i');
+      }
+    }
+
+    const H_cis_str = 'H_CIS = [' + H_CIS.join(', ') + '];';
+    const H_cross_str = 'H_CROSS = [' + H_CROSS.join(', ') + '];';
+
+    const REGIONS_str = 'REGIONS = [' + this.REGIONS.join(', ') + '];';
+    console.log(h_cis_str + '\n' + h_cross_str + '\n' + H_cis_str + '\n' + H_cross_str + '\n' + REGIONS_str);
   }
 
   configure(options) {
@@ -100,6 +128,7 @@ export class ConvolutionXTC {
     const H_CROSS = new Float32Array(n * 2);
 
     const B_P = 0;
+    const REGIONS = new Uint8Array(n);
     for (let k = 0; k < n; k++) {
       const omegatc = 2 * Math.PI * k / n * tc;
       const cos = Math.cos(omegatc);
@@ -110,12 +139,15 @@ export class ConvolutionXTC {
       let H;
       if (sp < y) {
         H = this.calculateH(g, omegatc, B_P);
+        REGIONS[k] = 0;
       } else if (cm_I < cm_II) {
         const B_I = -gg + 2*g*cos + cm_I / y - 1;
         H = this.calculateH(g, omegatc, B_I);
+        REGIONS[k] = 1;
       } else {
         const B_II = -gg - 2*g*cos + cm_II / y - 1;
         H = this.calculateH(g, omegatc, B_II);
+        REGIONS[k] = 2;
       }
 
       H_CIS[k * 2] = H[0];
@@ -126,6 +158,7 @@ export class ConvolutionXTC {
 
     this.H_CIS = H_CIS;
     this.H_CROSS = H_CROSS;
+    this.REGIONS = REGIONS;
 
     this.h_CIS = this.idft(H_CIS);
     this.h_CROSS = this.idft(H_CROSS);
