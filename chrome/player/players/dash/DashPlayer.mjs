@@ -108,7 +108,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   extractAllFragments() {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     processors.forEach((processor) => {
       const mediaInfo = processor.getMediaInfo();
       mediaInfo.representations.forEach((rep) => {
@@ -256,7 +256,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   getProcessor(adaptationIndex) {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     for (let i = 0; i < processors.length; i++) {
       const processor = processors[i];
       if (processor.getMediaInfo().index === adaptationIndex) {
@@ -267,7 +267,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get currentLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
     if (!processor) {
       return -1;
     }
@@ -284,7 +284,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get currentAudioLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
     if (!processor) {
       return -1;
     }
@@ -415,8 +415,8 @@ export default class DashPlayer extends EventEmitter {
       };
     });
 
-    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
-    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
+    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
 
     const videoDuration = videoProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
     const audioDuration = audioProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
