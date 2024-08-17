@@ -26,15 +26,19 @@ export default class YTPlayer extends DashPlayer {
 
   async setSource(source) {
     const identifier = URLUtils.get_yt_identifier(source.url);
+    // const playlistIdentifier = URLUtils.get_yt_playlist_identifier(source.url);
     if (!identifier) {
       this.emit(DefaultPlayerEvents.ERROR, new Error('Invalid YouTube URL'));
       return;
     }
 
     try {
-      this.videoInfo = await this.getVideoInfo(identifier);
+      const [youtube, info] = await this.getVideoInfo(identifier);
+      this.videoInfo = info;
+      this.ytclient = youtube;
 
       if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
+        console.warn('Login Required, trying to fetch with TV mode');
         this.videoInfo = await this.getVideoInfo(identifier, true);
       }
 
@@ -84,6 +88,33 @@ export default class YTPlayer extends DashPlayer {
 
     this.extractChapters();
     this.fetchSponsorBlock(identifier);
+    // this.playlist = this.getPlaylistInfo(playlistIdentifier).then((playlist) => {
+    //   if (playlist) {
+    //     this.playlist = playlist;
+    //     this.emit(DefaultPlayerEvents.PLAYLIST, playlist);
+    //   }
+    //   return playlist;
+    // });
+  }
+
+  previousVideo() {
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'request_previous_video',
+      }, ()=>{
+
+      });
+    }
+  }
+
+  nextVideo() {
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'request_next_video',
+      }, ()=>{
+
+      });
+    }
   }
 
   async youtubeFetchIOS(input, init) {
@@ -232,7 +263,15 @@ export default class YTPlayer extends DashPlayer {
 
     const info = await youtube.getInfo(identifier, mode);
     info.client_type = mode;
-    return info;
+    return [youtube, info];
+  }
+
+  async getPlaylistInfo(identifier) {
+    if (!identifier) {
+      return;
+    }
+
+    return this.ytclient.getPlaylist(identifier);
   }
 
   fetchSponsorBlock(identifier) {

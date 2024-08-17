@@ -16,6 +16,7 @@ export const DefaultOptions = {
   autoEnableBestSubtitles: false,
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
+  autoplayNext: true,
   defaultYoutubeClient: YoutubeClients.IOS,
   defaultQuality: `Auto`,
   autoEnableURLs: [],

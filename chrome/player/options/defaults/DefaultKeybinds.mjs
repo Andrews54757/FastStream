@@ -23,6 +23,8 @@ export const DefaultKeybinds = {
   'SkipIntroOutro': 'KeyS',
   'NextChapter': 'None',
   'GoToStart': 'Digit0',
+  'NextVideo': 'None',
+  'PreviousVideo': 'None',
   'ToggleSubtitles': 'KeyC',
   'SubtrackDelete': 'Delete',
   'SubtrackShiftRight': 'BracketRight',

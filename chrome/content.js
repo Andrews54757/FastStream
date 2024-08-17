@@ -34,210 +34,20 @@ chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
       if (request.type === 'ping') {
         sendResponse('pong');
+      } else if (request.type === 'next_video' || request.type === 'previous_video') {
+        return handlePlaylistNavigation(request, sender, sendResponse);
       } else if (request.type === 'windowed_fullscreen') {
-        const iframeObj = iframeMap.get(request.frameId);
-        if (!iframeObj) {
-          sendResponse('no_element');
-          throw new Error('No element found for frame id ' + request.frameId);
-        }
-
-        if (document.fullscreenElement) {
-          document.exitFullscreen();
-        }
-
-        if (iframeObj.isMini) {
-          unmakeMiniPlayer(iframeObj);
-        }
-
-        if (request.force === undefined || request.force !== iframeObj.isWindowedFullscreen) {
-          windowedFullscreenToggle(iframeObj);
-        }
-
-        if (iframeObj.isWindowedFullscreen) {
-          sendResponse('enter');
-        } else {
-          sendResponse('exit');
-        }
+        return handleWindowedFullscreen(request, sender, sendResponse);
       } else if (request.type === 'miniplayer') {
-        const iframeObj = iframeMap.get(request.frameId);
-        if (!iframeObj) {
-          sendResponse('no_element');
-          throw new Error('No element found for frame id ' + request.frameId);
-        }
-
-        iframeObj.miniSize = request.size;
-        iframeObj.miniStyles = request.styles;
-
-        if (iframeObj.isWindowedFullscreen || document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
-          updateMiniPlayer(iframeObj);
-        } else {
-          toggleMiniPlayer(iframeObj, request.size);
-          if (iframeObj.isMini && request.autoExit) {
-            // if placeholder is visible again
-            const observer = new IntersectionObserver(([entry]) => {
-              if (entry.intersectionRatio > 0.25) {
-                unmakeMiniPlayer(iframeObj);
-                observer.disconnect();
-
-                chrome.runtime.sendMessage({
-                  type: 'miniplayer_change_init',
-                  miniplayer: false,
-                  frameId: iframeObj.id,
-                });
-                updatePlayerStyles();
-              }
-            }, {
-              threshold: [0, 0.25, 0.5],
-            });
-            observer.observe(iframeObj.placeholder);
-          }
-        }
-
-        if (iframeObj.isMini) {
-          sendResponse('enter');
-        } else {
-          sendResponse('exit');
-        }
-
-        chrome.runtime.sendMessage({
-          type: 'miniplayer_change_init',
-          miniplayer: iframeObj.isMini,
-          frameId: iframeObj.id,
-        });
-        return;
+        return handleMiniplayer(request, sender, sendResponse);
       } else if (request.type === 'fullscreen') {
-        const iframeObj = iframeMap.get(request.frameId);
-        if (!iframeObj) {
-          sendResponse('no_element');
-          throw new Error('No element found for frame id ' + request.frameId);
-        }
-
-        const element = iframeObj.iframe;
-
-        if (document.fullscreenElement === element) {
-          document.exitFullscreen();
-          sendResponse('exit');
-        } else {
-          element.requestFullscreen().then(() => {
-            sendResponse('enter');
-          }).catch((e) => {
-            sendResponse('error');
-            throw e;
-          });
-        }
-        return true;
+        return handleFullscreen(request, sender, sendResponse);
       } else if (request.type === 'scrape_sponsorblock') {
-        if (!FoundYTPlayer) {
-          console.error('no player found');
-          sendResponse({
-            error: 'no_player',
-          });
-          return;
-        }
-
-        const playerID = get_yt_identifier(window.location.href);
-        if (playerID !== request.videoId) {
-          console.error('ID mismatch', playerID, request.videoId);
-          sendResponse({
-            error: 'id_mismatch',
-          });
-          return;
-        }
-
-        try {
-          scrapeSponsorBlock().then((segments) => {
-            sendResponse({segments});
-          }).catch((e) => {
-            console.error(e);
-            sendResponse({error: e.message});
-          });
-          return true;
-        } catch (e) {
-          console.error(e);
-          sendResponse({error: e.message});
-        }
-        return;
+        return handleSponsorblockScrape(request, sender, sendResponse);
       } else if (request.type === 'scrape_captions') {
-        const trackElements = querySelectorAllIncludingShadows('track');
-        let done = 0;
-        const tracks = [];
-        for (let i = 0; i < trackElements.length; i++) {
-          const track = trackElements[i];
-          if (track.src && track.kind === 'captions') {
-            const source = track.src;
-            httpRequest(source, (err, req, body) => {
-              done++;
-              if (body) {
-                tracks.push({
-                  data: body,
-                  source: source,
-                  label: track.label,
-                  language: track.srclang,
-                });
-              }
-              if (done === tracks.length) sendResponse(tracks);
-            });
-          }
-        }
-        if (done === tracks.length) sendResponse(tracks);
-
-        return true;
+        return handleCaptionsScrape(request, sender, sendResponse);
       } else if (request.type === 'player') {
-        const isYt = is_url_yt(window.location.href);
-        getVideo().then((video) => {
-          if (!video && !request.force) {
-            console.log('no video found');
-            sendResponse('no_video');
-            return;
-          }
-
-          const playerFillsScreen = video?.highest?.tagName === 'BODY';
-          if (!video || (playerFillsScreen && !request.noRedirect)) {
-            window.location = request.url;
-            console.log('redirecting to player');
-            sendResponse('redirect');
-          } else {
-          // copy styles
-            const iframe = document.createElement('iframe');
-            iframe.src = request.url;
-            updateIframeStyle(video.highest, iframe, isYt, playerFillsScreen);
-
-            iframe.allowFullscreen = true;
-            iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-
-            // replace element
-            const watcher = pauseAllWithin(video.highest);
-
-            if (isYt) {
-              video.highest.parentNode.insertBefore(iframe, video.highest);
-              hideYT(video.highest);
-            } else {
-              video.highest.parentNode.replaceChild(iframe, video.highest);
-            }
-
-            players.push({
-              iframe,
-              watcher,
-              old: video.highest,
-              isYt,
-              fillScreen: playerFillsScreen,
-              isWindowedFullscreen: false,
-            });
-            console.log('replacing video with iframe');
-            sendResponse('replace');
-          }
-
-
-          if (isYt) {
-            for (let i = 1; i <= 4; i++) {
-              setTimeout(() => {
-                updatePlayerStyles();
-              }, i * 100);
-            }
-          }
-        });
-        OverridenYTKeys = true;
-        return true;
+        return handlePlayerActivation(request, sender, sendResponse);
       } else if (request.type === 'remove_players') {
         removePlayers();
         sendResponse('ok');
@@ -248,6 +58,240 @@ chrome.runtime.onMessage.addListener(
         return true;
       }
     });
+
+function handlePlaylistNavigation(request, sender, sendResponse) {
+  if (!FoundYTPlayer) {
+    sendResponse('no_player');
+    return;
+  }
+
+  const player = FoundYTPlayer;
+  const btnclass = request.type === 'next_video' ? 'ytp-next-button' : 'ytp-prev-button';
+
+  const button = player.querySelector(`.${btnclass}`);
+
+  if (!button) {
+    sendResponse('no_button');
+    return;
+  }
+
+  button.click();
+  sendResponse('ok');
+}
+
+function handlePlayerActivation(request, sender, sendResponse) {
+  const isYt = is_url_yt(window.location.href);
+  getVideo().then((video) => {
+    if (!video && !request.force) {
+      console.log('no video found');
+      sendResponse('no_video');
+      return;
+    }
+
+    const playerFillsScreen = video?.highest?.tagName === 'BODY';
+    if (!video || (playerFillsScreen && !request.noRedirect)) {
+      window.location = request.url;
+      console.log('redirecting to player');
+      sendResponse('redirect');
+    } else {
+      // copy styles
+      const iframe = document.createElement('iframe');
+      iframe.src = request.url;
+      updateIframeStyle(video.highest, iframe, isYt, playerFillsScreen);
+
+      iframe.allowFullscreen = true;
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+
+      // replace element
+      const watcher = pauseAllWithin(video.highest);
+
+      if (isYt) {
+        video.highest.parentNode.insertBefore(iframe, video.highest);
+        hideYT(video.highest);
+      } else {
+        video.highest.parentNode.replaceChild(iframe, video.highest);
+      }
+
+      players.push({
+        iframe,
+        watcher,
+        old: video.highest,
+        isYt,
+        fillScreen: playerFillsScreen,
+        isWindowedFullscreen: false,
+      });
+      console.log('replacing video with iframe');
+      sendResponse('replace');
+    }
+
+
+    if (isYt) {
+      for (let i = 1; i <= 4; i++) {
+        setTimeout(() => {
+          updatePlayerStyles();
+        }, i * 100);
+      }
+    }
+  });
+  OverridenYTKeys = true;
+  return true;
+}
+
+function handleWindowedFullscreen(request, sender, sendResponse) {
+  const iframeObj = iframeMap.get(request.frameId);
+  if (!iframeObj) {
+    sendResponse('no_element');
+    throw new Error('No element found for frame id ' + request.frameId);
+  }
+
+  if (document.fullscreenElement) {
+    document.exitFullscreen();
+  }
+
+  if (iframeObj.isMini) {
+    unmakeMiniPlayer(iframeObj);
+  }
+
+  if (request.force === undefined || request.force !== iframeObj.isWindowedFullscreen) {
+    windowedFullscreenToggle(iframeObj);
+  }
+
+  if (iframeObj.isWindowedFullscreen) {
+    sendResponse('enter');
+  } else {
+    sendResponse('exit');
+  }
+}
+
+function handleMiniplayer(request, sender, sendResponse) {
+  const iframeObj = iframeMap.get(request.frameId);
+  if (!iframeObj) {
+    sendResponse('no_element');
+    throw new Error('No element found for frame id ' + request.frameId);
+  }
+
+  iframeObj.miniSize = request.size;
+  iframeObj.miniStyles = request.styles;
+
+  if (iframeObj.isWindowedFullscreen || document.fullscreenElement || (request.force !== undefined && request.force === iframeObj.isMini)) {
+    updateMiniPlayer(iframeObj);
+  } else {
+    toggleMiniPlayer(iframeObj, request.size);
+    if (iframeObj.isMini && request.autoExit) {
+      // if placeholder is visible again
+      const observer = new IntersectionObserver(([entry]) => {
+        if (entry.intersectionRatio > 0.25) {
+          unmakeMiniPlayer(iframeObj);
+          observer.disconnect();
+
+          chrome.runtime.sendMessage({
+            type: 'miniplayer_change_init',
+            miniplayer: false,
+            frameId: iframeObj.id,
+          });
+          updatePlayerStyles();
+        }
+      }, {
+        threshold: [0, 0.25, 0.5],
+      });
+      observer.observe(iframeObj.placeholder);
+    }
+  }
+
+  if (iframeObj.isMini) {
+    sendResponse('enter');
+  } else {
+    sendResponse('exit');
+  }
+
+  chrome.runtime.sendMessage({
+    type: 'miniplayer_change_init',
+    miniplayer: iframeObj.isMini,
+    frameId: iframeObj.id,
+  });
+}
+
+function handleFullscreen(request, sender, sendResponse) {
+  const iframeObj = iframeMap.get(request.frameId);
+  if (!iframeObj) {
+    sendResponse('no_element');
+    throw new Error('No element found for frame id ' + request.frameId);
+  }
+
+  const element = iframeObj.iframe;
+
+  if (document.fullscreenElement === element) {
+    document.exitFullscreen();
+    sendResponse('exit');
+  } else {
+    element.requestFullscreen().then(() => {
+      sendResponse('enter');
+    }).catch((e) => {
+      sendResponse('error');
+      throw e;
+    });
+  }
+  return true;
+}
+
+function handleSponsorblockScrape(request, sender, sendResponse) {
+  if (!FoundYTPlayer) {
+    console.error('no player found');
+    sendResponse({
+      error: 'no_player',
+    });
+    return;
+  }
+
+  const playerID = get_yt_identifier(window.location.href);
+  if (playerID !== request.videoId) {
+    console.error('ID mismatch', playerID, request.videoId);
+    sendResponse({
+      error: 'id_mismatch',
+    });
+    return;
+  }
+
+  try {
+    scrapeSponsorBlock().then((segments) => {
+      sendResponse({segments});
+    }).catch((e) => {
+      console.error(e);
+      sendResponse({error: e.message});
+    });
+    return true;
+  } catch (e) {
+    console.error(e);
+    sendResponse({error: e.message});
+  }
+}
+
+function handleCaptionsScrape(request, sender, sendResponse) {
+  const trackElements = querySelectorAllIncludingShadows('track');
+  let done = 0;
+  const tracks = [];
+  for (let i = 0; i < trackElements.length; i++) {
+    const track = trackElements[i];
+    if (track.src && track.kind === 'captions') {
+      const source = track.src;
+      httpRequest(source, (err, req, body) => {
+        done++;
+        if (body) {
+          tracks.push({
+            data: body,
+            source: source,
+            label: track.label,
+            language: track.srclang,
+          });
+        }
+        if (done === tracks.length) sendResponse(tracks);
+      });
+    }
+  }
+  if (done === tracks.length) sendResponse(tracks);
+
+  return true;
+}
 
 function removePlayers() {
   iframeMap.forEach((iframeObj) => {
@@ -1118,5 +1162,3 @@ document.addEventListener('click', (e) => {
     }
   }
 }, true);
-
-

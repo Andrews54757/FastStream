@@ -134,4 +134,9 @@ export const DefaultPlayerEvents = {
    * Fired when the player has language tracks
    */
   LANGUAGE_TRACKS: 'languagetracks',
+
+  /**
+   * Fired when the player has playlist
+   */
+  PLAYLIST: 'playlist',
 };

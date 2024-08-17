@@ -28,6 +28,7 @@ const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
 const autoplayYoutube = document.getElementById('autoplayyt');
+const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
@@ -70,6 +71,7 @@ if (!EnvUtils.isExtension()) {
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
   ytclient.disabled = true;
+  autoplayNext.disabled = true;
 }
 
 if (EnvUtils.isSafari()) {
@@ -88,6 +90,7 @@ async function loadOptions(newOptions) {
   previewEnabled.checked = !!Options.previewEnabled;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
+  autoplayNext.checked = !!Options.autoplayNext;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
@@ -354,6 +357,11 @@ storeProgress.addEventListener('change', () => {
 
 autoplayYoutube.addEventListener('change', () => {
   Options.autoplayYoutube = autoplayYoutube.checked;
+  optionChanged();
+});
+
+autoplayNext.addEventListener('change', () => {
+  Options.autoplayNext = autoplayNext.checked;
   optionChanged();
 });
 

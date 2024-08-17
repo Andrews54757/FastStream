@@ -48,6 +48,7 @@ export class FastStreamClient extends EventEmitter {
       freeUnusedChannels: true,
       storeProgress: false,
       previewEnabled: true,
+      autoplayNext: true,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -182,6 +183,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
     this.options.defaultYoutubeClient = options.defaultYoutubeClient;
+    this.options.autoplayNext = options.autoplayNext;
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;
@@ -999,6 +1001,9 @@ export class FastStreamClient extends EventEmitter {
 
     this.context.on(DefaultPlayerEvents.ENDED, (event) => {
       this.pause();
+      if (this.options.autoplayNext) {
+        this.nextVideo();
+      }
     });
 
     this.context.on(DefaultPlayerEvents.ERROR, (event, msg) => {
@@ -1281,6 +1286,20 @@ export class FastStreamClient extends EventEmitter {
       this.resetFailed();
       this.updateQualityLevels();
     }
+  }
+
+  nextVideo() {
+    if (!this.player || !this.player.nextVideo) {
+      return null;
+    }
+    return this.player.nextVideo();
+  }
+
+  previousVideo() {
+    if (!this.player || !this.player.previousVideo) {
+      return null;
+    }
+    return this.player.previousVideo();
   }
 
   get fragments() {

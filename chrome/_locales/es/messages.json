@@ -836,6 +836,9 @@
     "options_general_autoplayyt": {
         "message": "Reproducir automáticamente videos de YouTube incrustados"
     },
+    "options_general_autoplaynext": {
+        "message": "Reproducir automáticamente el siguiente video de YouTube"
+    },
     "options_general_quality": {
         "message": "Calidad de video predeterminada"
     },

@@ -837,6 +837,9 @@
     "options_general_autoplayyt": {
         "message": "Автовоспроизведение на YouTube"
     },
+    "options_general_autoplaynext": {
+        "message": "Автоматическое воспроизведение следующего видео на YouTube"
+    },
     "options_general_quality": {
         "message": "Качество видео"
     },

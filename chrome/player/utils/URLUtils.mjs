@@ -23,6 +23,16 @@ export class URLUtils {
       return '';
     }
   }
+
+  static get_yt_playlist_identifier(urlStr) {
+    try {
+      const url = new URL(urlStr);
+      return url.searchParams.get('list');
+    } catch (e) {
+      return '';
+    }
+  }
+
   static is_url_yt(urlStr) {
     if (!urlStr) return false;
     try {

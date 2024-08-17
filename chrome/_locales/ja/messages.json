@@ -837,6 +837,9 @@
     "options_general_autoplayyt": {
         "message": "YouTube 動画の自動再生"
     },
+    "options_general_autoplaynext": {
+        "message": "YouTube の次の動画を自動再生"
+    },
     "options_general_quality": {
         "message": "動画の品質"
     },

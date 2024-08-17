@@ -186,7 +186,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
-  if (msg.type === 'seek_to') {
+
+  if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
+    sendToParent(frame, {
+      type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
+    }).then((result) => {
+      sendResponse(result);
+    });
+  } else if (msg.type === 'seek_to') {
     // send to children
     for (const i in tab.frames) {
       if (Object.hasOwn(tab.frames, i)) {
@@ -249,14 +256,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return true;
     }
   } else if (msg.type === 'request_fullscreen') {
-    handleFullScreenRequest(frame, {
+    sendToParent(frame, {
       type: 'fullscreen',
     }).then((result) => {
       sendResponse(result);
     });
     return true;
   } else if (msg.type === 'request_windowed_fullscreen') {
-    handleFullScreenRequest(frame, {
+    sendToParent(frame, {
       type: 'windowed_fullscreen',
       force: msg.force,
     }).then((result) => {
@@ -264,7 +271,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   } else if (msg.type === 'request_miniplayer') {
-    handleFullScreenRequest(frame, {
+    sendToParent(frame, {
       type: 'miniplayer',
       size: msg.size,
       force: msg.force,
@@ -389,7 +396,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   sendResponse('ok');
 });
 
-async function handleFullScreenRequest(frame, message) {
+async function sendToParent(frame, message) {
   if (frame.parentId < 0) {
     return 'invalid';
   }
@@ -418,7 +425,7 @@ async function handleFullScreenRequest(frame, message) {
     }, {
       frameId: frame.parentId,
     }, (response) => {
-      BackgroundUtils.checkMessageError('fullscreen');
+      BackgroundUtils.checkMessageError('sendParent');
       resolve(response);
     });
   });

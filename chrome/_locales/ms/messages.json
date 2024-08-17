@@ -837,6 +837,9 @@
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos"
     },
+    "options_general_autoplaynext": {
+        "message": "Autoplay next video on YouTube"
+    },
     "options_general_quality": {
         "message": "Default video quality"
     },
