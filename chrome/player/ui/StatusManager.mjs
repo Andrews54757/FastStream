@@ -21,6 +21,7 @@ export class StatusManager {
 
     this.registerStatusLevel(StatusTypes.WELCOME);
     this.registerStatusLevel(StatusTypes.DOWNLOAD);
+    this.registerStatusLevel(StatusTypes.REQINTERACTION);
     this.registerStatusLevel(StatusTypes.INFO);
     this.registerStatusLevel(StatusTypes.ERROR);
 
@@ -30,7 +31,6 @@ export class StatusManager {
     this.registerStatusLevel(StatusTypes.SILENCE_SKIP, 1);
     this.registerStatusLevel(StatusTypes.SUBTITLES, 1);
     this.registerStatusLevel(StatusTypes.COPY, 1);
-    this.registerStatusLevel(StatusTypes.REQINTERACTION, 1);
 
     this.registerStatusLevel(StatusTypes.CHAPTER, 2);
   }
