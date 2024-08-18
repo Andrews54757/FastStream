@@ -150,7 +150,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   needsUserInteraction() {
-    return this._needsUserInteraction && !this.state.hasUserInteracted;
+    return this._needsUserInteraction && !this.state.hasUserInteracted && !this.state.playing;
   }
 
   setNeedsUserInteraction(value) {
