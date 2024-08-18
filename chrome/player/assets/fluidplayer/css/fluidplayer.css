@@ -921,15 +921,15 @@ body {
     cursor: pointer;
 }
 
-.status_message.success.clickable::hover {
+.status_message.success.clickable:hover {
     outline: 1px solid var(--status-success-color);
 }
 
-.status_message.error.clickable::hover {
+.status_message.error.clickable:hover {
     outline: 1px solid var(--status-error-color);
 }
 
-.status_message.warning.clickable::hover {
+.status_message.warning.clickable:hover {
     outline: 1px solid var(--status-warning-color);
 }
 
