@@ -48,7 +48,7 @@ export class FastStreamClient extends EventEmitter {
       freeUnusedChannels: true,
       storeProgress: false,
       previewEnabled: true,
-      autoplayNext: true,
+      autoplayNext: false,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
