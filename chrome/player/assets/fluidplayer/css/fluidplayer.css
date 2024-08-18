@@ -919,6 +919,7 @@ body {
 
 .status_message.clickable {
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .status_message.success.clickable:hover {
