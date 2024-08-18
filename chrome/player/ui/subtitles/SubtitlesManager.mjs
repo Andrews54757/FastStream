@@ -619,7 +619,7 @@ export class SubtitlesManager extends EventEmitter {
     }
 
     // Update elements
-    const currentTime = this.client.persistent.currentTime;
+    const currentTime = this.client.state.currentTime;
 
     for (let i = 0; i < tracks.length; i++) {
       const trackContainer = cachedElements[i];
@@ -627,7 +627,7 @@ export class SubtitlesManager extends EventEmitter {
       const cues = tracks[i].cues;
       let hasCues = false;
 
-      let cueIndex = Utils.binarySearch(cues, this.client.persistent.currentTime, (time, cue) => {
+      let cueIndex = Utils.binarySearch(cues, this.client.state.currentTime, (time, cue) => {
         if (cue.startTime > time) {
           return -1;
         } else if (cue.endTime < time) {

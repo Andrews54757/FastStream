@@ -3,6 +3,7 @@ import {DOMElements} from './DOMElements.mjs';
 export const StatusTypes = {
   WELCOME: 'welcome',
   DOWNLOAD: 'download',
+  REQINTERACTION: 'reqinteraction',
   INFO: 'info',
   ERROR: 'error',
   SAVE_VIDEO: 'save-video',
@@ -29,6 +30,7 @@ export class StatusManager {
     this.registerStatusLevel(StatusTypes.SILENCE_SKIP, 1);
     this.registerStatusLevel(StatusTypes.SUBTITLES, 1);
     this.registerStatusLevel(StatusTypes.COPY, 1);
+    this.registerStatusLevel(StatusTypes.REQINTERACTION, 1);
 
     this.registerStatusLevel(StatusTypes.CHAPTER, 2);
   }

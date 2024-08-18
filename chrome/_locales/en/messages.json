@@ -150,6 +150,9 @@
     "perms_page_notgranted": {
         "message": "Not Granted, click to grant"
     },
+    "player_needs_interaction": {
+        "message": "Interact to enable download acceleration"
+    },
     "player_skipintro": {
         "message": "Skip Intro"
     },

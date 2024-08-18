@@ -150,6 +150,9 @@
     "perms_page_notgranted": {
         "message": "Не предоставлено, нажмите, чтобы предоставить"
     },
+    "player_needs_interaction": {
+        "message": "Взаимодействуйте, чтобы включить ускорение загрузки"
+    },
     "player_skipintro": {
         "message": "Пропустить вступление"
     },

@@ -81709,7 +81709,7 @@ function KeySystemConfiguration(audioCapabilities, videoCapabilities, distinctiv
     this.videoCapabilities = videoCapabilities;
   }
   this.distinctiveIdentifier = distinctiveIdentifier;
-  this.persistentState = persistentState;
+  this.stateState = persistentState;
   this.sessionTypes = sessionTypes;
 });
 /* harmony default export */ var vo_KeySystemConfiguration = (KeySystemConfiguration);
@@ -82610,7 +82610,7 @@ function ProtectionController(config) {
     var videoRobustness = protData && protData.videoRobustness && protData.videoRobustness.length > 0 ? protData.videoRobustness : robustnessLevel;
     var ksSessionType = keySystemData.sessionType;
     var distinctiveIdentifier = protData && protData.distinctiveIdentifier ? protData.distinctiveIdentifier : 'optional';
-    var persistentState = protData && protData.persistentState ? protData.persistentState : ksSessionType === 'temporary' ? 'optional' : 'required';
+    var persistentState = protData && protData.stateState ? protData.stateState : ksSessionType === 'temporary' ? 'optional' : 'required';
     mediaInfoArr.forEach(function (media) {
       if (media.type === constants.AUDIO) {
         audioCapabilities.push(new vo_MediaCapability(media.codec, audioRobustness));

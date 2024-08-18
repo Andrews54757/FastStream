@@ -1186,7 +1186,7 @@ function getSupportedMediaKeySystemConfigurations(keySystem, audioCodecs, videoC
 function createMediaKeySystemConfigurations(initDataTypes, audioCodecs, videoCodecs, drmSystemOptions) {
   const baseConfig = {
     initDataTypes: initDataTypes,
-    persistentState: drmSystemOptions.persistentState || 'optional',
+    persistentState: drmSystemOptions.stateState || 'optional',
     distinctiveIdentifier: drmSystemOptions.distinctiveIdentifier || 'optional',
     sessionTypes: drmSystemOptions.sessionTypes || [drmSystemOptions.sessionType || 'temporary'],
     audioCapabilities: audioCodecs.map(codec => ({

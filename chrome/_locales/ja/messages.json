@@ -150,6 +150,9 @@
     "perms_page_notgranted": {
         "message": "許可がされていません、クリックで許可をします"
     },
+    "player_needs_interaction": {
+        "message": "ダウンロードの高速化を有効にするには、動画を再生してください"
+    },
     "player_skipintro": {
         "message": "イントロをスキップ"
     },

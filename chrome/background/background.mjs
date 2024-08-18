@@ -128,6 +128,7 @@ async function onClicked(tab) {
 
         if (hasPlayer) {
           CachedTabs[tab.id].frames = {};
+          CachedTabs[tab.id].playerCount = 0;
           chrome.tabs.reload(tab.id);
         }
       }
@@ -138,6 +139,7 @@ async function onClicked(tab) {
   } else {
     if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
     //   tabs[tab.id].frames[0].source = "null"
+    CachedTabs[tab.id].frames[0].isMainPlayer = true;
     chrome.tabs.update(tab.id, {
       url: PlayerURL,
     }, () => {
@@ -313,27 +315,26 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     frame.isFastStream = true;
     frame.url = msg.url;
 
+    let isMainPlayer = frame.isMainPlayer;
     if (frame.parentId === -2 && frame.frameId != msg.frameId) {
       frame.parentId = msg.frameId;
     }
 
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'media_name',
-      name: getMediaNameFromTab(sender?.tab),
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('media_name');
-    });
+    if (!isMainPlayer && frame.parentId > -1) {
+      const parentFrame = tab.frames[frame.parentId];
+      if (parentFrame) {
+        isMainPlayer = parentFrame.isMainPlayer;
+      }
+    }
 
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'analyzerData',
-      data: tab.analyzerData,
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('analyzerData');
-    });
+    const response = {
+      mediaName: getMediaNameFromTab(sender?.tab),
+      analyzerData: tab.analyzerData,
+      isMainPlayer: isMainPlayer,
+    };
+
+    sendResponse(response);
+    return;
   } else if (msg.type === 'analyzerData') {
     if (Logging) console.log('Analyzer data', msg.data);
     tab.analyzerData = msg.data;
@@ -784,14 +785,20 @@ async function openPlayer(frame) {
 
   frame.playerOpening = true;
 
-  return chrome.tabs.sendMessage(frame.tab.tabId, {
-    type: 'player',
-    url: PlayerURL + '?frame_id=' + frame.frameId,
-    noRedirect: frame.frameId === 0,
-  }, {
-    frameId: frame.frameId,
-  }, (response) => {
-    frame.playerOpening = false;
+  frame.isMainPlayer = frame.tab.playerCount === 0;
+  frame.tab.playerCount += 1;
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: 'player',
+      url: PlayerURL + '?frame_id=' + frame.frameId,
+      noRedirect: frame.frameId === 0,
+    }, {
+      frameId: frame.frameId,
+    }, (response) => {
+      frame.playerOpening = false;
+      BackgroundUtils.checkMessageError('player');
+      resolve(response);
+    });
   });
 }
 
@@ -1023,6 +1030,8 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         CachedTabs[tabid].analyzerData = undefined;
         CachedTabs[tabid].frames = {};
       }
+
+      CachedTabs[tabid].playerCount = 0;
 
       CachedTabs[tabid].url = changeInfo.url;
       CachedTabs[tabid].hostname = url.hostname;

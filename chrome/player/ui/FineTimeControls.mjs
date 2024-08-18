@@ -154,8 +154,8 @@ export class FineTimeControls extends EventEmitter {
       grabStart = e.clientX;
       grabStartTime = video.currentTime;
       this.isSeeking = true;
-      shouldPlay = this.client.persistent.playing;
-      if (this.client.persistent.playing) {
+      shouldPlay = this.client.state.playing;
+      if (this.client.state.playing) {
         this.client.player.pause();
       }
     };
@@ -528,7 +528,7 @@ export class FineTimeControls extends EventEmitter {
   renderTimeline() {
     if (!this.started || !this.client.interfaceController.controlsVisible || !this.client.player) return;
 
-    const time = this.client.persistent.currentTime;
+    const time = this.client.state.currentTime;
 
     const video = this.client.player.getVideo();
     const duration = video.duration;

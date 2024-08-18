@@ -917,6 +917,22 @@ body {
     color: var(--status-warning-color);
 }
 
+.status_message.clickable {
+    cursor: pointer;
+}
+
+.status_message.success.clickable::hover {
+    outline: 1px solid var(--status-success-color);
+}
+
+.status_message.error.clickable::hover {
+    outline: 1px solid var(--status-error-color);
+}
+
+.status_message.warning.clickable::hover {
+    outline: 1px solid var(--status-warning-color);
+}
+
 .reset_failed {
     color: var(--status-error-color);
     display: inline-block;
@@ -935,7 +951,6 @@ body {
 .reset_failed:hover {
     outline: 1px solid var(--status-error-color);
 }
-
 
 .spinner {
     background-image: url("../static/fluid-spinner.svg");

@@ -149,6 +149,9 @@
     "perms_page_notgranted": {
         "message": "No Concedido, haga clic para conceder"
     },
+    "player_needs_interaction": {
+        "message": "Interactuar para habilitar la aceleración de descarga"
+    },
     "player_skipintro": {
         "message": "Omitir Intro"
     },

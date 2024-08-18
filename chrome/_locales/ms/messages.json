@@ -150,6 +150,9 @@
     "perms_page_notgranted": {
         "message": "Tidak Diberikan, klik untuk memberikan"
     },
+    "player_needs_interaction": {
+        "message": "Berinteraksi untuk mendayakan pecutan muat turun"
+    },
     "player_skipintro": {
         "message": "Langkau Pengenalan"
     },

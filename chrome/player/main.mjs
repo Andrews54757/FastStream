@@ -17,7 +17,10 @@ if (EnvUtils.isExtension()) {
         if (request.type === 'seek') {
           if (window.fastStream) window.fastStream.currentTime = request.time;
         } else if (request.type === 'keypress') {
-          if (window.fastStream) window.fastStream.keybindManager.handleKeyString(request.key);
+          if (window.fastStream) {
+            window.fastStream.keybindManager.handleKeyString(request.key);
+            window.fastStream.userInteracted();
+          }
         } else if (request.type === 'sendFrameId') {
           if (window.parent !== window) {
             window.parent.postMessage({
@@ -30,14 +33,7 @@ if (EnvUtils.isExtension()) {
             optionSendTime = request.time;
             loadOptions();
           }
-        } if (request.type === 'analyzerData') {
-          window.fastStream.loadAnalyzerData(request.data);
-        } else if (request.type === 'media_name') {
-          const name = request.name;
-          if (name) {
-            if (window.fastStream) window.fastStream.setMediaName(name);
-          }
-        } else if (request.type === 'miniplayer_change' && window.fastStream) {
+        } if (request.type === 'miniplayer_change' && window.fastStream) {
           window.fastStream.interfaceController.setMiniplayerStatus(request.miniplayer);
         } else if (request.type === 'fullscreen_change' && window.fastStream) {
           window.fastStream.interfaceController.setFullscreenStatus(request.fullscreen);
@@ -243,6 +239,12 @@ async function setup() {
       isExt: true,
       frameId: parseInt(myParam) || 0,
     }).then((data) => {
+      window.fastStream.loadAnalyzerData(data.analyzerData);
+      window.fastStream.setMediaName(data.mediaName);
+      window.fastStream.setNeedsUserInteraction(!data.isMainPlayer);
+
+      console.log('Recieved data', data);
+
       chrome.runtime.sendMessage({
         type: 'ready',
       });

@@ -11,6 +11,7 @@ export class FrameHolder {
     this.playerOpening = false;
     this.isFastStream = false;
     this.hasSentFrameId = false;
+    this.isMainPlayer = false;
     this.ready = false;
   }
 }
@@ -21,6 +22,7 @@ export class TabHolder {
     this.isOn = false;
     this.complete = false;
     this.regexMatched = false;
+    this.playerCount = 0;
     this.frames = {};
     this.hostname;
     this.analyzerData = undefined;
