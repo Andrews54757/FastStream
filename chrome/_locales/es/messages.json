@@ -647,6 +647,9 @@
     "audiomixer_mono": {
         "message": "Mono"
     },
+    "audiomixer_dynamics_label": {
+        "message": "Editar dinámica del canal"
+    },
     "audiocrosstalk_title": {
         "message": "Corrección de Crosstalk de Audio"
     },

@@ -6,9 +6,7 @@ import {DOMElements} from '../DOMElements.mjs';
 import {createDropdown} from '../components/Dropdown.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioChannelMixer} from './AudioChannelMixer.mjs';
-import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioCrosstalk} from './AudioCrosstalk.mjs';
-import {AudioEqualizer} from './AudioEqualizer.mjs';
 import {AudioGain} from './AudioGain.mjs';
 import {MonoUpscaler} from './MonoUpscaler.mjs';
 import {AudioProfile} from './config/AudioProfile.mjs';
@@ -24,8 +22,6 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.renderLoopRunning = false;
     this.shouldRunRenderLoop = false;
     this.audioUpscaler = new MonoUpscaler();
-    this.audioEqualizer = new AudioEqualizer();
-    this.audioCompressor = new AudioCompressor();
     this.audioChannelMixer = new AudioChannelMixer();
     this.audioCrosstalk = new AudioCrosstalk();
     this.finalGain = new AudioGain();
@@ -38,7 +34,6 @@ export class AudioConfigManager extends AbstractAudioModule {
         this.audioUpscaler.disable();
       }
     };
-    this.audioCompressor.on('upscale', upscale);
     this.audioChannelMixer.on('upscale', upscale);
     this.audioCrosstalk.on('upscale', upscale);
 
@@ -120,9 +115,7 @@ export class AudioConfigManager extends AbstractAudioModule {
 
   setCurrentProfile(profile) {
     this.currentProfile = profile.copy();
-    this.audioEqualizer.setEqualizerConfig(this.currentProfile.equalizerNodes);
-    this.audioCompressor.setCompressionConfig(this.currentProfile.compressor);
-    this.audioChannelMixer.setChannelMixerConfig(this.currentProfile.mixerChannels);
+    this.audioChannelMixer.setConfig(this.currentProfile);
     this.audioCrosstalk.setCrosstalkConfig(this.currentProfile.crosstalk);
     this.saveProfilesToStorage();
   }
@@ -393,8 +386,14 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.dynamicsContainer = WebUtils.create('div', null, 'dynamics_container');
     contentContainer.appendChild(this.ui.dynamicsContainer);
 
-    this.ui.dynamicsContainer.appendChild(this.audioEqualizer.getElement());
-    this.ui.dynamicsContainer.appendChild(this.audioCompressor.getElement());
+    this.ui.equalizerContainer = WebUtils.create('div', null, 'equalizer-swap');
+    this.ui.dynamicsContainer.appendChild(this.ui.equalizerContainer);
+
+    this.ui.compressorContainer = WebUtils.create('div', null, 'compressor-swap');
+    this.ui.dynamicsContainer.appendChild(this.ui.compressorContainer);
+
+    this.audioChannelMixer.setupUI(this.ui.equalizerContainer, this.ui.compressorContainer);
+
     this.ui.dynamicsContainer.appendChild(this.audioChannelMixer.getElement());
     this.ui.dynamicsContainer.appendChild(this.audioCrosstalk.getElement());
   }
@@ -409,8 +408,6 @@ export class AudioConfigManager extends AbstractAudioModule {
       });
     }
 
-    this.audioEqualizer.render();
-    this.audioCompressor.render();
     this.audioChannelMixer.render();
     this.audioCrosstalk.render();
   }
@@ -430,16 +427,12 @@ export class AudioConfigManager extends AbstractAudioModule {
     super.setupNodes(audioContext);
 
     this.audioUpscaler.setupNodes(this.audioContext);
-    this.audioEqualizer.setupNodes(this.audioContext);
-    this.audioCompressor.setupNodes(this.audioContext);
     this.audioChannelMixer.setupNodes(this.audioContext);
     this.audioCrosstalk.setupNodes(this.audioContext);
     this.finalGain.setupNodes(this.audioContext);
 
     this.getInputNode().connect(this.audioUpscaler.getInputNode());
-    this.audioUpscaler.getOutputNode().connect(this.audioEqualizer.getInputNode());
-    this.audioEqualizer.getOutputNode().connect(this.audioCompressor.getInputNode());
-    this.audioCompressor.getOutputNode().connect(this.audioChannelMixer.getInputNode());
+    this.audioUpscaler.getOutputNode().connect(this.audioChannelMixer.getInputNode());
     this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
     this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
     this.finalGain.getOutputNode().connect(this.getOutputNode());

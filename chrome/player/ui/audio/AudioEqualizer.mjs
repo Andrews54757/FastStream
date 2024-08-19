@@ -6,8 +6,9 @@ import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioEQNode} from './config/AudioEQNode.mjs';
 
 export class AudioEqualizer extends AbstractAudioModule {
-  constructor() {
+  constructor(customTitlePrepend) {
     super('AudioEqualizer');
+    this.customTitlePrepend = customTitlePrepend || '';
     this.equalizerConfig = null;
     this.equalizerNodes = [];
     this.preAnalyzer = null;
@@ -16,6 +17,10 @@ export class AudioEqualizer extends AbstractAudioModule {
     this.renderCache = {};
 
     this.setupUI();
+  }
+
+  hasNodes() {
+    return this.equalizerNodes.length > 0;
   }
 
   getElement() {
@@ -37,9 +42,10 @@ export class AudioEqualizer extends AbstractAudioModule {
     }
   }
 
-  setEqualizerConfig(config) {
+  setConfig(config) {
     this.equalizerConfig = config;
     this.refreshEQNodes();
+    this.emit('change');
   }
 
   setupUI() {
@@ -47,7 +53,7 @@ export class AudioEqualizer extends AbstractAudioModule {
     this.ui.equalizer = WebUtils.create('div', null, 'equalizer');
 
     const equalizerTitle = WebUtils.create('div', null, 'equalizer_title');
-    equalizerTitle.textContent = Localize.getMessage('audioeq_title');
+    equalizerTitle.textContent = this.customTitlePrepend + Localize.getMessage('audioeq_title');
     this.ui.equalizer.appendChild(equalizerTitle);
 
     this.ui.spectrumCanvas = WebUtils.create('canvas', null, 'spectrum_canvas');
@@ -147,6 +153,7 @@ export class AudioEqualizer extends AbstractAudioModule {
   addEQNode(node) {
     this.equalizerConfig.push(node);
     this.refreshEQNodes();
+    this.emit('change');
   }
 
   refreshEQNodes() {
@@ -294,7 +301,7 @@ export class AudioEqualizer extends AbstractAudioModule {
     });
 
     const typesThatUseGain = ['peaking', 'lowshelf', 'highshelf'];
-    const typesThatUseQ = ['lowpass', 'highpass', 'bandpass', 'peaking', 'notch'];
+    const typesThatUseQ = ['lowpass', 'highpass', 'bandpass', 'peaking', 'notch', 'allpass'];
 
     function nodeToString(node) {
       const header = `${node.type.charAt(0).toUpperCase() + node.type.substring(1)} @${StringUtils.formatFrequency(node.frequency.value)}Hz`;
@@ -383,6 +390,7 @@ export class AudioEqualizer extends AbstractAudioModule {
         }
         updateTooltip(x, y);
         this.renderEqualizerResponse();
+        this.emit('change');
       };
 
       const mouseUp = (e) => {
@@ -409,9 +417,12 @@ export class AudioEqualizer extends AbstractAudioModule {
         this.equalizerConfig[i].q = q;
         tooltipText.textContent = nodeToString(node);
         this.renderEqualizerResponse();
+        this.emit('change');
       });
 
       let lastClick = 0;
+      const rotateTypes = ['peaking', 'lowshelf', 'highshelf', 'lowpass', 'highpass', 'notch', 'bandpass', 'allpass'];
+
       el.addEventListener('click', (e) => {
         e.stopPropagation();
         const now = Date.now();
@@ -420,7 +431,6 @@ export class AudioEqualizer extends AbstractAudioModule {
           return;
         }
         lastClick = now;
-        const rotateTypes = ['peaking', 'lowshelf', 'highshelf', 'lowpass', 'highpass', 'notch', 'bandpass'];
         const index = rotateTypes.indexOf(node.type);
         if (index === -1) return;
 
@@ -436,6 +446,7 @@ export class AudioEqualizer extends AbstractAudioModule {
         }
         tooltipText.textContent = nodeToString(node);
         this.renderEqualizerResponse();
+        this.emit('change');
       });
 
       el.addEventListener('contextmenu', (e) => {
@@ -447,7 +458,6 @@ export class AudioEqualizer extends AbstractAudioModule {
           return;
         }
         lastClick = now;
-        const rotateTypes = ['peaking', 'lowshelf', 'highshelf', 'lowpass', 'highpass', 'notch', 'bandpass'];
         const index = rotateTypes.indexOf(node.type);
         if (index === -1) return;
 
@@ -463,12 +473,14 @@ export class AudioEqualizer extends AbstractAudioModule {
         }
         tooltipText.textContent = nodeToString(node);
         this.renderEqualizerResponse();
+        this.emit('change');
       });
 
       el.addEventListener('keydown', (e)=>{
         if (e.key === 'Delete' || e.key === 'Backspace') {
           this.equalizerConfig.splice(i, 1);
           this.refreshEQNodes();
+          this.emit('change');
         }
       });
 
@@ -501,6 +513,7 @@ export class AudioEqualizer extends AbstractAudioModule {
     }
 
     const dbResponse = new Float32Array(bufferLength);
+    const phaseResponse = new Float32Array(bufferLength);
 
     const currentMagResponse = new Float32Array(bufferLength);
     const currentPhaseResponse = new Float32Array(bufferLength);
@@ -510,10 +523,12 @@ export class AudioEqualizer extends AbstractAudioModule {
 
       for (let i = 0; i < bufferLength; i++) {
         dbResponse[i] += 20 * Math.log10(currentMagResponse[i]);
+        phaseResponse[i] += currentPhaseResponse[i];
       }
     });
 
     this.equalizerDbResponse = dbResponse;
+    this.equalizerPhaseResponse = phaseResponse;
 
     // draw lines
     this.equalizerCtx.clearRect(0, 0, width, height);
@@ -521,19 +536,6 @@ export class AudioEqualizer extends AbstractAudioModule {
     const xScale = width / Math.log10(maxFreq / 20);
     const yScale = height / 40;
 
-    this.equalizerCtx.beginPath();
-    this.equalizerCtx.strokeStyle = 'green';
-    this.equalizerCtx.lineWidth = 2;
-    for (let i = 0; i < bufferLength; i++) {
-      const x = Math.log10(frequencyArray[i] / 20);
-      const y = dbResponse[i];
-      if (i === 0) {
-        this.equalizerCtx.moveTo(x * xScale, height / 2 - y * yScale);
-      } else {
-        this.equalizerCtx.lineTo(x * xScale, height / 2 - y * yScale);
-      }
-    }
-    this.equalizerCtx.stroke();
 
     // fill in the area under the curve
     this.equalizerCtx.beginPath();
@@ -548,6 +550,36 @@ export class AudioEqualizer extends AbstractAudioModule {
     this.equalizerCtx.lineTo(width, height / 2);
     this.equalizerCtx.closePath();
     this.equalizerCtx.fill();
+
+    // Phase response
+    const pScale = height / Math.PI / 2;
+    this.equalizerCtx.beginPath();
+    this.equalizerCtx.strokeStyle = 'rgba(66, 233, 245, 0.5)';
+    this.equalizerCtx.lineWidth = 2;
+    for (let i = 0; i < bufferLength; i++) {
+      const x = Math.log10(frequencyArray[i] / 20);
+      const y = phaseResponse[i];
+      if (i === 0) {
+        this.equalizerCtx.moveTo(x * xScale, height / 2 - y * pScale);
+      } else {
+        this.equalizerCtx.lineTo(x * xScale, height / 2 - y * pScale);
+      }
+    }
+    this.equalizerCtx.stroke();
+
+    this.equalizerCtx.beginPath();
+    this.equalizerCtx.strokeStyle = 'green';
+    this.equalizerCtx.lineWidth = 2;
+    for (let i = 0; i < bufferLength; i++) {
+      const x = Math.log10(frequencyArray[i] / 20);
+      const y = dbResponse[i];
+      if (i === 0) {
+        this.equalizerCtx.moveTo(x * xScale, height / 2 - y * yScale);
+      } else {
+        this.equalizerCtx.lineTo(x * xScale, height / 2 - y * yScale);
+      }
+    }
+    this.equalizerCtx.stroke();
   }
 
 

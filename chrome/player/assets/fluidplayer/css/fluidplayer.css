@@ -2070,13 +2070,19 @@ body {
     gap: 10px;
 }
 
-.equalizer {
+.equalizer-swap {
     position: relative;
     width: 100%;
-    height: 300px;
+    height: 320px;
+    min-width: 300px;
+}
+
+.equalizer {
+    position: relative;
     background-color: black;
     border-radius: 3px;
-    min-width: 300px;
+    width: 100%;
+    height: 100%;
 }
 
 .equalizer canvas {
@@ -2218,7 +2224,7 @@ body {
     min-width: 250px;
     flex: 1 1 auto;
     width: 30%;
-    height: 300px;
+    height: 320px;
     background-color: black;
     border-radius: 3px;
 }
@@ -2292,10 +2298,10 @@ body {
     right: 1px;
     left: 1px;
     gap: 1px;
+    flex-wrap: wrap;
 }
 
-.mixer_channel_mute,
-.mixer_channel_solo {
+.mixer_channel_buttons > div {
     flex: 1 1 auto;
     top: 0px;
     right: 0px;
@@ -2308,15 +2314,23 @@ body {
     background-color: rgba(60, 60, 60, 0.6);
 }
 
-.mixer_channel_mute.active,
-.mixer_channel_solo.active {
+.mixer_channel_buttons > div.active {
     color: rgba(255, 80, 80, 0.9);
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.mixer_channel_buttons > div.mixer_channel_dyn.active {
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(40, 87, 96, 0.9);
+}
+
+.mixer_channel_buttons > div.mixer_channel_dyn.configured {
+    color: rgba(80, 255, 80, 0.9) !important;
+}
+
 .mixer_channel_volume {
     position: absolute;
-    top: 75px;
+    top: 95px;
     left: 0px;
     right: 0px;
     bottom: 25px;
@@ -2382,16 +2396,31 @@ body {
     height: 100%;
 }
 
+.compressor-swap {
+    position: relative;
+    flex: 1 1 auto;
+    width: 30%;
+    min-width: 560px;
+    height: 320px;
+}
 
 .compressor,
 .crosstalk {
     position: relative;
-    width: 30%;
-    min-width: 560px;
-    flex: 1 1 auto;
-    height: 300px;
     background-color: black;
     border-radius: 3px;
+}
+
+.compressor {
+    width: 100%;
+    height: 100%;
+}
+
+.crosstalk {
+    flex: 1 1 auto;
+    width: 30%;
+    min-width: 560px;
+    height: 320px;
 }
 
 @media (max-width: 850px) {
@@ -2399,7 +2428,7 @@ body {
         display: none;
     }
 
-    .compressor,
+    .compressor-swap,
     .crosstalk {
         min-width: 300px;
         width: 100%;

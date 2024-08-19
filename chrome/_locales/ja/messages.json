@@ -648,6 +648,9 @@
     "audiomixer_mono": {
         "message": "モノ"
     },
+    "audiomixer_dynamics_label": {
+        "message": "チャンネルのダイナミクスを編集"
+    },
     "audiocrosstalk_title": {
         "message": "オーディオクロストーク補正"
     },

@@ -648,6 +648,9 @@
     "audiomixer_mono": {
         "message": "Моно"
     },
+    "audiomixer_dynamics_label": {
+        "message": "Изменить динамику канала"
+    },
     "audiocrosstalk_title": {
         "message": "Коррекция перекрёстных помех"
     },

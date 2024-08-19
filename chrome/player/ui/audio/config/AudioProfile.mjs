@@ -6,29 +6,46 @@ import {AudioEQNode} from './AudioEQNode.mjs';
 export class AudioProfile {
   constructor(id) {
     this.id = parseInt(id);
-    this.equalizerNodes = [];
-    this.mixerChannels = [];
-    this.compressor = new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24, 1);
-    this.crosstalk = new AudioCrosstalkControl(false, -370, 5, 89, 250, 5000, 25, 70);
+    this.channels = Array.from({length: 6}, (_, i) => {
+      return AudioChannelControl.default(i);
+    });
+    this.master = AudioChannelControl.default('master');
+    this.crosstalk = AudioCrosstalkControl.default();
     this.label = `Profile ${id}`;
   }
 
   static fromObj(obj) {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
-    profile.equalizerNodes = obj.equalizerNodes?.map((nodeObj) => {
-      return AudioEQNode.fromObj(nodeObj);
-    }) || [];
-    profile.mixerChannels = obj.mixerChannels?.map((channelObj) => {
-      return AudioChannelControl.fromObj(channelObj);
-    }) || [];
+
+    if (obj.channels) {
+      profile.channels = obj.channels.map((channel) => {
+        return AudioChannelControl.fromObj(channel);
+      });
+    } else if (obj.mixerChannels) {
+      profile.channels = obj.mixerChannels.map((channel) => {
+        return AudioChannelControl.fromObj(channel);
+      });
+      profile.master = profile.channels.pop();
+    }
+
+    if (obj.master) {
+      const masterChannel = AudioChannelControl.fromObj(obj.master);
+      profile.master = masterChannel;
+    }
+
+    if (obj.equalizerNodes) {
+      profile.master.equalizerNodes = obj.equalizerNodes.map((node) => {
+        return AudioEQNode.fromObj(node);
+      });
+    }
 
     if (obj.compressor) {
-      profile.compressor = AudioCompressionControl.fromObj(obj.compressor || {});
+      profile.master.compressor = AudioCompressionControl.fromObj(obj.compressor);
     }
 
     if (obj.crosstalk) {
-      profile.crosstalk = AudioCrosstalkControl.fromObj(obj.crosstalk || {});
+      profile.crosstalk = AudioCrosstalkControl.fromObj(obj.crosstalk);
     }
 
     return profile;
@@ -42,13 +59,10 @@ export class AudioProfile {
     return {
       id: this.id,
       label: this.label,
-      equalizerNodes: this.equalizerNodes.map((node) => {
-        return node.toObj();
-      }),
-      mixerChannels: this.mixerChannels.map((channel) => {
+      channels: this.channels.map((channel) => {
         return channel.toObj();
       }),
-      compressor: this.compressor.toObj(),
+      master: this.master.toObj(),
       crosstalk: this.crosstalk.toObj(),
     };
   }
