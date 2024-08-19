@@ -20,7 +20,7 @@ import {Proto, Utils} from '../../modules/yt.mjs';
 const BASE_URL = 'https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa';
 const CREATE_CHALLENGE_URL = BASE_URL + '/Create';
 const GENERATE_IT_URL = BASE_URL + '/GenerateIT';
-const GOOG_API_KEY = atob('QUl6YVN5RHlUNVcwSmg0OUYzMFBxcXR5ZmRmN3BETEZLTEpvQW53');
+const DEFAULT_API_KEY = atob('QUl6YVN5RHlUNVcwSmg0OUYzMFBxcXR5ZmRmN3BETEZLTEpvQW53');
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko)';
 const DEFAULT_REQUEST_TOKEN = atob('TzQzejBkcGpoZ1gyMFNDeDRLQW8=');
 
@@ -65,7 +65,7 @@ export class BgUtils {
     return result;
   }
 
-  static async createChallenge(requestToken, interpreterHash) {
+  static async createChallenge(requestToken, interpreterHash, apiKey) {
     const payload = [requestToken];
 
     if (interpreterHash) {
@@ -77,7 +77,7 @@ export class BgUtils {
       headers: {
         'Content-Type': 'application/json+protobuf',
         'User-Agent': USER_AGENT,
-        'x-goog-api-key': GOOG_API_KEY,
+        'x-goog-api-key': apiKey,
         'x-user-agent': 'grpc-web-javascript/0.1',
       },
       body: JSON.stringify(payload),
@@ -309,16 +309,20 @@ export class BgUtils {
     return fn2.toString();
   }
 
-  static async getTokens(visitorData, requestToken) {
+  static async getTokens(visitorData, requestToken, apiKey) {
     if (!requestToken) {
       requestToken = DEFAULT_REQUEST_TOKEN;
+    }
+
+    if (!apiKey) {
+      apiKey = DEFAULT_API_KEY;
     }
 
     if (!visitorData) {
       visitorData = Proto.encodeVisitorData(Utils.generateRandomString(11), Math.floor(Date.now() / 1000));
     }
 
-    const challenge = await BgUtils.createChallenge(requestToken);
+    const challenge = await BgUtils.createChallenge(requestToken, apiKey);
 
     if (!challenge) {
       throw new Error('Could not get challenge');
@@ -332,7 +336,6 @@ export class BgUtils {
     if (!script) {
       throw new Error('Could not get non-null challenge script');
     }
-
 
     const evaluator = new SandboxedEvaluator();
 
@@ -351,7 +354,7 @@ export class BgUtils {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json+protobuf',
-          'x-goog-api-key': GOOG_API_KEY,
+          'x-goog-api-key': apiKey,
           'x-user-agent': 'grpc-web-javascript/0.1',
           'User-Agent': USER_AGENT,
           'Accept': '*/*',
