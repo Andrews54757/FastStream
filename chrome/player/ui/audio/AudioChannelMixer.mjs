@@ -194,7 +194,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.buttons.appendChild(els.muteButton);
 
     els.dynButton = WebUtils.create('div', null, 'mixer_channel_dyn');
-    els.dynButton.textContent = 'Dynamics';
+    els.dynButton.textContent = 'EQ/Comp';
     els.dynButton.title = Localize.getMessage('audiomixer_dynamics_label');
     els.buttons.appendChild(els.dynButton);
 
