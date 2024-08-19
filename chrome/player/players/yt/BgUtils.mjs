@@ -90,9 +90,9 @@ export class BgUtils {
     const challenge = await response.json();
 
     if (challenge.length > 1 && challenge[1]) {
-      const descrambledChallenge = BgUtils.parseChallenge(challenge[1]);
-      if (descrambledChallenge) {
-        return descrambledChallenge;
+      const parsedChallenge = BgUtils.parseChallenge(challenge[1]);
+      if (parsedChallenge) {
+        return parsedChallenge;
       }
     }
   }
@@ -309,7 +309,7 @@ export class BgUtils {
     return fn2.toString();
   }
 
-  static async getTokens(visitorData, requestToken, apiKey) {
+  static async getTokens(visitorData, requestToken, apiKey, debug = false) {
     if (!requestToken) {
       requestToken = DEFAULT_REQUEST_TOKEN;
     }
@@ -343,11 +343,11 @@ export class BgUtils {
     let ttl = null;
     let refresh = null;
     try {
-      evaluator.setTimeout(5000);
+      if (!debug) evaluator.setTimeout(5000);
       await evaluator.load();
-      evaluator.setTimeout(5000);
+      if (!debug) evaluator.setTimeout(5000);
       const response = await evaluator.evaluate(this.getRunnerFn1(), [script, challenge]);
-      evaluator.setTimeout(null);
+      if (!debug) evaluator.setTimeout(null);
 
       const payload = [requestToken, response];
       const response2 = await BgUtils.fetch(GENERATE_IT_URL, {
@@ -375,12 +375,12 @@ export class BgUtils {
       const integrityToken = tokenData[0];
       ttl = tokenData[1];
       refresh = tokenData[2];
-      evaluator.setTimeout(5000);
+      if (!debug) evaluator.setTimeout(5000);
       poToken = await evaluator.evaluate(this.getRunnerFn2(), [integrityToken, visitorData]);
 
-      evaluator.close();
+      if (!debug) evaluator.close();
     } catch (err) {
-      evaluator.close();
+      if (!debug) evaluator.close();
       throw err;
     }
     return {poToken, visitorData, requestToken, ttl, refresh};
