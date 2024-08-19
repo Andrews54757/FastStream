@@ -8,6 +8,7 @@ import {SandboxedEvaluator} from '../../utils/SandboxedEvaluator.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
+import {BgUtils} from './BgUtils.mjs';
 
 Log.setLevel(
     Log.Level.WARNING,
@@ -264,7 +265,7 @@ export default class YTPlayer extends DashPlayer {
       return await params;
     }
 
-    const result = SandboxedEvaluator.evaluate(body, argVals);
+    const result = SandboxedEvaluator.evaluateOnce(body, argVals);
     this.paramCache.set(key, result);
 
     try {
@@ -279,7 +280,47 @@ export default class YTPlayer extends DashPlayer {
   async getVideoInfo(identifier, tvMode = false) {
     const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
     const mode = tvMode ? ClientType.TV_EMBEDDED : this.defaultClient;
+
+    // SPLICER:CENSORYT:REMOVE_START
+    let poToken = undefined;
+    let visitorData = undefined;
+    let ttl = null;
+    let creationDate = null;
+
+    const tokens = localStorage.getItem('yt_potoken');
+    if (tokens) {
+      const parsedTokens = JSON.parse(tokens);
+
+      if (parsedTokens.length > 0) {
+        poToken = parsedTokens[0];
+        visitorData = parsedTokens[1];
+        ttl = parsedTokens[2];
+        creationDate = parsedTokens[3];
+      }
+    }
+
+    if (!poToken || !visitorData || !ttl || !creationDate || creationDate + ttl * 1000 < Date.now()) {
+      try {
+        const tokens = await BgUtils.getTokens();
+        poToken = tokens.poToken;
+        visitorData = tokens.visitorData;
+        ttl = tokens.ttl;
+        creationDate = Date.now();
+
+        localStorage.setItem('yt_potoken', JSON.stringify([poToken, visitorData, ttl, creationDate]));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    if (poToken) {
+      console.log('Using PoToken', poToken, visitorData, ttl, creationDate);
+    }
+    // SPLICER:CENSORYT:REMOVE_END
+
     const youtube = await Innertube.create({
+      po_token: poToken, // SPLICER:CENSORYT:REMOVE_LINE
+      visitor_data: visitorData, // SPLICER:CENSORYT:REMOVE_LINE
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       clientType: mode,

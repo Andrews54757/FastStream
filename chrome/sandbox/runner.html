@@ -10,7 +10,7 @@
 
 <body>
     <script>
-        window.addEventListener('message', (event) => {
+        window.addEventListener('message', async (event) => {
             if (event.data.type === 'sandboxEvaluate') {
                 try {
                     const fnCode = event.data.fnCode;
@@ -19,7 +19,7 @@
                     const body = fnCode.substring(fnCode.indexOf('{') + 1, fnCode.lastIndexOf('}')).trim();
                     // Create a new function with the extracted arguments and body
                     const fn = new Function(...args, body);
-                    const result = fn(...event.data.args);
+                    const result = await fn(...event.data.args);
                     event.source.postMessage({ type: 'sandboxResult', result }, event.origin);
                 } catch (error) {
                     event.source.postMessage({ type: 'sandboxError', error: error }, event.origin);
