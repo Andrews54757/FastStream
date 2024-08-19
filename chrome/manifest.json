@@ -80,6 +80,7 @@
       "resources": [
         "player/index.html",
         "player/options/index.html",
+        "sandbox/runner.html",
         "custom/instagram_inject.js",
         "temp/*"
       ],
@@ -88,6 +89,9 @@
       ]
     }
   ],
+  "sandbox": {
+     "pages": ["sandbox/runner.html"]
+  },
   "content_security_policy": {
     "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self';"
   },

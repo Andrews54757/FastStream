@@ -4,6 +4,7 @@ import {ClientType, Innertube, UniversalCache, Log} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {SandboxedEvaluator} from '../../utils/SandboxedEvaluator.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
@@ -22,6 +23,8 @@ export default class YTPlayer extends DashPlayer {
     } else {
       this.defaultClient = ClientType.IOS;
     }
+
+    this.paramCache = new Map();
   }
 
   async setSource(source) {
@@ -251,6 +254,27 @@ export default class YTPlayer extends DashPlayer {
     });
   }
 
+  async fetchParams(body, args) {
+    const argVals = Object.values(args);
+
+    const key = body + '|' + JSON.stringify(argVals);
+    const params = this.paramCache.get(key);
+
+    if (params) {
+      return await params;
+    }
+
+    const result = SandboxedEvaluator.evaluate(body, argVals);
+    this.paramCache.set(key, result);
+
+    try {
+      return await result;
+    } catch (e) {
+      console.error('Failed to fetch params');
+      console.error(e);
+      return;
+    }
+  }
 
   async getVideoInfo(identifier, tvMode = false) {
     const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
@@ -259,6 +283,7 @@ export default class YTPlayer extends DashPlayer {
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       clientType: mode,
+      evaluator: this.fetchParams.bind(this),
     });
 
     const info = await youtube.getInfo(identifier, mode);

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>FastStream Sandbox</title>
+  
+</head>
+
+<body>
+    <script>
+        window.addEventListener('message', (event) => {
+            if (event.data.type === 'sandboxEvaluate') {
+                try {
+                    const fnCode = event.data.fnCode;
+                    // Extract arguments, and body
+                    const args = fnCode.substring(fnCode.indexOf('(') + 1, fnCode.indexOf(')')).split(',').map(arg => arg.trim());
+                    const body = fnCode.substring(fnCode.indexOf('{') + 1, fnCode.lastIndexOf('}')).trim();
+                    // Create a new function with the extracted arguments and body
+                    const fn = new Function(...args, body);
+                    const result = fn(...event.data.args);
+                    event.source.postMessage({ type: 'sandboxResult', result }, event.origin);
+                } catch (error) {
+                    event.source.postMessage({ type: 'sandboxError', error: error }, event.origin);
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
