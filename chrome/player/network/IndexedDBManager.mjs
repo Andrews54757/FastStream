@@ -2,7 +2,7 @@ const closeQueue = [];
 
 export class IndexedDBManager {
   constructor(persistentName) {
-    this.stateName = persistentName || null;
+    this.persistentName = persistentName || null;
   }
 
   static isSupported() {
@@ -24,7 +24,7 @@ export class IndexedDBManager {
   }
 
   isPersistent() {
-    return this.stateName !== null;
+    return this.persistentName !== null;
   }
 
   async setup() {
@@ -37,7 +37,7 @@ export class IndexedDBManager {
       }, 1000);
       this.dbName = 'faststream-temp-' + Date.now() + '-' + Math.floor(Math.random() * 1000000);
     } else {
-      this.dbName = this.stateName;
+      this.dbName = this.persistentName;
     }
 
     this.db = await IndexedDBManager.requestDB(this.dbName, true);
