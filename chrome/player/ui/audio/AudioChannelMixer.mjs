@@ -378,7 +378,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
         e.preventDefault();
 
         toggleSolo();
-      } else if (e.key === 'd') {
+      } else if (e.key === 'd' || e.key === 'e' || e.key === 'c') {
         e.stopPropagation();
         e.preventDefault();
 
