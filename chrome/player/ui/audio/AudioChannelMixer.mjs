@@ -47,6 +47,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.masterNodes.compressor.setConfig(this.masterConfig.compressor);
 
     this.refreshMixer();
+    this.updateDynLabels();
   }
 
   setupUI(equalizerContainer, compressorContainer) {

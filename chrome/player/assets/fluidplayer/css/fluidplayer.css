@@ -2321,7 +2321,7 @@ body {
 
 .mixer_channel_buttons > div.mixer_channel_dyn.active {
     color: rgba(255, 255, 255, 0.8);
-    background-color: rgba(40, 87, 96, 0.9);
+    background-color: rgba(0, 75, 0, 0.9);
 }
 
 .mixer_channel_buttons > div.mixer_channel_dyn.configured {
