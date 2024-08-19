@@ -91,16 +91,12 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.renderChannel(this.masterNodes, this.masterElements);
 
     this.channelNodes.forEach((nodes, i) => {
-      if (this.channelConfigs[i].dyn) {
-        nodes.equalizer.render();
-        nodes.compressor.render();
-      }
+      nodes.equalizer.render();
+      nodes.compressor.render();
     });
 
-    if (this.masterConfig.dyn) {
-      this.masterNodes.equalizer.render();
-      this.masterNodes.compressor.render();
-    }
+    this.masterNodes.equalizer.render();
+    this.masterNodes.compressor.render();
   }
 
   renderChannel(nodes, els) {
