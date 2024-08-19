@@ -322,7 +322,7 @@ export class BgUtils {
       visitorData = Proto.encodeVisitorData(Utils.generateRandomString(11), Math.floor(Date.now() / 1000));
     }
 
-    const challenge = await BgUtils.createChallenge(requestToken, apiKey);
+    const challenge = await BgUtils.createChallenge(requestToken, null, apiKey);
 
     if (!challenge) {
       throw new Error('Could not get challenge');
