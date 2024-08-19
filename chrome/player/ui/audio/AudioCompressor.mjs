@@ -331,13 +331,15 @@ export class AudioCompressor extends AbstractAudioModule {
     const reduction = this.compressorNode ? this.compressorNode.reduction : 0;
     const threshold = this.compressorConfig.threshold;
     const knee = this.compressorConfig.knee;
+    const ratio = this.compressorConfig.ratio;
 
     if (
       this.renderCache.width === width &&
       this.renderCache.height === height &&
       this.renderCache.reduction === reduction &&
       this.renderCache.threshold === threshold &&
-      this.renderCache.knee === knee
+      this.renderCache.knee === knee &&
+      this.renderCache.ratio === ratio
     ) {
       return;
     }
@@ -352,6 +354,7 @@ export class AudioCompressor extends AbstractAudioModule {
     this.renderCache.reduction = reduction;
     this.renderCache.threshold = threshold;
     this.renderCache.knee = knee;
+    this.renderCache.ratio = ratio;
 
     ctx.clearRect(0, 0, width, height);
 
