@@ -281,7 +281,6 @@ export default class YTPlayer extends DashPlayer {
     const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
     const mode = tvMode ? ClientType.TV_EMBEDDED : this.defaultClient;
 
-    // SPLICER:CENSORYT:REMOVE_START
     let poToken = undefined;
     let visitorData = undefined;
     let ttl = null;
@@ -316,11 +315,10 @@ export default class YTPlayer extends DashPlayer {
     if (poToken) {
       console.log('Using PoToken', poToken, visitorData, ttl, creationDate);
     }
-    // SPLICER:CENSORYT:REMOVE_END
 
     const youtube = await Innertube.create({
-      po_token: poToken, // SPLICER:CENSORYT:REMOVE_LINE
-      visitor_data: visitorData, // SPLICER:CENSORYT:REMOVE_LINE
+      po_token: poToken,
+      visitor_data: visitorData,
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       clientType: mode,

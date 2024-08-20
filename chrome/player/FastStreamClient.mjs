@@ -201,7 +201,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.visChangeAction = options.visChangeAction;
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
-    this.options.defaultYoutubeClient = options.defaultYoutubeClient;
+    this.options.defaultYoutubeClient = options.defaultYoutubeClient2;
     this.options.autoplayNext = options.autoplayNext;
 
     this.options.videoBrightness = options.videoBrightness;

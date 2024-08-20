@@ -1,4 +1,3 @@
-// SPLICER:CENSORYT:REMOVE_FILE
 /*
   From BGUtils
 
