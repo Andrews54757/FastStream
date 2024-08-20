@@ -197,7 +197,8 @@ export class BgUtils {
   }
 
   static getRunnerFn1() {
-    const fn1 = (script, challenge) => {
+    const fn1 =
+    `(script, challenge) => {
       const invoke = async () => {
         new Function(script)();
         const vm = window[challenge.globalName];
@@ -222,22 +223,22 @@ export class BgUtils {
           await vm.a(challenge.challenge, attFunctionsCallback, true, undefined, (...args) => {
           });
         } catch (err) {
-          throw new Error(`[BG]: Failed to load program: ${err.message}`);
+          throw new Error(\`[BG]: Failed to load program: \${err.message}\`);
         }
 
         if (!attFunctions.fn1) {
           throw new Error('[BG]: Att function 1 unavailable. Cannot proceed.');
         }
 
-        let botguardResponse = null;
+        let bgResponse = null;
         const postProcessFunctions = [];
 
         await attFunctions.fn1((response) => {
-          botguardResponse = response;
+          bgResponse = response;
         }, [, , postProcessFunctions]);
 
 
-        if (!botguardResponse) {
+        if (!bgResponse) {
           throw new Error('[BG]: No response');
         }
 
@@ -247,17 +248,18 @@ export class BgUtils {
 
         window.postProcessFunctions = postProcessFunctions;
 
-        return botguardResponse;
+        return bgResponse;
       };
 
       return invoke();
-    };
+    }`;
 
-    return SandboxedEvaluator.extractFnBodyAndArgs(fn1.toString());
+    return SandboxedEvaluator.extractFnBodyAndArgs(fn1);
   }
 
   static getRunnerFn2() {
-    const fn2 = (integrityToken, visitorData) => {
+    const fn2 =
+      `(integrityToken, visitorData) => {
       const postProcessor = window.postProcessFunctions[0];
       if (!postProcessor) {
         throw new Error('PMD:Undefined');
@@ -324,8 +326,8 @@ export class BgUtils {
       };
 
       return invoke();
-    };
-    return SandboxedEvaluator.extractFnBodyAndArgs(fn2.toString());
+    }`;
+    return SandboxedEvaluator.extractFnBodyAndArgs(fn2);
   }
 
   static async getTokens(visitorData, requestToken, apiKey, debug = false) {
