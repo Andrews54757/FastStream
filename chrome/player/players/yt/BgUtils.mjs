@@ -197,8 +197,9 @@ export class BgUtils {
   }
 
   static getRunnerFn1() {
-    const fn1 = (challenge) => {
+    const fn1 = (script, challenge) => {
       const invoke = async () => {
+        new Function(script)();
         const vm = window[challenge.globalName];
 
         if (!vm) {
@@ -218,9 +219,10 @@ export class BgUtils {
           throw new Error('[BG]: Init failed');
         }
 
-        console.log(challenge);
         try {
-          await vm.a(challenge.challenge, attFunctionsCallback, true, undefined, () => {/** no-op */});
+          await vm.a(challenge.challenge, attFunctionsCallback, true, undefined, (...args) => {
+
+          });
         } catch (err) {
           throw new Error(`[BG]: Failed to load program: ${err.message}`);
         }
@@ -231,8 +233,20 @@ export class BgUtils {
 
         let botguardResponse = null;
         const postProcessFunctions = [];
+        const postProcessProxy = new Proxy(postProcessFunctions, {
+          get(target, prop) {
+            console.error('Post-process function:', prop);
+            return target[prop];
+          },
+          set(target, prop, value) {
+            console.error('Post-process function:', prop, value);
+            target[prop] = value;
+            return true;
+          },
+        });
 
-        await attFunctions.fn1((response) => botguardResponse = response, [, , postProcessFunctions]);
+        await attFunctions.fn1((response) => botguardResponse = response, [, , postProcessProxy]);
+
 
         if (!botguardResponse) {
           throw new Error('[BG]: No response');
@@ -338,33 +352,33 @@ export class BgUtils {
       visitorData = Proto.encodeVisitorData(Utils.generateRandomString(11), Math.floor(Date.now() / 1000));
     }
 
-    const challenge = await BgUtils.createChallenge(requestToken, null, apiKey);
-
-    if (!challenge) {
-      throw new Error('Could not get challenge');
-    }
-
-    if (!challenge.script) {
-      throw new Error('Could not get challenge script');
-    }
-
-    const script = challenge.script.find((sc) => sc !== null);
-    if (!script) {
-      throw new Error('Could not get non-null challenge script');
-    }
-
     const evaluator = new SandboxedEvaluator();
-
     let poToken = null;
     let ttl = null;
     let refresh = null;
     try {
       if (!debug) evaluator.setTimeout(5000);
       await evaluator.load();
+      if (!debug) evaluator.setTimeout(null);
+
+      const challenge = await BgUtils.createChallenge(requestToken, null, apiKey);
+
+      if (!challenge) {
+        throw new Error('Could not get challenge');
+      }
+
+      if (!challenge.script) {
+        throw new Error('Could not get challenge script');
+      }
+
+      const script = challenge.script.find((sc) => sc !== null);
+      if (!script) {
+        throw new Error('Could not get non-null challenge script');
+      }
+
       if (!debug) evaluator.setTimeout(5000);
-      await evaluator.evaluate(script);
       const fn1 = this.getRunnerFn1();
-      const response = await evaluator.evaluate(fn1.body, fn1.argNames, [challenge]);
+      const response = await evaluator.evaluate(fn1.body, fn1.argNames, [script, challenge]);
       if (!debug) evaluator.setTimeout(null);
 
       const payload = [requestToken, response];
