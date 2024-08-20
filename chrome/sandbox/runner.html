@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
@@ -9,17 +8,16 @@
 </head>
 
 <body>
+    <div>
+        <h1>FastStream Sandbox</h1>
+        <p>This is a sandboxed environment for running untrusted code</p>
+    </div>
     <script>
         window.addEventListener('message', async (event) => {
             if (event.data.type === 'sandboxEvaluate') {
                 try {
-                    const fnCode = event.data.fnCode;
-                    // Extract arguments, and body
-                    const args = fnCode.substring(fnCode.indexOf('(') + 1, fnCode.indexOf(')')).split(',').map(arg => arg.trim());
-                    const body = fnCode.substring(fnCode.indexOf('{') + 1, fnCode.lastIndexOf('}')).trim();
-                    // Create a new function with the extracted arguments and body
-                    const fn = new Function(...args, body);
-                    const result = await fn(...event.data.args);
+                    const fn = new Function(...event.data.argNames, event.data.body);
+                    const result = await fn(...event.data.argValues);
                     event.source.postMessage({ type: 'sandboxResult', result }, event.origin);
                 } catch (error) {
                     event.source.postMessage({ type: 'sandboxError', error: error }, event.origin);

@@ -256,16 +256,16 @@ export default class YTPlayer extends DashPlayer {
   }
 
   async fetchParams(body, args) {
-    const argVals = Object.values(args);
-
-    const key = body + '|' + JSON.stringify(argVals);
+    const key = body + '|' + JSON.stringify(args);
     const params = this.paramCache.get(key);
 
     if (params) {
       return await params;
     }
 
-    const result = SandboxedEvaluator.evaluateOnce(body, argVals);
+    const fnData = SandboxedEvaluator.extractFnBodyAndArgs(body);
+    const argValues = SandboxedEvaluator.matchArgValues(fnData.argNames, args);
+    const result = SandboxedEvaluator.evaluateOnce(fnData.body, fnData.argNames, argValues);
     this.paramCache.set(key, result);
 
     try {

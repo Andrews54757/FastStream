@@ -130,10 +130,28 @@ export class BgUtils {
 
     const redirectHeaders = [
       'user-agent',
+    ];
+
+    const removeHeaders = [
+      'user-agent',
       'origin',
       'referer',
+      'sec-fetch-site',
+      'sec-fetch-mode',
+      'sec-fetch-dest',
+      'sec-ch-ua',
+      'sec-ch-ua-mobile',
+      'sec-ch-ua-platform',
+      'x-client-data',
+      'priority',
+      'accept',
+      'accept-encoding',
+      'accept-language',
+      'cache-control',
+      'pragma',
     ];
-      // now serialize the headers
+
+    // now serialize the headers
     let headersArr = [...headers];
     const customHeaderCommands = [];
     headersArr = headersArr.filter((header) => {
@@ -146,20 +164,20 @@ export class BgUtils {
           value,
         });
         return false;
+      } else if (removeHeaders.includes(name.toLowerCase())) {
+        removeHeaders.splice(removeHeaders.indexOf(name.toLowerCase()), 1);
+        return false;
       }
       return true;
     });
+
     const newHeaders = new Headers(headersArr);
-    if (!customHeaderCommands.find((c) => c.header === 'origin')) {
+
+    removeHeaders.forEach((header) => {
       customHeaderCommands.push({
         operation: 'remove',
-        header: 'origin',
+        header: header,
       });
-    }
-
-    customHeaderCommands.push({
-      operation: 'remove',
-      header: 'x-client-data',
     });
 
     if (EnvUtils.isExtension()) {
@@ -179,10 +197,7 @@ export class BgUtils {
   }
 
   static getRunnerFn1() {
-    const fn1 = (script, challenge) => {
-      const fn = new Function(script);
-      fn();
-
+    const fn1 = (challenge) => {
       const invoke = async () => {
         const vm = window[challenge.globalName];
 
@@ -203,6 +218,7 @@ export class BgUtils {
           throw new Error('[BG]: Init failed');
         }
 
+        console.log(challenge);
         try {
           await vm.a(challenge.challenge, attFunctionsCallback, true, undefined, () => {/** no-op */});
         } catch (err) {
@@ -234,7 +250,7 @@ export class BgUtils {
       return invoke();
     };
 
-    return fn1.toString();
+    return SandboxedEvaluator.extractFnBodyAndArgs(fn1.toString());
   }
 
   static getRunnerFn2() {
@@ -306,7 +322,7 @@ export class BgUtils {
 
       return invoke();
     };
-    return fn2.toString();
+    return SandboxedEvaluator.extractFnBodyAndArgs(fn2.toString());
   }
 
   static async getTokens(visitorData, requestToken, apiKey, debug = false) {
@@ -346,7 +362,9 @@ export class BgUtils {
       if (!debug) evaluator.setTimeout(5000);
       await evaluator.load();
       if (!debug) evaluator.setTimeout(5000);
-      const response = await evaluator.evaluate(this.getRunnerFn1(), [script, challenge]);
+      await evaluator.evaluate(script);
+      const fn1 = this.getRunnerFn1();
+      const response = await evaluator.evaluate(fn1.body, fn1.argNames, [challenge]);
       if (!debug) evaluator.setTimeout(null);
 
       const payload = [requestToken, response];
@@ -376,7 +394,8 @@ export class BgUtils {
       ttl = tokenData[1];
       refresh = tokenData[2];
       if (!debug) evaluator.setTimeout(5000);
-      poToken = await evaluator.evaluate(this.getRunnerFn2(), [integrityToken, visitorData]);
+      const fn2 = this.getRunnerFn2();
+      poToken = await evaluator.evaluate(fn2.body, fn2.argNames, [integrityToken, visitorData]);
 
       if (!debug) evaluator.close();
     } catch (err) {

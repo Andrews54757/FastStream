@@ -5,12 +5,23 @@ import {EnvUtils} from './EnvUtils.mjs';
 const RunnerFrameLocation = (EnvUtils.isChrome() && EnvUtils.isExtension()) ? import.meta.resolve('../../sandbox/runner.html') : 'https://faststream.online/sandbox/runner.html';
 
 export class SandboxedEvaluator extends EventEmitter {
-  constructor() {
+  constructor(otherPerms, visible = false) {
     super();
     this.runnerFrame = document.createElement('iframe');
     this.runnerFrame.src = RunnerFrameLocation;
-    this.runnerFrame.style.display = 'none';
-    this.runnerFrame.sandbox = 'allow-scripts';
+    if (!visible) {
+      this.runnerFrame.style.display = 'none';
+    } else {
+      this.runnerFrame.style.width = '100%';
+      this.runnerFrame.style.height = '100%';
+      this.runnerFrame.style.position = 'fixed';
+      this.runnerFrame.style.top = '0px';
+      this.runnerFrame.style.left = '0px';
+      this.runnerFrame.style.right = '0px';
+      this.runnerFrame.style.bottom = '0px';
+      this.runnerFrame.style.zIndex = '10000';
+    }
+    this.runnerFrame.sandbox = 'allow-scripts' + (otherPerms ? ' ' + otherPerms : '');
     document.body.appendChild(this.runnerFrame);
 
     this.listenerBind = this.listener.bind(this);
@@ -66,10 +77,10 @@ export class SandboxedEvaluator extends EventEmitter {
     this.emit('close');
   }
 
-  async evaluate(fnCode, args) {
+  async evaluate(body, argNames = [], argValues = []) {
     await this.readyPromise;
 
-    this.runnerFrame.contentWindow.postMessage({type: 'sandboxEvaluate', fnCode, args}, '*');
+    this.runnerFrame.contentWindow.postMessage({type: 'sandboxEvaluate', body, argNames, argValues}, '*');
 
     return new Promise((resolve, reject) => {
       let resultHandler = null;
@@ -103,17 +114,32 @@ export class SandboxedEvaluator extends EventEmitter {
     });
   }
 
-  static async evaluateOnce(fnCode, args, timeoutDuration = 5000) {
+  static async evaluateOnce(body, argNames, argValues, timeoutDuration = 5000) {
     const evaluator = new SandboxedEvaluator();
     if (timeoutDuration) evaluator.setTimeout(timeoutDuration);
 
     try {
-      const result = await evaluator.evaluate(fnCode, args);
+      const result = await evaluator.evaluate(body, argNames, argValues);
       evaluator.close();
       return result;
     } catch (err) {
       evaluator.close();
       throw err;
     }
+  }
+
+  static extractFnBodyAndArgs(funcStr) {
+    const body = funcStr.substring(funcStr.indexOf('{') + 1, funcStr.lastIndexOf('}'));
+    const argNames = funcStr.substring(funcStr.indexOf('(') + 1, funcStr.indexOf(')')).split(',').map((arg) => arg.trim());
+    return {body, argNames};
+  }
+
+  static matchArgValues(argNames, argObject) {
+    return argNames.map((arg) => {
+      if (!Object.hasOwn(argObject, arg)) {
+        throw new Error(`Missing argument: ${arg}`);
+      }
+      argObject[arg];
+    });
   }
 }
