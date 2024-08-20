@@ -1417,10 +1417,5 @@ export class FastStreamClient extends EventEmitter {
     this.currentTime = 6;
     this.player.getVideo().style.objectFit = 'cover';
   }
-
-  async testToken() {
-    const {BgUtils} = await import('./players/yt/BgUtils.mjs');
-    return BgUtils.getTokens(null, null, null, true);
-  }
 }
 
