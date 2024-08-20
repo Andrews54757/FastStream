@@ -207,7 +207,6 @@ export class BgUtils {
         }
 
         const attFunctions = {fn1: null, fn2: null, fn3: null, fn4: null};
-
         function attFunctionsCallback(fn1, fn2, fn3, fn4) {
           attFunctions.fn1 = fn1;
           attFunctions.fn2 = fn2;
@@ -221,7 +220,6 @@ export class BgUtils {
 
         try {
           await vm.a(challenge.challenge, attFunctionsCallback, true, undefined, (...args) => {
-
           });
         } catch (err) {
           throw new Error(`[BG]: Failed to load program: ${err.message}`);
@@ -233,19 +231,10 @@ export class BgUtils {
 
         let botguardResponse = null;
         const postProcessFunctions = [];
-        const postProcessProxy = new Proxy(postProcessFunctions, {
-          get(target, prop) {
-            console.error('Post-process function:', prop);
-            return target[prop];
-          },
-          set(target, prop, value) {
-            console.error('Post-process function:', prop, value);
-            target[prop] = value;
-            return true;
-          },
-        });
 
-        await attFunctions.fn1((response) => botguardResponse = response, [, , postProcessProxy]);
+        await attFunctions.fn1((response) => {
+          botguardResponse = response;
+        }, [, , postProcessFunctions]);
 
 
         if (!botguardResponse) {

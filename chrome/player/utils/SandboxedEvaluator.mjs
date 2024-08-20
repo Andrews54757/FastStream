@@ -1,8 +1,8 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
-import {EnvUtils} from './EnvUtils.mjs';
 
-// Firefox doesn't support manifest.sandbox, so we need to use a dedicated static page for the runner
-const RunnerFrameLocation = (EnvUtils.isChrome() && EnvUtils.isExtension()) ? import.meta.resolve('../../sandbox/runner.html') : 'https://faststream.online/sandbox/runner.html';
+// Untrusted code will be executed in an iframe with a different origin
+// This ensures that the untrusted code cannot access the parent window
+const RunnerFrameLocation = 'https://faststream.online/sandbox/runner.html';
 
 export class SandboxedEvaluator extends EventEmitter {
   constructor(otherPerms, visible = false) {
@@ -21,7 +21,6 @@ export class SandboxedEvaluator extends EventEmitter {
       this.runnerFrame.style.bottom = '0px';
       this.runnerFrame.style.zIndex = '10000';
     }
-    this.runnerFrame.sandbox = 'allow-scripts' + (otherPerms ? ' ' + otherPerms : '');
     document.body.appendChild(this.runnerFrame);
 
     this.listenerBind = this.listener.bind(this);
