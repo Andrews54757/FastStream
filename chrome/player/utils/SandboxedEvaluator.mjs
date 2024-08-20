@@ -2,7 +2,7 @@ import {EventEmitter} from '../modules/eventemitter.mjs';
 
 // Untrusted code will be executed in an iframe with a different origin
 // This ensures that the untrusted code cannot access the parent window
-const RunnerFrameLocation = 'https://faststream.online/sandbox/runner.html';
+const RunnerFrameLocation = 'https://sandbox.faststream.online/';
 
 export class SandboxedEvaluator extends EventEmitter {
   constructor(otherPerms, visible = false) {
