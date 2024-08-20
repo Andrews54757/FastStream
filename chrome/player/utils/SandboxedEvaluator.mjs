@@ -136,9 +136,9 @@ export class SandboxedEvaluator extends EventEmitter {
   static matchArgValues(argNames, argObject) {
     return argNames.map((arg) => {
       if (!Object.hasOwn(argObject, arg)) {
-        throw new Error(`Missing argument: ${arg}`);
+        return undefined;
       }
-      argObject[arg];
+      return argObject[arg];
     });
   }
 }
