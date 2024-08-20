@@ -299,8 +299,8 @@ export class BgUtils {
 
         if (base64url) {
           return result
-              .replace(/\+/g, '-')
-              .replace(/\//g, '_');
+              .replace(/\\+/g, '-')
+              .replace(/\\//g, '_');
         }
 
         return result;
