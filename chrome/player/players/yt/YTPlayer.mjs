@@ -256,6 +256,7 @@ export default class YTPlayer extends DashPlayer {
   }
 
   async fetchParams(body, args) {
+    args = Object.values(args);
     const key = body + '|' + JSON.stringify(args);
     const params = this.paramCache.get(key);
 
@@ -263,7 +264,8 @@ export default class YTPlayer extends DashPlayer {
       return await params;
     }
 
-    const result = SandboxedEvaluator.evaluateOnce(body, Object.keys(args), Object.values(args));
+    const fnData = SandboxedEvaluator.extractFnBodyAndArgs(body);
+    const result = SandboxedEvaluator.evaluateOnce(fnData.body, fnData.argNames, Object.values(args));
     this.paramCache.set(key, result);
 
     try {
