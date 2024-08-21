@@ -165,7 +165,7 @@ export class VideoQualityChanger extends EventEmitter {
       console.warn('No current level');
       return;
     }
-    const isHD = current.width >= 1280;
+    const isHD = (current.width >= 1280 || current.height >= 1280);
 
     if (isHD) {
       DOMElements.videoSource.classList.add('hd');
