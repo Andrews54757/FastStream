@@ -16,12 +16,13 @@ import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {SandboxedEvaluator} from '../../utils/SandboxedEvaluator.mjs';
 import {Proto, Utils} from '../../modules/yt.mjs';
 
-const BASE_URL = 'https://jnn-pa.googleapis.com/$rpc/google.internal.waa.v1.Waa';
+const BASE_URL = 'https://jnn-pa.googleapis.com' +
+                  '/$rpc/google.internal.waa.v1.Waa';
+
 const CREATE_CHALLENGE_URL = BASE_URL + '/Create';
 const GENERATE_IT_URL = BASE_URL + '/GenerateIT';
-const DEFAULT_API_KEY = atob('QUl6YVN5RHlUNVcwSmg0OUYzMFBxcXR5ZmRmN3BETEZLTEpvQW53');
+
 const USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36(KHTML, like Gecko)';
-const DEFAULT_REQUEST_TOKEN = atob('TzQzejBkcGpoZ1gyMFNDeDRLQW8=');
 
 export class BgUtils {
   static base64ToU8(base64) {
@@ -330,11 +331,11 @@ export class BgUtils {
 
   static async getTokens(visitorData, requestToken, apiKey, debug = false) {
     if (!requestToken) {
-      requestToken = DEFAULT_REQUEST_TOKEN;
+      requestToken = atob('TzQzejBkcGpoZ1gyMFNDeDRLQW8=');
     }
 
     if (!apiKey) {
-      apiKey = DEFAULT_API_KEY;
+      apiKey = atob('QUl6YVN5RHlUNVcwSmg0OUYzMFBxcXR5ZmRmN3BETEZLTEpvQW53');
     }
 
     if (!visitorData) {
