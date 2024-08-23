@@ -197,9 +197,8 @@ export class BgUtils {
 
   static getRunnerFn1() {
     const fn1 =
-    `(script, challenge) => {
+    `(challenge) => {
       const invoke = async () => {
-        new Function(script)();
         const vm = window[challenge.globalName];
 
         if (!vm) {
@@ -367,8 +366,10 @@ export class BgUtils {
       }
 
       if (!debug) evaluator.setTimeout(5000);
+      await evaluator.evaluate(script, [], []);
+      if (!debug) evaluator.setTimeout(5000);
       const fn1 = this.getRunnerFn1();
-      const response = await evaluator.evaluate(fn1.body, fn1.argNames, [script, challenge]);
+      const response = await evaluator.evaluate(fn1.body, fn1.argNames, [challenge]);
       if (!debug) evaluator.setTimeout(null);
 
       const payload = [requestToken, response];
