@@ -7,6 +7,13 @@ const RunnerFrameLocation = 'https://sandbox.faststream.online/';
 export class SandboxedEvaluator extends EventEmitter {
   constructor(otherPerms, visible = false) {
     super();
+    // Check if current origin is identical to the runner frame origin
+    const currentOrigin = window.location.origin;
+    const runnerOrigin = new URL(RunnerFrameLocation).origin;
+    if (currentOrigin === runnerOrigin) {
+      throw new Error('SandboxedEvaluator cannot be used from the same origin as the runner frame');
+    }
+
     this.runnerFrame = document.createElement('iframe');
     this.runnerFrame.credentialless = 'true';
     this.runnerFrame.src = RunnerFrameLocation;
