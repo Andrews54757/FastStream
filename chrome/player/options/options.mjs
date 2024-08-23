@@ -530,9 +530,51 @@ if (EnvUtils.isExtension()) {
     ratebox.style.display = 'none';
   });
 
-  chrome.storage.local.get('rateus', (result) => {
-    if (!result || !result.rateus) {
-      ratebox.style.display = 'block';
+
+  const feedbackbox = document.getElementById('feedbackbox');
+  const feedbackyes = document.getElementById('feedback-yes');
+  const feedbackno = document.getElementById('feedback-no');
+
+  feedbackyes.addEventListener('click', (e) => {
+    chrome.storage.local.set({
+      feedback: 'yes',
+    });
+    feedbackbox.style.display = 'none';
+    chrome.tabs.create({
+      url: 'https://docs.google.com/forms/d/e/1FAIpQLSfA3T8lmhKO_ih028cP0m67vhH-FaGNkeHE0EsQoyBWztpctA/viewform?usp=sf_link',
+    });
+  });
+
+  feedbackno.addEventListener('click', (e) => {
+    chrome.storage.local.set({
+      feedback: 'no',
+    });
+    feedbackbox.style.display = 'none';
+  });
+
+  chrome.storage.local.get('firstuse', (result) => {
+    if (!result || !result.firstuse) {
+      chrome.storage.local.set({
+        firstuse: Date.now(),
+      });
+    } else {
+      const now = Date.now();
+      const diff = now - result.firstuse;
+      if (diff > 1000 * 60 * 60 * 24 * 3) { // 3 days, ask for feedback
+        chrome.storage.local.get('feedback', (result) => {
+          if (!result || !result.feedback) {
+            feedbackbox.style.display = 'block';
+          } else {
+            if (diff > 1000 * 60 * 60 * 24 * 7) { // 7 days, ask for review
+              chrome.storage.local.get('rateus', (result) => {
+                if (!result || !result.rateus) {
+                  ratebox.style.display = 'block';
+                }
+              });
+            }
+          }
+        });
+      }
     }
   });
 

@@ -747,6 +747,21 @@
     "options_promo_norate": {
         "message": "評価しない :("
     },
+    "options_feedback_header": {
+        "message": "フィードバックをお願いします!"
+    },
+    "options_feedback_reason": {
+        "message": "あなたの意見を聞かせてください! 短いフォームを記入してください。私たちはあなたを追跡していないので、改善する唯一の方法です。"
+    },
+    "options_feedback_yes": {
+        "message": "はい、フィードバックを送信します"
+    },
+    "options_feedback_no": {
+        "message": "いいえ、結構です"
+    },
+    "options_help_feedback": {
+        "message": "フィードバックフォーム"
+    },
     "options_update_header": {
         "message": "アップデートが利用可能です!"
     },

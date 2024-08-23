@@ -747,6 +747,21 @@
     "options_promo_norate": {
         "message": "Не хочу оценивать :("
     },
+    "options_feedback_header": {
+        "message": "У вас есть отзыв?"
+    },
+    "options_feedback_reason": {
+        "message": "Мы хотели бы услышать ваше мнение! Пожалуйста, заполните короткую форму. Это единственный способ улучшить нас, поскольку мы не отслеживаем вас."
+    },
+    "options_feedback_yes": {
+        "message": "Да, у меня есть отзыв"
+    },
+    "options_feedback_no": {
+        "message": "Нет, мне хорошо"
+    },
+    "options_help_feedback": {
+        "message": "Форма обратной связи"
+    },
     "options_update_header": {
         "message": "Доступно обновление!"
     },

@@ -747,6 +747,21 @@
     "options_promo_norate": {
         "message": "I don't want to review :("
     },
+    "options_feedback_header": {
+        "message": "Do you have feedback?"
+    },
+    "options_feedback_reason": {
+        "message": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you."
+    },
+    "options_feedback_yes": {
+        "message": "Yes, I have feedback"
+    },
+    "options_feedback_no": {
+        "message": "No, I'm good"
+    },
+    "options_help_feedback": {
+        "message": "Feedback Form"
+    },
     "options_update_header": {
         "message": "An Update is Available!"
     },

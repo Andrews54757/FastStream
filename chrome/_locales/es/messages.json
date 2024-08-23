@@ -746,6 +746,21 @@
     "options_promo_norate": {
         "message": "No quiero reseñar :("
     },
+    "options_feedback_header": {
+        "message": "¿Tienes comentarios?"
+    },
+    "options_feedback_reason": {
+        "message": "¡Nos encantaría saber de ti! Por favor, completa un formulario corto. Es la única forma en que podemos mejorar ya que no te rastreamos."
+    },
+    "options_feedback_yes": {
+        "message": "Sí, tengo comentarios"
+    },
+    "options_feedback_no": {
+        "message": "No, estoy bien"
+    },
+    "options_help_feedback": {
+        "message": "Formulario de Comentarios"
+    },
     "options_update_header": {
         "message": "¡Hay una actualización disponible!"
     },

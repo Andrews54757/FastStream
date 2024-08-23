@@ -197,6 +197,14 @@ button:hover {
     margin-bottom: 20px;
 }
 
+#feedbackbox {
+    display: none;
+    border-radius: 5px;
+    border: 1px solid rgb(214, 144, 15);
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
 #updatebox {
     display: none;
     border-radius: 5px;
