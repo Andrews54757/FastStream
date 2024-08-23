@@ -8,6 +8,7 @@ export class SandboxedEvaluator extends EventEmitter {
   constructor(otherPerms, visible = false) {
     super();
     this.runnerFrame = document.createElement('iframe');
+    this.runnerFrame.credentialless = 'true';
     this.runnerFrame.src = RunnerFrameLocation;
     if (!visible) {
       this.runnerFrame.style.display = 'none';
