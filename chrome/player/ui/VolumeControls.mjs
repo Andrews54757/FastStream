@@ -123,6 +123,8 @@ export class VolumeControls extends EventEmitter {
     document.addEventListener('touchend', onVolumeBarMouseUp);
     document.addEventListener('mousemove', onVolumeBarMouseMove);
     document.addEventListener('touchmove', onVolumeBarMouseMove);
+
+    event.stopPropagation();
   }
 
   updateVolumeBar(volume) {
