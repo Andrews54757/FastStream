@@ -628,4 +628,4 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
 
-// Utils.printWelcome(EnvUtils.getVersion());
+document.getElementById('ytc').style.display = ''; // SPLICER:CENSORYT:REMOVE_LINE
