@@ -406,4 +406,59 @@ async function runAll() {
   removeBuildDirs();
 }
 
+// Check locales folder at chrome/_locales and match with messages.json in en folder
+const localesPath = path.join(chromeSourceDir, '_locales/');
+
+const localeFolders = fs.readdirSync(localesPath);
+const locales = [];
+
+localeFolders.forEach((localeFolder) => {
+  const localePath = path.join(localesPath, localeFolder, 'messages.json');
+  // check if file exists
+  if (!fs.existsSync(localePath)) {
+    return;
+  }
+
+  const messages = JSON.parse(fs.readFileSync(localePath, 'utf8'));
+  const translationMap = {};
+  Object.keys(messages).forEach((key) => {
+    translationMap[key] = messages[key].message;
+  });
+  locales.push({
+    translationMap,
+    code: localeFolder,
+  });
+});
+
+// Find english
+const defaultLanguage = 'en';
+const english = locales.find((locale) => locale.code === defaultLanguage);
+const otherLocales = locales.filter((locale) => locale.code !== defaultLanguage);
+
+// Check if all keys are present in all locales
+otherLocales.forEach((locale) => {
+  const missingKeys = [];
+  Object.keys(english.translationMap).forEach((key) => {
+    if (!locale.translationMap[key]) {
+      missingKeys.push(key);
+    }
+  });
+
+  const extraKeys = [];
+  Object.keys(locale.translationMap).forEach((key) => {
+    if (!english.translationMap[key]) {
+      extraKeys.push(key);
+    }
+  });
+
+  if (missingKeys.length) {
+    console.error(`Missing keys in ${locale.code}:`, missingKeys);
+  }
+
+  if (extraKeys.length) {
+    console.error(`Extra keys in ${locale.code}:`, extraKeys);
+  }
+});
+
+
 runAll();

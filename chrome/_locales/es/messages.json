@@ -176,8 +176,14 @@
     "player_nosource_instruction2p2": {
         "message": "para cargar fuentes detectadas desde otras pestañas."
     },
-    "player_playpause_label": {
-        "message": "Reproducir o pausar vídeo"
+    "player_play_label": {
+        "message": "Reproducir video"
+    },
+    "player_pause_label": {
+        "message": "Pausar video"
+    },
+    "player_volume_label": {
+        "message": "El volumen es $1%. Usa las teclas de flecha para ajustar, enter para silenciar."
     },
     "player_mute_label": {
         "message": "Silenciar el audio"
@@ -188,25 +194,25 @@
     "player_sourcesbrowser_title": {
         "message": "Navegador de Fuentes"
     },
-    "player_sourcesbrowser_toggle_label": {
-        "message": "Alternar navegador de fuentes"
+    "player_sourcesbrowser_open_label": {
+        "message": "Abrir navegador de fuentes"
     },
-    "player_sourcesbrowser_closebtn_label": {
+    "player_sourcesbrowser_close_label": {
         "message": "Cerrar navegador de fuentes"
     },
     "player_audioconfig_title": {
         "message": "Configuración de Audio"
     },
-    "player_audioconfig_toggle_label": {
-        "message": "Alternar ventana de configuración de audio"
+    "player_audioconfig_open_label": {
+        "message": "Abrir ventana de configuración de audio"
     },
-    "player_audioconfig_toggle_closebtn_label": {
+    "player_audioconfig_close_label": {
         "message": "Cerrar ventana de configuración de audio"
     },
     "player_opensubtitles_title": {
         "message": "Búsqueda en OpenSubtitles"
     },
-    "player_opensubtitles_closebtn_label": {
+    "player_opensubtitles_close_label": {
         "message": "Cerrar ventana de búsqueda de OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
@@ -284,8 +290,11 @@
     "player_opensubtitles_askopen": {
         "message": "¿Le gustaría abrir el sitio web de OpenSubtitles para descargar el archivo de subtítulos manualmente?"
     },
-    "player_subtitlesmenu_toggle_label": {
-        "message": "Alternar menú de subtítulos"
+    "player_subtitlesmenu_open_label": {
+        "message": "Abrir menú de subtítulos"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Cerrar menú de subtítulos"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "Volver"
@@ -356,11 +365,11 @@
     "player_settings_title": {
         "message": "Configuraciones de FastStream"
     },
-    "player_settings_closebtn_label": {
+    "player_settings_close_label": {
         "message": "Cerrar ventana de configuración"
     },
-    "player_settings_label": {
-        "message": "Configuraciones"
+    "player_settings_open_label": {
+        "message": "Abrir ventana de configuración"
     },
     "player_savevideo_label": {
         "message": "Guardar video. mantén presionado ALT para guardar un video parcial. mantén presionado SHIFT para vaciar el búfer."
@@ -637,6 +646,12 @@
     },
     "audiomixer_title": {
         "message": "Mezclador de Canales de Audio"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar mono"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar silencio"
     },
     "audiomixer_solo_label": {
         "message": "Solo"

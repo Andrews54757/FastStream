@@ -239,6 +239,12 @@ export class AudioChannelMixer extends AbstractAudioModule {
     const els = this.createMixerElements();
     els.channelTitle.textContent = channel.isMaster() ? 'Master' : CHANNEL_NAMES[channel.id];
 
+    if (channel.isMaster()) {
+      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+    } else {
+      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+    }
+
     els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(AudioUtils.gainToDB(channel.gain)) * 100}%`;
 
     if (channel.isMaster()) { // master
@@ -270,6 +276,12 @@ export class AudioChannelMixer extends AbstractAudioModule {
       els.volumeHandle.style.top = `${newYPercent}%`;
       channel.gain = AudioUtils.dbToGain(db);
       this.updateNodes();
+
+      if (channel.isMaster()) {
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+      } else {
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+      }
     };
 
     const mouseUp = (e) => {
@@ -382,6 +394,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       }
     });
     els.volumeHandle.tabIndex = 0;
+    els.volumeHandle.role = 'slider';
 
     els.soloButton.addEventListener('click', toggleSolo);
     els.muteButton.addEventListener('click', toggleMute);

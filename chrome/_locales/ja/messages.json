@@ -177,8 +177,14 @@
     "player_nosource_instruction2p2": {
         "message": "他のタブから検出されたソースを読み込み。"
     },
-    "player_playpause_label": {
-        "message": "動画を再生/一時停止"
+    "player_play_label": {
+        "message": "ビデオを再生"
+    },
+    "player_pause_label": {
+        "message": "ビデオを一時停止"
+    },
+    "player_volume_label": {
+        "message": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。"
     },
     "player_mute_label": {
         "message": "オーディオを消音"
@@ -189,25 +195,25 @@
     "player_sourcesbrowser_title": {
         "message": "ソースの参照"
     },
-    "player_sourcesbrowser_toggle_label": {
+    "player_sourcesbrowser_open_label": {
         "message": "ソースの参照を開く"
     },
-    "player_sourcesbrowser_closebtn_label": {
+    "player_sourcesbrowser_close_label": {
         "message": "ソースの参照を閉じる"
     },
     "player_audioconfig_title": {
         "message": "オーディオの設定"
     },
-    "player_audioconfig_toggle_label": {
+    "player_audioconfig_open_label": {
         "message": "オーディオ設定ウィンドウを開く"
     },
-    "player_audioconfig_toggle_closebtn_label": {
+    "player_audioconfig_close_label": {
         "message": "オーディオ設定ウィンドウを閉じる"
     },
     "player_opensubtitles_title": {
         "message": "OpenSubtitles を検索"
     },
-    "player_opensubtitles_closebtn_label": {
+    "player_opensubtitles_close_label": {
         "message": "OpenSubtitles 検索ウィンドウを閉じる"
     },
     "player_opensubtitles_search_placeholder": {
@@ -285,8 +291,11 @@
     "player_opensubtitles_askopen": {
         "message": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?"
     },
-    "player_subtitlesmenu_toggle_label": {
+    "player_subtitlesmenu_open_label": {
         "message": "字幕メニューを開く"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "字幕メニューを閉じる"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "戻る"
@@ -357,11 +366,11 @@
     "player_settings_title": {
         "message": "FastStream の設定"
     },
-    "player_settings_closebtn_label": {
+    "player_settings_close_label": {
         "message": "設定ウィンドウを閉じる"
     },
-    "player_settings_label": {
-        "message": "設定"
+    "player_settings_open_label": {
+        "message": "設定ウィンドウを開く"
     },
     "player_savevideo_label": {
         "message": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。"
@@ -638,6 +647,12 @@
     },
     "audiomixer_title": {
         "message": "オーディオチャンネルミキサー"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでモノラルを切り替えます"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでミュートを切り替えます"
     },
     "audiomixer_solo_label": {
         "message": "ソロ"

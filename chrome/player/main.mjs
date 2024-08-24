@@ -311,7 +311,7 @@ setup().catch((e)=>{
 const observer = new MutationObserver((mutations) => {
   mutations.forEach((mutation) => {
     mutation.addedNodes.forEach((node) => {
-      if (node.id === 'wave_sidebar_container') {
+      if (node.id === 'wave_sidebar_container' || node.id === 'waveordercontainer') {
         doWaveFix();
       }
     });
@@ -328,12 +328,18 @@ observer.observe(document.body, {
   childList: true,
 });
 
+let lastObserver = null;
 
 function doWaveFix() {
   const player = document.querySelector('.mainplayer');
   if (player) {
     player.style.left = '380px';
     player.style.width = 'calc(100% - 380px)';
+  }
+
+  const waveordercontainer = document.querySelector('#waveordercontainer');
+  if (waveordercontainer) {
+    waveordercontainer.style.left = '380px';
   }
 
   const waveTopbar = document.querySelector('#wave5topbar');
@@ -347,6 +353,10 @@ function doWaveFix() {
     });
 
     observer.observe(waveTopbar);
+    if (lastObserver) {
+      lastObserver.disconnect();
+    }
+    lastObserver = observer;
   }
 }
 
@@ -356,6 +366,11 @@ function undoWaveFix() {
     player.style.left = '';
     player.style.width = '';
     player.style.height = '';
+  }
+
+  if (lastObserver) {
+    lastObserver.disconnect();
+    lastObserver = null;
   }
 }
 // SPLICER:EXTENSION:REMOVE_END

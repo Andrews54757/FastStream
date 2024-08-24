@@ -17,6 +17,11 @@ export class WebUtils {
     });
   }
 
+  static setLabels(element, label) {
+    element.ariaLabel = label;
+    element.title = label;
+  }
+
   static getOffsetLeft(elem) {
     return elem.getBoundingClientRect().left;
   }

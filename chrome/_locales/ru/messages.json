@@ -177,8 +177,14 @@
     "player_nosource_instruction2p2": {
         "message": "для загрузки источников, обнаруженных на других вкладках."
     },
-    "player_playpause_label": {
-        "message": "Воспроизведение/Пауза"
+    "player_play_label": {
+        "message": "Воспроизвести видео"
+    },
+    "player_pause_label": {
+        "message": "Приостановить видео"
+    },
+    "player_volume_label": {
+        "message": "Громкость $1%. Используйте стрелки для регулировки, Enter для отключения звука."
     },
     "player_mute_label": {
         "message": "Отключить звук"
@@ -189,25 +195,25 @@
     "player_sourcesbrowser_title": {
         "message": "Обзор источников"
     },
-    "player_sourcesbrowser_toggle_label": {
-        "message": "Обзор источников"
+    "player_sourcesbrowser_open_label": {
+        "message": "Открыть обзор источников"
     },
-    "player_sourcesbrowser_closebtn_label": {
+    "player_sourcesbrowser_close_label": {
         "message": "Закрыть обзор источников"
     },
     "player_audioconfig_title": {
         "message": "Конфигурация звука"
     },
-    "player_audioconfig_toggle_label": {
-        "message": "Настройка звука"
+    "player_audioconfig_open_label": {
+        "message": "Открыть настройки звука"
     },
-    "player_audioconfig_toggle_closebtn_label": {
+    "player_audioconfig_close_label": {
         "message": "Закрыть настройки звука"
     },
     "player_opensubtitles_title": {
         "message": "Поиск по OpenSubtitles"
     },
-    "player_opensubtitles_closebtn_label": {
+    "player_opensubtitles_close_label": {
         "message": "Закрыть поиск по OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
@@ -285,8 +291,11 @@
     "player_opensubtitles_askopen": {
         "message": "Хотите открыть сайт OpenSubtitles, чтобы загрузить субтитры вручную?"
     },
-    "player_subtitlesmenu_toggle_label": {
-        "message": "Субтитры"
+    "player_subtitlesmenu_open_label": {
+        "message": "Открыть меню субтитров"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Закрыть меню субтитров"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "Назад"
@@ -357,11 +366,11 @@
     "player_settings_title": {
         "message": "Настройки FastStream"
     },
-    "player_settings_closebtn_label": {
+    "player_settings_close_label": {
         "message": "Закрыть окно настроек"
     },
-    "player_settings_label": {
-        "message": "Настройки"
+    "player_settings_open_label": {
+        "message": "Открыть окно настроек"
     },
     "player_savevideo_label": {
         "message": "Сохранить видео. Удерживайте ALT, чтобы сохранить часть видео. Удерживайте SHIFT, чтобы сбросить буфер."
@@ -638,6 +647,12 @@
     },
     "audiomixer_title": {
         "message": "Микшер аудиоканала"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
     },
     "audiomixer_solo_label": {
         "message": "Соло"

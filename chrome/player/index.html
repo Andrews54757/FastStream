@@ -19,7 +19,7 @@
             <div class="skip_button" style="display: none;" tabindex="0" role="button"></div>
             <div class="fluid_controls_bottom_container">
                 <div class="fluid_controls_left">
-                    <div data-i18n-label="player_playpause_label" class="fluid_button fluid_control_playpause" role="button">
+                    <div data-i18n-label="player_play_label" class="fluid_button fluid_control_playpause" role="button">
                         <svg class="play">
                             <use href="assets/fluidplayer/static/icons.svg#play"></use>
                         </svg>
@@ -27,7 +27,7 @@
                             <use href="assets/fluidplayer/static/icons.svg#pause"></use>
                         </svg>
                     </div>
-                    <div class="volume_block">
+                    <div class="volume_block" role="slider">
                         <div data-i18n-label="player_mute_label" class="fluid_button fluid_control_mute" role="button">
                             <svg class="speaker">
                                 <use href="assets/fluidplayer/static/icons.svg#speaker"></use>
@@ -64,17 +64,17 @@
                    
                 </div>
                 <div class="fluid_controls_disabled_tools">
-                    <div role="button" data-i18n-label="player_sourcesbrowser_toggle_label" class="fluid_button fluid_button_link">
+                    <div role="button" data-i18n-label="player_sourcesbrowser_open_label" class="fluid_button fluid_button_link">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#link"></use>
                         </svg>
                     </div>
-                    <div role="button" data-i18n-label="player_audioconfig_toggle_label" class="fluid_button fluid_button_soundwave">
+                    <div role="button" data-i18n-label="player_audioconfig_open_label" class="fluid_button fluid_button_soundwave">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#soundwave"></use>
                         </svg>
                     </div>
-                    <div role="button" data-i18n-label="player_subtitlesmenu_toggle_label"
+                    <div role="button" data-i18n-label="player_subtitlesmenu_open_label"
                         class="fluid_button fluid_control_subtitles fluid_button_subtitles">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#captions"></use>
@@ -124,7 +124,7 @@
                             </div>
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_settings_label" class="fluid_button fluid_button_settings">
+                    <div role="button" data-i18n-label="player_settings_open_label" class="fluid_button fluid_button_settings">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#gear"></use>
                         </svg>
@@ -211,7 +211,7 @@
             <div role="button" class="hide_button" tabindex="0" data-i18n="player_hidecontrols"></div>
         </div>
         <div class="fluid_html_on_pause">
-            <div role="button" data-i18n-label="player_playpause_label" class="fluid_control_playpause_big_circle fluid_initial_play"
+            <div role="button" data-i18n-label="player_play_label" class="fluid_control_playpause_big_circle fluid_initial_play"
                 style="background-color: rgb(51, 51, 51);">
                 <div class="fluid_control_playpause_big fluid_initial_play_button"></div>
             </div>
@@ -223,32 +223,32 @@
                 </svg> <span data-i18n="player_nosource_instruction2p2"></span>
             </div>
         </div>
-        <div class="popwindow linkui_container" style="display: none;" tabindex="0">
+        <div class="popwindow linkui_container" style="display: none;" tabindex="-1" role="dialog">
             <div class="window_header">
                 <div class="title" data-i18n="player_sourcesbrowser_title"></div>
-                <div role="button" class="close_button" data-i18n-label="player_sourcesbrowser_closebtn_label"></div>
+                <div role="button" class="close_button" data-i18n-label="player_sourcesbrowser_close_label"></div>
             </div>
             <div class="content_container"></div>
            
         </div>
-        <div class="popwindow subui_container" style="display: none" tabindex="0">
+        <div class="popwindow subui_container" style="display: none" tabindex="-1" role="dialog">
             <div class="window_header">
                 <div class="title" data-i18n="player_opensubtitles_title"></div>
-                <div role="button" class="close_button" data-i18n-label="player_opensubtitles_closebtn_label"></div>
+                <div role="button" class="close_button" data-i18n-label="player_opensubtitles_close_label"></div>
             </div>
             <div class="content_container"></div>
         </div>
-        <div class="popwindow options_container" style="display: none" tabindex="0">
+        <div class="popwindow options_container" style="display: none" tabindex="-1" role="dialog">
             <div class="window_header">
                 <div class="title" data-i18n="player_settings_title"></div>
-                <div role="button" class="close_button" data-i18n-label="player_settings_closebtn_label"></div>
+                <div role="button" class="close_button" data-i18n-label="player_settings_close_label"></div>
             </div>
             <iframe class="options_frame" src="./options/index.html"></iframe>
         </div>
-        <div class="popwindow audio_config_container" style="display: none" tabindex="0">
+        <div class="popwindow audio_config_container" style="display: none" tabindex="-1" role="dialog">
             <div class="window_header">
                 <div class="title" data-i18n="player_audioconfig_title"></div>
-                <div role="button" class="close_button" data-i18n-label="player_audioconfig_closebtn_label"></div>
+                <div role="button" class="close_button" data-i18n-label="player_audioconfig_close_label"></div>
             </div>
             <div class="content_container"></div>
         </div>

@@ -177,37 +177,43 @@
     "player_nosource_instruction2p2": {
         "message": "to load sources detected from other tabs."
     },
-    "player_playpause_label": {
-        "message": "Play or pause video"
+    "player_play_label": {
+        "message": "Play video"
+    },
+    "player_pause_label": {
+        "message": "Pause video"
+    },
+    "player_volume_label": {
+        "message": "Volume is $1%. Use arrow keys to adjust, enter to toggle mute."
     },
     "player_mute_label": {
         "message": "Mute audio"
     },
     "player_timestamp_label": {
-        "message": "Timestamp"
+        "message": "Copy URL with timestamp"
     },
     "player_sourcesbrowser_title": {
         "message": "Sources Browser"
     },
-    "player_sourcesbrowser_toggle_label": {
-        "message": "Toggle sources browser"
+    "player_sourcesbrowser_open_label": {
+        "message": "Open sources browser"
     },
-    "player_sourcesbrowser_closebtn_label": {
+    "player_sourcesbrowser_close_label": {
         "message": "Close sources browser"
     },
     "player_audioconfig_title": {
         "message": "Audio Configuration"
     },
-    "player_audioconfig_toggle_label": {
-        "message": "Toggle audio config window"
+    "player_audioconfig_open_label": {
+        "message": "Open audio config window"
     },
-    "player_audioconfig_toggle_closebtn_label": {
+    "player_audioconfig_close_label": {
         "message": "Close audio config window"
     },
     "player_opensubtitles_title": {
         "message": "OpenSubtitles Search"
     },
-    "player_opensubtitles_closebtn_label": {
+    "player_opensubtitles_close_label": {
         "message": "Close OpenSubtitles search window"
     },
     "player_opensubtitles_search_placeholder": {
@@ -285,8 +291,11 @@
     "player_opensubtitles_askopen": {
         "message": "Would you like to open the OpenSubtitles website to download the subtitle file manually?"
     },
-    "player_subtitlesmenu_toggle_label": {
-        "message": "Toggle subtitles menu"
+    "player_subtitlesmenu_open_label": {
+        "message": "Open subtitles menu"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Close subtitles menu"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "Back"
@@ -357,11 +366,11 @@
     "player_settings_title": {
         "message": "FastStream Settings"
     },
-    "player_settings_closebtn_label": {
-        "message": "Close settings window"
+    "player_settings_open_label": {
+        "message": "Open settings window"
     },
-    "player_settings_label": {
-        "message": "Settings"
+    "player_settings_close_label": {
+        "message": "Close settings window"
     },
     "player_savevideo_label": {
         "message": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer."
@@ -373,10 +382,10 @@
         "message": "Picture in picture"
     },
     "player_fullscreen_label": {
-        "message": "Fullscreen"
+        "message": "Toggle fullscreen"
     },
     "player_windowed_fullscreen_label": {
-        "message": "Windowed Fullscreen"
+        "message": "Toggle windowed fullscreen"
     },
     "player_skip_forward_label": {
         "message": "Skip forward 10s"
@@ -638,6 +647,12 @@
     },
     "audiomixer_title": {
         "message": "Audio Channel Mixer"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mono"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mute"
     },
     "audiomixer_solo_label": {
         "message": "Solo"

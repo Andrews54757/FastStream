@@ -944,9 +944,11 @@ export class InterfaceController {
     if (this.state.playing) {
       playButton.classList.add('playing');
       playButtonBig.classList.replace('fluid_initial_play_button', 'fluid_initial_pause_button');
+      WebUtils.setLabels(playButton, Localize.getMessage('player_pause_label'));
     } else {
       playButton.classList.remove('playing');
       playButtonBig.classList.replace('fluid_initial_pause_button', 'fluid_initial_play_button');
+      WebUtils.setLabels(playButton, Localize.getMessage('player_play_label'));
     }
   }
 

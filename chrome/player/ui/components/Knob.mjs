@@ -42,6 +42,10 @@ export function createKnob(name, minValue, maxValue, callback, units = '') {
   const knobValue = WebUtils.create('div', null, 'knob_value');
   knobContainer.appendChild(knobValue);
   knobValue.contentEditable = true;
+  knobValue.role = 'textbox';
+  knobValue.ariaLabel = name;
+  knobValue.tabIndex = 0;
+
 
   const decimals = Utils.clamp(3 - Math.ceil(Math.log10(maxValue - minValue)), 0, 3);
 

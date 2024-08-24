@@ -210,11 +210,15 @@ export class AudioConfigManager extends AbstractAudioModule {
     InterfaceUtils.closeWindows();
     DOMElements.audioConfigContainer.style.display = '';
     this.startRenderLoop();
+
+    WebUtils.setLabels(DOMElements.audioConfigBtn, Localize.getMessage('player_audioconfig_close_label'));
   }
 
   closeUI() {
     DOMElements.audioConfigContainer.style.display = 'none';
     this.stopRenderLoop();
+
+    WebUtils.setLabels(DOMElements.audioConfigBtn, Localize.getMessage('player_audioconfig_open_label'));
   }
 
   saveCurrentProfile() {

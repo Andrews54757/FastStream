@@ -1,4 +1,5 @@
 import {EventEmitter} from '../modules/eventemitter.mjs';
+import {Localize} from '../modules/Localize.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
@@ -143,6 +144,8 @@ export class VolumeControls extends EventEmitter {
     } else {
       DOMElements.volumeBanner.style.display = '';
     }
+
+    WebUtils.setLabels(DOMElements.volumeBlock, Localize.getMessage('player_volume_label', [Math.round(volume * 100)]));
   }
 
   async loadVolumeState() {

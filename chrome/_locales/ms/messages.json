@@ -177,8 +177,14 @@
     "player_nosource_instruction2p2": {
         "message": "untuk memuatkan sumber yang dikesan daripada tab lain."
     },
-    "player_playpause_label": {
-        "message": "Mainkan atau jeda video"
+    "player_play_label": {
+        "message": "Mainkan video"
+    },
+    "player_pause_label": {
+        "message": "Jeda video"
+    },
+    "player_volume_label": {
+        "message": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio."
     },
     "player_mute_label": {
         "message": "Redamkan audio"
@@ -189,25 +195,25 @@
     "player_sourcesbrowser_title": {
         "message": "Sumber Pelayar"
     },
-    "player_sourcesbrowser_toggle_label": {
-        "message": "Togol penyemak imbas sumber"
+    "player_sourcesbrowser_open_label": {
+        "message": "Buka penyemak imbas sumber"
     },
-    "player_sourcesbrowser_closebtn_label": {
+    "player_sourcesbrowser_close_label": {
         "message": "Tutup penyemak imbas sumber"
     },
     "player_audioconfig_title": {
         "message": "Konfigurasi Audio"
     },
-    "player_audioconfig_toggle_label": {
-        "message": "Togol tetingkap konfigurasi audio"
+    "player_audioconfig_open_label": {
+        "message": "Buka tetingkap konfigurasi audio"
     },
-    "player_audioconfig_toggle_closebtn_label": {
+    "player_audioconfig_close_label": {
         "message": "Tutup tetingkap konfigurasi audio"
     },
     "player_opensubtitles_title": {
         "message": "Carian OpenSubtitles"
     },
-    "player_opensubtitles_closebtn_label": {
+    "player_opensubtitles_close_label": {
         "message": "Tutup tingkap carian OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
@@ -285,8 +291,11 @@
     "player_opensubtitles_askopen": {
         "message": "Adakah anda ingin membuka laman web OpenSubtitles untuk memuat turun fail sarikata secara manual?"
     },
-    "player_subtitlesmenu_toggle_label": {
-        "message": "Togol menu sarikata"
+    "player_subtitlesmenu_open_label": {
+        "message": "Buka tingkap sarikata"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Tutup tingkap sarikata"
     },
     "player_subtitlesmenu_backbtn": {
         "message": "Kembali"
@@ -357,11 +366,11 @@
     "player_settings_title": {
         "message": "Tetapan FastStream"
     },
-    "player_settings_closebtn_label": {
+    "player_settings_close_label": {
         "message": "Tutup tetingkap tetapan"
     },
-    "player_settings_label": {
-        "message": "Tetapan"
+    "player_settings_open_label": {
+        "message": "Buka tetingkap tetapan"
     },
     "player_savevideo_label": {
         "message": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal."
@@ -638,6 +647,12 @@
     },
     "audiomixer_title": {
         "message": "Pengadun Saluran Audio"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
     },
     "audiomixer_solo_label": {
         "message": "Solo"
