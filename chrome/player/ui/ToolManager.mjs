@@ -18,7 +18,7 @@ export class ToolManager {
     this.updateToolVisibility();
     DOMElements.playerContainer.addEventListener('click', (e) => {
       this.stopReorderUI();
-      DOMElements.disabledTools.classList.remove('visible');
+      DOMElements.extraTools.classList.remove('visible');
     });
 
     const options = {
@@ -32,13 +32,14 @@ export class ToolManager {
         this.userIsReordering = false;
         this.checkToolsAndSave();
       },
-      filter: '.menu_container, .rate_menu_container',
+      filter: '.menu_container, .rate_menu_container, .fluid_control_volume_container',
       preventOnFilter: false,
     };
-    this.reorderSortEnabled = Sortable.create(DOMElements.toolsContainer, options);
-    this.reorderSortDisabled = Sortable.create(DOMElements.disabledTools, options);
+    this.sortableRight = Sortable.create(DOMElements.rightToolsContainer, options);
+    this.sortableLeft = Sortable.create(DOMElements.leftToolsContainer, options);
+    this.sortableExtra = Sortable.create(DOMElements.extraTools, options);
 
-    const tools = Array.from(DOMElements.toolsContainer.children).concat(Array.from(DOMElements.disabledTools.children));
+    const tools = Array.from(DOMElements.leftToolsContainer.children).concat(Array.from(DOMElements.rightToolsContainer), Array.from(DOMElements.extraTools.children));
     tools.forEach((el) => {
       let skipClick = false;
       const reorderMouseDown = (e) => {
@@ -81,27 +82,6 @@ export class ToolManager {
       }, true);
     });
 
-
-    const mouseUpHandler = (e) => {
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
-    };
-
-    const mouseMoveHandler = (e) => {
-      const currentY = Math.min(Math.max(e.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 100);
-      const isExpanded = DOMElements.playerContainer.classList.contains('expanded');
-      const offset = isExpanded ? 0 : 80;
-      if (currentY > 50) {
-        this.interfaceController.closeTimeline();
-      } else if (currentY <= -5 - offset) {
-        this.interfaceController.openTimeline();
-      }
-    };
-
-    DOMElements.controlsLeft.addEventListener('mousedown', (e) => {
-      document.addEventListener('mousemove', mouseMoveHandler);
-      document.addEventListener('mouseup', mouseUpHandler);
-    });
     this.setupDragDemoTutorial();
   }
 
@@ -150,6 +130,8 @@ export class ToolManager {
 
     const toolSettings = this.client.options.toolSettings;
     const toolElements = {
+      playpause: DOMElements.playPauseButton,
+      volume: DOMElements.volumeBlock,
       pip: DOMElements.pip,
       screenshot: DOMElements.screenshot,
       download: DOMElements.download,
@@ -172,46 +154,62 @@ export class ToolManager {
       return;
     }
 
-    const enabledToolPairs = [];
-    const disabledToolPairs = [];
+    const leftToolPairs = [];
+    const rightToolPairs = [];
+    const extraToolPairs = [];
 
     for (const [tool, element] of Object.entries(toolElements)) {
       element.dataset.tool = tool;
-      if (toolSettings[tool].enabled) {
-        enabledToolPairs.push([element, toolSettings[tool]]);
-      } else {
-        disabledToolPairs.push([element, toolSettings[tool]]);
+      const location = toolSettings[tool].location;
+      if (location === 'left') {
+        leftToolPairs.push([element, toolSettings[tool]]);
+      } else if (location === 'right') {
+        rightToolPairs.push([element, toolSettings[tool]]);
+      } else if (location === 'extra') {
+        extraToolPairs.push([element, toolSettings[tool]]);
+      } else { // Legacy
+        if (toolSettings[tool].enabled) {
+          rightToolPairs.push([element, toolSettings[tool]]);
+        } else {
+          extraToolPairs.push([element, toolSettings[tool]]);
+        }
       }
       element.remove();
     }
 
-    enabledToolPairs.sort((a, b) => a[1].priority - b[1].priority);
-    for (const [element] of enabledToolPairs) {
-      DOMElements.toolsContainer.appendChild(element);
+    leftToolPairs.sort((a, b) => a[1].priority - b[1].priority);
+    for (const [element] of leftToolPairs) {
+      DOMElements.leftToolsContainer.appendChild(element);
     }
 
-    disabledToolPairs.sort((a, b) => a[1].priority - b[1].priority);
-    for (const [element] of disabledToolPairs) {
-      DOMElements.disabledTools.appendChild(element);
+    rightToolPairs.sort((a, b) => a[1].priority - b[1].priority);
+    for (const [element] of rightToolPairs) {
+      DOMElements.rightToolsContainer.appendChild(element);
+    }
+
+    extraToolPairs.sort((a, b) => a[1].priority - b[1].priority);
+    for (const [element] of extraToolPairs) {
+      DOMElements.extraTools.appendChild(element);
     }
 
     this.checkMoreTool();
   }
 
   checkMoreTool() {
-    if (Array.from(DOMElements.disabledTools.children).some((el) => {
+    if (Array.from(DOMElements.extraTools.children).some((el) => {
       return !el.classList.contains('hidden');
     })) {
       DOMElements.moreButton.classList.remove('hidden');
     } else {
       DOMElements.moreButton.classList.add('hidden');
-      DOMElements.disabledTools.classList.remove('visible');
+      DOMElements.extraTools.classList.remove('visible');
     }
 
-    if (DOMElements.toolsContainer.children.length === 0) {
-      this.moveMoreTool(DOMElements.disabledTools, DOMElements.toolsContainer);
-    } else if (DOMElements.disabledTools.children.length === 0) {
-      this.moveMoreTool(DOMElements.toolsContainer, DOMElements.disabledTools);
+    if (DOMElements.leftToolsContainer.children.length === 0 && DOMElements.rightToolsContainer.children.length === 0) {
+      this.moveMoreTool(DOMElements.extraTools, DOMElements.rightToolsContainer);
+    } else if (DOMElements.extraTools.children.length === 0) {
+      this.moveMoreTool(DOMElements.rightToolsContainer, DOMElements.extraTools);
+      this.moveMoreTool(DOMElements.leftToolsContainer, DOMElements.extraTools);
     }
   }
 
@@ -226,16 +224,22 @@ export class ToolManager {
   checkToolsAndSave() {
     this.checkMoreTool();
 
-    Array.from(DOMElements.toolsContainer.children).forEach((el, i) => {
+    Array.from(DOMElements.leftToolsContainer.children).forEach((el, i) => {
       const tool = el.dataset.tool;
       this.client.options.toolSettings[tool].priority = (i + 1) * 100;
-      this.client.options.toolSettings[tool].enabled = true;
+      this.client.options.toolSettings[tool].location = 'left';
     });
 
-    Array.from(DOMElements.disabledTools.children).forEach((el, i) => {
+    Array.from(DOMElements.rightToolsContainer.children).forEach((el, i) => {
       const tool = el.dataset.tool;
       this.client.options.toolSettings[tool].priority = (i + 1) * 100;
-      this.client.options.toolSettings[tool].enabled = false;
+      this.client.options.toolSettings[tool].location = 'right';
+    });
+
+    Array.from(DOMElements.extraTools.children).forEach((el, i) => {
+      const tool = el.dataset.tool;
+      this.client.options.toolSettings[tool].priority = (i + 1) * 100;
+      this.client.options.toolSettings[tool].location = 'extra';
     });
 
     Utils.setConfig('toolSettings', JSON.stringify(this.client.options.toolSettings));
@@ -246,15 +250,17 @@ export class ToolManager {
     this.interfaceController.closeAllMenus();
     this.closeDragDemoTutorial();
     this.specialReorderModeEnabled = true;
-    DOMElements.toolsContainer.classList.add('reordering');
-    DOMElements.disabledTools.classList.add('reordering');
+    DOMElements.rightToolsContainer.classList.add('reordering');
+    DOMElements.leftToolsContainer.classList.add('reordering');
+    DOMElements.extraTools.classList.add('reordering');
   }
 
   stopReorderUI() {
     if (!this.specialReorderModeEnabled) return;
     this.specialReorderModeEnabled = false;
-    DOMElements.toolsContainer.classList.remove('reordering');
-    DOMElements.disabledTools.classList.remove('reordering');
+    DOMElements.rightToolsContainer.classList.remove('reordering');
+    DOMElements.leftToolsContainer.classList.remove('reordering');
+    DOMElements.extraTools.classList.remove('reordering');
   }
 
   setupDragDemoTutorial() {

@@ -342,10 +342,15 @@ body {
 }
 
 .fluid_controls_left,
+.tools_container_left,
 .fluid_controls_right {
     display: flex;
     align-items: center;
     gap: 5px;
+}
+
+.tools_container_left {
+    height: 100%;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container {
@@ -2755,20 +2760,22 @@ input.crosstalk_calculator_input {
 }
 
 .fluid_controls_right:not(.reordering) > .hidden,
-.fluid_controls_disabled_tools:not(.reordering) > .hidden {
+.fluid_controls_extra_tools:not(.reordering) > .hidden {
     display: none !important;
 }
 
 .fluid_controls_right.reordering > .hidden,
-.fluid_controls_disabled_tools.reordering > .hidden {
+.fluid_controls_extra_tools.reordering > .hidden {
     opacity: 0.5;
 }
 
 /* Make shake */
-.reordering > div > svg {
+.reordering > div > svg,
+.reordering > div.volume_block > div > svg {
     animation: tilt-shaking 0.25s infinite;
 }
-.reordering > div.sortable-chosen > svg {
+.reordering > div.sortable-chosen > svg,
+.reordering > div.volume_block.sortable-chosen > div > svg  {
     animation: none;
 }
 
@@ -2784,7 +2791,7 @@ input.crosstalk_calculator_input {
     opacity: 0 !important;
 }
 
-.fluid_controls_disabled_tools {
+.fluid_controls_extra_tools {
     display: none;
     z-index: 888888;
     flex-wrap: wrap;
@@ -2799,27 +2806,31 @@ input.crosstalk_calculator_input {
     gap: 5px;
 }
 
-.fluid_controls_disabled_tools.reordering,
-.fluid_controls_disabled_tools.visible {
+.fluid_controls_extra_tools.reordering,
+.fluid_controls_extra_tools.visible {
     display: flex;
 }
 
-.fluid_controls_disabled_tools.reordering,
+.fluid_controls_extra_tools.reordering,
 .fluid_controls_right.reordering {
     min-width: 390px;
+}
+
+.tools_container_left.reordering {
+    min-width: 30px;
 }
 
 .fluid_controls_right.reordering {
     justify-content: flex-end;
 }
 
-.fluid_controls_disabled_tools .rate_menu_container,
-.fluid_controls_disabled_tools .menu_container {
+.fluid_controls_extra_tools .rate_menu_container,
+.fluid_controls_extra_tools .menu_container {
     max-height: calc(100vh - 105px);
 }
 
-.expanded .fluid_controls_disabled_tools .rate_menu_container,
-.expanded .fluid_controls_disabled_tools .menu_container {
+.expanded .fluid_controls_extra_tools .rate_menu_container,
+.expanded .fluid_controls_extra_tools .menu_container {
     max-height: calc(100vh - 185px);
 }
 
@@ -2906,11 +2917,11 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_controls_right.reordering,
-    .fluid_controls_disabled_tools.reordering {
+    .fluid_controls_extra_tools.reordering {
         min-width: 280px;
     }
 
-    .fluid_controls_disabled_tools {
+    .fluid_controls_extra_tools {
         gap: 2px;
     }
 
@@ -2920,7 +2931,8 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_controls_right,
-    .fluid_controls_left {
+    .fluid_controls_left,
+    .tools_container_left {
         gap: 2px;
     }
 

@@ -1,66 +1,74 @@
 export const DefaultToolSettings = {
+  'playpause': {
+    'location': 'left',
+    'priority': 100,
+  },
+  'volume': {
+    'location': 'left',
+    'priority': 200,
+  },
   'sources': {
-    'enabled': true,
+    'location': 'right',
     'priority': 100,
   },
   'audioconfig': {
-    'enabled': true,
+    'location': 'right',
     'priority': 200,
   },
   'subtitles': {
-    'enabled': true,
+    'location': 'right',
     'priority': 300,
   },
-  'quality': {
-    'enabled': true,
-    'priority': 500,
-  },
   'languages': {
-    'enabled': true,
+    'location': 'right',
     'priority': 400,
   },
+  'quality': {
+    'location': 'right',
+    'priority': 500,
+  },
   'playrate': {
-    'enabled': true,
+    'location': 'right',
     'priority': 600,
   },
   'settings': {
-    'enabled': true,
+    'location': 'right',
     'priority': 700,
   },
-  'download': {
-    'enabled': true,
-    'priority': 900,
-  },
-  'screenshot': {
-    'enabled': false,
-    'priority': 200,
-  },
-  'pip': {
-    'enabled': false,
-    'priority': 300,
-  },
-  'fullscreen': {
-    'enabled': true,
-    'priority': 1000,
-  },
-  'windowedfs': {
-    'enabled': false,
-    'priority': 400,
-  },
   'more': {
-    'enabled': true,
+    'location': 'right',
     'priority': 800,
   },
+  'download': {
+    'location': 'right',
+    'priority': 900,
+  },
+  'fullscreen': {
+    'location': 'right',
+    'priority': 1000,
+  },
   'loop': {
-    'enabled': false,
+    'location': 'extra',
     'priority': 100,
   },
-  'forward': {
-    'enabled': false,
-    'priority': 600,
+  'pip': {
+    'location': 'extra',
+    'priority': 200,
+  },
+  'windowedfs': {
+    'location': 'extra',
+    'priority': 300,
   },
   'backward': {
-    'enabled': false,
+    'location': 'extra',
+    'priority': 400,
+  },
+  'screenshot': {
+    'location': 'extra',
     'priority': 500,
+  },
+  'forward': {
+    'location': 'extra',
+    'priority': 600,
   },
 };

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./assets/fluidplayer/css/fluidplayer.css">
     <link rel="stylesheet" href="./assets/coloris/css/coloris.css">
 </head>
+
 <body>
     <div class="mainplayer fluid_video_wrapper fluid_player_layout_default controls_visible" role="application">
         <div class="video-container"></div>
@@ -19,6 +20,24 @@
             <div class="skip_button" style="display: none;" tabindex="0" role="button"></div>
             <div class="fluid_controls_bottom_container">
                 <div class="fluid_controls_left">
+                    <div class="tools_container_left">
+
+                    </div>
+                    <div data-i18n-label="player_timestamp_label" class="fluid_control_duration">00:00 / 00:00
+                    </div>
+                    <div class="status_message"></div>
+                    <div class="status_message"></div>
+                    <div class="status_message"></div>
+                    <div class="reset_failed" style="display: none" role="button"></div>
+                    <div class="buffering_spinner" style="display: none;">
+                        <div class="spinner"></div>
+                        <span data-i18n="player_loading"></span>
+                    </div>
+                </div>
+                <div class="fluid_controls_right">
+
+                </div>
+                <div class="fluid_controls_extra_tools">
                     <div data-i18n-label="player_play_label" class="fluid_button fluid_control_playpause" role="button">
                         <svg class="play">
                             <use href="assets/fluidplayer/static/icons.svg#play"></use>
@@ -49,27 +68,14 @@
                             </div>
                         </div>
                     </div>
-                    <div data-i18n-label="player_timestamp_label" class="fluid_control_duration">00:00 / 00:00
-                    </div>
-                    <div class="status_message"></div>
-                    <div class="status_message"></div>
-                    <div class="status_message"></div>
-                    <div class="reset_failed" style="display: none" role="button"></div>
-                    <div class="buffering_spinner" style="display: none;">
-                        <div class="spinner"></div>
-                        <span data-i18n="player_loading"></span>
-                    </div>
-                </div>
-                <div class="fluid_controls_right">
-                   
-                </div>
-                <div class="fluid_controls_disabled_tools">
-                    <div role="button" data-i18n-label="player_sourcesbrowser_open_label" class="fluid_button fluid_button_link">
+                    <div role="button" data-i18n-label="player_sourcesbrowser_open_label"
+                        class="fluid_button fluid_button_link">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#link"></use>
                         </svg>
                     </div>
-                    <div role="button" data-i18n-label="player_audioconfig_open_label" class="fluid_button fluid_button_soundwave">
+                    <div role="button" data-i18n-label="player_audioconfig_open_label"
+                        class="fluid_button fluid_button_soundwave">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#soundwave"></use>
                         </svg>
@@ -85,17 +91,20 @@
                             </div>
                             <div class="subtitles_options">
                                 <div class="subtitles_options_header">
-                                    <div role="button" class="subtitles_options_back" data-i18n="player_subtitlesmenu_backbtn"></div>
+                                    <div role="button" class="subtitles_options_back"
+                                        data-i18n="player_subtitlesmenu_backbtn"></div>
                                     <div class="subtitles_title" data-i18n="player_subtitlesmenu_settings"></div>
                                 </div>
                                 <div class="subtitles_options_list"></div>
                                 <div style="display: flex; justify-content: center;">
-                                    <div role="button" class="subtitles_test_button" data-i18n="player_subtitlesmenu_testbtn"></div>
+                                    <div role="button" class="subtitles_test_button"
+                                        data-i18n="player_subtitlesmenu_testbtn"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_qualitymenu_label" class="fluid_button fluid_control_video_source fluid_button_video_source hidden">
+                    <div role="button" data-i18n-label="player_qualitymenu_label"
+                        class="fluid_button fluid_control_video_source fluid_button_video_source hidden">
                         <svg class="quality-sd" style="display: inline-block">
                             <use href="assets/fluidplayer/static/icons2.svg#quality-sd"></use>
                         </svg>
@@ -117,14 +126,16 @@
                         <div class="fluid_video_sources_list menu_container" style="display: none;" title="">
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_languagemenu_label" class="fluid_button fluid_control_language fluid_button_language hidden">
+                    <div role="button" data-i18n-label="player_languagemenu_label"
+                        class="fluid_button fluid_control_language fluid_button_language hidden">
                         <svg class="language">
                             <use href="assets/fluidplayer/static/icons.svg#language"></use>
                         </svg>
                         <div class="fluid_language_list menu_container" style="display: none;" title="">
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_playbackrate_label" class="fluid_button fluid_button_playback_rate">
+                    <div role="button" data-i18n-label="player_playbackrate_label"
+                        class="fluid_button fluid_button_playback_rate">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#timer"></use>
                         </svg>
@@ -136,19 +147,22 @@
                             </div>
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_settings_open_label" class="fluid_button fluid_button_settings">
+                    <div role="button" data-i18n-label="player_settings_open_label"
+                        class="fluid_button fluid_button_settings">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#gear"></use>
                         </svg>
                         <div id="update_notif_banner" style="display: none;">!</div>
                     </div>
-                    <div role="button" data-i18n-label="player_savevideo_label" class="fluid_button fluid_button_download main_download hidden">
+                    <div role="button" data-i18n-label="player_savevideo_label"
+                        class="fluid_button fluid_button_download main_download hidden">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#download"></use>
                         </svg>
                         <div id="save_notif_banner" style="display: none;">1</div>
                     </div>
-                    <div role="button" data-i18n-label="player_screenshot_label" class="fluid_button fluid_button_screenshot hidden">
+                    <div role="button" data-i18n-label="player_screenshot_label"
+                        class="fluid_button fluid_button_screenshot hidden">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#photo"></use>
                         </svg>
@@ -168,10 +182,11 @@
                             <use href="assets/fluidplayer/static/icons2.svg#loop"></use>
                         </svg>
                         <div class="loop_menu menu_container" style="display: none;" title="">
-                        
+
                         </div>
                     </div>
-                    <div role="button" data-i18n-label="player_fullscreen_label" class="fluid_button fluid_control_fullscreen">
+                    <div role="button" data-i18n-label="player_fullscreen_label"
+                        class="fluid_button fluid_control_fullscreen">
                         <svg class="fullscreen-in">
                             <use href="assets/fluidplayer/static/icons.svg#fullscreen"></use>
                         </svg>
@@ -179,19 +194,22 @@
                             <use href="assets/fluidplayer/static/icons.svg#fullscreen-out"></use>
                         </svg>
                     </div>
-                    <div role="button" data-i18n-label="player_windowed_fullscreen_label" class="fluid_button fluid_control_windowed_fullscreen">
+                    <div role="button" data-i18n-label="player_windowed_fullscreen_label"
+                        class="fluid_button fluid_control_windowed_fullscreen">
                         <svg>
                             <use href="assets/fluidplayer/static/icons2.svg#windowed-fs"></use>
                         </svg>
                     </div>
 
-                    <div role="button" data-i18n-label="player_skip_forward_label" class="fluid_button fluid_control_skip_forward">
+                    <div role="button" data-i18n-label="player_skip_forward_label"
+                        class="fluid_button fluid_control_skip_forward">
                         <svg>
                             <use href="assets/fluidplayer/static/icons2.svg#skip-forward"></use>
                         </svg>
                     </div>
 
-                    <div role="button" data-i18n-label="player_skip_backward_label" class="fluid_button fluid_control_skip_backward">
+                    <div role="button" data-i18n-label="player_skip_backward_label"
+                        class="fluid_button fluid_control_skip_backward">
                         <svg>
                             <use href="assets/fluidplayer/static/icons2.svg#skip-backward"></use>
                         </svg>
@@ -223,14 +241,16 @@
             <div role="button" class="hide_button" tabindex="0" data-i18n="player_hidecontrols"></div>
         </div>
         <div class="fluid_html_on_pause">
-            <div role="button" data-i18n-label="player_play_label" class="fluid_control_playpause_big_circle fluid_initial_play"
+            <div role="button" data-i18n-label="player_play_label"
+                class="fluid_control_playpause_big_circle fluid_initial_play"
                 style="background-color: rgb(51, 51, 51);">
                 <div class="fluid_control_playpause_big fluid_initial_play_button"></div>
             </div>
             <div class="playinfo">
                 <h3 data-i18n="player_nosource_header"></h3>
                 <span data-i18n="player_nosource_instruction1"></span><br>
-                <span data-i18n="player_nosource_instruction2p1"></span> <svg width="18px" height="16px" style="color: var(--linkui-toggle-color); margin-bottom: -3px">
+                <span data-i18n="player_nosource_instruction2p1"></span> <svg width="18px" height="16px"
+                    style="color: var(--linkui-toggle-color); margin-bottom: -3px">
                     <use href="assets/fluidplayer/static/icons.svg#link"></use>
                 </svg> <span data-i18n="player_nosource_instruction2p2"></span>
             </div>
@@ -241,7 +261,7 @@
                 <div role="button" class="close_button" data-i18n-label="player_sourcesbrowser_close_label"></div>
             </div>
             <div class="content_container"></div>
-           
+
         </div>
         <div class="popwindow subui_container" style="display: none" tabindex="-1" role="dialog">
             <div class="window_header">
@@ -270,4 +290,5 @@
     <script src="./i18n.mjs" charset="UTF-8" type="module"></script>
     <script src="./main.mjs" type="module"></script>
 </body>
+
 </html>
