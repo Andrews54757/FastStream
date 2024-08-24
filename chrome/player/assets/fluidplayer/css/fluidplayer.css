@@ -613,15 +613,12 @@ body {
     display: none;
 }
 
-.fluid_button_video_source .quality-hd {
-    display: none;
-}
-
-.fluid_button_video_source.hd .quality-hd {
-    display: inline-block;
-}
-
-.fluid_button_video_source.hd .quality-sd {
+.fluid_button_video_source .quality-sd,
+.fluid_button_video_source .quality-hd,
+.fluid_button_video_source .quality-fhd,
+.fluid_button_video_source .quality-2k,
+.fluid_button_video_source .quality-4k,
+.fluid_button_video_source .quality-8k {
     display: none;
 }
 

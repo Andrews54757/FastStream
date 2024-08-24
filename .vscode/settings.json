@@ -5,5 +5,5 @@
     "eslint.validate": [
         "javascript"
     ],
-    "svg.preview.background": "dark-transparent"
+    "svg.preview.background": "editor"
 }

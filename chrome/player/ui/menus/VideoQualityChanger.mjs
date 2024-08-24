@@ -165,12 +165,34 @@ export class VideoQualityChanger extends EventEmitter {
       console.warn('No current level');
       return;
     }
-    const isHD = (current.width >= 1280 || current.height >= 1280);
+    const maxSize = Math.max(current.width, current.height);
 
-    if (isHD) {
-      DOMElements.videoSource.classList.add('hd');
-    } else {
-      DOMElements.videoSource.classList.remove('hd');
+    const qualityList = {
+      'sd': maxSize < 720,
+      'hd': maxSize >= 720 && maxSize < 1080,
+      'fhd': maxSize >= 1080 && maxSize < 1440,
+      '2k': maxSize >= 1440 && maxSize < 2160,
+      '4k': maxSize >= 2160 && maxSize < 4320,
+      '8k': maxSize >= 4320,
+    };
+
+    for (const quality in qualityList) {
+      if (!Object.hasOwn(qualityList, quality)) {
+        continue;
+      }
+
+      // Find element with .quality-<quality> class
+      const element = DOMElements.videoSource.querySelector(`.quality-${quality}`);
+      if (!element) {
+        console.warn('No element for quality', quality);
+        continue;
+      }
+
+      if (qualityList[quality]) {
+        element.style.display = 'inline-block';
+      } else {
+        element.style.display = '';
+      }
     }
   }
 }
