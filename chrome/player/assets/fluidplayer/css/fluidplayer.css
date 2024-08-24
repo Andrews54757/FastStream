@@ -2776,8 +2776,14 @@ input.crosstalk_calculator_input {
 .reordering > div.volume_block > div > svg {
     animation: tilt-shaking 0.25s infinite;
 }
+
+.reordering > .fluid_control_duration {
+    animation: tilt-shaking-small 0.25s infinite;
+}
+
 .reordering > div.sortable-chosen > svg,
-.reordering > div.volume_block.sortable-chosen > div > svg  {
+.reordering > div.volume_block.sortable-chosen > div > svg,
+.reordering > .fluid_control_duration.sortable-chosen  {
     animation: none;
 }
 
@@ -2788,6 +2794,14 @@ input.crosstalk_calculator_input {
     75% { transform: rotate(-5deg); }
     100% { transform: rotate(0deg); }
   }
+
+@keyframes tilt-shaking-small {
+0% { transform: rotate(0deg); }
+25% { transform: rotate(1deg); }
+50% { transform: rotate(0eg); }
+75% { transform: rotate(-1deg); }
+100% { transform: rotate(0deg); }
+}
 
 .sortable-ghost {
     opacity: 0 !important;

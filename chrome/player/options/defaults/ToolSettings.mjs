@@ -7,6 +7,10 @@ export const DefaultToolSettings = {
     'location': 'left',
     'priority': 200,
   },
+  'duration': {
+    'location': 'left',
+    'priority': 300,
+  },
   'sources': {
     'location': 'right',
     'priority': 100,

@@ -132,6 +132,7 @@ export class ToolManager {
     const toolElements = {
       playpause: DOMElements.playPauseButton,
       volume: DOMElements.volumeBlock,
+      duration: DOMElements.duration,
       pip: DOMElements.pip,
       screenshot: DOMElements.screenshot,
       download: DOMElements.download,
