@@ -282,6 +282,7 @@ function createKeybindElement(keybind) {
   keybindInput.classList.add('keybind-input');
   keybindInput.tabIndex = 0;
   keybindInput.title = keybindName;
+  keybindInput.role = 'button';
   keybindInput.textContent = Options.keybinds[keybind];
 
   keybindInput.addEventListener('keydown', (e) => {
