@@ -427,8 +427,8 @@ body {
     visibility: hidden;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:focus .fluid_control_volume_container,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:hover .fluid_control_volume_container {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering) > .volume_block:focus .fluid_control_volume_container,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering) > .volume_block:hover .fluid_control_volume_container {
     width: var(--volume-block-width);
     visibility: visible;
 }
@@ -437,8 +437,8 @@ body {
     transition: 0.2s ease-in-out;
 }
 
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:focus .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering) > .volume_block:focus .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering) > .volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
     width: 11px;
     height: 11px;
 }
@@ -2020,7 +2020,7 @@ body {
 }
 
 
-.volume_block:focus .tooltip .tooltiptext {
+div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     visibility: visible;
 }
 
@@ -2760,11 +2760,13 @@ input.crosstalk_calculator_input {
 }
 
 .fluid_controls_right:not(.reordering) > .hidden,
+.tools_container_left:not(.reordering) > .hidden,
 .fluid_controls_extra_tools:not(.reordering) > .hidden {
     display: none !important;
 }
 
 .fluid_controls_right.reordering > .hidden,
+.tools_container_left.reordering > .hidden,
 .fluid_controls_extra_tools.reordering > .hidden {
     opacity: 0.5;
 }
