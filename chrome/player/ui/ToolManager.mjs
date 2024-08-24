@@ -39,7 +39,7 @@ export class ToolManager {
     this.sortableLeft = Sortable.create(DOMElements.leftToolsContainer, options);
     this.sortableExtra = Sortable.create(DOMElements.extraTools, options);
 
-    const tools = Array.from(DOMElements.leftToolsContainer.children).concat(Array.from(DOMElements.rightToolsContainer), Array.from(DOMElements.extraTools.children));
+    const tools = Array.from(DOMElements.leftToolsContainer.children).concat(Array.from(DOMElements.rightToolsContainer.children), Array.from(DOMElements.extraTools.children));
     tools.forEach((el) => {
       let skipClick = false;
       const reorderMouseDown = (e) => {
