@@ -165,7 +165,7 @@ export class VideoQualityChanger extends EventEmitter {
       console.warn('No current level');
       return;
     }
-    const maxSize = Math.max(current.width, current.height);
+    const maxSize = Math.min(current.width, current.height);
 
     const qualityList = {
       'sd': maxSize < 720,
