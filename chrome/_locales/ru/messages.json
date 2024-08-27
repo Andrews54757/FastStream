@@ -159,6 +159,9 @@
     "player_skipoutro": {
         "message": "Пропустить окончание"
     },
+    "player_nextvideoin": {
+        "message": "Следующее видео через $1с"
+    },
     "player_hidecontrols": {
         "message": "Скрыть элементы управления"
     },

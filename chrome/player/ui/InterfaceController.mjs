@@ -75,7 +75,7 @@ export class InterfaceController {
     this.loopControls.on('open', this.closeAllMenus.bind(this));
 
     this.progressBar = new ProgressBar(this.client);
-    this.progressBar.on('enteredSkipSegment', (segment)=>{
+    this.progressBar.on('show-skip', (segment)=>{
       this.showControlBar();
       this.queueControlsHide(5000);
     });

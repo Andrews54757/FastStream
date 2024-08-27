@@ -159,6 +159,9 @@
     "player_skipoutro": {
         "message": "Skip Outro"
     },
+    "player_nextvideoin": {
+        "message": "Next Video in $1s"
+    },
     "player_hidecontrols": {
         "message": "Hide Controls"
     },

@@ -1043,6 +1043,7 @@ body {
     border: var(--popbutton-hover-border);
 }
 
+.next_video_button,
 .skip_button {
     color: var(--popbutton-text-color);
     position: absolute;
@@ -1056,9 +1057,18 @@ body {
     transition: bottom 0.5s;
 }
 
+.skip_button.shiftup {
+    bottom: 90px;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .hide_button,
-.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button {
+.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button,
+.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .next_video_button {
     bottom: 130px;
+}
+
+.fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button.shiftup {
+    bottom: 170px;
 }
 
 .skip_button:hover {

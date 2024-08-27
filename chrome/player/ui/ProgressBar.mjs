@@ -346,23 +346,34 @@ export class ProgressBar extends EventEmitter {
     if (currentSegment) {
       DOMElements.skipButton.style.display = '';
       DOMElements.skipButton.textContent = currentSegment.skipText;
+      DOMElements.skipButton.ariaLabel = currentSegment.skipText;
       DOMElements.progressContainer.classList.add('skip_freeze');
     } else {
       DOMElements.progressContainer.classList.remove('skip_freeze');
       DOMElements.skipButton.style.display = 'none';
-      this.hasShownSkip = false;
     }
 
-    if (DOMElements.skipButton.style.display !== 'none') {
+    if (this.client.hasNextVideo() && (currentSegment === skipSegments[1] || Math.ceil(duration - time) <= 5)) { // Outro
+      DOMElements.nextVideoBannerButton.style.display = '';
+      DOMElements.nextVideoBannerButton.textContent = Localize.getMessage('player_nextvideoin', [Math.ceil(duration - time)]);
+      DOMElements.skipButton.classList.add('shiftup');
+    } else {
+      DOMElements.nextVideoBannerButton.style.display = 'none';
+      DOMElements.skipButton.classList.remove('shiftup');
+    }
+
+    if (DOMElements.skipButton.style.display !== 'none' || DOMElements.nextVideoBannerButton.style.display !== 'none') {
       if (!this.hasShownSkip) {
         this.hasShownSkip = true;
 
         if (currentSegment.autoSkip) {
           this.skipSegment();
         } else {
-          this.emit('enteredSkipSegment', currentSegment);
+          this.emit('show-skip', currentSegment);
         }
       }
+    } else {
+      this.hasShownSkip = false;
     }
 
     const chapters = [];

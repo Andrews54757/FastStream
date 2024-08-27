@@ -159,6 +159,9 @@
     "player_skipoutro": {
         "message": "Langkau Lain"
     },
+    "player_nextvideoin": {
+        "message": "Video seterusnya dalam $1s"
+    },
     "player_hidecontrols": {
         "message": "Sembunyikan Kawalan"
     },

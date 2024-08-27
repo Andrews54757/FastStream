@@ -159,6 +159,9 @@
     "player_skipoutro": {
         "message": "アウトロをスキップ"
     },
+    "player_nextvideoin": {
+        "message": "次のビデオ $1s 後"
+    },
     "player_hidecontrols": {
         "message": "コントロールを隠す"
     },
