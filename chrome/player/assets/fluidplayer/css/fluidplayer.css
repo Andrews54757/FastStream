@@ -1058,7 +1058,7 @@ body {
 }
 
 .skip_button.shiftup {
-    bottom: 90px;
+    bottom: 88px;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .hide_button,
@@ -1068,9 +1068,10 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button.shiftup {
-    bottom: 170px;
+    bottom: 168px;
 }
 
+.next_video_button:hover,
 .skip_button:hover {
     background-color: var(--popbutton-hover-background-color);
     border: var(--popbutton-hover-border);
