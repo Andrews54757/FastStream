@@ -183,6 +183,12 @@
     "player_pause_label": {
         "message": "Pause video"
     },
+    "player_next_video_label": {
+        "message": "Next video"
+    },
+    "player_previous_video_label": {
+        "message": "Previous video"
+    },
     "player_volume_label": {
         "message": "Volume is $1%. Use arrow keys to adjust, enter to toggle mute."
     },

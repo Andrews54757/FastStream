@@ -183,6 +183,12 @@
     "player_pause_label": {
         "message": "ビデオを一時停止"
     },
+    "player_next_video_label": {
+        "message": "次のビデオ"
+    },
+    "player_previous_video_label": {
+        "message": "前のビデオ"
+    },
     "player_volume_label": {
         "message": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。"
     },

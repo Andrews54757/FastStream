@@ -183,6 +183,12 @@
     "player_pause_label": {
         "message": "Jeda video"
     },
+    "player_next_video_label": {
+        "message": "Video seterusnya"
+    },
+    "player_previous_video_label": {
+        "message": "Video sebelumnya"
+    },
     "player_volume_label": {
         "message": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio."
     },

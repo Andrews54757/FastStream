@@ -183,6 +183,12 @@
     "player_pause_label": {
         "message": "Приостановить видео"
     },
+    "player_next_video_label": {
+        "message": "Следующее видео"
+    },
+    "player_previous_video_label": {
+        "message": "Предыдущее видео"
+    },
     "player_volume_label": {
         "message": "Громкость $1%. Используйте стрелки для регулировки, Enter для отключения звука."
     },

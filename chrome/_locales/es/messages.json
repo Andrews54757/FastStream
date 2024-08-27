@@ -182,6 +182,12 @@
     "player_pause_label": {
         "message": "Pausar video"
     },
+    "player_next_video_label": {
+        "message": "Siguiente video"
+    },
+    "player_previous_video_label": {
+        "message": "Video anterior"
+    },
     "player_volume_label": {
         "message": "El volumen es $1%. Usa las teclas de flecha para ajustar, enter para silenciar."
     },
