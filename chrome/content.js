@@ -277,8 +277,8 @@ function handlePlayerActivation(request, sender, sendResponse) {
 
         pauseAllWithin(document.body);
         // Remove everything from the document
-        document.body.replaceChildren(iframe);
-        console.log('replacing everything with iframe');
+        document.body.appendChild(iframe);
+        console.log('Overlaying iframe');
         sendResponse('replaceall');
       }
     } else {
@@ -769,7 +769,7 @@ function pauseAllWithin(element) {
       if (mutation.type === 'childList') {
         const addedNodes = Array.from(mutation.addedNodes);
         addedNodes.forEach((node) => {
-          if (node.tagName === 'VIDEO') {
+          if (node.tagName === 'VIDEO' || node.tagName === 'AUDIO') {
             node.pause();
             node.addEventListener('play', pauseOnPlay);
           }
