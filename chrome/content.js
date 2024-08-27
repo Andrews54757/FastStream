@@ -253,31 +253,34 @@ function handlePlayerActivation(request, sender, sendResponse) {
 
     const playerFillsScreen = video?.highest?.tagName === 'BODY';
     if (!video || (playerFillsScreen && !request.noRedirect)) {
-      // window.location = request.url;
-      // console.log('redirecting to player');
-      // sendResponse('redirect');
-      const iframe = document.createElement('iframe');
-      iframe.src = request.url;
-      iframe.allowFullscreen = true;
-      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-      iframe.style.setProperty('width', '100%', 'important');
-      iframe.style.setProperty('height', '100%', 'important');
-      iframe.style.setProperty('position', 'fixed', 'important');
-      iframe.style.setProperty('top', '0', 'important');
-      iframe.style.setProperty('left', '0', 'important');
-      iframe.style.setProperty('z-index', '2147483647', 'important');
-      iframe.style.setProperty('border', 'none', 'important');
-      iframe.style.setProperty('outline', 'none', 'important');
-      iframe.style.setProperty('padding', '0', 'important');
-      iframe.style.setProperty('opacity', '1', 'important');
-      iframe.style.setProperty('visibility', 'visible', 'important');
-      iframe.style.setProperty('display', 'block', 'important');
+      if (!document.fullscreenEnabled) {
+        window.location = request.url;
+        console.log('redirecting to player');
+        sendResponse('redirect');
+      } else {
+        const iframe = document.createElement('iframe');
+        iframe.src = request.url;
+        iframe.allowFullscreen = true;
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+        iframe.style.setProperty('width', '100%', 'important');
+        iframe.style.setProperty('height', '100%', 'important');
+        iframe.style.setProperty('position', 'fixed', 'important');
+        iframe.style.setProperty('top', '0', 'important');
+        iframe.style.setProperty('left', '0', 'important');
+        iframe.style.setProperty('z-index', '2147483647', 'important');
+        iframe.style.setProperty('border', 'none', 'important');
+        iframe.style.setProperty('outline', 'none', 'important');
+        iframe.style.setProperty('padding', '0', 'important');
+        iframe.style.setProperty('opacity', '1', 'important');
+        iframe.style.setProperty('visibility', 'visible', 'important');
+        iframe.style.setProperty('display', 'block', 'important');
 
-      pauseAllWithin(document.body);
-      // Remove everything from the document
-      document.body.replaceChildren(iframe);
-
-      sendResponse('replaceall');
+        pauseAllWithin(document.body);
+        // Remove everything from the document
+        document.body.replaceChildren(iframe);
+        console.log('replacing everything with iframe');
+        sendResponse('replaceall');
+      }
     } else {
       // copy styles
       const iframe = document.createElement('iframe');
