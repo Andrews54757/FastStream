@@ -197,6 +197,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   } else if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
+    const parent = tab.frames[frame.parentId];
+    if (parent) {
+      parent.nextOrPrevRequested = true;
+    }
     sendToParent(frame, {
       type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
     }).then((result) => {
@@ -351,6 +355,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (Logging) console.log('Iframe-controls', frame.frame_referer);
   } else if (msg.type === 'iframe') {
     frame.url = msg.url;
+    frame.nextOrPrevRequested = false;
     if (frame.url.substring(0, PlayerURL.length) !== PlayerURL) {
       //  console.log("reset frame sources")
       frame.subtitles.length = 0;
@@ -688,11 +693,17 @@ function collectSources(frame, remove = false) {
 function sendSources(frame) {
   const {subtitles, sources} = collectSources(frame, true);
 
+  const parent = frame.tab.frames[frame.parentId];
+  const shouldForceAutoplay = parent?.nextOrPrevRequested || false;
+  if (shouldForceAutoplay) {
+    parent.nextOrPrevRequested = false; // reset
+  }
   chrome.tabs.sendMessage(frame.tab.tabId, {
     type: 'sources',
     subtitles: subtitles,
     sources: sources,
     autoSetSource: true,
+    forceAutoplay: shouldForceAutoplay,
   }, {
     frameId: frame.frameId,
   }, ()=>{

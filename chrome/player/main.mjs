@@ -66,7 +66,7 @@ async function recieveSources(request, sendResponse) {
 
   // Sources are ordered by time, so we can just choose the first one and it will be the oldest.
   // But we also want to minimize depth
-  let autoPlaySource = sources.reduce((result, curr) => {
+  let autoSetSource = sources.reduce((result, curr) => {
     // Choose lower depth
     if (result.depth > curr.depth) {
       return curr;
@@ -87,9 +87,9 @@ async function recieveSources(request, sendResponse) {
   }, sources[0]);
 
   // Play the newest source at lowest depth if it is mp4
-  if (autoPlaySource.mode === PlayerModes.ACCELERATED_MP4) {
+  if (autoSetSource.mode === PlayerModes.ACCELERATED_MP4) {
     const mp4SourceCandidates = sources.filter((item) => {
-      return item !== autoPlaySource && item.mode === PlayerModes.ACCELERATED_MP4;
+      return item !== autoSetSource && item.mode === PlayerModes.ACCELERATED_MP4;
     });
 
     mp4SourceCandidates.sort((a, b) => {
@@ -103,28 +103,28 @@ async function recieveSources(request, sendResponse) {
     });
 
     if (mp4SourceCandidates.length > 0) {
-      autoPlaySource = mp4SourceCandidates[0];
+      autoSetSource = mp4SourceCandidates[0];
     }
   }
 
   if (window.fastStream.source || !request.autoSetSource) {
-    autoPlaySource = null;
+    autoSetSource = null;
   }
 
-  if (autoPlaySource) {
+  if (autoSetSource) {
     window.fastStream.clearSubtitles();
   }
 
   if (
-    autoPlaySource &&autoPlaySource.mode === PlayerModes.ACCELERATED_YT &&
-    !URLUtils.is_url_yt_embed(autoPlaySource.url) &&
-    OPTIONS.autoplayYoutube
+    (autoSetSource && autoSetSource.mode === PlayerModes.ACCELERATED_YT &&
+    !URLUtils.is_url_yt_embed(autoSetSource.url) &&
+    OPTIONS.autoplayYoutube) || (autoSetSource && request.forceAutoplay)
   ) {
     window.fastStream.setAutoPlay(true); // Enable autoplay for yt only. Not embeds.
   }
 
   sources.forEach((s) => {
-    window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), s === autoPlaySource);
+    window.fastStream.addSource(new VideoSource(s.url, s.headers, s.mode), s === autoSetSource);
   });
 
   if (subs) {

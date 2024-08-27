@@ -1351,6 +1351,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   nextVideo() {
+    if (!this.hasNextVideo()) return;
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_next_video',
@@ -1361,6 +1362,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   previousVideo() {
+    if (!this.hasPreviousVideo()) return;
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_previous_video',
