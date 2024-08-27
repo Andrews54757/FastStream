@@ -100,6 +100,13 @@ export class ProgressBar extends EventEmitter {
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
     DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
     DOMElements.progressContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
+
+    DOMElements.nextVideoBannerButton.addEventListener('click', (e) => {
+      this.client.nextVideo();
+      e.preventDefault();
+      e.stopPropagation();
+    });
+    WebUtils.setupTabIndex(DOMElements.nextVideoBannerButton);
   }
 
   reset() {
