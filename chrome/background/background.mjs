@@ -189,12 +189,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
 
-  if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
+  if (msg.type === 'request_prevnext_video_poll') {
+    sendToParent(frame, {
+      type: 'prevnext_video_poll',
+    }).then((result) => {
+      sendResponse(result);
+    });
+    return true;
+  } else if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
     sendToParent(frame, {
       type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
     }).then((result) => {
       sendResponse(result);
     });
+    return true;
   } else if (msg.type === 'seek_to') {
     // send to children
     for (const i in tab.frames) {

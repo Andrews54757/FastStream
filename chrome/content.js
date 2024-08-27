@@ -1,5 +1,6 @@
 let FoundYTPlayer = null;
 let OverridenYTKeys = false;
+let MiniplayerCooldown = 0;
 const iframeMap = new Map();
 const players = [];
 const elementsHiddenByFillscreen = [];
@@ -34,11 +35,18 @@ chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
       if (request.type === 'ping') {
         sendResponse('pong');
+      } else if (request.type === 'prevnext_video_poll') {
+        return pollNextOrPreviousButton(request, sender, sendResponse);
       } else if (request.type === 'next_video' || request.type === 'previous_video') {
         return handlePlaylistNavigation(request, sender, sendResponse);
       } else if (request.type === 'windowed_fullscreen') {
         return handleWindowedFullscreen(request, sender, sendResponse);
       } else if (request.type === 'miniplayer') {
+        if (Date.now() < MiniplayerCooldown) {
+          sendResponse('cooldown');
+          return;
+        }
+
         return handleMiniplayer(request, sender, sendResponse);
       } else if (request.type === 'fullscreen') {
         return handleFullscreen(request, sender, sendResponse);
@@ -59,24 +67,168 @@ chrome.runtime.onMessage.addListener(
       }
     });
 
-function handlePlaylistNavigation(request, sender, sendResponse) {
-  if (!FoundYTPlayer) {
-    sendResponse('no_player');
-    return;
+function isSimilar(element, child) {
+  const style = window.getComputedStyle(element);
+  const width = parseInt(style.width) || 0;
+  const height = parseInt(style.height) || 0;
+
+  const cstyle = window.getComputedStyle(child);
+  const cwidth = parseInt(cstyle.width) || 0;
+  const cheight = parseInt(cstyle.height) || 0;
+  if (child.tagName == element.tagName && (cwidth == width || cheight == height) && cstyle.display == style.display && cstyle.position == style.position) {
+    return true;
+  }
+  return false;
+}
+
+
+function getSimilar(element) {
+  if (!element) return [];
+  const parent = element.parentElement;
+  if (!parent) return [];
+  const children = parent.children;
+  if (element.tagName === 'BODY' || !children) return [];
+
+
+  const found = [];
+  const potential = [];
+  for (let i = 0; i < children.length; i++) {
+    const child = children[i];
+    if (isSimilar(element, child)) {
+      let count = 0;
+
+      if ((element.children && child.children)) {
+        const threshold = Math.ceil(Math.max(element.children.length, child.children.length) * 0.6);
+
+        for (let k = 0; k < element.children.length; k++) {
+          const el2 = element.children[k];
+          for (let j = 0; j < child.children.length; j++) {
+            const ch2 = child.children[j];
+            if (isSimilar(el2, ch2)) {
+              count++;
+              break;
+            }
+          }
+          if (count >= threshold) {
+            break;
+          }
+        }
+        if (count >= threshold) {
+          found.push(child);
+        } else {
+          potential.push(child);
+        }
+      } else if (!element.children && !child.children) {
+        found.push(child);
+      }
+    }
   }
 
-  const player = FoundYTPlayer;
-  const btnclass = request.type === 'next_video' ? 'ytp-next-button' : 'ytp-prev-button';
+  if (found.length > 1) {
+    potential.forEach((item) => {
+      found.push(item);
+    });
+    return found;
+  } else {
+    return getSimilar(parent);
+  }
+}
 
-  const button = player.querySelector(`.${btnclass}`);
+function getNextOrPreviousButton(isNext = false) {
+  const isYt = is_url_yt(window.location.href);
+  if (isYt) {
+    if (!FoundYTPlayer) {
+      return null;
+    }
 
+    const player = FoundYTPlayer;
+    const btnclass = isNext ? 'ytp-next-button' : 'ytp-prev-button';
+
+    const button = player.querySelector(`.${btnclass}`);
+
+    if (!button) {
+      return null;
+    }
+
+    return button;
+  } else {
+    const aElements = querySelectorAllIncludingShadows('a');
+    const currentURL = window.location.href;
+    const matchedElements = aElements.filter((a) => {
+      if (!a.href) {
+        return false;
+      }
+      try {
+        const url = url_to_absolute(a.href);
+        return url === currentURL;
+      } catch (e) {
+        return false;
+      }
+    });
+
+    if (matchedElements.length === 0) {
+      return null;
+    }
+
+    for (let i = 0; i < matchedElements.length; i++) {
+      const element = matchedElements[i];
+      const similar = getSimilar(element);
+      if (similar.length > 0) {
+        // Find index of element with match
+        const index = similar.findIndex((el) => {
+          if (el === element) {
+            return true;
+          }
+
+          if (el.contains(element)) {
+            return true;
+          }
+
+          return false;
+        });
+
+        if (index === -1) {
+          continue;
+        }
+
+        // Find next element
+        const nextIndex = isNext ? index + 1 : index - 1;
+
+        if (nextIndex < 0 || nextIndex >= similar.length) {
+          continue;
+        }
+        return similar[nextIndex];
+      }
+    }
+  }
+
+  return null;
+}
+
+function handlePlaylistNavigation(request, sender, sendResponse) {
+  const button = getNextOrPreviousButton(request.type === 'next_video');
   if (!button) {
     sendResponse('no_button');
     return;
   }
 
   button.click();
-  sendResponse('ok');
+  sendResponse('clicked');
+}
+
+function pollNextOrPreviousButton(request, sender, sendResponse) {
+  try {
+    const nextButton = getNextOrPreviousButton(true);
+    const previousButton = getNextOrPreviousButton(false);
+    sendResponse({
+      next: nextButton !== null,
+      previous: previousButton !== null,
+    });
+  } catch (e) {
+    sendResponse({
+      error: e.message,
+    });
+  }
 }
 
 function handlePlayerActivation(request, sender, sendResponse) {
@@ -294,6 +446,7 @@ function handleCaptionsScrape(request, sender, sendResponse) {
 }
 
 function removePlayers() {
+  MiniplayerCooldown = Date.now() + 1000;
   iframeMap.forEach((iframeObj) => {
     unmakeMiniPlayer(iframeObj);
   });
@@ -943,6 +1096,12 @@ function is_url_yt_embed(urlStr) {
 }
 
 // eslint-disable-next-line camelcase
+function url_to_absolute(urlStr) {
+  const url = new URL(urlStr, document.baseURI);
+  return url.href;
+}
+
+// eslint-disable-next-line camelcase
 function get_yt_video_elements() {
   const queries = [
     'body #player',
@@ -978,6 +1137,10 @@ function isLinkToDifferentPageOnWebsite(url) {
   }
 
   if (url.pathname !== window.location.pathname) {
+    return true;
+  }
+
+  if (url.search !== window.location.search) {
     return true;
   }
 

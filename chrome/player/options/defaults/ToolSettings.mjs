@@ -3,13 +3,21 @@ export const DefaultToolSettings = {
     'location': 'left',
     'priority': 100,
   },
-  'volume': {
+  'previous': {
     'location': 'left',
     'priority': 200,
   },
-  'duration': {
+  'next': {
     'location': 'left',
     'priority': 300,
+  },
+  'volume': {
+    'location': 'left',
+    'priority': 400,
+  },
+  'duration': {
+    'location': 'left',
+    'priority': 500,
   },
   'sources': {
     'location': 'right',

@@ -19,6 +19,8 @@ export const DOMElements = {
   saveNotifBanner: document.querySelector('#save_notif_banner'),
   screenshot: document.querySelector('.mainplayer .fluid_button_screenshot'),
   pip: document.querySelector('.mainplayer .fluid_button_pip'),
+  nextVideo: document.querySelector('.mainplayer .fluid_button_next'),
+  previousVideo: document.querySelector('.mainplayer .fluid_button_previous'),
   muteBtn: document.querySelector('.mainplayer .fluid_control_mute'),
   volumeBlock: document.querySelector('.mainplayer .volume_block'),
   volumeBanner: document.querySelector('.mainplayer .volume_banner'),

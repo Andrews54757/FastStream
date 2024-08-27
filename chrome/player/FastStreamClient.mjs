@@ -80,6 +80,8 @@ export class FastStreamClient extends EventEmitter {
       hasUserInteracted: false,
       bufferBehind: this.options.bufferBehind,
       bufferAhead: this.options.bufferAhead,
+      hasNextVideo: false,
+      hasPrevVideo: false,
     };
 
     this._needsUserInteraction = false;
@@ -137,6 +139,36 @@ export class FastStreamClient extends EventEmitter {
       console.error(e);
     }
   }
+
+  pollPrevNext() {
+    return new Promise((resolve) => {
+      chrome.runtime.sendMessage({type: 'request_prevnext_video_poll'}, (response) => {
+        if (!response) {
+          resolve(null);
+          return;
+        }
+        if (this.state.hasNextVideo !== response.next || this.state.hasPrevVideo !== response.previous) {
+          this.state.hasPrevVideo = response.previous;
+          this.state.hasNextVideo = response.next;
+          this.interfaceController.updateToolVisibility();
+        }
+        resolve(response);
+      });
+    });
+  }
+
+  setupPoll() {
+    const count = 10;
+    const initialTimeout = 500;
+    const pollDurationLengthen = 1.2;
+
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        this.pollPrevNext();
+      }, initialTimeout * Math.pow(pollDurationLengthen, i));
+    }
+  }
+
 
   shouldDownloadAll() {
     return this.options.downloadAll && this.hasDownloadSpace;
@@ -1319,17 +1351,38 @@ export class FastStreamClient extends EventEmitter {
   }
 
   nextVideo() {
-    if (!this.player || !this.player.nextVideo) {
-      return null;
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'request_next_video',
+      }, ()=>{
+
+      });
     }
-    return this.player.nextVideo();
   }
 
   previousVideo() {
-    if (!this.player || !this.player.previousVideo) {
-      return null;
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: 'request_previous_video',
+      }, ()=>{
+
+      });
     }
-    return this.player.previousVideo();
+  }
+
+
+  hasPreviousVideo() {
+    if (!this.player) return false;
+    if (window.top === window.self) return false;
+    if (!this.state.hasPrevVideo) return false;
+    return true;
+  }
+
+  hasNextVideo() {
+    if (!this.player) return false;
+    if (window.top === window.self) return false;
+    if (!this.state.hasNextVideo) return false;
+    return true;
   }
 
   get fragments() {

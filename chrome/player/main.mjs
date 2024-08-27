@@ -248,6 +248,8 @@ async function setup() {
       chrome.runtime.sendMessage({
         type: 'ready',
       });
+
+      window.fastStream.setupPoll();
     });
   }
 

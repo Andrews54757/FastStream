@@ -99,26 +99,6 @@ export default class YTPlayer extends DashPlayer {
     // });
   }
 
-  previousVideo() {
-    if (EnvUtils.isExtension()) {
-      chrome.runtime.sendMessage({
-        type: 'request_previous_video',
-      }, ()=>{
-
-      });
-    }
-  }
-
-  nextVideo() {
-    if (EnvUtils.isExtension()) {
-      chrome.runtime.sendMessage({
-        type: 'request_next_video',
-      }, ()=>{
-
-      });
-    }
-  }
-
   async youtubeFetchIOS(input, init) {
     // url
     const url = typeof input === 'string' ?

@@ -532,6 +532,19 @@ export class InterfaceController {
     });
     WebUtils.setupTabIndex(DOMElements.duration);
 
+    DOMElements.nextVideo.addEventListener('click', (e) => {
+      this.client.nextVideo();
+      e.stopPropagation();
+    });
+
+    WebUtils.setupTabIndex(DOMElements.nextVideo);
+
+    DOMElements.previousVideo.addEventListener('click', (e) => {
+      this.client.previousVideo();
+      e.stopPropagation();
+    });
+
+    WebUtils.setupTabIndex(DOMElements.previousVideo);
 
     const o = new IntersectionObserver(([entry]) => {
       if (entry.intersectionRatio > 0.25 && !document.hidden) {
