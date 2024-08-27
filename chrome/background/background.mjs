@@ -197,9 +197,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   } else if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
-    const parent = tab.frames[frame.parentId];
-    if (parent) {
-      parent.nextOrPrevRequested = true;
+    if (frame.replacedAll) {
+      const parent = tab.frames[frame.parentId];
+      if (parent) {
+        const parentparent = tab.frames[parent.parentId];
+        if (parentparent) {
+          parentparent.nextOrPrevRequested = true;
+        }
+      }
+    } else {
+      const parent = tab.frames[frame.parentId];
+      if (parent) {
+        parent.nextOrPrevRequested = true;
+      }
     }
     sendToParent(frame, {
       type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
@@ -296,12 +306,26 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   } else if (msg.type ==='miniplayer_change_init') {
+    const frame = tab.frames[msg.frameId];
+    if (!frame) {
+      return;
+    }
+
+    if (frame.parentId !== sender.frameId) {
+      return;
+    }
+
+    let sendTo = msg.frameId;
+    if (frame.replacedAll && frame.replacedBy) {
+      sendTo = frame.replacedBy;
+    }
+
     // send to msg.frameId
     chrome.tabs.sendMessage(frame.tab.tabId, {
       type: 'miniplayer_change',
       miniplayer: msg.miniplayer,
     }, {
-      frameId: msg.frameId,
+      frameId: sendTo,
     }, ()=>{
       BackgroundUtils.checkMessageError('miniplayer_change');
     });
@@ -311,11 +335,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (Object.hasOwn(tab.frames, i)) {
         const frame = tab.frames[i];
         if (frame.parentId === sender.frameId) {
+          let sendID = frame.frameId;
+          if (frame.replacedAll && frame.replacedBy) {
+            sendID = frame.replacedBy;
+          }
           chrome.tabs.sendMessage(frame.tab.tabId, {
             type: 'fullscreen_change',
             fullscreen: msg.fullscreen,
           }, {
-            frameId: frame.frameId,
+            frameId: sendID,
           }, ()=>{
             BackgroundUtils.checkMessageError('fullscreen_change');
           });
@@ -336,6 +364,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       const parentFrame = tab.frames[frame.parentId];
       if (parentFrame) {
         isMainPlayer = parentFrame.isMainPlayer;
+      }
+    }
+
+    if (frame.parentId > -1) {
+      const parentFrame = tab.frames[frame.parentId];
+      if (parentFrame.replacedAll) {
+        frame.replacedAll = true;
+        parentFrame.replacedBy = frame.frameId;
       }
     }
 
@@ -361,6 +397,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       frame.subtitles.length = 0;
       frame.sources.length = 0;
       frame.isFastStream = false;
+      frame.replacedAll = false;
+      frame.replacedBy = false;
       frame.playerOpening = false;
       frame.hasSentFrameId = false;
     }
@@ -411,9 +449,14 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 });
 
 async function sendToParent(frame, message) {
+  if (frame.replacedAll) {
+    frame = frame.tab.frames[frame.parentId];
+  }
+
   if (frame.parentId < 0) {
     return 'invalid';
   }
+
   const needsToSendFrameId = !frame.hasSentFrameId;
   if (needsToSendFrameId) {
     frame.hasSentFrameId = true;
@@ -691,13 +734,19 @@ function collectSources(frame, remove = false) {
 }
 
 function sendSources(frame) {
-  const {subtitles, sources} = collectSources(frame, true);
+  let collectFrame = frame;
+  if (frame.replacedAll) {
+    collectFrame = frame.tab.frames[frame.parentId];
+  }
 
-  const parent = frame.tab.frames[frame.parentId];
+  const {subtitles, sources} = collectSources(collectFrame, true);
+
+  const parent = frame.tab.frames[collectFrame.parentId];
   const shouldForceAutoplay = parent?.nextOrPrevRequested || false;
   if (shouldForceAutoplay) {
     parent.nextOrPrevRequested = false; // reset
   }
+
   chrome.tabs.sendMessage(frame.tab.tabId, {
     type: 'sources',
     subtitles: subtitles,
@@ -798,12 +847,12 @@ async function pingContentScript() {
 }
 
 async function openPlayer(frame) {
-  if (frame.playerOpening || frameHasPlayer(frame)) {
+  if (frame.playerOpening || frameHasPlayer(frame) || frame.replacedAll) {
     return;
   }
 
   frame.playerOpening = true;
-
+  frame.replacedAll = false;
   frame.isMainPlayer = frame.tab.playerCount === 0;
   frame.tab.playerCount += 1;
   return new Promise((resolve, reject) => {
@@ -815,6 +864,9 @@ async function openPlayer(frame) {
       frameId: frame.frameId,
     }, (response) => {
       frame.playerOpening = false;
+      if (response === 'replaceall') {
+        frame.replacedAll = true;
+      }
       BackgroundUtils.checkMessageError('player');
       resolve(response);
     });

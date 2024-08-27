@@ -35,6 +35,13 @@ chrome.runtime.onMessage.addListener(
     (request, sender, sendResponse) => {
       if (request.type === 'ping') {
         sendResponse('pong');
+      } else if (request.type === 'sendFrameId') {
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'frame',
+            id: request.frameId,
+          }, '*');
+        }
       } else if (request.type === 'prevnext_video_poll') {
         return pollNextOrPreviousButton(request, sender, sendResponse);
       } else if (request.type === 'next_video' || request.type === 'previous_video') {
@@ -246,9 +253,31 @@ function handlePlayerActivation(request, sender, sendResponse) {
 
     const playerFillsScreen = video?.highest?.tagName === 'BODY';
     if (!video || (playerFillsScreen && !request.noRedirect)) {
-      window.location = request.url;
-      console.log('redirecting to player');
-      sendResponse('redirect');
+      // window.location = request.url;
+      // console.log('redirecting to player');
+      // sendResponse('redirect');
+      const iframe = document.createElement('iframe');
+      iframe.src = request.url;
+      iframe.allowFullscreen = true;
+      iframe.allow = 'autoplay; fullscreen; picture-in-picture';
+      iframe.style.setProperty('width', '100%', 'important');
+      iframe.style.setProperty('height', '100%', 'important');
+      iframe.style.setProperty('position', 'fixed', 'important');
+      iframe.style.setProperty('top', '0', 'important');
+      iframe.style.setProperty('left', '0', 'important');
+      iframe.style.setProperty('z-index', '2147483647', 'important');
+      iframe.style.setProperty('border', 'none', 'important');
+      iframe.style.setProperty('outline', 'none', 'important');
+      iframe.style.setProperty('padding', '0', 'important');
+      iframe.style.setProperty('opacity', '1', 'important');
+      iframe.style.setProperty('visibility', 'visible', 'important');
+      iframe.style.setProperty('display', 'block', 'important');
+
+      pauseAllWithin(document.body);
+      // Remove everything from the document
+      document.body.replaceChildren(iframe);
+
+      sendResponse('replaceall');
     } else {
       // copy styles
       const iframe = document.createElement('iframe');

@@ -21,13 +21,6 @@ if (EnvUtils.isExtension()) {
             window.fastStream.keybindManager.handleKeyString(request.key);
             window.fastStream.userInteracted();
           }
-        } else if (request.type === 'sendFrameId') {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'frame',
-              id: request.frameId,
-            }, '*');
-          }
         } else if (request.type === 'options' || request.type === 'options_init') {
           if (request.time !== optionSendTime) {
             optionSendTime = request.time;
