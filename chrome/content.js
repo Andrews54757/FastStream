@@ -150,6 +150,10 @@ function getNextOrPreviousButton(isNext = false) {
       return null;
     }
 
+    if (button.style.display === 'none') {
+      return null;
+    }
+
     return button;
   } else {
     const aElements = querySelectorAllIncludingShadows('a');
