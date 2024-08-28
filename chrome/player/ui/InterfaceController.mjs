@@ -600,6 +600,9 @@ export class InterfaceController {
     };
 
     DOMElements.controlsLeft.addEventListener('mousedown', (e) => {
+      if (e.button !== 0) {
+        return;
+      }
       document.addEventListener('mousemove', mouseMoveHandler);
       document.addEventListener('mouseup', mouseUpHandler);
     });
