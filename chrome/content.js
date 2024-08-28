@@ -1204,13 +1204,35 @@ function isActiveElementEditable() {
   return false;
 }
 
+// eslint-disable-next-line camelcase
+function is_live() {
+  // meta isLiveBroadcast
+  const meta = document.querySelector('meta[itemprop="isLiveBroadcast"]');
+  if (!meta) {
+    return false;
+  }
+
+  if (meta.content !== 'True') {
+    return false;
+  }
+
+  const parent = meta.parentElement;
+  // Check if has endDate meta
+  const endDate = parent.querySelector('meta[itemprop="endDate"]');
+  if (endDate) {
+    return false;
+  }
+
+  return true;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   chrome.runtime.sendMessage({
     type: 'loaded',
   });
 });
 
-if (is_url_yt(window.location.href)) {
+if (is_url_yt(window.location.href) && !is_live()) {
   const observer = new MutationObserver((mutations) => {
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
@@ -1224,10 +1246,12 @@ if (is_url_yt(window.location.href)) {
         const rect = playerNode.getBoundingClientRect();
         if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !FoundYTPlayer) {
           FoundYTPlayer = playerNode;
-          chrome.runtime.sendMessage({
-            type: 'yt_loaded',
-            url: window.location.href,
-          });
+          if (!is_live()) {
+            chrome.runtime.sendMessage({
+              type: 'yt_loaded',
+              url: window.location.href,
+            });
+          }
           return true;
         }
         return false;
