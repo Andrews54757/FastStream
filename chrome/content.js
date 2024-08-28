@@ -1232,7 +1232,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-if (is_url_yt(window.location.href) && !is_live()) {
+if (is_url_yt(window.location.href)) {
   const observer = new MutationObserver((mutations) => {
     const isWatch = is_url_yt_watch(window.location.href);
     const isEmbed = is_url_yt_embed(window.location.href);
