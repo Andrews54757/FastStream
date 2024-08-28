@@ -22,6 +22,13 @@ export class SaveManager {
     DOMElements.playerContainer.addEventListener('drop', this.onFileDrop.bind(this), false);
 
     DOMElements.download.addEventListener('click', this.saveVideo.bind(this));
+
+    DOMElements.download.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.saveVideo(e, true);
+    });
+
     WebUtils.setupTabIndex(DOMElements.download);
 
     DOMElements.screenshot.addEventListener('click', this.saveScreenshot.bind(this));
@@ -71,7 +78,7 @@ export class SaveManager {
     }
   }
 
-  async saveVideo(e) {
+  async saveVideo(e, allowPartial = false) {
     if (!this.client.player) {
       alert(Localize.getMessage('player_nosource_alert'));
       return;
@@ -88,7 +95,7 @@ export class SaveManager {
       return;
     }
 
-    const doPartial = e.altKey;
+    const doPartial = e.altKey || allowPartial;
     const doDump = e.shiftKey;
     const player = this.client.player;
 

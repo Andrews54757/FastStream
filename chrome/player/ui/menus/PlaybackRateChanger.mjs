@@ -291,7 +291,7 @@ export class PlaybackRateChanger extends EventEmitter {
     });
 
     DOMElements.playbackRate.addEventListener('click', (e) => {
-      if (e.shiftKey) {
+      if (e.shiftKey || e.altKey) {
         this.toggleSilenceSkipper();
         e.stopPropagation();
         return;
@@ -303,6 +303,12 @@ export class PlaybackRateChanger extends EventEmitter {
         this.openUI();
       }
       e.stopPropagation();
+    });
+
+    DOMElements.playbackRate.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleSilenceSkipper();
     });
 
     DOMElements.playerContainer.addEventListener('click', (e) => {

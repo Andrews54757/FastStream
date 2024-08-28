@@ -305,6 +305,13 @@ export class InterfaceController {
       this.fullscreenToggle();
       e.stopPropagation();
     });
+
+    DOMElements.fullscreen.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleWindowedFullscreen();
+    });
+
     WebUtils.setupTabIndex(DOMElements.fullscreen);
 
     DOMElements.windowedFullscreen.addEventListener('click', (e)=>{
