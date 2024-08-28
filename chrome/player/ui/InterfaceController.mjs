@@ -548,8 +548,19 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.duration);
 
     DOMElements.nextVideo.addEventListener('click', (e) => {
+      if (e.shiftKey || e.altKey) {
+        this.toggleAutoplayNext();
+        return;
+      }
+
       this.client.nextVideo();
       e.stopPropagation();
+    });
+
+    DOMElements.nextVideo.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      this.toggleAutoplayNext();
     });
 
     WebUtils.setupTabIndex(DOMElements.nextVideo);
@@ -613,6 +624,12 @@ export class InterfaceController {
       document.addEventListener('mousemove', mouseMoveHandler);
       document.addEventListener('mouseup', mouseUpHandler);
     });
+  }
+
+  toggleAutoplayNext() {
+    this.client.options.autoplayNext = !this.client.options.autoplayNext;
+    sessionStorage.setItem('autoplayNext', this.client.options.autoplayNext);
+    this.updateAutoNextIndicator();
   }
 
   async handleVisibilityChange(isVisible) {

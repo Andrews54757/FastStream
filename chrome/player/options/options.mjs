@@ -363,6 +363,7 @@ autoplayYoutube.addEventListener('change', () => {
 
 autoplayNext.addEventListener('change', () => {
   Options.autoplayNext = autoplayNext.checked;
+  sessionStorage.removeItem('autoplayNext');
   optionChanged();
 });
 

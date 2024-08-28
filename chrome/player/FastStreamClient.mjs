@@ -234,7 +234,12 @@ export class FastStreamClient extends EventEmitter {
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
     this.options.defaultYoutubeClient = options.defaultYoutubeClient2;
-    this.options.autoplayNext = options.autoplayNext;
+
+    if (sessionStorage.getItem('autoplayNext') !== null) {
+      this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
+    } else {
+      this.options.autoplayNext = options.autoplayNext;
+    }
 
     this.options.videoBrightness = options.videoBrightness;
     this.options.videoContrast = options.videoContrast;
