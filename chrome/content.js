@@ -262,22 +262,10 @@ function handlePlayerActivation(request, sender, sendResponse) {
         iframe.src = request.url;
         iframe.allowFullscreen = true;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
-        iframe.style.setProperty('width', '100%', 'important');
-        iframe.style.setProperty('height', '100%', 'important');
-        iframe.style.setProperty('position', 'fixed', 'important');
-        iframe.style.setProperty('top', '0', 'important');
-        iframe.style.setProperty('left', '0', 'important');
-        iframe.style.setProperty('z-index', '2147483647', 'important');
-        iframe.style.setProperty('border', 'none', 'important');
-        iframe.style.setProperty('outline', 'none', 'important');
-        iframe.style.setProperty('padding', '0', 'important');
-        iframe.style.setProperty('opacity', '1', 'important');
-        iframe.style.setProperty('visibility', 'visible', 'important');
-        iframe.style.setProperty('display', 'block', 'important');
-
         pauseAllWithin(document.body);
         // Remove everything from the document
         document.body.appendChild(iframe);
+        fillScreenIframe(iframe);
         console.log('Overlaying iframe');
         sendResponse('replaceall');
       }
