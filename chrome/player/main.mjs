@@ -16,6 +16,13 @@ if (EnvUtils.isExtension()) {
       (request, sender, sendResponse) => {
         if (request.type === 'seek') {
           if (window.fastStream) window.fastStream.currentTime = request.time;
+        } else if (request.type === 'sendFrameId') {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'frame',
+              id: request.frameId,
+            }, '*');
+          }
         } else if (request.type === 'keypress') {
           if (window.fastStream) {
             window.fastStream.keybindManager.handleKeyString(request.key);
