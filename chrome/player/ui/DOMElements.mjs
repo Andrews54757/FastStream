@@ -55,6 +55,7 @@ export const DOMElements = {
 
   skipButton: document.querySelector('.mainplayer .skip_button'),
   nextVideoBannerButton: document.querySelector('.mainplayer .next_video_button'),
+  autoNextIndicator: document.querySelector('.mainplayer .nextvideo_banner'),
 
   markerContainer: document.querySelector('.mainplayer .marker_container'),
 

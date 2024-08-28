@@ -93,6 +93,14 @@ export class InterfaceController {
     this.setupDOM();
   }
 
+  updateAutoNextIndicator() {
+    if (this.client.options.autoplayNext) {
+      DOMElements.autoNextIndicator.style.display = '';
+    } else {
+      DOMElements.autoNextIndicator.style.display = 'none';
+    }
+  }
+
   updateToolVisibility() {
     this.toolManager.updateToolVisibility();
   }

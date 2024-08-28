@@ -682,6 +682,7 @@ body {
 
 .volume_banner,
 .rate_menu_banner,
+.nextvideo_banner,
 #update_notif_banner,
 #save_notif_banner {
     position: absolute;
@@ -693,6 +694,10 @@ body {
     z-index: 2;
     font-size: 8px;
     padding: 1px 2px;
+}
+
+.nextvideo_banner {
+    background-color: rgb(80,180,180);
 }
 
 #update_notif_banner,
@@ -2994,6 +2999,7 @@ input.crosstalk_calculator_input {
         width: 50px;
     }
 
+    .nextvideo_banner,
     .volume_banner,
     .rate_menu_banner {
         font-size: 6px;

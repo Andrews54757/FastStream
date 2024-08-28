@@ -284,6 +284,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     this.updateHasDownloadSpace();
+    this.interfaceController.updateAutoNextIndicator();
   }
 
   updateCSSFilters() {
