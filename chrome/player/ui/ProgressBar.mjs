@@ -360,7 +360,7 @@ export class ProgressBar extends EventEmitter {
       DOMElements.skipButton.style.display = 'none';
     }
 
-    if (this.client.options.autoplayNext && this.client.hasNextVideo() && (currentSegment?.class === 'outro' || Math.ceil(duration - time) <= 5)) { // Outro
+    if (this.client.options.autoplayNext && this.client.hasNextVideo() && (currentSegment?.class === 'outro' || Math.ceil(duration - time) <= 10)) { // Outro
       DOMElements.nextVideoBannerButton.style.display = '';
       DOMElements.nextVideoBannerButton.textContent = Localize.getMessage('player_nextvideoin', [Math.ceil(duration - time)]);
       DOMElements.skipButton.classList.add('shiftup');
