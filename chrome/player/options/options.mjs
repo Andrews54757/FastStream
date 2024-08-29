@@ -567,6 +567,8 @@ if (EnvUtils.isExtension()) {
           if (!result || !result.feedback) {
             feedbackbox.style.display = 'block';
           } else {
+            // Don't ask for rating for manual installs
+            // SPLICER:NO_PROMO:REMOVE_START
             if (diff > 1000 * 60 * 60 * 24 * 7) { // 7 days, ask for review
               chrome.storage.local.get('rateus', (result) => {
                 if (!result || !result.rateus) {
@@ -574,6 +576,7 @@ if (EnvUtils.isExtension()) {
                 }
               });
             }
+            // SPLICER:NO_PROMO:REMOVE_END
           }
         });
       }
