@@ -543,12 +543,12 @@ function getMediaInfoFromTab(tab) {
   let season = null;
   let episode = null;
   // Remove season #, episode #, s#, e#
-  title = title.replace(/\b(s|season)\s*([0-9]+)\b/gi, (match, p1, p2) => {
+  title = title.replace(/(s|\bseason)\s*([0-9]+)/gi, (match, p1, p2) => {
     season = parseInt(p2);
     return '';
   });
 
-  title = title.replace(/\b(e|episode)\s*([0-9]+)\b/gi, (match, p1, p2) => {
+  title = title.replace(/(e|\bepisode)\s*([0-9]+)/gi, (match, p1, p2) => {
     episode = parseInt(p2);
     return '';
   });
