@@ -147,7 +147,10 @@ async function recieveSources(request, sendResponse) {
   }
 
   if (request.requestFullscreen === 'fullscreen') {
-    window.fastStream.interfaceController.fullscreenToggle(true);
+    window.fastStream.interfaceController.fullscreenToggle(true).catch((e) => {
+      console.error(e);
+      window.fastStream.interfaceController.toggleWindowedFullscreen(true);
+    });
   } else if (request.requestFullscreen === 'pip') {
     window.fastStream.interfaceController.pipToggle(true);
   } else if (request.requestFullscreen === 'windowed') {

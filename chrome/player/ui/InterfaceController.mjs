@@ -949,29 +949,32 @@ export class InterfaceController {
     });
   }
 
-  fullscreenToggle(force) {
-    try {
-      if (document.fullscreenEnabled) {
-        const newValue = force === undefined ? document.fullscreenElement !== DOMElements.playerContainer : force;
-        if (newValue) {
-          DOMElements.playerContainer.requestFullscreen();
-        } else if (document.exitFullscreen) {
-          document.exitFullscreen();
-        }
+  async fullscreenToggle(force) {
+    if (document.fullscreenEnabled) {
+      const newValue = force === undefined ? document.fullscreenElement !== DOMElements.playerContainer : force;
+      if (newValue) {
+        await DOMElements.playerContainer.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
 
-        this.updateFullScreenButton();
-      } else {
-        if (EnvUtils.isExtension()) {
+      this.updateFullScreenButton();
+    } else {
+      if (EnvUtils.isExtension()) {
+        return new Promise((resolve, reject) => {
           chrome.runtime.sendMessage({
             type: 'request_fullscreen',
             force,
-          }, (response)=>{
+          }, (response) => {
+            if (response === 'error') {
+              reject(new Error('Fullscreen not supported'));
+              return;
+            }
             this.setFullscreenStatus(response === 'enter');
+            resolve();
           });
-        }
+        });
       }
-    } catch (e) {
-      console.log('Fullscreen not supported', e);
     }
   }
 
