@@ -146,6 +146,14 @@ async function recieveSources(request, sendResponse) {
     }
   }
 
+  if (request.requestFullscreen === 'fullscreen') {
+    window.fastStream.interfaceController.fullscreenToggle(true);
+  } else if (request.requestFullscreen === 'pip') {
+    window.fastStream.interfaceController.pipToggle(true);
+  } else if (request.requestFullscreen === 'windowed') {
+    window.fastStream.interfaceController.toggleWindowedFullscreen(true);
+  }
+
   sendResponse('sources_recieved');
 }
 

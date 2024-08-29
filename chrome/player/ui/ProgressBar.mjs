@@ -373,7 +373,7 @@ export class ProgressBar extends EventEmitter {
       if (!this.hasShownSkip) {
         this.hasShownSkip = true;
 
-        if (currentSegment.autoSkip) {
+        if (currentSegment && currentSegment.autoSkip) {
           this.skipSegment();
         } else {
           this.emit('show-skip', currentSegment);

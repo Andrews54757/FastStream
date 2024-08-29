@@ -730,7 +730,11 @@ export class InterfaceController {
     }
   }
 
-  async documentPipToggle() {
+  async documentPipToggle(force) {
+    if (force !== undefined && !!force == !!window.documentPictureInPicture.window) {
+      return;
+    }
+
     if (window.documentPictureInPicture.window) {
       window.documentPictureInPicture.window.close();
       return;
@@ -770,7 +774,11 @@ export class InterfaceController {
     });
   }
 
-  pipToggle() {
+  pipToggle(force) {
+    if (force !== undefined && !!force == !!document.pictureInPictureElement) {
+      return;
+    }
+
     if (document.pictureInPictureElement) {
       return this.exitPip();
     } else {
@@ -932,17 +940,20 @@ export class InterfaceController {
     this.updateSkipSegments();
   }
 
-  toggleWindowedFullscreen() {
+  toggleWindowedFullscreen(force) {
     chrome.runtime.sendMessage({
       type: 'request_windowed_fullscreen',
+      force,
     }, (response) => {
+      this.state.windowedFullscreen = response === 'enter';
     });
   }
 
-  fullscreenToggle() {
+  fullscreenToggle(force) {
     try {
       if (document.fullscreenEnabled) {
-        if (!document.fullscreenElement) {
+        const newValue = force === undefined ? document.fullscreenElement !== DOMElements.playerContainer : force;
+        if (newValue) {
           DOMElements.playerContainer.requestFullscreen();
         } else if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -953,6 +964,7 @@ export class InterfaceController {
         if (EnvUtils.isExtension()) {
           chrome.runtime.sendMessage({
             type: 'request_fullscreen',
+            force,
           }, (response)=>{
             this.setFullscreenStatus(response === 'enter');
           });
@@ -971,8 +983,10 @@ export class InterfaceController {
     const fullScreenButton = DOMElements.fullscreen;
     if (status) {
       fullScreenButton.classList.add('out');
+      this.state.fullscreen = true;
     } else {
       fullScreenButton.classList.remove('out');
+      this.state.fullscreen = false;
     }
   }
 

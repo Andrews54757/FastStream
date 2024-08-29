@@ -82,6 +82,8 @@ export class FastStreamClient extends EventEmitter {
       bufferAhead: this.options.bufferAhead,
       hasNextVideo: false,
       hasPrevVideo: false,
+      fullscreen: false,
+      windowedFullscreen: false,
     };
 
     this._needsUserInteraction = false;
@@ -1356,11 +1358,27 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  getFullscreenState() {
+    if (this.state.fullscreen) {
+      return 'fullscreen';
+    }
+
+    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+      return 'pip';
+    }
+
+    if (this.state.windowedFullscreen) {
+      return 'windowed';
+    }
+
+    return 'normal';
+  }
   nextVideo() {
     if (!this.hasNextVideo()) return;
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_next_video',
+        requestFullscreen: this.getFullscreenState(),
       }, ()=>{
 
       });
@@ -1372,6 +1390,7 @@ export class FastStreamClient extends EventEmitter {
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_previous_video',
+        requestFullscreen: this.getFullscreenState(),
       }, ()=>{
 
       });

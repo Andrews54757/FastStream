@@ -203,16 +203,20 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         const parentparent = tab.frames[parent.parentId];
         if (parentparent) {
           parentparent.nextOrPrevRequested = true;
+          parentparent.requestFullscreen = msg.requestFullscreen;
         }
       }
     } else {
       const parent = tab.frames[frame.parentId];
       if (parent) {
         parent.nextOrPrevRequested = true;
+        parent.requestFullscreen = msg.requestFullscreen;
       }
     }
+
     sendToParent(frame, {
       type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
+      requestFullscreen: msg.requestFullscreen,
     }).then((result) => {
       sendResponse(result);
     });
@@ -282,6 +286,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === 'request_fullscreen') {
     sendToParent(frame, {
       type: 'fullscreen',
+      force: msg.force,
     }).then((result) => {
       sendResponse(result);
     });
@@ -392,6 +397,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === 'iframe') {
     frame.url = msg.url;
     frame.nextOrPrevRequested = false;
+    frame.requestFullscreen = false;
     if (frame.url.substring(0, PlayerURL.length) !== PlayerURL) {
       //  console.log("reset frame sources")
       frame.subtitles.length = 0;
@@ -743,8 +749,13 @@ function sendSources(frame) {
 
   const parent = frame.tab.frames[collectFrame.parentId];
   const shouldForceAutoplay = parent?.nextOrPrevRequested || false;
+  const requestFullscreen = parent?.requestFullscreen || false;
   if (shouldForceAutoplay) {
     parent.nextOrPrevRequested = false; // reset
+  }
+
+  if (requestFullscreen) {
+    parent.requestFullscreen = false;
   }
 
   chrome.tabs.sendMessage(frame.tab.tabId, {
@@ -753,6 +764,7 @@ function sendSources(frame) {
     sources: sources,
     autoSetSource: true,
     forceAutoplay: shouldForceAutoplay,
+    requestFullscreen: requestFullscreen,
   }, {
     frameId: frame.frameId,
   }, ()=>{

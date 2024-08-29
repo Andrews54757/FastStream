@@ -395,8 +395,10 @@ function handleFullscreen(request, sender, sendResponse) {
   }
 
   const element = iframeObj.iframe;
+  const force = request.force;
 
-  if (document.fullscreenElement === element) {
+  const newValue = force === undefined ? document.fullscreenElement !== element : force;
+  if (newValue) {
     document.exitFullscreen();
     sendResponse('exit');
   } else {
@@ -601,7 +603,7 @@ function windowedFullscreenToggle(iframeObj) {
       }
     });
 
-    fillScreenIframe(iframeObj.iframe);
+    fillScreenIframe(iframeObj.iframe, is_url_yt(window.location.href));
   } else {
     iframeObj.isWindowedFullscreen = false;
     iframeObj.iframe.setAttribute('style', iframeObj.oldStyle);
@@ -618,42 +620,44 @@ function windowedFullscreenToggle(iframeObj) {
 }
 
 function undoFillScreenIframe() {
-  elementsHiddenByFillscreen.forEach((element) => {
-    element.style.display = element.dataset.olddisplay;
+  elementsHiddenByFillscreen.forEach(([element, old]) => {
+    element.style.display = old;
   });
   elementsHiddenByFillscreen.length = 0;
 }
 
-function fillScreenIframe(iframe) {
-  const elementsToHide = [];
+function fillScreenIframe(iframe, skipHide = false) {
+  if (!skipHide) {
+    const elementsToHide = [];
 
-  // Gather all elements not parents of the iframe
-  const elements = document.querySelectorAll('*');
-  for (let i = 0; i < elements.length; i++) {
-    const element = elements[i];
-    if (element === iframe) {
-      continue;
-    }
+    // Gather all elements not parents of the iframe
+    const elements = document.querySelectorAll('*');
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      if (element === iframe) {
+        continue;
+      }
 
-    if (element.contains(iframe) ||
+      if (element.contains(iframe) ||
       element.tagName === 'BODY' ||
       element.tagName === 'HTML' ||
       element.tagName === 'HEAD'
-    ) {
-      continue;
+      ) {
+        continue;
+      }
+
+      elementsToHide.push(element);
     }
 
-    elementsToHide.push(element);
+    elementsToHide.forEach((element) => {
+      if (element === iframe) {
+        return;
+      }
+      const olddisplay = element.style.display;
+      element.style.setProperty('display', 'none', 'important');
+      elementsHiddenByFillscreen.push([element, olddisplay]);
+    });
   }
-
-  elementsToHide.forEach((element) => {
-    if (element === iframe) {
-      return;
-    }
-    element.dataset.olddisplay = element.style.display;
-    element.style.setProperty('display', 'none', 'important');
-    elementsHiddenByFillscreen.push(element);
-  });
 
   iframe.setAttribute('style', `
     position: fixed !important;
