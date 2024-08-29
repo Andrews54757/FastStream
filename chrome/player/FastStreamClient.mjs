@@ -1373,6 +1373,23 @@ export class FastStreamClient extends EventEmitter {
 
     return 'normal';
   }
+
+  escapeAll() {
+    if (this.state.fullscreen) {
+      this.interfaceController.fullscreenToggle(false);
+    }
+
+    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+      this.interfaceController.pipToggle(false);
+    }
+
+    if (this.state.windowedFullscreen) {
+      this.interfaceController.toggleWindowedFullscreen(false);
+    }
+
+    this.interfaceController.hideControlBar();
+  }
+
   nextVideo() {
     if (!this.hasNextVideo()) return;
     if (EnvUtils.isExtension()) {

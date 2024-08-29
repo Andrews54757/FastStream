@@ -149,6 +149,7 @@ async function recieveSources(request, sendResponse) {
   if (request.requestFullscreen === 'fullscreen') {
     window.fastStream.interfaceController.fullscreenToggle(true).catch((e) => {
       console.error(e);
+      window.fastStream.interfaceController.setStatusMessage('error', 'Fullscreen permissions denied!', 'warning', 5000);
       window.fastStream.interfaceController.toggleWindowedFullscreen(true);
     });
   } else if (request.requestFullscreen === 'pip') {
