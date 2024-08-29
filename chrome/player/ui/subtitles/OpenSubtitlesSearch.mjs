@@ -103,6 +103,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     seasonInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
+    this.subui.seasonInput = seasonInput;
 
     const episodeInput = WebUtils.create('input', null, 'text_input');
     episodeInput.placeholder = Localize.getMessage('player_opensubtitles_episodenum');
@@ -112,6 +113,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     episodeInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
+    this.subui.episodeInput = episodeInput;
 
     const typeSelector = createDropdown('all',
         'Type', {
@@ -128,6 +130,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
           }
         },
     );
+
+    this.subui.typeSelector = typeSelector;
 
     typeSelector.classList.add('subtitle-type-selector');
 
@@ -151,6 +155,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
     yearInput.classList.add('subtitle-year-input');
     yearInput.ariaLabel = yearInput.placeholder;
     this.subui.searchContainer.appendChild(yearInput);
+    this.subui.yearInput = yearInput;
     yearInput.addEventListener('keydown', (e) => {
       e.stopPropagation();
     });
@@ -193,6 +198,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
           sortDirection: sortDirectionSelector.dataset.val,
           page: 1,
         });
+        this.saveToSession();
       }
     };
 
@@ -217,6 +223,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
         sortDirection: sortDirectionSelector.dataset.val,
         page: 1,
       });
+      this.saveToSession();
     });
 
     this.subui.results = document.createElement('div');
@@ -226,6 +233,37 @@ export class OpenSubtitlesSearch extends EventEmitter {
     this.subui.pages = document.createElement('div');
     this.subui.pages.classList.add('subtitle-pages');
     contentContainer.appendChild(this.subui.pages);
+
+    this.loadFromSession();
+  }
+
+  loadFromSession() {
+    const inputDataStr = sessionStorage.getItem('subtitleSearch');
+    if (!inputDataStr) {
+      return;
+    }
+
+    const inputData = JSON.parse(inputDataStr);
+
+    this.subui.search.value = inputData.query;
+    this.subui.languageInput.value = inputData.language;
+    Array.from(this.subui.typeSelector.children[1].children).find((el) => el.dataset.val === inputData.type)?.click();
+    this.subui.yearInput.value = inputData.year;
+    this.subui.seasonInput.value = inputData.season;
+    this.subui.episodeInput.value = inputData.episode;
+  }
+
+  saveToSession() {
+    const inputData = {
+      query: this.subui.search.value,
+      language: this.subui.languageInput.value,
+      type: this.subui.typeSelector.dataset.val,
+      year: this.subui.yearInput.value,
+      season: this.subui.seasonInput.value,
+      episode: this.subui.episodeInput.value,
+    };
+
+    sessionStorage.setItem('subtitleSearch', JSON.stringify(inputData));
   }
 
   async queryOpenSubtitles(query) {
@@ -445,6 +483,9 @@ export class OpenSubtitlesSearch extends EventEmitter {
   }
 
   setQueryInputValue(value) {
+    if (!value) {
+      return;
+    }
     this.subui.search.value = value;
   }
 
