@@ -1,4 +1,4 @@
-[![logotext1](https://github.com/Andrews54757/FastStream/assets/13282284/cf344807-ff49-4db2-b806-4be5458fd767)](https://faststream.online)
+[![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
 
 # FastStream
 
