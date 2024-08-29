@@ -49,6 +49,7 @@ export class FastStreamClient extends EventEmitter {
       downloadAll: false,
       freeUnusedChannels: true,
       storeProgress: false,
+      disableLoadProgress: false,
       previewEnabled: true,
       autoplayNext: false,
       singleClickAction: ClickActions.HIDE_CONTROLS,
@@ -647,7 +648,7 @@ export class FastStreamClient extends EventEmitter {
           this.setSeekSave(false);
           this.currentTime = timeFromURL || 0;
           this.setSeekSave(true);
-        } else if (this.options.storeProgress && this.progressData) {
+        } else if (this.options.storeProgress && this.progressData && !this.options.disableLoadProgress) {
           const lastTime = this.progressData.lastTime;
           if (lastTime && lastTime < this.duration - 5) {
             this.setSeekSave(false);
@@ -1415,7 +1416,11 @@ export class FastStreamClient extends EventEmitter {
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_next_video',
-        requestFullscreen: this.getFullscreenState(),
+        continuationOptions: {
+          fullscreenState: this.getFullscreenState(),
+          autoPlay: true,
+          disableLoadProgress: true,
+        },
       }, ()=>{
 
       });
@@ -1427,7 +1432,10 @@ export class FastStreamClient extends EventEmitter {
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
         type: 'request_previous_video',
-        requestFullscreen: this.getFullscreenState(),
+        continuationOptions: {
+          fullscreenState: this.getFullscreenState(),
+          autoPlay: true,
+        },
       }, ()=>{
 
       });

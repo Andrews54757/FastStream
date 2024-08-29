@@ -202,21 +202,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       if (parent) {
         const parentparent = tab.frames[parent.parentId];
         if (parentparent) {
-          parentparent.nextOrPrevRequested = true;
-          parentparent.requestFullscreen = msg.requestFullscreen;
+          parentparent.continuationOptions = msg.continuationOptions;
         }
       }
     } else {
       const parent = tab.frames[frame.parentId];
       if (parent) {
-        parent.nextOrPrevRequested = true;
-        parent.requestFullscreen = msg.requestFullscreen;
+        parent.continuationOptions = msg.continuationOptions;
       }
     }
 
     sendToParent(frame, {
       type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
-      requestFullscreen: msg.requestFullscreen,
+      continuationOptions: msg.continuationOptions,
     }).then((result) => {
       sendResponse(result);
     });
@@ -396,8 +394,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (Logging) console.log('Iframe-controls', frame.frame_referer);
   } else if (msg.type === 'iframe') {
     frame.url = msg.url;
-    frame.nextOrPrevRequested = false;
-    frame.requestFullscreen = false;
+    frame.continuationOptions = null;
     if (frame.url.substring(0, PlayerURL.length) !== PlayerURL) {
       //  console.log("reset frame sources")
       frame.subtitles.length = 0;
@@ -748,14 +745,10 @@ function sendSources(frame) {
   const {subtitles, sources} = collectSources(collectFrame, true);
 
   const parent = frame.tab.frames[collectFrame.parentId];
-  const shouldForceAutoplay = parent?.nextOrPrevRequested || false;
-  const requestFullscreen = parent?.requestFullscreen || false;
-  if (shouldForceAutoplay) {
-    parent.nextOrPrevRequested = false; // reset
-  }
+  const continuationOptions = parent?.continuationOptions || null;
 
-  if (requestFullscreen) {
-    parent.requestFullscreen = false;
+  if (continuationOptions) {
+    parent.continuationOptions = null;
   }
 
   chrome.tabs.sendMessage(frame.tab.tabId, {
@@ -763,8 +756,7 @@ function sendSources(frame) {
     subtitles: subtitles,
     sources: sources,
     autoSetSource: true,
-    forceAutoplay: shouldForceAutoplay,
-    requestFullscreen: requestFullscreen,
+    continuationOptions: continuationOptions,
   }, {
     frameId: frame.frameId,
   }, ()=>{

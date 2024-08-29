@@ -55,7 +55,17 @@ if (EnvUtils.isExtension()) {
 }
 
 async function recieveSources(request, sendResponse) {
-  console.log('Recieved sources', request.sources, request.subtitles);
+  console.log('Recieved sources', request.sources, request.subtitles, request.continuationOptions);
+
+  const continuationOptions = request.continuationOptions || {};
+  if (continuationOptions.autoPlay) {
+    request.forceAutoplay = true;
+  }
+
+  if (continuationOptions.disableLoadProgress) {
+    window.fastStream.options.disableLoadProgress = true;
+  }
+
   let subs = request.subtitles;
   const sources = request.sources;
 
@@ -146,15 +156,16 @@ async function recieveSources(request, sendResponse) {
     }
   }
 
-  if (request.requestFullscreen === 'fullscreen') {
+  const fullscreenState = continuationOptions.fullscreenState;
+  if (fullscreenState === 'fullscreen') {
     window.fastStream.interfaceController.fullscreenToggle(true).catch((e) => {
       console.error(e);
       window.fastStream.interfaceController.setStatusMessage('error', 'Fullscreen permissions denied!', 'warning', 5000);
       window.fastStream.interfaceController.toggleWindowedFullscreen(true);
     });
-  } else if (request.requestFullscreen === 'pip') {
+  } else if (fullscreenState === 'pip') {
     window.fastStream.interfaceController.pipToggle(true);
-  } else if (request.requestFullscreen === 'windowed') {
+  } else if (fullscreenState === 'windowed') {
     window.fastStream.interfaceController.toggleWindowedFullscreen(true);
   }
 
