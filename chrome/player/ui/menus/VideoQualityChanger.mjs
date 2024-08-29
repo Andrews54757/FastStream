@@ -20,8 +20,12 @@ export class VideoQualityChanger extends EventEmitter {
   }
 
   closeUI() {
+    if (DOMElements.videoSourceList.style.display === 'none') {
+      return false;
+    }
     DOMElements.videoSourceList.style.display = 'none';
     this.stayOpen = false;
+    return true;
   }
 
   isVisible() {

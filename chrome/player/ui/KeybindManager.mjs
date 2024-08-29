@@ -238,11 +238,6 @@ export class KeybindManager extends EventEmitter {
   onKeyDown(e) {
     const keyString = WebUtils.getKeyString(e);
 
-    if (keyString === 'Escape') {
-      this.client.escapeAll();
-      return;
-    }
-
     if (this.handleKeyString(keyString)) {
       e.preventDefault();
     }

@@ -145,9 +145,12 @@ export class SubtitlesManager extends EventEmitter {
   }
 
   closeUI() {
+    if (DOMElements.subtitlesMenu.style.display === 'none') {
+      return false;
+    }
     DOMElements.subtitlesMenu.style.display = 'none';
-
     WebUtils.setLabels(DOMElements.subtitles, Localize.getMessage('player_subtitlesmenu_open_label'));
+    return true;
   }
 
   openUI() {

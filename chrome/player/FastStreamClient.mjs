@@ -28,6 +28,7 @@ import {URLUtils} from './utils/URLUtils.mjs';
 import {YoutubeClients} from './enums/YoutubeClients.mjs';
 import {StringUtils} from './utils/StringUtils.mjs';
 import {StatusTypes} from './ui/StatusManager.mjs';
+import {InterfaceUtils} from './utils/InterfaceUtils.mjs';
 
 const SET_VOLUME_USING_NODE = false; // !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
@@ -105,6 +106,14 @@ export class FastStreamClient extends EventEmitter {
 
     this.videoAnalyzer.on(AnalyzerEvents.MATCH, () => {
       this.interfaceController.updateSkipSegments();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        this.escapeAll();
+        e.preventDefault();
+        e.stopPropagation();
+      }
     });
 
     this.player = null;
@@ -1375,16 +1384,27 @@ export class FastStreamClient extends EventEmitter {
   }
 
   escapeAll() {
+    if (this.interfaceController.closeAllMenus(false)) {
+      return;
+    }
+
+    if (InterfaceUtils.closeWindows()) {
+      return;
+    }
+
     if (this.state.fullscreen) {
       this.interfaceController.fullscreenToggle(false);
+      return;
     }
 
     if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
       this.interfaceController.pipToggle(false);
+      return;
     }
 
     if (this.state.windowedFullscreen) {
       this.interfaceController.toggleWindowedFullscreen(false);
+      return;
     }
 
     this.interfaceController.hideControlBar();

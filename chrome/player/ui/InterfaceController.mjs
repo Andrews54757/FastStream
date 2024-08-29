@@ -117,14 +117,19 @@ export class InterfaceController {
   }
 
   closeAllMenus(e) {
-    if (e && e.target && !DOMElements.extraTools.contains(e.target)) {
-      DOMElements.extraTools.classList.remove('visible');
+    let closedSomething = false;
+    if (e !== true && (!e || (e.target && !DOMElements.extraTools.contains(e.target)))) {
+      if (DOMElements.extraTools.classList.contains('visible')) {
+        DOMElements.extraTools.classList.remove('visible');
+        closedSomething = true;
+      }
     }
-    this.playbackRateChanger.closeUI();
-    this.videoQualityChanger.closeUI();
-    this.languageChanger.closeUI();
-    this.subtitlesManager.closeUI();
-    this.loopControls.closeUI();
+    closedSomething = closedSomething || this.playbackRateChanger.closeUI();
+    closedSomething = closedSomething || this.videoQualityChanger.closeUI();
+    closedSomething = closedSomething || this.languageChanger.closeUI();
+    closedSomething = closedSomething || this.subtitlesManager.closeUI();
+    closedSomething = closedSomething || this.loopControls.closeUI();
+    return closedSomething = closedSomething;
   }
 
   setStatusMessage(key, message, type, expiry) {
@@ -280,9 +285,9 @@ export class InterfaceController {
       this.client.userInteracted();
     };
 
-    DOMElements.playerContainer.addEventListener('keydown', interactHandler, true);
-    DOMElements.playerContainer.addEventListener('mousedown', interactHandler, true);
-    DOMElements.playerContainer.addEventListener('touchstart', interactHandler, true);
+    document.addEventListener('keydown', interactHandler, true);
+    document.addEventListener('mousedown', interactHandler, true);
+    document.addEventListener('touchstart', interactHandler, true);
 
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.playPauseButton);
@@ -504,7 +509,7 @@ export class InterfaceController {
 
     DOMElements.moreButton.addEventListener('click', (e) => {
       if (!DOMElements.extraTools.classList.contains('visible')) {
-        this.closeAllMenus();
+        this.closeAllMenus(true);
         DOMElements.extraTools.classList.add('visible');
       } else {
         DOMElements.extraTools.classList.remove('visible');

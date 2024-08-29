@@ -212,7 +212,11 @@ export class LoopMenu extends EventEmitter {
   }
 
   closeUI() {
+    if (DOMElements.loopMenu.style.display === 'none') {
+      return false;
+    }
     DOMElements.loopMenu.style.display = 'none';
+    return true;
   }
 
   recordGif() {

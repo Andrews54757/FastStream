@@ -252,8 +252,12 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   closeUI() {
+    if (DOMElements.playbackRateMenuContainer.style.display === 'none') {
+      return false;
+    }
     DOMElements.playbackRateMenuContainer.style.display = 'none';
     this.stayOpen = false;
+    return true;
   }
 
   isVisible() {
