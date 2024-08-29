@@ -684,7 +684,7 @@ export class SubtitlesManager extends EventEmitter {
     this.checkTrackBounds();
   }
 
-  mediaNameSet() {
-    this.openSubtitlesSearch.setQueryInputValue(this.client.mediaName);
+  mediaInfoSet() {
+    this.openSubtitlesSearch.setMediaInfo(this.client.mediaInfo?.name);
   }
 }

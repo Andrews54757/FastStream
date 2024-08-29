@@ -45,7 +45,7 @@ export class SaveManager {
       return;
     }
 
-    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_') + '@' + StringUtils.formatTime(this.client.currentTime);
+    const suggestedName = (this.client.mediaInfo?.name || 'video').replaceAll(' ', '_') + '@' + StringUtils.formatTime(this.client.currentTime);
     const name = EnvUtils.isIncognito() ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
     if (!name) {
@@ -120,7 +120,7 @@ export class SaveManager {
       }
     }
 
-    const suggestedName = (this.client.mediaName || 'video').replaceAll(' ', '_');
+    const suggestedName = (this.client.mediaInfo?.name || 'video').replaceAll(' ', '_');
     const name = EnvUtils.isIncognito() ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
     if (!name) {

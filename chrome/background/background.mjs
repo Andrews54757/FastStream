@@ -379,7 +379,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     const response = {
-      mediaName: getMediaNameFromTab(sender?.tab),
+      mediaInfo: getMediaInfoFromTab(sender?.tab),
       analyzerData: tab.analyzerData,
       isMainPlayer: isMainPlayer,
     };
@@ -520,7 +520,7 @@ function checkURLMatch(frame) {
   }
 }
 
-function getMediaNameFromTab(tab) {
+function getMediaInfoFromTab(tab) {
   if (!tab || tab.url === PlayerURL) return;
   // Get name of website through tab url
   const url = new URL(tab.url);
@@ -540,8 +540,18 @@ function getMediaNameFromTab(tab) {
     return word.length > 0 && (word.length <= 3 || StringUtils.levenshteinDistance(word.toLowerCase(), name.toLowerCase()) >= Math.ceil(name.length * 0.4));
   }).join(' ');
 
+  let season = null;
+  let episode = null;
   // Remove season #, episode #, s#, e#
-  title = title.replace(/\b(s|e|season|episode)\s*[0-9]+\b/gi, '');
+  title = title.replace(/\b(s|season)\s*([0-9]+)\b/gi, (match, p1, p2) => {
+    season = parseInt(p2);
+    return '';
+  });
+
+  title = title.replace(/\b(e|episode)\s*([0-9]+)\b/gi, (match, p1, p2) => {
+    episode = parseInt(p2);
+    return '';
+  });
 
   // Remove year
   title = title.replace(/\b[0-9]{4}\b/g, '');
@@ -551,7 +561,11 @@ function getMediaNameFromTab(tab) {
   const wordsToExclude = ['tv', 'movie', 'hd', 'full', 'free', 'online', 'stream', 'streaming', 'watch', 'now', 'watching', 'series', 'episode', 'season', 'anime', 'show', 'shows', 'episodes', 'seasons', 'part', 'parts', 'sub', 'dub', 'subdub', 'subbed', 'dubbed', 'english', 'subtitles', 'subtitle'];
   title = title.replace(new RegExp('\\b(' + wordsToExclude.join('|') + ')\\b', 'gi'), '');
 
-  return title.replace(/\s\s+/g, ' ').trim();
+  return {
+    name: title.replace(/\s\s+/g, ' ').trim(),
+    season: season,
+    episode: episode,
+  };
 }
 
 async function loadOptions(newOptions) {

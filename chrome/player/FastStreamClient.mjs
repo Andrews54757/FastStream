@@ -1017,9 +1017,9 @@ export class FastStreamClient extends EventEmitter {
     await Promise.all(promises);
   }
 
-  setMediaName(name) {
-    this.mediaName = name;
-    this.interfaceController.subtitlesManager.mediaNameSet();
+  setMediaInfo(info) {
+    this.mediaInfo = info;
+    this.interfaceController.subtitlesManager.mediaInfoSet();
   }
 
   bindPlayer(player) {

@@ -263,7 +263,7 @@ async function setup() {
       frameId: parseInt(myParam) || 0,
     }).then((data) => {
       window.fastStream.loadAnalyzerData(data.analyzerData);
-      window.fastStream.setMediaName(data.mediaName);
+      window.fastStream.setMediaInfo(data.mediaInfo);
       window.fastStream.setNeedsUserInteraction(!data.isMainPlayer);
 
       console.log('Recieved data', data);

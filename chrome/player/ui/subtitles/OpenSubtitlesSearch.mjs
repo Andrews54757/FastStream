@@ -482,11 +482,22 @@ export class OpenSubtitlesSearch extends EventEmitter {
     });
   }
 
-  setQueryInputValue(value) {
-    if (!value) {
+  setMediaInfo(info) {
+    if (!info) {
       return;
     }
-    this.subui.search.value = value;
+
+    if (info.name) {
+      this.subui.search.value = info.name;
+    }
+
+    if (info.season) {
+      this.subui.seasonInput.value = info.season;
+    }
+
+    if (info.episode) {
+      this.subui.episodeInput.value = info.episode;
+    }
   }
 
   setLanguageInputValue(value) {
