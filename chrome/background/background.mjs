@@ -536,9 +536,29 @@ function getMediaInfoFromTab(tab) {
   title = title.replace(/[^a-zA-Z0-9 ]/g, '');
 
   // Remove any words too similar to the website name
-  title = title.split(' ').filter((word) => {
-    return word.length > 0 && (word.length <= 3 || StringUtils.levenshteinDistance(word.toLowerCase(), name.toLowerCase()) >= Math.ceil(name.length * 0.4));
-  }).join(' ');
+  const words = title.split(' ').filter((word) => word.length > 0);
+  for (let i = 0; i < words.length; i++) {
+    const word = words[i];
+    if (word.length <= 3) {
+      continue;
+    }
+
+    if (StringUtils.levenshteinDistance(word.toLowerCase(), name.toLowerCase()) < Math.ceil(name.length * 0.4)) {
+      words.splice(i, 1);
+      i--;
+
+      // Check if previous word is "the" or "a" or etc...
+      if (i > 0) {
+        const prewordList = ['the', 'a', 'an', 'of', 'and', 'or', 'in', 'on', 'at', 'to', 'for', 'with', 'by', 'from'];
+        if (prewordList.includes(words[i].toLowerCase())) {
+          words.splice(i, 1);
+          i--;
+        }
+      }
+    }
+  }
+
+  title = words.join(' ');
 
   let season = null;
   let episode = null;
