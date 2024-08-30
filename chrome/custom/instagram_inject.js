@@ -60,12 +60,21 @@
       const objs = findPropertyRecursive(data, 'video_dash_manifest');
 
       if (objs.length === 0) {
+        console.error('No video_dash_manifest found');
+        return;
+      }
+
+      // Find non empty value
+      const value = objs.find((o)=>!!o.value).value;
+
+      if (!value) {
+        console.error('No value found');
         return;
       }
 
       window.postMessage({
         type: 'fs_source_detected',
-        value: objs[0].value.toString(),
+        value: value.toString(),
         ext: 'mpd',
       }, '*');
     });
