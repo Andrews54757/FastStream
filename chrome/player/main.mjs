@@ -160,8 +160,10 @@ async function recieveSources(request, sendResponse) {
   if (fullscreenState === 'fullscreen') {
     window.fastStream.interfaceController.fullscreenToggle(true).catch((e) => {
       console.error(e);
-      window.fastStream.interfaceController.setStatusMessage('error', 'Fullscreen permissions denied!', 'warning', 5000);
-      window.fastStream.interfaceController.toggleWindowedFullscreen(true);
+      if (document.fullscreenElement === null) {
+        window.fastStream.interfaceController.setStatusMessage('error', 'Fullscreen permissions denied!', 'warning', 5000);
+        window.fastStream.interfaceController.toggleWindowedFullscreen(true);
+      }
     });
   } else if (fullscreenState === 'pip') {
     window.fastStream.interfaceController.pipToggle(true);
