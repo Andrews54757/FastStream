@@ -610,15 +610,41 @@ async function loadOptions(newOptions) {
       return;
     }
 
-    if (urlStr[0] === '~') {
+    const obj = {
+      negative: false,
+      regex: false,
+      match: null,
+    };
+
+    while (urlStr.length > 0) {
+      if (urlStr[0] === '!') {
+        obj.negative = true;
+        urlStr = urlStr.substring(1);
+      } else if (urlStr[0] === '~') {
+        obj.regex = true;
+        urlStr = urlStr.substring(1);
+      } else {
+        break;
+      }
+    }
+
+    if (obj.regex) {
       try {
-        AutoEnableList.push(new RegExp(urlStr.substring(1)));
+        obj.match = new RegExp(urlStr);
       } catch (e) {
+
       }
     } else {
-      AutoEnableList.push(urlStr);
+      obj.match = urlStr;
+    }
+
+    if (obj.match) {
+      AutoEnableList.push(obj);
     }
   });
+
+  // Reverse auto enable list
+  AutoEnableList.reverse();
 
   loadCustomPatterns();
 }
@@ -1153,12 +1179,12 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         BackgroundUtils.checkMessageError('remove_players');
       });
 
-      const urlIsInAutoList = AutoEnableList.some((regex) => {
+      const match = AutoEnableList.find((item) => {
         try {
-          if (typeof regex === 'string') {
-            return changeInfo.url.substring(0, regex.length) === regex;
+          if (!item.regex) {
+            return changeInfo.url.substring(0, item.match.length) === item.match;
           } else {
-            return regex.test(changeInfo.url);
+            return item.match.test(changeInfo.url);
           }
         } catch (e) {
 
@@ -1166,15 +1192,17 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
         return false;
       });
 
+      const shouldAutoEnable = match && !match.negative;
+
 
       if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
         CachedTabs[tabid].isOn = true;
         CachedTabs[tabid].regexMatched = true;
-      } else if (urlIsInAutoList && !CachedTabs[tabid].regexMatched) {
+      } else if (shouldAutoEnable && !CachedTabs[tabid].regexMatched) {
         CachedTabs[tabid].regexMatched = true;
         CachedTabs[tabid].isOn = true;
         openPlayersWithSources(tab.id);
-      } else if (!urlIsInAutoList && CachedTabs[tabid].regexMatched) {
+      } else if (!shouldAutoEnable && CachedTabs[tabid].regexMatched) {
         CachedTabs[tabid].isOn = false;
         CachedTabs[tabid].regexMatched = false;
       }
