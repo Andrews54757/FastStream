@@ -208,7 +208,13 @@ function getNextOrPreviousButton(isNext = false) {
         if (nextIndex < 0 || nextIndex >= similar.length) {
           continue;
         }
-        return similar[nextIndex];
+
+        // Check if a element
+        if (similar[nextIndex].tagName === 'A') {
+          return similar[nextIndex];
+        }
+
+        return similar[nextIndex].querySelector('a');
       }
     }
   }
