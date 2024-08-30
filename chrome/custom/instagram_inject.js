@@ -68,7 +68,7 @@
       const value = objs.find((o)=>!!o.value).value;
 
       if (!value) {
-        console.error('No value found');
+        console.error('No value found', data);
         return;
       }
 
