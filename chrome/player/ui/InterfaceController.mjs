@@ -638,6 +638,10 @@ export class InterfaceController {
   }
 
   async handleVisibilityChange(isVisible) {
+    if (this.client.needsUserInteraction()) { // Don't do anything if the user needs to interact with the player
+      return;
+    }
+
     const action = this.client.options.visChangeAction;
 
     if (isVisible === this.lastPageVisibility || this.miniPlayerActive) {
