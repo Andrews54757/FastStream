@@ -34,6 +34,10 @@ export class AudioProfile {
       profile.master = masterChannel;
     }
 
+    if (!profile.master) {
+      profile.master = AudioChannelControl.default('master');
+    }
+
     if (obj.equalizerNodes) {
       profile.master.equalizerNodes = obj.equalizerNodes.map((node) => {
         return AudioEQNode.fromObj(node);
