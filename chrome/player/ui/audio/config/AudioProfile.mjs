@@ -18,7 +18,7 @@ export class AudioProfile {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
 
-    if (obj.channels) {
+    if (obj.channels && obj.channels.length === 6) {
       profile.channels = obj.channels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });

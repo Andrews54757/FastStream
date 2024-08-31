@@ -29,8 +29,10 @@ import {YoutubeClients} from './enums/YoutubeClients.mjs';
 import {StringUtils} from './utils/StringUtils.mjs';
 import {StatusTypes} from './ui/StatusManager.mjs';
 import {InterfaceUtils} from './utils/InterfaceUtils.mjs';
+import {VirtualAudioNode} from './ui/audio/VirtualAudioNode.mjs';
+import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
 
-const SET_VOLUME_USING_NODE = false; // !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
+const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
 export class FastStreamClient extends EventEmitter {
   constructor() {
@@ -71,6 +73,7 @@ export class FastStreamClient extends EventEmitter {
       seekStepSize: 0.2,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
+      videoDelay: 0,
     };
     this.state = {
       playing: false,
@@ -118,6 +121,7 @@ export class FastStreamClient extends EventEmitter {
     });
 
     this.player = null;
+    this.syncedAudioPlayer = null;
     this.previewPlayer = null;
     this.saveSeek = true;
     this.pastSeeks = [];
@@ -263,6 +267,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
     this.options.previewEnabled = options.previewEnabled;
+    this.options.videoDelay = options.videoDelay;
 
     this.loadProgressData();
 
@@ -302,6 +307,8 @@ export class FastStreamClient extends EventEmitter {
 
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
+
+    this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }
 
   updateCSSFilters() {
@@ -606,11 +613,22 @@ export class FastStreamClient extends EventEmitter {
       if (EnvUtils.isWebAudioSupported()) {
         this.audioContext = new AudioContext();
         this.audioSource = this.audioContext.createMediaElementSource(this.player.getVideo());
-        this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioSource, this.audioContext);
+
+        this.audioOutputNode = new VirtualAudioNode('mainSource');
+        this.audioOutputNode.connectFrom(this.audioSource);
+
+        this.audioAnalyzer.setupAnalyzerNodeForMainPlayer(this.player.getVideo(), this.audioOutputNode, this.audioContext, ()=>{
+          return this.currentVideo.currentTime + this.options.videoDelay / 1000;
+        });
         this.audioConfigManager.setupNodes(this.audioContext);
-        this.audioConfigManager.getInputNode().connectFrom(this.audioSource);
+        this.audioConfigManager.getInputNode().connectFrom(this.audioOutputNode);
         this.audioConfigManager.getOutputNode().connect(this.audioContext.destination);
       }
+
+      this.syncedAudioPlayer = new SyncedAudioPlayer(this);
+      this.syncedAudioPlayer.setPlaybackRate(this.state.playbackRate);
+      await this.syncedAudioPlayer.setup(this.audioContext, this.audioSource, this.audioOutputNode);
+      this.syncedAudioPlayer.setVideoDelay(this.options.videoDelay);
 
       this.setVolume(this.state.volume);
 
@@ -806,6 +824,7 @@ export class FastStreamClient extends EventEmitter {
     this.videoAnalyzer.update();
     this.videoAnalyzer.saveAnalyzerData();
     this.updateHasDownloadSpace();
+    if (this.syncedAudioPlayer) this.syncedAudioPlayer.watcherLoop();
     this.emit('tick', this);
   }
 
@@ -989,6 +1008,15 @@ export class FastStreamClient extends EventEmitter {
         console.error(e);
       }
       this.previewPlayer = null;
+    }
+
+    if (this.syncedAudioPlayer) {
+      try {
+        this.syncedAudioPlayer.destroy();
+      } catch (e) {
+        console.error(e);
+      }
+      this.syncedAudioPlayer = null;
     }
 
     if (this.audioContext) {
@@ -1227,6 +1255,10 @@ export class FastStreamClient extends EventEmitter {
 
     // Everything below will only run if browser allows playing the video
     // (e.g. not blocked by autoplay policy)
+    if (this.syncedAudioPlayer) {
+      await this.syncedAudioPlayer.play();
+    }
+
     this.interfaceController.play();
     if (this.audioContext && this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
@@ -1236,6 +1268,11 @@ export class FastStreamClient extends EventEmitter {
 
   async pause() {
     await this.player.pause();
+
+    if (this.syncedAudioPlayer) {
+      await this.syncedAudioPlayer.pause();
+    }
+
     this.interfaceController.pause();
   }
 
@@ -1292,6 +1329,7 @@ export class FastStreamClient extends EventEmitter {
     if (this.player) {
       this.player.currentTime = value;
     }
+    if (this.syncedAudioPlayer) this.syncedAudioPlayer.setCurrentTime(value);
   }
 
   get duration() {
@@ -1363,6 +1401,9 @@ export class FastStreamClient extends EventEmitter {
       this.videoAnalyzer.setLevel(level, audioLevel);
       this.audioAnalyzer.setLevel(level, audioLevel);
       this.frameExtractor.setLevel(level, audioLevel);
+      if (this.syncedAudioPlayer) {
+        this.syncedAudioPlayer.setLevel(level, audioLevel);
+      }
       this.resetFailed();
       this.updateQualityLevels();
     }
@@ -1480,10 +1521,14 @@ export class FastStreamClient extends EventEmitter {
   setVolume(volume) {
     this.state.volume = volume;
     if (SET_VOLUME_USING_NODE || (volume > 1 && EnvUtils.isWebAudioSupported())) {
-      if (this.player) this.player.volume = 1;
+      if (this.player && (!this.syncedAudioPlayer || !this.syncedAudioPlayer.setVolume(1))) {
+        this.player.volume = 1;
+      }
       this.audioConfigManager.updateVolume(volume);
     } else {
-      if (this.player) this.player.volume = volume;
+      if (this.player && (!this.syncedAudioPlayer || !this.syncedAudioPlayer.setVolume(volume))) {
+        this.player.volume = volume;
+      }
       if (EnvUtils.isWebAudioSupported()) this.audioConfigManager.updateVolume(1);
     }
   }
@@ -1504,6 +1549,9 @@ export class FastStreamClient extends EventEmitter {
     this.state.playbackRate = value;
     if (this.player) {
       this.player.playbackRate = value;
+    }
+    if (this.syncedAudioPlayer) {
+      this.syncedAudioPlayer.setPlaybackRate(value);
     }
     this.interfaceController.updatePlaybackRate();
   }

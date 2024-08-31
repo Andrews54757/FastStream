@@ -34,6 +34,15 @@ class EventEmitterContext {
     return this;
   }
 
+  once(event, callback) {
+    const onceCallback = (...args) => {
+      this.off(event, onceCallback);
+      callback(...args);
+    };
+    this.on(event, onceCallback);
+    return this;
+  }
+
   clear(event) {
     this.events.delete(event);
     return this;
@@ -99,6 +108,11 @@ export class EventEmitter {
 
   off(event, callback) {
     this.mainContext.off(event, callback);
+    return this;
+  }
+
+  once(event, callback) {
+    this.mainContext.once(event, callback);
     return this;
   }
 

@@ -180,4 +180,34 @@ export class Utils {
     );
     console.log('Please report all issues to the GitHub repository: https://github.com/Andrews54757/FastStream/issues');
   }
+
+  static timeoutableEvent(context, event, timeout) {
+    let callback; let timeoutId;
+    const cleanup = () => {
+      clearTimeout(timeoutId);
+      context.off(event, callback);
+    };
+
+    return new Promise((resolve, reject) => {
+      callback = () => {
+        cleanup();
+        resolve(true);
+      };
+
+      timeoutId = setTimeout(() => {
+        cleanup();
+        resolve(false);
+      }, timeout);
+
+      context.on(event, callback);
+    });
+  }
+
+  static asyncTimeout(timeout) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, timeout);
+    });
+  }
 }

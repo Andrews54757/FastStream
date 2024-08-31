@@ -40,4 +40,5 @@ export const DefaultOptions = {
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,
+  videoDelay: 0,
 };
