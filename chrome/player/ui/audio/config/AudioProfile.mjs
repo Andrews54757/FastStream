@@ -22,7 +22,7 @@ export class AudioProfile {
       profile.channels = obj.channels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
-    } else if (obj.mixerChannels) {
+    } else if (obj.mixerChannels && obj.mixerChannels.length === 7) {
       profile.channels = obj.mixerChannels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
