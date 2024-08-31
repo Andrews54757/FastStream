@@ -41,7 +41,7 @@ export class AudioProfile {
     if (obj.equalizerNodes) {
       profile.master.equalizerNodes = obj.equalizerNodes.map((node) => {
         return AudioEQNode.fromObj(node);
-      });
+      }) || [];
     }
 
     if (obj.compressor) {

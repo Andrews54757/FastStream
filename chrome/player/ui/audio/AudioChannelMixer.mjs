@@ -533,7 +533,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       nodes.compressor.setupNodes(audioContext);
       nodes.equalizer.setupNodes(audioContext);
 
-      if (this.channelConfigs) {
+      if (this.channelConfigs && this.channelConfigs[i]) {
         const channel = this.channelConfigs[i];
         nodes.equalizer.setConfig(channel.equalizerNodes);
         nodes.compressor.setConfig(channel.compressor);
