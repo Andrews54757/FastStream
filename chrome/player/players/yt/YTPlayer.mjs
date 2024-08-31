@@ -241,7 +241,7 @@ export default class YTPlayer extends DashPlayer {
     const youtube = await Innertube.create({
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
-      client_type: mode,
+      client_type: mode === ClientType.IOS ? undefined : mode,
       runner_location: 'https://sandbox.faststream.online/',
     });
 

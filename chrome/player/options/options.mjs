@@ -106,7 +106,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
-  setSelectMenuValue(ytclient, Options.defaultYoutubeClient2);
+  setSelectMenuValue(ytclient, Options.defaultYoutubeClient3);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -212,8 +212,8 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
   optionChanged();
 });
 
-createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient2, null, (e) => {
-  Options.defaultYoutubeClient2 = e.target.value;
+createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient3, null, (e) => {
+  Options.defaultYoutubeClient3 = e.target.value;
   optionChanged();
 });
 
@@ -631,5 +631,3 @@ if (EnvUtils.isExtension()) {
   });
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
-
-document.getElementById('ytc').style.display = ''; // SPLICER:CENSORYT:REMOVE_LINE
