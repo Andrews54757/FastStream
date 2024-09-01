@@ -45,8 +45,9 @@ export class SubtitleTrack {
         return a.startTime - b.startTime;
       });
     };
+
     parser.onparsingerror = (error) => {
-      throw error;
+      console.error(error);
     };
 
     parser.parse(text);
