@@ -146,7 +146,9 @@ async function recieveSources(request, sendResponse) {
         const track = new SubtitleTrack(sub.label, sub.language);
         try {
           track.loadText(sub.data);
-          window.fastStream.loadSubtitleTrack(track, request.autoSetSource);
+          if (track.cues.length > 0) {
+            window.fastStream.loadSubtitleTrack(track, request.autoSetSource);
+          }
         } catch (e) {
           console.error(e);
         }
