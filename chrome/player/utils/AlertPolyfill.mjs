@@ -1,3 +1,4 @@
+import {Localize} from '../modules/Localize.mjs';
 import {SweetAlert} from '../modules/sweetalert.mjs';
 
 export class AlertPolyfill {
@@ -11,15 +12,19 @@ export class AlertPolyfill {
     return (await SweetAlert.fire({
       text: message,
       showCancelButton: true,
+      confirmButtonText: Localize.getMessage('yes'),
+      cancelButtonText: Localize.getMessage('cancel'),
     })).isConfirmed;
   }
 
-  static async prompt(message, defaultValue = '') {
+  static async prompt(message, defaultValue = '', inputType = 'text') {
     return (await SweetAlert.fire({
       text: message,
-      input: 'text',
+      input: inputType,
       inputValue: defaultValue,
       showCancelButton: true,
+      confirmButtonText: Localize.getMessage('ok'),
+      cancelButtonText: Localize.getMessage('cancel'),
     })).value;
   }
 

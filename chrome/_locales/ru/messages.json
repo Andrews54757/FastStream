@@ -1022,5 +1022,17 @@
     },
     "subtitles_settings_defaultLanguage": {
         "message": "Язык"
+    },
+    "yes": {
+        "message": "Да"
+    },
+    "no": {
+        "message": "Нет"
+    },
+    "ok": {
+        "message": "ОК"
+    },
+    "cancel": {
+        "message": "Отмена"
     }
 }

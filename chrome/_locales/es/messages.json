@@ -1021,5 +1021,17 @@
     },
     "subtitles_settings_defaultLanguage": {
         "message": "Idioma"
+    },
+    "yes": {
+        "message": "Sí"
+    },
+    "no": {
+        "message": "No"
+    },
+    "ok": {
+        "message": "Aceptar"
+    },
+    "cancel": {
+        "message": "Cancelar"
     }
 }

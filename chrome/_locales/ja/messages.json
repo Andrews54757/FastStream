@@ -1022,5 +1022,17 @@
     },
     "subtitles_settings_defaultLanguage": {
         "message": "言語"
+    },
+    "yes": {
+        "message": "はい"
+    },
+    "no": {
+        "message": "いいえ"
+    },
+    "ok": {
+        "message": "OK"
+    },
+    "cancel": {
+        "message": "キャンセル"
     }
 }
