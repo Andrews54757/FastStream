@@ -1,4 +1,5 @@
-
+/* eslint-disable */
+// Minified to reduce loading time (https://minify-js.com/)
 var ortWasmThreaded = (() => {
   var _scriptName = import.meta.url;
   
