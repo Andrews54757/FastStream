@@ -14,7 +14,7 @@ const assetPath = (file) => {
 };
 
 const modelFetcher = async () => {
-  const modelURL = assetPath('silero_vad.ort');
+  const modelURL = assetPath('silero_vad_half.ort');
   return await fetch(modelURL).then((r) => r.arrayBuffer());
 };
 
@@ -73,7 +73,7 @@ class Silero {
       const inputs = {
         input: t,
         state: this.state,
-        sr: this._sr,
+        //   sr: this._sr,
       };
       const out = await this._session.run(inputs);
       this.state = out.stateN;

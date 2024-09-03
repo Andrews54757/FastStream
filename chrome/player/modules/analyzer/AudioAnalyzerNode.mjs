@@ -9,7 +9,6 @@ export class AudioAnalyzerNode extends EventEmitter {
       onFrameProcessed: this.onVadFrameProcessed.bind(this),
       positiveSpeechThreshold: 1,
       negativeSpeechThreshold: 1,
-      frameSamples: 512,
     };
 
     this.loopHandle = this.volumeLoop.bind(this);
