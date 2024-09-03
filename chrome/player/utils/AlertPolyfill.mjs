@@ -10,7 +10,7 @@ export class AlertPolyfill {
   static async confirm(message) {
     return (await SweetAlert.fire({
       text: message,
-      showDenyButton: true,
+      showCancelButton: true,
     })).isConfirmed;
   }
 
