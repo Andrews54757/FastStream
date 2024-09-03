@@ -1,4 +1,5 @@
 /* eslint-disable */
+// Minified to reduce loading time (https://minify-js.com/)
 /* !
  * ONNX Runtime Web v1.20.0
  * Copyright (c) Microsoft Corporation. All rights reserved.
