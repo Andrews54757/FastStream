@@ -1036,5 +1036,14 @@
     },
     "cancel": {
         "message": "Cancelar"
+    },
+    "error_popup": {
+        "message": "Error: $1"
+    },
+    "error_popup_body": {
+        "message": "Por favor, informe este error a los desarrolladores en https://github.com/Andrews54757/FastStream/issues con la traza de pila a continuación:"
+    },
+    "error_popup_send": {
+        "message": "Reportar Error"
     }
 }

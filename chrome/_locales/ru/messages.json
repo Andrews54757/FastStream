@@ -1037,5 +1037,14 @@
     },
     "cancel": {
         "message": "Отмена"
+    },
+    "error_popup": {
+        "message": "Ошибка: $1"
+    },
+    "error_popup_body": {
+        "message": "Пожалуйста, сообщите об этой ошибке разработчикам на https://github.com/Andrews54757/FastStream/issues с указанием стека вызовов ниже:"
+    },
+    "error_popup_send": {
+        "message": "Сообщить об ошибке"
     }
 }

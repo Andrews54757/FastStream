@@ -31,6 +31,7 @@ import {StatusTypes} from './ui/StatusManager.mjs';
 import {InterfaceUtils} from './utils/InterfaceUtils.mjs';
 import {VirtualAudioNode} from './ui/audio/VirtualAudioNode.mjs';
 import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
+import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
@@ -682,18 +683,7 @@ export class FastStreamClient extends EventEmitter {
         }
       });
     } catch (e) {
-      const msg = 'Please send this error to the developer at https://github.com/Andrews54757/FastStream/issues \n' + e + '\n' + e.stack;
-      const el = document.createElement('div');
-      el.style.position = 'fixed';
-      el.style.top = '0';
-      el.style.left = '0';
-      el.style.width = '100%';
-      el.style.height = '200px';
-      el.style.backgroundColor = 'white';
-      el.style.zIndex = '999999999';
-      el.innerText = msg;
-      document.body.appendChild(el);
-
+      AlertPolyfill.errorSendToDeveloper(e);
       console.error(e);
     }
 

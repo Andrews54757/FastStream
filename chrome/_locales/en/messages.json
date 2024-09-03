@@ -1037,5 +1037,14 @@
     },
     "cancel": {
         "message": "Cancel"
+    },
+    "error_popup": {
+        "message": "Error: $1"
+    },
+    "error_popup_body": {
+        "message": "Please report this error to the developers at https://github.com/Andrews54757/FastStream/issues with the stack trace below:"
+    },
+    "error_popup_send": {
+        "message": "Report Error"
     }
 }

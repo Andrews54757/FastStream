@@ -1037,5 +1037,14 @@
     },
     "cancel": {
         "message": "Batal"
+    },
+    "error_popup": {
+        "message": "Ralat: $1"
+    },
+    "error_popup_body": {
+        "message": "Sila laporkan ralat ini kepada pembangun di https://github.com/Andrews54757/FastStream/issues dengan jejak tumpukan di bawah:"
+    },
+    "error_popup_send": {
+        "message": "Laporkan Ralat"
     }
 }

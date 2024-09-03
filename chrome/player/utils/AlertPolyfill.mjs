@@ -1,5 +1,6 @@
 import {Localize} from '../modules/Localize.mjs';
 import {SweetAlert} from '../modules/sweetalert.mjs';
+import {EnvUtils} from './EnvUtils.mjs';
 
 export class AlertPolyfill {
   static async alert(message, icon = undefined) {
@@ -45,6 +46,42 @@ export class AlertPolyfill {
         toast.onmouseenter = SweetAlert.stopTimer;
         toast.onmouseleave = SweetAlert.resumeTimer;
       },
+    });
+  }
+
+  static async errorSendToDeveloper(error) {
+    const errorHtml = document.createElement('div');
+    const bodyText = document.createElement('p');
+    bodyText.classList.add('error-popup-body');
+    bodyText.textContent = Localize.getMessage('error_popup_body');
+
+    const stackText = document.createElement('pre');
+    stackText.classList.add('error-popup-stack');
+    stackText.textContent = error?.stack;
+    errorHtml.appendChild(bodyText);
+    errorHtml.appendChild(stackText);
+
+    return await SweetAlert.fire({
+      title: Localize.getMessage('error_popup', [error?.message]),
+      html: errorHtml,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonText: Localize.getMessage('error_popup_send'),
+      cancelButtonText: Localize.getMessage('cancel'),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const body = `## Version:\n${EnvUtils.getVersion()}\n\n## Error message:\n${error?.message || error}\n\n## Stack trace:\n\`\`\`\n${error?.stack || 'No stack trace'}\n\`\`\``;
+        const urlBase = `https://github.com/Andrews54757/FastStream/issues/new?`;
+        const url = `${urlBase}title=${encodeURIComponent('Error report')}&body=${encodeURIComponent(body)}`;
+
+        if (EnvUtils.isExtension()) {
+          chrome?.tabs?.create({
+            url,
+          });
+        } else {
+          window.open(url, '_blank');
+        }
+      }
     });
   }
 }

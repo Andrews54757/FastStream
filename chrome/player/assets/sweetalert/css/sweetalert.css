@@ -245,7 +245,6 @@
     position: relative;
     box-sizing: border-box;
     grid-template-columns: minmax(0, 100%);
-    width: 32em;
     max-width: 100%;
     padding: 0 0 1.25em;
     border: none;
@@ -1084,3 +1083,7 @@
     inset: auto 0 0 auto;
   }
   
+  .error-popup-stack {
+    text-align: left;
+    white-space: pre-wrap;
+  }

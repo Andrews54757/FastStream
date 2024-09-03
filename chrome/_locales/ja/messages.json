@@ -1037,5 +1037,14 @@
     },
     "cancel": {
         "message": "キャンセル"
+    },
+    "error_popup": {
+        "message": "エラー: $1"
+    },
+    "error_popup_body": {
+        "message": "このエラーを開発者に報告してください: https://github.com/Andrews54757/FastStream/issues 以下にスタックトレースが表示されます:"
+    },
+    "error_popup_send": {
+        "message": "エラーを報告"
     }
 }
