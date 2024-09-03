@@ -241,11 +241,19 @@ export class SubtitlesManager extends EventEmitter {
 
       if (url) {
         RequestUtils.requestSimple(url, (err, req, body) => {
-          if (body) {
-            const track = new SubtitleTrack('URL Track', null);
-            track.loadText(body);
+          if (!err && body) {
+            try {
+              const track = new SubtitleTrack('URL Track', null);
+              track.loadText(body);
 
-            this.addTrack(track);
+              this.addTrack(track);
+
+              AlertPolyfill.toast('success', Localize.getMessage('player_subtitlesmenu_urlsuccess'));
+            } catch (e) {
+              AlertPolyfill.toast('error', Localize.getMessage('player_subtitlesmenu_urlfail'), e?.message);
+            }
+          } else {
+            AlertPolyfill.toast('error', Localize.getMessage('player_subtitlesmenu_urlfail'), err?.message);
           }
         });
       }

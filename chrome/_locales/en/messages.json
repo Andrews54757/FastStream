@@ -327,6 +327,12 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Enter URL"
     },
+    "player_subtitlesmenu_urlsuccess": {
+        "message": "Subtitle track loaded!"
+    },
+    "player_subtitlesmenu_urlfail": {
+        "message": "Failed to load subtitle track!"
+    },
     "player_subtitlesmenu_searchbtn": {
         "message": "Search OpenSubtitles"
     },

@@ -327,6 +327,12 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Masuk URL"
     },
+    "player_subtitlesmenu_urlsuccess": {
+        "message": "Trek sarikata dimuatkan!"
+    },
+    "player_subtitlesmenu_urlfail": {
+        "message": "Gagal memuatkan trek sarikata!"
+    },
     "player_subtitlesmenu_searchbtn": {
         "message": "Carian OpenSubtitles"
     },

@@ -327,6 +327,12 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "URL を入力"
     },
+    "player_subtitlesmenu_urlsuccess": {
+        "message": "字幕トラックを読み込みました!"
+    },
+    "player_subtitlesmenu_urlfail": {
+        "message": "字幕トラックの読み込みに失敗しました!"
+    },
     "player_subtitlesmenu_searchbtn": {
         "message": "OpenSubtitles を検索"
     },

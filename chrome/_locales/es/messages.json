@@ -326,6 +326,12 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Ingrese URL"
     },
+    "player_subtitlesmenu_urlsuccess": {
+        "message": "¡Pista de subtítulos cargada!"
+    },
+    "player_subtitlesmenu_urlfail": {
+        "message": "¡Error al cargar la pista de subtítulos!"
+    },
     "player_subtitlesmenu_searchbtn": {
         "message": "Buscar en OpenSubtitles"
     },

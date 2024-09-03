@@ -327,6 +327,12 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Введите адрес"
     },
+    "player_subtitlesmenu_urlsuccess": {
+        "message": "Субтитры загружены!"
+    },
+    "player_subtitlesmenu_urlfail": {
+        "message": "Не удалось загрузить субтитры!"
+    },
     "player_subtitlesmenu_searchbtn": {
         "message": "Искать на OpenSubtitles"
     },

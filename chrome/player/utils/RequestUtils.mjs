@@ -93,7 +93,9 @@ export class RequestUtils {
 
     // check error
     if (xhr.status !== 200 && xhr.status !== 206) {
-      if (callback) callback(true, xhr, false);
+      if (callback) {
+        callback(new Error(`Bad status code: ${xhr.status}`), xhr, false);
+      }
       return xhr;
     }
 
