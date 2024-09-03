@@ -4,6 +4,7 @@ import {BlobManager} from '../../utils/BlobManager.mjs';
 import {Muxer, StreamTarget} from './mp4-muxer.mjs';
 import {MP4Demuxer, WebMDemuxer} from './demuxers.mjs';
 import {Localize} from '../Localize.mjs';
+import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 
 /**
  * Recode Merger
@@ -431,7 +432,7 @@ export class Reencoder extends EventEmitter {
       throw new Error('Webcodecs not supported');
     }
 
-    const answer = confirm(Localize.getMessage('player_savevideo_reencode'));
+    const answer = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_reencode'));
     if (!answer) {
       throw new Error('User cancelled conversion');
     }

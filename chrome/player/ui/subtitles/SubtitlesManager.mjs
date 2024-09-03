@@ -2,6 +2,7 @@ import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {Localize} from '../../modules/Localize.mjs';
 import {WebVTT} from '../../modules/vtt.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {SubtitleUtils} from '../../utils/SubtitleUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -235,8 +236,8 @@ export class SubtitlesManager extends EventEmitter {
     urlbutton.classList.add('subtitle-menu-option');
     urlbutton.textContent = Localize.getMessage('player_subtitlesmenu_urlbtn');
     WebUtils.setupTabIndex(urlbutton);
-    urlbutton.addEventListener('click', (e) => {
-      const url = prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'));
+    urlbutton.addEventListener('click', async (e) => {
+      const url = await AlertPolyfill.prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'));
 
       if (url) {
         RequestUtils.requestSimple(url, (err, req, body) => {
@@ -346,10 +347,10 @@ export class SubtitlesManager extends EventEmitter {
 
     trackElement.appendChild(downloadTrack);
 
-    downloadTrack.addEventListener('click', (e) => {
+    downloadTrack.addEventListener('click', async (e) => {
       e.stopPropagation();
       const suggestedName = trackElement.textContent.replaceAll(' ', '_');
-      const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
+      const dlname = chrome?.extension?.inIncognitoContext ? suggestedName : await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName);
 
       if (!dlname) {
         return;

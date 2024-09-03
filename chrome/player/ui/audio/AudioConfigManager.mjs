@@ -1,4 +1,5 @@
 import {Localize} from '../../modules/Localize.mjs';
+import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
@@ -172,7 +173,7 @@ export class AudioConfigManager extends AbstractAudioModule {
                   const obj = JSON.parse(e.target.result);
                   this.loadProfileFile(obj);
                 } catch (e) {
-                  alert(Localize.getMessage('player_audioconfig_import_invalid'));
+                  AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'));
                 }
               };
               reader.readAsText(file);
