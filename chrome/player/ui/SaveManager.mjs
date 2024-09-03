@@ -42,7 +42,7 @@ export class SaveManager {
 
   async saveScreenshot() {
     if (!this.client.player) {
-      await AlertPolyfill.alert(Localize.getMessage('player_nosource_alert'));
+      await AlertPolyfill.alert(Localize.getMessage('player_nosource_alert'), 'error');
       return;
     }
 
@@ -81,7 +81,7 @@ export class SaveManager {
 
   async saveVideo(e, allowPartial = false) {
     if (!this.client.player) {
-      await AlertPolyfill.alert(Localize.getMessage('player_nosource_alert'));
+      await AlertPolyfill.alert(Localize.getMessage('player_nosource_alert'), 'error');
       return;
     }
 
@@ -91,7 +91,7 @@ export class SaveManager {
         DOMElements.saveNotifBanner.style.color = 'gold';
         this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelling'), 'info');
       } else {
-        await AlertPolyfill.alert(Localize.getMessage('player_savevideo_inprogress_alert'));
+        await AlertPolyfill.alert(Localize.getMessage('player_savevideo_inprogress_alert'), 'error');
       }
       return;
     }
@@ -103,19 +103,19 @@ export class SaveManager {
     const {canSave, isComplete, canStream} = player.canSave();
 
     if (!canSave && !doDump) {
-      await AlertPolyfill.alert(Localize.getMessage('player_savevideo_unsupported'));
+      await AlertPolyfill.alert(Localize.getMessage('player_savevideo_unsupported'), 'error');
       return;
     }
 
     if (doPartial && !isComplete) {
-      const res = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_partial_confirm'));
+      const res = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_partial_confirm'), 'warning');
       if (!res) {
         return;
       }
     }
 
     if (!doPartial && !isComplete && EnvUtils.isIncognito()) {
-      const res = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_incognito_confirm'));
+      const res = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_incognito_confirm'), 'warning');
       if (!res) {
         return;
       }
@@ -173,7 +173,7 @@ export class SaveManager {
           console.error(e);
           this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_cancelled'), 'info', 2000);
         } else {
-          if (await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_failed_ask_archive'))) {
+          if (await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_failed_ask_archive'), 'error')) {
             this.dumpBuffer(name);
           }
         }

@@ -237,7 +237,7 @@ export class SubtitlesManager extends EventEmitter {
     urlbutton.textContent = Localize.getMessage('player_subtitlesmenu_urlbtn');
     WebUtils.setupTabIndex(urlbutton);
     urlbutton.addEventListener('click', async (e) => {
-      const url = await AlertPolyfill.prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'), '', 'url');
+      const url = await AlertPolyfill.prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'), '', undefined, 'url');
 
       if (url) {
         RequestUtils.requestSimple(url, (err, req, body) => {

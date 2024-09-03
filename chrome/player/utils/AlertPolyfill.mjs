@@ -2,24 +2,27 @@ import {Localize} from '../modules/Localize.mjs';
 import {SweetAlert} from '../modules/sweetalert.mjs';
 
 export class AlertPolyfill {
-  static async alert(message) {
+  static async alert(message, icon = undefined) {
     return SweetAlert.fire({
       text: message,
+      icon: icon,
     });
   }
 
-  static async confirm(message) {
+  static async confirm(message, icon = undefined) {
     return (await SweetAlert.fire({
       text: message,
+      icon: icon,
       showCancelButton: true,
       confirmButtonText: Localize.getMessage('yes'),
       cancelButtonText: Localize.getMessage('cancel'),
     })).isConfirmed;
   }
 
-  static async prompt(message, defaultValue = '', inputType = 'text') {
+  static async prompt(message, defaultValue = '', icon = undefined, inputType = 'text') {
     return (await SweetAlert.fire({
       text: message,
+      icon: icon,
       input: inputType,
       inputValue: defaultValue,
       showCancelButton: true,

@@ -432,7 +432,7 @@ export class Reencoder extends EventEmitter {
       throw new Error('Webcodecs not supported');
     }
 
-    const answer = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_reencode'));
+    const answer = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_reencode'), 'warning');
     if (!answer) {
       throw new Error('User cancelled conversion');
     }

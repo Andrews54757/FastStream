@@ -173,7 +173,7 @@ export class AudioConfigManager extends AbstractAudioModule {
                   const obj = JSON.parse(e.target.result);
                   this.loadProfileFile(obj);
                 } catch (e) {
-                  AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'));
+                  AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'), 'error');
                 }
               };
               reader.readAsText(file);

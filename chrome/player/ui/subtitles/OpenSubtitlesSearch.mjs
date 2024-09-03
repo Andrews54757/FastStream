@@ -427,8 +427,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
             if (!data.link && data.remaining <= 0) {
               item.downloading = false;
-              await AlertPolyfill.alert(Localize.getMessage('player_opensubtitles_quota', [data.reset_time]));
-              if (await AlertPolyfill.confirm(Localize.getMessage('player_opensubtitles_askopen'))) {
+              await AlertPolyfill.alert(Localize.getMessage('player_opensubtitles_quota', [data.reset_time]), 'warning');
+              if (await AlertPolyfill.confirm(Localize.getMessage('player_opensubtitles_askopen'), 'question')) {
                 window.open(item.attributes.url);
               }
               return;
@@ -467,8 +467,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
           console.log(e);
           if (DOMElements.subuiContainer.style.display === 'none') return;
           item.downloading = false;
-          await AlertPolyfill.alert(Localize.getMessage('player_opensubtitles_down_alert'));
-          if (await AlertPolyfill.confirm(Localize.getMessage('player_opensubtitles_askopen'))) {
+          await AlertPolyfill.alert(Localize.getMessage('player_opensubtitles_down_alert'), 'error');
+          if (await AlertPolyfill.confirm(Localize.getMessage('player_opensubtitles_askopen'), 'question')) {
             window.open(item.attributes.url);
           }
           return;
