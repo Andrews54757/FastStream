@@ -327,10 +327,13 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Enter URL"
     },
-    "player_subtitlesmenu_urlsuccess": {
+    "player_subtitles_addtrack_downloading": {
+        "message": "Downloading subtitle track..."
+    },
+    "player_subtitles_addtrack_success": {
         "message": "Subtitle track loaded!"
     },
-    "player_subtitlesmenu_urlfail": {
+    "player_subtitles_addtrack_error": {
         "message": "Failed to load subtitle track!"
     },
     "player_subtitlesmenu_searchbtn": {

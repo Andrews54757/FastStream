@@ -327,10 +327,13 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Masuk URL"
     },
-    "player_subtitlesmenu_urlsuccess": {
+    "player_subtitles_addtrack_downloading": {
+        "message": "Memuat turun sarikata..."
+    },
+    "player_subtitles_addtrack_success": {
         "message": "Trek sarikata dimuatkan!"
     },
-    "player_subtitlesmenu_urlfail": {
+    "player_subtitles_addtrack_error": {
         "message": "Gagal memuatkan trek sarikata!"
     },
     "player_subtitlesmenu_searchbtn": {

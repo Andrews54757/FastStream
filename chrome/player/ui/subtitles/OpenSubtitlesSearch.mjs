@@ -399,6 +399,8 @@ export class OpenSubtitlesSearch extends EventEmitter {
 
         item.downloading = true;
 
+        AlertPolyfill.toast('info', Localize.getMessage('player_subtitles_addtrack_downloading'));
+
         try {
           let link = item.cached_download_link;
           if (!link) {
@@ -475,10 +477,14 @@ export class OpenSubtitlesSearch extends EventEmitter {
         }
 
         item.downloading = false;
-        const track = new SubtitleTrack(item.attributes.uploader.name + ' - ' + item.attributes.feature_details.movie_name, item.attributes.language);
-        track.loadText(body);
-
-        this.emit(OpenSubtitlesSearchEvents.TRACK_DOWNLOADED, track);
+        try {
+          const track = new SubtitleTrack(item.attributes.uploader.name + ' - ' + item.attributes.feature_details.movie_name, item.attributes.language);
+          track.loadText(body);
+          this.emit(OpenSubtitlesSearchEvents.TRACK_DOWNLOADED, track);
+          AlertPolyfill.toast('success', Localize.getMessage('player_subtitles_addtrack_success'));
+        } catch (e) {
+          AlertPolyfill.toast('error', Localize.getMessage('player_subtitles_addtrack_error'), e?.message);
+        }
       });
     });
   }

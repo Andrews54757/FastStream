@@ -327,10 +327,13 @@
     "player_subtitlesmenu_urlprompt": {
         "message": "Введите адрес"
     },
-    "player_subtitlesmenu_urlsuccess": {
+    "player_subtitles_addtrack_downloading": {
+        "message": "Загрузка субтитров…"
+    },
+    "player_subtitles_addtrack_success": {
         "message": "Субтитры загружены!"
     },
-    "player_subtitlesmenu_urlfail": {
+    "player_subtitles_addtrack_error": {
         "message": "Не удалось загрузить субтитры!"
     },
     "player_subtitlesmenu_searchbtn": {

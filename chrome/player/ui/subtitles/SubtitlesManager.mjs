@@ -240,6 +240,7 @@ export class SubtitlesManager extends EventEmitter {
       const url = await AlertPolyfill.prompt(Localize.getMessage('player_subtitlesmenu_urlprompt'), '', undefined, 'url');
 
       if (url) {
+        AlertPolyfill.toast('info', Localize.getMessage('player_subtitles_addtrack_downloading'));
         RequestUtils.requestSimple(url, (err, req, body) => {
           if (!err && body) {
             try {
@@ -248,12 +249,12 @@ export class SubtitlesManager extends EventEmitter {
 
               this.addTrack(track);
 
-              AlertPolyfill.toast('success', Localize.getMessage('player_subtitlesmenu_urlsuccess'));
+              AlertPolyfill.toast('success', Localize.getMessage('player_subtitles_addtrack_success'));
             } catch (e) {
-              AlertPolyfill.toast('error', Localize.getMessage('player_subtitlesmenu_urlfail'), e?.message);
+              AlertPolyfill.toast('error', Localize.getMessage('player_subtitles_addtrack_error'), e?.message);
             }
           } else {
-            AlertPolyfill.toast('error', Localize.getMessage('player_subtitlesmenu_urlfail'), err?.message);
+            AlertPolyfill.toast('error', Localize.getMessage('player_subtitles_addtrack_error'), err?.message);
           }
         });
       }
