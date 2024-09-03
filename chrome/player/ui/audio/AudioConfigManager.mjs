@@ -43,26 +43,30 @@ export class AudioConfigManager extends AbstractAudioModule {
   }
 
   async loadProfilesFromStorage() {
-    const audioProfilesStr = await Utils.getConfig('audioProfiles') || '[]';
-    const currentAudioProfileStr = await Utils.getConfig('currentAudioProfile') || '-1';
+    try {
+      const audioProfilesStr = await Utils.getConfig('audioProfiles') || '[]';
+      const currentAudioProfileStr = await Utils.getConfig('currentAudioProfile') || '-1';
 
-    const audioProfiles = JSON.parse(audioProfilesStr);
-    const currentAudioProfileID = parseInt(currentAudioProfileStr);
+      const audioProfiles = JSON.parse(audioProfilesStr);
+      const currentAudioProfileID = parseInt(currentAudioProfileStr);
 
-    if (audioProfiles.length === 0) {
-      this.newProfile();
-      this.setCurrentProfile(this.profiles[0]);
-    } else {
-      this.profiles = audioProfiles.map((profile) => {
-        return AudioProfile.fromObj(profile);
-      });
-      const currentProfile = this.profiles.find((profile) => profile.id === currentAudioProfileID);
-      if (currentProfile) {
-        this.setCurrentProfile(currentProfile);
-      } else {
+      if (audioProfiles.length === 0) {
+        this.newProfile();
         this.setCurrentProfile(this.profiles[0]);
+      } else {
+        this.profiles = audioProfiles.map((profile) => {
+          return AudioProfile.fromObj(profile);
+        });
+        const currentProfile = this.profiles.find((profile) => profile.id === currentAudioProfileID);
+        if (currentProfile) {
+          this.setCurrentProfile(currentProfile);
+        } else {
+          this.setCurrentProfile(this.profiles[0]);
+        }
+        this.updateProfileDropdown();
       }
-      this.updateProfileDropdown();
+    } catch (e) {
+      AlertPolyfill.errorSendToDeveloper(e);
     }
   }
 
@@ -431,19 +435,23 @@ export class AudioConfigManager extends AbstractAudioModule {
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
 
-    this.audioUpscaler.setupNodes(this.audioContext);
-    this.audioChannelMixer.setupNodes(this.audioContext);
-    this.audioCrosstalk.setupNodes(this.audioContext);
-    this.finalGain.setupNodes(this.audioContext);
+    try {
+      this.audioUpscaler.setupNodes(this.audioContext);
+      this.audioChannelMixer.setupNodes(this.audioContext);
+      this.audioCrosstalk.setupNodes(this.audioContext);
+      this.finalGain.setupNodes(this.audioContext);
 
-    this.getInputNode().connect(this.audioUpscaler.getInputNode());
-    this.audioUpscaler.getOutputNode().connect(this.audioChannelMixer.getInputNode());
-    this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
-    this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
-    this.finalGain.getOutputNode().connect(this.getOutputNode());
+      this.getInputNode().connect(this.audioUpscaler.getInputNode());
+      this.audioUpscaler.getOutputNode().connect(this.audioChannelMixer.getInputNode());
+      this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
+      this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
+      this.finalGain.getOutputNode().connect(this.getOutputNode());
 
-    // IDK why but webaudio is bugged
-    this.audioUpscaler.enable();
+      // IDK why but webaudio is bugged
+      this.audioUpscaler.enable();
+    } catch (e) {
+      AlertPolyfill.errorSendToDeveloper(e);
+    }
   }
 
   updateVolume(value) {

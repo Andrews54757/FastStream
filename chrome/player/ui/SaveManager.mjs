@@ -231,6 +231,7 @@ export class SaveManager {
     } catch (e) {
       console.error(e);
       this.setStatusMessage('save-video', 'Unreachable Error', 'error', 2000);
+      AlertPolyfill.errorSendToDeveloper(e);
     }
   }
 
