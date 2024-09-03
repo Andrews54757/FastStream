@@ -1,4 +1,4 @@
-import {OrtJS} from './ort.mjs';
+import OrtJS from './ort.wasm.mjs';
 
 const currentScript = import.meta;
 let basePath = '';
@@ -13,6 +13,10 @@ const assetPath = (file) => {
   return basePath + file;
 };
 
+OrtJS.env.wasm.wasmPaths = basePath;
+OrtJS.env.wasm.numThreads = 1;
+OrtJS.env.wasm.simd = false;
+
 const modelFetcher = async () => {
   const modelURL = assetPath('silero_vad.ort');
   return await fetch(modelURL).then((r) => r.arrayBuffer());
@@ -23,7 +27,7 @@ const defaultFrameProcessorOptions = {
   negativeSpeechThreshold: 0.5 - 0.15,
   preSpeechPadFrames: 1,
   redemptionFrames: 8,
-  frameSamples: 1536,
+  frameSamples: 512,
   minSpeechFrames: 3,
 };
 const defaultRealTimeVADOptions = {
@@ -65,21 +69,18 @@ class Silero {
       console.debug('vad is initialized');
     };
     this.reset_state = () => {
-      const zeroes = Array(2 * 64).fill(0);
-      this._h = new this.ort.Tensor('float32', zeroes, [2, 1, 64]);
-      this._c = new this.ort.Tensor('float32', zeroes, [2, 1, 64]);
+      const zeroes = Array(2 * 1 * 128).fill(0);
+      this.state = new this.ort.Tensor('float32', zeroes, [2, 1, 128]);
     };
     this.process = async (audioFrame) => {
       const t = new this.ort.Tensor('float32', audioFrame, [1, audioFrame.length]);
       const inputs = {
         input: t,
-        h: this._h,
-        c: this._c,
+        state: this.state,
         sr: this._sr,
       };
       const out = await this._session.run(inputs);
-      this._h = out.hn;
-      this._c = out.cn;
+      this.state = out.stateN;
       const [isSpeech] = out.output.data;
       const notSpeech = 1 - isSpeech;
       return {notSpeech, isSpeech};
