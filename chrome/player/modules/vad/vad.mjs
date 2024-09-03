@@ -13,10 +13,6 @@ const assetPath = (file) => {
   return basePath + file;
 };
 
-OrtJS.env.wasm.wasmPaths = basePath;
-OrtJS.env.wasm.numThreads = 1;
-OrtJS.env.wasm.simd = false;
-
 const modelFetcher = async () => {
   const modelURL = assetPath('silero_vad.ort');
   return await fetch(modelURL).then((r) => r.arrayBuffer());
