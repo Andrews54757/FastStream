@@ -1158,63 +1158,62 @@ chrome.tabs.onRemoved.addListener((tabid, removed) => {
 });
 
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
-  if (CachedTabs[tabid]) {
-    if (changeInfo.url) {
-      const url = new URL(changeInfo.url);
-      if (CachedTabs[tabid].hostname && CachedTabs[tabid].hostname !== url.hostname) {
-        CachedTabs[tabid].analyzerData = undefined;
-        CachedTabs[tabid].frames = {};
-      }
+  if (!CachedTabs[tabid]) CachedTabs[tabid] = new TabHolder(tabid);
+  if (changeInfo.url) {
+    const url = new URL(changeInfo.url);
+    if (CachedTabs[tabid].hostname && CachedTabs[tabid].hostname !== url.hostname) {
+      CachedTabs[tabid].analyzerData = undefined;
+      CachedTabs[tabid].frames = {};
+    }
 
-      CachedTabs[tabid].playerCount = 0;
+    CachedTabs[tabid].playerCount = 0;
 
-      CachedTabs[tabid].url = changeInfo.url;
-      CachedTabs[tabid].hostname = url.hostname;
+    CachedTabs[tabid].url = changeInfo.url;
+    CachedTabs[tabid].hostname = url.hostname;
 
-      chrome.tabs.sendMessage(tabid, {
-        type: 'remove_players',
-      }, {
-        frameId: 0,
-      }, () => {
-        BackgroundUtils.checkMessageError('remove_players');
-      });
+    chrome.tabs.sendMessage(tabid, {
+      type: 'remove_players',
+    }, {
+      frameId: 0,
+    }, () => {
+      BackgroundUtils.checkMessageError('remove_players');
+    });
 
-      const match = AutoEnableList.find((item) => {
-        try {
-          if (!item.regex) {
-            return changeInfo.url.substring(0, item.match.length) === item.match;
-          } else {
-            return item.match.test(changeInfo.url);
-          }
-        } catch (e) {
-
+    const match = AutoEnableList.find((item) => {
+      try {
+        if (!item.regex) {
+          return changeInfo.url.substring(0, item.match.length) === item.match;
+        } else {
+          return item.match.test(changeInfo.url);
         }
-        return false;
-      });
+      } catch (e) {
 
-      const shouldAutoEnable = match && !match.negative;
-
-
-      if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
-        CachedTabs[tabid].isOn = true;
-        CachedTabs[tabid].regexMatched = true;
-      } else if (shouldAutoEnable && !CachedTabs[tabid].regexMatched) {
-        CachedTabs[tabid].regexMatched = true;
-        CachedTabs[tabid].isOn = true;
-        openPlayersWithSources(tab.id);
-      } else if (!shouldAutoEnable && CachedTabs[tabid].regexMatched) {
-        CachedTabs[tabid].isOn = false;
-        CachedTabs[tabid].regexMatched = false;
       }
-    }
-    if (changeInfo.status === 'complete') {
-      CachedTabs[tabid].complete = true;
-    } else if (changeInfo.status === 'loading') {
-      CachedTabs[tabid].complete = false;
-    }
+      return false;
+    });
 
-    updateTabIcon(CachedTabs[tabid], true);
+    const shouldAutoEnable = match && !match.negative;
+
+
+    if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
+      CachedTabs[tabid].isOn = true;
+      CachedTabs[tabid].regexMatched = true;
+    } else if (shouldAutoEnable && !CachedTabs[tabid].regexMatched) {
+      CachedTabs[tabid].regexMatched = true;
+      CachedTabs[tabid].isOn = true;
+      openPlayersWithSources(tab.id);
+    } else if (!shouldAutoEnable && CachedTabs[tabid].regexMatched) {
+      CachedTabs[tabid].isOn = false;
+      CachedTabs[tabid].regexMatched = false;
+    }
   }
+  if (changeInfo.status === 'complete') {
+    CachedTabs[tabid].complete = true;
+  } else if (changeInfo.status === 'loading') {
+    CachedTabs[tabid].complete = false;
+  }
+
+  updateTabIcon(CachedTabs[tabid], true);
 });
 
 loadOptions().catch(console.error);
