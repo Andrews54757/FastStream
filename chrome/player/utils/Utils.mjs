@@ -167,7 +167,7 @@ export class Utils {
         return a.diff - b.diff;
       });
 
-      return list[0].key;
+      return list[0]?.key;
     }
   }
 
