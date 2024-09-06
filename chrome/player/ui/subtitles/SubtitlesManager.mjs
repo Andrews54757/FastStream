@@ -640,9 +640,8 @@ export class SubtitlesManager extends EventEmitter {
 
     for (let i = 0; i < tracks.length; i++) {
       const trackContainer = cachedElements[i];
-      trackContainer.replaceChildren();
+      // trackContainer.replaceChildren();
       const cues = tracks[i].cues;
-      let hasCues = false;
 
       let cueIndex = Utils.binarySearch(cues, this.client.state.currentTime, (time, cue) => {
         if (cue.startTime > time) {
@@ -653,6 +652,7 @@ export class SubtitlesManager extends EventEmitter {
         return 0;
       });
 
+      const toAdd = [];
       if (cueIndex > -1) {
         while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
           cueIndex--;
@@ -663,32 +663,39 @@ export class SubtitlesManager extends EventEmitter {
           if (!cue.dom) {
             cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
           }
-          hasCues = true;
-          trackContainer.appendChild(cue.dom);
+          toAdd.push(cue.dom);
           cueIndex++;
         }
       }
 
-      if (!hasCues) {
-        trackContainer.style.opacity = 0;
-        const fillerCue = document.createElement('div');
-        trackContainer.appendChild(fillerCue);
 
+      if (!toAdd.length) {
+        trackContainer.style.opacity = 0;
+
+        // Remove all children except one
+        const fillerCue = trackContainer.children[0] || document.createElement('div');
+        WebUtils.replaceChildrenPerformant(trackContainer, [fillerCue]);
         fillerCue.textContent = '|';
       } else {
         trackContainer.style.opacity = '';
+
+        WebUtils.replaceChildrenPerformant(trackContainer, toAdd);
       }
     }
 
 
     if (this.isTestSubtitleActive) {
       const trackContainer = cachedElements[trackLen - 1];
-      trackContainer.replaceChildren();
+
       trackContainer.style.opacity = '';
 
-      const cue = document.createElement('div');
-      cue.textContent = Localize.getMessage('player_testsubtitle');
-      trackContainer.appendChild(cue);
+      if (!this.testCue) {
+        const cue = document.createElement('div');
+        cue.textContent = Localize.getMessage('player_testsubtitle');
+        this.testCue = cue;
+      }
+
+      WebUtils.replaceChildrenPerformant(trackContainer, [this.testCue]);
     }
 
     this.checkTrackBounds();

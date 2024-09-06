@@ -47,4 +47,15 @@ export class WebUtils {
     svg.appendChild(use);
     return svg;
   }
+
+  static replaceChildrenPerformant(parent, children) {
+    const currentChildrenSet = new Set(parent.children);
+    const newChildrenSet = new Set(children);
+
+    const toRemove = currentChildrenSet.difference(newChildrenSet);
+    const toAdd = newChildrenSet.difference(currentChildrenSet);
+
+    toRemove.forEach((child) => parent.removeChild(child));
+    toAdd.forEach((child) => parent.appendChild(child));
+  }
 }

@@ -289,6 +289,7 @@ body {
     padding: 0.25em;
     border-radius: 4px;
     display: inline-block;
+    user-select: text;
 }
 
 .subtitle-track-wrapper {
