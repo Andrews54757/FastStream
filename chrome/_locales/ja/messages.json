@@ -116,7 +116,6 @@
     "perms_page_breakdown_perm2r1": {
         "message": "動画のソースを特定"
     },
-
     "perms_page_breakdown_perm3h": {
         "message": "declarativeNetRequest API へのアクセス"
     },
@@ -384,11 +383,11 @@
     "player_settings_title": {
         "message": "FastStream の設定"
     },
-    "player_settings_close_label": {
-        "message": "設定ウィンドウを閉じる"
-    },
     "player_settings_open_label": {
         "message": "設定ウィンドウを開く"
+    },
+    "player_settings_close_label": {
+        "message": "設定ウィンドウを閉じる"
     },
     "player_savevideo_label": {
         "message": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。"
@@ -435,14 +434,14 @@
     "loop_menu_gif_end": {
         "message": "GIFの録画が終了しました。現在保存中..."
     },
+    "loop_menu_gif_abort": {
+        "message": "GIFの録画が中断されました!"
+    },
     "loop_menu_gif_progress": {
         "message": "GIFを保存中 $1%"
     },
     "loop_menu_gif_finished": {
         "message": "GIFの保存が完了しました!"
-    },
-    "loop_menu_gif_abort": {
-        "message": "GIFの録画が中断されました!"
     },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
@@ -538,7 +537,7 @@
         "message": "動画の読み込みに失敗しました!"
     },
     "source_copied": {
-        "message":  "URL をクリップボードにコピーしました!"
+        "message": "URL をクリップボードにコピーしました!"
     },
     "player_source_copybtn": {
         "message": "コピー"
@@ -936,12 +935,6 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "ミニプレーヤーに切り替え"
     },
-    "options_general_vischangeaction_pip": {
-        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
-    },
-    "options_general_ytclient": {
-        "message": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)"
-    },
     "options_general_minipos": {
         "message": "ミニプレーヤーの位置"
     },
@@ -959,6 +952,12 @@
     },
     "options_general_minisize": {
         "message": "ミニプレーヤーのサイズ"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
+    },
+    "options_general_ytclient": {
+        "message": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)"
     },
     "options_export_header": {
         "message": "設定のインポート/エクスポート"

@@ -116,7 +116,6 @@
     "perms_page_breakdown_perm2r1": {
         "message": "Определить источники видео"
     },
-
     "perms_page_breakdown_perm3h": {
         "message": "Доступ к declarativeNetRequest API"
     },
@@ -384,11 +383,11 @@
     "player_settings_title": {
         "message": "Настройки FastStream"
     },
-    "player_settings_close_label": {
-        "message": "Закрыть окно настроек"
-    },
     "player_settings_open_label": {
         "message": "Открыть окно настроек"
+    },
+    "player_settings_close_label": {
+        "message": "Закрыть окно настроек"
     },
     "player_savevideo_label": {
         "message": "Сохранить видео. Удерживайте ALT, чтобы сохранить часть видео. Удерживайте SHIFT, чтобы сбросить буфер."
@@ -435,14 +434,14 @@
     "loop_menu_gif_end": {
         "message": "Запись GIF завершена. Сохранение…"
     },
+    "loop_menu_gif_abort": {
+        "message": "Запись GIF прервана!"
+    },
     "loop_menu_gif_progress": {
         "message": "Сохранение GIF $1%"
     },
     "loop_menu_gif_finished": {
         "message": "Сохранение GIF завершено!"
-    },
-    "loop_menu_gif_abort": {
-        "message": "Запись GIF прервана!"
     },
     "player_fragment_failed_singular": {
         "message": "Ошибка $1 фрагмента! Нажмите для повтора"
@@ -936,9 +935,6 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Мини-плеер"
     },
-    "options_general_ytclient": {
-        "message": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
-    },
     "options_general_minipos": {
         "message": "Положение мини-плеера"
     },
@@ -959,6 +955,9 @@
     },
     "options_general_vischangeaction_pip": {
         "message": "Картинка в картинке"
+    },
+    "options_general_ytclient": {
+        "message": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
     },
     "options_export_header": {
         "message": "Настройки импорта/экспорта"

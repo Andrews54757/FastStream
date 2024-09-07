@@ -116,7 +116,6 @@
     "perms_page_breakdown_perm2r1": {
         "message": "Identify video sources"
     },
-
     "perms_page_breakdown_perm3h": {
         "message": "Access the declarativeNetRequest API"
     },

@@ -4,7 +4,9 @@
   "description": "Stream videos without buffering. Fix bad video players on the internet.",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "node build.mjs"
+    "build": "node localescript.mjs && node build.mjs",
+    "combine-locales": "node localescript.mjs --combined",
+    "split-locales": "node localescript.mjs"
   },
   "repository": {
     "type": "git",

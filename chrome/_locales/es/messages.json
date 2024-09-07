@@ -24,7 +24,7 @@
         "message": "Puedes ir a una nueva pestaña y presionar el ícono de la extensión para ir al reproductor."
     },
     "welcome_page_usage_content3": {
-        "message": "Si tienes la opción habilitada, ve a una url mp4\/mpd\/m3u8 y el reproductor la reproducirá."
+        "message": "Si tienes la opción habilitada, ve a una url mp4/mpd/m3u8 y el reproductor la reproducirá."
     },
     "welcome_page_usage_content4": {
         "message": "Mantén el reproductor abierto en una nueva pestaña y recogerá fuentes mientras navegas en otros lugares."
@@ -39,31 +39,31 @@
         "message": "Puedes cambiar estas combinaciones de teclas en la configuración de la extensión"
     },
     "welcome_page_keybinds_content1": {
-        "message": "teclas de flecha - avance\/retroceso de 1 segundo"
+        "message": "teclas de flecha - avance/retroceso de 1 segundo"
     },
     "welcome_page_keybinds_content2": {
-        "message": "teclas - avance\/retroceso de 10 segundos"
+        "message": "teclas - avance/retroceso de 10 segundos"
     },
     "welcome_page_keybinds_content3": {
         "message": "clave - Deshacer búsqueda"
     },
     "welcome_page_keybinds_content4": {
-        "message": "teclas de flecha - subir\/bajar el volumen 10%"
+        "message": "teclas de flecha - subir/bajar el volumen 10%"
     },
     "welcome_page_keybinds_content5": {
         "message": "- Pantalla completa"
     },
     "welcome_page_keybinds_content6": {
-        "message": "- Añadir\/disminuir solicitudes concurrentes"
+        "message": "- Añadir/disminuir solicitudes concurrentes"
     },
     "welcome_page_keybinds_content7": {
         "message": "- Tecla de reintento forzado - utilízala para volver a intentar descargas fallidas"
     },
     "welcome_page_keybinds_content8": {
-        "message": "- Omitir intro\/outro si corresponde"
+        "message": "- Omitir intro/outro si corresponde"
     },
     "welcome_page_keybinds_content9": {
-        "message": "- Ocultar\/mostrar jugador"
+        "message": "- Ocultar/mostrar jugador"
     },
     "perms_page_title": {
         "message": "Permisos de FastStream"
@@ -383,11 +383,11 @@
     "player_settings_title": {
         "message": "Configuraciones de FastStream"
     },
-    "player_settings_close_label": {
-        "message": "Cerrar ventana de configuración"
-    },
     "player_settings_open_label": {
         "message": "Abrir ventana de configuración"
+    },
+    "player_settings_close_label": {
+        "message": "Cerrar ventana de configuración"
     },
     "player_savevideo_label": {
         "message": "Guardar video. mantén presionado ALT para guardar un video parcial. mantén presionado SHIFT para vaciar el búfer."
@@ -870,7 +870,7 @@
         "message": "Muestra la vista previa al pasar el cursor sobre la línea de tiempo"
     },
     "options_general_analyze": {
-        "message": "Analiza automáticamente videos secuenciales para intros\/outros\n(desactiva si tienes problemas de rendimiento de CPU)"
+        "message": "Analiza automáticamente videos secuenciales para intros/outros\n(desactiva si tienes problemas de rendimiento de CPU)"
     },
     "options_general_storeprogress": {
         "message": "Guardar progreso de videos en el almacenamiento local"
@@ -879,7 +879,7 @@
         "message": "Habilitar automáticamente la mejor pista de subtítulos encontrada\n(Cambiar el idioma predeterminado en la configuración de subtítulos)"
     },
     "options_general_stream": {
-        "message": "Use el reproductor para reproducir transmisiones HLS\/DASH al abrir URLs de listas de reproducción (.m3u8\/.mpd)"
+        "message": "Use el reproductor para reproducir transmisiones HLS/DASH al abrir URLs de listas de reproducción (.m3u8/.mpd)"
     },
     "options_general_mp4": {
         "message": "Use el reproductor para reproducir videos MP4 al abrir URLs de video (.mp4)"
@@ -935,9 +935,6 @@
     "options_general_vischangeaction_miniplayer": {
         "message": "Alternar miniplayer"
     },
-    "options_general_ytclient": {
-        "message": "Cliente de YouTube. Intente cambiar si tiene problemas."
-    },
     "options_general_minipos": {
         "message": "Posición del miniplayer"
     },
@@ -958,6 +955,9 @@
     },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagen en imagen"
+    },
+    "options_general_ytclient": {
+        "message": "Cliente de YouTube. Intente cambiar si tiene problemas."
     },
     "options_export_header": {
         "message": "Importar/Exportar Configuraciones"

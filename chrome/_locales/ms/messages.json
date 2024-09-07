@@ -116,7 +116,6 @@
     "perms_page_breakdown_perm2r1": {
         "message": "Kenal pasti sumber video"
     },
-
     "perms_page_breakdown_perm3h": {
         "message": "Akses API declarativeNetRequest"
     },
@@ -384,11 +383,11 @@
     "player_settings_title": {
         "message": "Tetapan FastStream"
     },
-    "player_settings_close_label": {
-        "message": "Tutup tetingkap tetapan"
-    },
     "player_settings_open_label": {
         "message": "Buka tetingkap tetapan"
+    },
+    "player_settings_close_label": {
+        "message": "Tutup tetingkap tetapan"
     },
     "player_savevideo_label": {
         "message": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal."
