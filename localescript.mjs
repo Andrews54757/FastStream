@@ -116,29 +116,38 @@ function checkLocaleKeys(locales) {
 
 // Get arguments
 const args = process.argv.slice(2);
-let convertToMultiPath = true;
+let combine = false;
+let split = false;
 if (args.length > 0) {
-  if (args[0] === '--combined') {
-    convertToMultiPath = false;
+  if (args[0] === '--split') {
+    split = true;
+  } else if (args[0] === '--combine') {
+    combine = true;
   } else {
     console.log('Invalid argument:', args[0]);
     process.exit(1);
   }
 }
 
-console.log('Converting to', convertToMultiPath ? 'multi-path' : 'combined file');
-
-const locales = convertToMultiPath ? getLocalesFromCombinedFile() : getLocalesFromMultiPath();
-
-console.log('Loaded locales: ', Array.from(locales.keys()));
-
-checkLocaleKeys(locales);
-
-if (convertToMultiPath) {
-  saveLocalesToMultiPath(locales);
-} else {
-  saveLocalesToCombinedFile(locales);
+if (combine && split) {
+  console.log('Cannot combine and split at the same time');
+  process.exit(1);
 }
 
-console.log('Done');
 
+const localesCombined = getLocalesFromCombinedFile();
+const localesMulti = getLocalesFromMultiPath();
+
+console.log('Checking locale keys');
+checkLocaleKeys(localesMulti);
+checkLocaleKeys(localesCombined);
+
+if (combine) {
+  console.log('Combining locales');
+  saveLocalesToCombinedFile(localesMulti);
+}
+
+if (split) {
+  console.log('Splitting locales');
+  saveLocalesToMultiPath(localesCombined);
+}
