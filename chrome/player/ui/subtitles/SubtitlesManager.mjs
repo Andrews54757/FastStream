@@ -675,7 +675,7 @@ export class SubtitlesManager extends EventEmitter {
         // Remove all children except one
         const fillerCue = trackContainer.children[0] || document.createElement('div');
         WebUtils.replaceChildrenPerformant(trackContainer, [fillerCue]);
-        fillerCue.textContent = '|';
+        if (!fillerCue.textContent) fillerCue.textContent = '|';
       } else {
         trackContainer.style.opacity = '';
 
