@@ -8,6 +8,22 @@ const localesPath = path.join(chromeSourceDir, '_locales/');
 const combinedLocalesFile = path.join(__dirname, 'combined-locales.json');
 const defaultLanguage = 'en';
 
+function sortLocales(locales) {
+  const sortedLocales = new Map();
+  // Set english as the first locale
+  if (locales.has(defaultLanguage)) {
+    sortedLocales.set(defaultLanguage, locales.get(defaultLanguage));
+  }
+
+  Array.from(locales.keys()).sort().forEach((key) => {
+    if (key === defaultLanguage) {
+      return;
+    }
+    sortedLocales.set(key, locales.get(key));
+  });
+  return sortedLocales;
+}
+
 function getLocalesFromMultiPath() {
   const locales = new Map();
   const localesFolders = fs.readdirSync(localesPath);
@@ -26,7 +42,7 @@ function getLocalesFromMultiPath() {
     });
     locales.set(localeFolder, translationMap);
   }
-  return locales;
+  return sortLocales(locales);
 }
 
 function getLocalesFromCombinedFile() {
@@ -60,11 +76,14 @@ function getLocalesFromCombinedFile() {
     });
   });
 
-  return locales;
+  return sortLocales(locales);
 }
 
-function saveLocalesToMultiPath(locales) {
+function saveLocalesToMultiPath(locales, whiteList) {
   for (const [locale, translations] of locales.entries()) {
+    if (whiteList && !whiteList.includes(locale)) {
+      continue;
+    }
     const messagesPath = path.join(localesPath, locale, 'messages.json');
     const messages = {};
     for (const [key, value] of translations.entries()) {
@@ -74,9 +93,12 @@ function saveLocalesToMultiPath(locales) {
   }
 }
 
-function saveLocalesToCombinedFile(locales) {
+function saveLocalesToCombinedFile(locales, whiteList) {
   const messages = {};
   for (const [locale, translations] of locales.entries()) {
+    if (whiteList && !whiteList.includes(locale)) {
+      continue;
+    }
     for (const [key, value] of translations.entries()) {
       if (!Object.hasOwn(messages, key)) {
         messages[key] = {};
@@ -118,14 +140,20 @@ function checkLocaleKeys(locales) {
 const args = process.argv.slice(2);
 let combine = false;
 let split = false;
+let whiteList = null;
 if (args.length > 0) {
-  if (args[0] === '--split') {
-    split = true;
-  } else if (args[0] === '--combine') {
-    combine = true;
-  } else {
-    console.log('Invalid argument:', args[0]);
-    process.exit(1);
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === '--whitelist') {
+      whiteList = args[i + 1].split(',');
+      i++;
+    } else if (args[i] === '--split') {
+      split = true;
+    } else if (args[i] === '--combine') {
+      combine = true;
+    } else {
+      console.log('Invalid argument:', args[i]);
+      process.exit(1);
+    }
   }
 }
 
@@ -144,10 +172,16 @@ checkLocaleKeys(localesCombined);
 
 if (combine) {
   console.log('Combining locales');
-  saveLocalesToCombinedFile(localesMulti);
+  localesMulti.forEach((translations, locale) => {
+    localesCombined.set(locale, translations);
+  });
+  saveLocalesToCombinedFile(localesCombined, whiteList);
 }
 
 if (split) {
   console.log('Splitting locales');
-  saveLocalesToMultiPath(localesCombined);
+  localesCombined.forEach((translations, locale) => {
+    localesMulti.set(locale, translations);
+  });
+  saveLocalesToMultiPath(localesMulti, whiteList);
 }
