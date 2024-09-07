@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "Pantalla completa"
     },
+    "player_fullscreen_denied": {
+        "message": "¡Permisos de pantalla completa denegados!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "Pantalla completa de ventana"
     },

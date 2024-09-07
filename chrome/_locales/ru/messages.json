@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "Во весь экран"
     },
+    "player_fullscreen_denied": {
+        "message": "Отказано в разрешении на полноэкранный режим!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
     },

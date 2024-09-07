@@ -1,6 +1,7 @@
 
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
+import {Localize} from './modules/Localize.mjs';
 import {SubtitleTrack} from './SubtitleTrack.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
 import {RequestUtils} from './utils/RequestUtils.mjs';
@@ -162,7 +163,7 @@ async function recieveSources(request, sendResponse) {
   if (fullscreenState === 'fullscreen') {
     window.fastStream.interfaceController.fullscreenToggle(true).catch((e) => {
       console.error(e);
-      window.fastStream.interfaceController.setStatusMessage('error', 'Fullscreen permissions denied!', 'warning', 5000);
+      window.fastStream.interfaceController.setStatusMessage('error', Localize.getMessage('player_fullscreen_denied'), 'warning', 5000);
     });
   } else if (fullscreenState === 'pip') {
     window.fastStream.interfaceController.pipToggle(true);

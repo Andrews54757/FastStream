@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "Skrin penuh"
     },
+    "player_fullscreen_denied": {
+        "message": "Kebenaran skrin penuh ditolak!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "Skrin Penuh Bertingkap"
     },

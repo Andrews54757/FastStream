@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "Toggle fullscreen"
     },
+    "player_fullscreen_denied": {
+        "message": "Fullscreen permissions denied!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "Toggle windowed fullscreen"
     },

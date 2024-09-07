@@ -1071,6 +1071,14 @@
         "ms": "Skrin penuh",
         "ru": "Во весь экран"
     },
+    "player_fullscreen_denied": {
+        "en": "Fullscreen permissions denied!",
+        "es": "¡Permisos de pantalla completa denegados!",
+        "it": "Permessi schermo intero negati!",
+        "ja": "フルスクリーンの許可が拒否されました!",
+        "ms": "Kebenaran skrin penuh ditolak!",
+        "ru": "Отказано в разрешении на полноэкранный режим!"
+    },
     "player_windowed_fullscreen_label": {
         "en": "Toggle windowed fullscreen",
         "es": "Pantalla completa de ventana",

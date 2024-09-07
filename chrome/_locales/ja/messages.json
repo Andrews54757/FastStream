@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "フルスクリーン"
     },
+    "player_fullscreen_denied": {
+        "message": "フルスクリーンの許可が拒否されました!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "ウィンドウ化されたフルスクリーン"
     },
