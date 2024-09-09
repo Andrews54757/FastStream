@@ -1,4 +1,5 @@
 
+import {MessageTypes} from '../background/MessageTypes.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
 import {Localize} from './modules/Localize.mjs';
@@ -15,7 +16,14 @@ let optionSendTime = null;
 if (EnvUtils.isExtension()) {
   chrome.runtime.onMessage.addListener(
       (request, sender, sendResponse) => {
-        if (request.type === 'seek') {
+        if (request.type === MessageTypes.FRAME_LINK_SENDER) {
+          window.parent.postMessage(request.key, '*');
+          sendResponse('ok');
+          return;
+        } else if (request.type === MessageTypes.SOURCES && window.fastStream) {
+          recieveSources(request, sendResponse);
+          return true;
+        } else if (request.type === 'seek') {
           if (window.fastStream) window.fastStream.currentTime = request.time;
         } else if (request.type === 'sendFrameId') {
           if (window.parent !== window) {
@@ -34,13 +42,14 @@ if (EnvUtils.isExtension()) {
             optionSendTime = request.time;
             loadOptions();
           }
-        } if (request.type === 'miniplayer_change' && window.fastStream) {
-          window.fastStream.interfaceController.setMiniplayerStatus(request.miniplayer);
-        } else if (request.type === 'fullscreen_change' && window.fastStream) {
-          window.fastStream.interfaceController.setFullscreenStatus(request.fullscreen);
-        } else if (request.type === 'sources' && window.fastStream) {
-          recieveSources(request, sendResponse);
-          return true;
+        } if (request.type === MessageTypes.MESSAGE_FROM_PAGE && window.fastStream) {
+          const data = request.data;
+          console.log('Recieved message from page', data);
+          if (data.type === 'fullscreen-state') {
+            window.fastStream.interfaceController.setFullscreenStatus(data.value);
+          } else if (data.type === 'miniplayer-state') {
+            window.fastStream.interfaceController.setMiniplayerStatus(data.value);
+          }
         } else {
           return;
         }
@@ -50,7 +59,7 @@ if (EnvUtils.isExtension()) {
 
   setInterval(() => {
     chrome.runtime.sendMessage({
-      type: 'ping',
+      type: MessageTypes.PING,
     });
   }, 10000);
 }
@@ -189,7 +198,7 @@ async function loadSubtitles(subs) {
       });
 
       await chrome.runtime.sendMessage({
-        type: 'header_commands',
+        type: MessageTypes.SET_HEADERS,
         url: sub.source,
         commands: customHeaderCommands,
       });
@@ -259,7 +268,7 @@ async function setup() {
 
   if (EnvUtils.isExtension()) {
     chrome?.runtime?.sendMessage({
-      type: 'faststream',
+      type: MessageTypes.PLAYER_LOADED,
       url: window.location.href,
       isExt: true,
       frameId: parseInt(myParam) || 0,
@@ -269,12 +278,11 @@ async function setup() {
       window.fastStream.setNeedsUserInteraction(!data.isMainPlayer);
 
       console.log('Recieved data', data);
+      window.fastStream.setupPoll();
 
       chrome.runtime.sendMessage({
-        type: 'ready',
+        type: MessageTypes.REQUEST_SOURCES,
       });
-
-      window.fastStream.setupPoll();
     });
   }
 
@@ -286,6 +294,9 @@ async function setup() {
       window.fastStream.destroy();
       delete window.fastStream;
     }
+    chrome.runtime.sendMessage({
+      type: MessageTypes.FRAME_REMOVED,
+    });
   });
 
   if (window.location.hash) {

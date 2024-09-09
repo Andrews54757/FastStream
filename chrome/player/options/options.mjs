@@ -469,7 +469,7 @@ function optionChanged() {
     }, ()=>{
       optionSendTime = Date.now();
       chrome.runtime.sendMessage({
-        type: 'options_init',
+        type: 'LOAD_OPTIONS',
         time: optionSendTime,
       });
     });

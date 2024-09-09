@@ -63,7 +63,7 @@ export class RequestUtils {
       if (options.header_commands) {
         if (EnvUtils.isExtension()) {
           await chrome.runtime.sendMessage({
-            type: 'header_commands',
+            type: 'SET_HEADERS',
             url: options.url,
             commands: options.header_commands,
           });

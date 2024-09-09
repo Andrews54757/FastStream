@@ -15,7 +15,7 @@ window.addEventListener('message', (event) => {
     const mpd = value;
     const url = `data:application/dash+xml;base64,${btoa(mpd)}`;
     chrome.runtime.sendMessage({
-      type: 'detected_source',
+      type: 'DETECTED_SOURCE',
       url,
       ext: ext,
       headers: {

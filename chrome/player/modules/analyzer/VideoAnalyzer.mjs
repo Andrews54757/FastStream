@@ -80,7 +80,7 @@ export class VideoAnalyzer extends EventEmitter {
       this.introAligner.unsetChangesFlag();
       this.outroAligner.unsetChangesFlag();
       chrome.runtime.sendMessage({
-        type: 'analyzerData',
+        type: 'STORE_ANALYZER_DATA',
         data: {
           intro: this.introAligner.getMemoryForSave(),
           outro: this.outroAligner.getMemoryForSave(),

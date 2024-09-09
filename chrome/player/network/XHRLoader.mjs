@@ -127,7 +127,7 @@ export class XHRLoader {
         if (customHeaderCommands.length) {
           if (EnvUtils.isExtension()) {
             await chrome.runtime.sendMessage({
-              type: 'header_commands',
+              type: 'SET_HEADERS',
               url: entry.url,
               commands: customHeaderCommands,
             });

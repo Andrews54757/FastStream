@@ -644,9 +644,14 @@ export class InterfaceController {
 
     const action = this.client.options.visChangeAction;
 
-    if (isVisible === this.lastPageVisibility || this.miniPlayerActive) {
+    if (isVisible === this.lastPageVisibility) {
       return;
     }
+
+    if (!isVisible && this.state.fullscreen || this.state.pip) {
+      return;
+    }
+
     switch (action) {
       case VisChangeActions.NOTHING:
         break;
@@ -668,7 +673,9 @@ export class InterfaceController {
         }
         break;
       case VisChangeActions.MINI_PLAYER:
-        this.requestMiniplayer(!isVisible);
+        if (!this.state.miniplayer && (isVisible || !this.state.windowedFullscreen)) {
+          this.requestMiniplayer(!isVisible);
+        }
         break;
     }
 
@@ -677,8 +684,6 @@ export class InterfaceController {
 
   requestMiniplayer(force) {
     if (EnvUtils.isExtension()) {
-      this.miniPlayerActive = true;
-
       const styles = {};
       switch (this.client.options.miniPos) {
         case MiniplayerPositions.TOP_LEFT:
@@ -699,26 +704,33 @@ export class InterfaceController {
           break;
       }
 
+
+      this.state.miniplayer = !this.state.miniplayer;
+      if (force !== undefined) {
+        this.state.miniplayer = force;
+      }
+
       chrome.runtime.sendMessage({
-        type: 'request_miniplayer',
+        type: 'REQUEST_MINIPLAYER',
         size: this.client.options.miniSize,
-        force,
+        force: this.state.miniplayer,
         styles,
         autoExit: true,
       }, (response) => {
-        if (response !== 'enter') {
-          this.miniPlayerActive = false;
-        }
+        this.state.miniplayer = response === 'enter';
       });
     }
   }
 
   setMiniplayerStatus(isMini) {
     if (isMini) {
-      this.miniPlayerActive = true;
+      this.state.miniplayer = true;
       DOMElements.playerContainer.classList.add('miniplayer');
     } else {
-      this.miniPlayerActive = false;
+      if (this.state.miniplayer) {
+        this.state.miniplayer = false;
+        this.requestMiniplayer(false);
+      }
       DOMElements.playerContainer.classList.remove('miniplayer');
     }
   }
@@ -951,7 +963,7 @@ export class InterfaceController {
 
   toggleWindowedFullscreen(force) {
     chrome.runtime.sendMessage({
-      type: 'request_windowed_fullscreen',
+      type: 'REQUEST_WINDOWED_FULLSCREEN',
       force,
     }, (response) => {
       this.state.windowedFullscreen = response === 'enter';
@@ -963,7 +975,7 @@ export class InterfaceController {
       const newValue = force === undefined ? document.fullscreenElement !== document.documentElement : force;
       if (newValue) {
         await document.documentElement.requestFullscreen();
-      } else if (document.exitFullscreen) {
+      } else if (document.exitFullscreen && document.fullscreenElement) {
         document.exitFullscreen();
       }
 
@@ -972,7 +984,7 @@ export class InterfaceController {
       if (EnvUtils.isExtension()) {
         return new Promise((resolve, reject) => {
           chrome.runtime.sendMessage({
-            type: 'request_fullscreen',
+            type: 'REQUEST_FULLSCREEN',
             force,
           }, (response) => {
             if (response === 'error') {
@@ -998,7 +1010,10 @@ export class InterfaceController {
       this.state.fullscreen = true;
     } else {
       fullScreenButton.classList.remove('out');
-      this.state.fullscreen = false;
+      if (this.state.fullscreen) {
+        this.state.fullscreen = false;
+        this.fullscreenToggle(false);
+      }
     }
   }
 

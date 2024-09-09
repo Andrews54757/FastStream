@@ -95,7 +95,7 @@ for (let i = 0; i < scriptTags.length; i++) {
       const mpd = converter.playInfoToDash(playInfoObj);
       const url = `data:application/dash+xml;base64,${btoa(mpd)}`;
       chrome.runtime.sendMessage({
-        type: 'detected_source',
+        type: 'DETECTED_SOURCE',
         url,
         ext: 'mpd',
         headers: {

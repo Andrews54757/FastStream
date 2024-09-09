@@ -4,11 +4,12 @@ import {StringUtils} from '../player/utils/StringUtils.mjs';
 import {URLUtils} from '../player/utils/URLUtils.mjs';
 import {Utils} from '../player/utils/Utils.mjs';
 import {BackgroundUtils} from './BackgroundUtils.mjs';
-import {TabHolder} from './Containers.mjs';
+import {MessageTypes} from './MessageTypes.mjs';
 import {MultiRegexMatcher} from './MultiRegexMatcher.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
 import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
+import {TabTracker} from './TabTracker.mjs';
 
 let Options = {};
 const OptionsCache = {};
@@ -16,8 +17,9 @@ const OptionsCache = {};
 const AutoEnableList = [];
 const ExtensionVersion = chrome.runtime.getManifest().version;
 const Logging = false;
-const PlayerURL = chrome.runtime.getURL('player/index.html');
-const CachedTabs = {};
+const Tabs = new TabTracker();
+const ruleManager = new RuleManager();
+
 
 let CustomSourcePatternsMatcher = new MultiRegexMatcher();
 
@@ -29,73 +31,21 @@ try {
   console.error(e);
 }
 
-chrome.runtime.onInstalled.addListener((object) => {
-  chrome.storage.local.get('welcome', (result) => {
-    if (!result || !result.welcome) {
-      if (Logging) console.log(result);
-      chrome.tabs.create({
-        url: chrome.runtime.getURL('welcome.html'),
-      }, (tab) => {
-        chrome.storage.local.set({
-          welcome: true,
-        });
-      });
-    }
-  });
-});
+BackgroundUtils.openWelcomePageOnInstall();
 
-chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
-  ctabs.forEach((tab) => {
-    if (!CachedTabs[tab.id]) CachedTabs[tab.id] = new TabHolder(tab.id);
+BackgroundUtils.queryTabs().then((ctabs) => {
+  ctabs.forEach((tabobj) => {
+    const tab = Tabs.getTabOrCreate(tabobj.id);
     try {
-      updateTabIcon(tab.id, true);
+      BackgroundUtils.updateTabIcon(tab, true);
     } catch (e) {
       console.error(e);
     }
   });
 });
 
-const ruleManager = new RuleManager();
-
-let tabIconTimeout = null;
-function updateTabIcon(tab, skipNotify) {
-  clearTimeout(tabIconTimeout);
-  if (tab.isOn) {
-    chrome.action.setBadgeText({
-      text: 'On',
-      tabId: tab.tabId,
-    });
-    chrome.action.setIcon({
-      path: '/icon2_128.png',
-      tabId: tab.tabId,
-    });
-  } else {
-    chrome.action.setIcon({
-      path: '/icon128.png',
-      tabId: tab.tabId,
-    });
-    if (skipNotify) {
-      chrome.action.setBadgeText({
-        text: '',
-        tabId: tab.tabId,
-      });
-    } else {
-      chrome.action.setBadgeText({
-        text: 'Off',
-        tabId: tab.tabId,
-      });
-      tabIconTimeout = setTimeout(() => {
-        chrome.action.setBadgeText({
-          text: '',
-          tabId: tab.tabId,
-        });
-      }, 1000);
-    }
-  }
-}
-
-async function onClicked(tab) {
-  if (!CachedTabs[tab.id]) CachedTabs[tab.id] = new TabHolder(tab.id);
+async function onClicked(tabobj) {
+  const tab = Tabs.getTabOrCreate(tabobj.id);
 
   // check permissions
   const hasPerms = await BackgroundUtils.checkPermissions();
@@ -106,67 +56,117 @@ async function onClicked(tab) {
     return;
   }
 
+  if (tabobj.url) {
+    tab.url = tabobj.url;
+  }
+
   const emptyTabURLS = ['about:blank', 'about:home', 'about:newtab', 'about:privatebrowsing', 'chrome://newtab/'];
   if (tab.url && !emptyTabURLS.includes(tab.url)) {
-    if (tab.url.substring(0, PlayerURL.length) !== PlayerURL) {
-      CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
+    if (!BackgroundUtils.isUrlPlayerUrl(tab.url)) {
+      tab.isOn = !tab.isOn;
 
-      updateTabIcon(CachedTabs[tab.id]);
-      if (CachedTabs[tab.id].isOn) {
-        openPlayersWithSources(tab.id);
+      BackgroundUtils.updateTabIcon(tab);
+
+      if (tab.isOn) {
+        openPlayersWithSources(tab);
       } else {
         let hasPlayer = false;
-        for (const i in CachedTabs[tab.id].frames) {
-          if (Object.hasOwn(CachedTabs[tab.id].frames, i)) {
-            const frame = CachedTabs[tab.id].frames[i];
-            if (frame && frameHasPlayer(frame)) {
-              hasPlayer = true;
-              break;
-            }
+        for (const frame of tab.getFrames()) {
+          if (frame.isPlayer) {
+            hasPlayer = true;
+            break;
           }
         }
 
         if (hasPlayer) {
-          CachedTabs[tab.id].frames = {};
-          CachedTabs[tab.id].playerCount = 0;
-          chrome.tabs.reload(tab.id);
+          tab.reset();
+          chrome.tabs.reload(tab.tabId);
         }
       }
     } else {
-      CachedTabs[tab.id].isOn = !CachedTabs[tab.id].isOn;
-      updateTabIcon(CachedTabs[tab.id]);
+      tab.isOn = !tab.isOn;
+      BackgroundUtils.updateTabIcon(tab);
     }
   } else {
-    if (!CachedTabs[tab.id].frames[0]) CachedTabs[tab.id].addFrame(0, -1);
-    //   tabs[tab.id].frames[0].source = "null"
-    CachedTabs[tab.id].frames[0].isMainPlayer = true;
-    chrome.tabs.update(tab.id, {
-      url: PlayerURL,
+    chrome.tabs.update(tab.tabId, {
+      url: BackgroundUtils.getPlayerUrl(),
     }, () => {
-
 
     });
   }
 }
 
-chrome.action.onClicked.addListener((tab) => {
-  onClicked(tab);
+chrome.action.onClicked.addListener(onClicked);
+
+
+chrome.tabs.onRemoved.addListener((tabid, removed) => {
+  Tabs.removeTab(tabid);
+});
+
+chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
+  const tab = Tabs.getTabOrCreate(tabid);
+
+  if (changeInfo.url) {
+    const url = new URL(changeInfo.url);
+    const oldURL = tab.url ? new URL(tab.url) : null;
+    if (oldURL && oldURL.hostname !== url.hostname) {
+      tab.reset();
+    }
+
+    tab.url = changeInfo.url;
+
+    chrome.tabs.sendMessage(tabid, {
+      type: MessageTypes.REMOVE_PLAYERS,
+    }, {
+      frameId: 0,
+    }, () => {
+      BackgroundUtils.checkMessageError('remove_players');
+    });
+
+    const match = AutoEnableList.find((item) => {
+      try {
+        if (!item.regex) {
+          return changeInfo.url.substring(0, item.match.length) === item.match;
+        } else {
+          return item.match.test(changeInfo.url);
+        }
+      } catch (e) {
+
+      }
+      return false;
+    });
+
+    const shouldAutoEnable = match && !match.negative;
+
+
+    if (BackgroundUtils.isUrlPlayerUrl(tab.url)) {
+      tab.isOn = true;
+      tab.regexMatched = true;
+    } else if (shouldAutoEnable && !tab.regexMatched) {
+      tab.regexMatched = true;
+      tab.isOn = true;
+      openPlayersWithSources(tab);
+    } else if (!shouldAutoEnable && tab.regexMatched) {
+      tab.isOn = false;
+      tab.regexMatched = false;
+    }
+  }
+
+  BackgroundUtils.updateTabIcon(tab, true);
 });
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === 'ping') {
-    sendResponse('pong');
+  if (msg.type === MessageTypes.PING) {
+    sendResponse(MessageTypes.PONG);
     return;
-  }
-
-  if (msg.type === 'options_init') {
+  } else if (msg.type === MessageTypes.LOAD_OPTIONS) {
     loadOptions();
     // sent to all tabs
-    chrome.tabs.query({}, (tabs) => {
+    BackgroundUtils.queryTabs().then((tabs) => {
       tabs.forEach((tab) => {
-        if (CachedTabs[tab.id]) {
+        if (Tabs.getTab(tab.id)) {
           chrome.tabs.sendMessage(tab.id, {
-            type: 'options',
+            type: MessageTypes.UPDATE_OPTIONS,
             time: msg.time,
           }, (response) => {
             BackgroundUtils.checkMessageError('options', true);
@@ -177,87 +177,151 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return;
   }
 
-  if (!CachedTabs[sender.tab.id]) {
-    CachedTabs[sender.tab.id] = new TabHolder(sender.tab.id);
-  }
-  const tab = CachedTabs[sender.tab.id];
+  const tab = Tabs.getTabOrCreate(sender.tab.id);
+  const frame = tab.getFrameOrCreate(sender.frameId);
 
-  if (!CachedTabs[sender.tab.id].frames[sender.frameId]) {
-    const parentFrameId = -2;
-    CachedTabs[sender.tab.id].addFrame(sender.frameId, parentFrameId);
-  }
+  if (msg.type === MessageTypes.PLAYER_LOADED) {
+    if (Logging) console.log('Found FastStream window', frame);
+    frame.isPlayer = true;
+    if (frame.playerOpening) {
+      frame.playerOpening = false;
+    } else if (frame.parent) {
+      frame.parent.playerOpening = false;
+    }
+    tab.playerCount++;
+    const isMainPlayer = tab.playerCount === 1;
 
-  const frame = CachedTabs[sender.tab.id].frames[sender.frameId];
+    getPageFrame(frame).then((pageFrame) => {
+      if (pageFrame) {
+        frame.pageFrame = pageFrame;
+      } else {
+        frame.pageFrame = tab.getFrameOrCreate(0);
+      }
 
-  if (msg.type === 'request_prevnext_video_poll') {
-    sendToParent(frame, {
-      type: 'prevnext_video_poll',
-    }).then((result) => {
-      sendResponse(result);
+      const response = {
+        mediaInfo: getMediaInfoFromTab(sender?.tab),
+        analyzerData: tab.analyzerData,
+        isMainPlayer,
+      };
+
+      sendResponse(response);
     });
     return true;
-  } else if (msg.type === 'request_next_video' || msg.type === 'request_previous_video') {
-    if (frame.replacedAll) {
-      const parent = tab.frames[frame.parentId];
-      if (parent) {
-        const parentparent = tab.frames[parent.parentId];
-        if (parentparent) {
-          parentparent.continuationOptions = msg.continuationOptions;
-        }
-      }
-    } else {
-      const parent = tab.frames[frame.parentId];
-      if (parent) {
-        parent.continuationOptions = msg.continuationOptions;
-      }
+  } else if (msg.type === MessageTypes.FRAME_ADDED) {
+    const playerCount = frame.resetSelfAndChildren();
+    frame.url = msg.url;
+    tab.playerCount -= playerCount;
+    tab.playerCount = Math.max(0, tab.playerCount);
+    checkURLMatch(frame);
+  } else if (msg.type === MessageTypes.FRAME_REMOVED) {
+    const toRemove = msg.frameId !== undefined ? tab.getFrame(msg.frameId) : frame;
+    const playerCount = toRemove.resetSelfAndChildren();
+    tab.playerCount -= playerCount;
+    tab.playerCount = Math.max(0, tab.playerCount);
+
+    if (toRemove.parent) {
+      toRemove.parent.removeChildFrame(toRemove);
     }
 
-    sendToParent(frame, {
-      type: msg.type === 'request_next_video' ? 'next_video' : 'previous_video',
-      continuationOptions: msg.continuationOptions,
-    }).then((result) => {
-      sendResponse(result);
+    tab.removeFrame(toRemove.frameId);
+  } else if (msg.type === MessageTypes.REQUEST_FRAMEID) {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: MessageTypes.FRAMEID,
+      frameId: frame.frameId,
+    }, {
+      frameId: frame.frameId,
+    }, () => {
+      BackgroundUtils.checkMessageError('frameId');
+    });
+  } else if (msg.type === MessageTypes.REQUEST_SOURCES) {
+    sendSources(frame);
+  } else if (msg.type === MessageTypes.SET_HEADERS) {
+    if (msg.commands.length) {
+      ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
+        if (Logging) console.log('Added rule', msg, rule);
+        sendResponse();
+      });
+      return true;
+    }
+  } else if (msg.type === MessageTypes.DETECTED_SOURCE) {
+    const mode = URLUtils.getModeFromExtension(msg.ext);
+    const headers = msg.headers || {};
+    onSourceRecieved({
+      url: msg.url,
+      requestId: -1,
+      customHeaders: headers,
+    }, frame, mode);
+  } else if (msg.type === MessageTypes.YT_LOADED) {
+    frame.url = msg.url;
+    checkYTURL(frame);
+  } else if (msg.type === MessageTypes.STORE_ANALYZER_DATA) {
+    if (Logging) console.log('Analyzer data', msg.data);
+    tab.analyzerData = msg.data;
+  } else if (msg.type === MessageTypes.SEND_TO_PLAYER) {
+    const pframe = tab.getFrame(msg.frameId);
+    if (!pframe || !pframe.isPlayer) {
+      sendResponse(null);
+      return;
+    }
+
+    chrome.tabs.sendMessage(pframe.tab.tabId, {
+      type: MessageTypes.MESSAGE_FROM_PAGE,
+      data: msg.data,
+    }, {
+      frameId: pframe.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('message_from_page');
+
+      sendResponse(response);
     });
     return true;
-  } else if (msg.type === 'seek_to') {
-    // send to children
-    for (const i in tab.frames) {
-      if (Object.hasOwn(tab.frames, i)) {
-        const frame = tab.frames[i];
-        if (frame.parentId === sender.frameId) {
-          chrome.tabs.sendMessage(frame.tab.tabId, {
-            type: 'seek',
-            time: msg.time,
-          }, {
-            frameId: frame.frameId,
-          }, ()=>{
-            BackgroundUtils.checkMessageError('seek');
-          });
-        }
-      }
+  } else if (msg.type === MessageTypes.REQUEST_FULLSCREEN) {
+    return handleFullscreenRequest(frame, msg, sendResponse);
+  } else if (msg.type === MessageTypes.REQUEST_WINDOWED_FULLSCREEN) {
+    return handleWindowedFullscreenRequest(frame, msg, sendResponse);
+  } else if (msg.type === MessageTypes.REQUEST_MINIPLAYER) {
+    return handleMiniplayerRequest(frame, msg, sendResponse);
+  } else if (msg.type === MessageTypes.REQUEST_PLAYLIST_NAVIGATION) {
+    const pageFrame = frame.pageFrame;
+    if (!pageFrame) {
+      sendResponse('error');
+      return;
     }
-  } else if (msg.type === 'transmit_key') {
-    // send to children
-    for (const i in tab.frames) {
-      if (Object.hasOwn(tab.frames, i)) {
-        const frame = tab.frames[i];
-        if (frame.parentId === sender.frameId) {
-          chrome.tabs.sendMessage(frame.tab.tabId, {
-            type: 'keypress',
-            key: msg.key,
-          }, {
-            frameId: frame.frameId,
-          }, ()=>{
-            BackgroundUtils.checkMessageError('keypress');
-          });
-        }
+
+    chrome.tabs.sendMessage(pageFrame.tab.tabId, {
+      type: MessageTypes.PLAYLIST_NAVIGATION,
+      direction: msg.direction,
+    }, {
+      frameId: pageFrame.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('playlist_navigation');
+      if (response === 'clicked') {
+        tab.continuationOptions = msg.continuationOptions;
       }
+      sendResponse(response);
+    });
+    return true;
+  } else if (msg.type === MessageTypes.REQUEST_PLAYLIST_POLL) {
+    const pageFrame = frame.pageFrame;
+    if (!pageFrame) {
+      sendResponse('error');
+      return;
     }
-  } else if (msg.type === 'sponsor_block') {
+
+    chrome.tabs.sendMessage(pageFrame.tab.tabId, {
+      type: MessageTypes.PLAYLIST_POLL,
+    }, {
+      frameId: pageFrame.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('playlist_poll');
+      sendResponse(response);
+    });
+    return true;
+  } else if (msg.type === MessageTypes.REQUEST_SPONSORBLOCK_SCRAPE) {
     if (msg.action === 'getSkipSegments' && frame.frameId !== 0) {
       // send message to parent frame
       chrome.tabs.sendMessage(frame.tab.tabId, {
-        type: 'scrape_sponsorblock',
+        type: MessageTypes.SPONSORBLOCK_SCRAPE,
         videoId: msg.videoId,
       }, {
         frameId: frame.parentId,
@@ -273,177 +337,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
-  } else if (msg.type === 'header_commands') {
-    if (msg.commands.length) {
-      ruleManager.addHeaderRule(msg.url, sender.tab.id, msg.commands).then((rule) => {
-        if (Logging) console.log('Added rule', msg, rule);
-        sendResponse();
-      });
-      return true;
-    }
-  } else if (msg.type === 'request_fullscreen') {
-    sendToParent(frame, {
-      type: 'fullscreen',
-      force: msg.force,
-    }).then((result) => {
-      sendResponse(result);
-    });
-    return true;
-  } else if (msg.type === 'request_windowed_fullscreen') {
-    sendToParent(frame, {
-      type: 'windowed_fullscreen',
-      force: msg.force,
-    }).then((result) => {
-      sendResponse(result);
-    });
-    return true;
-  } else if (msg.type === 'request_miniplayer') {
-    sendToParent(frame, {
-      type: 'miniplayer',
-      size: msg.size,
-      force: msg.force,
-      autoExit: msg.autoExit,
-      styles: msg.styles,
-    }).then((result) => {
-      sendResponse(result);
-    });
-    return true;
-  } else if (msg.type ==='miniplayer_change_init') {
-    const frame = tab.frames[msg.frameId];
-    if (!frame) {
-      return;
-    }
-
-    if (frame.parentId !== sender.frameId) {
-      return;
-    }
-
-    let sendTo = msg.frameId;
-    if (frame.replacedAll && frame.replacedBy) {
-      sendTo = frame.replacedBy;
-    }
-
-    // send to msg.frameId
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'miniplayer_change',
-      miniplayer: msg.miniplayer,
-    }, {
-      frameId: sendTo,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('miniplayer_change');
-    });
-  } else if (msg.type ==='fullscreen_change_init') {
-    // send to children
-    for (const i in tab.frames) {
-      if (Object.hasOwn(tab.frames, i)) {
-        const frame = tab.frames[i];
-        if (frame.parentId === sender.frameId) {
-          let sendID = frame.frameId;
-          if (frame.replacedAll && frame.replacedBy) {
-            sendID = frame.replacedBy;
-          }
-          chrome.tabs.sendMessage(frame.tab.tabId, {
-            type: 'fullscreen_change',
-            fullscreen: msg.fullscreen,
-          }, {
-            frameId: sendID,
-          }, ()=>{
-            BackgroundUtils.checkMessageError('fullscreen_change');
-          });
-        }
-      }
-    }
-  } else if (msg.type === 'faststream') {
-    if (Logging) console.log('Found FastStream window', frame);
-    frame.isFastStream = true;
-    frame.url = msg.url;
-
-    let isMainPlayer = frame.isMainPlayer;
-    if (frame.parentId === -2 && frame.frameId != msg.frameId) {
-      frame.parentId = msg.frameId;
-    }
-
-    if (!isMainPlayer && frame.parentId > -1) {
-      const parentFrame = tab.frames[frame.parentId];
-      if (parentFrame) {
-        isMainPlayer = parentFrame.isMainPlayer;
-      }
-    }
-
-    if (frame.parentId > -1) {
-      const parentFrame = tab.frames[frame.parentId];
-      if (parentFrame.replacedAll) {
-        frame.replacedAll = true;
-        parentFrame.replacedBy = frame.frameId;
-      }
-    }
-
-    const response = {
-      mediaInfo: getMediaInfoFromTab(sender?.tab),
-      analyzerData: tab.analyzerData,
-      isMainPlayer: isMainPlayer,
-    };
-
-    sendResponse(response);
-    return;
-  } else if (msg.type === 'analyzerData') {
-    if (Logging) console.log('Analyzer data', msg.data);
-    tab.analyzerData = msg.data;
-  } else if (msg.type === 'iframe_controls') {
-    frame.frame_referer = msg.mode === PlayerModes.IFRAME ? msg.referer : null;
-    if (Logging) console.log('Iframe-controls', frame.frame_referer);
-  } else if (msg.type === 'iframe') {
-    frame.url = msg.url;
-    frame.continuationOptions = null;
-    if (frame.url.substring(0, PlayerURL.length) !== PlayerURL) {
-      //  console.log("reset frame sources")
-      frame.subtitles.length = 0;
-      frame.sources.length = 0;
-      frame.isFastStream = false;
-      frame.replacedAll = false;
-      frame.replacedBy = false;
-      frame.playerOpening = false;
-      frame.hasSentFrameId = false;
-    }
-
-    if (frame.frameId === 0) {
-      // clear all other frames
-      for (const i in tab.frames) {
-        if (Object.hasOwn(tab.frames, i)) {
-          const frame = tab.frames[i];
-          if (!frame || frame.frameId !== 0) {
-            delete tab.frames[i];
-          }
-        }
-      }
-    }
-
-    checkURLMatch(frame);
-  } else if (msg.type === 'loaded') {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'init',
-      frameId: frame.frameId,
-    }, {
-      frameId: frame.frameId,
-    }, ()=>{
-      BackgroundUtils.checkMessageError('init');
-    });
-  } else if (msg.type === 'yt_loaded') {
-    frame.url = msg.url;
-    checkYTURL(frame);
-  } else if (msg.type === 'ready') {
-    if (Logging) console.log('Ready');
-    frame.ready = true;
-
-    sendSources(frame);
-  } else if (msg.type === 'detected_source') {
-    const mode = URLUtils.getModeFromExtension(msg.ext);
-    const headers = msg.headers || {};
-    onSourceRecieved({
-      url: msg.url,
-      requestId: -1,
-      customHeaders: headers,
-    }, frame, mode);
   } else {
     return;
   }
@@ -451,41 +344,144 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   sendResponse('ok');
 });
 
-async function sendToParent(frame, message) {
-  if (frame.replacedAll) {
-    frame = frame.tab.frames[frame.parentId];
+async function cascadedFullscreen(playerFrame, finalFrame, data) {
+  const trace = traceFrames(playerFrame, finalFrame);
+  const result = await new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(playerFrame.tab.tabId, {
+      ...data,
+      frameId: trace[trace.length - 2].frameId,
+      playerFrameId: playerFrame.frameId,
+    }, {
+      frameId: finalFrame.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('cascade_fullscreen_' + data.type);
+      resolve(response);
+    });
+  });
+
+  if (result !== 'enter' && result !== 'exit') {
+    return result;
   }
 
-  if (frame.parentId < 0) {
-    return 'invalid';
-  }
-
-  const needsToSendFrameId = !frame.hasSentFrameId;
-  if (needsToSendFrameId) {
-    frame.hasSentFrameId = true;
-    await (new Promise((resolve, reject) => {
-      chrome.tabs.sendMessage(frame.tab.tabId, {
-        type: 'sendFrameId',
-        frameId: frame.frameId,
+  const newValue = result === 'enter';
+  const promises = [];
+  for (let i = 1; i < trace.length - 1; i++) {
+    const currentFrame = trace[i];
+    const lastFrame = trace[i - 1];
+    promises.push(new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(currentFrame.tab.tabId, {
+        type: MessageTypes.TOGGLE_WINDOWED_FULLSCREEN,
+        force: newValue,
+        frameId: lastFrame.frameId,
       }, {
-        frameId: frame.frameId,
-      }, ()=>{
-        BackgroundUtils.checkMessageError('sendFrameId');
-        setTimeout(()=>{
-          resolve();
-        }, 100);
+        frameId: currentFrame.frameId,
+      }, (response) => {
+        BackgroundUtils.checkMessageError('toggle_fullscreen_windowed');
+        resolve(response);
       });
     }));
   }
 
+  await Promise.all(promises);
+
+  return result;
+}
+
+function handleFullscreenRequest(frame, msg, sendResponse) {
+  const fn = async () => {
+    const fullScreenAllowedFrame = await getFrameWithFullscreenPermission(frame);
+
+    if (!fullScreenAllowedFrame) {
+      sendResponse('error');
+      return;
+    }
+
+    const result = await cascadedFullscreen(frame, fullScreenAllowedFrame, {
+      type: MessageTypes.TOGGLE_FULLSCREEN,
+      force: msg.force,
+    });
+
+    sendResponse(result);
+  };
+  fn();
+  return true;
+}
+
+function handleWindowedFullscreenRequest(frame, msg, sendResponse) {
+  const fn = async () => {
+    const mainFrame = frame.tab.getFrameOrCreate(0);
+
+    const result = await cascadedFullscreen(frame, mainFrame, {
+      type: MessageTypes.TOGGLE_WINDOWED_FULLSCREEN,
+      force: msg.force,
+    });
+
+    sendResponse(result);
+  };
+  fn();
+  return true;
+}
+
+function handleMiniplayerRequest(frame, msg, sendResponse) {
+  const fn = async () => {
+    const pageFrame = frame.pageFrame;
+    if (!pageFrame) {
+      sendResponse('error');
+      return;
+    }
+
+    const result = await cascadedFullscreen(frame, pageFrame, {
+      type: MessageTypes.TOGGLE_MINIPLAYER,
+      force: msg.force,
+      size: msg.size,
+      styles: msg.styles,
+      autoExit: msg.autoExit,
+    });
+
+    sendResponse(result);
+  };
+  fn();
+  return true;
+}
+
+async function getFrameWithFullscreenPermission(frame) {
+  let currentFrame = frame.parent;
+  while (currentFrame) {
+    const isFullscreenAllowed = await checkIsFullscreenAllowed(currentFrame);
+    if (isFullscreenAllowed) {
+      return currentFrame;
+    }
+    currentFrame = currentFrame.parent;
+  }
+
+  return null;
+}
+
+function traceFrames(frame, toFrame) {
+  if (frame === toFrame) {
+    return [frame];
+  }
+  const frames = [];
+  let currentFrame = frame;
+  while (currentFrame && currentFrame !== toFrame) {
+    frames.push(currentFrame);
+    currentFrame = currentFrame.parent;
+  }
+
+  frames.push(toFrame);
+
+  return frames;
+}
+
+async function checkIsFullscreenAllowed(frame) {
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(frame.tab.tabId, {
-      frameId: frame.frameId,
-      ...message,
+      type: MessageTypes.TOGGLE_FULLSCREEN,
+      queryPermissions: true,
     }, {
-      frameId: frame.parentId,
+      frameId: frame.frameId,
     }, (response) => {
-      BackgroundUtils.checkMessageError('sendParent');
+      BackgroundUtils.checkMessageError('check_fullscreen');
       resolve(response);
     });
   });
@@ -494,8 +490,7 @@ async function sendToParent(frame, message) {
 function checkYTURL(frame) {
   const url = frame.url;
   // Check if url is youtube
-
-  if (url.substring(0, PlayerURL.length) === PlayerURL) {
+  if (BackgroundUtils.isUrlPlayerUrl(url)) {
     return;
   }
 
@@ -520,8 +515,70 @@ function checkURLMatch(frame) {
   }
 }
 
+
+async function getPageFrame(frame) {
+  let currentFrame = frame;
+  while (currentFrame && currentFrame.parent) {
+    if (!currentFrame.linkPromise) {
+      currentFrame.linkPromise = linkToParentFrame(currentFrame);
+    }
+
+    await currentFrame.linkPromise;
+
+    const isFull = await checkIsFull(currentFrame);
+    if (!isFull) {
+      return currentFrame.parent;
+    }
+    currentFrame = currentFrame.parent;
+  }
+
+  return null;
+}
+
+async function checkIsFull(frame) {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: MessageTypes.IS_FULL,
+      frameId: frame.frameId,
+    }, {
+      frameId: frame.parent.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('is_full');
+      resolve(response);
+    });
+  });
+}
+
+async function linkToParentFrame(frame) {
+  if (!frame.parent) return;
+
+  // Generate random string
+  const key = crypto.randomUUID();
+
+  return await new Promise((resolve, reject) => {
+    chrome.tabs.sendMessage(frame.tab.tabId, {
+      type: MessageTypes.FRAME_LINK_RECEIVER,
+      frameId: frame.frameId,
+      key,
+    }, {
+      frameId: frame.parent.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('link_frame_reciever');
+      chrome.tabs.sendMessage(frame.tab.tabId, {
+        type: MessageTypes.FRAME_LINK_SENDER,
+        key,
+      }, {
+        frameId: frame.frameId,
+      }, (response) => {
+        BackgroundUtils.checkMessageError('link_frame_sender');
+        resolve();
+      });
+    });
+  });
+}
+
 function getMediaInfoFromTab(tab) {
-  if (!tab || tab.url === PlayerURL) return;
+  if (!tab || BackgroundUtils.isUrlPlayerUrl(tab.url)) return;
   // Get name of website through tab url
   const url = new URL(tab.url);
   const hostname = url.hostname;
@@ -649,6 +706,34 @@ async function loadOptions(newOptions) {
   loadCustomPatterns();
 }
 
+
+async function setupRedirectRule(ruleID, filetypes) {
+  const rule = {
+    id: ruleID,
+    action: {
+      type: 'redirect',
+      redirect: {regexSubstitution: PlayerURL + '#\\0'},
+    },
+    condition: {
+      // exclude self
+      excludedRequestDomains: [(new URL(PlayerURL)).hostname],
+      // only match m3u8 or mpds
+      regexFilter: '^.+\\.(' + filetypes.join('|') + ')$',
+      resourceTypes: ['main_frame'],
+    },
+  };
+  return chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [rule.id],
+    addRules: [rule],
+  });
+}
+
+async function removeRule(ruleID) {
+  return chrome.declarativeNetRequest.updateDynamicRules({
+    removeRuleIds: [ruleID],
+  });
+}
+
 async function loadCustomPatterns() {
   const customSourcePatterns = Options.customSourcePatterns;
   if (OptionsCache.customSourcePatterns !== customSourcePatterns) {
@@ -696,42 +781,16 @@ async function loadCustomPatternsFile(matcher, fileStr, isPrimary = false) {
   }
 }
 
-async function setupRedirectRule(ruleID, filetypes) {
-  const rule = {
-    id: ruleID,
-    action: {
-      type: 'redirect',
-      redirect: {regexSubstitution: PlayerURL + '#\\0'},
-    },
-    condition: {
-      // exclude self
-      excludedRequestDomains: [(new URL(PlayerURL)).hostname],
-      // only match m3u8 or mpds
-      regexFilter: '^.+\\.(' + filetypes.join('|') + ')$',
-      resourceTypes: ['main_frame'],
-    },
-  };
-  return chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: [rule.id],
-    addRules: [rule],
-  });
-}
-
-async function removeRule(ruleID) {
-  return chrome.declarativeNetRequest.updateDynamicRules({
-    removeRuleIds: [ruleID],
-  });
-}
-
 function handleSubtitles(url, frame, headers) {
-  if (frame.subtitles.find((a) => {
+  const subtitles = frame.getSubtitles();
+  if (subtitles.find((a) => {
     return a.source === url;
   })) return;
 
   if (Logging) console.log('Found subtitle', url);
   const u = (new URL(url)).pathname.split('/').pop();
 
-  frame.subtitles.push({
+  subtitles.push({
     source: url,
     headers: headers,
     label: u.split('.')[0],
@@ -740,13 +799,13 @@ function handleSubtitles(url, frame, headers) {
 }
 
 function getSourceFromURL(frame, url) {
-  return frame.sources.find((a) => {
+  return frame.getSources().find((a) => {
     return a.url === url;
   });
 }
 
 function addSource(frame, url, mode, headers) {
-  frame.sources.push({
+  frame.getSources().push({
     url, mode, headers,
     time: Date.now(),
   });
@@ -755,36 +814,41 @@ function addSource(frame, url, mode, headers) {
 function collectSources(frame, remove = false) {
   const subtitles = [];
   const sources = [];
-  const tab = frame.tab;
 
   let currentFrame = frame;
   let removed = false;
   let depth = 0;
+
   while (currentFrame) {
-    for (let i = 0; i < currentFrame.subtitles.length; i++) {
+    const currentSubtitles = currentFrame.getSubtitles();
+    for (const sub of currentSubtitles) {
       subtitles.push({
-        ...currentFrame.subtitles[i],
+        ...sub,
         depth,
+        frameId: currentFrame.frameId,
       });
     }
 
-    for (let i = 0; i < currentFrame.sources.length; i++) {
+    const currentSources = currentFrame.getSources();
+    for (const source of currentSources) {
       sources.push({
-        ...currentFrame.sources[i],
+        ...source,
         depth,
+        frameId: currentFrame.frameId,
       });
     }
 
     if (!removed && remove) {
-      if (currentFrame.sources.length !== 0) {
+      if (currentSources.length !== 0) {
         removed = true;
       }
-      currentFrame.sources.length = 0;
-      currentFrame.subtitles.length = 0;
+      currentSources.length = 0;
+      currentSubtitles.length = 0;
     }
 
-    if (currentFrame.sources.length !== 0) break;
-    currentFrame = tab.frames[currentFrame.parentId];
+    if (sources.length !== 0) break;
+
+    currentFrame = currentFrame.parent;
     depth++;
   }
 
@@ -797,52 +861,22 @@ function collectSources(frame, remove = false) {
 }
 
 function sendSources(frame) {
-  let collectFrame = frame;
-  if (frame.replacedAll) {
-    collectFrame = frame.tab.frames[frame.parentId];
-  }
+  const {subtitles, sources} = collectSources(frame, true);
 
-  const {subtitles, sources} = collectSources(collectFrame, true);
-
-  const parent = frame.tab.frames[collectFrame.parentId];
-  const continuationOptions = parent?.continuationOptions || null;
-
-  if (continuationOptions) {
-    parent.continuationOptions = null;
-  }
+  const continuationOptions = frame.tab.continuationOptions;
+  frame.tab.continuationOptions = null;
 
   chrome.tabs.sendMessage(frame.tab.tabId, {
-    type: 'sources',
+    type: MessageTypes.SOURCES,
     subtitles: subtitles,
     sources: sources,
     autoSetSource: true,
     continuationOptions: continuationOptions,
   }, {
     frameId: frame.frameId,
-  }, ()=>{
+  }, () => {
     BackgroundUtils.checkMessageError('sources');
   });
-}
-
-function getOrCreateFrame(details) {
-  const tabId = details.tabId;
-  const frameId = details.frameId;
-  const parentFrameId = details.parentFrameId;
-
-  if (!CachedTabs[tabId]) CachedTabs[tabId] = new TabHolder(tabId);
-  const tab = CachedTabs[tabId];
-
-  if (!tab.frames[frameId]) tab.addFrame(frameId, parentFrameId);
-  const frame = tab.frames[frameId];
-
-  if (parentFrameId !== undefined) {
-    frame.parentId = parentFrameId;
-  }
-
-  return frame;
-}
-function isSubtitles(ext) {
-  return ext ==='vtt' || ext === 'srt';
 }
 
 async function scrapeCaptionsTags(frame) {
@@ -852,7 +886,7 @@ async function scrapeCaptionsTags(frame) {
 
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(tabId, {
-      type: 'scrape_captions',
+      type: MessageTypes.SCRAPE_CAPTIONS,
     }, {
       frameId: frameId,
     }, (sub) => {
@@ -865,7 +899,7 @@ async function scrapeCaptionsTags(frame) {
 async function getVideoSize(frame) {
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'get_video_size',
+      type: MessageTypes.GET_VIDEO_SIZE,
     }, {
       frameId: frame.frameId,
     }, (size) => {
@@ -876,127 +910,122 @@ async function getVideoSize(frame) {
 }
 
 async function pingContentScript() {
-  return new Promise((resolve, reject) => {
-    chrome.tabs.query({}, (tabs) => {
-      const message = {
-        type: 'ping',
-      };
+  return new Promise(async (resolve, reject) => {
+    const tabs = await BackgroundUtils.queryTabs();
+    const message = {
+      type: MessageTypes.PING_TAB,
+    };
 
-      // try one tab at a time. If it fails, try the next one
-      let i = 0;
-      const tryTab = () => {
-        if (i >= tabs.length) {
-          resolve(false);
-          return;
-        }
-
+    // try one tab at a time. If it fails, try the next one
+    for (const tab of tabs) {
+      const result = await new Promise((resolve, reject) => {
         try {
-          chrome.tabs.sendMessage(tabs[i].id, message, (returnMessage) => {
-            if (chrome.runtime.lastError || returnMessage !== 'pong') {
-              i++;
-              tryTab();
+          chrome.tabs.sendMessage(tab.id, message, (returnMessage) => {
+            if (chrome.runtime.lastError || returnMessage !== MessageTypes.PONG_TAB) {
+              resolve(false);
             } else {
               resolve(true);
             }
           });
         } catch (e) {
-          i++;
-          tryTab();
+          resolve(false);
         }
-      };
+      });
 
-      tryTab();
-    });
+      if (result) {
+        resolve(true);
+        return;
+      }
+    }
+    resolve(false);
   });
 }
 
 async function openPlayer(frame) {
-  if (frame.playerOpening || frameHasPlayer(frame) || frame.replacedAll) {
+  if (frame.playerOpening || frame.hasPlayer()) {
     return;
   }
 
   frame.playerOpening = true;
-  frame.replacedAll = false;
-  frame.isMainPlayer = frame.tab.playerCount === 0;
-  frame.tab.playerCount += 1;
+
+  if (Logging) console.log('Opening player', frame);
+
   return new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: 'player',
-      url: PlayerURL + '?frame_id=' + frame.frameId,
+      type: MessageTypes.OPEN_PLAYER,
+      url: BackgroundUtils.getPlayerUrl(),
       noRedirect: frame.frameId === 0,
     }, {
       frameId: frame.frameId,
     }, (response) => {
-      frame.playerOpening = false;
-      if (response === 'replaceall') {
-        frame.replacedAll = true;
-      }
       BackgroundUtils.checkMessageError('player');
+
+      if (response === 'no_video') {
+        frame.playerOpening = false;
+      }
+
       resolve(response);
     });
   });
 }
 
-function sendSourcesToMainFramePlayers(frame) {
+async function sendSourcesToMainFramePlayers(frame) {
   // query all tabs
-  chrome.tabs.query({}, (tabs) => {
-    // for each tab
-    for (let i = 0; i < tabs.length; i++) {
-      const tab = CachedTabs[tabs[i].id];
-      if (!tab || !tab.isOn) continue;
-      // if the tab is a faststream tab
-      if (tab.url.substring(0, PlayerURL.length) === PlayerURL && tab.frames?.[0]?.isFastStream) {
-        const fastStreamFrame = tab.frames[0];
-        if (fastStreamFrame.ready) {
-          // send the source to the tab
-          chrome.tabs.sendMessage(tab.tabId, {
-            type: 'sources',
-            subtitles: frame.subtitles,
-            sources: frame.sources,
-            autoSetSource: false,
-          }, ()=>{
-            BackgroundUtils.checkMessageError('sources');
-          });
-        }
-      }
+  const tabs = await BackgroundUtils.queryTabs();
+
+  // for each tab
+  for (let i = 0; i < tabs.length; i++) {
+    const tab = Tabs.getTab(tabs[i].id);
+    if (!tab || !tab.isOn) continue;
+    // if the tab is a faststream tab
+    const mainPlayerFrame = tab.getMainPlayer();
+    if (mainPlayerFrame) {
+      // send the source to the tab
+      chrome.tabs.sendMessage(tab.tabId, {
+        type: MessageTypes.SOURCES,
+        subtitles: frame.subtitles,
+        sources: frame.sources,
+        autoSetSource: false,
+      }, () => {
+        BackgroundUtils.checkMessageError('sources');
+      });
     }
-  });
+  }
 }
 
-let currentTimeout = null;
 async function onSourceRecieved(details, frame, mode) {
   if ((URLUtils.is_url_yt(frame.url) || URLUtils.is_url_yt(frame.tab.url)) && mode !== PlayerModes.ACCELERATED_YT) {
     return;
   }
 
   const url = details.url;
-  const customHeaders = details.customHeaders || frame.requestHeaders[details.requestId];
+  const customHeaders = details.customHeaders || frame.requestHeaders.get(details.requestId);
 
   if (getSourceFromURL(frame, url)) return;
 
   // Check if service worker
   if (frame.tab.tabId < 0 && details.initiator) {
     // get current frame
-    const currentFrame = await new Promise((resolve, reject) => {
-      chrome.tabs.query({url: '*://*/*'}).then((ctabs) => {
-        ctabs.every((tab) => {
-          const tabObj = CachedTabs[tab.id];
-          if (!tabObj) return true;
-          for (const i in tabObj.frames) {
-            if (!Object.hasOwn(tabObj.frames, i)) continue;
-            const f = tabObj.frames[i];
-            if (!f?.url) continue;
-            const furl = f.url;
-            if (furl.length >= details.initiator.length && furl.substring(0, details.initiator.length) === details.initiator) {
-              resolve(f);
+    const currentFrame = await new Promise(async (resolve, reject) => {
+      try {
+        const ctabs = await BackgroundUtils.queryTabs();
+        ctabs.every((ctab) => {
+          const tab = Tabs.getTab(ctab.id);
+          if (!tab) return true;
+
+          for (const frame of tab.getFrames()) {
+            const furl = frame.url;
+            if (furl && furl.length >= details.initiator.length && furl.substring(0, details.initiator.length) === details.initiator) {
+              resolve(frame);
               return false;
             }
           }
           return true;
         });
-      }).catch((e) => {
+      } catch (e) {
         resolve(null);
-      });
+        return;
+      }
     });
 
     if (currentFrame) {
@@ -1006,23 +1035,22 @@ async function onSourceRecieved(details, frame, mode) {
 
   addSource(frame, url, mode, customHeaders);
 
-  await scrapeCaptionsTags(frame).then((sub) => {
-    if (sub) {
-      sub.forEach((s) => {
-        if (frame.subtitles.every((ss, i) => {
-          if (s.source === ss.source) {
-            frame.subtitles[i] = s;
-            return false;
-          }
-          return true;
-        })) frame.subtitles.push(s);
-      });
-    }
-  });
+  const subs = await scrapeCaptionsTags(frame);
+  if (subs) {
+    subs.forEach((s) => {
+      if (frame.subtitles.every((ss, i) => {
+        if (s.source === ss.source) {
+          frame.subtitles[i] = s;
+          return false;
+        }
+        return true;
+      })) frame.subtitles.push(s);
+    });
+  }
 
   if (frame.tab.isOn) {
-    clearTimeout(currentTimeout);
-    currentTimeout = setTimeout(() => {
+    clearTimeout(frame.openTimeout);
+    frame.openTimeout = setTimeout(() => {
       if (frame.tab.isOn) {
         openPlayer(frame);
       }
@@ -1036,18 +1064,11 @@ async function onSourceRecieved(details, frame, mode) {
   return;
 }
 
-async function openPlayersWithSources(tabid) {
-  if (!CachedTabs[tabid]) return;
-  const tab = CachedTabs[tabid];
-
+async function openPlayersWithSources(tab) {
   let framesWithSources = [];
-  for (const i in tab.frames) {
-    if (Object.hasOwn(tab.frames, i)) {
-      const frame = tab.frames[i];
-      if (!frame || frameHasPlayer(frame)) continue;
-      if (frame.sources.length > 0) {
-        framesWithSources.push(frame);
-      }
+  for (const frame of tab.getFrames()) {
+    if (!frame.isPlayer && frame.getSources().length > 0) {
+      framesWithSources.push(frame);
     }
   }
 
@@ -1060,7 +1081,6 @@ async function openPlayersWithSources(tabid) {
       return b.videoSize - a.videoSize;
     });
 
-    // console.log("Opening player from source recieved2", framesWithSources)
     for (let i = 0; i < framesWithSources.length; i++) {
       openPlayer(framesWithSources[i].frame);
     }
@@ -1075,23 +1095,32 @@ if (EnvUtils.isChrome()) {
   webRequestPerms2.push('extraHeaders');
 }
 
+chrome.webRequest.onBeforeRequest.addListener((details) => {
+  const tab = Tabs.getTabOrCreate(details.tabId);
+  const frame = tab.getFrameOrCreate(details.frameId);
+  if (!frame.parent && details.parentFrameId !== -1) {
+    const parentFrame = tab.getFrameOrCreate(details.parentFrameId);
+    frame.setParentFrame(parentFrame);
+  }
+}, {
+  urls: ['<all_urls>'],
+});
+
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
-  const frame = getOrCreateFrame(details);
-  frame.requestHeaders[details.requestId] = details.requestHeaders;
+  const tab = Tabs.getTabOrCreate(details.tabId);
+  const frame = tab.getFrameOrCreate(details.frameId);
+  frame.requestHeaders.set(details.requestId, details.requestHeaders);
 }, {
   urls: ['<all_urls>'],
 }, webRequestPerms);
-
-function frameHasPlayer(frame) {
-  return frame.isFastStream || frame.url.substring(0, PlayerURL.length) === PlayerURL;
-}
 
 chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
       const url = details.url;
       let ext = URLUtils.get_url_extension(url);
-      const frame = getOrCreateFrame(details);
-      if (frameHasPlayer(frame)) return;
+      const tab = Tabs.getTabOrCreate(details.tabId);
+      const frame = tab.getFrameOrCreate(details.frameId);
+      if (frame.hasPlayer()) return;
 
       if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
         return; // Client or server error. Ignore it
@@ -1103,9 +1132,9 @@ chrome.webRequest.onHeadersReceived.addListener(
         'https://www.instagram.com',
       ];
       if (details.initiator &&
-        initiatorBlacklist.some((a) => {
-          return details.initiator.startsWith(a);
-        })) {
+      initiatorBlacklist.some((a) => {
+        return details.initiator.startsWith(a);
+      })) {
         return;
       }
 
@@ -1114,10 +1143,10 @@ chrome.webRequest.onHeadersReceived.addListener(
         ext = output;
       }
 
-      if (isSubtitles(ext)) {
-        return handleSubtitles(url, frame, frame.requestHeaders[details.requestId]);
+      if (BackgroundUtils.isSubtitles(ext)) {
+        return handleSubtitles(url, frame, frame.requestHeaders.get(details.requestId));
       } else if (ext === 'json') {
-        // Vimeo. Check if filename is master.json
+      // Vimeo. Check if filename is master.json
         const filename = URLUtils.get_file_name(url);
         if (filename === 'master.json' && url.includes('/video/')) {
           ext = 'mpd';
@@ -1149,76 +1178,14 @@ chrome.webRequest.onErrorOccurred.addListener(deleteHeaderCache, {
 });
 
 function deleteHeaderCache(details) {
-  const frame = getOrCreateFrame(details);
-  delete frame.requestHeaders[details.requestId];
+  const tab = Tabs.getTabOrCreate(details.tabId);
+  const frame = tab.getFrameOrCreate(details.frameId);
+  frame.requestHeaders.delete(details.requestId);
 }
-
-chrome.tabs.onRemoved.addListener((tabid, removed) => {
-  delete CachedTabs[tabid];
-});
-
-chrome.tabs.onUpdated.addListener((tabid, changeInfo, tab) => {
-  if (!CachedTabs[tabid]) CachedTabs[tabid] = new TabHolder(tabid);
-  if (changeInfo.url) {
-    const url = new URL(changeInfo.url);
-    if (CachedTabs[tabid].hostname && CachedTabs[tabid].hostname !== url.hostname) {
-      CachedTabs[tabid].analyzerData = undefined;
-      CachedTabs[tabid].frames = {};
-    }
-
-    CachedTabs[tabid].playerCount = 0;
-
-    CachedTabs[tabid].url = changeInfo.url;
-    CachedTabs[tabid].hostname = url.hostname;
-
-    chrome.tabs.sendMessage(tabid, {
-      type: 'remove_players',
-    }, {
-      frameId: 0,
-    }, () => {
-      BackgroundUtils.checkMessageError('remove_players');
-    });
-
-    const match = AutoEnableList.find((item) => {
-      try {
-        if (!item.regex) {
-          return changeInfo.url.substring(0, item.match.length) === item.match;
-        } else {
-          return item.match.test(changeInfo.url);
-        }
-      } catch (e) {
-
-      }
-      return false;
-    });
-
-    const shouldAutoEnable = match && !match.negative;
-
-
-    if (tab.url.substring(0, PlayerURL.length) === PlayerURL) {
-      CachedTabs[tabid].isOn = true;
-      CachedTabs[tabid].regexMatched = true;
-    } else if (shouldAutoEnable && !CachedTabs[tabid].regexMatched) {
-      CachedTabs[tabid].regexMatched = true;
-      CachedTabs[tabid].isOn = true;
-      openPlayersWithSources(tab.id);
-    } else if (!shouldAutoEnable && CachedTabs[tabid].regexMatched) {
-      CachedTabs[tabid].isOn = false;
-      CachedTabs[tabid].regexMatched = false;
-    }
-  }
-  if (changeInfo.status === 'complete') {
-    CachedTabs[tabid].complete = true;
-  } else if (changeInfo.status === 'loading') {
-    CachedTabs[tabid].complete = false;
-  }
-
-  updateTabIcon(CachedTabs[tabid], true);
-});
 
 loadOptions().catch(console.error);
 
-setInterval(async ()=>{
+setInterval(async () => {
   await chrome.runtime.getPlatformInfo();
   await pingContentScript();
 }, 10e3);

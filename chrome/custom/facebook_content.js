@@ -56,7 +56,7 @@ if (datas.length === 0) {
   const mpd = datas[0].value.playlist;
   const url = `data:application/dash+xml;base64,${btoa(mpd)}`;
   chrome.runtime.sendMessage({
-    type: 'detected_source',
+    type: 'DETECTED_SOURCE',
     url,
     ext: 'mpd',
     headers: {
