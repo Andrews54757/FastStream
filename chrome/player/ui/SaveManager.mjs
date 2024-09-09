@@ -136,8 +136,11 @@ export class SaveManager {
     let url;
     let filestream;
     let name;
-    if (canStream) {
+    if (canStream || EnvUtils.isChrome()) {
       name = shouldAskForName ? await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName) : suggestedName;
+    }
+
+    if (canStream) {
       if (!name) {
         return;
       }
@@ -209,7 +212,9 @@ export class SaveManager {
     if (!canStream) {
       this.downloadURL = url;
 
-      const name = shouldAskForName ? await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName) : suggestedName;
+      if (!name) {
+        name = shouldAskForName ? await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName) : suggestedName;
+      }
       if (!name) {
         URL.revokeObjectURL(this.downloadURL);
         this.downloadURL = null;
