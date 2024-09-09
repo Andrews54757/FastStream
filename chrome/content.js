@@ -190,8 +190,8 @@ function handlePlayerOpen(request, sender, sendResponse) {
     }
 
     const playerFillsScreen = video?.highest?.tagName === 'BODY';
-    if (!video || (playerFillsScreen && !request.noRedirect)) {
-      if (!document.fullscreenEnabled) {
+    if (!video || playerFillsScreen) {
+      if (!document.fullscreenEnabled && !request.noRedirect) {
         window.location = request.url;
         console.log('redirecting to player');
         sendResponse('redirect');
