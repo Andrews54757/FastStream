@@ -44,7 +44,6 @@ if (EnvUtils.isExtension()) {
           }
         } if (request.type === MessageTypes.MESSAGE_FROM_PAGE && window.fastStream) {
           const data = request.data;
-          console.log('Recieved message from page', data);
           if (data.type === 'fullscreen-state') {
             window.fastStream.interfaceController.setFullscreenStatus(data.value);
           } else if (data.type === 'miniplayer-state') {

@@ -23,6 +23,7 @@ import {SubtitlesManager} from './subtitles/SubtitlesManager.mjs';
 import {ToolManager} from './ToolManager.mjs';
 import {VolumeControls} from './VolumeControls.mjs';
 
+let MiniplayerCooldown = Date.now() + 500;
 export class InterfaceController {
   constructor(client) {
     this.client = client;
@@ -673,7 +674,7 @@ export class InterfaceController {
         }
         break;
       case VisChangeActions.MINI_PLAYER:
-        if (!this.state.miniplayer && (isVisible || !this.state.windowedFullscreen)) {
+        if (!this.state.miniplayer && !isVisible && !this.state.windowedFullscreen && Date.now() > MiniplayerCooldown) {
           this.requestMiniplayer(!isVisible);
         }
         break;
@@ -717,21 +718,18 @@ export class InterfaceController {
         styles,
         autoExit: true,
       }, (response) => {
+        MiniplayerCooldown = Date.now() + 500;
         this.state.miniplayer = response === 'enter';
+        DOMElements.playerContainer.classList.toggle('miniplayer', this.state.miniplayer);
       });
     }
   }
 
   setMiniplayerStatus(isMini) {
     if (isMini) {
-      this.state.miniplayer = true;
-      DOMElements.playerContainer.classList.add('miniplayer');
+      this.requestMiniplayer(true);
     } else {
-      if (this.state.miniplayer) {
-        this.state.miniplayer = false;
-        this.requestMiniplayer(false);
-      }
-      DOMElements.playerContainer.classList.remove('miniplayer');
+      this.requestMiniplayer(false);
     }
   }
 

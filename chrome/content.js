@@ -295,8 +295,8 @@ function handleMiniplayer(request, sender, sendResponse) {
   if (miniplayerState.active && request.autoExit) {
     // if placeholder is visible again
     const observer = new IntersectionObserver(([entry]) => {
-      if (entry.intersectionRatio > 0.25 && miniplayerState.active) {
-        unmakeMiniPlayer(iframeObj);
+      if (entry.intersectionRatio > 0.3 && miniplayerState.active) {
+      //  unmakeMiniPlayer(iframeObj);
         observer.disconnect();
 
         chrome.runtime.sendMessage({
@@ -304,10 +304,10 @@ function handleMiniplayer(request, sender, sendResponse) {
           frameId: miniplayerState.playerFrameId,
           data: {
             type: 'miniplayer-state',
-            value: miniplayerState.active,
+            value: false,
           },
         });
-        updateReplacedPlayers();
+        // updateReplacedPlayers();
       }
     }, {
       threshold: [0, 0.25, 0.5],
