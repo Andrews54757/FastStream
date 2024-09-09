@@ -718,7 +718,7 @@ export class InterfaceController {
         styles,
         autoExit: true,
       }, (response) => {
-        MiniplayerCooldown = Date.now() + 500;
+        MiniplayerCooldown = Date.now() + 200;
         this.state.miniplayer = response === 'enter';
         DOMElements.playerContainer.classList.toggle('miniplayer', this.state.miniplayer);
       });

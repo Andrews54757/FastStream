@@ -23,21 +23,7 @@ if (EnvUtils.isExtension()) {
         } else if (request.type === MessageTypes.SOURCES && window.fastStream) {
           recieveSources(request, sendResponse);
           return true;
-        } else if (request.type === 'seek') {
-          if (window.fastStream) window.fastStream.currentTime = request.time;
-        } else if (request.type === 'sendFrameId') {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'frame',
-              id: request.frameId,
-            }, '*');
-          }
-        } else if (request.type === 'keypress') {
-          if (window.fastStream) {
-            window.fastStream.keybindManager.handleKeyString(request.key);
-            window.fastStream.userInteracted();
-          }
-        } else if (request.type === 'options' || request.type === 'options_init') {
+        } else if (request.type === MessageTypes.UPDATE_OPTIONS) {
           if (request.time !== optionSendTime) {
             optionSendTime = request.time;
             loadOptions();
@@ -48,6 +34,12 @@ if (EnvUtils.isExtension()) {
             window.fastStream.interfaceController.setFullscreenStatus(data.value);
           } else if (data.type === 'miniplayer-state') {
             window.fastStream.interfaceController.setMiniplayerStatus(data.value);
+          } else if (data.type === 'key_down') {
+            window.fastStream.keybindManager.handleKeyString(data.key);
+            window.fastStream.userInteracted();
+          } else if (data.type === 'seek_to') {
+            window.fastStream.currentTime = data.time;
+            window.fastStream.userInteracted();
           }
         } else {
           return;

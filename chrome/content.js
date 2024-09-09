@@ -51,7 +51,6 @@ let MiniplayerCooldown = 0;
 let FoundYTPlayer = null;
 let OverridenYTKeys = false;
 
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === MessageTypes.IS_FULL) {
     const frameId = request.frameId;
@@ -299,14 +298,11 @@ function handleMiniplayer(request, sender, sendResponse) {
       //  unmakeMiniPlayer(iframeObj);
         observer.disconnect();
 
-        chrome.runtime.sendMessage({
-          type: MessageTypes.SEND_TO_PLAYER,
-          frameId: miniplayerState.playerFrameId,
-          data: {
-            type: 'miniplayer-state',
-            value: false,
-          },
+        sendToPlayer(miniplayerState.playerFrameId, {
+          type: 'miniplayer-state',
+          value: false,
         });
+
         // updateReplacedPlayers();
       }
     }, {
@@ -321,6 +317,27 @@ function handleMiniplayer(request, sender, sendResponse) {
   } else {
     sendResponse('exit');
   }
+}
+
+function sendToPlayer(frameId, data) {
+  const frameIds = [];
+  if (typeof frameId === 'number') {
+    frameIds.push(frameId);
+  } else if (Array.isArray(frameId)) {
+    frameIds.push(...frameId);
+  } else if (frameId === 'all') {
+    iframeMap.forEach((iframeObj) => {
+      frameIds.push(iframeObj.frameId);
+    });
+  }
+
+  frameIds.forEach((id) => {
+    chrome.runtime.sendMessage({
+      type: MessageTypes.SEND_TO_PLAYER,
+      frameId: id,
+      data,
+    });
+  });
 }
 
 function handleFullscreen(request, sender, sendResponse) {
@@ -343,7 +360,7 @@ function handleFullscreen(request, sender, sendResponse) {
 
   const newValue = force === undefined ? document.fullscreenElement !== element : force;
   fullscreenState.active = newValue;
-  if (newValue) {
+  if (!newValue) {
     if (document.fullscreenElement) {
       document.exitFullscreen();
     }
@@ -1143,7 +1160,7 @@ document.addEventListener('click', (e) => {
       if (searchParams.has('t')) {
         const time = searchParams.get('t');
         if (time.match(/^[0-9]+s$/)) {
-          chrome.runtime.sendMessage({
+          sendToPlayer('all', {
             type: 'seek_to',
             time: parseInt(time),
           });
@@ -1176,13 +1193,9 @@ document.addEventListener('fullscreenchange', () => {
   });
 
   changedFor.forEach((iframeObj) => {
-    chrome.runtime.sendMessage({
-      type: MessageTypes.SEND_TO_PLAYER,
-      frameId: iframeObj.fullscreenState.playerFrameId,
-      data: {
-        type: 'fullscreen-state',
-        value: iframeObj.fullscreenState.active,
-      },
+    sendToPlayer(iframeObj.fullscreenState.playerFrameId, {
+      type: 'fullscreen-state',
+      value: iframeObj.fullscreenState.active,
     });
   });
 });
@@ -1474,8 +1487,8 @@ if (is_url_yt(window.location.href)) {
       return;
     }
 
-    chrome.runtime.sendMessage({
-      type: '',
+    sendToPlayer('all', {
+      type: 'key_down',
       key: getKeyString(e),
     });
 
