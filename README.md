@@ -85,6 +85,7 @@ Many thanks to the contributors of this project.
 - reindex-ot: Japanese translations
 - elfriob: Russian translations
 - Justryuz: Malay translations
+- CommandLeo: Italian translations
 
 #### Open Source Libraries
 

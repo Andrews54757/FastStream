@@ -401,6 +401,9 @@
     "player_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero"
     },
+    "player_fullscreen_denied": {
+        "message": "Autorizzazioni per lo schermo intero negate!"
+    },
     "player_windowed_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero nella finestra"
     },
