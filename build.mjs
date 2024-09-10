@@ -314,7 +314,7 @@ async function buildFirefoxLibre() {
   const manifestPath = path.join(firefoxLibreBuildDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-  manifest.permissions.push('downloads');
+  manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
 
   manifest.browser_specific_settings = {
     gecko: {
