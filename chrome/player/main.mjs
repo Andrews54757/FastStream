@@ -28,7 +28,7 @@ if (EnvUtils.isExtension()) {
             optionSendTime = request.time;
             loadOptions();
           }
-        } if (request.type === MessageTypes.MESSAGE_FROM_PAGE && window.fastStream) {
+        } else if (request.type === MessageTypes.MESSAGE_FROM_PAGE && window.fastStream) {
           const data = request.data;
           if (data.type === 'fullscreen-state') {
             window.fastStream.interfaceController.setFullscreenStatus(data.value);
@@ -41,6 +41,14 @@ if (EnvUtils.isExtension()) {
             window.fastStream.currentTime = data.time;
             window.fastStream.userInteracted();
           }
+        } else if (request.type === MessageTypes.HANDLE_DOWNLOAD) {
+          console.log('Downloading', request);
+          const url = request.url;
+          const filename = request.filename;
+          Utils.downloadURL(url, filename, true).then((response) => {
+            sendResponse(response);
+          });
+          return true;
         } else {
           return;
         }
@@ -262,6 +270,9 @@ async function setup() {
       isExt: true,
       parentFrameId: urlParams.has('parent_frame_id') ? parseInt(urlParams.get('parent_frame_id')) : undefined,
     }).then((data) => {
+      if (!data) {
+        return;
+      }
       window.fastStream.loadAnalyzerData(data.analyzerData);
       window.fastStream.setMediaInfo(data.mediaInfo);
       window.fastStream.setNeedsUserInteraction(!data.isMainPlayer);

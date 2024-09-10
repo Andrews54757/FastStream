@@ -184,6 +184,31 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (Logging) console.log('Found FastStream window', frame);
     frame.isPlayer = true;
 
+    if (tab.downloadInfo) {
+      chrome.tabs.sendMessage(frame.tab.tabId, {
+        type: MessageTypes.HANDLE_DOWNLOAD,
+        url: tab.downloadInfo.url,
+        filename: tab.downloadInfo.filename,
+      }, {
+        frameId: frame.frameId,
+      }, (response) => {
+        BackgroundUtils.checkMessageError('download');
+        tab.downloadInfo.resolve(response);
+        const oldTab = tab.downloadInfo.onBehalfOf;
+        tab.downloadInfo = null;
+
+        // Close tab
+        chrome.tabs.remove(frame.tab.tabId);
+
+        // activate old tab;
+        chrome.tabs.update(oldTab, {
+          active: true,
+        });
+      });
+      sendResponse(null);
+      return;
+    }
+
     if (!frame.parent && msg.parentFrameId !== undefined) {
       const parentFrame = tab.getFrameOrCreate(msg.parentFrameId);
       frame.setParentFrame(parentFrame);
@@ -263,14 +288,29 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === MessageTypes.DOWNLOAD) {
     const url = msg.url;
     const filename = msg.filename;
-    chrome.downloads.download({
-      url: url,
-      filename: filename,
-      saveAs: false,
-      cookieStoreId: sender.tab.cookieStoreId,
-    }).then((downloadId) => {
-      sendResponse(downloadId);
-    });
+    // Check if cookieStoreId is set
+    if (sender.tab.cookieStoreId && sender.tab.cookieStoreId !== 'firefox-default') {
+      chrome.tabs.create({
+        url: BackgroundUtils.getPlayerUrl(),
+        cookieStoreId: sender.tab.cookieStoreId,
+      }, (tabobj2) => {
+        const tab2 = Tabs.getTabOrCreate(tabobj2.id);
+        tab2.downloadInfo = {
+          url: url,
+          filename: filename,
+          resolve: sendResponse,
+          onBehalfOf: tab.tabId,
+        };
+      });
+    } else {
+      chrome.downloads.download({
+        url: url,
+        filename: filename,
+        saveAs: false,
+      }).then((downloadId) => {
+        sendResponse(downloadId);
+      });
+    }
     return true;
   } else if (msg.type === MessageTypes.STORE_ANALYZER_DATA) {
     if (Logging) console.log('Analyzer data', msg.data);
