@@ -7,7 +7,7 @@ export const streamSaver = {
   createWriteStream,
 };
 
-const useBlobFallback = true || !EnvUtils.isExtension() || navigator.serviceWorker === undefined;
+const useBlobFallback = !EnvUtils.isExtension() || navigator.serviceWorker === undefined;
 
 function getServiceWorker() {
   return navigator.serviceWorker.getRegistration('./').then((swReg) => {

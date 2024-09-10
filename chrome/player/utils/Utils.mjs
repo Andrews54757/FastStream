@@ -214,7 +214,7 @@ export class Utils {
   static async downloadURL(url, filename) {
     // Firefox has a bug where it doesn't download filed from sandboxed iframes
     // Caused by bloburl partitioning issues. See gecko's dom/file/uri/BlobURLProtocolHandler.cpp#L775C1-L786C6
-    if (false && EnvUtils.isExtension() && !EnvUtils.isChrome()) {
+    if (EnvUtils.isExtension() && !EnvUtils.isChrome()) {
       return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({
           type: 'DOWNLOAD',
