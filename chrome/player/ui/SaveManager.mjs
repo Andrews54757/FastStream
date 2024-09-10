@@ -115,7 +115,9 @@ export class SaveManager {
       }
     }
 
-    const shouldAskForName = true;
+    // Incognito mode always opens file picker anyways
+    // Except firefox, which we use extension download API
+    const shouldAskForName = (EnvUtils.isExtension() && !EnvUtils.isChrome()) ? true : !EnvUtils.isIncognito();
     const suggestedName = (this.client.mediaInfo?.name || 'video').replaceAll(' ', '_');
 
     if (doDump) {
