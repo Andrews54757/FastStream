@@ -246,6 +246,9 @@ function handlePlayerOpen(request, sender, sendResponse) {
         softReplace,
         fillScreen: playerFillsScreen,
       });
+
+      updateReplacedPlayer(video.highest, iframe, softReplace);
+
       console.log('replacing video with iframe');
       sendResponse('replace');
     }
