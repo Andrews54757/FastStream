@@ -194,16 +194,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }, (response) => {
         BackgroundUtils.checkMessageError('download');
         tab.downloadInfo.resolve(response);
-        const oldTab = tab.downloadInfo.onBehalfOf;
         tab.downloadInfo = null;
 
         // Close tab
         chrome.tabs.remove(frame.tab.tabId);
-
-        // activate old tab;
-        chrome.tabs.update(oldTab, {
-          active: true,
-        });
       });
       sendResponse(null);
       return;
@@ -293,13 +287,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       chrome.tabs.create({
         url: BackgroundUtils.getPlayerUrl(),
         cookieStoreId: sender.tab.cookieStoreId,
+        active: false,
       }, (tabobj2) => {
+        if (!tabobj2) {
+          sendResponse(null);
+          return;
+        }
         const tab2 = Tabs.getTabOrCreate(tabobj2.id);
         tab2.downloadInfo = {
           url: url,
           filename: filename,
           resolve: sendResponse,
-          onBehalfOf: tab.tabId,
         };
       });
     } else {
