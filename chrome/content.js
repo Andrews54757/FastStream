@@ -141,6 +141,14 @@ window.addEventListener('message', (e) => {
     iframeMap.set(request.frameId, newFrameObj);
 
     updateReplacedPlayers();
+
+    if (FoundYTPlayer) {
+      for (let i = 1; i <= 8; i++) {
+        setTimeout(() => {
+          updateReplacedPlayers();
+        }, i * 250);
+      }
+    }
   }
 });
 
@@ -636,7 +644,9 @@ function updateReplacedPlayers() {
   iframeMap.forEach((iframeObj) => {
     if (iframeObj.replacedData) {
       const {iframe, old, softReplace} = iframeObj.replacedData;
-      if (iframeObj.miniplayerState.active) {
+      if (iframeObj.windowedFullscreenState.active) {
+        fillScreenIframe(iframe, true);
+      } else if (iframeObj.miniplayerState.active) {
         const placeholder = iframeObj.miniplayerState.placeholder;
         updateReplacedPlayer(old, placeholder, softReplace);
         placeholder.style.setProperty('background-color', 'black', 'important');
