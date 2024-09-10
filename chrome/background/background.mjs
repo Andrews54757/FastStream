@@ -183,6 +183,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === MessageTypes.PLAYER_LOADED) {
     if (Logging) console.log('Found FastStream window', frame);
     frame.isPlayer = true;
+
+    if (!frame.parent && msg.parentFrameId !== undefined) {
+      const parentFrame = tab.getFrameOrCreate(msg.parentFrameId);
+      frame.setParentFrame(parentFrame);
+    }
+
     if (frame.playerOpening) {
       frame.playerOpening = false;
     } else if (frame.parent) {
@@ -346,6 +352,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
 async function cascadedFullscreen(playerFrame, finalFrame, data) {
   const trace = traceFrames(playerFrame, finalFrame);
+  if (trace.length < 2) {
+    return 'error';
+  }
+
   const result = await new Promise((resolve, reject) => {
     chrome.tabs.sendMessage(playerFrame.tab.tabId, {
       ...data,
@@ -955,6 +965,7 @@ async function openPlayer(frame) {
       type: MessageTypes.OPEN_PLAYER,
       url: BackgroundUtils.getPlayerUrl(),
       noRedirect: frame.frameId === 0,
+      frameId: frame.frameId,
     }, {
       frameId: frame.frameId,
     }, (response) => {

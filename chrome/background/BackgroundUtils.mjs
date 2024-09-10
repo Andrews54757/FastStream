@@ -21,7 +21,6 @@ export class BackgroundUtils {
     chrome.runtime.onInstalled.addListener((object) => {
       chrome.storage.local.get('welcome', (result) => {
         if (!result || !result.welcome) {
-          if (Logging) console.log(result);
           chrome.tabs.create({
             url: chrome.runtime.getURL('welcome.html'),
           }, (tab) => {

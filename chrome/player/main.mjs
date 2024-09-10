@@ -254,15 +254,13 @@ async function setup() {
 
   await loadOptions();
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const myParam = urlParams.get('frame_id');
-
   if (EnvUtils.isExtension()) {
+    const urlParams = new URLSearchParams(window.location.search);
     chrome?.runtime?.sendMessage({
       type: MessageTypes.PLAYER_LOADED,
       url: window.location.href,
       isExt: true,
-      frameId: parseInt(myParam) || 0,
+      parentFrameId: urlParams.has('parent_frame_id') ? parseInt(urlParams.get('parent_frame_id')) : undefined,
     }).then((data) => {
       window.fastStream.loadAnalyzerData(data.analyzerData);
       window.fastStream.setMediaInfo(data.mediaInfo);

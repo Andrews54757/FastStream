@@ -190,14 +190,16 @@ function handlePlayerOpen(request, sender, sendResponse) {
     }
 
     const playerFillsScreen = video?.highest?.tagName === 'BODY';
+    const newURL = new URL(request.url);
     if (!video || playerFillsScreen) {
       if (!document.fullscreenEnabled && !request.noRedirect) {
-        window.location = request.url;
+        window.location = newURL.href;
         console.log('redirecting to player');
         sendResponse('redirect');
       } else {
         const iframe = document.createElement('iframe');
-        iframe.src = request.url;
+        newURL.searchParams.set('parent_frame_id', request.frameId);
+        iframe.src = newURL.href;
         iframe.allowFullscreen = true;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         pauseAllWithin(document.body);
@@ -214,7 +216,8 @@ function handlePlayerOpen(request, sender, sendResponse) {
       iframe.allowFullscreen = true;
       iframe.allow = 'autoplay; fullscreen; picture-in-picture';
       iframe.style.display = 'none';
-      iframe.src = request.url;
+      newURL.searchParams.set('parent_frame_id', request.frameId);
+      iframe.src = newURL.href;
 
       if (softReplace) {
         video.highest.parentNode.insertBefore(iframe, video.highest);

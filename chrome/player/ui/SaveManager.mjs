@@ -136,7 +136,7 @@ export class SaveManager {
     let url;
     let filestream;
     let name;
-    if (canStream || EnvUtils.isChrome()) {
+    if (canStream || EnvUtils.isChrome() || true) {
       name = shouldAskForName ? await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName) : suggestedName;
     }
 
@@ -197,21 +197,22 @@ export class SaveManager {
       this.downloadCancel = null;
       this.makingDownload = false;
 
-      if (this.downloadURL) {
-        URL.revokeObjectURL(this.downloadURL);
-        this.downloadURL = null;
-      }
 
       this.setStatusMessage('save-video', Localize.getMessage('player_savevideo_complete'), 'info', 2000);
 
       if (!canStream) {
         url = URL.createObjectURL(result.blob);
       }
+
+      if (this.downloadURL) {
+        URL.revokeObjectURL(this.downloadURL);
+        this.downloadURL = null;
+      }
+
+      this.downloadURL = url;
     }
 
     if (!canStream) {
-      this.downloadURL = url;
-
       if (!name) {
         name = shouldAskForName ? await AlertPolyfill.prompt(Localize.getMessage('player_filename_prompt'), suggestedName) : suggestedName;
       }
