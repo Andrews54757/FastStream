@@ -268,7 +268,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       filename: filename,
       saveAs: false,
       cookieStoreId: sender.tab.cookieStoreId,
-    }, (downloadId) => {
+    }).then((downloadId) => {
       sendResponse(downloadId);
     });
     return true;
