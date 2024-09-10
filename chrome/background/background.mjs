@@ -260,6 +260,17 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === MessageTypes.YT_LOADED) {
     frame.url = msg.url;
     checkYTURL(frame);
+  } else if (msg.type === MessageTypes.DOWNLOAD) {
+    const url = msg.url;
+    const filename = msg.filename;
+    chrome.downloads.download({
+      url: url,
+      filename: filename,
+      saveAs: false,
+    }, (downloadId) => {
+      sendResponse(downloadId);
+    });
+    return true;
   } else if (msg.type === MessageTypes.STORE_ANALYZER_DATA) {
     if (Logging) console.log('Analyzer data', msg.data);
     tab.analyzerData = msg.data;

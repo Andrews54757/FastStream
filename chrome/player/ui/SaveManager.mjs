@@ -9,6 +9,7 @@ import {FastStreamArchiveUtils} from '../utils/FastStreamArchiveUtils.mjs';
 import {RequestUtils} from '../utils/RequestUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
+import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
@@ -64,14 +65,7 @@ export class SaveManager {
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
       const url = canvas.toDataURL('image/png'); // For some reason this is faster than async toBlob
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', name + '.png');
-      link.setAttribute('target', '_blank');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
+      await Utils.downloadURL(url, name + '.png');
       this.setStatusMessage('save-screenshot', Localize.getMessage('player_screenshot_saved'), 'info', 1000);
     } catch (e) {
       console.error(e);
@@ -232,14 +226,7 @@ export class SaveManager {
           this.reuseDownloadURL = false;
         }
       }, 10000);
-
-      const link = document.createElement('a');
-      link.setAttribute('href', url);
-      link.setAttribute('download', name + '.mp4');
-      link.setAttribute('target', '_blank');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      await Utils.downloadURL(url, name + '.mp4');
     }
   }
 

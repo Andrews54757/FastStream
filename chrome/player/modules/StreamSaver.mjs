@@ -1,4 +1,5 @@
 import {EnvUtils} from '../utils/EnvUtils.mjs';
+import {Utils} from '../utils/Utils.mjs';
 import {FSBlob} from './FSBlob.mjs';
 
 /* ! streamsaver. MIT License. Jimmy Wärting <https://jimmy.warting.se/opensource> */
@@ -51,12 +52,7 @@ function createWriteStreamBlob(filename, opts, size) {
       const chunks = await Promise.all(blobs.map((blob) => blobManager.getBlob(blob)));
       const blob = new Blob(chunks, {type: 'application/octet-stream'});
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
+      await Utils.downloadURL(url, filename);
       URL.revokeObjectURL(url);
 
       setTimeout(() => {
