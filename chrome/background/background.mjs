@@ -977,6 +977,7 @@ async function openPlayer(frame) {
       url: BackgroundUtils.getPlayerUrl(),
       noRedirect: frame.frameId === 0,
       frameId: frame.frameId,
+      parentFrameId: frame.parent ? frame.parent.frameId : -1,
     }, {
       frameId: frame.frameId,
     }, (response) => {

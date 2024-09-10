@@ -201,6 +201,9 @@ function handlePlayerOpen(request, sender, sendResponse) {
     const newURL = new URL(request.url);
     if (!video || playerFillsScreen) {
       if (!document.fullscreenEnabled && !request.noRedirect) {
+        if (request.parentFrameId > -1) {
+          newURL.searchParams.set('parent_frame_id', request.parentFrameId);
+        }
         window.location = newURL.href;
         console.log('redirecting to player');
         sendResponse('redirect');
