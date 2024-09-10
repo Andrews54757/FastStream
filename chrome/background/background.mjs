@@ -341,7 +341,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         type: MessageTypes.SPONSORBLOCK_SCRAPE,
         videoId: msg.videoId,
       }, {
-        frameId: frame.parentId,
+        frameId: frame.parent.frameId,
       }, (response) => {
         if (!response || response.error) {
           sendResponse(null);
