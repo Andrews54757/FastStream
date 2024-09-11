@@ -304,7 +304,6 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       chrome.downloads.download({
         url: url,
         filename: filename,
-        saveAs: false,
       }).then((downloadId) => {
         sendResponse(downloadId);
       });
