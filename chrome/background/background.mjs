@@ -777,7 +777,7 @@ async function setupRedirectRule(ruleID, filetypes) {
       // exclude self
       excludedRequestDomains: [(new URL(BackgroundUtils.getPlayerUrl())).hostname],
       // only match m3u8 or mpds
-      regexFilter: '^.+\\.(' + filetypes.join('|') + ')$',
+      regexFilter: '^.+\\.(' + filetypes.join('|') + ')([\\?|#].*)?$',
       resourceTypes: ['main_frame'],
     },
   };
