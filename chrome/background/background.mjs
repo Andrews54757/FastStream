@@ -771,11 +771,11 @@ async function setupRedirectRule(ruleID, filetypes) {
     id: ruleID,
     action: {
       type: 'redirect',
-      redirect: {regexSubstitution: PlayerURL + '#\\0'},
+      redirect: {regexSubstitution: BackgroundUtils.getPlayerUrl() + '#\\0'},
     },
     condition: {
       // exclude self
-      excludedRequestDomains: [(new URL(PlayerURL)).hostname],
+      excludedRequestDomains: [(new URL(BackgroundUtils.getPlayerUrl())).hostname],
       // only match m3u8 or mpds
       regexFilter: '^.+\\.(' + filetypes.join('|') + ')$',
       resourceTypes: ['main_frame'],
