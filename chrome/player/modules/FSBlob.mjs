@@ -22,7 +22,7 @@ export class FSBlob {
       await this.setupPromise;
     } catch (e) {
       // IndexedDB is not supported
-      console.warn(e);
+      console.warn('IndexedDB is not supported, falling back to memory storage');
       this.indexedDBManager = null;
       this.blobStorePromises.clear();
       return false;
