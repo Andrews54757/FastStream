@@ -430,8 +430,9 @@ export class MP4 {
 
 
   static stbl(track) {
+    const co = track.use64Offsets ? MP4.co64(track) : MP4.stco(track);
+     
     if (track.type === 'video') {
-      const co = track.use64Offsets ? MP4.co64(track) : MP4.stco(track);
       return MP4.box(MP4.types.stbl,
           MP4.stsd(track),
           MP4.stts(track),
@@ -447,7 +448,7 @@ export class MP4 {
           MP4.stts(track),
           MP4.stsc(track),
           MP4.stsz(track),
-          MP4.stco(track));
+          co);
     }
   };
 
