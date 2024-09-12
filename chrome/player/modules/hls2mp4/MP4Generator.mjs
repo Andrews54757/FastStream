@@ -367,7 +367,7 @@ export class MP4 {
     view.setUint32(4, len);
     let index = 8;
     for (let i = 0; i < len; i++) {
-      view.setBigUint64(index, track.chunks[i].offset || 0);
+      view.setBigUint64(index, BigInt(track.chunks[i].offset || 0));
       index += 8;
     }
 
