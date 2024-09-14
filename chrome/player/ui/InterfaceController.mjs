@@ -627,6 +627,13 @@ export class InterfaceController {
       if (e.button !== 0) {
         return;
       }
+
+      // Ignore if user is over an element contained by .tools_container_left
+      if (DOMElements.leftToolsContainer.contains(e.target)) {
+        return;
+      }
+
+
       document.addEventListener('mousemove', mouseMoveHandler);
       document.addEventListener('mouseup', mouseUpHandler);
     });
