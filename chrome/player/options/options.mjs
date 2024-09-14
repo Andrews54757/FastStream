@@ -106,7 +106,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
-  setSelectMenuValue(ytclient, Options.defaultYoutubeClient3);
+  setSelectMenuValue(ytclient, Options.defaultYoutubeClient4);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -141,6 +141,10 @@ async function loadOptions(newOptions) {
   });
 
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
+
+  if (Options.dev) {
+    document.getElementById('ytc').style.display = '';
+  }
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -212,8 +216,8 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
   optionChanged();
 });
 
-createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient3, null, (e) => {
-  Options.defaultYoutubeClient3 = e.target.value;
+createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient4, null, (e) => {
+  Options.defaultYoutubeClient4 = e.target.value;
   optionChanged();
 });
 
