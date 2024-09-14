@@ -313,6 +313,7 @@ export class SaveManager {
           newSource = new VideoSource(source.url, null, source.mode);
           newSource.identifier = source.identifier;
           newSource.headers = source.headers;
+          newSource.loadedFromArchive = true;
           newSource.defaultLevelInfo = {
             level: currentLevel,
             audioLevel: currentAudioLevel,

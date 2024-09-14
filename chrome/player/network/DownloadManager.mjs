@@ -1,8 +1,7 @@
 import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
-import {EnvUtils} from '../utils/EnvUtils.mjs';
+import {FSBlob} from '../modules/FSBlob.mjs';
 import {DownloadEntry} from './DownloadEntry.mjs';
-import {IndexedDBManager} from './IndexedDBManager.mjs';
 import {StandardDownloader} from './StandardDownloader.mjs';
 
 export class DownloadManager {
@@ -23,7 +22,7 @@ export class DownloadManager {
 
     this.failed = 0;
 
-    this.indexedDBManager = null;
+    this.blobStore = new FSBlob();
   }
 
   getCompletedEntries() {
@@ -43,15 +42,15 @@ export class DownloadManager {
   }
 
   async archiveEntryData(entry) {
-    if (!this.indexedDBManager || entry.status !== DownloadStatus.DOWNLOAD_COMPLETE || entry.storeRaw) return;
+    if (entry.status !== DownloadStatus.DOWNLOAD_COMPLETE || entry.storeRaw || typeof entry.data === 'function') {
+      return;
+    }
 
     const identifier = this.getIdentifier(entry);
-    const data = entry.data;
-
-    await this.indexedDBManager.setFile(identifier, data);
+    await this.blobStore.saveBlobAsync(entry.data, identifier);
 
     entry.data = () => {
-      return this.indexedDBManager.getFile(identifier);
+      return this.blobStore.getBlob(identifier);
     };
   }
 
@@ -95,7 +94,7 @@ export class DownloadManager {
     if (storedEntry) {
       storedEntry.destroy();
       this.storage.delete(key);
-      this.indexedDBManager?.deleteFile(key);
+      this.blobStore.deleteBlob(key);
     }
   }
 
@@ -105,8 +104,8 @@ export class DownloadManager {
     });
     this.downloaders = null;
     this.storage = null;
-    this.indexedDBManager?.close();
-    this.indexedDBManager = null;
+    this.blobStore.close();
+    this.blobStore = null;
   }
 
   getFile(details, callbacks, priority) {
@@ -322,17 +321,7 @@ export class DownloadManager {
   }
 
   async setup() {
-    // Chrome can move blobs to file storage, so we don't need to use IndexedDB
-    if (!EnvUtils.isChrome() && IndexedDBManager.isSupported()) {
-      const indexedDBManager = new IndexedDBManager();
-      try {
-        await indexedDBManager.setup();
-        this.indexedDBManager = indexedDBManager;
-      } catch (e) {
-        // IndexedDB is not supported
-        console.warn('IndexedDB is not supported', e);
-      }
-    }
+
   }
 
   resetOverride(value) {
@@ -341,7 +330,7 @@ export class DownloadManager {
 
   async clearStorage() {
     this.storage.clear();
-    await this.indexedDBManager?.clearStorage();
+    await this.blobStore.clear();
   }
 
   abortAll() {

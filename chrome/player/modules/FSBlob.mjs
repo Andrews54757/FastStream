@@ -2,7 +2,8 @@ import {IndexedDBManager} from '../network/IndexedDBManager.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 
 const BrowserCanAutoOffloadBlobs = EnvUtils.isChrome();
-const UseIndexedDB = !BrowserCanAutoOffloadBlobs && IndexedDBManager.isSupported();
+const UseXHRTrick = false && !BrowserCanAutoOffloadBlobs && EnvUtils.isFirefox();
+const UseIndexedDB = !UseXHRTrick && !BrowserCanAutoOffloadBlobs && IndexedDBManager.isSupported();
 
 export class FSBlob {
   constructor() {
@@ -17,7 +18,7 @@ export class FSBlob {
     this.blobIndex = 0;
   }
 
-  async saveBlobAsync(identifier, blob) {
+  async saveBlobInIndexedDBAsync(identifier, blob) {
     try {
       await this.setupPromise;
     } catch (e) {
@@ -33,24 +34,95 @@ export class FSBlob {
     return true;
   }
 
-  _saveBlob(identifier, blob) {
-    this.blobStore.set(identifier, blob);
-    if (this.indexedDBManager) {
-      this.blobStorePromises.set(identifier, this.saveBlobAsync(identifier, blob));
+  async saveBlobUsingFetchTrick(identifier, blob) {
+    // Does not work
+    // Create url for blob
+    // const url = URL.createObjectURL(blob);
+    // const xhr = new XMLHttpRequest();
+    // xhr.open('GET', url);
+    // xhr.responseType = 'blob';
+
+    // return new Promise((resolve, reject) => {
+    //   const cleanup = () => {
+    //     URL.revokeObjectURL(url);
+    //     resolve();
+    //   };
+
+    //   xhr.onload = () => {
+    //     if (xhr.status === 200) {
+    //       this.blobStore.set(identifier, xhr.response);
+    //     } else {
+    //       console.error('Failed to save blob using XHR trick');
+    //     }
+    //     cleanup();
+    //   };
+
+    //   xhr.onerror = () => {
+    //     console.error('XHR error while saving blob');
+    //     cleanup();
+    //   };
+
+    //   xhr.send();
+    // });
+
+    // const response = await fetch(url);
+    // if (response.ok) {
+    //   const blobResponse = await response.blob();
+    //   URL.revokeObjectURL(url);
+    //   this.blobStore.set(identifier, blobResponse);
+    // } else {
+    //   URL.revokeObjectURL(url);
+    //   throw new Error('Failed to save blob using fetch trick');
+    // }
+  }
+
+  nextIdentifier() {
+    return `blob${this.blobIndex++}`;
+  }
+
+  async saveBlobAsync(blob, identifier) {
+    if (!identifier) {
+      identifier = this.nextIdentifier();
     }
+    this.blobStore.set(identifier, blob);
+    let promise;
+    if (this.indexedDBManager) {
+      promise = this.saveBlobInIndexedDBAsync(identifier, blob);
+    } else if (UseXHRTrick) {
+      promise = this.saveBlobUsingFetchTrick(identifier, blob);
+    }
+    this.blobStorePromises.set(identifier, promise);
+
+    await promise;
+
+    return identifier;
   }
 
   saveBlob(blob) {
-    const identifier = `blob${this.blobIndex++}`;
-    this._saveBlob(identifier, blob);
+    const identifier = this.nextIdentifier();
+    this.saveBlobAsync(blob, identifier);
     return identifier;
   }
 
   createBlob(data) {
-    const identifier = `blob${this.blobIndex++}`;
     const blob = new Blob([data], {type: 'application/octet-stream'});
-    this._saveBlob(identifier, blob);
-    return identifier;
+    return this.saveBlob(blob);
+  }
+
+  async deleteBlob(identifier) {
+    this.blobStore.delete(identifier);
+
+    if (this.blobStorePromises.has(identifier)) {
+      await this.blobStorePromises.get(identifier);
+    }
+
+    this.blobStore.delete(identifier);
+    this.blobStorePromises.delete(identifier);
+    if (this.indexedDBManager) {
+      await this.indexedDBManager.deleteFile(identifier);
+    }
+
+    return true;
   }
 
   async getBlob(identifier) {
@@ -60,10 +132,22 @@ export class FSBlob {
 
     if (this.blobStorePromises.has(identifier)) {
       await this.blobStorePromises.get(identifier);
-      return await this.indexedDBManager.getFile(identifier);
+      if (this.indexedDBManager) {
+        return await this.indexedDBManager.getFile(identifier);
+      } else if (UseXHRTrick) {
+        return this.blobStore.get(identifier);
+      }
     }
 
     return null;
+  }
+
+  async clear() {
+    this.blobStore.clear();
+    this.blobStorePromises.clear();
+    if (this.indexedDBManager) {
+      await this.indexedDBManager.clearStorage();
+    }
   }
 
   close() {

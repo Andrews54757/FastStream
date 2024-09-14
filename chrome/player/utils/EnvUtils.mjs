@@ -17,6 +17,10 @@ export class EnvUtils {
     return navigator.userAgent.indexOf('Chrome') !== -1;
   }
 
+  static isFirefox() {
+    return navigator.userAgent.indexOf('Firefox') !== -1;
+  }
+
   static isSafari() {
     return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   }

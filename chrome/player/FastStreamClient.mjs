@@ -187,9 +187,8 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
-
   shouldDownloadAll() {
-    return this.options.downloadAll && this.hasDownloadSpace;
+    return (this.options.downloadAll && this.hasDownloadSpace) || this.source?.loadedFromArchive;
   }
 
   userInteracted() {
@@ -440,6 +439,10 @@ export class FastStreamClient extends EventEmitter {
     const currentLevel = this.currentLevel;
     const level = levels.get(currentLevel);
     if (!level) return;
+
+    if (this.source?.loadedFromArchive) {
+      return;
+    }
 
     if (EnvUtils.isIncognito()) {
       if (this.hasDownloadSpace) {
