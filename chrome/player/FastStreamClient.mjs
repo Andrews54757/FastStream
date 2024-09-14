@@ -870,7 +870,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (!hasDownloaded && (
-      this.videoAnalyzer.isRunning() || this.interfaceController.makingDownload
+      this.videoAnalyzer.isRunning() || this.interfaceController.saveManager.makingDownload
     )) {
       hasDownloaded = this.predownloadReservedFragments();
     }
