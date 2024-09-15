@@ -28,7 +28,7 @@
   let MiniplayerCooldown = 0;
   let Activated = false;
   const Config = {
-    softReplaceByDefault: false,
+    softReplaceByDefault: true,
     hasCustomPlaylist: false,
     customVideoQuery: null,
     hasCustomLinkHandler: false,
