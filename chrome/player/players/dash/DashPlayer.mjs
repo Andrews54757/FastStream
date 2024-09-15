@@ -177,6 +177,7 @@ export default class DashPlayer extends EventEmitter {
   downloadFragment(fragment, priority) {
     return new Promise((resolve, reject) => {
       this.fragmentRequester.requestFragment(fragment, {
+        skipProcess: true,
         onProgress: (e) => {
 
         },

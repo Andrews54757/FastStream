@@ -430,6 +430,7 @@ export default class MP4Player extends EventEmitter {
   downloadFragment(fragment, priority) {
     return new Promise((resolve, reject) => {
       this.fragmentRequester.requestFragment(fragment, {
+        skipProcess: true,
         onSuccess: (entry, data) => {
           resolve();
         },
