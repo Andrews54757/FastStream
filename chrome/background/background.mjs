@@ -398,7 +398,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse(response);
     });
     return true;
-  } else if (msg.type === MessageTypes.REQUEST_SPONSORBLOCK_SCRAPE) {
+  } else if (msg.type === MessageTypes.REQUEST_SPONSORBLOCK) {
     if (msg.action === 'getSkipSegments' && frame.frameId !== 0) {
       // send message to parent frame
       chrome.tabs.sendMessage(frame.tab.tabId, {
@@ -418,6 +418,22 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
+  } else if (msg.type === MessageTypes.REQUEST_YT_DATA) {
+    const pageFrame = frame.pageFrame;
+    if (!pageFrame) {
+      sendResponse('error');
+      return;
+    }
+
+    chrome.tabs.sendMessage(pageFrame.tab.tabId, {
+      type: MessageTypes.EXTRACT_YT_DATA,
+    }, {
+      frameId: pageFrame.frameId,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('extract_yt_data');
+      sendResponse(response);
+    });
+    return true;
   } else {
     return;
   }

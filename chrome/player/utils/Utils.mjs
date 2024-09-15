@@ -234,4 +234,29 @@ export class Utils {
       aElement.remove();
     }
   }
+
+  static findPropertyRecursive(obj, key, list = [], stack = []) {
+    if (typeof obj !== 'object' || obj === null) {
+      return;
+    }
+
+    if (Array.isArray(obj)) {
+      obj.forEach((v, i)=>{
+        stack.push(i);
+        Utils.findPropertyRecursive(v, key, list, stack);
+        stack.pop();
+      });
+    } else {
+      if (Object.hasOwn(obj, key)) {
+        list.push({value: obj[key], stack: stack.slice(), obj});
+      }
+      Object.keys(obj).forEach((k)=>{
+        stack.push(k);
+        Utils.findPropertyRecursive(obj[k], key, list, stack);
+        stack.pop();
+      });
+    }
+
+    return list;
+  }
 }

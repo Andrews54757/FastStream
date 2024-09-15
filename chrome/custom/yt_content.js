@@ -6,6 +6,7 @@ const MessageTypes = {
   PLAYLIST_NAVIGATION: 'PLAYLIST_NAVIGATION',
   PLAYLIST_POLL: 'PLAYLIST_POLL',
   YT_LOADED: 'YT_LOADED',
+  EXTRACT_YT_DATA: 'EXTRACT_YT_DATA',
 };
 
 const mainLoadedPromise = new Promise((resolve)=>{
@@ -31,6 +32,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     return handlePlaylistNavigation(request, sender, sendResponse);
   } else if (request.type === MessageTypes.PLAYLIST_POLL) {
     return pollPlaylistButtons(request, sender, sendResponse);
+  } else if (request.type === MessageTypes.EXTRACT_YT_DATA) {
+    const data = get_yt_data_objs();
+    sendResponse(data);
   }
 });
 
@@ -142,6 +146,100 @@ function get_yt_video_elements() {
   }
   return elements;
 }
+
+function json_parse_loose(json) {
+  // replace single quotes with double quotes, remove trailing commas, etc. Careful for escaping
+  const newstr = [];
+  let inDoubleQuotes = false;
+  let inSingleQuotes = false;
+  let isEscaped = false;
+  for (let i = 0; i < json.length; i++) {
+    const char = json.charAt(i);
+    if (isEscaped) {
+      newstr.push(char);
+      isEscaped = false;
+      continue;
+    }
+
+    if (char === '\\') {
+      isEscaped = true;
+      newstr.push(char);
+      continue;
+    }
+
+    if (!inSingleQuotes && char === '"') {
+      inDoubleQuotes = !inDoubleQuotes;
+      newstr.push(char);
+      continue;
+    }
+
+    if (!inDoubleQuotes && char === '\'') {
+      inSingleQuotes = !inSingleQuotes;
+      newstr.push('"');
+      continue;
+    }
+
+    if (!inDoubleQuotes && !inSingleQuotes && char === ',') {
+      // Check if next non-whitespace character is a closing bracket
+      let nextChar = i + 1;
+      while (nextChar < json.length && /\s/.test(json[nextChar])) {
+        nextChar++;
+      }
+      if (nextChar < json.length && (json[nextChar] === '}' || json[nextChar] === ']')) {
+        continue; // Skip this comma
+      }
+    }
+
+    newstr.push(char);
+  }
+
+  return JSON.parse(newstr.join(''));
+}
+
+function get_yt_data_objs() {
+  const scripts = document.querySelectorAll('script');
+  const data = [];
+  for (const script of scripts) {
+    const scriptText = script.innerHTML;
+    // Check `ytcfg.set({ ... code ... })`
+    const match = scriptText.match(/ytcfg\.set\((\{.*\})\)/);
+    if (match) {
+      try {
+        const obj = json_parse_loose(match[1]);
+        data.push({ytcfg: obj});
+      } catch (e) {
+        console.error(e);
+      }
+      continue;
+    }
+
+    // check `var ytInitialData = {...};`
+    const match2 = scriptText.match(/var ytInitialData = (\{.*\});/);
+    if (match2) {
+      try {
+        const obj = json_parse_loose(match2[1]);
+        data.push({ytInitialData: obj});
+      } catch (e) {
+        console.error(e);
+      }
+      continue;
+    }
+
+    // check `var ytInitialPlayerResponse = {...};`
+    const match3 = scriptText.match(/var ytInitialPlayerResponse = (\{.*\});/);
+    if (match3) {
+      try {
+        const obj = json_parse_loose(match3[1]);
+        data.push({ytInitialPlayerResponse: obj});
+      } catch (e) {
+        console.error(e);
+      }
+      continue;
+    }
+  }
+  return data;
+}
+
 
 function handleSponsorBlockScrape(request, sender, sendResponse) {
   if (!FoundYTPlayer) {
@@ -360,7 +458,6 @@ function getKeyString(e) {
 
   return (metaPressed ? 'Meta+' : '') + (ctrlPressed ? 'Control+' : '') + (altPressed ? 'Alt+' : '') + (shiftPressed ? 'Shift+' : '') + key;
 }
-
 
 document.addEventListener('keydown', (e) => {
   if (isActiveElementEditable()) {
