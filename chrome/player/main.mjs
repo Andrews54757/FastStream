@@ -1,5 +1,5 @@
 
-import {MessageTypes} from '../background/MessageTypes.mjs';
+import {MessageTypes} from './enums/MessageTypes.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
 import {Localize} from './modules/Localize.mjs';

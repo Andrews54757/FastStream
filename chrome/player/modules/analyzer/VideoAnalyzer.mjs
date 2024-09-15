@@ -6,6 +6,7 @@ import {EventEmitter} from '../eventemitter.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {VideoAligner} from './VideoAligner.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
+import {MessageTypes} from '../../enums/MessageTypes.mjs';
 
 const AnalyzerStatus = {
   IDLE: 'idle',
@@ -80,7 +81,7 @@ export class VideoAnalyzer extends EventEmitter {
       this.introAligner.unsetChangesFlag();
       this.outroAligner.unsetChangesFlag();
       chrome.runtime.sendMessage({
-        type: 'STORE_ANALYZER_DATA',
+        type: MessageTypes.STORE_ANALYZER_DATA,
         data: {
           intro: this.introAligner.getMemoryForSave(),
           outro: this.outroAligner.getMemoryForSave(),

@@ -1,3 +1,4 @@
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 
@@ -127,7 +128,7 @@ export class XHRLoader {
         if (customHeaderCommands.length) {
           if (EnvUtils.isExtension()) {
             await chrome.runtime.sendMessage({
-              type: 'SET_HEADERS',
+              type: MessageTypes.SET_HEADERS,
               url: entry.url,
               commands: customHeaderCommands,
             });

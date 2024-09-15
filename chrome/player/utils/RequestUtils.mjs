@@ -1,3 +1,4 @@
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {LargeBuffer} from '../modules/LargeBuffer.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 import {URLUtils} from './URLUtils.mjs';
@@ -63,7 +64,7 @@ export class RequestUtils {
       if (options.header_commands) {
         if (EnvUtils.isExtension()) {
           await chrome.runtime.sendMessage({
-            type: 'SET_HEADERS',
+            type: MessageTypes.SET_HEADERS,
             url: options.url,
             commands: options.header_commands,
           });

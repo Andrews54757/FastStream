@@ -1,3 +1,4 @@
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Coloris} from '../modules/coloris.mjs';
 import {Localize} from '../modules/Localize.mjs';
@@ -719,7 +720,7 @@ export class InterfaceController {
       }
 
       chrome.runtime.sendMessage({
-        type: 'REQUEST_MINIPLAYER',
+        type: MessageTypes.REQUEST_MINIPLAYER,
         size: this.client.options.miniSize,
         force: this.state.miniplayer,
         styles,
@@ -968,7 +969,7 @@ export class InterfaceController {
 
   toggleWindowedFullscreen(force) {
     chrome.runtime.sendMessage({
-      type: 'REQUEST_WINDOWED_FULLSCREEN',
+      type: MessageTypes.REQUEST_WINDOWED_FULLSCREEN,
       force,
     }, (response) => {
       this.state.windowedFullscreen = response === 'enter';
@@ -989,7 +990,7 @@ export class InterfaceController {
       if (EnvUtils.isExtension()) {
         return new Promise((resolve, reject) => {
           chrome.runtime.sendMessage({
-            type: 'REQUEST_FULLSCREEN',
+            type: MessageTypes.REQUEST_FULLSCREEN,
             force,
           }, (response) => {
             if (response === 'error') {

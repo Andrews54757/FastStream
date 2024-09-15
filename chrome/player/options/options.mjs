@@ -15,6 +15,7 @@ import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {YoutubeClients} from '../enums/YoutubeClients.mjs';
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -473,7 +474,7 @@ function optionChanged() {
     }, ()=>{
       optionSendTime = Date.now();
       chrome.runtime.sendMessage({
-        type: 'LOAD_OPTIONS',
+        type: MessageTypes.LOAD_OPTIONS,
         time: optionSendTime,
       });
     });
@@ -492,7 +493,7 @@ versionDiv.textContent = `FastStream v${EnvUtils.getVersion()}`;
 if (EnvUtils.isExtension()) {
   // Load options on options event
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === 'options' || request.type === 'options_init') {
+    if (request.type === MessageTypes.UPDATE_OPTIONS) {
       if (request.time !== optionSendTime) {
         optionSendTime = request.time;
         loadOptions();

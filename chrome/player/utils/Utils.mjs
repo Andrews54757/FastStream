@@ -1,3 +1,4 @@
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
 import {DefaultSubtitlesSettings} from '../options/defaults/DefaultSubtitlesSettings.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
@@ -217,7 +218,7 @@ export class Utils {
     if (EnvUtils.isExtension() && !EnvUtils.isChrome() && !forceDirect) {
       return new Promise((resolve, reject) => {
         chrome.runtime.sendMessage({
-          type: 'DOWNLOAD',
+          type: MessageTypes.DOWNLOAD,
           url,
           filename,
         }, (response) => {

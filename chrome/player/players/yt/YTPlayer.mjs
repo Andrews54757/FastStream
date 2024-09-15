@@ -1,4 +1,5 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
+import {MessageTypes} from '../../enums/MessageTypes.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {ClientType, Innertube, UniversalCache, Log} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
@@ -156,7 +157,7 @@ export default class YTPlayer extends DashPlayer {
 
     if (EnvUtils.isExtension()) {
       await chrome.runtime.sendMessage({
-        type: 'SET_HEADERS',
+        type: MessageTypes.SET_HEADERS,
         url: url.toString(),
         commands: customHeaderCommands,
       });
@@ -220,7 +221,7 @@ export default class YTPlayer extends DashPlayer {
 
     if (EnvUtils.isExtension()) {
       await chrome.runtime.sendMessage({
-        type: 'SET_HEADERS',
+        type: MessageTypes.SET_HEADERS,
         url: url.toString(),
         commands: customHeaderCommands,
       });
@@ -271,7 +272,7 @@ export default class YTPlayer extends DashPlayer {
     if (EnvUtils.isExtension()) {
       this.markedAsWatched = true;
       chrome.runtime.sendMessage({
-        type: 'REQUEST_YT_DATA',
+        type: MessageTypes.REQUEST_YT_DATA,
       }, (datas)=>{
         const visitorData = Utils.findPropertyRecursive(datas, 'visitorData')[0]?.value;
         const endpointURL = Utils.findPropertyRecursive(datas, 'videostatsPlaybackUrl')[0]?.value?.baseUrl;
@@ -289,7 +290,7 @@ export default class YTPlayer extends DashPlayer {
   fetchSponsorBlock(identifier) {
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
-        type: 'REQUEST_SPONSORBLOCK',
+        type: MessageTypes.REQUEST_SPONSORBLOCK,
         action: 'getSkipSegments',
         videoId: identifier,
       }, (segments)=>{
@@ -308,7 +309,7 @@ export default class YTPlayer extends DashPlayer {
               onSkip: () => {
                 if (segment.UUID) {
                   chrome.runtime.sendMessage({
-                    type: 'REQUEST_SPONSORBLOCK',
+                    type: MessageTypes.REQUEST_SPONSORBLOCK,
                     action: 'segmentSkipped',
                     UUID: segment.UUID,
                   });

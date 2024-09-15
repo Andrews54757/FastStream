@@ -32,6 +32,7 @@ import {InterfaceUtils} from './utils/InterfaceUtils.mjs';
 import {VirtualAudioNode} from './ui/audio/VirtualAudioNode.mjs';
 import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
 import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
+import {MessageTypes} from './enums/MessageTypes.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
@@ -160,7 +161,7 @@ export class FastStreamClient extends EventEmitter {
 
   pollPrevNext() {
     return new Promise((resolve) => {
-      chrome.runtime.sendMessage({type: 'REQUEST_PLAYLIST_POLL'}, (response) => {
+      chrome.runtime.sendMessage({type: MessageTypes.REQUEST_PLAYLIST_POLL}, (response) => {
         if (!response) {
           resolve(null);
           return;
@@ -1451,7 +1452,7 @@ export class FastStreamClient extends EventEmitter {
     if (!this.hasNextVideo()) return;
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
-        type: 'REQUEST_PLAYLIST_NAVIGATION',
+        type: MessageTypes.REQUEST_PLAYLIST_NAVIGATION,
         direction: 'next',
         continuationOptions: {
           fullscreenState: this.getFullscreenState(),
@@ -1468,7 +1469,7 @@ export class FastStreamClient extends EventEmitter {
     if (!this.hasPreviousVideo()) return;
     if (EnvUtils.isExtension()) {
       chrome.runtime.sendMessage({
-        type: 'REQUEST_PLAYLIST_NAVIGATION',
+        type: MessageTypes.REQUEST_PLAYLIST_NAVIGATION,
         direction: 'previous',
         continuationOptions: {
           fullscreenState: this.getFullscreenState(),

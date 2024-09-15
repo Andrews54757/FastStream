@@ -4,7 +4,7 @@ import {StringUtils} from '../player/utils/StringUtils.mjs';
 import {URLUtils} from '../player/utils/URLUtils.mjs';
 import {Utils} from '../player/utils/Utils.mjs';
 import {BackgroundUtils} from './BackgroundUtils.mjs';
-import {MessageTypes} from './MessageTypes.mjs';
+import {MessageTypes} from '../player/enums/MessageTypes.mjs';
 import {MultiRegexMatcher} from './MultiRegexMatcher.mjs';
 import {RuleManager} from './NetRequestRuleManager.mjs';
 import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
