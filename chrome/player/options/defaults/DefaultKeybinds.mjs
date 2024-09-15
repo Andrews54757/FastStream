@@ -28,11 +28,6 @@ export const DefaultKeybinds = {
   'NextVideo': 'KeyN',
   'PreviousVideo': 'None',
   'ToggleSubtitles': 'KeyC',
-  'SubtrackDelete': 'Delete',
-  'SubtrackShiftRight': 'BracketRight',
-  'SubtrackShiftLeft': 'BracketLeft',
-  'SubtrackDownload': 'KeyD',
-  'SubtrackToggleResync': 'KeyR',
   'FlipVideo': 'None',
   'RotateVideo': 'None',
 };

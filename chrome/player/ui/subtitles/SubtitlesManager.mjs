@@ -423,20 +423,19 @@ export class SubtitlesManager extends EventEmitter {
 
 
     trackElement.addEventListener('keydown', (e) => {
-      const keybind = this.client.keybindManager.eventToKeybind(e);
-      if (keybind === 'SubtrackDelete') {
+      if (e.code === 'Delete' || e.code === 'Backspace') {
         e.stopPropagation();
         removeTrack.click();
-      } else if (keybind === 'SubtrackShiftRight') {
+      } else if (e.code === 'BracketRight') {
         e.stopPropagation();
         shiftRTrack.click();
-      } else if (keybind === 'SubtrackShiftLeft') {
+      } else if (e.code === 'BracketLeft') {
         e.stopPropagation();
         shiftLTrack.click();
-      } else if (keybind === 'SubtrackDownload') {
+      } else if (e.code === 'KeyD') {
         e.stopPropagation();
         downloadTrack.click();
-      } else if (keybind === 'SubtrackToggleResync') {
+      } else if (e.code === 'KeyR') {
         e.stopPropagation();
         resyncTool.click();
       }
