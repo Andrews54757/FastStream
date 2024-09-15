@@ -127,12 +127,12 @@ export class InterfaceController {
         closedSomething = true;
       }
     }
-    closedSomething = closedSomething || this.playbackRateChanger.closeUI();
-    closedSomething = closedSomething || this.videoQualityChanger.closeUI();
-    closedSomething = closedSomething || this.languageChanger.closeUI();
-    closedSomething = closedSomething || this.subtitlesManager.closeUI();
-    closedSomething = closedSomething || this.loopControls.closeUI();
-    return closedSomething = closedSomething;
+    closedSomething = this.playbackRateChanger.closeUI() || closedSomething;
+    closedSomething = this.videoQualityChanger.closeUI() || closedSomething;
+    closedSomething = this.languageChanger.closeUI() || closedSomething;
+    closedSomething = this.subtitlesManager.closeUI() || closedSomething;
+    closedSomething = this.loopControls.closeUI() || closedSomething;
+    return closedSomething;
   }
 
   setStatusMessage(key, message, type, expiry) {
