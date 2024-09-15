@@ -127,6 +127,8 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
       try {
         if (!item.regex) {
           return changeInfo.url.substring(0, item.match.length) === item.match;
+        } else if (item.exclude_domain) {
+          return item.domain === url.hostname;
         } else {
           return item.match.test(changeInfo.url);
         }
@@ -750,18 +752,6 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || await Utils.getOptionsFromStorage();
   Options = newOptions;
 
-  if (Options.playMP4URLs) {
-    setupRedirectRule(1, ['mp4']);
-  } else {
-    removeRule(1);
-  }
-
-  if (Options.playStreamURLs) {
-    setupRedirectRule(2, ['m3u8', 'mpd']);
-  } else {
-    removeRule(2);
-  }
-
   AutoEnableList.length = 0;
   Options.autoEnableURLs.forEach((urlStr) => {
     if (urlStr.length === 0) {
@@ -769,6 +759,7 @@ async function loadOptions(newOptions) {
     }
 
     const obj = {
+      exclude_domain: false,
       negative: false,
       regex: false,
       match: null,
@@ -781,12 +772,25 @@ async function loadOptions(newOptions) {
       } else if (urlStr[0] === '~') {
         obj.regex = true;
         urlStr = urlStr.substring(1);
+      } else if (urlStr[0] === '-') {
+        obj.exclude_domain = true;
+        urlStr = urlStr.substring(1);
       } else {
         break;
       }
     }
 
-    if (obj.regex) {
+    if (obj.exclude_domain) {
+      try {
+        // Check if starts with http or https, add it if not
+        if (!urlStr.startsWith('http')) {
+          urlStr = 'http://' + urlStr;
+        }
+
+        obj.domain = new URL(urlStr).hostname;
+      } catch (e) {
+      }
+    } else if (obj.regex) {
       try {
         obj.match = new RegExp(urlStr);
       } catch (e) {
@@ -804,11 +808,31 @@ async function loadOptions(newOptions) {
   // Reverse auto enable list
   AutoEnableList.reverse();
 
+  if (Options.playMP4URLs) {
+    setupRedirectRule(1, ['mp4']);
+  } else {
+    removeRule(1);
+  }
+
+  if (Options.playStreamURLs) {
+    setupRedirectRule(2, ['m3u8', 'mpd']);
+  } else {
+    removeRule(2);
+  }
+
   loadCustomPatterns();
 }
 
 
 async function setupRedirectRule(ruleID, filetypes) {
+  const excludedRequestDomains = [(new URL(BackgroundUtils.getPlayerUrl())).hostname];
+
+  AutoEnableList.forEach((item) => {
+    if (item.exclude_domain && item.domain && !excludedRequestDomains.includes(item.domain)) {
+      excludedRequestDomains.push(item.domain);
+    }
+  });
+
   const rule = {
     id: ruleID,
     action: {
@@ -817,7 +841,7 @@ async function setupRedirectRule(ruleID, filetypes) {
     },
     condition: {
       // exclude self
-      excludedRequestDomains: [(new URL(BackgroundUtils.getPlayerUrl())).hostname],
+      excludedRequestDomains,
       // only match m3u8 or mpds
       regexFilter: '^.+\\.(' + filetypes.join('|') + ')([\\?|#].*)?$',
       resourceTypes: ['main_frame'],
