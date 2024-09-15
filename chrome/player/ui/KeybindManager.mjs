@@ -175,7 +175,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('RotateVideo', (e) => {
-      rotateIndex = (rotateIndex + 1) % 4;
+      rotateIndex = (rotateIndex + 3) % 4;
       updateVideoTransform();
     });
 
@@ -193,6 +193,10 @@ export class KeybindManager extends EventEmitter {
 
     this.on('SaveVideo', (e) => {
       this.client.interfaceController.saveManager.saveVideo(e);
+    });
+
+    this.on('Screenshot', (e) => {
+      this.client.interfaceController.saveManager.saveScreenshot(e);
     });
 
     this.on('keybind', (keybind, e) => {
