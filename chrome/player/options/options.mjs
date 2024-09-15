@@ -47,6 +47,7 @@ const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
 const ytclient = document.getElementById('ytclient');
+const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -99,6 +100,7 @@ async function loadOptions(newOptions) {
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
+  maxdownloaders.value = Options.maximumDownloaders;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -144,7 +146,7 @@ async function loadOptions(newOptions) {
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
 
   if (Options.dev) {
-    document.getElementById('ytc').style.display = '';
+    document.getElementById('dev').style.display = '';
   }
 }
 
@@ -398,6 +400,11 @@ replaceDelay.addEventListener('change', () => {
 
 miniSize.addEventListener('change', () => {
   Options.miniSize = Math.min(Math.max(parseFloat(miniSize.value) || 0.25, 0.01), 1);
+  optionChanged();
+});
+
+maxdownloaders.addEventListener('change', () => {
+  Options.maximumDownloaders = parseInt(maxdownloaders.value) || 0;
   optionChanged();
 });
 

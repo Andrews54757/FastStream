@@ -131,7 +131,7 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('AddDownloader', (e) => {
-      if (this.client.downloadManager.downloaders.length < 6) {
+      if (!this.client.options.maximumDownloaders || this.client.downloadManager.downloaders.length < this.client.options.maximumDownloaders) {
         this.client.downloadManager.addDownloader();
         this.client.interfaceController.updateFragmentsLoaded();
       }

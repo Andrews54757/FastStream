@@ -253,12 +253,21 @@
         <input class="number" type="number" id="replacedelay" step="1" data-i18n-label="options_general_replace_delay"></input>
     </div>
 
-    <br>
+    <div id="dev" style="display: none;">
+        <br>
+        <div class="option grid2">
+            <div class="label" data-i18n="options_general_ytclient"></div>
+            <div class="select" id="ytclient" data-i18n-label="options_general_ytclient"></div>
+        </div>
 
-    <div class="option grid2" id="ytc" style="display: none;">
-        <div class="label" data-i18n="options_general_ytclient"></div>
-        <div class="select" id="ytclient" data-i18n-label="options_general_ytclient"></div>
+        <br>
+
+        <div class="option grid2">
+            <div class="label">Max downloaders (browsers limit to 6)</div>
+            <input class="number" type="number" id="maxdownloaders" step="1"></input>
+        </div>
     </div>
+   
 
 
     <h1 data-i18n="options_keybinds_header"></h1>
