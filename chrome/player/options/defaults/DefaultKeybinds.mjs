@@ -26,10 +26,11 @@ export const DefaultKeybinds = {
   'NextChapter': 'KeyA',
   'GoToStart': 'Digit0',
   'NextVideo': 'KeyN',
-  'PreviousVideo': 'None',
+  'PreviousVideo': 'KeyB',
   'ToggleSubtitles': 'KeyC',
-  'FlipVideo': 'None',
-  'RotateVideo': 'None',
+  'FlipVideo': 'KeyE',
+  'RotateVideo': 'KeyR',
+  'ToggleVisualFilters': 'KeyQ',
 };
 
 export const KeybindsWithModifiers = [

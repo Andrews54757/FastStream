@@ -646,6 +646,12 @@ export class InterfaceController {
     this.updateAutoNextIndicator();
   }
 
+  toggleVisualFilters() {
+    this.client.options.disableVisualFilters = !this.client.options.disableVisualFilters;
+    sessionStorage.setItem('disableVisualFilters', this.client.options.disableVisualFilters);
+    this.client.updateCSSFilters();
+  }
+
   async handleVisibilityChange(isVisible) {
     if (this.client.needsUserInteraction()) { // Don't do anything if the user needs to interact with the player
       return;

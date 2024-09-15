@@ -199,6 +199,10 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.saveManager.saveScreenshot(e);
     });
 
+    this.on('ToggleVisualFilters', (e) => {
+      this.client.interfaceController.toggleVisualFilters();
+    });
+
     this.on('keybind', (keybind, e) => {
       // console.log("Keybind", keybind);
     });

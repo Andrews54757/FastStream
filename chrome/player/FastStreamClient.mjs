@@ -76,6 +76,7 @@ export class FastStreamClient extends EventEmitter {
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
+      disableVisualFilters: false,
     };
     this.state = {
       playing: false,
@@ -257,6 +258,10 @@ export class FastStreamClient extends EventEmitter {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
     } else {
       this.options.autoplayNext = options.autoplayNext;
+    }
+
+    if (sessionStorage) {
+      this.options.disableVisualFilters = sessionStorage.getItem('disableVisualFilters') == 'true';
     }
 
     this.options.videoBrightness = options.videoBrightness;
