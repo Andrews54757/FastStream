@@ -20,6 +20,7 @@ export const DefaultKeybinds = {
   'ResetFailed': 'Backquote',
   'AddDownloader': 'Equal',
   'RemoveDownloader': 'Minus',
+  'SaveVideo': 'KeyD',
   'SkipIntroOutro': 'KeyS',
   'NextChapter': 'None',
   'GoToStart': 'Digit0',
@@ -34,3 +35,7 @@ export const DefaultKeybinds = {
   'FlipVideo': 'None',
   'RotateVideo': 'None',
 };
+
+export const KeybindsWithModifiers = [
+  'SaveVideo',
+];
