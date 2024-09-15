@@ -20,7 +20,7 @@ export class VideoQualityChanger extends EventEmitter {
   }
 
   closeUI() {
-    if (DOMElements.videoSourceList.style.display === 'none') {
+    if (!this.isOpen()) {
       return false;
     }
     DOMElements.videoSourceList.style.display = 'none';
@@ -28,7 +28,7 @@ export class VideoQualityChanger extends EventEmitter {
     return true;
   }
 
-  isVisible() {
+  isOpen() {
     return DOMElements.videoSourceList.style.display !== 'none';
   }
 
@@ -45,7 +45,7 @@ export class VideoQualityChanger extends EventEmitter {
     }, true);
 
     DOMElements.videoSource.addEventListener('click', (e) => {
-      if (this.isVisible()) {
+      if (this.isOpen()) {
         this.closeUI();
       } else {
         this.openUI();
@@ -53,12 +53,8 @@ export class VideoQualityChanger extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
-    });
-
     DOMElements.videoSource.addEventListener('focus', ()=>{
-      if (!this.isVisible() && !isMouseDown) {
+      if (!this.isOpen() && !isMouseDown) {
         this.openUI(true);
       }
     });

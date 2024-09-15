@@ -28,7 +28,7 @@ export class LanguageChanger extends EventEmitter {
     return true;
   }
 
-  isVisible() {
+  isOpen() {
     return DOMElements.languageMenu.style.display !== 'none';
   }
 
@@ -45,7 +45,7 @@ export class LanguageChanger extends EventEmitter {
     }, true);
 
     DOMElements.languageButton.addEventListener('click', (e) => {
-      if (this.isVisible()) {
+      if (this.isOpen()) {
         this.closeUI();
       } else {
         this.openUI();
@@ -53,13 +53,8 @@ export class LanguageChanger extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
-    });
-
-
     DOMElements.languageButton.addEventListener('focus', ()=>{
-      if (!this.isVisible() && !isMouseDown) {
+      if (!this.isOpen() && !isMouseDown) {
         this.openUI(true);
       }
     });

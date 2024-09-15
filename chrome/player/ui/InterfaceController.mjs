@@ -6,6 +6,7 @@ import {ClickActions} from '../options/defaults/ClickActions.mjs';
 import {MiniplayerPositions} from '../options/defaults/MiniplayerPositions.mjs';
 import {VisChangeActions} from '../options/defaults/VisChangeActions.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
+import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {StringUtils} from '../utils/StringUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
@@ -389,6 +390,14 @@ export class InterfaceController {
       clearTimeout(holdTimeout);
       if (lastSpeed !== null) {
         stopSpeedUp();
+        return;
+      }
+
+      if (this.closeAllMenus(false)) {
+        return;
+      }
+
+      if (InterfaceUtils.closeWindows()) {
         return;
       }
 

@@ -156,4 +156,8 @@ export class SubtitlesSettingsManager extends EventEmitter {
     DOMElements.subtitlesMenu.classList.remove('settings');
     Coloris.close();
   }
+
+  isOpen() {
+    return DOMElements.subtitlesMenu.classList.contains('settings');
+  }
 }

@@ -137,7 +137,7 @@ export class SubtitlesManager extends EventEmitter {
       return;
     }
 
-    if (DOMElements.subtitlesMenu.style.display === 'none') {
+    if (!this.isOpen()) {
       this.openUI();
     } else {
       this.closeUI();
@@ -163,23 +163,18 @@ export class SubtitlesManager extends EventEmitter {
     WebUtils.setLabels(DOMElements.subtitles, Localize.getMessage('player_subtitlesmenu_close_label'));
   }
 
+  isOpen() {
+    return DOMElements.subtitlesMenu.style.display !== 'none';
+  }
+
   setupUI() {
     DOMElements.subtitles.addEventListener('click', this.onCaptionsButtonInteract.bind(this));
     DOMElements.subtitles.tabIndex = 0;
 
     DOMElements.subtitles.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.closeUI();
-        e.stopPropagation();
-        e.preventDefault();
-      } else if (e.key === 'Enter') {
+      if (e.key === 'Enter') {
         this.onCaptionsButtonInteract(e);
       }
-    });
-
-
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
     });
 
     DOMElements.subtitlesOptionsTestButton.addEventListener('click', (e) => {

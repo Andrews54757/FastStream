@@ -13,26 +13,19 @@ export class OptionsWindow {
       e.stopPropagation();
     });
 
-    DOMElements.optionsContainer.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this.closeUI();
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    });
-
     DOMElements.optionsContainer.addEventListener('keyup', (e) => {
       e.stopPropagation();
     });
 
-    DOMElements.playerContainer.addEventListener('click', (e) => {
-      this.closeUI();
-    });
     const closeBtn = DOMElements.optionsContainer.getElementsByClassName('close_button')[0];
     closeBtn.addEventListener('click', (e) => {
       this.closeUI();
     });
     WebUtils.setupTabIndex(closeBtn);
+  }
+
+  isOpen() {
+    return DOMElements.optionsContainer.style.display !== 'none';
   }
 
   openUI() {
@@ -49,7 +42,7 @@ export class OptionsWindow {
   }
 
   toggleUI() {
-    if (DOMElements.optionsContainer.style.display === 'none') {
+    if (!this.isOpen()) {
       this.openUI();
     } else {
       this.closeUI();
