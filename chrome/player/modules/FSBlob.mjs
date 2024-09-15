@@ -41,9 +41,11 @@ export class FSBlob {
       this.blobStorePromises.clear();
       return false;
     }
-
+    // Store file
     await this.indexedDBManager.setFile(identifier, blob);
-    this.blobStore.delete(identifier);
+    // Get file
+    const file = await this.indexedDBManager.getFile(identifier);
+    this.blobStore.set(identifier, file);
     return true;
   }
 
@@ -125,21 +127,8 @@ export class FSBlob {
     return true;
   }
 
-  async getBlob(identifier) {
-    if (this.blobStore.has(identifier)) {
-      return this.blobStore.get(identifier);
-    }
-
-    if (this.blobStorePromises.has(identifier)) {
-      await this.blobStorePromises.get(identifier);
-      if (this.cache) {
-        return this.blobStore.get(identifier);
-      } else if (this.indexedDBManager) {
-        return await this.indexedDBManager.getFile(identifier);
-      }
-    }
-
-    return null;
+  getBlob(identifier) {
+    return this.blobStore.get(identifier);
   }
 
   async clear() {
@@ -149,6 +138,7 @@ export class FSBlob {
       // Setup a new cache entirely
       this.cache = true;
       this.setupPromise = this.setupOrphanedCache();
+      await this.setupPromise;
     } else if (this.indexedDBManager) {
       await this.indexedDBManager.clearStorage();
     }
