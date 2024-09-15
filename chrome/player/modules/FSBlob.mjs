@@ -45,11 +45,17 @@ export class FSBlob {
     await this.indexedDBManager.setFile(identifier, blob);
     // Get file
     const file = await this.indexedDBManager.getFile(identifier);
+
+    if (EnvUtils.isFirefox()) {
+      // Delete file to orphan it
+      await this.indexedDBManager.deleteFile(identifier);
+    }
+
     this.blobStore.set(identifier, file);
     return true;
   }
 
-  async saveBlobUsingCacheTrick(identifier, blob) {
+  async saveBlobUsingCache(identifier, blob) {
     try {
       await this.setupPromise;
     } catch (e) {
@@ -68,6 +74,7 @@ export class FSBlob {
     const match = await this.cache.match(identifierURL);
 
     const blobResponse = await match?.blob();
+
     this.blobStore.set(identifier, blobResponse);
   }
 
@@ -86,7 +93,7 @@ export class FSBlob {
     this.blobStore.set(identifier, blob);
     let promise;
     if (this.cache) {
-      promise = this.saveBlobUsingCacheTrick(identifier, blob);
+      promise = this.saveBlobUsingCache(identifier, blob);
     } else if (this.indexedDBManager) {
       promise = this.saveBlobInIndexedDBAsync(identifier, blob);
     }
