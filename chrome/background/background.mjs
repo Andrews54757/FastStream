@@ -238,6 +238,15 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     tab.playerCount -= playerCount;
     tab.playerCount = Math.max(0, tab.playerCount);
     checkURLMatch(frame);
+
+    frame.loadedCallbacks.forEach((callback) => {
+      try {
+        callback('loaded');
+      } catch (e) {
+        console.error(e);
+      }
+    });
+    frame.loadedCallbacks.clear();
   } else if (msg.type === MessageTypes.FRAME_REMOVED) {
     const toRemove = msg.frameId !== undefined ? tab.getFrame(msg.frameId) : frame;
     const playerCount = toRemove.resetSelfAndChildren();
@@ -249,14 +258,31 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     tab.removeFrame(toRemove.frameId);
-  } else if (msg.type === MessageTypes.REQUEST_FRAMEID) {
-    chrome.tabs.sendMessage(frame.tab.tabId, {
-      type: MessageTypes.FRAMEID,
-      frameId: frame.frameId,
+  } else if (msg.type === MessageTypes.WAIT_UNTIL_MAIN_LOADED) {
+    frame.loadedCallbacks.add(sendResponse);
+
+    // Try to ping tab
+    chrome.tabs.sendMessage(tab.tabId, {
+      type: MessageTypes.PING_TAB,
+    }, (response) => {
+      BackgroundUtils.checkMessageError('ping_tab');
+      if (response === MessageTypes.PONG_TAB) {
+        if (frame.loadedCallbacks.has(sendResponse)) {
+          frame.loadedCallbacks.delete(sendResponse);
+          sendResponse('loaded');
+        }
+      }
+    });
+    return true;
+  } else if (msg.type === MessageTypes.SEND_TO_CONTENT) {
+    chrome.tabs.sendMessage(tab.tabId, {
+      type: MessageTypes.MESSAGE_FROM_CONTENT,
+      data: msg.data,
+      destination: msg.destination,
     }, {
       frameId: frame.frameId,
-    }, () => {
-      BackgroundUtils.checkMessageError('frameId');
+    }, (response) => {
+      BackgroundUtils.checkMessageError('message_from_content');
     });
   } else if (msg.type === MessageTypes.REQUEST_SOURCES) {
     sendSources(frame);

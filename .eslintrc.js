@@ -24,5 +24,6 @@ module.exports = {
   'rules': {
     'require-jsdoc': 'off',
     'max-len': 0,
+    'camelcase': 'off',
   },
 };

@@ -6,7 +6,7 @@ export class FrameHolder {
     this.frameId = frameId;
     this.parent = null;
     this.children = new Set();
-
+    this.loadedCallbacks = new Set();
     this.reset();
   }
 
