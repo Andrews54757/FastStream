@@ -1110,8 +1110,8 @@ async function sendSourcesToMainFramePlayers(frame) {
       // send the source to the tab
       chrome.tabs.sendMessage(tab.tabId, {
         type: MessageTypes.SOURCES,
-        subtitles: frame.subtitles,
-        sources: frame.sources,
+        subtitles: frame.getSubtitles(),
+        sources: frame.getSources(),
         autoSetSource: false,
       }, () => {
         BackgroundUtils.checkMessageError('sources');
