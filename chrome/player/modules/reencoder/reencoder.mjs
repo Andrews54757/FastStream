@@ -147,6 +147,10 @@ export class Reencoder extends EventEmitter {
         height: decoderConfig.codedHeight,
       };
 
+      console.log('Video decoder config: ', decoderConfig);
+      console.log('Video encoder config: ', encoderConfig);
+
+
       videoOutput = {
         codec: 'avc',
         width: decoderConfig.codedWidth,
@@ -209,6 +213,9 @@ export class Reencoder extends EventEmitter {
         sampleRate: 44100,
         numberOfChannels: decoderConfig.numberOfChannels,
       };
+
+      console.log('Audio decoder config: ', decoderConfig);
+      console.log('Audio encoder config: ', encoderConfig);
 
       audioOutput = {
         codec: 'aac',
