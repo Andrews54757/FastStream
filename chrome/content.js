@@ -124,14 +124,6 @@
       iframeMap.set(request.frameId, newFrameObj);
 
       updateReplacedPlayers();
-
-      if (FoundYTPlayer) {
-        for (let i = 1; i <= 8; i++) {
-          setTimeout(() => {
-            updateReplacedPlayers();
-          }, i * 250);
-        }
-      }
     }
   });
 
