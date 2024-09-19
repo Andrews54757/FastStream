@@ -434,7 +434,7 @@ export class Reencoder extends EventEmitter {
 
     const answer = await AlertPolyfill.confirm(Localize.getMessage('player_savevideo_reencode'), 'warning');
     if (!answer) {
-      throw new Error('User cancelled conversion');
+      throw new Error('Cancelled');
     }
 
     await this.setup(videoMimeType, videoDuration, videoInitSegment, audioMimeType, audioDuration, audioInitSegment);
