@@ -386,7 +386,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     return true;
   } else if (msg.type === MessageTypes.REQUEST_PLAYLIST_POLL) {
     const pageFrame = frame.pageFrame;
-    if (!pageFrame) {
+    if (!pageFrame || frame.frameId === 0) {
       sendResponse('error');
       return;
     }
@@ -491,6 +491,11 @@ async function cascadedFullscreen(playerFrame, finalFrame, data) {
 }
 
 function handleFullscreenRequest(frame, msg, sendResponse) {
+  if (frame.frameId === 0) {
+    sendResponse('error');
+    return;
+  }
+
   const fn = async () => {
     const fullScreenAllowedFrame = await getFrameWithFullscreenPermission(frame);
 
@@ -511,6 +516,11 @@ function handleFullscreenRequest(frame, msg, sendResponse) {
 }
 
 function handleWindowedFullscreenRequest(frame, msg, sendResponse) {
+  if (frame.frameId === 0) {
+    sendResponse('error');
+    return;
+  }
+
   const fn = async () => {
     const mainFrame = frame.tab.getFrameOrCreate(0);
 
@@ -526,6 +536,11 @@ function handleWindowedFullscreenRequest(frame, msg, sendResponse) {
 }
 
 function handleMiniplayerRequest(frame, msg, sendResponse) {
+  if (frame.frameId === 0) {
+    sendResponse('error');
+    return;
+  }
+
   const fn = async () => {
     const pageFrame = frame.pageFrame;
     if (!pageFrame) {
