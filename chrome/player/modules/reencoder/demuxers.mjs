@@ -328,6 +328,8 @@ export class MP4Demuxer extends AbstractDemuxer {
       });
       chunks.push(lastChunk);
     }
+
+    return chunks;
   }
 
   clearChunks() {

@@ -185,6 +185,8 @@ class Colour {
               'BT2020 Non-constant Luminance': 'bt2020-ncl',
             }
 
+            this.matrixCoefficientsNumber = matrixCoefficients;
+
             this.matrixCoefficients = map[matrixCoefficients];
             if (!this.matrixCoefficients) {
               console.warn('Matrix Coefficients not found', matrixCoefficients);
@@ -214,7 +216,7 @@ class Colour {
             this.chromaSubsamplingHorz = chromaSubsamplingHorz;
           } else {
             return null;
-          }  
+          }
           break;
         }
         case 0x55B4: { // ChromaSubsamplingVert, u
@@ -223,7 +225,7 @@ class Colour {
             this.chromaSubsamplingVert = chromaSubsamplingVert;
           } else {
             return null;
-          }  
+          }
           break;
         }
         case 0x55B5: { // CbSubsamplingHorz, u
@@ -311,6 +313,8 @@ class Colour {
               'ARIB STD-B67 (HLG)': 'hlg'
             }
 
+            this.transferCharacteristicsNumber = transferCharacteristics;
+
             this.transferCharacteristics = map[transferCharacteristics];
             if (!this.transferCharacteristics) {
               console.warn('Transfer Characteristics not found', transferCharacteristics);
@@ -345,7 +349,8 @@ class Colour {
               'SMPTE EG 432-2' // 12: Web ready as smpte432
             ];
 
-         
+            this.primariesNumber = primaries;
+
             if (primaries === 22) {
               this.primaries = 'EBU Tech. 3213-E - JEDEC P22 phosphors';
             } else {
@@ -705,12 +710,12 @@ class Cluster {
         case 0xA3: // Simple Block
           if (!this.tempBlock.status) {
             this.tempBlock.init(
-                this.tempElementHeader.offset,
-                this.tempElementHeader.size,
-                this.tempElementHeader.end,
-                this.tempElementHeader.dataOffset,
-                this.dataInterface,
-                this,
+              this.tempElementHeader.offset,
+              this.tempElementHeader.size,
+              this.tempElementHeader.end,
+              this.tempElementHeader.dataOffset,
+              this.dataInterface,
+              this,
             );
           }
           this.tempBlock.load();
@@ -764,7 +769,7 @@ class Cluster {
             return null;
           }
           break;
-          // TODO, ADD VOID
+        // TODO, ADD VOID
         default:
           console.warn('cluster data element not found, skipping : ' + this.tempElementHeader.id.toString(16));
           // This means we probably are out of the cluster now, double check bounds when end not available
@@ -883,7 +888,7 @@ class Cues {
             return null;
           }
           break;
-          // TODO, ADD VOID
+        // TODO, ADD VOID
         default:
           console.warn('Cue Head element not found ' + this.currentElement.id.toString(16)); // probably bad
           break;
@@ -1004,11 +1009,11 @@ class DataInterface {
     this.dateParser = new DateParser();
 
     Object.defineProperty(this, 'offset', {
-      get: function() {
+      get: function () {
         return this.overallPointer;
       },
 
-      set: function(offset) {
+      set: function (offset) {
         this.overallPointer = offset;
       },
     });
@@ -1031,7 +1036,7 @@ class DataInterface {
          * Returns the bytes left in the current buffer
          */
     Object.defineProperty(this, 'remainingBytes', {
-      get: function() {
+      get: function () {
         if (!this.currentBuffer) {
           return 0;
         } else {
@@ -1827,7 +1832,7 @@ export class JsWebm {
     this.processing = false;
 
     Object.defineProperty(this, 'duration', {
-      get: function() {
+      get: function () {
         if (this.segmentInfo.duration < 0) {
           return -1;
         }
@@ -1836,7 +1841,7 @@ export class JsWebm {
     });
 
     Object.defineProperty(this, 'keyframeTimestamp', {
-      get: function() {
+      get: function () {
         if (this.videoPackets.length > 0) {
           return this.videoPackets[0].keyframeTimestamp;
         } else {
@@ -1897,16 +1902,16 @@ export class JsWebm {
     switch (codecID) {
       case 'V_VP8':
         this.videoCodec = 'vp8';
+        this.initVp8Headers(tempTrack);
         break;
       case 'V_VP9':
-        this.videoCodec = 'vp09';
+        this.initVp9Headers(tempTrack);
         break;
       default:
         this.videoCodec = null;
         break;
     }
 
-    this.videoTrack = tempTrack;
     const fps = 0; // For now?
     this.videoFormat = {
       width: tempTrack.width,
@@ -1964,6 +1969,84 @@ export class JsWebm {
     this.audioTrack = trackEntry;
   }
 
+  initVp8Headers(trackEntry) {
+    this.videoTrack = trackEntry;
+  }
+
+  initVp9Headers(trackEntry) {
+    this.videoTrack = trackEntry;
+    let profile = 0; // 0 for default
+    let level = 10; // 10 for default level 1
+    let bitDepth = 8; // 8 for default
+    let chromaSubsampling = 1; // 1 for default
+    let colourPrimaries = 1; // 1 for default
+    let transferCharacteristics = 1; // 1 for default
+    let matrixCoefficients = 1; // 1 for default
+    let videoFullRangeFlag = 0; // 0 for default
+
+    if (trackEntry.codecPrivate) {
+      const headerParser = new DataView(trackEntry.codecPrivate);
+      let currentByte = 0;
+      while (currentByte < headerParser.byteLength) {
+        const id = headerParser.getUint8(currentByte++);
+        const length = headerParser.getUint8(currentByte++);
+        if (length !== 1) {
+          console.warn('Invalid vp9 header len', length);
+          continue;
+        }
+
+        const value = headerParser.getUint8(currentByte++);
+        switch (id) {
+          case 0x01:
+            profile = value;
+            break;
+          case 0x02:
+            level = value;
+            break;
+          case 0x03:
+            bitDepth = value;
+            break;
+          case 0x04:
+            chromaSubsampling = value;
+            break;
+          default:
+            console.warn('Unknown vp9 header id', id);
+            break;
+        }
+      }
+    }
+
+    const colour = trackEntry.colour;
+    if (colour) {
+      if (colour.primaries) {
+        colourPrimaries = colour.primariesNumber;
+      }
+
+      if (colour.transferCharacteristics) {
+        transferCharacteristics = colour.transferCharacteristicsNumber;
+      }
+
+      if (colour.matrixCoefficients) {
+        matrixCoefficients = colour.matrixCoefficientsNumber;
+      }
+
+      if (colour.range) {
+        videoFullRangeFlag = colour.range === 'full' ? 1 : 0;
+      }
+    }
+
+    profile = profile.toString().padStart(2, '0');
+    level = level.toString().padStart(2, '0');
+    bitDepth = bitDepth.toString().padStart(2, '0');
+    chromaSubsampling = chromaSubsampling.toString().padStart(2, '0');
+    colourPrimaries = colourPrimaries.toString().padStart(2, '0');
+    transferCharacteristics = transferCharacteristics.toString().padStart(2, '0');
+    matrixCoefficients = matrixCoefficients.toString().padStart(2, '0');
+    videoFullRangeFlag = videoFullRangeFlag.toString().padStart(2, '0');
+
+    this.videoCodec = `vp09.${profile}.${level}.${bitDepth}.${chromaSubsampling}.${colourPrimaries}.${transferCharacteristics}.${matrixCoefficients}.${videoFullRangeFlag}`;
+  }
+
   /**
        * This function ques up more data to the internal buffer
        * @param {arraybuffer} data
@@ -1991,7 +2074,7 @@ export class JsWebm {
         break;
       default:
         console.warn('INVALID STATE');
-          // fill this out
+      // fill this out
     }
 
     return lastPointer < this.dataInterface.overallPointer;
@@ -2074,12 +2157,12 @@ export class JsWebm {
           }
           if (!this.currentCluster) {
             this.currentCluster = new Cluster(
-                this.tempElementHeader.offset,
-                this.tempElementHeader.size,
-                this.tempElementHeader.end,
-                this.tempElementHeader.dataOffset,
-                this.dataInterface,
-                this,
+              this.tempElementHeader.offset,
+              this.tempElementHeader.size,
+              this.tempElementHeader.end,
+              this.tempElementHeader.dataOffset,
+              this.dataInterface,
+              this,
             );
           }
           status = this.currentCluster.load();
@@ -2448,7 +2531,7 @@ class SeekHead {
             return null;
           }
           break;
-          // TODO, ADD VOID
+        // TODO, ADD VOID
         default:
           console.warn('Seek head element not found, skipping : ' + this.currentElement.id.toString(16));
           break;
