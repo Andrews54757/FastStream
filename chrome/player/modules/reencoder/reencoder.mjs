@@ -6,6 +6,7 @@ import {MP4Demuxer, WebMDemuxer} from './demuxers.mjs';
 import {Localize} from '../Localize.mjs';
 import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 
+const KEYFRAME_INTERVAL = 10 * 1000 * 1000; // 10 seconds
 /**
  * Recode Merger
  *
@@ -167,6 +168,8 @@ export class Reencoder extends EventEmitter {
         throw new Error('unsupported output video codec');
       }
 
+      this.lastVideoKeyframe = 0;
+
       this.videoEncoder = new VideoEncoder({
         output: (chunk, meta) => {
           this.muxer.addVideoChunk(chunk, meta);
@@ -182,7 +185,13 @@ export class Reencoder extends EventEmitter {
 
       this.videoDecoder = new VideoDecoder({
         output: (frame) => {
-          this.videoEncoder.encode(frame);
+          const timestamp = frame.timestamp; // frame.timestamp is in microseconds
+          if (timestamp - this.lastVideoKeyframe > KEYFRAME_INTERVAL) {
+            this.lastVideoKeyframe = timestamp;
+            this.videoEncoder.encode(frame, {keyFrame: true});
+          } else {
+            this.videoEncoder.encode(frame);
+          }
           frame.close();
           requeue();
         },
@@ -233,6 +242,7 @@ export class Reencoder extends EventEmitter {
         throw new Error('unsupported output video codec');
       }
 
+      this.lastAudioKeyframe = 0;
       this.audioEncoder = new AudioEncoder({
         output: (chunk, meta) => {
           this.muxer.addAudioChunk(chunk, meta);
@@ -269,7 +279,15 @@ export class Reencoder extends EventEmitter {
         const data = event.data;
         if (data.type === 'resampled') {
           this.resamplerWorkerTasks--;
-          this.audioEncoder.encode(data.data);
+
+          const frame = data.data;
+          const timestamp = frame.timestamp; // frame.timestamp is in microseconds
+          if (timestamp - this.lastAudioKeyframe > KEYFRAME_INTERVAL) {
+            this.lastAudioKeyframe = timestamp;
+            this.audioEncoder.encode(frame, {keyFrame: true});
+          } else {
+            this.audioEncoder.encode(frame);
+          }
 
           requeue();
 
