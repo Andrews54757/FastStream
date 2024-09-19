@@ -31,6 +31,262 @@ class Track {
   }
 }
 
+class MasteringData {
+  constructor(masteringDataHeader, dataInterface) {
+    this.dataInterface = dataInterface;
+    this.offset = masteringDataHeader.offset;
+    this.size = masteringDataHeader.size;
+    this.end = masteringDataHeader.end;
+  }
+  load() {
+    while (this.dataInterface.offset < this.end) {
+      if (!this.currentElement) {
+        this.currentElement = this.dataInterface.peekElement();
+        if (this.currentElement === null) return null;
+      }
+      switch (this.currentElement.id) {
+        case 0x55D1: { // PrimaryRChromaticityX, f
+          const primaryRChromaticityX = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryRChromaticityX !== null) {
+            this.primaryRChromaticityX = primaryRChromaticityX;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D2: { // PrimaryRChromaticityY, f
+          const primaryRChromaticityY = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryRChromaticityY !== null) {
+            this.primaryRChromaticityY = primaryRChromaticityY;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D3: { // PrimaryGChromaticityX, f
+          const primaryGChromaticityX = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryGChromaticityX !== null) {
+            this.primaryGChromaticityX = primaryGChromaticityX;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D4: { // PrimaryGChromaticityY, f
+          const primaryGChromaticityY = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryGChromaticityY !== null) {
+            this.primaryGChromaticityY = primaryGChromaticityY;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D5: { // PrimaryBChromaticityX, f
+          const primaryBChromaticityX = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryBChromaticityX !== null) {
+            this.primaryBChromaticityX = primaryBChromaticityX;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D6: { // PrimaryBChromaticityY, f
+          const primaryBChromaticityY = this.dataInterface.readFloat(this.currentElement.size);
+          if (primaryBChromaticityY !== null) {
+            this.primaryBChromaticityY = primaryBChromaticityY;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D7: { // WhitePointChromaticityX, f
+          const whitePointChromaticityX = this.dataInterface.readFloat(this.currentElement.size);
+          if (whitePointChromaticityX !== null) {
+            this.whitePointChromaticityX = whitePointChromaticityX;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D8: { // WhitePointChromaticityY, f
+          const whitePointChromaticityY = this.dataInterface.readFloat(this.currentElement.size);
+          if (whitePointChromaticityY !== null) {
+            this.whitePointChromaticityY = whitePointChromaticityY;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D9: { // LuminanceMax, f
+          const luminanceMax = this.dataInterface.readFloat(this.currentElement.size);
+          if (luminanceMax !== null) {
+            this.luminanceMax = luminanceMax;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55DA: { // LuminanceMin, f
+          const luminanceMin = this.dataInterface.readFloat(this.currentElement.size);
+          if (luminanceMin !== null) {
+            this.luminanceMin = luminanceMin;
+          } else {
+            return null;
+          }
+          break;
+        }
+        default:
+          console.warn(`MasteringData element not found, skipping: ${this.currentElement.id.toString(16)}`);
+          break;
+      }
+    }
+  }
+}
+class Colour {
+  constructor(colourHeader, dataInterface) {
+    this.dataInterface = dataInterface;
+    this.offset = colourHeader.offset;
+    this.size = colourHeader.size;
+    this.end = colourHeader.end;
+  }
+  load() {
+    while (this.dataInterface.offset < this.end) {
+      if (!this.currentElement) {
+        this.currentElement = this.dataInterface.peekElement();
+        if (this.currentElement === null) return null;
+      }
+      switch (this.currentElement.id) {
+        case 0x55B1: { // MatrixCoefficients, u
+          const matrixCoefficients = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (matrixCoefficients !== null) {
+            this.matrixCoefficients = matrixCoefficients;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B2: { // BitsPerChannel, u
+          const bitsPerChannel = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (bitsPerChannel !== null) {
+            this.bitsPerChannel = bitsPerChannel;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B3: { // ChromaSubsamplingHorz, u
+          const chromaSubsamplingHorz = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (chromaSubsamplingHorz !== null) {
+            this.chromaSubsamplingHorz = chromaSubsamplingHorz;
+          } else {
+            return null;
+          }  
+          break;
+        }
+        case 0x55B4: { // ChromaSubsamplingVert, u
+          const chromaSubsamplingVert = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (chromaSubsamplingVert !== null) {
+            this.chromaSubsamplingVert = chromaSubsamplingVert;
+          } else {
+            return null;
+          }  
+          break;
+        }
+        case 0x55B5: { // CbSubsamplingHorz, u
+          const cbSubsamplingHorz = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (cbSubsamplingHorz !== null) {
+            this.cbSubsamplingHorz = cbSubsamplingHorz;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B6: { // CbSubsamplingVert, u
+          const cbSubsamplingVert = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (cbSubsamplingVert !== null) {
+            this.cbSubsamplingVert = cbSubsamplingVert;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B7: { // ChromaSitingHorz, u
+          const chromaSitingHorz = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (chromaSitingHorz !== null) {
+            this.chromaSitingHorz = chromaSitingHorz;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B8: { // ChromaSitingVert, u
+          const chromaSitingVert = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (chromaSitingVert !== null) {
+            this.chromaSitingVert = chromaSitingVert;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55B9: { // Range, u
+          const range = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (range !== null) {
+            this.range = range;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55BA: { // TransferCharacteristics, u
+          const transferCharacteristics = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (transferCharacteristics !== null) {
+            this.transferCharacteristics = transferCharacteristics;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55BB: { // Primaries, u
+          const primaries = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (primaries !== null) {
+            this.primaries = primaries;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55BC: { // MaxCLL, u
+          const maxCLL = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (maxCLL !== null) {
+            this.maxCLL = maxCLL;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55BD: { // MaxFALL, u
+          const maxFALL = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (maxFALL !== null) {
+            this.maxFALL = maxFALL;
+          } else {
+            return null;
+          }
+          break;
+        }
+        case 0x55D0: { // MasteringMetadata
+          const masteringMetadata = new MasteringData(this.currentElement, this.dataInterface);
+          masteringMetadata.load();
+          this.masteringMetadata = masteringMetadata;
+          break;
+        }
+        default:
+          console.warn(`Info element not found, skipping: ${this.currentElement.id.toString(16)}`);
+          break;
+      }
+      this.currentElement = null;
+    }
+  }
+}
 class VideoTrack extends Track {
   constructor(trackHeader, dataInterface) {
     super();
@@ -59,7 +315,7 @@ class VideoTrack extends Track {
         if (this.currentElement === null) return null;
       }
       switch (this.currentElement.id) {
-        // TODO add color
+        // TODO add colour
         case 0xB0: { // Pixel width
           const width = this.dataInterface.readUnsignedInt(this.currentElement.size);
           if (width !== null) {
@@ -132,8 +388,10 @@ class VideoTrack extends Track {
           }
           break;
         }
-        case 0x55B0: { // Color
-          const colours = this.dataInterface.readUnsignedInt(this.currentElement.size);
+        case 0x55B0: { // colour
+          const colour = new Colour(this.currentElement, this.dataInterface);
+          colour.load();
+          this.colour = colour;
           break;
         }
         default:
@@ -1523,7 +1781,7 @@ export class JsWebm {
         this.videoCodec = 'vp8';
         break;
       case 'V_VP9':
-        this.videoCodec = 'vp9';
+        this.videoCodec = 'vp09';
         break;
       default:
         this.videoCodec = null;
