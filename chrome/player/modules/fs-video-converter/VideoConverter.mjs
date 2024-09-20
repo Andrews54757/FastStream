@@ -14,6 +14,7 @@ export class VideoConverter extends EventEmitter {
 
     this.inputConfig.inputStreams.forEach((stream) => {
       const inputStream = new InputStream(stream.id);
+      inputStream.setupDemuxer();
       this.inputs.set(stream.id, inputStream);
     });
   }

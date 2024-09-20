@@ -2,6 +2,7 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
+import {VideoConverter} from '../../modules/fs-video-converter/VideoConverter.mjs';
 import {Hls} from '../../modules/hls.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
@@ -149,7 +150,19 @@ export default class HLSPlayer extends EventEmitter {
     if (audioFragments[-1]) {
       audioLevelInitData = new Uint8Array(await this.client.downloadManager.getEntry(audioFragments[-1].getContext()).getDataFromBlob());
     }
+    const videoConverter = new VideoConverter();
+    videoConverter.configure({
+      inputStreams: [
+        {
+          id: 0,
+          codec: level.codec,
+          initData: levelInitData,
+        },
+      ],
+    });
 
+    videoConverter.appendBuffer(0, await (await zippedFragments[0].getEntry()).getDataFromBlob());
+    return;
     try {
       if (levelInitData && audioLevelInitData) {
         const {MP4Merger} = await import('../../modules/dash2mp4/mp4merger.mjs');

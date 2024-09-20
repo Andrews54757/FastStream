@@ -1,17 +1,32 @@
 import {MP4Box} from '../../mp4box.mjs';
-import {TrackTypes} from '../enums/TrackTypes.mjs';
+import {AudioSample} from '../common/AudioSample.mjs';
+import {VideoSample} from '../common/VideoSample.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class MP4Demuxer extends AbstractDemuxer {
   constructor() {
     super();
-    this.tracksByType = new Map();
     this.nextPos = 0;
   }
 
   // These are public methods that can be called from outside the class
   static test(buffer) {
-
+    // Check if moof or moov box exists in the buffer
+    const data = new Uint8Array(buffer);
+    const end = data.byteLength;
+    for (let i = 0; i < end;) {
+      // const size = readUint32(data, i);
+      let size = (data[i] << 24) | (data[i + 1] << 16) | (data[i + 2] << 8) | data[i + 3];
+      if (size < 0) size += 4294967296;
+      if (size > 8 && (
+        (data[i + 4] === 0x6d && data[i + 5] === 0x6f && data[i + 6] === 0x6f && data[i + 7] === 0x66) || // moof
+        (data[i + 4] === 0x6d && data[i + 5] === 0x6f && data[i + 6] === 0x6f && data[i + 7] === 0x76) // moov
+      )) {
+        return true;
+      }
+      i = size > 1 ? i + size : end;
+    }
+    return false;
   }
 
   appendBuffer(buffer, offset) {
@@ -36,54 +51,75 @@ export default class MP4Demuxer extends AbstractDemuxer {
     this.process();
   }
 
-  getTracks() {
-    return this.tracksByType;
+  getVideoDecoderConfig(trackId) {
+    const videoTrack = this.videoTracks?.get(track.id);
+    if (!videoTrack) {
+      return null;
+    }
+    return {
+      codec: videoTrack.codec,
+      codedWidth: videoTrack.video.width,
+      codedHeight: videoTrack.video.height,
+      displayAspectWidth: videoTrack.track_width,
+      displayAspectHeight: videoTrack.track_height,
+    };
+  }
+
+  getAudioDecoderConfig(trackId) {
+    const audioTrack = this.audioTracks?.get(trackId);
+    if (!audioTrack) {
+      return null;
+    }
+    return {
+      codec: audioTrack.codec,
+      description: undefined,
+      sampleRate: audioTrack.audio.sample_rate,
+      numberOfChannels: audioTrack.audio.channel_count,
+    };
   }
 
   // Private methods can be defined here
-
-
   process() {
-    this.tracksByType.forEach((type, tracks) => {
-      tracks.forEach((track) => {
-        const trak = this.file.getTrackById(track.id);
-        const samples = trak.samples_stored;
+    const videoTracks = this.videoTracks;
+    videoTracks.forEach((track) => {
+      const trak = this.file.getTrackById(track.id);
+      const samples = trak.samples_stored;
 
-        for (let i = 0; i < samples.length; i++) {
-          const sample = samples[i];
+      for (let i = 0; i < samples.length; i++) {
+        const sample = samples[i];
+        track.chunks.push(new VideoSample({
+          isKey: sample.is_sync,
+          pts: sample.cts,
+          dts: sample.dts,
+          timescale: sample.timescale,
+          data: sample.data,
+        }));
+      }
 
-          const timescale = sample.timescale;
-          const currentTimestamp = Math.floor(sample.cts * 1000000 / timescale);
-          const compositionTimeOffset = Math.floor((sample.cts - nextSample.dts) * 1000000 / timescale);
-
-          const chunk = {
-            type: sample.is_sync ? 'key' : 'delta',
-            timestamp: currentTimestamp,
-            duration: -1,
-            data: sample.data,
-            compositionTimeOffset: compositionTimeOffset,
-          };
-          track.chunks.push(chunk);
-        }
-
-        samples.forEach((sample) => {
-          this.file.releaseSample(trak, sample.number);
-        });
-        samples.length = 0; // Clear samples after processing
-
-        // Check monotonicity
-        for (let i = 0; i < track.chunks.length - 1; i++) {
-          const currentChunk = track.chunks[i];
-          const nextChunk = track.chunks[i + 1];
-          if (nextChunk.timestamp < currentChunk.timestamp) {
-            console.warn('Timestamp is not monotonically increasing');
-          }
-
-          if (currentChunk.duration === -1) {
-            currentChunk.duration = nextChunk.timestamp - currentChunk.timestamp;
-          }
-        }
+      samples.forEach((sample) => {
+        this.file.releaseSample(trak, sample.number);
       });
+      samples.length = 0; // Clear samples after processing
+    });
+
+    const audioTracks = this.audioTracks;
+    audioTracks.forEach((track) => {
+      const trak = this.file.getTrackById(track.id);
+      const samples = trak.samples_stored;
+
+      for (let i = 0; i < samples.length; i++) {
+        const sample = samples[i];
+        track.chunks.push(new AudioSample({
+          pts: sample.cts,
+          timescale: sample.timescale,
+          data: sample.data,
+        }));
+      }
+
+      samples.forEach((sample) => {
+        this.file.releaseSample(trak, sample.number);
+      });
+      samples.length = 0; // Clear samples after processing
     });
   }
 
@@ -96,10 +132,6 @@ export default class MP4Demuxer extends AbstractDemuxer {
   }
 
   initializeTracks() {
-    if (this.initializedTracks) {
-      throw new Error('Tracks already initialized');
-    }
-
     this.initializedTracks = true;
 
     this.info = this.file.getInfo();
@@ -110,7 +142,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
       videoTracks.set(track.id, track);
     });
     if (videoTracks.size > 0) {
-      this.tracksByType.set(TrackTypes.VIDEO, videoTracks);
+      this.videoTracks = videoTracks;
     }
 
     const audioTracks = new Map();
@@ -119,7 +151,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
       audioTracks.set(track.id, track);
     });
     if (audioTracks.size > 0) {
-      this.tracksByType.set(TrackTypes.AUDIO, audioTracks);
+      this.audioTracks = audioTracks;
     }
 
     videoTracks.forEach((track) => {
@@ -135,32 +167,5 @@ export default class MP4Demuxer extends AbstractDemuxer {
     };
 
     this.file.start();
-  }
-
-  getVideoDecoderConfig() {
-    const videoTrack = this.videoTrack;
-    if (!videoTrack) {
-      return null;
-    }
-    return {
-      codec: videoTrack.codec,
-      codedWidth: videoTrack.video.width,
-      codedHeight: videoTrack.video.height,
-      displayAspectWidth: videoTrack.track_width,
-      displayAspectHeight: videoTrack.track_height,
-    };
-  }
-
-  getAudioDecoderConfig() {
-    const audioTrack = this.audioTrack;
-    if (!audioTrack) {
-      return null;
-    }
-    return {
-      codec: audioTrack.codec,
-      description: undefined,
-      sampleRate: audioTrack.audio.sample_rate,
-      numberOfChannels: audioTrack.audio.channel_count,
-    };
   }
 }

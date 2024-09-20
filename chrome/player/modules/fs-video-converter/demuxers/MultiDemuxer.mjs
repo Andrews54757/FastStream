@@ -15,7 +15,7 @@ export class MultiDemuxer extends AbstractDemuxer {
 
   static async loadDemuxer(type) {
     if (Object.hasOwn(DemuxerURLS, type)) {
-      return await import(DemuxerURLS[type]);
+      return (await import(DemuxerURLS[type])).default;
     }
     throw new Error(`Unsupported demuxer type: ${type}`);
   }

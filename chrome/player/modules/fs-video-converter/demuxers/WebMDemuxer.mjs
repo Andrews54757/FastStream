@@ -1,5 +1,6 @@
 import {JsWebm} from '../../reencoder/webm.mjs';
-import {TrackTypes} from '../enums/TrackTypes.mjs';
+import {AudioSample} from '../common/AudioSample.mjs';
+import {VideoSample} from '../common/VideoSample.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class WebMDemuxer extends AbstractDemuxer {
@@ -7,13 +8,19 @@ export default class WebMDemuxer extends AbstractDemuxer {
     super();
     this.demuxer = new JsWebm();
     this.MAX_ITERATIONS = 10000;
-
-    this.tracksByType = new Map();
   }
 
   // These are public methods that can be called from outside the class
   static test(buffer) {
+    const demuxer = new JsWebm();
+    try {
+      demuxer.queueData(buffer);
+      demuxer.demux();
+    } catch (e) {
+      return false;
+    }
 
+    return demuxer.elementEBML && demuxer.elementEBML.id === 0x1A45DFA3;
   }
 
   appendBuffer(buffer, offset) {
@@ -35,65 +42,87 @@ export default class WebMDemuxer extends AbstractDemuxer {
     this.process();
   }
 
-  getTracks() {
-    return this.tracksByType;
+  getVideoDecoderConfig() {
+    const videoTrack = this.demuxer.videoTrack;
+    if (!videoTrack) {
+      return null;
+    }
+
+    const config = {
+      codec: this.demuxer.videoCodec,
+      codedWidth: videoTrack.width,
+      codedHeight: videoTrack.height,
+      displayAspectWidth: videoTrack.displayWidth,
+      displayAspectHeight: videoTrack.displayHeight,
+    };
+
+    const colour = videoTrack.colour;
+    if (colour) {
+      config.colorSpace = {
+        primaries: colour.webReadyPrimaries || null,
+        transfer: colour.webReadyTransferCharacteristics || null,
+        matrix: colour.webReadyMatrixCoefficients || null,
+        fullRange: colour.range ? (colour.range === 'full') : null,
+      };
+    }
+
+    return config;
+  }
+
+  getAudioDecoderConfig(trackId) {
+    const audioTrack = this.demuxer.audioTrack;
+    if (!audioTrack) {
+      return null;
+    }
+    return {
+      codec: this.demuxer.audioCodec,
+      description: audioTrack.codecPrivate,
+      sampleRate: audioTrack.rate,
+      numberOfChannels: audioTrack.channels,
+    };
   }
 
   // Private methods can be defined here
   process() {
-    this.tracksByType.forEach((type, tracks) => {
-      tracks.forEach((track) => {
-        let samples;
-        if (type === TrackTypes.VIDEO) {
-          samples = this.demuxer.videoPackets;
-        } else if (type === TrackTypes.AUDIO) {
-          samples = this.demuxer.audioPackets;
-        }
-
-        for (let i = 0; i < samples.length; i++) {
-          const sample = samples[i];
-          const currentTimestamp = Math.floor(sample.timestamp * 1000000);
-
-          const chunk = {
-            type: sample.isKeyframe ? 'key' : 'delta',
-            timestamp: currentTimestamp,
-            duration: -1,
-            data: sample.data,
-            compositionTimeOffset: 0,
-          };
-          track.chunks.push(chunk);
-        }
-
-        samples.length = 0; // Clear samples after processing
-
-        // Check monotonicity
-        for (let i = 0; i < track.chunks.length - 1; i++) {
-          const currentChunk = track.chunks[i];
-          const nextChunk = track.chunks[i + 1];
-          if (nextChunk.timestamp < currentChunk.timestamp) {
-            console.warn('Timestamp is not monotonically increasing');
-          }
-
-          if (currentChunk.duration === -1) {
-            currentChunk.duration = nextChunk.timestamp - currentChunk.timestamp;
-          }
-        }
+    const videoTrack = this.demuxer.videoTrack;
+    if (videoTrack) {
+      const samples = videoTrack.samples;
+      samples.forEach((sample) => {
+        videoTrack.chunks.push(new VideoSample({
+          isKey: sample.isKeyframe,
+          pts: sample.timestamp,
+          dts: sample.timestamp,
+          timescale: 1,
+          data: sample.data,
+        }));
       });
-    });
+    }
+
+    const audioTrack = this.demuxer.audioTrack;
+    if (audioTrack) {
+      const samples = audioTrack.samples;
+      samples.forEach((sample) => {
+        audioTrack.chunks.push(new AudioSample({
+          pts: sample.timestamp,
+          timescale: 1,
+          data: sample.data,
+        }));
+      });
+    }
   }
 
   initializeTracks() {
+    this.initializedTracks = true;
+
     // Initialize tracks from demuxer
     const videoTrack = this.demuxer.videoTrack;
     const audioTrack = this.demuxer.audioTrack;
 
     if (videoTrack) {
-      this.tracksByType.set(TrackTypes.VIDEO, new Map([[0, videoTrack]]));
       videoTrack.chunks = [];
     }
 
     if (audioTrack) {
-      this.tracksByType.set(TrackTypes.AUDIO, new Map([[1, audioTrack]]));
       audioTrack.chunks = [];
     }
   }
