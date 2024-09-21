@@ -568,5 +568,6 @@ sendToOtherContents({
     hasCustomPlaylist: true,
     hasCustomLinkHandler: true,
     customVideoQuery: '[data-faststreamytplayer="true"]',
+    customIframeId: 'player',
   },
 });
