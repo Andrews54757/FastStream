@@ -38,7 +38,7 @@ export class URLUtils {
     try {
       const url = new URL(urlStr);
       const hostname = url.hostname;
-      if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com') {
+      if (hostname === 'www.youtube.com' || hostname === 'youtube.com' || hostname === 'm.youtube.com' || hostname === 'music.youtube.com' || hostname === 'www.youtube-nocookie.com') {
         return true;
       }
     } catch (e) {
