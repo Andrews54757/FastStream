@@ -42,6 +42,7 @@ export default class MP3Demuxer extends AbstractDemuxer {
       codec: audioTrack.parsedCodec || audioTrack.manifestCodec || audioTrack.codec,
       sampleRate: audioTrack.samplerate,
       numberOfChannels: audioTrack.channelCount,
+      description: audioTrack.config,
     });
   }
 
