@@ -3,6 +3,7 @@ import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
 import {DashJS} from '../../modules/dash.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
+import {VideoConverter} from '../../modules/fs-video-converter/VideoConverter.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {DashFragment} from './DashFragment.mjs';
@@ -441,6 +442,18 @@ export default class DashPlayer extends EventEmitter {
     const videoMimeType = videoProcessor.getRepresentation().mimeType;
     const audioMimeType = audioProcessor.getRepresentation().mimeType;
 
+    const videoConverter = new VideoConverter();
+    videoConverter.configure({
+      inputStreams: [
+        {
+          id: 0,
+        },
+      ],
+    });
+
+    videoConverter.appendBuffer(0, videoInitSegmentData);
+
+    return;
     try {
       const blob = await dash2mp4.convert(videoMimeType, videoDuration, videoInitSegmentData, audioMimeType, audioDuration, audioInitSegmentData, zippedFragments);
 

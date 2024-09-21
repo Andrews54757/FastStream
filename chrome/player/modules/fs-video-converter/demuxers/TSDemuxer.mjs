@@ -1,5 +1,6 @@
 import {TSDemuxer as HLSTSDemuxer} from '../../hls.mjs';
 import {AudioSample} from '../common/AudioSample.mjs';
+import {VideoConverterUtils} from '../common/VideoConverterUtils.mjs';
 import {VideoSample} from '../common/VideoSample.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
@@ -35,31 +36,33 @@ export default class TSDemuxer extends AbstractDemuxer {
     this.process(demuxed);
   }
 
-  getVideoDecoderConfig() {
+  getVideoInfo() {
     const videoTrack = this.videoTrack;
     if (!videoTrack) {
       return null;
     }
-    return {
-      codec: videoTrack.codec,
-      codedWidth: videoTrack.video.width,
-      codedHeight: videoTrack.video.height,
-      displayAspectWidth: videoTrack.track_width,
-      displayAspectHeight: videoTrack.track_height,
-    };
+
+    return new VideoTrackInfo({
+      codec: videoTrack.parsedCodec || videoTrack.manifestCodec || videoTrack.codec,
+      description: VideoConverterUtils.spsppsToDescription(videoTrack.sps, videoTrack.pps),
+      codedWidth: videoTrack.width,
+      codedHeight: videoTrack.height,
+      displayAspectWidth: videoTrack.pixelRatio[0],
+      displayAspectHeight: videoTrack.pixelRatio[1],
+    });
   }
 
-  getAudioDecoderConfig() {
+  getAudioInfo() {
     const audioTrack = this.audioTrack;
     if (!audioTrack) {
       return null;
     }
-    return {
-      codec: audioTrack.codec,
-      description: undefined,
-      sampleRate: audioTrack.audio.sample_rate,
-      numberOfChannels: audioTrack.audio.channel_count,
-    };
+    return new AudioTrackInfo({
+      codec: audioTrack.parsedCodec || audioTrack.manifestCodec || audioTrack.codec,
+      sampleRate: audioTrack.samplerate,
+      numberOfChannels: audioTrack.channelCount,
+      description: audioTrack.config,
+    });
   }
 
   // Private methods can be defined here

@@ -1,0 +1,1 @@
+[Codec registry](https://w3c.github.io/webcodecs/codec_registry.html)

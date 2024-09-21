@@ -29,21 +29,20 @@ export default class MP3Demuxer extends AbstractDemuxer {
     this.process(demuxed);
   }
 
-  getVideoDecoderConfig() {
+  getVideoInfo() {
     return null;
   }
 
-  getAudioDecoderConfig() {
+  getAudioInfo() {
     const audioTrack = this.audioTrack;
     if (!audioTrack) {
       return null;
     }
-    return {
-      codec: audioTrack.codec,
-      description: undefined,
-      sampleRate: audioTrack.audio.sample_rate,
-      numberOfChannels: audioTrack.audio.channel_count,
-    };
+    return new AudioTrackInfo({
+      codec: audioTrack.parsedCodec || audioTrack.manifestCodec || audioTrack.codec,
+      sampleRate: audioTrack.samplerate,
+      numberOfChannels: audioTrack.channelCount,
+    });
   }
 
   // Private methods can be defined here

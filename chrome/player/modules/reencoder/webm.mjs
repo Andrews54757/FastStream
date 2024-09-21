@@ -282,49 +282,7 @@ class Colour {
         case 0x55BA: { // TransferCharacteristics, u
           const transferCharacteristics = this.dataInterface.readUnsignedInt(this.currentElement.size);
           if (transferCharacteristics !== null) {
-            const map = [
-              'reserved', // 0
-              'ITU-R BT.709', // 1: Web ready as bt709
-              'unspecified', // 2
-              'reserved2', // 3
-              'Gamma 2.2 curve - BT.470M', // 4
-              'Gamma 2.8 curve - BT.470BG', // 5
-              'SMPTE 170M', // 6: Web ready as smpte170m
-              'SMPTE 240M', // 7
-              'Linear', // 8: Web ready as linear
-              'Log', // 9
-              'Log Sqrt', // 10
-              'IEC 61966-2-4', // 11
-              'ITU-R BT.1361 Extended Colour Gamut', // 12
-              'IEC 61966-2-1', // 13: Web ready as iec61966-2-1
-              'ITU-R BT.2020 10 bit', // 14
-              'ITU-R BT.2020 12 bit', // 15
-              'ITU-R BT.2100 Perceptual Quantization', // 16: Web ready as pq
-              'SMPTE ST 428-1', // 17
-              'ARIB STD-B67 (HLG)' // 18: Web ready as hlg
-            ];
-
-            const webReady = {
-              'ITU-R BT.709': 'bt709',
-              'SMPTE 170M': 'smpte170m',
-              'Linear': 'linear',
-              'IEC 61966-2-1': 'iec61966-2-1',
-              'ITU-R BT.2100 Perceptual Quantization': 'pq',
-              'ARIB STD-B67 (HLG)': 'hlg'
-            }
-
-            this.transferCharacteristicsNumber = transferCharacteristics;
-
-            this.transferCharacteristics = map[transferCharacteristics];
-            if (!this.transferCharacteristics) {
-              console.warn('Transfer Characteristics not found', transferCharacteristics);
-            } else {
-              this.webReadyTransferCharacteristics = webReady[this.transferCharacteristics];
-              if (!this.webReadyTransferCharacteristics) {
-                console.warn('Web ready Transfer Characteristics not found', this.transferCharacteristics);
-              }
-            }
-
+            this.transferCharacteristics = transferCharacteristics;
           } else {
             return null;
           }
@@ -333,46 +291,7 @@ class Colour {
         case 0x55BB: { // Primaries, u
           const primaries = this.dataInterface.readUnsignedInt(this.currentElement.size);
           if (primaries !== null) {
-            const map = [
-              'reserved', // 0
-              'ITU-R BT.709', // 1: Web ready as bt709
-              'unspecified', // 2
-              'reserved2', // 3
-              'ITU-R BT.470M', // 4
-              'ITU-R BT.470BG - BT.601 625', // 5: Web ready as bt470bg
-              'ITU-R BT.601 525 - SMPTE 170M', // 6: Web ready as smpte170m
-              'SMPTE 240M', // 7
-              'FILM', // 8
-              "ITU-R BT.2020", // 9: Web ready as bt2020
-              'SMTPE ST 428-1', // 10
-              'SMPTE RP 432-2', // 11
-              'SMPTE EG 432-2' // 12: Web ready as smpte432
-            ];
-
-            this.primariesNumber = primaries;
-
-            if (primaries === 22) {
-              this.primaries = 'EBU Tech. 3213-E - JEDEC P22 phosphors';
-            } else {
-              this.primaries = map[primaries];
-            }
-
-            const webReady = {
-              'ITU-R BT.709': 'bt709',
-              'ITU-R BT.470BG - BT.601 625': 'bt470bg',
-              'ITU-R BT.601 525 - SMPTE 170M': 'smpte170m',
-              'ITU-R BT.2020': 'bt2020',
-              'SMPTE RP 432-2': 'smpte432'
-            }
-
-            if (!this.primaries) {
-              console.warn('Primaries not found', primaries);
-            } else {
-              this.webReadyPrimaries = webReady[this.primaries];
-              if (!this.webReadyPrimaries) {
-                console.warn('Web ready primaries not found', this.primaries);
-              }
-            }
+              this.primaries = primaries
           } else {
             return null;
           }

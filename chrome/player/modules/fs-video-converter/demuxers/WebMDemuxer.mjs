@@ -1,6 +1,9 @@
 import {JsWebm} from '../../reencoder/webm.mjs';
 import {AudioSample} from '../common/AudioSample.mjs';
+import {AudioTrackInfo} from '../common/AudioTrackInfo.mjs';
+import {ColorSpaceConfig} from '../common/ColorSpaceConfig.mjs';
 import {VideoSample} from '../common/VideoSample.mjs';
+import {VideoTrackInfo} from '../common/VideoTrackInfo.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class WebMDemuxer extends AbstractDemuxer {
@@ -42,44 +45,46 @@ export default class WebMDemuxer extends AbstractDemuxer {
     this.process();
   }
 
-  getVideoDecoderConfig() {
+  getVideoInfo() {
     const videoTrack = this.demuxer.videoTrack;
     if (!videoTrack) {
       return null;
     }
 
-    const config = {
+    let colorSpace = null;
+
+    const colour = videoTrack.colour;
+    if (colour) {
+      colorSpace = new ColorSpaceConfig({
+        primaries: colour.primaries,
+        transfer: colour.transferCharacteristics,
+        matrix: colour.matrixCoefficients,
+        fullRange: colour.range ? (colour.range === 'full') : null,
+      });
+    }
+
+    return new VideoTrackInfo({
       codec: this.demuxer.videoCodec,
+      description: videoTrack.codecPrivate,
       codedWidth: videoTrack.width,
       codedHeight: videoTrack.height,
       displayAspectWidth: videoTrack.displayWidth,
       displayAspectHeight: videoTrack.displayHeight,
-    };
-
-    const colour = videoTrack.colour;
-    if (colour) {
-      config.colorSpace = {
-        primaries: colour.webReadyPrimaries || null,
-        transfer: colour.webReadyTransferCharacteristics || null,
-        matrix: colour.webReadyMatrixCoefficients || null,
-        fullRange: colour.range ? (colour.range === 'full') : null,
-      };
-    }
-
-    return config;
+      colorSpace,
+    });
   }
 
-  getAudioDecoderConfig(trackId) {
+  getAudioInfo() {
     const audioTrack = this.demuxer.audioTrack;
     if (!audioTrack) {
       return null;
     }
-    return {
+    return new AudioTrackInfo({
       codec: this.demuxer.audioCodec,
       description: audioTrack.codecPrivate,
       sampleRate: audioTrack.rate,
       numberOfChannels: audioTrack.channels,
-    };
+    });
   }
 
   // Private methods can be defined here
