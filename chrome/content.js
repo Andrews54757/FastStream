@@ -584,25 +584,34 @@
 
       windowedFullscreenState.active = true;
       windowedFullscreenState.oldStyle = iframeObj.iframe.getAttribute('style') || '';
-      fillScreenIframe(iframeObj.iframe);
+      windowedFullscreenState.fillScreenWhitelist = fillScreenIframe(iframeObj.iframe);
     } else {
       windowedFullscreenState.active = false;
       iframeObj.iframe.setAttribute('style', windowedFullscreenState.oldStyle);
-      undoFillScreenIframe();
+      undoFillScreenIframe(windowedFullscreenState.fillScreenWhitelist);
       setTimeout(() => {
         updateReplacedPlayers();
       }, 1000);
     }
   }
 
-  function undoFillScreenIframe() {
-    elementsChangedByFillscreen.forEach(([element, old]) => {
-      element.setAttribute('style', old);
-    });
-    elementsChangedByFillscreen.length = 0;
+  function undoFillScreenIframe(whitelist) {
+    for (let i = 0; i < elementsChangedByFillscreen.length; i++) {
+      const [element, old] = elementsChangedByFillscreen[i];
+      if (!whitelist || whitelist.includes(element)) {
+        element.setAttribute('style', old);
+        elementsChangedByFillscreen.splice(i, 1);
+        i--;
+
+        if (whitelist) {
+          whitelist.splice(whitelist.indexOf(element), 1);
+        }
+      }
+    }
   }
 
   function fillScreenIframe(iframe, skipHide = false) {
+    const addedElements = [];
     const expandStyle =
     `position: fixed !important;
     display: block !important;
@@ -658,6 +667,7 @@
         const oldstyle = element.getAttribute('style') || '';
         element.style.setProperty('display', 'none', 'important');
         elementsChangedByFillscreen.push([element, oldstyle]);
+        addedElements.push(element);
       });
 
       elementsToExpand.forEach((element) => {
@@ -671,10 +681,13 @@
         const oldstyle = element.getAttribute('style') || '';
         element.setAttribute('style', expandStyle);
         elementsChangedByFillscreen.push([element, oldstyle]);
+        addedElements.push(element);
       });
     }
 
     iframe.setAttribute('style', expandStyle);
+
+    return addedElements;
   }
 
   function hideSoft(player) {
