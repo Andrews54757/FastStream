@@ -57,6 +57,51 @@ export default class MP4Demuxer extends AbstractDemuxer {
     this.process();
   }
 
+
+  getAllSamples() {
+    const videoTracks = this.videoTracks;
+    const audioTracks = this.audioTracks;
+
+    const results = new Map();
+
+    videoTracks.forEach((track) => {
+      results.set(track.id, {
+        id: track.id,
+        type: TrackTypes.VIDEO,
+        samples: track.fssamples,
+      });
+      track.fssamples = [];
+    });
+
+    audioTracks.forEach((track) => {
+      results.set(track.id, {
+        id: track.id,
+        type: TrackTypes.AUDIO,
+        samples: track.fssamples,
+      });
+      track.fssamples = [];
+    });
+
+    return results;
+  }
+
+  getAllTracks() {
+    const videoTracks = this.videoTracks;
+    const audioTracks = this.audioTracks;
+
+    const results = new Map();
+    videoTracks.forEach((track) => {
+      results.set(track.id, this.getVideoInfo(track.id));
+    });
+
+    audioTracks.forEach((track) => {
+      results.set(track.id, this.getAudioInfo(track.id));
+    });
+
+    return results;
+  }
+
+  // Private methods can be defined here
   getVideoInfo(trackId) {
     const videoTrack = this.videoTracks?.get(trackId);
     if (!videoTrack) {
@@ -117,6 +162,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
     }
 
     return new VideoTrackInfo({
+      id: videoTrack.id,
       codec: videoTrack.codec,
       description,
       codedWidth: videoTrack.video.width,
@@ -169,6 +215,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
     }
 
     return new AudioTrackInfo({
+      id: audioTrack.id,
       codec: audioTrack.codec,
       sampleRate: audioTrack.audio.sample_rate,
       numberOfChannels: audioTrack.audio.channel_count,
@@ -176,7 +223,6 @@ export default class MP4Demuxer extends AbstractDemuxer {
     });
   }
 
-  // Private methods can be defined here
   process() {
     const videoTracks = this.videoTracks;
     videoTracks.forEach((track) => {
@@ -185,10 +231,10 @@ export default class MP4Demuxer extends AbstractDemuxer {
 
       for (let i = 0; i < samples.length; i++) {
         const sample = samples[i];
-        track.chunks.push(new VideoSample({
+        track.fssamples.push(new VideoSample({
           isKey: sample.is_sync,
           pts: sample.cts,
-          dts: sample.dts,
+          coffset: sample.cts - sample.dts,
           timescale: sample.timescale,
           data: sample.data,
         }));
@@ -207,7 +253,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
 
       for (let i = 0; i < samples.length; i++) {
         const sample = samples[i];
-        track.chunks.push(new AudioSample({
+        track.fssamples.push(new AudioSample({
           pts: sample.cts,
           timescale: sample.timescale,
           data: sample.data,
@@ -236,7 +282,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
 
     const videoTracks = new Map();
     this.info.videoTracks.forEach((track) => {
-      track.chunks = [];
+      track.fssamples = [];
       videoTracks.set(track.id, track);
     });
     this.videoTracks = videoTracks;
@@ -244,7 +290,7 @@ export default class MP4Demuxer extends AbstractDemuxer {
 
     const audioTracks = new Map();
     this.info.audioTracks.forEach((track) => {
-      track.chunks = [];
+      track.fssamples = [];
       audioTracks.set(track.id, track);
     });
     this.audioTracks = audioTracks;

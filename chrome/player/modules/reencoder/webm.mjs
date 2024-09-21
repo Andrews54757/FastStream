@@ -1,4 +1,5 @@
 /* eslint-disable */
+// https://www.matroska.org/technical/
 /*
 MIT License
 
@@ -589,7 +590,7 @@ class Cluster {
     this.loaded = false;
     this.tempEntry = null;
     this.currentElement = null;
-    this.timeCode = null;
+    this.timeStamp = null;
     this.tempBlock = null;
     this.position = null;
     this.tempElementHeader = new ElementHeader(-1, -1, -1, -1);
@@ -619,9 +620,9 @@ class Cluster {
       }
       switch (this.tempElementHeader.id) {
         case 0xE7: // TimeCode
-          var timeCode = this.dataInterface.readUnsignedInt(this.tempElementHeader.size);
-          if (timeCode !== null) {
-            this.timeCode = timeCode;
+          var timeStamp = this.dataInterface.readUnsignedInt(this.tempElementHeader.size);
+          if (timeStamp !== null) {
+            this.timeStamp = timeStamp;
           } else {
             return null;
           }
@@ -654,9 +655,9 @@ class Cluster {
           }
           break;
         case 0xA7: // Position
-          var timeCode = this.dataInterface.readUnsignedInt(this.tempElementHeader.size);
-          if (timeCode !== null) {
-            this.timeCode = timeCode;
+          var timeStamp = this.dataInterface.readUnsignedInt(this.tempElementHeader.size);
+          if (timeStamp !== null) {
+            this.timeStamp = timeStamp;
           } else {
             return null;
           }
@@ -1758,16 +1759,6 @@ export class JsWebm {
         return this.segmentInfo.duration / 1000;// / 1000000000.0; ;
       },
     });
-
-    Object.defineProperty(this, 'keyframeTimestamp', {
-      get: function () {
-        if (this.videoPackets.length > 0) {
-          return this.videoPackets[0].keyframeTimestamp;
-        } else {
-          return -1;
-        }
-      },
-    });
   }
 
   /**
@@ -1937,16 +1928,16 @@ export class JsWebm {
 
     const colour = trackEntry.colour;
     if (colour) {
-      if (colour.primaries) {
-        colourPrimaries = colour.primariesNumber;
+      if (colour.primaries !== undefined) {
+        colourPrimaries = colour.primaries;
       }
 
-      if (colour.transferCharacteristics) {
-        transferCharacteristics = colour.transferCharacteristicsNumber;
+      if (colour.transferCharacteristics !== undefined) {
+        transferCharacteristics = colour.transferCharacteristics;
       }
 
-      if (colour.matrixCoefficients) {
-        matrixCoefficients = colour.matrixCoefficientsNumber;
+      if (colour.matrixCoefficients !== undefined) {
+        matrixCoefficients = colour.matrixCoefficients;
       }
 
       if (colour.range) {
@@ -2320,7 +2311,7 @@ export class JsWebm {
        * Get the offset based off the seconds, probably use binary search and have to parse the keypoints to numbers
        */
   calculateKeypointOffset() {
-    const timecodeScale = this.segmentInfo.timecodeScale;
+    const timestampScale = this.segmentInfo.timestampScale;
     this.seekTime;
     const cuesPoints = this.cues.entries; // cache for faster lookups;
     const length = this.cues.entries.length; // total number of cues;
@@ -2332,7 +2323,7 @@ export class JsWebm {
     let i = 1;
     for (i; i < length; i++) {
       tempPoint = cuesPoints[i];
-      if (tempPoint.cueTime * timecodeScale > this.seekTime) {
+      if (tempPoint.cueTime * timestampScale > this.seekTime) {
         break;
       }
       scanPoint = tempPoint;
@@ -2478,7 +2469,7 @@ class SegmentInfo {
     this.writingApp = null;
     this.title = null;
     this.dataOffset = null;
-    this.timecodeScale = 1000000;
+    this.timestampScale = 1000000;
     this.duration = -1;
     this.loaded = false;
     this.segmentUID = null;
@@ -2498,10 +2489,10 @@ class SegmentInfo {
 
       switch (this.currentElement.id) {
         // TODO add duration and title
-        case 0x2AD7B1: { // TimeCodeScale
-          const timecodeScale = this.dataInterface.readUnsignedInt(this.currentElement.size);
-          if (timecodeScale !== null) {
-            this.timecodeScale = timecodeScale;
+        case 0x2AD7B1: { // TimeStampScale
+          const timestampScale = this.dataInterface.readUnsignedInt(this.currentElement.size);
+          if (timestampScale !== null) {
+            this.timestampScale = timestampScale;
           } else {
             return null;
           }
@@ -2599,7 +2590,7 @@ class SimpleBlock {
     this.end;// = blockHeader.end;
     this.loaded = false;
     this.trackNumber = null;
-    this.timeCode = -1;
+    this.timeStamp = -1;
     this.flags = null;
     this.keyFrame = false;
     this.invisible = false;
@@ -2629,7 +2620,7 @@ class SimpleBlock {
     this.end = end;
     this.loaded = false;
     this.trackNumber = null;
-    this.timeCode = null;
+    this.timeStamp = null;
     this.flags = null;
     this.keyFrame = false;
     this.invisible = false;
@@ -2683,9 +2674,9 @@ class SimpleBlock {
       this.loadTrack();
     }
 
-    if (this.timeCode === null) {
-      this.timeCode = dataInterface.readUnsignedInt(2);// Be signed for some reason?
-      if (this.timeCode === null) {
+    if (this.timeStamp === null) {
+      this.timeStamp = dataInterface.readUnsignedInt(2);// Be signed for some reason?
+      if (this.timeStamp === null) {
         return null;
       }
     }
@@ -2733,9 +2724,9 @@ class SimpleBlock {
         }
 
         this.fixedFrameLength = (this.frameLength - 1) / this.lacedFrameCount;
-        var fullTimeCode = this.timeCode + this.cluster.timeCode;
-        // var fullTimeCode = this.cluster.timeCode;
-        var timeStamp = fullTimeCode / 1000;
+        var fullTimeStamp = this.timeStamp + this.cluster.timeStamp;
+        // var fullTimeCode = this.cluster.timeStamp;
+        var timeStamp = fullTimeStamp;
         if (timeStamp < 0) {
           throw 'INVALID TIMESTAMP';
         }
@@ -2744,14 +2735,13 @@ class SimpleBlock {
           if (this.track.trackType === 1) {
             this.videoPackets.push({// This could be improved
               data: tempFrame.slice(i * this.fixedFrameLength, i * this.fixedFrameLength + this.fixedFrameLength),
-              timestamp: timeStamp,
-              keyframeTimestamp: timeStamp,
+              timestamp: i === 0 ? timeStamp : null,
               isKeyframe: this.keyFrame,
             });
           } else if (this.track.trackType === 2) {
             this.audioPackets.push({// This could be improved
               data: tempFrame.slice(i * this.fixedFrameLength, i * this.fixedFrameLength + this.fixedFrameLength),
-              timestamp: timeStamp,
+              timestamp: i === 0 ? timeStamp : null,
               isKeyframe: this.keyFrame,
             });
           }
@@ -2816,9 +2806,9 @@ class SimpleBlock {
           return null;
         }
 
-        var fullTimeCode = this.timeCode + this.cluster.timeCode;
-        // var fullTimeCode = this.cluster.timeCode;
-        var timeStamp = fullTimeCode / 1000;
+        var fullTimeStamp = this.timeStamp + this.cluster.timeStamp;
+        // var fullTimeCode = this.cluster.timeStamp;
+        var timeStamp = fullTimeStamp;
         if (timeStamp < 0) {
           throw 'INVALID TIMESTAMP';
         }
@@ -2829,14 +2819,13 @@ class SimpleBlock {
           if (this.track.trackType === 1) {
             this.videoPackets.push({// This could be improved
               data: tempFrame.slice(start, end),
-              timestamp: timeStamp,
-              keyframeTimestamp: timeStamp,
+              timestamp: i === 0 ? timeStamp : null,
               isKeyframe: this.keyFrame,
             });
           } else if (this.track.trackType === 2) {
             this.audioPackets.push({// This could be improved
               data: tempFrame.slice(start, end),
-              timestamp: timeStamp,
+              timestamp: i === 0 ? timeStamp : null,
               isKeyframe: this.keyFrame,
             });
           }
@@ -2882,9 +2871,9 @@ class SimpleBlock {
         }
 
 
-        var fullTimeCode = this.timeCode + this.cluster.timeCode;
-        // var fullTimeCode = this.cluster.timeCode;
-        var timeStamp = fullTimeCode / 1000;
+        var fullTimeStamp = this.timeStamp + this.cluster.timeStamp;
+        // var fullTimeCode = this.cluster.timeStamp;
+        var timeStamp = fullTimeStamp;
         if (timeStamp < 0) {
           throw 'INVALID TIMESTAMP';
         }
@@ -2893,7 +2882,6 @@ class SimpleBlock {
           this.videoPackets.push({// This could be improved
             data: tempFrame,
             timestamp: timeStamp,
-            keyframeTimestamp: timeStamp,
             isKeyframe: this.keyFrame,
           });
         } else if (this.track.trackType === 2) {

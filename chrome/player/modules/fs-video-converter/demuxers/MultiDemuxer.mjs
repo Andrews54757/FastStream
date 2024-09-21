@@ -49,17 +49,11 @@ export class MultiDemuxer extends AbstractDemuxer {
     await this.demuxer.appendBuffer(data, offset);
   }
 
-  async process() {
-    if (!this.demuxer) {
-      throw new Error('Demuxer not initialized');
-    }
-    await this.demuxer.process();
+  getAllSamples() {
+    return this.demuxer.getAllSamples();
   }
 
-  async destroy() {
-    if (this.demuxer) {
-      await this.demuxer.destroy();
-      this.demuxer = null;
-    }
+  getAllTracks() {
+    return this.demuxer.getAllTracks();
   }
 }

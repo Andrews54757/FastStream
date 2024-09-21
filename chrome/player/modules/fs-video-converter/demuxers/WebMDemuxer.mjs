@@ -4,6 +4,7 @@ import {AudioTrackInfo} from '../common/AudioTrackInfo.mjs';
 import {ColorSpaceConfig} from '../common/ColorSpaceConfig.mjs';
 import {VideoSample} from '../common/VideoSample.mjs';
 import {VideoTrackInfo} from '../common/VideoTrackInfo.mjs';
+import {TrackTypes} from '../enums/TrackTypes.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class WebMDemuxer extends AbstractDemuxer {
@@ -45,6 +46,51 @@ export default class WebMDemuxer extends AbstractDemuxer {
     this.process();
   }
 
+  getAllSamples() {
+    const videoTrack = this.demuxer.videoTrack;
+    const audioTrack = this.demuxer.audioTrack;
+
+    const results = new Map();
+
+    if (videoTrack) {
+      results.set(0, {
+        id: 0,
+        type: TrackTypes.VIDEO,
+        samples: videoTrack.fssamples,
+      });
+      videoTrack.fssamples = [];
+    }
+
+    if (audioTrack) {
+      results.set(1, {
+        id: 1,
+        type: TrackTypes.AUDIO,
+        samples: videoTrack.fssamples,
+      });
+      audioTrack.fssamples = [];
+    }
+
+    return results;
+  }
+
+  getAllTracks() {
+    const videoTrack = this.demuxer.videoTrack;
+    const audioTrack = this.demuxer.audioTrack;
+
+    const results = new Map();
+
+    if (videoTrack) {
+      results.set(0, this.getVideoInfo());
+    }
+
+    if (audioTrack) {
+      results.set(1, this.getAudioInfo());
+    }
+
+    return results;
+  }
+
+  // Private methods can be defined here
   getVideoInfo() {
     const videoTrack = this.demuxer.videoTrack;
     if (!videoTrack) {
@@ -64,6 +110,7 @@ export default class WebMDemuxer extends AbstractDemuxer {
     }
 
     return new VideoTrackInfo({
+      id: 0,
       codec: this.demuxer.videoCodec,
       description: videoTrack.codecPrivate,
       codedWidth: videoTrack.width,
@@ -80,6 +127,7 @@ export default class WebMDemuxer extends AbstractDemuxer {
       return null;
     }
     return new AudioTrackInfo({
+      id: 1,
       codec: this.demuxer.audioCodec,
       description: audioTrack.codecPrivate,
       sampleRate: audioTrack.rate,
@@ -87,32 +135,33 @@ export default class WebMDemuxer extends AbstractDemuxer {
     });
   }
 
-  // Private methods can be defined here
   process() {
     const videoTrack = this.demuxer.videoTrack;
     if (videoTrack) {
-      const samples = videoTrack.samples;
+      const samples = this.demuxer.videoPackets;
       samples.forEach((sample) => {
-        videoTrack.chunks.push(new VideoSample({
+        videoTrack.fssamples.push(new VideoSample({
           isKey: sample.isKeyframe,
           pts: sample.timestamp,
-          dts: sample.timestamp,
-          timescale: 1,
+          coffset: 0,
+          timescale: this.demuxer.segmentInfo.timestampScale,
           data: sample.data,
         }));
       });
+      samples.length = 0;
     }
 
     const audioTrack = this.demuxer.audioTrack;
     if (audioTrack) {
-      const samples = audioTrack.samples;
+      const samples = this.demuxer.audioPackets;
       samples.forEach((sample) => {
-        audioTrack.chunks.push(new AudioSample({
+        audioTrack.fssamples.push(new AudioSample({
           pts: sample.timestamp,
-          timescale: 1,
+          timescale: this.demuxer.segmentInfo.timestampScale,
           data: sample.data,
         }));
       });
+      samples.length = 0;
     }
   }
 
@@ -124,11 +173,11 @@ export default class WebMDemuxer extends AbstractDemuxer {
     const audioTrack = this.demuxer.audioTrack;
 
     if (videoTrack) {
-      videoTrack.chunks = [];
+      videoTrack.fssamples = [];
     }
 
     if (audioTrack) {
-      audioTrack.chunks = [];
+      audioTrack.fssamples = [];
     }
   }
 }

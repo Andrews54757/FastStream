@@ -1,4 +1,5 @@
 import {AACDemuxer as HLSAACDemuxer} from '../../hls.mjs';
+import {AudioTrackInfo} from '../common/AudioTrackInfo.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class AACDemuxer extends AbstractDemuxer {
@@ -31,16 +32,40 @@ export default class AACDemuxer extends AbstractDemuxer {
     this.process(demuxed);
   }
 
-  getVideoInfo() {
-    return null;
+  getAllSamples() {
+    const audioTrack = this.audioTrack;
+
+    const results = new Map();
+
+    if (audioTrack) {
+      results.set(0, {
+        id: 0,
+        type: TrackTypes.AUDIO,
+        samples: videoTrack.fssamples,
+      });
+      audioTrack.fssamples = [];
+    }
+
+    return results;
   }
 
+  getAllTracks() {
+    const audioTrack = this.audioTrack;
+    const results = new Map();
+    if (audioTrack) {
+      results.set(1, this.getAudioInfo());
+    }
+    return results;
+  }
+
+  // Private methods can be defined here
   getAudioInfo() {
     const audioTrack = this.audioTrack;
     if (!audioTrack) {
       return null;
     }
     return new AudioTrackInfo({
+      id: 0,
       codec: audioTrack.parsedCodec || audioTrack.manifestCodec || audioTrack.codec,
       sampleRate: audioTrack.samplerate,
       numberOfChannels: audioTrack.channelCount,
@@ -48,12 +73,11 @@ export default class AACDemuxer extends AbstractDemuxer {
     });
   }
 
-  // Private methods can be defined here
   initializeTracks(demuxed) {
     this.initializedTracks = true;
 
     if (demuxed.audioTrack && demuxed.audioTrack.pid > -1) {
-      demuxed.audioTrack.chunks = [];
+      demuxed.audioTrack.fssamples = [];
       this.audioTrack = demuxed.audioTrack;
     }
   }
@@ -74,7 +98,7 @@ export default class AACDemuxer extends AbstractDemuxer {
 
       for (let i = 0; i < samples.length; i++) {
         const sample = samples[i];
-        track.chunks.push(new AudioSample({
+        track.fssamples.push(new AudioSample({
           pts: sample.pts,
           timescale: track.inputTimeScale,
           data: sample.unit,

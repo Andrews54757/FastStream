@@ -6,6 +6,7 @@ export class AudioSample extends AbstractSample {
   }) {
     super();
     this.pts = pts;
+    this.isKey = true;
     this.timescale = timescale;
     this.data = data;
   }

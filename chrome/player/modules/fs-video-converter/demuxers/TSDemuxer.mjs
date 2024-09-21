@@ -1,7 +1,9 @@
 import {TSDemuxer as HLSTSDemuxer} from '../../hls.mjs';
 import {AudioSample} from '../common/AudioSample.mjs';
+import {AudioTrackInfo} from '../common/AudioTrackInfo.mjs';
 import {VideoConverterUtils} from '../common/VideoConverterUtils.mjs';
 import {VideoSample} from '../common/VideoSample.mjs';
+import {VideoTrackInfo} from '../common/VideoTrackInfo.mjs';
 import {AbstractDemuxer} from './AbstractDemuxer.mjs';
 
 export default class TSDemuxer extends AbstractDemuxer {
@@ -36,6 +38,48 @@ export default class TSDemuxer extends AbstractDemuxer {
     this.process(demuxed);
   }
 
+
+  getAllSamples() {
+    const videoTrack = this.videoTrack;
+    const audioTrack = this.audioTrack;
+
+    const results = new Map();
+
+    if (videoTrack) {
+      results.set(0, {
+        id: 0,
+        type: TrackTypes.VIDEO,
+        samples: videoTrack.fssamples,
+      });
+      videoTrack.fssamples = [];
+    }
+
+    if (audioTrack) {
+      results.set(1, {
+        id: 1,
+        type: TrackTypes.AUDIO,
+        samples: videoTrack.fssamples,
+      });
+      audioTrack.fssamples = [];
+    }
+
+    return results;
+  }
+
+  getAllTracks() {
+    const videoTrack = this.videoTrack;
+    const audioTrack = this.audioTrack;
+    const results = new Map();
+    if (videoTrack) {
+      results.set(0, this.getVideoInfo());
+    }
+    if (audioTrack) {
+      results.set(1, this.getAudioInfo());
+    }
+    return results;
+  }
+
+  // Private methods can be defined here
   getVideoInfo() {
     const videoTrack = this.videoTrack;
     if (!videoTrack) {
@@ -43,6 +87,7 @@ export default class TSDemuxer extends AbstractDemuxer {
     }
 
     return new VideoTrackInfo({
+      id: 0,
       codec: videoTrack.parsedCodec || videoTrack.manifestCodec || videoTrack.codec,
       description: VideoConverterUtils.spsppsToDescription(videoTrack.sps, videoTrack.pps),
       codedWidth: videoTrack.width,
@@ -58,6 +103,7 @@ export default class TSDemuxer extends AbstractDemuxer {
       return null;
     }
     return new AudioTrackInfo({
+      id: 1,
       codec: audioTrack.parsedCodec || audioTrack.manifestCodec || audioTrack.codec,
       sampleRate: audioTrack.samplerate,
       numberOfChannels: audioTrack.channelCount,
@@ -65,17 +111,16 @@ export default class TSDemuxer extends AbstractDemuxer {
     });
   }
 
-  // Private methods can be defined here
   initializeTracks(demuxed) {
     this.initializedTracks = true;
 
     if (demuxed.audioTrack && demuxed.audioTrack.pid > -1) {
-      demuxed.audioTrack.chunks = [];
+      demuxed.audioTrack.fssamples = [];
       this.audioTrack = demuxed.audioTrack;
     }
 
     if (demuxed.videoTrack && demuxed.videoTrack.pid > -1) {
-      demuxed.videoTrack.chunks = [];
+      demuxed.videoTrack.fssamples = [];
       this.videoTrack = demuxed.videoTrack;
     }
   }
@@ -112,10 +157,10 @@ export default class TSDemuxer extends AbstractDemuxer {
           offset += unit.data.byteLength;
         }
 
-        track.chunks.push(new VideoSample({
+        track.fssamples.push(new VideoSample({
           isKey: sample.key,
           pts: sample.pts,
-          dts: sample.dts,
+          coffset: sample.pts - sample.dts,
           timescale: track.inputTimeScale,
           data: data,
         }));
@@ -131,7 +176,7 @@ export default class TSDemuxer extends AbstractDemuxer {
 
       for (let i = 0; i < samples.length; i++) {
         const sample = samples[i];
-        track.chunks.push(new AudioSample({
+        track.fssamples.push(new AudioSample({
           pts: sample.pts,
           timescale: track.inputTimeScale,
           data: sample.unit,

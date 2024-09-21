@@ -1,6 +1,9 @@
+import {TrackTypes} from '../enums/TrackTypes.mjs';
+
 // https://developer.mozilla.org/en-US/docs/Web/API/VideoDecoder/configure
 export class VideoTrackInfo {
   constructor({
+    id,
     codec,
     description,
     codedWidth,
@@ -9,6 +12,8 @@ export class VideoTrackInfo {
     displayAspectHeight,
     colorSpace,
   }) {
+    this.id = id;
+    this.type = TrackTypes.VIDEO;
     this.codec = codec;
     this.description = description;
     this.codedWidth = codedWidth;

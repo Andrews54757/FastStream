@@ -12,4 +12,12 @@ export class AbstractDemuxer extends EventEmitter {
   appendBuffer(data, offset) {
     throw new Error('Method not implemented.');
   }
+
+  getAllSamples() {
+    throw new Error('Method not implemented.');
+  }
+
+  getAllTracks() {
+    throw new Error('Method not implemented.');
+  }
 }

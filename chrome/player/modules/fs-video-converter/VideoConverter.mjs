@@ -19,12 +19,16 @@ export class VideoConverter extends EventEmitter {
     });
   }
 
-  appendBuffer(streamId, data, offset) {
+  async appendBuffer(streamId, data, offset) {
     const inputStream = this.inputs.get(streamId);
     if (!inputStream) {
       throw new Error(`Input stream not found: ${streamId}`);
     }
 
-    inputStream.appendBuffer(data, offset);
+    return inputStream.appendBuffer(data, offset);
+  }
+
+  processSamples() {
+
   }
 }

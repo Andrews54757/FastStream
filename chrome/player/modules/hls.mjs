@@ -13711,7 +13711,7 @@ class MP3Demuxer extends BaseAudioDemuxer {
  *  AAC helper
  */
 
-class AAC {
+export class AAC {
   static getSilentFrame(codec, channelCount) {
     switch (codec) {
       case 'mp4a.40.2':
