@@ -122,6 +122,17 @@
         windowedFullscreenState: {},
       };
 
+      if (iframeMap.has(request.frameId)) {
+        const oldFrameObj = iframeMap.get(request.frameId);
+        if (oldFrameObj.miniplayerState.active) {
+          unmakeMiniPlayer(oldFrameObj);
+        }
+
+        if (oldFrameObj.windowedFullscreenState.active) {
+          windowedFullscreenToggle(oldFrameObj);
+        }
+      }
+
       iframeMap.set(request.frameId, newFrameObj);
 
       updateReplacedPlayers();
