@@ -274,15 +274,16 @@ export default class YTPlayer extends DashPlayer {
       chrome.runtime.sendMessage({
         type: MessageTypes.REQUEST_YT_DATA,
       }, (datas)=>{
+        console.log('Recieved YT Data', datas);
         if (!datas) {
           return;
         }
         const visitorData = Utils.findPropertyRecursive(datas, 'visitorData')[0]?.value;
-        //  const endpointURL = Utils.findPropertyRecursive(datas, 'videostatsPlaybackUrl')[0]?.value?.baseUrl;
-        if (visitorData) {
+        const endpointURL = Utils.findPropertyRecursive(datas, 'videostatsPlaybackUrl')[0]?.value?.baseUrl;
+        if (visitorData && endpointURL) {
           this.videoInfo.addToWatchHistory({
             visitor_data: visitorData,
-            //    url: endpointURL,
+            url: endpointURL,
           });
           console.log('Marked yt video as watched');
         }
