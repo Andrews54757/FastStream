@@ -22,7 +22,6 @@ import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
-import {ReferenceTypes} from './enums/ReferenceTypes.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {URLUtils} from './utils/URLUtils.mjs';
 import {YoutubeClients} from './enums/YoutubeClients.mjs';
