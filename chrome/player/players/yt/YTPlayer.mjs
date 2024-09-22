@@ -278,8 +278,14 @@ export default class YTPlayer extends DashPlayer {
         if (!datas) {
           return;
         }
+        const initialResponse = Utils.findPropertyRecursive(datas, 'ytInitialPlayerResponse')[0]?.value;
+        if (!initialResponse || initialResponse.videoDetails.videoId !== this.videoInfo.basic_info.id) {
+          console.log('Video ID does not match, will not mark as watched');
+          return;
+        }
+
         const visitorData = Utils.findPropertyRecursive(datas, 'visitorData')[0]?.value;
-        const endpointURL = Utils.findPropertyRecursive(datas, 'videostatsPlaybackUrl')[0]?.value?.baseUrl;
+        const endpointURL = Utils.findPropertyRecursive(initialResponse, 'videostatsPlaybackUrl')[0]?.value?.baseUrl;
         if (visitorData && endpointURL) {
           this.videoInfo.addToWatchHistory({
             visitor_data: visitorData,
