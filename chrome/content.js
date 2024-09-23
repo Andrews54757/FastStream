@@ -328,17 +328,21 @@
 
     if (miniplayerState.active && request.autoExit) {
       // if placeholder is visible again
-      const observer = new IntersectionObserver(([entry]) => {
+      const observer = new IntersectionObserver(async ([entry]) => {
         if (entry.intersectionRatio > 0.3 && miniplayerState.active) {
           //  unmakeMiniPlayer(iframeObj);
           observer.disconnect();
 
-          sendToPlayer(miniplayerState.playerFrameId, {
+          const result = await sendToPlayer(miniplayerState.playerFrameId, {
             type: 'miniplayer-state',
             value: false,
           });
 
-          // updateReplacedPlayers();
+          if (result[0] !== 'recieved') {
+            console.error('Failed to send miniplayer state to player, assuming its closed');
+            unmakeMiniPlayer(iframeObj);
+            updateReplacedPlayers();
+          }
         }
       }, {
         threshold: [0, 0.25, 0.5],
@@ -354,7 +358,7 @@
     }
   }
 
-  function sendToPlayer(frameId, data) {
+  async function sendToPlayer(frameId, data) {
     const frameIds = [];
     if (typeof frameId === 'number') {
       frameIds.push(frameId);
@@ -366,13 +370,17 @@
       });
     }
 
-    frameIds.forEach((id) => {
-      chrome.runtime.sendMessage({
-        type: MessageTypes.SEND_TO_PLAYER,
-        frameId: id,
-        data,
+    return Promise.all(frameIds.map((id) => {
+      return new Promise((resolve) => {
+        chrome.runtime.sendMessage({
+          type: MessageTypes.SEND_TO_PLAYER,
+          frameId: id,
+          data,
+        }, (response) => {
+          resolve(response);
+        });
       });
-    });
+    }));
   }
 
   function handleFullscreen(request, sender, sendResponse) {
