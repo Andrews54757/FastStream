@@ -144,20 +144,12 @@ export class MultiChannelSampleAdjuster {
   getAllSamples() {
     const results = new Map();
     if (this.videoQueue) {
-      results.set(this.videoQueue.id, {
-        id: this.videoQueue.id,
-        type: TrackTypes.VIDEO,
-        samples: this.videoQueue.outputSamples,
-      });
+      results.set(this.videoQueue.id, this.videoQueue.outputSamples);
       this.videoQueue.outputSamples = [];
     }
 
     if (this.audioQueue) {
-      results.set(this.audioQueue.id, {
-        id: this.audioQueue.id,
-        type: TrackTypes.AUDIO,
-        samples: this.audioQueue.outputSamples,
-      });
+      results.set(this.audioQueue.id, this.audioQueue.outputSamples);
       this.audioQueue.outputSamples = [];
     }
 

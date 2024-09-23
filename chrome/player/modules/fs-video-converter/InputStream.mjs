@@ -1,6 +1,5 @@
 import {TimeStampFixer} from './common/TimeStampFixer.mjs';
 import {MultiDemuxer} from './demuxers/MultiDemuxer.mjs';
-import {TrackTypes} from './enums/TrackTypes.mjs';
 
 export class InputStream {
   constructor(id) {
@@ -16,39 +15,33 @@ export class InputStream {
 
     const samples = this.demuxer.getAllSamples();
 
-    if (!this.tracksChosen) {
-      this.tracksChosen = true;
-      this.tracks = this.demuxer.getAllTracks();
+    if (!this.tracksInitialized) {
+      const tracks = this.demuxer.getAllTracks();
+      if (tracks.size === 0) {
+        return;
+      }
+
+      this.tracksInitialized = true;
+      this.tracks = tracks;
       this.tracks.forEach((track) => {
-        if (!this.videoTrack && track.type === TrackTypes.VIDEO) {
-          this.videoTrack = track;
-        }
-
-        if (!this.audioTrack && track.type === TrackTypes.AUDIO) {
-          this.audioTrack = track;
-        }
+        track.samples = [];
+        track.timeFixer = new TimeStampFixer();
       });
-
-      if (this.videoTrack) {
-        this.videoTrack.timeFixer = new TimeStampFixer();
-      }
-
-      if (this.audioTrack) {
-        this.audioTrack.timeFixer = new TimeStampFixer();
-      }
     }
 
     // Fix timestamps
-    let videoSamples;
-    let audioSamples;
-    if (this.videoTrack) {
-      videoSamples = samples.get(this.videoTrack.id).samples;
-      this.videoTrack.timeFixer.fix(videoSamples);
-    }
+    this.tracks.forEach((track) => {
+      const trackSamples = samples.get(track.id).samples;
+      track.timeFixer.fix(trackSamples);
+      track.samples.push(...trackSamples);
+    });
+  }
 
-    if (this.audioTrack) {
-      audioSamples = samples.get(this.audioTrack.id).samples;
-      this.audioTrack.timeFixer.fix(audioSamples);
-    }
+  hasInitializedTracks() {
+    return this.tracksInitialized;
+  }
+
+  getTracks() {
+    return this.tracks;
   }
 }
