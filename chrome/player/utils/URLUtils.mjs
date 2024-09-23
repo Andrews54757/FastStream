@@ -69,6 +69,28 @@ export class URLUtils {
     }
   }
 
+  static is_url(urlStr) {
+    try {
+      new URL(urlStr);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  static get_url_params(url) {
+    try {
+      const urlObj = new URL(url);
+      const params = new Map();
+      urlObj.searchParams.forEach((value, key) =>{
+        params.set(key, value);
+      });
+      return params;
+    } catch (e) {
+      return new Map();
+    }
+  }
+
   static get_param(url, name) {
     try {
       const urlObj = new URL(url);

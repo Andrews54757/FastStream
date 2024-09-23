@@ -41,6 +41,8 @@ if (EnvUtils.isExtension()) {
             window.fastStream.currentTime = data.time;
             window.fastStream.userInteracted();
           }
+          sendResponse('recieved');
+          return;
         } else if (request.type === MessageTypes.HANDLE_DOWNLOAD) {
           console.log('Downloading', request);
           const url = request.url;

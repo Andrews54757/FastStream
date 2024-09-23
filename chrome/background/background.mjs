@@ -1256,6 +1256,12 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
+// Exclude urls from facebook.
+const initiatorBlacklist = [
+  'https://www.facebook.com',
+  'https://www.instagram.com',
+];
+
 chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
       const url = details.url;
@@ -1268,11 +1274,6 @@ chrome.webRequest.onHeadersReceived.addListener(
         return; // Client or server error. Ignore it
       }
 
-      // Exclude urls from facebook.
-      const initiatorBlacklist = [
-        'https://www.facebook.com',
-        'https://www.instagram.com',
-      ];
       if (details.initiator &&
       initiatorBlacklist.some((a) => {
         return details.initiator.startsWith(a);
@@ -1295,12 +1296,31 @@ chrome.webRequest.onHeadersReceived.addListener(
           details.url = URLUtils.strip_queryhash(url).replace('master.json', 'master.mpd');
         }
       }
+
       let mode = URLUtils.getModeFromExtension(ext);
       if (!mode) {
         if (details.type === 'media') {
           mode = PlayerModes.ACCELERATED_MP4;
         } else {
-          return;
+          // Check url query parameters
+          const urlParams = URLUtils.get_url_params(url).values();
+          for (const value of urlParams) {
+            if (!URLUtils.is_url(value)) continue;
+            let ext2 = URLUtils.get_url_extension(value);
+
+            const output = CustomSourcePatternsMatcher.match(value);
+            if (output) {
+              ext2 = output;
+            }
+
+            mode = URLUtils.getModeFromExtension(ext2);
+            if (mode) {
+              break;
+            }
+          }
+          if (!mode) {
+            return;
+          }
         }
       }
 
