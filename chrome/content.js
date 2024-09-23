@@ -131,6 +131,12 @@
         if (oldFrameObj.windowedFullscreenState.active) {
           windowedFullscreenToggle(oldFrameObj);
         }
+
+        if (oldFrameObj.iframe !== iframeElement) {
+          iframeElement.addEventListener('load', frameLoadListener);
+        }
+      } else {
+        iframeElement.addEventListener('load', frameLoadListener);
       }
 
       iframeMap.set(request.frameId, newFrameObj);
@@ -138,6 +144,29 @@
       updateReplacedPlayers();
     }
   });
+
+  function frameLoadListener(e) {
+    // Find match in iframeMap
+    const iframeElement = e.target;
+    let frameObj = null;
+    iframeMap.forEach((value) => {
+      if (value.iframe === iframeElement) {
+        frameObj = value;
+      }
+    });
+
+    if (!frameObj) {
+      return;
+    }
+
+    if (frameObj.miniplayerState.active) {
+      unmakeMiniPlayer(frameObj);
+    }
+
+    if (frameObj.windowedFullscreenState.active) {
+      windowedFullscreenToggle(frameObj);
+    }
+  }
 
   async function sendToOtherContents(message) {
     chrome.runtime.sendMessage({
