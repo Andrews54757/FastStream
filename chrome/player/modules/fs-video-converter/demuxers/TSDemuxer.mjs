@@ -92,8 +92,8 @@ export default class TSDemuxer extends AbstractDemuxer {
       description: VideoConverterUtils.spsppsToDescription(videoTrack.sps, videoTrack.pps),
       codedWidth: videoTrack.width,
       codedHeight: videoTrack.height,
-      displayAspectWidth: videoTrack.pixelRatio[0],
-      displayAspectHeight: videoTrack.pixelRatio[1],
+      displayAspectWidth: videoTrack.pixelRatio[0] * videoTrack.width,
+      displayAspectHeight: videoTrack.pixelRatio[1] * videoTrack.height,
     });
   }
 
