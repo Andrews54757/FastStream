@@ -362,6 +362,8 @@ async function buildFirefoxDist() {
     type: 'module',
   };
 
+  manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
+
   delete manifest.incognito;
   delete manifest.minimum_chrome_version;
   delete manifest.key;
