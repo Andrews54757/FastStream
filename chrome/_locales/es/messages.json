@@ -572,6 +572,9 @@
     "player_source_mode": {
         "message": "Modo"
     },
+    "player_source_mode_auto_error": {
+        "message": "¡Por favor, selecciona un modo de reproductor!"
+    },
     "player_source_url_placeholder": {
         "message": "URL de origen"
     },

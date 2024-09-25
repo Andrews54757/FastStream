@@ -572,6 +572,9 @@
     "player_source_mode": {
         "message": "Режим"
     },
+    "player_source_mode_auto_error": {
+        "message": "Выберите режим проигрывателя!"
+    },
     "player_source_url_placeholder": {
         "message": "Адрес источника"
     },

@@ -572,6 +572,9 @@
     "player_source_mode": {
         "message": "Mode"
     },
+    "player_source_mode_auto_error": {
+        "message": "Please select a player mode!"
+    },
     "player_source_url_placeholder": {
         "message": "Source URL"
     },

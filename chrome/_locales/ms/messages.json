@@ -572,6 +572,9 @@
     "player_source_mode": {
         "message": "Mod"
     },
+    "player_source_mode_auto_error": {
+        "message": "Sila pilih mod pemain!"
+    },
     "player_source_url_placeholder": {
         "message": "Sumber URL"
     },

@@ -572,6 +572,9 @@
     "player_source_mode": {
         "message": "モード"
     },
+    "player_source_mode_auto_error": {
+        "message": "プレーヤーモードを選択してください!"
+    },
     "player_source_url_placeholder": {
         "message": "ソースの URL"
     },

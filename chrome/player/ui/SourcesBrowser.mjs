@@ -1,6 +1,7 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Localize} from '../modules/Localize.mjs';
+import {AlertPolyfill} from '../utils/AlertPolyfill.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
@@ -152,6 +153,12 @@ export class SourcesBrowser {
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
+      // Check if mode is AuTO
+      if (source.mode === PlayerModes.AUTO) {
+        AlertPolyfill.alert(Localize.getMessage('player_source_mode_auto_error'), 'error');
+        return;
+      }
+
       if (sourceSetBtn.classList.contains('loading')) return;
       sourceSetBtn.classList.add('loading');
       sourceSetBtn.textContent = Localize.getMessage('player_source_playbtn_loading');

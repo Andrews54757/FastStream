@@ -1527,6 +1527,14 @@
         "ms": "Mod",
         "ru": "Режим"
     },
+    "player_source_mode_auto_error": {
+        "en": "Please select a player mode!",
+        "es": "¡Por favor, selecciona un modo de reproductor!",
+        "it": "Seleziona una modalità di riproduzione!",
+        "ja": "プレーヤーモードを選択してください!",
+        "ms": "Sila pilih mod pemain!",
+        "ru": "Выберите режим проигрывателя!"
+    },
     "player_source_url_placeholder": {
         "en": "Source URL",
         "es": "URL de origen",
