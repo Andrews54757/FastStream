@@ -153,7 +153,12 @@ export class SourcesBrowser {
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
-      // Check if mode is AuTO
+      // Check if source url is empty
+      if (!source.url) {
+        return;
+      }
+
+      // Check if mode is AUTO
       if (source.mode === PlayerModes.AUTO) {
         AlertPolyfill.alert(Localize.getMessage('player_source_mode_auto_error'), 'error');
         return;
