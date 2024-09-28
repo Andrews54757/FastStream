@@ -54,9 +54,8 @@ export function createDropdown(defaultChoice, title, items, call, editableCallba
         return;
       } else if (e.key === 'Enter') {
         span.blur();
-        e.stopPropagation();
       }
-      e.preventDefault();
+      e.stopPropagation();
     });
 
     span.addEventListener('click', (e) => {
