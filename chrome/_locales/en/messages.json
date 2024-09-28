@@ -761,28 +761,28 @@
     "options_title": {
         "message": "FastStream Options"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "Enjoy FastStream? Leave a review!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "How you use it"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "Any bugs you encounter"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "Feature requests"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "OK I'll review FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "I don't want to review :("
     },
     "options_feedback_header": {

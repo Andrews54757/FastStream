@@ -761,28 +761,28 @@
     "options_title": {
         "message": "Параметры FastStream"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "Понравился FastStream? Оставьте отзыв!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "Как вы используете расширение"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "О проблемах, с которыми вы столкнулись"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "Запросить функцию"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "Хорошо, оценю FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "Не хочу оценивать :("
     },
     "options_feedback_header": {

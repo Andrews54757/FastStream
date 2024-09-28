@@ -761,28 +761,28 @@
     "options_title": {
         "message": "Opzioni FastStream"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "Ti piace FastStream? Lascia una recensione!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream è un progetto amatoriale gestito da volontari. Apprezziamo il tuo feedback perché ci aiuta a capire dove migliorare. Non esitare a dircelo:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "Come lo usi"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "Eventuali bug che riscontri"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "Richieste di funzionalità"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "Prendiamo molto seriamente anche l'accessibilità. Se hai bisogno di sistemazioni che mancano nella versione attuale, invia una richiesta e ci lavoreremo il prima possibile."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "OK, lasciero una recensione a FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "Non voglio lasciare una recensione :("
     },
     "options_feedback_header": {

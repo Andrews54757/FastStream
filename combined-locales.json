@@ -2031,7 +2031,7 @@
         "ms": "FastStream Options",
         "ru": "Параметры FastStream"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "en": "Enjoy FastStream? Leave a review!",
         "es": "¿Te gusta FastStream? ¡Deja una reseña!",
         "it": "Ti piace FastStream? Lascia una recensione!",
@@ -2039,7 +2039,7 @@
         "ms": "Enjoy FastStream? Leave a review!",
         "ru": "Понравился FastStream? Оставьте отзыв!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "en": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
         "es": "FastStream es un proyecto de hobby mantenido por voluntarios. Agradecemos tus comentarios ya que nos ayudan a saber dónde mejorar. Por favor, no dudes en comentarnos:",
         "it": "FastStream è un progetto amatoriale gestito da volontari. Apprezziamo il tuo feedback perché ci aiuta a capire dove migliorare. Non esitare a dircelo:",
@@ -2047,7 +2047,7 @@
         "ms": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
         "ru": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "en": "How you use it",
         "es": "Cómo lo usas",
         "it": "Come lo usi",
@@ -2055,7 +2055,7 @@
         "ms": "How you use it",
         "ru": "Как вы используете расширение"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "en": "Any bugs you encounter",
         "es": "Cualquier error que encuentres",
         "it": "Eventuali bug che riscontri",
@@ -2063,7 +2063,7 @@
         "ms": "Any bugs you encounter",
         "ru": "О проблемах, с которыми вы столкнулись"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "en": "Feature requests",
         "es": "Solicitudes de características",
         "it": "Richieste di funzionalità",
@@ -2071,7 +2071,7 @@
         "ms": "Feature requests",
         "ru": "Запросить функцию"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "en": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
         "es": "También tomamos la accesibilidad muy en serio. Si necesitas adaptaciones que faltan en la versión actual, haz una solicitud y trabajaremos en ello lo antes posible.",
         "it": "Prendiamo molto seriamente anche l'accessibilità. Se hai bisogno di sistemazioni che mancano nella versione attuale, invia una richiesta e ci lavoreremo il prima possibile.",
@@ -2079,7 +2079,7 @@
         "ms": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
         "ru": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "en": "OK I'll review FastStream",
         "es": "OK, revisaré FastStream",
         "it": "OK, lasciero una recensione a FastStream",
@@ -2087,7 +2087,7 @@
         "ms": "OK I'll review FastStream",
         "ru": "Хорошо, оценю FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "en": "I don't want to review :(",
         "es": "No quiero reseñar :(",
         "it": "Non voglio lasciare una recensione :(",
