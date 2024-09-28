@@ -698,7 +698,7 @@
     "audiocrosstalk_disabled": {
         "message": "クロストーク補正無効"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "減衰"
     },
     "audiocrosstalk_colorgain": {

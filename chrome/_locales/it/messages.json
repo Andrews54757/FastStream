@@ -698,7 +698,7 @@
     "audiocrosstalk_disabled": {
         "message": "Correzione Crosstalk Disabilitata"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "Decadimento"
     },
     "audiocrosstalk_colorgain": {

@@ -698,7 +698,7 @@
     "audiocrosstalk_disabled": {
         "message": "Коррекция перекрёстных помех отключена"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "Затухание"
     },
     "audiocrosstalk_colorgain": {

@@ -1863,7 +1863,7 @@
         "ms": "Crosstalk Correction Disabled",
         "ru": "Коррекция перекрёстных помех отключена"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "en": "Decay",
         "es": "Decaimiento",
         "it": "Decadimento",
