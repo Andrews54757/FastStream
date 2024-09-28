@@ -315,7 +315,7 @@ export class AudioEqualizer extends AbstractAudioModule {
 
       if (typesThatUseQ.includes(node.type)) {
         description.push(`Q: ${node.Q.value.toFixed(3)}`);
-        instructions.push(Localize.getMessage('audioeq_qscroll'));
+        instructions.push(Localize.getMessage('audioeq_qscroll_instructions'));
       }
 
       if (description.length > 0) {

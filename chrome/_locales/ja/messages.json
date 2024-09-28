@@ -755,7 +755,7 @@
     "audioeq_gain": {
         "message": "ゲイン: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "スクロールで Q を変更"
     },
     "options_title": {

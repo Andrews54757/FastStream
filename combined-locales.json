@@ -2015,7 +2015,7 @@
         "ms": "Gain: $1dB",
         "ru": "Усиление: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "en": "Scroll to change Q",
         "es": "Desplázate para cambiar Q",
         "it": "Scorri per cambiare Q",

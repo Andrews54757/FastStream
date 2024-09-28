@@ -755,7 +755,7 @@
     "audioeq_gain": {
         "message": "Gain: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "Scroll to change Q"
     },
     "options_title": {

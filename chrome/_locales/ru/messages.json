@@ -755,7 +755,7 @@
     "audioeq_gain": {
         "message": "Усиление: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "Прокрутите, чтобы изменить Q"
     },
     "options_title": {
