@@ -109,7 +109,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
-  setSelectMenuValue(ytclient, Options.defaultYoutubeClient4);
+  setSelectMenuValue(ytclient, Options.defaultYoutubeClient5);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -219,8 +219,8 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
   optionChanged();
 });
 
-createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient4, null, (e) => {
-  Options.defaultYoutubeClient4 = e.target.value;
+createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient5, null, (e) => {
+  Options.defaultYoutubeClient5 = e.target.value;
   optionChanged();
 });
 
