@@ -128,7 +128,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     const rectHeight = height / 50;
     const volHeight = volume * yScale;
 
-    const rectCount = Math.ceil(volHeight / rectHeight);
+    const rectCount = Math.round(volHeight / rectHeight);
     const now = Date.now();
 
     if (!els.peak || rectCount > els.peak) {
@@ -137,7 +137,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     for (let i = 0; i < rectCount; i++) {
-      const y = height - i * rectHeight;
+      const y = height - (i + 1) * rectHeight;
 
 
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
