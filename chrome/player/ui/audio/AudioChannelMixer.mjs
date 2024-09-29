@@ -117,18 +117,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     ctx.clearRect(0, 0, width, height);
 
-    const minDB = -40;
-    const maxDB = 40;
-    const dbRange = maxDB - minDB;
-    const lastVolume = analyzer._lastVolume || 0;
-    const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
+    const lastVolume = analyzer._lastVolume !== undefined ? analyzer._lastVolume : -Infinity;
+    const newvolume = AudioUtils.getVolume(analyzer);
+    const volume = Math.max(newvolume, lastVolume - 0.5);
     analyzer._lastVolume = volume;
-    const yScale = height;
-
     const rectHeight = height / 50;
-    const volHeight = volume * yScale;
 
-    const rectCount = Math.round(volHeight / rectHeight);
+    const rectCount = Math.round((1 - AudioUtils.mixerDBToPositionRatio(volume)) * 50);
     const now = Date.now();
 
     if (!els.peak || rectCount > els.peak) {
