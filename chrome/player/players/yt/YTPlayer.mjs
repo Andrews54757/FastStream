@@ -63,6 +63,8 @@ export default class YTPlayer extends DashPlayer {
           manifest = await this.videoInfo.toDash((url) => {
             return url;
           });
+        } else {
+          throw e;
         }
       }
 
