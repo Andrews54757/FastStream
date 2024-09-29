@@ -200,9 +200,10 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.volumeAxis = WebUtils.create('div', null, 'mixer_channel_volume_axis');
     els.volume.appendChild(els.volumeAxis);
 
-    // Volume axis goes from +10 to -60 then -inf
-    for (let i = 0; i < 6; i++) {
-      const db = 10 - i * 10;
+    // Volume axis goes from +10 to -30 then -inf
+    const dbs = [10, 5, 0, -5, -10, -20, -30];
+    for (let i = 0; i < dbs.length; i++) {
+      const db = dbs[i];
       const el = WebUtils.create('div', null, 'mixer_channel_volume_tick');
       el.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;
       els.volumeAxis.appendChild(el);
