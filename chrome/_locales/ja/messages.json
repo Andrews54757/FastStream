@@ -672,10 +672,10 @@
         "message": "オーディオチャンネルミキサー"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでモノラルを切り替えます"
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます"
     },
     "audiomixer_volume_handle_label": {
-        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでミュートを切り替えます"
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます"
     },
     "audiomixer_solo_label": {
         "message": "ソロ"

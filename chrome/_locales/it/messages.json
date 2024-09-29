@@ -672,10 +672,10 @@
         "message": "Mixer Canali Audio"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono"
+        "message": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono"
     },
     "audiomixer_volume_handle_label": {
-        "message": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto"
+        "message": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto"
     },
     "audiomixer_solo_label": {
         "message": "Singolo"

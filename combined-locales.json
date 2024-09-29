@@ -1792,20 +1792,20 @@
         "ru": "Микшер аудиоканала"
     },
     "audiomixer_volume_master_handle_label": {
-        "en": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mono",
-        "es": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar mono",
-        "it": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono",
-        "ja": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでモノラルを切り替えます",
-        "ms": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
-        "ru": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
+        "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mono",
+        "es": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar mono",
+        "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono",
+        "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます",
+        "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
     },
     "audiomixer_volume_handle_label": {
-        "en": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mute",
-        "es": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar silencio",
-        "it": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto",
-        "ja": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでミュートを切り替えます",
-        "ms": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
-        "ru": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
+        "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mute",
+        "es": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar silencio",
+        "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto",
+        "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます",
+        "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
     },
     "audiomixer_solo_label": {
         "en": "Solo",

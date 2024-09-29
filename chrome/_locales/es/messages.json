@@ -672,10 +672,10 @@
         "message": "Mezclador de Canales de Audio"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar mono"
+        "message": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar mono"
     },
     "audiomixer_volume_handle_label": {
-        "message": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar silencio"
+        "message": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar silencio"
     },
     "audiomixer_solo_label": {
         "message": "Solo"

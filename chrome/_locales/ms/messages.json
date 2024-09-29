@@ -672,10 +672,10 @@
         "message": "Pengadun Saluran Audio"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
     },
     "audiomixer_volume_handle_label": {
-        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
     },
     "audiomixer_solo_label": {
         "message": "Solo"
