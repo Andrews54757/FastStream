@@ -215,7 +215,7 @@ export class SubtitlesManager extends EventEmitter {
       };
       reader.readAsText(file);
     });
-    document.body.appendChild(filechooser);
+    DOMElements.playerContainer.appendChild(filechooser);
 
     const filebutton = document.createElement('div');
     filebutton.classList.add('subtitle-menu-option');
@@ -517,8 +517,8 @@ export class SubtitlesManager extends EventEmitter {
     let yStart = 0;
 
     const mouseup = (e) => {
-      document.removeEventListener('mousemove', mousemove);
-      document.removeEventListener('mouseup', mouseup);
+      DOMElements.playerContainer.removeEventListener('mousemove', mousemove);
+      DOMElements.playerContainer.removeEventListener('mouseup', mouseup);
       e.stopPropagation();
     };
 
@@ -551,8 +551,8 @@ export class SubtitlesManager extends EventEmitter {
 
     wrapper.addEventListener('mousedown', (e) => {
       yStart = e.clientY;
-      document.addEventListener('mousemove', mousemove);
-      document.addEventListener('mouseup', mouseup);
+      DOMElements.playerContainer.addEventListener('mousemove', mousemove);
+      DOMElements.playerContainer.addEventListener('mouseup', mouseup);
       e.stopPropagation();
     });
 

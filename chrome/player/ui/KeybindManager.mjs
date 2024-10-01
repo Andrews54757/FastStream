@@ -1,6 +1,7 @@
 import {DefaultKeybinds, KeybindsWithModifiers} from '../options/defaults/DefaultKeybinds.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
+import {DOMElements} from './DOMElements.mjs';
 
 export class KeybindManager extends EventEmitter {
   constructor(client) {
@@ -15,8 +16,7 @@ export class KeybindManager extends EventEmitter {
         this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
       }
     }
-
-    document.addEventListener('keydown', (e) => {
+    DOMElements.playerContainer.addEventListener('keydown', (e) => {
       this.onKeyDown(e);
     });
 

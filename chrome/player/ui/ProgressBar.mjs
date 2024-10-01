@@ -526,10 +526,10 @@ export class ProgressBar extends EventEmitter {
     };
 
     const onProgressbarMouseUp = (event) => {
-      document.removeEventListener('mousemove', onProgressbarMouseMove);
-      document.removeEventListener('touchmove', onProgressbarMouseMove);
-      document.removeEventListener('mouseup', onProgressbarMouseUp);
-      document.removeEventListener('touchend', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('mousemove', onProgressbarMouseMove);
+      DOMElements.playerContainer.removeEventListener('touchmove', onProgressbarMouseMove);
+      DOMElements.playerContainer.removeEventListener('mouseup', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('touchend', onProgressbarMouseUp);
       if (!this.keepPreciseModeOpen) {
         this.endPreciseMode();
       }
@@ -556,10 +556,10 @@ export class ProgressBar extends EventEmitter {
       }
     };
     shiftTime(initialPosition);
-    document.addEventListener('mouseup', onProgressbarMouseUp);
-    document.addEventListener('touchend', onProgressbarMouseUp);
-    document.addEventListener('mousemove', onProgressbarMouseMove);
-    document.addEventListener('touchmove', onProgressbarMouseMove);
+    DOMElements.playerContainer.addEventListener('mouseup', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('touchend', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('mousemove', onProgressbarMouseMove);
+    DOMElements.playerContainer.addEventListener('touchmove', onProgressbarMouseMove);
   }
 
   onProgressbarMouseLeave() {

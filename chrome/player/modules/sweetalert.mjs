@@ -1,4 +1,7 @@
 /* eslint-disable */
+
+import { DOMElements } from '../ui/DOMElements.mjs';
+
 /* !
 * sweetalert2 v11.12.4
 * Released under the MIT License.
@@ -25,6 +28,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+const document_body = DOMElements.playerContainer;
 let swl;
 (function(global, factory) {
   swl = factory();
@@ -266,8 +270,8 @@ let swl;
     if (globalState.previousActiveElement instanceof HTMLElement) {
       globalState.previousActiveElement.focus();
       globalState.previousActiveElement = null;
-    } else if (document.body) {
-      document.body.focus();
+    } else if (document_body) {
+      document_body.focus();
     }
   };
 
@@ -420,7 +424,7 @@ let swl;
      * @return {HTMLElement | null}
      */
   const getContainer = function getContainer() {
-    return document.body.querySelector('.'.concat(swalClasses.container));
+    return document_body.querySelector('.'.concat(swalClasses.container));
   };
 
   /**
@@ -598,7 +602,7 @@ let swl;
      * @return {boolean}
      */
   const isModal = function isModal() {
-    return hasClass(document.body, swalClasses.shown) && !hasClass(document.body, swalClasses['toast-shown']) && !hasClass(document.body, swalClasses['no-backdrop']);
+    return hasClass(document_body, swalClasses.shown) && !hasClass(document_body, swalClasses['toast-shown']) && !hasClass(document_body, swalClasses['no-backdrop']);
   };
 
   /**
@@ -984,7 +988,7 @@ let swl;
       return false;
     }
     oldContainer.remove();
-    removeClass([document.documentElement, document.body], [swalClasses['no-backdrop'], swalClasses['toast-shown'], swalClasses['has-column']]);
+    removeClass([document.documentElement, document_body], [swalClasses['no-backdrop'], swalClasses['toast-shown'], swalClasses['has-column']]);
     return true;
   };
   const resetValidationMessage$1 = function resetValidationMessage() {
@@ -1064,7 +1068,7 @@ let swl;
       addClass(container, swalClasses['no-transition']);
     }
     setInnerHtml(container, sweetHTML);
-    const targetElement = getTarget(params.target);
+    const targetElement = document_body;
     targetElement.appendChild(container);
     setupAccessibility(params);
     setupRTL(targetElement);
@@ -1290,7 +1294,7 @@ let swl;
     if (typeof backdrop === 'string') {
       container.style.background = backdrop;
     } else if (!backdrop) {
-      addClass([document.documentElement, document.body], swalClasses['no-backdrop']);
+      addClass([document.documentElement, document_body], swalClasses['no-backdrop']);
     }
   }
 
@@ -1607,7 +1611,7 @@ let swl;
         const initialPopupWidth = parseInt(window.getComputedStyle(getPopup()).width);
         const textareaResizeHandler = function textareaResizeHandler() {
           // check if texarea is still in document (i.e. popup wasn't closed in the meantime)
-          if (!document.body.contains(textarea)) {
+          if (!document_body.contains(textarea)) {
             return;
           }
           const textareaWidth = textarea.offsetWidth + getMargin(textarea);
@@ -1888,7 +1892,7 @@ let swl;
     // Default Class + showClass when updating Swal.update({})
     popup.className = ''.concat(swalClasses.popup, ' ').concat(isVisible$1(popup) ? showClass.popup : '');
     if (params.toast) {
-      addClass([document.documentElement, document.body], swalClasses['toast-shown']);
+      addClass([document.documentElement, document_body], swalClasses['toast-shown']);
       addClass(popup, swalClasses.toast);
     } else {
       addClass(popup, swalClasses.modal);
@@ -2266,7 +2270,7 @@ let swl;
 
   const setAriaHidden = function setAriaHidden() {
     const container = getContainer();
-    const bodyChildren = Array.from(document.body.children);
+    const bodyChildren = Array.from(document_body.children);
     bodyChildren.forEach(function(el) {
       if (el.contains(container)) {
         return;
@@ -2278,7 +2282,7 @@ let swl;
     });
   };
   const unsetAriaHidden = function unsetAriaHidden() {
-    const bodyChildren = Array.from(document.body.children);
+    const bodyChildren = Array.from(document_body.children);
     bodyChildren.forEach(function(el) {
       if (el.hasAttribute('data-previous-aria-hidden')) {
         el.setAttribute('aria-hidden', el.getAttribute('data-previous-aria-hidden') || '');
@@ -2297,10 +2301,10 @@ let swl;
      * http://stackoverflow.com/q/39626302
      */
   const iOSfix = function iOSfix() {
-    if (isSafariOrIOS && !hasClass(document.body, swalClasses.iosfix)) {
-      const offset = document.body.scrollTop;
-      document.body.style.top = ''.concat(offset * -1, 'px');
-      addClass(document.body, swalClasses.iosfix);
+    if (isSafariOrIOS && !hasClass(document_body, swalClasses.iosfix)) {
+      const offset = document_body.scrollTop;
+      document_body.style.top = ''.concat(offset * -1, 'px');
+      addClass(document_body, swalClasses.iosfix);
       lockBodyScroll();
     }
   };
@@ -2381,11 +2385,11 @@ let swl;
     return event.touches && event.touches.length > 1;
   };
   const undoIOSfix = function undoIOSfix() {
-    if (hasClass(document.body, swalClasses.iosfix)) {
-      const offset = parseInt(document.body.style.top, 10);
-      removeClass(document.body, swalClasses.iosfix);
-      document.body.style.top = '';
-      document.body.scrollTop = offset * -1;
+    if (hasClass(document_body, swalClasses.iosfix)) {
+      const offset = parseInt(document_body.style.top, 10);
+      removeClass(document_body, swalClasses.iosfix);
+      document_body.style.top = '';
+      document_body.scrollTop = offset * -1;
     }
   };
 
@@ -2398,9 +2402,9 @@ let swl;
   const measureScrollbar = function measureScrollbar() {
     const scrollDiv = document.createElement('div');
     scrollDiv.className = swalClasses['scrollbar-measure'];
-    document.body.appendChild(scrollDiv);
+    document_body.appendChild(scrollDiv);
     const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
-    document.body.removeChild(scrollDiv);
+    document_body.removeChild(scrollDiv);
     return scrollbarWidth;
   };
 
@@ -2419,16 +2423,16 @@ let swl;
       return;
     }
     // if the body has overflow
-    if (document.body.scrollHeight > window.innerHeight || initialBodyOverflow === 'scroll' // https://github.com/sweetalert2/sweetalert2/issues/2663
+    if (document_body.scrollHeight > window.innerHeight || initialBodyOverflow === 'scroll' // https://github.com/sweetalert2/sweetalert2/issues/2663
     ) {
       // add padding so the content doesn't shift after removal of scrollbar
-      previousBodyPadding = parseInt(window.getComputedStyle(document.body).getPropertyValue('padding-right'));
-      document.body.style.paddingRight = ''.concat(previousBodyPadding + measureScrollbar(), 'px');
+      previousBodyPadding = parseInt(window.getComputedStyle(document_body).getPropertyValue('padding-right'));
+      document_body.style.paddingRight = ''.concat(previousBodyPadding + measureScrollbar(), 'px');
     }
   };
   const undoReplaceScrollbarWithPadding = function undoReplaceScrollbarWithPadding() {
     if (previousBodyPadding !== null) {
-      document.body.style.paddingRight = ''.concat(previousBodyPadding, 'px');
+      document_body.style.paddingRight = ''.concat(previousBodyPadding, 'px');
       previousBodyPadding = null;
     }
   };
@@ -2470,7 +2474,7 @@ let swl;
      * Remove SweetAlert2 classes from body
      */
   function removeBodyClasses() {
-    removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown']]);
+    removeClass([document.documentElement, document_body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown']]);
   }
 
   /**
@@ -3790,7 +3794,7 @@ let swl;
     const attr = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'data-swal-template';
     clickHandlers[attr] = this;
     if (!bodyClickListenerAdded) {
-      document.body.addEventListener('click', bodyClickListener);
+      document_body.addEventListener('click', bodyClickListener);
       bodyClickListenerAdded = true;
     }
   }
@@ -4170,7 +4174,7 @@ let swl;
     if (typeof params.willOpen === 'function') {
       params.willOpen(popup);
     }
-    const bodyStyles = window.getComputedStyle(document.body);
+    const bodyStyles = window.getComputedStyle(document_body);
     const initialBodyOverflow = bodyStyles.overflowY;
     addClasses(container, popup, params);
 
@@ -4256,9 +4260,9 @@ let swl;
     } else {
       show(popup, 'grid');
     }
-    addClass([document.documentElement, document.body], swalClasses.shown);
+    addClass([document.documentElement, document_body], swalClasses.shown);
     if (params.heightAuto && params.backdrop && !params.toast) {
-      addClass([document.documentElement, document.body], swalClasses['height-auto']);
+      addClass([document.documentElement, document_body], swalClasses['height-auto']);
     }
   };
 

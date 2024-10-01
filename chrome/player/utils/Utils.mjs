@@ -1,6 +1,7 @@
 import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
 import {DefaultSubtitlesSettings} from '../options/defaults/DefaultSubtitlesSettings.mjs';
+import {DOMElements} from '../ui/DOMElements.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 
 export class Utils {
@@ -230,7 +231,7 @@ export class Utils {
       aElement.href = url;
       aElement.download = filename;
       aElement.target = '_blank';
-      document.body.appendChild(aElement);
+      DOMElements.playerContainer.appendChild(aElement);
       aElement.click();
       aElement.remove();
     }

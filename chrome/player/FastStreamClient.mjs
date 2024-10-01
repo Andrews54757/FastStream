@@ -116,7 +116,7 @@ export class FastStreamClient extends EventEmitter {
       this.interfaceController.updateSkipSegments();
     });
 
-    document.addEventListener('keydown', (e) => {
+    DOMElements.playerContainer.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.escapeAll();
         e.preventDefault();
@@ -335,7 +335,7 @@ export class FastStreamClient extends EventEmitter {
       svg.style.position = 'absolute';
       svg.style.width = '0px';
       svg.style.height = '0px';
-      document.body.appendChild(svg);
+      DOMElements.playerContainer.appendChild(svg);
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
@@ -1415,7 +1415,7 @@ export class FastStreamClient extends EventEmitter {
       return 'fullscreen';
     }
 
-    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+    if (this.interfaceController.isInPip()) {
       return 'pip';
     }
 
@@ -1440,7 +1440,7 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
-    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+    if (this.interfaceController.isInPip()) {
       this.interfaceController.pipToggle(false);
       return;
     }

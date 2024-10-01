@@ -3,6 +3,7 @@ import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {DOMElements} from '../DOMElements.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
@@ -281,14 +282,14 @@ export class AudioChannelMixer extends AbstractAudioModule {
     };
 
     const mouseUp = (e) => {
-      document.removeEventListener('mousemove', mouseMove);
-      document.removeEventListener('mouseup', mouseUp);
+      DOMElements.playerContainer.removeEventListener('mousemove', mouseMove);
+      DOMElements.playerContainer.removeEventListener('mouseup', mouseUp);
     };
 
     els.volumeHandle.addEventListener('mousedown', (e) => {
       e.stopPropagation();
-      document.addEventListener('mousemove', mouseMove);
-      document.addEventListener('mouseup', mouseUp);
+      DOMElements.playerContainer.addEventListener('mousemove', mouseMove);
+      DOMElements.playerContainer.addEventListener('mouseup', mouseUp);
     });
 
     els.volumeTrack.addEventListener('click', (e) => {

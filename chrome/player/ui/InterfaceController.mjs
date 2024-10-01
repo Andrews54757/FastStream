@@ -288,9 +288,9 @@ export class InterfaceController {
       this.client.userInteracted();
     };
 
-    document.addEventListener('keydown', interactHandler, true);
-    document.addEventListener('mousedown', interactHandler, true);
-    document.addEventListener('touchstart', interactHandler, true);
+    DOMElements.playerContainer.addEventListener('keydown', interactHandler, true);
+    DOMElements.playerContainer.addEventListener('mousedown', interactHandler, true);
+    DOMElements.playerContainer.addEventListener('touchstart', interactHandler, true);
 
     DOMElements.playPauseButton.addEventListener('click', this.playPauseToggle.bind(this));
     WebUtils.setupTabIndex(DOMElements.playPauseButton);
@@ -463,7 +463,10 @@ export class InterfaceController {
 
     DOMElements.skipButton.addEventListener('click', this.skipSegment.bind(this));
 
-    DOMElements.pip.addEventListener('click', this.pipToggle.bind(this));
+    DOMElements.pip.addEventListener('click', (e) => {
+      this.pipToggle();
+    });
+
     WebUtils.setupTabIndex(DOMElements.pip);
 
     DOMElements.playerContainer.addEventListener('dragenter', (e) => {
@@ -553,11 +556,11 @@ export class InterfaceController {
 
       const input = document.createElement('input');
       input.value = copyURL;
-      document.body.appendChild(input);
+      DOMElements.playerContainer.appendChild(input);
       input.focus();
       input.select();
       document.execCommand('copy');
-      document.body.removeChild(input);
+      DOMElements.playerContainer.removeChild(input);
 
       this.setStatusMessage(StatusTypes.COPY, Localize.getMessage('source_copied'), 'info', 2000);
     });
@@ -602,6 +605,7 @@ export class InterfaceController {
 
     // eslint-disable-next-line new-cap
     Coloris({
+      parent: '.mainplayer',
       theme: 'pill',
       themeMode: 'dark',
       formatToggle: true,
@@ -618,8 +622,8 @@ export class InterfaceController {
     });
 
     const mouseUpHandler = (e) => {
-      document.removeEventListener('mousemove', mouseMoveHandler);
-      document.removeEventListener('mouseup', mouseUpHandler);
+      DOMElements.playerContainer.removeEventListener('mousemove', mouseMoveHandler);
+      DOMElements.playerContainer.removeEventListener('mouseup', mouseUpHandler);
     };
 
     const mouseMoveHandler = (e) => {
@@ -644,8 +648,8 @@ export class InterfaceController {
       }
 
 
-      document.addEventListener('mousemove', mouseMoveHandler);
-      document.addEventListener('mouseup', mouseUpHandler);
+      DOMElements.playerContainer.addEventListener('mousemove', mouseMoveHandler);
+      DOMElements.playerContainer.addEventListener('mouseup', mouseUpHandler);
     });
   }
 
@@ -672,7 +676,7 @@ export class InterfaceController {
       return;
     }
 
-    if (!isVisible && this.state.fullscreen || this.state.pip) {
+    if (!isVisible && (this.state.fullscreen || this.isInPip())) {
       return;
     }
 
@@ -772,22 +776,59 @@ export class InterfaceController {
     }
   }
 
-  async documentPipToggle(force) {
-    if (force !== undefined && !!force == !!window.documentPictureInPicture.window) {
+  pipToggle(force) {
+    if (force !== undefined && !!force == this.isInPip()) {
       return;
     }
+    if (this.isInPip()) {
+      return this.exitPip();
+    } else {
+      return this.enterPip();
+    }
+  }
 
-    if (window.documentPictureInPicture.window) {
+  isInPip() {
+    return !!document.pictureInPictureElement || !!window.documentPictureInPicture?.window || this.state.documentPip;
+  }
+
+  shouldDoDocumentPip() {
+    return !!window.documentPictureInPicture;
+  }
+
+  exitPip() {
+    if (window.documentPictureInPicture?.window) {
       window.documentPictureInPicture.window.close();
-      return;
+    } else if (this.state.documentPip) {
+      window.close();
     }
 
+    if (document.pictureInPictureElement) {
+      return document.exitPictureInPicture();
+    }
+    return Promise.resolve();
+  }
+
+  enterPip() {
+    if (this.shouldDoDocumentPip()) {
+      return this.enterDocumentPip();
+    }
+
+    if (!document.pictureInPictureElement && this.client.player) {
+      return this.client.player.getVideo().requestPictureInPicture();
+    }
+    return Promise.resolve();
+  }
+
+  async enterDocumentPip() {
     const pipWindow = await documentPictureInPicture.requestWindow({
       width: DOMElements.playerContainer.clientWidth,
       height: DOMElements.playerContainer.clientHeight,
     });
 
-    pipWindow.document.body.appendChild(DOMElements.playerContainer);
+    // Copy all except script tags from the current document to the new window
+    const children = [...document.body.children].filter((child) => child.tagName.toLowerCase() !== 'script');
+    pipWindow.document.body.append(...children);
+    this.state.documentPip = true;
 
     // Copy style sheets over from the initial document
     // so that the player looks the same.
@@ -812,34 +853,9 @@ export class InterfaceController {
     });
 
     pipWindow.addEventListener('pagehide', (event) => {
-      document.body.appendChild(DOMElements.playerContainer);
+      this.state.documentPip = false;
+      document.body.append(...pipWindow.document.body.children);
     });
-  }
-
-  pipToggle(force) {
-    if (force !== undefined && !!force == !!document.pictureInPictureElement) {
-      return;
-    }
-
-    if (document.pictureInPictureElement) {
-      return this.exitPip();
-    } else {
-      return this.enterPip();
-    }
-  }
-
-  exitPip() {
-    if (document.pictureInPictureElement) {
-      return document.exitPictureInPicture();
-    }
-    return Promise.resolve();
-  }
-
-  enterPip() {
-    if (!document.pictureInPictureElement && this.client.player) {
-      return this.client.player.getVideo().requestPictureInPicture();
-    }
-    return Promise.resolve();
   }
 
   destroy() {

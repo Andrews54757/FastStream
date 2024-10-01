@@ -66,14 +66,14 @@ export class PlaybackRateChanger extends EventEmitter {
     };
 
     const onAudioMouseUp = (e) => {
-      document.removeEventListener('mousemove', onAudioMouseMove);
-      document.removeEventListener('mouseup', onAudioMouseUp);
-      document.removeEventListener('mouseleave', onAudioMouseUp);
+      DOMElements.playerContainer.removeEventListener('mousemove', onAudioMouseMove);
+      DOMElements.playerContainer.removeEventListener('mouseup', onAudioMouseUp);
+      DOMElements.playerContainer.removeEventListener('mouseleave', onAudioMouseUp);
     };
 
-    document.addEventListener('mousemove', onAudioMouseMove);
-    document.addEventListener('mouseup', onAudioMouseUp);
-    document.addEventListener('mouseleave', onAudioMouseUp);
+    DOMElements.playerContainer.addEventListener('mousemove', onAudioMouseMove);
+    DOMElements.playerContainer.addEventListener('mouseup', onAudioMouseUp);
+    DOMElements.playerContainer.addEventListener('mouseleave', onAudioMouseUp);
     e.stopPropagation();
     e.preventDefault();
   }
