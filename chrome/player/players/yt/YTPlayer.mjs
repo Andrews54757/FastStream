@@ -37,24 +37,24 @@ export default class YTPlayer extends DashPlayer {
     }
 
     try {
-      const [youtube, info] = await this.getVideoInfo(identifier, this.defaultClient);
-      this.videoInfo = info;
-      this.ytclient = youtube;
-
-      if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
-        console.warn('Login Required, trying to fetch with TV mode');
-        const [youtube2, info2] = await this.getVideoInfo(identifier, ClientType.TV_EMBEDDED);
-        this.videoInfo = info2;
-        this.ytclient = youtube2;
-      }
-
       let manifest;
       try {
+        const [youtube, info] = await this.getVideoInfo(identifier, this.defaultClient);
+        this.videoInfo = info;
+        this.ytclient = youtube;
+
+        if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
+          console.warn('Login Required, trying to fetch with TV mode');
+          const [youtube2, info2] = await this.getVideoInfo(identifier, ClientType.TV_EMBEDDED);
+          this.videoInfo = info2;
+          this.ytclient = youtube2;
+        }
+
         manifest = await this.videoInfo.toDash((url) => {
           return url;
         });
       } catch (e) {
-        if (this.videoInfo.client_type === ClientType.WEB) {
+        if (this.defaultClient === ClientType.WEB) {
           console.warn('Failed to fetch manifest, trying with iOS client', e);
           const [youtube3, info3] = await this.getVideoInfo(identifier, ClientType.IOS);
           this.videoInfo = info3;
