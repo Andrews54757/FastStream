@@ -58,7 +58,7 @@ The Chrome extension store policies do not allow extensions that can download vi
 ## Manual Installation For Firefox
 The extension is, by default, configured to work on Chrome. You can either use a prebuilt version from the [Releases page](https://github.com/Andrews54757/FastStream/releases) or build the extension yourself using the build instructions below.
 
-You can then install the extension temporarily on Firefox Developer Edition by going to `about:debugging`. Unfortunately, you will have to re-install after each restart because firefox doesn't allow you to permenantly install unsigned extensions.
+You can then install the extension on Firefox Developer Edition by going to `about:config` and setting `xpinstall.signatures.required` to `false`. You must then also disable extension auto-updates or the extension will be removed when you close the browser. To do this, go to `about:addons`, click on the gear icon, and uncheck `Update Add-ons Automatically`. You can then click "Install Add-on From File" and select the `firefox-libre-*.zip` file to install the extension.
 
 **THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. See above.**
 
