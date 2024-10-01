@@ -39,6 +39,6 @@ If you see someone violating the Code of Conduct, please report it to `andrews54
 
 If you need help with a private matter, please contact `andrews54757@gmail.com`, and we will do our best to help you. Historically, we have been able to help with a variety of private matters, including but not limited to: Bug reports containing private information, privacy/security concerns with potential vulnerabilities, and accessibility needs.
 
-### If I have a bug report relating to sensitive, or embaraassing information, what should I do?
+### If I have a bug report relating to sensitive, or embarrassing information, what should I do?
 
 If you have a bug report with sensitive or embarrassing information, please contact `andrews54757@gmail.com` with the subject line "Sensitive Bug Report". We will do our best to help you and keep your information confidential.
