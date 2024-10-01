@@ -792,7 +792,21 @@ export class InterfaceController {
   }
 
   shouldDoDocumentPip() {
-    return !!window.documentPictureInPicture;
+    // Check if in pip
+    if (this.state.documentPip) {
+      return true;
+    }
+
+    if (!window.documentPictureInPicture) {
+      return false;
+    }
+
+    // Check if top level frame
+    if (window !== window.top) {
+      return false;
+    }
+
+    return true;
   }
 
   exitPip() {
