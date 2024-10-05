@@ -736,17 +736,31 @@ function getMediaInfoFromTab(tab) {
   title = words.join(' ');
 
   let season = null;
-  let episode = null;
+  const episode = null;
   // Remove season #, episode #, s#, e#
-  title = title.replace(/(s|\bseason)\s*([0-9]+)/gi, (match, p1, p2) => {
-    season = parseInt(p2);
+  title = title.replace(/\bseason\s*([0-9]+)/gi, (match, p1) => {
+    season = parseInt(p1);
     return '';
   });
 
-  title = title.replace(/(e|\bepisode)\s*([0-9]+)/gi, (match, p1, p2) => {
-    episode = parseInt(p2);
+  title = title.replace(/\bepisode\s*([0-9]+)/gi, (match, p1) => {
+    episode = parseInt(p1);
     return '';
   });
+
+  if (season === null) {
+    title = title.replace(/\bs([0-9]+)/gi, (match, p1) => {
+      season = parseInt(p1);
+      return '';
+    });
+  }
+
+  if (episode === null) {
+    title = title.replace(/\be([0-9]+)/gi, (match, p1) => {
+      episode = parseInt(p1);
+      return '';
+    });
+  }
 
   // Remove year
   title = title.replace(/\b[0-9]{4}\b/g, '');
