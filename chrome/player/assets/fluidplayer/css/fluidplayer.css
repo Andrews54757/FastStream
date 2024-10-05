@@ -1989,6 +1989,7 @@ body {
 .equalizer_node .tooltiptext {
     width: 200px;
     margin-left: -100px;
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 .tooltip:hover .tooltiptext {
