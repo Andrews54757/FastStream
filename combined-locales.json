@@ -405,7 +405,7 @@
         "it": "Interagisci per abilitare l'accelerazione dei download",
         "ja": "ダウンロードの高速化を有効にするには、動画を再生してください",
         "ms": "Berinteraksi untuk mendayakan pecutan muat turun",
-        "ru": "Взаимодействуйте, чтобы включить ускорение загрузки"
+        "ru": "Воспроизведите видео для ускорения загрузки"
     },
     "player_skipintro": {
         "en": "Skip Intro",
@@ -517,7 +517,7 @@
         "it": "Il volume è al $1%. Usa i tasti freccia per regolarlo, Invio per attivare/disattivare l'audio.",
         "ja": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。",
         "ms": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio.",
-        "ru": "Громкость $1%. Используйте стрелки для регулировки, Enter для отключения звука."
+        "ru": "Громкость $1%. Клавиши со стрелками - регулировка, Enter - отключение звука."
     },
     "player_mute_label": {
         "en": "Mute audio",
@@ -1077,7 +1077,7 @@
         "it": "Autorizzazioni per lo schermo intero negate!",
         "ja": "フルスクリーンの許可が拒否されました!",
         "ms": "Kebenaran skrin penuh ditolak!",
-        "ru": "Отказано в разрешении на полноэкранный режим!"
+        "ru": "Полноэкранный режим запрещён!"
     },
     "player_windowed_fullscreen_label": {
         "en": "Toggle windowed fullscreen",
@@ -1325,7 +1325,7 @@
         "it": "Il salvataggio richiederà una nuova codifica. Potrebbe richiedere molto tempo. Vuoi procedere?",
         "ja": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?",
         "ms": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?",
-        "ru": "Сохранение потребует повторного кодирования. Это может занять много времени. Вы хотите продолжить?"
+        "ru": "Для сохранения требуется перекодировка. Это может занять много времени. Продолжить?"
     },
     "player_savevideo_cancelling": {
         "en": "Cancelling save...",
@@ -1797,7 +1797,7 @@
         "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono",
         "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます",
         "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
-        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, для переключения в моно"
     },
     "audiomixer_volume_handle_label": {
         "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mute",
@@ -1805,7 +1805,7 @@
         "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto",
         "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます",
         "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
-        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы отключить звук"
     },
     "audiomixer_solo_label": {
         "en": "Solo",
@@ -2101,7 +2101,7 @@
         "it": "Hai del feedback?",
         "ja": "フィードバックをお願いします!",
         "ms": "Do you have feedback?",
-        "ru": "У вас есть отзыв?"
+        "ru": "Оставьте свой отзыв!"
     },
     "options_feedback_reason": {
         "en": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
@@ -2109,7 +2109,7 @@
         "it": "Ci piacerebbe sentire la tua opinione! Compila un breve modulo. È l'unico modo in cui possiamo migliorare, dal momento che non ti tracciamo.",
         "ja": "あなたの意見を聞かせてください! 短いフォームを記入してください。私たちはあなたを追跡していないので、改善する唯一の方法です。",
         "ms": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
-        "ru": "Мы хотели бы услышать ваше мнение! Пожалуйста, заполните короткую форму. Это единственный способ улучшить нас, поскольку мы не отслеживаем вас."
+        "ru": "Будем рады услышать ваше мнение! Пожалуйста, заполните небольшую форму. Это единственный способ стать лучше, поскольку мы не следим за вами."
     },
     "options_feedback_yes": {
         "en": "Yes, I have feedback",
@@ -2117,7 +2117,7 @@
         "it": "Sì, ho del feedback",
         "ja": "はい、フィードバックを送信します",
         "ms": "Yes, I have feedback",
-        "ru": "Да, у меня есть отзыв"
+        "ru": "Оставить отзыв"
     },
     "options_feedback_no": {
         "en": "No, I'm good",
@@ -2125,7 +2125,7 @@
         "it": "No, sto a posto",
         "ja": "いいえ、結構です",
         "ms": "No, I'm good",
-        "ru": "Нет, мне хорошо"
+        "ru": "Нет, спасибо"
     },
     "options_help_feedback": {
         "en": "Feedback Form",
@@ -2189,7 +2189,7 @@
         "it": "Ritardo Video",
         "ja": "Video Delay",
         "ms": "Video Delay",
-        "ru": "Video Delay"
+        "ru": "Задержка видео"
     },
     "options_video_brightness": {
         "en": "Brightness",
@@ -2573,7 +2573,7 @@
         "it": "Client YT da usare. Prova a cambiare se hai problemi.",
         "ja": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)",
         "ms": "YT client to use. Try changing if you have issues.",
-        "ru": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
+        "ru": "Используемый YouTube-клиент. Попробуйте изменить при возникновении проблемы"
     },
     "options_export_header": {
         "en": "Import/Export Settings",
@@ -2797,7 +2797,7 @@
         "it": "Segnala questo errore agli sviluppatori su https://github.com/Andrews54757/FastStream/issues con la seguente traccia dello stack:",
         "ja": "このエラーを開発者に報告してください: https://github.com/Andrews54757/FastStream/issues 以下にスタックトレースが表示されます:",
         "ms": "Sila laporkan ralat ini kepada pembangun di https://github.com/Andrews54757/FastStream/issues dengan jejak tumpukan di bawah:",
-        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам на https://github.com/Andrews54757/FastStream/issues с указанием стека вызовов ниже:"
+        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам по адресу https://github.com/Andrews54757/FastStream/issues с приведённой ниже трассировкой стека:"
     },
     "error_popup_send": {
         "en": "Report Error",
