@@ -573,22 +573,20 @@ if (EnvUtils.isExtension()) {
         chrome.storage.local.get('feedback', (result) => {
           if (!result || !result.feedback) {
             feedbackbox.style.display = 'block';
-          } else {
-            // Don't ask for rating for manual installs
-            // SPLICER:NO_PROMO:REMOVE_START
-            if (diff > 1000 * 60 * 60 * 24 * 7) { // 7 days, ask for review
-              chrome.storage.local.get('rateus', (result) => {
-                if (!result || !result.rateus) {
-                  ratebox.style.display = 'block';
-                }
-              });
-            }
-            // SPLICER:NO_PROMO:REMOVE_END
           }
         });
       }
     }
   });
+
+  // Don't ask for rating for manual installs
+  // SPLICER:NO_PROMO:REMOVE_START
+  chrome.storage.local.get('rateus', (result) => {
+    if (!result || !result.rateus) {
+      ratebox.style.display = 'block';
+    }
+  });
+  // SPLICER:NO_PROMO:REMOVE_END
 
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
   const updatebox = document.getElementById('updatebox');
