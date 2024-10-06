@@ -624,6 +624,7 @@ export class SubtitlesManager extends EventEmitter {
 
     // Update elements
     const currentTime = this.client.state.currentTime;
+    let subtitlesVisible = 0;
 
     for (let i = 0; i < tracks.length; i++) {
       const trackContainer = cachedElements[i];
@@ -667,6 +668,7 @@ export class SubtitlesManager extends EventEmitter {
         trackContainer.style.opacity = '';
 
         WebUtils.replaceChildrenPerformant(trackContainer, toAdd);
+        subtitlesVisible++;
       }
     }
 
@@ -683,6 +685,13 @@ export class SubtitlesManager extends EventEmitter {
       }
 
       WebUtils.replaceChildrenPerformant(trackContainer, [this.testCue]);
+      subtitlesVisible++;
+    }
+
+    if (subtitlesVisible) {
+      DOMElements.subtitlesContainer.style.display = '';
+    } else {
+      DOMElements.subtitlesContainer.style.display = 'none';
     }
 
     this.checkTrackBounds();
