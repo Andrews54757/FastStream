@@ -1023,7 +1023,7 @@ export class InterfaceController {
 
   async fullscreenToggle(force) {
     if (document.fullscreenEnabled) {
-      const newValue = force === undefined ? document.fullscreenElement !== document.documentElement : force;
+      const newValue = force === undefined ? !document.fullscreenElement : force;
       if (newValue) {
         await document.documentElement.requestFullscreen();
       } else if (document.exitFullscreen && document.fullscreenElement) {
