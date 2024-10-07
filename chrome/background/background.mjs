@@ -736,7 +736,7 @@ function getMediaInfoFromTab(tab) {
   title = words.join(' ');
 
   let season = null;
-  const episode = null;
+  let episode = null;
   // Remove season #, episode #, s#, e#
   title = title.replace(/\bseason\s*([0-9]+)/gi, (match, p1) => {
     season = parseInt(p1);
