@@ -1191,6 +1191,14 @@
         "ms": "Selesai menyimpan GIF!",
         "ru": "Сохранение GIF завершено!"
     },
+    "player_download_paused": {
+        "en": "Download paused",
+        "es": "Descarga pausada",
+        "it": "Download in pausa",
+        "ja": "ダウンロードが一時停止されました",
+        "ms": "Muat turun ditangguhkan",
+        "ru": "Загрузка приостановлена"
+    },
     "player_fragment_failed_singular": {
         "en": "$1 Fragment Failed! Click to retry.",
         "es": "¡$1 fragmento falló! Haz clic para reintentar.",

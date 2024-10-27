@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "¡Finalizó el guardado del GIF!"
     },
+    "player_download_paused": {
+        "message": "Descarga pausada"
+    },
     "player_fragment_failed_singular": {
         "message": "¡$1 fragmento falló! Haz clic para reintentar."
     },

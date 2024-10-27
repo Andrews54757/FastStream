@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "GIFの保存が完了しました!"
     },
+    "player_download_paused": {
+        "message": "ダウンロードが一時停止されました"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },

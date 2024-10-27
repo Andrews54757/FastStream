@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "Selesai menyimpan GIF!"
     },
+    "player_download_paused": {
+        "message": "Muat turun ditangguhkan"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
     },

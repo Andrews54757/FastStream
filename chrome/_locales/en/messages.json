@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "Finished saving GIF!"
     },
+    "player_download_paused": {
+        "message": "Download paused"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Fragment Failed! Click to retry."
     },

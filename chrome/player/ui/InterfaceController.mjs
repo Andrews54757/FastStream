@@ -244,6 +244,11 @@ export class InterfaceController {
   }
 
   updateDownloadStatus() {
+    if (this.client.downloadManager.paused) {
+      this.setStatusMessage('download', Localize.getMessage('player_download_paused'), 'warning');
+      return;
+    }
+
     const {loaded, total, failed} = this.progressBar.getFragmentCounts();
     if (total === 0) {
       this.setStatusMessage('download', null);

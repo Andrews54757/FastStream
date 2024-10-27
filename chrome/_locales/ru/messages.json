@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "Сохранение GIF завершено!"
     },
+    "player_download_paused": {
+        "message": "Загрузка приостановлена"
+    },
     "player_fragment_failed_singular": {
         "message": "Ошибка $1 фрагмента! Нажмите для повтора"
     },

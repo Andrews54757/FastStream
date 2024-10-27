@@ -203,6 +203,14 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.toggleVisualFilters();
     });
 
+    this.on('PauseDownloaders', (e) => {
+      if (!this.client.downloadManager.paused) {
+        this.client.downloadManager.pause();
+      } else {
+        this.client.downloadManager.resume();
+      }
+    });
+
     this.on('keybind', (keybind, e) => {
       // console.log("Keybind", keybind);
     });
