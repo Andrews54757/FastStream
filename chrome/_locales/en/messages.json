@@ -572,6 +572,9 @@
     "player_source_accelyt": {
         "message": "Accelerated YouTube"
     },
+    "player_source_accelvm": {
+        "message": "Accelerated Vimeo"
+    },
     "player_source_mode": {
         "message": "Mode"
     },

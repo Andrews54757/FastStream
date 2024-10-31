@@ -1527,6 +1527,14 @@
         "ms": "YouTube dipercepatkan",
         "ru": "Аппарат. ускорение YouTube"
     },
+    "player_source_accelvm": {
+        "en": "Accelerated Vimeo",
+        "es": "Vimeo Acelerado",
+        "it": "Vimeo Accelerato",
+        "ja": "高速化された Vimeo",
+        "ms": "Vimeo dipercepatkan",
+        "ru": "Аппарат. ускорение Vimeo"
+    },
     "player_source_mode": {
         "en": "Mode",
         "es": "Modo",

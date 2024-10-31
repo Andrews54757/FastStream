@@ -1,8 +1,4 @@
-import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {RequestUtils} from '../../utils/RequestUtils.mjs';
-
-
-class Vimeo2Dash {
+export class Vimeo2Dash {
   constructor() {
     this.document = document.implementation.createDocument('', '', null);
   }
@@ -120,33 +116,4 @@ class Vimeo2Dash {
     Period.appendChild(audioAdaptationSet);
     return MPD;
   }
-}
-
-export async function patchVimeoSource(source) {
-  const hc = [];
-  for (const key in source.headers) {
-    if (Object.hasOwn(source.headers, key)) {
-      hc.push({
-        operation: 'set',
-        header: key,
-        value: source.headers[key],
-      });
-    }
-  }
-
-  const xhr = await RequestUtils.request({
-    url: source.url,
-    header_commands: hc,
-    responseType: 'json',
-  });
-
-  const convert = new Vimeo2Dash();
-  const dashManifest = convert.playlistToDash(source.url, xhr.response);
-  source.url = URL.createObjectURL(new Blob([dashManifest], {type: 'application/dash+xml'}));
-  source.mode = PlayerModes.ACCELERATED_DASH;
-
-  console.log('Vimeo source patched');
-  console.log(dashManifest);
-
-  return source;
 }

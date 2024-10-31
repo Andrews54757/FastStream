@@ -572,6 +572,9 @@
     "player_source_accelyt": {
         "message": "YouTube dipercepatkan"
     },
+    "player_source_accelvm": {
+        "message": "Vimeo dipercepatkan"
+    },
     "player_source_mode": {
         "message": "Mod"
     },

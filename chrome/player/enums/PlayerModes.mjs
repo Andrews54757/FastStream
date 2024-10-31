@@ -6,5 +6,5 @@ export const PlayerModes = {
   ACCELERATED_DASH: 'accelerated_dash',
   ACCELERATED_YT: 'accelerated_yt',
   IFRAME: 'iframe',
-  PATCHED_VIMEO: 'patched_vimeo',
+  ACCELERATED_VM: 'accelerated_vm',
 };
