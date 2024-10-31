@@ -32,6 +32,7 @@ import {VirtualAudioNode} from './ui/audio/VirtualAudioNode.mjs';
 import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
 import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
 import {MessageTypes} from './enums/MessageTypes.mjs';
+import {patchVimeoSource} from './players/patches/vimeo.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
@@ -561,6 +562,16 @@ export class FastStreamClient extends EventEmitter {
   async setSource(source) {
     try {
       source = source.copy();
+
+      try {
+        if (source.mode === PlayerModes.PATCHED_VIMEO) {
+          source = await patchVimeoSource(source);
+        }
+      } catch (e) {
+        console.error(e);
+        this.failedToLoad(Localize.getMessage('player_error_load'));
+        return;
+      }
 
       let timeFromURL = null;
       if (source.mode === PlayerModes.ACCELERATED_YT) {

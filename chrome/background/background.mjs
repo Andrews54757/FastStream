@@ -1270,10 +1270,11 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
-// Exclude urls from facebook.
+// Exclude urls from facebook and vimeo.
 const initiatorBlacklist = [
   'https://www.facebook.com',
   'https://www.instagram.com',
+  'https://vimeo.com',
 ];
 
 chrome.webRequest.onHeadersReceived.addListener(
@@ -1292,7 +1293,23 @@ chrome.webRequest.onHeadersReceived.addListener(
       initiatorBlacklist.some((a) => {
         return details.initiator.startsWith(a);
       })) {
-        return;
+        if (url.startsWith('https://vod-adaptive') && url.includes('playlist.json')) {
+          ext = 'vmpatch';
+          // chrome.tabs.sendMessage(details.tabId, {
+          //   type: 'vmurl',
+          //   url: url,
+          //   headers: frame.requestHeaders.get(details.requestId),
+          // }, {
+          //   frameId: details.frameId,
+          // }, () => {
+          //   BackgroundUtils.checkMessageError('vmurl');
+          // });
+          // return;
+        } else if (ext === 'json') {
+
+        } else {
+          return;
+        }
       }
 
       const output = CustomSourcePatternsMatcher.match(url);
