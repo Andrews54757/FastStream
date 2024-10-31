@@ -93,6 +93,7 @@ export class FastStreamClient extends EventEmitter {
       fullscreen: false,
       miniplayer: false,
       windowedFullscreen: false,
+      autoPlayTriggered: false,
     };
 
     this._needsUserInteraction = false;
@@ -662,8 +663,11 @@ export class FastStreamClient extends EventEmitter {
 
       this.interfaceController.updateToolVisibility();
 
+      this.state.autoPlayTriggered = false;
       if (autoPlay) {
-        this.play();
+        this.play().then(() => {
+          this.state.autoPlayTriggered = true;
+        });
       }
 
       this.loadProgressData().then(async () => {
@@ -689,8 +693,10 @@ export class FastStreamClient extends EventEmitter {
 
         this.disableProgressSave = false;
 
-        if (autoPlay) {
-          this.play();
+        if (autoPlay && !this.state.autoPlayTriggered) {
+          this.play().then(() => {
+            this.state.autoPlayTriggered = true;
+          });
         }
       });
     } catch (e) {
@@ -1081,12 +1087,11 @@ export class FastStreamClient extends EventEmitter {
 
     });
 
-    let autoPlayTriggered = false;
     this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
       this.player.playbackRate = this.state.playbackRate;
 
-      if (!autoPlayTriggered && this.options.autoPlay && this.state.playing === false) {
-        autoPlayTriggered = true;
+      if (!this.state.autoPlayTriggered && this.options.autoPlay && this.state.playing === false) {
+        this.state.autoPlayTriggered = true;
         this.play();
       }
     });
