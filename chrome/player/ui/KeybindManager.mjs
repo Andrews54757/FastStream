@@ -16,7 +16,12 @@ export class KeybindManager extends EventEmitter {
         this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
       }
     }
+
     DOMElements.playerContainer.addEventListener('keydown', (e) => {
+      this.onKeyDown(e);
+    });
+
+    document.addEventListener('keydown', (e) => {
       this.onKeyDown(e);
     });
 
@@ -269,6 +274,7 @@ export class KeybindManager extends EventEmitter {
 
     if (this.handleKeyString(keyString, e)) {
       e.preventDefault();
+      e.stopPropagation();
     }
   }
 }

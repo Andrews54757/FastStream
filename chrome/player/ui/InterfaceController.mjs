@@ -1031,7 +1031,6 @@ export class InterfaceController {
       const newValue = force === undefined ? !document.fullscreenElement : force;
       if (newValue) {
         await document.documentElement.requestFullscreen();
-        DOMElements.playerContainer.focus();
       } else if (document.exitFullscreen && document.fullscreenElement) {
         document.exitFullscreen();
       }
