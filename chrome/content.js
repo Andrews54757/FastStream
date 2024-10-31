@@ -27,6 +27,8 @@
   const linkRequests = new Map();
   let MiniplayerCooldown = 0;
   let Activated = false;
+
+  let resizeDebounce = Date.now();
   const Config = {
     softReplaceByDefault: true,
     hasCustomPlaylist: false,
@@ -273,13 +275,14 @@
         // updateIframeStyle(video.highest, iframe, isYt, playerFillsScreen);
         const watcher = pauseAllWithin(video.highest);
 
-        replacedPlayerQueue.push({
+        const pobj = {
           iframe,
           watcher,
           old: video.highest,
           softReplace,
           fillScreen: playerFillsScreen,
-        });
+        };
+        replacedPlayerQueue.push(pobj);
 
         updateReplacedPlayer(video.highest, iframe, softReplace);
 
@@ -293,6 +296,16 @@
             }, i * 250);
           }
         }
+
+        // Add resize listener
+        pobj.resizeObserver = new ResizeObserver(() => {
+          const now = Date.now();
+          if (now - resizeDebounce > 100) {
+            resizeDebounce = now;
+            updateReplacedPlayers();
+          }
+        });
+        pobj.resizeObserver.observe(iframe.parentNode);
       }
       if (!Activated) {
         Activated = true;
@@ -488,6 +501,9 @@
           replacedData.iframe.parentNode.replaceChild(replacedData.old, replacedData.iframe);
         }
         removePauseListeners(replacedData.old, replacedData.watcher);
+
+        replacedData.resizeObserver.disconnect();
+
         iframeObj.replacedData = null;
 
         chrome.runtime.sendMessage({
