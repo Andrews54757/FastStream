@@ -71,6 +71,7 @@ export class FastStreamClient extends EventEmitter {
       videoHueRotate: 0,
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
+      videoZoom: 1,
       seekStepSize: 0.2,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
@@ -275,6 +276,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoHueRotate = options.videoHueRotate;
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
+    this.options.videoZoom = options.videoZoom;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
 
@@ -340,13 +342,16 @@ export class FastStreamClient extends EventEmitter {
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
+    const transformStr = CSSFilterUtils.getTransformString(this.options);
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;
+      this.player.getVideo().style.transform = transformStr;
     }
 
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.filter = filterStr;
+      this.previewPlayer.getVideo().style.transform = transformStr;
     }
   }
 

@@ -50,4 +50,13 @@ export class CSSFilterUtils {
   static makeLMSDaltonizerFilter(type, strength) {
     return SVGDaltonizer.makeLMSDaltonizerFilter(DaltonizerTypeMap.get(type), strength, true);
   }
+
+  static getTransformString(options) {
+    const transforms = [];
+    if (options.videoZoom !== 1) {
+      transforms.push(`scale(${options.videoZoom})`);
+    }
+
+    return transforms.join(' ');
+  }
 }

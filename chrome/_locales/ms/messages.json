@@ -824,6 +824,9 @@
     "options_video_body": {
         "message": "Applies CSS filters to the video. Doesn't work with picture-in-picture."
     },
+    "options_video_zoom": {
+        "message": "Video Zoom"
+    },
     "options_video_delay": {
         "message": "Video Delay"
     },

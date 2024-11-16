@@ -2199,6 +2199,14 @@
         "ms": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
         "ru": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»"
     },
+    "options_video_zoom": {
+        "en": "Video Zoom",
+        "es": "Zoom de Video",
+        "it": "Zoom Video",
+        "ja": "ビデオズーム",
+        "ms": "Video Zoom",
+        "ru": "Масштабирование видео"
+    },
     "options_video_delay": {
         "en": "Video Delay",
         "es": "Video Delay",

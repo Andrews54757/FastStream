@@ -824,6 +824,9 @@
     "options_video_body": {
         "message": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»"
     },
+    "options_video_zoom": {
+        "message": "Масштабирование видео"
+    },
     "options_video_delay": {
         "message": "Задержка видео"
     },

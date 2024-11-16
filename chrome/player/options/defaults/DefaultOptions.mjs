@@ -32,6 +32,7 @@ export const DefaultOptions = {
   videoHueRotate: 0,
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
+  videoZoom: 1,
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
