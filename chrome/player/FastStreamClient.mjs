@@ -76,6 +76,8 @@ export class FastStreamClient extends EventEmitter {
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
+      videoFlip: 0,
+      videoRotate: 0,
       disableVisualFilters: false,
       maximumDownloaders: 6,
     };
