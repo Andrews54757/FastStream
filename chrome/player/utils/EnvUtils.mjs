@@ -49,4 +49,13 @@ export class EnvUtils {
   static isWebAudioSupported() {
     return !!window.AudioContext;
   }
+
+  static async getAvailableStorage() {
+    if (!window.navigator || !window.navigator.storage || !window.navigator.storage.estimate) {
+      // 2GB
+      return 2 * 1024 * 1024 * 1024;
+    }
+    const estimate = await window.navigator.storage.estimate();
+    return estimate.quota - estimate.usage;
+  }
 }

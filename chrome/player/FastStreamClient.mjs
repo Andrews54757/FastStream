@@ -606,8 +606,7 @@ export class FastStreamClient extends EventEmitter {
       await this.resetPlayer();
       this.source = source;
 
-      const estimate = await navigator.storage.estimate();
-      this.storageAvailable = estimate.quota - estimate.usage;
+      this.storageAvailable = await EnvUtils.getAvailableStorage();
 
       const options = {};
       if (source.mode === PlayerModes.ACCELERATED_YT) {
