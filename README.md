@@ -86,6 +86,7 @@ Many thanks to the contributors of this project.
 - elfriob: Russian translations
 - Justryuz: Malay translations
 - CommandLeo: Italian translations
+- andercard0: Portuguese translations
 
 #### Open Source Libraries
 
