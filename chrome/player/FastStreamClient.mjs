@@ -46,7 +46,7 @@ export class FastStreamClient extends EventEmitter {
       maxVideoSize: 5000000000, // 5GB max size
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
-      bufferAhead: 180,
+      bufferAhead: 300,
       bufferBehind: 20,
       freeFragments: true,
       downloadAll: false,
