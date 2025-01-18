@@ -295,9 +295,11 @@
 
         if (softReplace) {
           for (let i = 1; i <= 8; i++) {
-            setTimeout(() => {
-              updateReplacedPlayers();
-            }, i * 250);
+            ((i) => {
+              setTimeout(() => {
+                updateReplacedPlayers(i == 4 ? pobj : null);
+              }, i * 250);
+            })(i);
           }
         }
 
@@ -320,6 +322,17 @@
       }
     });
     return true;
+  }
+
+  function makeSoftIntoHard(pobj) {
+    const {iframe, old} = pobj;
+    if (!pobj.softReplace) {
+      return;
+    }
+
+    showSoft(old);
+    old.remove();
+    pobj.softReplace = false;
   }
 
   function handleWindowedFullscreen(request, sender, sendResponse) {
@@ -766,7 +779,7 @@
     player.style.display = '';
   }
 
-  function updateReplacedPlayers() {
+  function updateReplacedPlayers(convert = null) {
     iframeMap.forEach((iframeObj) => {
       if (iframeObj.replacedData) {
         const {iframe, old, softReplace} = iframeObj.replacedData;
@@ -777,7 +790,12 @@
           updateReplacedPlayer(old, placeholder, softReplace);
           placeholder.style.setProperty('background-color', 'black', 'important');
         } else {
-          updateReplacedPlayer(old, iframe, softReplace);
+          const final_size = updateReplacedPlayer(old, iframe, softReplace);
+          if (convert == iframeObj.replacedData &&final_size <= 100 && softReplace) {
+            console.log('converting to hard', iframeObj);
+            makeSoftIntoHard(iframeObj.replacedData);
+            updateReplacedPlayer(old, iframe, false);
+          }
         }
       } else if (iframeObj.miniplayerState.active) {
         updateMiniPlayer(iframeObj);
@@ -788,16 +806,18 @@
   function updateReplacedPlayer(old, iframe, softReplace) {
     const parent = iframe.parentNode;
     iframe.style.display = 'none';
+    let final_size;
     if (softReplace) {
       showSoft(old);
-      transferStyles(old, iframe, true);
+      final_size = transferStyles(old, iframe, true);
       hideSoft(old);
     } else {
       parent.insertBefore(old, iframe);
       transferId(iframe, old);
-      transferStyles(old, iframe, false);
+      final_size = transferStyles(old, iframe, false);
       parent.removeChild(old);
     }
+    return final_size;
   }
 
   function pauseOnPlay() {
@@ -882,6 +902,8 @@
     iframe.style.border = styles.border;
     iframe.style.borderRadius = styles.borderRadius;
     iframe.style.boxShadow = styles.boxShadow;
+
+    return rect.width * rect.height;
   }
 
   function transferId(from, to) {
