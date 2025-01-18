@@ -506,7 +506,7 @@
         }
         removePauseListeners(replacedData.old, replacedData.watcher);
 
-        // replacedData.resizeObserver.disconnect();
+        replacedData.resizeObserver.disconnect();
 
         iframeObj.replacedData = null;
 
