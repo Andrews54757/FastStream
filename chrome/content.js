@@ -37,6 +37,10 @@
     customIframeId: null,
   };
 
+  if (window.location.origin = 'https://www.twitch.tv') {
+    Config.softReplaceByDefault = false;
+  }
+
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.type === MessageTypes.IS_FULL) {
       const frameId = request.frameId;
@@ -502,7 +506,7 @@
         }
         removePauseListeners(replacedData.old, replacedData.watcher);
 
-        replacedData.resizeObserver.disconnect();
+        // replacedData.resizeObserver.disconnect();
 
         iframeObj.replacedData = null;
 
