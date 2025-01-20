@@ -148,4 +148,13 @@ export class SubtitleUtils {
     }
     return cue;
   }
+
+  static convertSubtitleFormatting(text) {
+    return text
+      .replace(/\{\\([ibu])1\}/g, '<$1>') // convert {\b1}, {\i1}, {\u1} to <b>, <i>, <u>
+      .replace(/\{\\([ibu])\}/g, '</$1>') // convert {\b}, {\i}, {\u} to </b>, </i>, </u>
+      .replace(/\{([ibu])\}/g, '<$1>') // convert {b}, {i}, {u} to <b>, <i>, <u>
+      .replace(/\{\/([ibu])\}/g, '</$1>') // convert {/b}, {/i}, {/u} to </b>, </i>, </u>
+      .replace(/(\r\n|\n)\{\\an8\}/g, ' line:5%\n'); // handle top positioning
+  }
 }
