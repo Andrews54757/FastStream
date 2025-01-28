@@ -79,6 +79,7 @@ Many thanks to the contributors of this project.
 #### Developers
 - Andrews54757: Lead developer
 - ChromiaCat: Update notify icon (PR #142)
+- frenicohansen: SRT/ASS subtitles to WebVTT (PR #323)
 
 #### Translators
 - Dael (dael_io): Fixed Spanish translations
