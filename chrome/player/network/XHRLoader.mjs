@@ -13,6 +13,7 @@ const redirectHeaders = [
   'sec-ch-ua-mobile',
   'sec-ch-ua-platform',
   'x-client-data',
+  'cookie',
 ];
 
 export class XHRLoader {
