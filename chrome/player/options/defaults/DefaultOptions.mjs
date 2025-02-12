@@ -18,7 +18,7 @@ export const DefaultOptions = {
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
   autoplayNext: false,
-  defaultYoutubeClient5: YoutubeClients.WEB,
+  defaultYoutubeClient5: YoutubeClients.IOS,
   defaultQuality: `Auto`,
   autoEnableURLs: [],
   customSourcePatterns: ``,
