@@ -13,7 +13,7 @@ import DashPlayer from '../dash/DashPlayer.mjs';
 Log.setLevel(
     Log.Level.WARNING,
     Log.Level.ERROR,
-//    Log.Level.INFO,
+    //  Log.Level.INFO,
 );
 
 const CurrentUA = `com.google.ios.youtube/18.06.35 (iPhone; CPU iPhone OS 14_4 like Mac OS X; en_US)`;
