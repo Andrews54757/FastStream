@@ -4,7 +4,7 @@ All rights reserved.
 
 The software is provided AS-IS with no warranties of any kind. This has been a hobby project of mine for the past six years. Don't expect my code to be great.
 
-You must recieve permission before using my code.
+You must receive permission before using my code.
 
 # OPEN SOURCE LICENSES:
 
