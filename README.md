@@ -35,6 +35,9 @@ See the player in action without installing the extension! Tested on Chrome and 
 
 [Web Version + Big Buck Bunny](https://faststream.online/player/#https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8)
 
+## Youtube issues
+We've been seeing issues with Youtube not working for some people using FastStream. This is because of an ongoing effort by Google to thwart third-party clients and adblockers. If you are having trouble with Youtube, please let us know in the issue tracker!
+
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
 
