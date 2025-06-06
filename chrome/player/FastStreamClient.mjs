@@ -488,19 +488,17 @@ export class FastStreamClient extends EventEmitter {
       }
       if (bitrate && this.duration) {
         let storageAvailable = (this.storageAvailable * 8) * 0.6;
-        let bufferAhead = 0;
         if (this.options.maxVideoSize > 0 && this.options.maxVideoSize * 8 < storageAvailable) {
           storageAvailable = this.options.maxVideoSize * 8;
-          const canBufferTime = storageAvailable / bitrate / 1.1;
-          bufferAhead = Math.floor(canBufferTime - this.state.bufferBehind);
         }
 
-        if (bufferAhead === 0 || !this.options.downloadAll) {
+        const canBufferTime = storageAvailable / bitrate / 1.1;
+        let bufferAhead = Math.max(Math.floor(canBufferTime - this.state.bufferBehind), 0);
+
+        if (bufferAhead < this.options.bufferAhead || !this.options.downloadAll) {
           this.state.bufferAhead = this.options.bufferAhead;
           bufferAhead = 0;
-        }
-
-        if (bufferAhead > 0 && Math.abs(this.state.bufferAhead - bufferAhead) > 30) {
+        } else if (bufferAhead > 0 && Math.abs(this.state.bufferAhead - bufferAhead) > 30) {
           this.state.bufferAhead = Math.max(bufferAhead, this.options.bufferAhead);
         }
 
