@@ -37,7 +37,7 @@
     customIframeId: null,
   };
 
-  if (window.location.origin = 'https://www.twitch.tv') {
+  if (window.location.origin === 'https://www.twitch.tv') {
     Config.softReplaceByDefault = false;
   }
 
