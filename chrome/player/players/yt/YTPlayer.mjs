@@ -99,7 +99,7 @@ export default class YTPlayer extends DashPlayer {
     await super.setSource(this.source);
 
     if (this.videoInfo.captions?.caption_tracks) {
-      this.videoInfo.captions.caption_tracks.forEach(async (track)=>{
+      this.videoInfo.captions.caption_tracks.forEach(async (track) => {
         const url = track.base_url;
         const label = track.name.text;
         const language = track.language_code;
@@ -124,16 +124,16 @@ export default class YTPlayer extends DashPlayer {
   async youtubeFetchIOS(input, init) {
     // url
     const url = typeof input === 'string' ?
-                  new URL(input) :
-                  input instanceof URL ?
-                      input :
-                      new URL(input.url);
+      new URL(input) :
+      input instanceof URL ?
+        input :
+        new URL(input.url);
 
     const headers = init?.headers ?
-                  new Headers(init.headers) :
-                  input instanceof Request ?
-                      input.headers :
-                      new Headers();
+      new Headers(init.headers) :
+      input instanceof Request ?
+        input.headers :
+        new Headers();
 
     const removeHeaders = [
       'user-agent',
@@ -146,7 +146,7 @@ export default class YTPlayer extends DashPlayer {
       'sec-ch-ua-mobile',
       'sec-ch-ua-platform',
     ];
-      // now serialize the headers
+    // now serialize the headers
     let headersArr = [...headers];
     const customHeaderCommands = [];
     headersArr = headersArr.filter((header) => {
@@ -194,23 +194,23 @@ export default class YTPlayer extends DashPlayer {
   async youtubeFetch(input, init) {
     // url
     const url = typeof input === 'string' ?
-                  new URL(input) :
-                  input instanceof URL ?
-                      input :
-                      new URL(input.url);
+      new URL(input) :
+      input instanceof URL ?
+        input :
+        new URL(input.url);
 
     const headers = init?.headers ?
-                  new Headers(init.headers) :
-                  input instanceof Request ?
-                      input.headers :
-                      new Headers();
+      new Headers(init.headers) :
+      input instanceof Request ?
+        input.headers :
+        new Headers();
 
     const redirectHeaders = [
       'user-agent',
       'origin',
       'referer',
     ];
-      // now serialize the headers
+    // now serialize the headers
     let headersArr = [...headers];
     const customHeaderCommands = [];
     headersArr = headersArr.filter((header) => {
@@ -266,7 +266,7 @@ export default class YTPlayer extends DashPlayer {
       runner_location: 'https://sandbox.faststream.online/',
     });
 
-    const info = await youtube.getInfo(identifier, mode);
+    const info = await youtube.getInfo(identifier, {client: mode});
     info.client_type = mode;
     return [youtube, info];
   }
@@ -292,7 +292,7 @@ export default class YTPlayer extends DashPlayer {
       this.markedAsWatched = true;
       chrome.runtime.sendMessage({
         type: MessageTypes.REQUEST_YT_DATA,
-      }, (datas)=>{
+      }, (datas) => {
         if (!datas) {
           return;
         }
@@ -321,7 +321,7 @@ export default class YTPlayer extends DashPlayer {
         type: MessageTypes.REQUEST_SPONSORBLOCK,
         action: 'getSkipSegments',
         videoId: identifier,
-      }, (segments)=>{
+      }, (segments) => {
         if (segments) {
           console.log('Recieved Skip Segments', segments);
           this._skipSegments = segments.map((segment) => {
