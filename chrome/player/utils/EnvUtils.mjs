@@ -55,7 +55,7 @@ export class EnvUtils {
       // 2GB
       return 2 * 1024 * 1024 * 1024;
     }
-    const estimate = await window.navigator.storage.estimate();
+    const estimate = await window.navigator.storage.estimate().catch(() => ({quota: 2 * 1024 * 1024 * 1024, usage: 0}));
     return estimate.quota - estimate.usage;
   }
 }
