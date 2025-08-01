@@ -27,7 +27,7 @@ export function DASHLoaderFactory(player) {
         }
         let segmentIndex = requestObj.index;
 
-        if (requestObj.type === 'InitializationSegment') {
+        if (requestObj.type === 'InitializationSegment' || isNaN(segmentIndex)) {
           segmentIndex = -1;
         }
 
@@ -36,7 +36,7 @@ export function DASHLoaderFactory(player) {
         if (!frag) {
           console.warn('Fragment not found', requestObj, identifier, player.client.getFragments(identifier));
           // throw new Error("Fragment not found");
-          request(httpRequest, true, requestObj.startTime || 0, requestObj.type === 'InitializationSegment' || isNaN(segmentIndex));
+          request(httpRequest, true, requestObj.startTime || 0, requestObj.type === 'InitializationSegment' || segmentIndex === -1);
           return;
         }
 
