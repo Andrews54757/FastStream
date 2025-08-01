@@ -1,7 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {MessageTypes} from '../../enums/MessageTypes.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {SabrStreamingAdapter, SabrUmpProcessor} from '../../modules/SabrStreamingAdapter.mjs';
+import {SabrStreamingAdapter, SabrUmpProcessor} from '../../modules/googlevideo.mjs';
 import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
