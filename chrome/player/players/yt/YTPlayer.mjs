@@ -308,7 +308,6 @@ export default class YTPlayer extends DashPlayer {
     });
 
     const tokens = await getPoTokens(youtube.session, identifier);
-    console.log('Po Tokens:', tokens);
     youtube.session.player.po_token = tokens.sessionToken;
     youtube.session.po_token = tokens.contentToken;
     youtube.session.content_token = tokens.contentToken;

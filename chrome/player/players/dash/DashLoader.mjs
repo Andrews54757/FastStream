@@ -122,23 +122,13 @@ export function DASHLoaderFactory(player) {
         ...context,
         preProcessor: async (entry, request) => {
           if (isSegment && player.preProcessFragment) {
-            try {
-              return await player.preProcessFragment(entry, request, startTime, isInit);
-            } catch (e) {
-              console.error('Error in preProcessor:', e);
-              throw e;
-            }
+            return await player.preProcessFragment(entry, request, startTime, isInit);
           }
           return request;
         },
         postProcessor: async (entry, response) => {
           if (isSegment && player.postProcessFragment) {
-            try {
-              return await player.postProcessFragment(entry, response, startTime, isInit);
-            } catch (e) {
-              console.error('Error in postProcessor:', e);
-              throw e;
-            }
+            return await player.postProcessFragment(entry, response, startTime, isInit);
           }
           return response;
         },
