@@ -22,6 +22,32 @@ export class DashFragmentRequester {
         ...config.headers,
         ...this.player.source.headers,
       },
+      preProcessor: async (entry, request) => {
+        if (this.player.preProcessFragment) {
+          try {
+            const startTime = fragment.start;
+            const isInit = fragment.sn === -1;
+            return await this.player.preProcessFragment(entry, request, startTime, isInit);
+          } catch (e) {
+            console.error('Error in preProcessor:', e);
+            throw e;
+          }
+        }
+        return request;
+      },
+      postProcessor: async (entry, response) => {
+        if (this.player.postProcessFragment) {
+          try {
+            const startTime = fragment.start;
+            const isInit = fragment.sn === -1;
+            return await this.player.postProcessFragment(entry, response, startTime, isInit);
+          } catch (e) {
+            console.error('Error in postProcessor:', e);
+            throw e;
+          }
+        }
+        return response;
+      },
     }, {
       onSuccess: async (entry, xhr) => {
         let data;

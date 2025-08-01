@@ -1,7 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
-import {DashJS} from '../../modules/dash.mjs';
+import {MediaPlayer, Debug} from '../../modules/dash.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
@@ -30,7 +30,7 @@ export default class DashPlayer extends EventEmitter {
 
   async setup() {
     // eslint-disable-next-line new-cap
-    this.dash = DashJS.MediaPlayer().create();
+    this.dash = MediaPlayer().create();
 
     const preEvents = new EventEmitter();
     const emitterRelay = new EmitterRelay([preEvents, this]);
@@ -60,9 +60,9 @@ export default class DashPlayer extends EventEmitter {
     };
 
     // if (this.isPreview) {
-    //   newSettings.debug ={
-    //     'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
-    //   };
+    // newSettings.debug ={
+    //   'logLevel': Debug.LOG_LEVEL_DEBUG,
+    // };
     // }
 
     this.dash.updateSettings(newSettings);
@@ -99,7 +99,7 @@ export default class DashPlayer extends EventEmitter {
       this.extractAllFragments();
     });
 
-    this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
+    this.dash.on(MediaPlayer.events.STREAM_INITIALIZED, (e) => {
       this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
     });
 
@@ -108,7 +108,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   extractAllFragments() {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     processors.forEach((processor) => {
       const mediaInfo = processor.getMediaInfo();
       mediaInfo.representations.forEach((rep) => {
@@ -257,7 +257,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   getProcessor(adaptationIndex) {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     for (let i = 0; i < processors.length; i++) {
       const processor = processors[i];
       if (processor.getMediaInfo().index === adaptationIndex) {
@@ -268,7 +268,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get currentLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
     if (!processor) {
       return -1;
     }
@@ -285,7 +285,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get currentAudioLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
     if (!processor) {
       return -1;
     }
@@ -344,6 +344,11 @@ export default class DashPlayer extends EventEmitter {
     const frags = this.client.getFragments(this.currentLevel);
     if (!frags) return null;
 
+    // check if init segment isn't loaded
+    if (frags[-1] && frags[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      return frags[-1];
+    }
+
     const time = this.currentTime;
     return frags.find((frag) => {
       if (!frag) return false;
@@ -354,6 +359,11 @@ export default class DashPlayer extends EventEmitter {
   get currentAudioFragment() {
     const frags = this.client.getFragments(this.currentAudioLevel);
     if (!frags) return null;
+
+    // check if init segment isn't loaded
+    if (frags[-1] && frags[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      return frags[-1];
+    }
 
     const time = this.currentTime;
     return frags.find((frag) => {
@@ -425,8 +435,8 @@ export default class DashPlayer extends EventEmitter {
       };
     });
 
-    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
-    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
+    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
 
     const videoDuration = videoProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
     const audioDuration = audioProcessor?.getMediaInfo()?.streamInfo?.duration || 0;

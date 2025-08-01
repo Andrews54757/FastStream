@@ -1,20 +1,21 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {MessageTypes} from '../../enums/MessageTypes.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
-import {ClientType, Innertube, UniversalCache, Log} from '../../modules/yt.mjs';
+import {SabrStreamingAdapter, SabrUmpProcessor} from '../../modules/SabrStreamingAdapter.mjs';
+import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
-
-Log.setLevel(
-    Log.Level.WARNING,
-    Log.Level.ERROR,
-    //  Log.Level.INFO,
-);
+// Log.setLevel(
+//     Log.Level.WARNING,
+//     Log.Level.ERROR,
+//     Log.Level.INFO,
+// );
 
 const CurrentUA = `com.google.ios.youtube/18.06.35 (iPhone; CPU iPhone OS 14_4 like Mac OS X; en_US)`;
 export default class YTPlayer extends DashPlayer {
@@ -25,7 +26,6 @@ export default class YTPlayer extends DashPlayer {
     } else {
       this.defaultClient = ClientType.IOS;
     }
-
     this.paramCache = new Map();
   }
 
@@ -49,21 +49,54 @@ export default class YTPlayer extends DashPlayer {
           const [youtube2, info2] = await this.getVideoInfo(identifier, ClientType.TV_EMBEDDED);
           this.videoInfo = info2;
           this.ytclient = youtube2;
-        }
+          manifest = await this.videoInfo.toDash();
+        } else if (this.defaultClient === ClientType.WEB) {
+          manifest = await this.videoInfo.toDash({
+            manifest_options: {
+              is_sabr: true,
+            },
+          });
+          const serverAbrStreamingUrl = await this.ytclient.session.player?.decipher(this.videoInfo.streaming_data?.server_abr_streaming_url);
+          const videoPlaybackUstreamerConfig = this.videoInfo.player_config?.media_common_config.media_ustreamer_request_config?.video_playback_ustreamer_config;
+          const sabrFormats = this.videoInfo.streaming_data?.adaptive_formats.map(buildSabrFormat) || [];
 
-        manifest = await this.videoInfo.toDash((url) => {
-          return url;
-        });
+          this.sabrFormats = sabrFormats;
+
+          const adapter = new SabrStreamingAdapter({
+            playerAdapter: this,
+            formats: sabrFormats,
+            serverAbrStreamingUrl,
+            videoPlaybackUstreamerConfig,
+            sabrFormats,
+          });
+          adapter.setStreamingURL(serverAbrStreamingUrl);
+          adapter.setServerAbrFormats(sabrFormats);
+          adapter.setUstreamerConfig(videoPlaybackUstreamerConfig);
+          adapter.onMintPoToken(async () => {
+            return this.ytclient.session.po_token;
+          });
+
+          adapter.onSnackbarMessage((message) => {
+            console.warn('Sabr Snackbar Message:', message);
+          });
+
+          adapter.onReloadPlayerResponse((response) => {
+            console.warn('Sabr Reload Player Response:', response);
+          });
+
+          adapter.attach();
+
+          this.sabrAdapter = adapter;
+        } else {
+          manifest = await this.videoInfo.toDash();
+        }
       } catch (e) {
         if (this.defaultClient === ClientType.WEB) {
           console.warn('Failed to fetch manifest, trying with iOS client', e);
           const [youtube3, info3] = await this.getVideoInfo(identifier, ClientType.IOS);
           this.videoInfo = info3;
           this.ytclient = youtube3;
-
-          manifest = await this.videoInfo.toDash((url) => {
-            return url;
-          });
+          manifest = await this.videoInfo.toDash();
         } else {
           throw e;
         }
@@ -419,4 +452,257 @@ export default class YTPlayer extends DashPlayer {
     return super.canSave();
     // SPLICER:CENSORYT:REMOVE_END
   }
+
+  // For sabr adapter
+  initialize(player, requestMetadataManager, cache) {
+    this.requestMetadataManager = requestMetadataManager;
+    this.sabrCache = cache;
+  }
+
+  getPlayerTime() {
+    return this.currentTime;
+  }
+
+  getPlaybackRate() {
+    return this.playbackRate;
+  }
+
+  getBandwidthEstimate() {
+    // 100 MBPS
+    return 8 * 100 * 1024 * 1024; // 100 Mbps in bits per second
+  }
+
+  getActiveTrackFormats(activeFormat, sabrFormats) {
+    const videoFormat = sabrFormats.find((format) => format.itag === parseInt(this.currentLevel) && format.mimeType.startsWith('video/'));
+
+    const audioParts = this.currentAudioLevel.split('-');
+    const itag = parseInt(audioParts[0]);
+    let audioTrackId;
+    let isDrc = false;
+
+    if (audioParts.length === 3) {
+      audioTrackId = parseInt(audioParts[1]);
+      if (audioParts[2] === 'drc') {
+        isDrc = true;
+      }
+    } else if (audioParts.length === 2) {
+      if (audioParts[1] === 'drc') {
+        isDrc = true;
+      } else {
+        audioTrackId = parseInt(audioParts[1]);
+      }
+    }
+
+    const audioFormat = sabrFormats.find((format) => format.itag === itag && format.audioTrackId === audioTrackId && format.isDrc === isDrc && format.mimeType.startsWith('audio/'));
+    const obj = {audioFormat, videoFormat};
+    if (activeFormat.mimeType.startsWith('video/')) {
+      obj.videoFormat = activeFormat;
+    } else if (activeFormat.mimeType.startsWith('audio/')) {
+      obj.audioFormat = activeFormat;
+    }
+    return obj;
+  }
+
+  registerRequestInterceptor(interceptor) {
+    this.sabrPreProcessor = interceptor;
+  }
+
+  registerResponseInterceptor(interceptor) {
+    this.sabrPostProcessor = interceptor;
+  }
+
+  async preProcessFragment(entry, request, startTime, isInit) {
+    if (this.sabrPreProcessor) {
+      const requestObj = {
+        ...request,
+        segment: {
+          getStartTime: () => {
+            return startTime;
+          },
+          isInit: () => {
+            return isInit;
+          },
+        },
+      };
+
+      // If rangeStart and rangeEnd are defined, use them
+      if (requestObj.rangeEnd !== undefined) {
+        requestObj.headers.Range = `bytes=${requestObj.rangeStart || 0}-${requestObj.rangeEnd - 1}`;
+        requestObj.rangeEnd = undefined;
+        requestObj.rangeStart = undefined;
+      }
+      return await this.sabrPreProcessor(requestObj);
+    }
+    return request;
+  }
+
+
+  async makeRequestRecurse(entry, url, headers, startTime = 0, isInit = false) {
+    const newRequest = await this.sabrPreProcessor({
+      url,
+      headers,
+      segment: {
+        getStartTime: () => startTime,
+        isInit: () => isInit,
+      },
+    });
+
+    const {customHeaderCommands, regularHeaders} = RequestUtils.splitSpecialHeaders(newRequest.headers);
+    const xhr = await RequestUtils.request({
+      method: newRequest.method || 'GET',
+      url: newRequest.url,
+      headers: regularHeaders,
+      header_commands: customHeaderCommands,
+      body: newRequest.body,
+      responseType: 'arraybuffer',
+    });
+
+    const responseObject = {
+      url: xhr.responseURL,
+      headers: URLUtils.headersStringToObj(xhr.getAllResponseHeaders()),
+      status: xhr.status,
+      statusText: xhr.statusText,
+      data: xhr.response,
+      makeRequest: (url2, headers2) => {
+        return this.makeRequestRecurse(entry, url2, headers2, startTime, isInit);
+      },
+    };
+
+    // Get metadata
+    const requestMetadata = this.requestMetadataManager.getRequestMetadata(responseObject.url, true);
+    if (!requestMetadata) {
+      console.warn('(r) No request metadata found for', entry);
+      return response;
+    }
+
+    const processor = new SabrUmpProcessor(requestMetadata, this.sabrCache);
+    const result = await processor.processChunk(new Uint8Array(responseObject.data));
+    // console.log(result);
+
+    if (!result) {
+      console.warn('(r) No result from SABR UMP processor for', entry, requestMetadata);
+      responseObject.data = null;
+    } else {
+      responseObject.data = result.data;
+    }
+
+    this.requestMetadataManager.setRequestMetadata(responseObject.url, requestMetadata);
+
+
+    const newResponse = await this.sabrPostProcessor(responseObject);
+    // console.log(requestMetadata, newResponse);
+
+    if (!this.debugDownloadList) {
+      this.debugDownloadList = [];
+    }
+    this.debugDownloadList.push({
+      data: newResponse.data,
+    });
+
+
+    if (!newResponse.data) {
+      throw new Error('No data from SABR UMP processor');
+    }
+    return newResponse;
+  }
+
+  async postProcessFragment(entry, response, startTime = 0, isInit = false) {
+    if (this.sabrPostProcessor) {
+      // Get metadata
+      const requestMetadata = this.requestMetadataManager.getRequestMetadata(response.url, true);
+      if (!requestMetadata) {
+        console.warn('No request metadata found for', entry);
+        return response;
+      }
+
+      const processor = new SabrUmpProcessor(requestMetadata, this.sabrCache);
+      const result = await processor.processChunk(new Uint8Array(response.data));
+      // console.log(result);
+
+      const responseObject = {
+        ...response,
+        makeRequest: (url, headers) => {
+          return this.makeRequestRecurse(entry, url, headers, startTime, isInit);
+        },
+      };
+
+      if (!result) {
+        console.warn('No result from SABR UMP processor for', entry, requestMetadata);
+        responseObject.data = null;
+      } else {
+        responseObject.data = result.data;
+      }
+
+      this.requestMetadataManager.setRequestMetadata(response.url, requestMetadata);
+
+
+      const newResponse = await this.sabrPostProcessor(responseObject);
+
+      // console.log(requestMetadata, newResponse);
+
+      if (!this.debugDownloadList) {
+        this.debugDownloadList = [];
+      }
+      this.debugDownloadList.push({
+        data: newResponse.data,
+      });
+
+      if (!newResponse.data) {
+        throw new Error('No data from SABR UMP processor');
+      }
+      return newResponse;
+    }
+    return response;
+  }
+
+  downloadDebugList() {
+    if (!this.debugDownloadList || this.debugDownloadList.length === 0) {
+      console.warn('No debug download list available');
+      return;
+    }
+    // download each item as separate file
+    this.debugDownloadList.forEach((item, index) => {
+      const blob = new Blob([item.data], {type: 'application/octet-stream'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `debug-download-${index}.bin`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  dispose() {
+
+  }
+}
+
+function buildSabrFormat(formatStream) {
+  return {
+    itag: formatStream.itag,
+    lastModified: parseInt(formatStream.last_modified_ms || formatStream.lastModified || '0'),
+    xtags: formatStream.xtags,
+    width: formatStream.width,
+    height: formatStream.height,
+    mimeType: formatStream.mime_type || formatStream.mimeType,
+    audioQuality: formatStream.audio_quality || formatStream.audioQuality,
+    bitrate: formatStream.bitrate,
+    averageBitrate: formatStream.average_bitrate || formatStream.averageBitrate,
+    quality: formatStream.quality,
+    qualityLabel: formatStream.quality_label || formatStream.qualityLabel,
+    audioTrackId: formatStream.audio_track?.id || formatStream.audioTrackId,
+    approxDurationMs: formatStream.approx_duration_ms || parseInt(formatStream.approxDurationMs || '0'),
+    contentLength: parseInt(formatStream.contentLength || '0') || formatStream.content_length,
+
+    // YouTube.js-specific properties.
+    isDrc: formatStream.is_drc,
+    isAutoDubbed: formatStream.is_auto_dubbed,
+    isDescriptive: formatStream.is_descriptive,
+    isDubbed: formatStream.is_dubbed,
+    language: formatStream.language,
+    isOriginal: formatStream.is_original,
+    isSecondary: formatStream.is_secondary,
+  };
 }

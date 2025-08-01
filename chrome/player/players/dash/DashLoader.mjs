@@ -17,11 +17,12 @@ export function DASHLoaderFactory(player) {
     }
 
     function loadFragmentInternal(httpRequest) {
+      // console.log(httpRequest);
       try {
         const requestObj = httpRequest.customData.request;
         const representation = requestObj.representation;
         if (!representation) {
-          request(httpRequest);
+          request(httpRequest, true, requestObj.startTime || 0, true);
           return;
         }
         let segmentIndex = requestObj.index;
@@ -35,7 +36,7 @@ export function DASHLoaderFactory(player) {
         if (!frag) {
           console.warn('Fragment not found', requestObj, identifier, player.client.getFragments(identifier));
           // throw new Error("Fragment not found");
-          request(httpRequest);
+          request(httpRequest, true, requestObj.startTime || 0, requestObj.type === 'InitializationSegment' || isNaN(segmentIndex));
           return;
         }
 
@@ -82,7 +83,7 @@ export function DASHLoaderFactory(player) {
       }
     }
 
-    function request(httpRequest) {
+    function request(httpRequest, isSegment = false, startTime = 0, isInit = false) {
       // Variables will be used in the callback functions
       const request = httpRequest.customData.request;
 
@@ -117,7 +118,31 @@ export function DASHLoaderFactory(player) {
         },
       };
 
-      const loader = player.getClient().downloadManager.getFile(context, {
+      const loader = player.getClient().downloadManager.getFile({
+        ...context,
+        preProcessor: async (entry, request) => {
+          if (isSegment && player.preProcessFragment) {
+            try {
+              return await player.preProcessFragment(entry, request, startTime, isInit);
+            } catch (e) {
+              console.error('Error in preProcessor:', e);
+              throw e;
+            }
+          }
+          return request;
+        },
+        postProcessor: async (entry, response) => {
+          if (isSegment && player.postProcessFragment) {
+            try {
+              return await player.postProcessFragment(entry, response, startTime, isInit);
+            } catch (e) {
+              console.error('Error in postProcessor:', e);
+              throw e;
+            }
+          }
+          return response;
+        },
+      }, {
         onSuccess: async (entry, xhr) => {
           const data = await entry.getDataFromBlob();
           httpRequest.customData.onSuccess(data, entry.responseURL);
