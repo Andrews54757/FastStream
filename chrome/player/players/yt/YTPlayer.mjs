@@ -45,11 +45,9 @@ export default class YTPlayer extends DashPlayer {
         this.ytclient = youtube;
 
         if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
-          console.warn('Login Required, trying to fetch with TV mode');
-          const [youtube2, info2] = await this.getVideoInfo(identifier, ClientType.TV_EMBEDDED);
-          this.videoInfo = info2;
-          this.ytclient = youtube2;
-          manifest = await this.videoInfo.toDash();
+          console.warn('Login Required!');
+          this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
+          return;
         } else if (this.defaultClient === ClientType.WEB) {
           manifest = await this.videoInfo.toDash({
             manifest_options: {
