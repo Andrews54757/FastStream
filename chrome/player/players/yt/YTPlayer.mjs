@@ -73,7 +73,7 @@ export default class YTPlayer extends DashPlayer {
           adapter.setServerAbrFormats(sabrFormats);
           adapter.setUstreamerConfig(videoPlaybackUstreamerConfig);
           adapter.onMintPoToken(async () => {
-            return this.ytclient.session.po_token;
+            return (await getPoTokens(this.ytclient.session, identifier)).sessionToken;
           });
 
           adapter.onSnackbarMessage((message) => {
@@ -133,7 +133,15 @@ export default class YTPlayer extends DashPlayer {
 
     if (this.videoInfo.captions?.caption_tracks) {
       this.videoInfo.captions.caption_tracks.forEach(async (track) => {
-        const url = track.base_url;
+        let url = track.base_url;
+        // if po token exists, add it to the url
+        if (this.ytclient.session.content_token) {
+          const urlObj = new URL(url);
+          urlObj.searchParams.set('potc', 1);
+          urlObj.searchParams.set('pot', this.ytclient.session.content_token);
+          urlObj.searchParams.set('c', this.ytclient.session.client_name);
+          url = urlObj.toString();
+        }
         const label = track.name.text;
         const language = track.language_code;
 
@@ -299,7 +307,17 @@ export default class YTPlayer extends DashPlayer {
       runner_location: 'https://sandbox.faststream.online/',
     });
 
-    const info = await youtube.getInfo(identifier, {client: mode});
+    const tokens = await getPoTokens(youtube.session, identifier);
+    console.log('Po Tokens:', tokens);
+    youtube.session.player.po_token = tokens.sessionToken;
+    youtube.session.po_token = tokens.contentToken;
+    youtube.session.content_token = tokens.contentToken;
+
+
+    const info = await youtube.getInfo(identifier, {
+      client: mode,
+      po_token: tokens.contentToken,
+    });
     info.client_type = mode;
     return [youtube, info];
   }
@@ -705,4 +723,89 @@ function buildSabrFormat(formatStream) {
     isOriginal: formatStream.is_original,
     isSecondary: formatStream.is_secondary,
   };
+}
+
+async function getPoTokens(session, videoId) {
+  const visitorData = session.context.client.visitorData;
+
+  // first, check cache
+  const poTokenCache = JSON.parse(localStorage.getItem('po_token_cache') || '{}');
+  if (!poTokenCache.sessionCache) {
+    poTokenCache.sessionCache = {};
+  }
+  if (!poTokenCache.contentCache) {
+    poTokenCache.contentCache = [];
+  }
+  const now = Date.now();
+  const sessionCache = poTokenCache.sessionCache;
+
+  let sessionToken = null;
+  if (sessionCache.token &&sessionCache.visitorData === visitorData && sessionCache.expires > now) {
+    // session cache is valid, return it
+    sessionToken = sessionCache.token;
+  }
+
+  let contentToken = null;
+  // find videoId in content cache
+  const contentCache = poTokenCache.contentCache.find((item) => item.videoId === videoId);
+  if (contentCache && contentCache.token && contentCache.expires > now) {
+    // content cache is valid, return it
+    contentToken = contentCache.token;
+  }
+
+  if (!sessionToken || !contentToken) {
+    const identifiers = [];
+    if (!contentToken) {
+      identifiers.push(videoId);
+    }
+    if (!sessionToken) {
+      identifiers.push(visitorData);
+    }
+    console.log('Requesting PoToken for identifiers:', identifiers);
+    const result = await session.getPot(identifiers).catch((e) => {
+      console.warn('Failed to get PoToken', e);
+      return null;
+    });
+
+    if (!result) {
+      return {contentToken, sessionToken};
+    }
+
+    const expires = Date.now() + (result.ttl * 1000);
+
+    result.result.forEach((item) => {
+      if (item.error) {
+        console.warn('PoToken error for', item.identifier, item.error);
+        return;
+      }
+      if (item.id === visitorData) {
+        sessionToken = item.pot;
+        sessionCache.token = item.pot;
+        sessionCache.visitorData = visitorData;
+        sessionCache.expires = expires;
+      } else if (item.id === videoId) {
+        contentToken = item.pot;
+        // Remove old tokens that are expired
+        const now = Date.now();
+        poTokenCache.contentCache = poTokenCache.contentCache.filter((c) => c.expires > now);
+
+        // Remove old content token if exists
+        poTokenCache.contentCache = poTokenCache.contentCache.filter((c) => c.videoId !== videoId);
+
+        // Limit to 5
+        if (poTokenCache.contentCache.length >= 5) {
+          poTokenCache.contentCache.shift();
+        }
+
+        poTokenCache.contentCache.push({
+          videoId,
+          token: item.pot,
+          expires,
+        });
+      }
+    });
+
+    localStorage.setItem('po_token_cache', JSON.stringify(poTokenCache));
+  }
+  return {contentToken, sessionToken};
 }

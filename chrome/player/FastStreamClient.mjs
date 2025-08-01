@@ -59,7 +59,7 @@ export class FastStreamClient extends EventEmitter {
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
-      defaultYoutubeClient: YoutubeClients.IOS,
+      defaultYoutubeClient: YoutubeClients.WEB,
       miniSize: 0.25,
       miniPos: MiniplayerPositions.BOTTOM_RIGHT,
       videoBrightness: 1,
@@ -256,7 +256,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.visChangeAction = options.visChangeAction;
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
-    this.options.defaultYoutubeClient = options.defaultYoutubeClient5;
+    this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.maximumDownloaders = options.maximumDownloaders;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
