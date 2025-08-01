@@ -2,9 +2,11 @@ import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {MessageTypes} from '../../enums/MessageTypes.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {SabrStreamingAdapter, SabrUmpProcessor} from '../../modules/googlevideo.mjs';
+import {Localize} from '../../modules/Localize.mjs';
 import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
+import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {URLUtils} from '../../utils/URLUtils.mjs';
@@ -45,10 +47,45 @@ export default class YTPlayer extends DashPlayer {
         this.ytclient = youtube;
 
         if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
-          console.warn('Login Required!');
-          this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
-          return;
-        } else if (this.defaultClient === ClientType.WEB) {
+          if (false && this.defaultClient === ClientType.WEB && this.videoInfo.playability_status.reason === 'Sign in to confirm your age') {
+            console.warn('Login Required, trying to fetch with WEB_EMBEDDED mode', ClientType);
+            const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
+            const embeddedClient = await Innertube.create({
+              cache,
+              fetch: this.youtubeFetch.bind(this),
+              client_type: ClientType.WEB_EMBEDDED,
+              runner_location: 'https://sandbox.faststream.online/',
+            });
+            embeddedClient.session.context.client.visitorData = this.ytclient.session.context.client.visitorData;
+            embeddedClient.session.content_token = this.ytclient.session.content_token;
+            embeddedClient.session.po_token = this.ytclient.session.po_token;
+            embeddedClient.session.player = this.ytclient.session.player;
+
+            const info = await embeddedClient.getInfo(identifier, {
+              client: 'WEB_EMBEDDED',
+              po_token: embeddedClient.session.content_token,
+            });
+
+            if (info.playability_status.status === 'OK' && info.streaming_data) {
+              this.videoInfo.playability_status = info.playability_status;
+              this.videoInfo.streaming_data = info.streaming_data;
+              this.videoInfo.basic_info.start_timestamp = info.basic_info.start_timestamp;
+              this.videoInfo.basic_info.duration = info.basic_info.duration;
+              this.videoInfo.captions = info.captions;
+            } else {
+              console.warn('Login Required after embedded client fetch', info);
+              this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
+              return;
+            }
+          } else {
+            console.warn('Login Required!');
+            this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
+            AlertPolyfill.alert(Localize.getMessage('yt_error_login_required'), 'error');
+            return;
+          }
+        }
+
+        if (this.defaultClient === ClientType.WEB) {
           manifest = await this.videoInfo.toDash({
             manifest_options: {
               is_sabr: true,

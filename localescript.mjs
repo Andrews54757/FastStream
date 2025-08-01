@@ -175,6 +175,12 @@ if (combine) {
   localesMulti.forEach((translations, locale) => {
     localesCombined.set(locale, translations);
   });
+  // delete locales not found in multi
+  for (const locale of localesCombined.keys()) {
+    if (!localesMulti.has(locale)) {
+      localesCombined.delete(locale);
+    }
+  }
   saveLocalesToCombinedFile(localesCombined, whiteList);
 }
 

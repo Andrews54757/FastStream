@@ -1060,5 +1060,8 @@
     },
     "error_popup_send": {
         "message": "エラーを報告"
+    },
+    "yt_error_login_required": {
+        "message": "申し訳ありませんが、FastStream は YouTube にログインする必要がある動画をサポートしていません。"
     }
 }

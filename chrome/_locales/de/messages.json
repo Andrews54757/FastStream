@@ -1060,5 +1060,8 @@
     },
     "error_popup_send": {
         "message": "Fehler melden"
+    },
+    "yt_error_login_required": {
+        "message": "Entschuldigung! FastStream unterstützt keine Videos, die erfordern, dass du bei YouTube angemeldet bist."
     }
 }

@@ -1060,5 +1060,8 @@
     },
     "error_popup_send": {
         "message": "Relatar erro"
+    },
+    "yt_error_login_required": {
+        "message": "Desculpe! O FastStream não suporta vídeos que exigem que você esteja logado no YouTube."
     }
 }

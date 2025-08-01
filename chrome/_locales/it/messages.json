@@ -1060,5 +1060,8 @@
     },
     "error_popup_send": {
         "message": "Segnala un Errore"
+    },
+    "yt_error_login_required": {
+        "message": "Spiacenti! FastStream non supporta i video che richiedono l'accesso a YouTube."
     }
 }
