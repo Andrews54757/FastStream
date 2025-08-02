@@ -283,7 +283,7 @@ export default class DashPlayer extends EventEmitter {
   set currentLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      this.dash.setRepresentationForTypeById('video', value, true);
+      this.dash.setRepresentationForTypeById('video', value);
     } catch (e) {
       console.warn(e);
     }
@@ -300,7 +300,7 @@ export default class DashPlayer extends EventEmitter {
   set currentAudioLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      this.dash.setRepresentationForTypeById('audio', value, true);
+      this.dash.setRepresentationForTypeById('audio', value);
     } catch (e) {
       console.warn(e);
     }
