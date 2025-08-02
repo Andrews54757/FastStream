@@ -325,7 +325,7 @@
   }
 
   function makeSoftIntoHard(pobj) {
-    const {iframe, old} = pobj;
+    const {old} = pobj;
     if (!pobj.softReplace) {
       return;
     }
