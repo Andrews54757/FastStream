@@ -653,7 +653,7 @@ export default class YTPlayer extends DashPlayer {
 
 
     if (!newResponse.data) {
-      throw new Error('No data from SABR UMP processor');
+      throw new Error('(r) No data from SABR UMP processor');
     }
     return newResponse;
   }

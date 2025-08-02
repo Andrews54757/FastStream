@@ -91,6 +91,11 @@ export default class DashPlayer extends EventEmitter {
       initialize();
     });
 
+    this.dash.on('REPRESENTATION_UPDATED', (a) => {
+      const rep = a.representation;
+      this.extractFragments(rep);
+    });
+
     this.dash.on('dataUpdateCompleted', (a) => {
       this.extractAllFragments();
     });

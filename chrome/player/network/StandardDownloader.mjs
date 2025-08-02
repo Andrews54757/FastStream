@@ -89,7 +89,7 @@ export class StandardDownloader {
 
   async onSuccess(response, stats, entry, xhr) {
     this.updateSpeed(stats);
-    this.entry.onSuccess(response, stats, this.entry, xhr);
+    await this.entry.onSuccess(response, stats, this.entry, xhr);
     this.cleanup();
   }
 

@@ -22,6 +22,7 @@ export function DASHLoaderFactory(player) {
         const requestObj = httpRequest.customData.request;
         const representation = requestObj.representation;
         if (!representation) {
+          console.error('Representation not found', requestObj);
           request(httpRequest, true, requestObj.startTime || 0, true);
           return;
         }
