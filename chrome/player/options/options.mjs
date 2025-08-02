@@ -46,7 +46,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
-const ytclient = document.getElementById('ytclient');
+// const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
@@ -72,7 +72,7 @@ if (!EnvUtils.isExtension()) {
   autoEnableURLSInput.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
-  ytclient.disabled = true;
+  // ytclient.disabled = true;
   autoplayNext.disabled = true;
 }
 
@@ -109,7 +109,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
-  setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
+  // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -219,10 +219,10 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
   optionChanged();
 });
 
-createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient, null, (e) => {
-  Options.defaultYoutubeClient = e.target.value;
-  optionChanged();
-});
+// createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient, null, (e) => {
+//   Options.defaultYoutubeClient = e.target.value;
+//   optionChanged();
+// });
 
 document.querySelectorAll('.option').forEach((option) => {
   option.addEventListener('click', (e) => {
