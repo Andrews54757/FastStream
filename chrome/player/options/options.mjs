@@ -14,7 +14,6 @@ import {DefaultSubtitlesSettings} from './defaults/DefaultSubtitlesSettings.mjs'
 import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
-import {YoutubeClients} from '../enums/YoutubeClients.mjs';
 import {MessageTypes} from '../enums/MessageTypes.mjs';
 
 let Options = {};
