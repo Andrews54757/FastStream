@@ -37,7 +37,7 @@ export default class DashPlayer extends EventEmitter {
     VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
     const newSettings = {
-      'streaming': {
+      streaming: {
         abr: {
           autoSwitchBitrate: {audio: false, video: false},
         },
@@ -51,8 +51,11 @@ export default class DashPlayer extends EventEmitter {
         text: {
           defaultEnabled: false,
         },
+        capabilities: {
+          useMediaCapabilitiesApi: false,
+        },
       },
-      'errors': {
+      errors: {
         recoverAttempts: {
           mediaErrorDecode: 1000000,
         },

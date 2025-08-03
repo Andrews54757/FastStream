@@ -3,7 +3,7 @@ import {MessageTypes} from '../../enums/MessageTypes.mjs';
 import {PlayerModes} from '../../enums/PlayerModes.mjs';
 import {SabrStreamingAdapter, SabrUmpProcessor} from '../../modules/googlevideo.mjs';
 import {Localize} from '../../modules/Localize.mjs';
-import {ClientType, Innertube, UniversalCache} from '../../modules/yt.mjs';
+import {ClientType, Innertube, UniversalCache, Constants} from '../../modules/yt.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {SubtitleTrack} from '../../SubtitleTrack.mjs';
 import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
@@ -103,6 +103,10 @@ export default class YTPlayer extends DashPlayer {
             serverAbrStreamingUrl,
             videoPlaybackUstreamerConfig,
             sabrFormats,
+            clientInfo: {
+              clientName: parseInt(Constants.CLIENT_NAME_IDS[this.ytclient.session.context.client.clientName]),
+              clientVersion: this.ytclient.session.context.client.clientVersion,
+            },
           });
           adapter.setStreamingURL(serverAbrStreamingUrl);
           adapter.setServerAbrFormats(sabrFormats);
@@ -115,9 +119,46 @@ export default class YTPlayer extends DashPlayer {
             console.warn('Sabr Snackbar Message:', message);
           });
 
-          adapter.onReloadPlayerResponse((response) => {
-            console.warn('Sabr Reload Player Response:', response);
+          adapter.onReloadPlayerResponse(async (reloadPlaybackContext) => {
+            const newInfo = await this.ytclient.getInfo(identifier, {
+              client: this.defaultClient,
+              po_token: this.ytclient.session.content_token,
+            }, reloadPlaybackContext);
+            this.videoInfo = newInfo;
+
+            const serverAbrStreamingUrl = await this.ytclient.session.player?.decipher(this.videoInfo.streaming_data?.server_abr_streaming_url);
+            const videoPlaybackUstreamerConfig = this.videoInfo.player_config?.media_common_config.media_ustreamer_request_config?.video_playback_ustreamer_config;
+            const sabrFormats = this.videoInfo.streaming_data?.adaptive_formats.map(buildSabrFormat) || [];
+            this.newSabrFormats = sabrFormats;
+            if (!serverAbrStreamingUrl || !videoPlaybackUstreamerConfig) {
+              console.error('Failed to reload player, missing serverAbrStreamingUrl or videoPlaybackUstreamerConfig');
+              return;
+            }
+            adapter.setStreamingURL(serverAbrStreamingUrl);
+            adapter.setUstreamerConfig(videoPlaybackUstreamerConfig);
+            // adapter.setServerAbrFormats(sabrFormats);
+            // console.warn('Sabr Reload Player:', reloadPlaybackContext);
+
+            // const manifest = await this.videoInfo.toDash({
+            //   manifest_options: {
+            //     is_sabr: true,
+            //   },
+            // });
+            // const blob = new Blob([manifest], {
+            //   type: 'application/dash+xml',
+            // });
+            // const uri = URL.createObjectURL(blob);
+            // this.source = new VideoSource(uri, source.headers, PlayerModes.ACCELERATED_DASH);
+            // this.source.identifier = 'yt-' + identifier;
+            // this.source.headers['origin'] = 'https://www.youtube.com';
+            // this.source.headers['referer'] = 'https://www.youtube.com/';
+            // try {
+            //   this.dash.attachSource(this.source.url);
+            // } catch (e) {
+            //   console.error('Failed to attach source', e);
+            // }
           });
+
 
           adapter.attach();
 
@@ -527,7 +568,7 @@ export default class YTPlayer extends DashPlayer {
   getActiveTrackFormats(activeFormat, sabrFormats) {
     const videoFormat = sabrFormats.find((format) => format.itag === parseInt(this.currentLevel) && format.mimeType.startsWith('video/'));
 
-    const audioParts = this.currentAudioLevel.split('-');
+    const audioParts = (this.currentAudioLevel || '').split('-');
     const itag = parseInt(audioParts[0]);
     let audioTrackId;
     let isDrc = false;
@@ -631,6 +672,10 @@ export default class YTPlayer extends DashPlayer {
     const result = await processor.processChunk(new Uint8Array(responseObject.data));
     // console.log(result);
 
+    if (requestMetadata.error) {
+      console.warn('Request metadata has error', requestMetadata.error);
+    }
+
     if (!result) {
       console.warn('(r) No result from SABR UMP processor for', entry, requestMetadata);
       responseObject.data = null;
@@ -670,6 +715,10 @@ export default class YTPlayer extends DashPlayer {
       const processor = new SabrUmpProcessor(requestMetadata, this.sabrCache);
       const result = await processor.processChunk(new Uint8Array(response.data));
       // console.log(result);
+
+      if (requestMetadata.error) {
+        console.warn('Request metadata has error', requestMetadata.error);
+      }
 
       const responseObject = {
         ...response,
@@ -774,7 +823,7 @@ async function getPoTokens(session, videoId) {
   const sessionCache = poTokenCache.sessionCache;
 
   let sessionToken = null;
-  if (sessionCache.token &&sessionCache.visitorData === visitorData && sessionCache.expires > now) {
+  if (sessionCache.token && sessionCache.visitorData === visitorData && sessionCache.expires > now) {
     // session cache is valid, return it
     sessionToken = sessionCache.token;
   }
