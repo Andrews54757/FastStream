@@ -179,4 +179,28 @@ export class DownloadEntry {
   getDataSize() {
     return this.dataSize;
   }
+
+  // debug
+  async downloadFile() {
+    const data = await this.getData();
+
+    // if it's a blob, convert it to a URL
+    if (data instanceof Blob) {
+      const url = URL.createObjectURL(data);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = this.url.split('/').pop() || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } else {
+      const a = document.createElement('a');
+      a.href = 'data:application/octet-stream;base64,' + btoa(data);
+      a.download = this.url.split('/').pop() || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+  }
 }
