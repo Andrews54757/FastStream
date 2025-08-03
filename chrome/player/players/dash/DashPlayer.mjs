@@ -352,11 +352,6 @@ export default class DashPlayer extends EventEmitter {
     const frags = this.client.getFragments(this.currentLevel);
     if (!frags) return null;
 
-    // check if init segment isn't loaded
-    if (frags[-1] && frags[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-      return frags[-1];
-    }
-
     const time = this.currentTime;
     return frags.find((frag) => {
       if (!frag) return false;
@@ -367,11 +362,6 @@ export default class DashPlayer extends EventEmitter {
   get currentAudioFragment() {
     const frags = this.client.getFragments(this.currentAudioLevel);
     if (!frags) return null;
-
-    // check if init segment isn't loaded
-    if (frags[-1] && frags[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-      return frags[-1];
-    }
 
     const time = this.currentTime;
     return frags.find((frag) => {
@@ -451,6 +441,15 @@ export default class DashPlayer extends EventEmitter {
 
     const videoInitSegment = fragments?.[-1];
     const audioInitSegment = audioFragments?.[-1];
+
+    // if init segments are not downloaded, we will try to download them
+    if (videoInitSegment && videoInitSegment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      await this.downloadFragment(videoInitSegment, -1);
+    }
+
+    if (audioInitSegment && audioInitSegment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      await this.downloadFragment(audioInitSegment, -1);
+    }
 
     const videoInitSegmentData = videoInitSegment ? await this.client.downloadManager.getEntry(videoInitSegment.getContext()).getDataFromBlob() : null;
     const audioInitSegmentData = audioInitSegment ? await this.client.downloadManager.getEntry(audioInitSegment.getContext()).getDataFromBlob() : null;

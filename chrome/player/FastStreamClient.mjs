@@ -554,6 +554,12 @@ export class FastStreamClient extends EventEmitter {
         isPreview: true,
       });
 
+      // check if its yt mode
+      if (this.source.mode === PlayerModes.ACCELERATED_YT) {
+        this.previewPlayer.preProcessFragment = this.player.preProcessFragment.bind(this.player);
+        this.previewPlayer.postProcessFragment = this.player.postProcessFragment.bind(this.player);
+      }
+
       await this.previewPlayer.setup();
       this.bindPreviewPlayer(this.previewPlayer);
 
