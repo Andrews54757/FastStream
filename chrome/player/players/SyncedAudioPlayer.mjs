@@ -99,6 +99,11 @@ export class SyncedAudioPlayer extends EventEmitter {
         this.client.failedToLoad(msg || Localize.getMessage('player_error_load'));
       });
 
+      if (this.client.source.mode === PlayerModes.ACCELERATED_YT) {
+        player.preProcessFragment = this.client.player.preProcessFragment.bind(this.client.player);
+        player.postProcessFragment = this.client.player.postProcessFragment.bind(this.client.player);
+      }
+
       await player.setSource(source);
 
       this.audioPlayers.push(player);
