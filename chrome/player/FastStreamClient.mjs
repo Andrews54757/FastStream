@@ -544,6 +544,13 @@ export class FastStreamClient extends EventEmitter {
     this.options.autoPlay = value;
   }
 
+  attachProcessorsToPlayer(player) {
+    if (this.source.mode === PlayerModes.ACCELERATED_YT) {
+      player.preProcessFragment = this.player.preProcessFragment.bind(player);
+      player.postProcessFragment = this.player.postProcessFragment.bind(player);
+    }
+  }
+
   async setupPreviewPlayer() {
     if (!this.player || this.previewPlayer || !this.options.previewEnabled) {
       return;
@@ -555,10 +562,7 @@ export class FastStreamClient extends EventEmitter {
       });
 
       // check if its yt mode
-      if (this.source.mode === PlayerModes.ACCELERATED_YT) {
-        this.previewPlayer.preProcessFragment = this.player.preProcessFragment.bind(this.player);
-        this.previewPlayer.postProcessFragment = this.player.postProcessFragment.bind(this.player);
-      }
+      this.attachProcessorsToPlayer(this.previewPlayer);
 
       await this.previewPlayer.setup();
       this.bindPreviewPlayer(this.previewPlayer);
