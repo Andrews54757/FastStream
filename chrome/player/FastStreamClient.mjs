@@ -546,8 +546,8 @@ export class FastStreamClient extends EventEmitter {
 
   attachProcessorsToPlayer(player) {
     if (this.source.mode === PlayerModes.ACCELERATED_YT) {
-      player.preProcessFragment = this.player.preProcessFragment.bind(player);
-      player.postProcessFragment = this.player.postProcessFragment.bind(player);
+      player.preProcessFragment = this.player.preProcessFragment.bind(this.player);
+      player.postProcessFragment = this.player.postProcessFragment.bind(this.player);
     }
   }
 

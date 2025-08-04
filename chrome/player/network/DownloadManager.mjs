@@ -132,6 +132,9 @@ export class DownloadManager {
       };
     }
 
+    storedEntry.preProcessor = details.preProcessor;
+    storedEntry.postProcessor = details.postProcessor;
+
     const watcher = {
       entry: storedEntry,
       abort: () => {
