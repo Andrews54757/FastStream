@@ -178,7 +178,7 @@ export class FineTimeControls extends EventEmitter {
         }
       }
       isGrabbing = false;
-    });
+    }, true);
 
     DOMElements.playerContainer.addEventListener('mousemove', (e) => {
       if (!this.client.player) return;

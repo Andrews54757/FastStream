@@ -558,6 +558,7 @@ export class ProgressBar extends EventEmitter {
       DOMElements.playerContainer.removeEventListener('mousemove', onProgressbarMouseMove);
       DOMElements.playerContainer.removeEventListener('touchmove', onProgressbarMouseMove);
       DOMElements.playerContainer.removeEventListener('mouseup', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('mouseleave', onProgressbarMouseUp);
       DOMElements.playerContainer.removeEventListener('touchend', onProgressbarMouseUp);
       if (!this.keepPreciseModeOpen) {
         this.endPreciseMode();
@@ -587,6 +588,7 @@ export class ProgressBar extends EventEmitter {
     shiftTime(initialPosition);
     DOMElements.playerContainer.addEventListener('mouseup', onProgressbarMouseUp);
     DOMElements.playerContainer.addEventListener('touchend', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('mouseleave', onProgressbarMouseUp);
     DOMElements.playerContainer.addEventListener('mousemove', onProgressbarMouseMove);
     DOMElements.playerContainer.addEventListener('touchmove', onProgressbarMouseMove);
   }

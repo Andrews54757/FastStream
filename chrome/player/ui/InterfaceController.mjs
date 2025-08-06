@@ -629,6 +629,7 @@ export class InterfaceController {
     const mouseUpHandler = (e) => {
       DOMElements.playerContainer.removeEventListener('mousemove', mouseMoveHandler);
       DOMElements.playerContainer.removeEventListener('mouseup', mouseUpHandler);
+      DOMElements.playerContainer.removeEventListener('mouseleave', mouseUpHandler);
     };
 
     const mouseMoveHandler = (e) => {
@@ -654,7 +655,8 @@ export class InterfaceController {
 
 
       DOMElements.playerContainer.addEventListener('mousemove', mouseMoveHandler);
-      DOMElements.playerContainer.addEventListener('mouseup', mouseUpHandler);
+      DOMElements.playerContainer.addEventListener('mouseup', mouseUpHandler, true);
+      DOMElements.playerContainer.addEventListener('mouseleave', mouseUpHandler);
     });
   }
 
