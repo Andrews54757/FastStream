@@ -208,7 +208,29 @@ export default class YTPlayer extends DashPlayer {
     await super.setSource(this.source);
 
     if (this.videoInfo.captions?.caption_tracks) {
-      this.videoInfo.captions.caption_tracks.forEach(async (track) => {
+      // Sort this.videoInfo.captions.caption_tracks so that the default language is first
+      let defLang = 'en';
+      const subtitlesSettings = await Utils.getSubtitlesSettingsFromStorage();
+      if (subtitlesSettings.defaultLanguage) {
+        defLang = subtitlesSettings.defaultLanguage;
+      }
+      const tracks = this.videoInfo.captions.caption_tracks.slice();
+      tracks.sort((a, b) => {
+        const aMatches = a.language_code.substring(0, defLang.length) === defLang;
+        const bMatches = b.language_code.substring(0, defLang.length) === defLang;
+        if (aMatches && !bMatches) return -1;
+        if (!aMatches && bMatches) return 1;
+        if (aMatches && bMatches) {
+          // if one is auto (a.kind === 'asr') and the other is not, prefer the non-auto
+          const aIsAuto = a.kind === 'asr';
+          const bIsAuto = b.kind === 'asr';
+          if (aIsAuto && !bIsAuto) return 1;
+          if (!aIsAuto && bIsAuto) return -1;
+        }
+        return 0;
+      });
+
+      const promises = tracks.map(async (track) => {
         let url = track.base_url;
         // if po token exists, add it to the url
         if (this.ytclient.session.content_token) {
@@ -223,7 +245,15 @@ export default class YTPlayer extends DashPlayer {
 
         const subTrack = new SubtitleTrack(label, language);
         await subTrack.loadURL(url);
-        this.client.loadSubtitleTrack(subTrack, true);
+        return subTrack;
+      });
+
+      await Promise.allSettled(promises).then((results) => {
+        results.forEach((result) => {
+          if (result.status === 'fulfilled' && result.value) {
+            this.client.loadSubtitleTrack(result.value, true);
+          }
+        });
       });
     }
 

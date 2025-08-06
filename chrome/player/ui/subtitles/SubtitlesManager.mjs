@@ -43,9 +43,22 @@ export class SubtitlesManager extends EventEmitter {
     }
 
     const defLang = this.settingsManager.getSettings().defaultLanguage;
-    if (autoset && this.activeTracks.length === 0 && this.client.options.autoEnableBestSubtitles) {
+    if (autoset && this.activeTracks.length <= 1 && this.client.options.autoEnableBestSubtitles) {
       if (subtitleTrack.language && subtitleTrack.language.substring(0, defLang.length) === defLang) {
-        this.activateTrack(subtitleTrack);
+        // check if active tracks exist with same language
+        const existingActive = this.activeTracks.find((t) => {
+          return t.language && subtitleTrack.language && t.language.substring(0, defLang.length) === defLang;
+        });
+        if (!existingActive) {
+          this.activateTrack(subtitleTrack);
+        } else {
+          // Check if existing has "auto" in label, if new one doesn't, prefer new one
+          if (existingActive.label && existingActive.label.toLowerCase().includes('auto') &&
+              subtitleTrack.label && !subtitleTrack.label.toLowerCase().includes('auto')) {
+            this.deactivateTrack(existingActive);
+            this.activateTrack(subtitleTrack);
+          }
+        }
       }
     }
 
@@ -690,6 +703,8 @@ export class SubtitlesManager extends EventEmitter {
 
     if (subtitlesVisible) {
       DOMElements.subtitlesContainer.style.display = '';
+      const margin = this.settingsManager.getSettings().bottomMargin;
+      DOMElements.subtitlesContainer.style.bottom = margin === '40px' ? '' : this.settingsManager.getSettings().bottomMargin;
     } else {
       DOMElements.subtitlesContainer.style.display = 'none';
     }
