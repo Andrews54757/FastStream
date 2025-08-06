@@ -3469,6 +3469,16 @@
         "pt-br": "Idioma",
         "ru": "Язык"
     },
+    "subtitles_settings_bottomMargin": {
+        "en": "Bottom Margin",
+        "de": "Unterer Rand",
+        "es": "Margen Inferior",
+        "it": "Margine Inferiore",
+        "ja": "下の余白",
+        "ms": "Bottom Margin",
+        "pt-br": "Margem inferior",
+        "ru": "Нижнее поле"
+    },
     "yes": {
         "en": "Yes",
         "de": "Ja",

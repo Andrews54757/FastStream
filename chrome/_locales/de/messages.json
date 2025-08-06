@@ -1040,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "Sprache"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "Unterer Rand"
+    },
     "yes": {
         "message": "Ja"
     },

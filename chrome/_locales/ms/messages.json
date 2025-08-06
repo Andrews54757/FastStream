@@ -1040,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "Language"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "Bottom Margin"
+    },
     "yes": {
         "message": "Ya"
     },

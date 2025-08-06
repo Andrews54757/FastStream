@@ -1040,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "言語"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "下の余白"
+    },
     "yes": {
         "message": "はい"
     },

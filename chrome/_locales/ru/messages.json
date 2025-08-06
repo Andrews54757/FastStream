@@ -1040,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "Язык"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "Нижнее поле"
+    },
     "yes": {
         "message": "Да"
     },
