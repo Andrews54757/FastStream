@@ -18,10 +18,14 @@ export class AudioProfile {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
 
-    if (obj.channels && obj.channels.length === 6) {
+    if (obj.channels && obj.channels.length <= 6) {
       profile.channels = obj.channels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
+      // fill remaining with defaults if less than 6
+      for (let i = profile.channels.length; i < 6; i++) {
+        profile.channels.push(AudioChannelControl.default(i));
+      }
     } else if (obj.mixerChannels && obj.mixerChannels.length === 7) {
       profile.channels = obj.mixerChannels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
@@ -52,6 +56,7 @@ export class AudioProfile {
       profile.crosstalk = AudioCrosstalkControl.fromObj(obj.crosstalk);
     }
 
+    console.log('Loaded audio profile:', profile, obj);
     return profile;
   }
 

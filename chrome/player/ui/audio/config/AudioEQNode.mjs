@@ -7,7 +7,7 @@ export class AudioEQNode {
   }
 
   static fromObj(obj) {
-    return new AudioEQNode(obj.type, obj.frequency, obj.gainDb === undefined ? obj.gain : obj.gainDb, obj.q);
+    return new AudioEQNode(obj.type, obj.frequency, obj.gainDb === undefined ? obj.gain : obj.gainDb, obj.q ?? 1);
   }
 
   toObj() {
