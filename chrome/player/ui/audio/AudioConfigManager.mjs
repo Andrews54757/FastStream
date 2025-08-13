@@ -337,7 +337,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_download');
     let downloadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.downloadButton);
-    this.ui.downloadButton.addEventListener('click', () => {
+    this.ui.downloadButton.addEventListener('click', (e) => {
       const profile = this.getDropdownProfile();
       if (!profile) {
         this.updateProfileDropdown();
@@ -350,14 +350,21 @@ export class AudioConfigManager extends AbstractAudioModule {
         profiles: [],
       };
 
-      const profileObj = profile.toObj();
-      delete profileObj.id;
-      data.profiles.push(profileObj);
+      const shouldDownloadAll = e.shiftKey || e.metaKey;
+      if (shouldDownloadAll) {
+        this.profiles.forEach((profile) => {
+          data.profiles.push(profile.toObj());
+        });
+      } else {
+        const profileObj = profile.toObj();
+        delete profileObj.id;
+        data.profiles.push(profileObj);
+      }
 
       const downloadBlob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(downloadBlob);
-      a.download = `${profile.label}.fsprofile.json`;
+      a.download = `${shouldDownloadAll ? 'all' : profile.label}.fsprofile.json`;
       a.click();
       this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_downloaded');
       clearTimeout(downloadTimeout);
