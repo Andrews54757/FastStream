@@ -56,7 +56,7 @@ export class AudioProfile {
       profile.crosstalk = AudioCrosstalkControl.fromObj(obj.crosstalk);
     }
 
-    console.log('Loaded audio profile:', profile, obj);
+    // console.log('Loaded audio profile:', profile, obj);
     return profile;
   }
 

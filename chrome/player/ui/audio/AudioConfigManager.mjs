@@ -169,19 +169,21 @@ export class AudioConfigManager extends AbstractAudioModule {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
-            input.addEventListener('change', () => {
-              const file = input.files[0];
-              if (!file) return;
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                try {
-                  const obj = JSON.parse(e.target.result);
-                  this.loadProfileFile(obj);
-                } catch (e) {
-                  AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'), 'error');
-                }
-              };
-              reader.readAsText(file);
+            input.multiple = true;
+            input.addEventListener('change', (e) => {
+              const files = Array.from(e.target.files);
+              files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  try {
+                    const obj = JSON.parse(e.target.result);
+                    this.loadProfileFile(obj);
+                  } catch (e) {
+                    AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'), 'error');
+                  }
+                };
+                reader.readAsText(file);
+              });
             });
             input.click();
           } else {
