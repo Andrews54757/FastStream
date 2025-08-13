@@ -39,14 +39,30 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.audioCrosstalk.on('upscale', upscale);
 
     this.setupUI();
-    this.loadProfilesFromStorage();
+    this.loadProfilesFromStorage().then(() => {
+      this.loadDefaultProfiles();
+    }).catch((e) => {
+      AlertPolyfill.errorSendToDeveloper(e);
+    });
   }
 
+  async loadDefaultProfiles() {
+    try {
+      const loadedDefaultProfiles = await Utils.getConfig('loadedDefaultAudioProfiles');
+      if (loadedDefaultProfiles === '1') {
+        return;
+      }
+      const {DefaultProfilesData} = await import('./config/DefaultProfiles.mjs');
+      await this.loadProfileFile(DefaultProfilesData);
+      await Utils.setConfig('loadedDefaultAudioProfiles', '1');
+    } catch (e) {
+      AlertPolyfill.errorSendToDeveloper(e);
+    }
+  }
   async loadProfilesFromStorage() {
     try {
       const audioProfilesStr = await Utils.getConfig('audioProfiles') || '[]';
       const currentAudioProfileStr = await Utils.getConfig('currentAudioProfile') || '-1';
-
       const audioProfiles = JSON.parse(audioProfilesStr);
       const currentAudioProfileID = parseInt(currentAudioProfileStr);
 
