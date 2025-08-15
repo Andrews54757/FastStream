@@ -13,6 +13,8 @@ export class ProgressBar extends EventEmitter {
     this.progressCache = [];
     this.progressCacheAudio = [];
     this.skipSegments = [];
+    this.skipSegmentsCache = [];
+    this.chapterCache = [];
     this.hasShownSkip = false;
     this.isSeeking = false;
     this.isMouseOverProgressbar = false;
@@ -286,7 +288,7 @@ export class ProgressBar extends EventEmitter {
   }
 
   updateSkipSegments() {
-    DOMElements.skipSegmentsContainer.replaceChildren();
+    // DOMElements.skipSegmentsContainer.replaceChildren();
 
     const introMatch = this.client.videoAnalyzer.getIntro();
     const outroMatch = this.client.videoAnalyzer.getOutro();
@@ -329,18 +331,31 @@ export class ProgressBar extends EventEmitter {
     let currentSegment = null;
     const time = this.client.currentTime;
 
-    skipSegments.forEach((segment) => {
-      const segmentElement = document.createElement('div');
-      segmentElement.classList.add('skip_segment');
-      segmentElement.classList.add(segment.class);
+    if (this.skipSegmentsCache.length > skipSegments.length) {
+      // Remove elements
+      for (let i = skipSegments.length; i < this.skipSegmentsCache.length; i++) {
+        this.skipSegmentsCache[i].remove();
+      }
+      this.skipSegmentsCache.length = skipSegments.length;
+    } else if (this.skipSegmentsCache.length < skipSegments.length) {
+      // Add elements
+      for (let i = this.skipSegmentsCache.length; i < skipSegments.length; i++) {
+        const segmentElement = document.createElement('div');
+        DOMElements.skipSegmentsContainer.appendChild(segmentElement);
+        this.skipSegmentsCache.push(segmentElement);
+      }
+    }
+
+
+    skipSegments.forEach((segment, i) => {
+      const segmentElement = this.skipSegmentsCache[i];
+      segmentElement.className = 'skip_segment ' + segment.class;
       segmentElement.style.left = segment.startTime / duration * 100 + '%';
       segmentElement.style.width = (segment.endTime - segment.startTime) / duration * 100 + '%';
 
       if (segment.color) {
         segmentElement.style.backgroundColor = segment.color;
       }
-
-      DOMElements.skipSegmentsContainer.appendChild(segmentElement);
 
       if (!currentSegment && time >= segment.startTime && time < segment.endTime) {
         currentSegment = segment;
@@ -385,20 +400,34 @@ export class ProgressBar extends EventEmitter {
 
     const chapters = [];
     this.client.chapters.forEach((chapter) => {
-      chapters.push({
-        ...chapter,
-        startTime: Utils.clamp(chapter.startTime, 0, duration),
-        endTime: Utils.clamp(chapter.endTime, 0, duration),
-      });
+      if (chapter.startTime > 0) {
+        chapters.push({
+          ...chapter,
+          startTime: Utils.clamp(chapter.startTime, 0, duration),
+          endTime: Utils.clamp(chapter.endTime, 0, duration),
+        });
+      }
     });
 
-    chapters.forEach((chapter) => {
-      if (chapter.startTime !== 0) {
-        const chapterElement = document.createElement('div');
-        chapterElement.classList.add('chapter');
-        chapterElement.style.left = chapter.startTime / duration * 100 + '%';
-        DOMElements.skipSegmentsContainer.appendChild(chapterElement);
+    if (this.chapterCache.length > chapters.length) {
+      // Remove elements
+      for (let i = chapters.length; i < this.chapterCache.length; i++) {
+        this.chapterCache[i].remove();
       }
+      this.chapterCache.length = chapters.length;
+    } else if (this.chapterCache.length < chapters.length) {
+      // Add elements
+      for (let i = this.chapterCache.length; i < chapters.length; i++) {
+        const chapterElement = document.createElement('div');
+        DOMElements.skipSegmentsContainer.appendChild(chapterElement);
+        this.chapterCache.push(chapterElement);
+      }
+    }
+
+    chapters.forEach((chapter, i) => {
+      const chapterElement = this.chapterCache[i];
+      chapterElement.classList.add('chapter');
+      chapterElement.style.left = chapter.startTime / duration * 100 + '%';
     });
   }
 
@@ -526,10 +555,11 @@ export class ProgressBar extends EventEmitter {
     };
 
     const onProgressbarMouseUp = (event) => {
-      document.removeEventListener('mousemove', onProgressbarMouseMove);
-      document.removeEventListener('touchmove', onProgressbarMouseMove);
-      document.removeEventListener('mouseup', onProgressbarMouseUp);
-      document.removeEventListener('touchend', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('mousemove', onProgressbarMouseMove);
+      DOMElements.playerContainer.removeEventListener('touchmove', onProgressbarMouseMove);
+      DOMElements.playerContainer.removeEventListener('mouseup', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('mouseleave', onProgressbarMouseUp);
+      DOMElements.playerContainer.removeEventListener('touchend', onProgressbarMouseUp);
       if (!this.keepPreciseModeOpen) {
         this.endPreciseMode();
       }
@@ -556,10 +586,11 @@ export class ProgressBar extends EventEmitter {
       }
     };
     shiftTime(initialPosition);
-    document.addEventListener('mouseup', onProgressbarMouseUp);
-    document.addEventListener('touchend', onProgressbarMouseUp);
-    document.addEventListener('mousemove', onProgressbarMouseMove);
-    document.addEventListener('touchmove', onProgressbarMouseMove);
+    DOMElements.playerContainer.addEventListener('mouseup', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('touchend', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('mouseleave', onProgressbarMouseUp);
+    DOMElements.playerContainer.addEventListener('mousemove', onProgressbarMouseMove);
+    DOMElements.playerContainer.addEventListener('touchmove', onProgressbarMouseMove);
   }
 
   onProgressbarMouseLeave() {

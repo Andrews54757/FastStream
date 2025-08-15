@@ -10,7 +10,7 @@ export class CrosstalkNode {
   configure(noptions) {
     const options = {
       microdelay: 90,
-      decaygain: 0.985,
+      decay: 0.985,
       colorgain: 7,
       lowbypass: 250,
       highbypass: 5000,
@@ -18,7 +18,7 @@ export class CrosstalkNode {
     };
     const fs = this.audioContext.sampleRate;
     options.tc = options.microdelay * fs * 1e-6;
-    options.g = options.decaygain;
+    options.g = options.decay;
     options.y = options.colorgain;
 
     const changedProperties = {

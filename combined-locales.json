@@ -1,2802 +1,3562 @@
 {
     "extension_name": {
         "en": "FastStream Video Player",
+        "de": "FastStream Video Player",
         "es": "Reproductor de Video FastStream",
         "it": "FastStream Video Player",
         "ja": "FastStream Video Player",
         "ms": "Pemain Video FastStream",
+        "pt-br": "FastStream Video Player",
         "ru": "FastStream Video Player"
     },
     "extension_description": {
         "en": "Stream without buffering. Fix bad video players on the internet.",
+        "de": "Streame ohne zu buffern. Repariert schlechte video player im internet.",
         "es": "Transmisión sin almacenamiento en búfer. Soluciona los reproductores de video deficientes en Internet.",
         "it": "Streaming fluido, senza buffering. Dì addio ai lettori video scadenti.",
         "ja": "バッファリングなしでストリーム。インターネット上の悪質なビデオプレーヤーを修正します。",
         "ms": "Strim tanpa penimbalan. Betulkan pemain video yang buruk di Internet.",
+        "pt-br": "Assista á transmissões sem pré-carregamento, consertando tocadores de vídeos na internet.",
         "ru": "Потоковая передача без буферизации. Исправляет плохие видеоплееры в интернете."
     },
     "extension_toggle_label": {
         "en": "Toggle FastStream",
+        "de": "FastStream umschalten",
         "es": "Alternar FastStream",
         "it": "Attiva/disattiva FastStream",
         "ja": "FastStream に切り替える",
         "ms": "Togol FastStream",
+        "pt-br": "Alternar FastStream",
         "ru": "Переключить FastStream"
     },
     "welcome_page_title": {
         "en": "Welcome to FastStream",
+        "de": "Willkommen zu FastStream",
         "es": "Bienvenido a FastStream",
         "it": "Ti diamo il benvenuto su FastStream",
         "ja": "FastStream へようこそ",
         "ms": "Selamat datang ke FastStream",
+        "pt-br": "Bem-vindo ao FastStream",
         "ru": "Добро пожаловать в FastStream!"
     },
     "welcome_page_usage_header": {
         "en": "Usage",
+        "de": "Nutzung",
         "es": "Cómo Utilizar",
         "it": "Modalità d'uso",
         "ja": "使用方法",
         "ms": "Penggunaan",
+        "pt-br": "Uso",
         "ru": "Использование"
     },
     "welcome_page_usage_content0": {
         "en": "There are four ways to use FastStream",
+        "de": "Es gibt vier Methoden FastStream zu nutzen",
         "es": "Hay cuatro formas de usar FastStream",
         "it": "Ci sono quattro modi per utilizzare FastStream",
         "ja": "FastStream の使用方法は 4 つあります",
         "ms": "Terdapat empat cara untuk menggunakan FastStream",
+        "pt-br": "Existem quatro formas de uso do FastStream",
         "ru": "Существует четыре способа использования FastStream:"
     },
     "welcome_page_usage_content1": {
         "en": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream",
+        "de": "Du kannst auf eine webseite gehen mit einem Videostream und FastStream anschalten in dem du auf das icon klickst. Spiel den Stream ab und der Player wir automatisch ersetzt mit FastStream",
         "es": "Puedes ir a un sitio web con una transmisión de video y activar FastStream haciendo clic en el icono. Reproduce la transmisión y el cliente se reemplazará automáticamente con FastStream",
         "it": "Puoi andare su un sito web che contiene un video e attivare FastStream cliccando sull'icona. Riproduci il video e l'interfaccia verrà sostituita automaticamente con FastStream",
         "ja": "動画のある Web サイトを開いてアイコンをクリックで FastStream を ON にする事ができます。動画を再生するとクライアントは自動的に FastStream に置き換わります。",
         "ms": "Anda boleh pergi ke tapak web dengan strim video dan hidupkan strim pantas dengan mengklik pada ikon. Mainkan strim dan pelanggan akan digantikan secara automatik dengan FastStream",
+        "pt-br": "Acesse qualquer site para transmissão de vídeo, ative o FastStream pelo ícone da extensão. Reproduza o vídeo e o cliente será substituído automaticamente pelo FastStream",
         "ru": "Вы можете зайти на сайт с потоковым видео и включить FastStream, нажав на значок. При воспроизведении клиент будет автоматически заменён на FastStream."
     },
     "welcome_page_usage_content2": {
         "en": "You can go to a new tab, and press the extension icon to go to the player.",
+        "de": "Du kannst in einen neuen Tab gehen und auf das Erweiterungs Icon drücken um zum Player zu gelangen.",
         "es": "Puedes ir a una nueva pestaña y presionar el ícono de la extensión para ir al reproductor.",
         "it": "Puoi aprire una nuova scheda e premere l'icona dell'estensione per accedere al lettore video.",
         "ja": "新しいタブを開いて拡張機能のアイコンをクリックでプレーヤーを開く事ができます。",
         "ms": "Anda boleh pergi ke tab baharu dan tekan ikon sambungan untuk pergi ke pemain.",
+        "pt-br": "Você pode ir para uma nova guia e pressionar o ícone da extensão para ir para o tocador.",
         "ru": "Откройте новую вкладку и нажмите на значок расширения, чтобы перейти к плееру."
     },
     "welcome_page_usage_content3": {
         "en": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it.",
+        "de": "Falls du diese option aktiviert hast, kannst du zu einer mp4/mpd/m3u8 medien url gehen und der Player wird es abspielen.",
         "es": "Si tienes la opción habilitada, ve a una url mp4/mpd/m3u8 y el reproductor la reproducirá.",
         "it": "Se hai abilitato l'opzione, vai su un url di un file mp4/mpd/m3u8 e il lettore video lo riprodurrà.",
         "ja": "オプションを有効化している場合に、mp4/mpd/m3u8 の URL にアクセスする事でプレーヤーが再生をします。",
         "ms": "Jika anda mempunyai pilihan yang didayakan, pergi ke url mp4/mpd/m3u8 dan pemain akan memainkannya.",
+        "pt-br": "Se a opção estiver ativada, acesse um URL mp4/mpd/m3u8 e o player o reproduzirá.",
         "ru": "При включенной опции (см. настройки) перейдите по адресу с mp4/mpd/m3u8, и плеер воспроизведёт его."
     },
     "welcome_page_usage_content4": {
         "en": "Keep the player open in a new tab and it will collect sources as you browse elsewhere.",
+        "de": "Lass den Player geöffnet in einem neuen Tab und er wird automatisch Videoquellen sammeln während du am browsen bist anderswo.",
         "es": "Mantén el reproductor abierto en una nueva pestaña y recogerá fuentes mientras navegas en otros lugares.",
         "it": "Tieni aperto il lettore video in una nuova scheda affinché possa raccogliere le sorgenti video mentre navighi altrove.",
         "ja": "新しいタブでプレーヤーを開いておく事で、他の場所を参照してソースを取得します。",
         "ms": "Pastikan pemain dibuka dalam tab baharu dan ia akan mengumpul sumber semasa anda menyemak imbas di tempat lain.",
+        "pt-br": "Mantenha o player aberto em uma nova guia e ele coletará fontes enquanto você navega em outro lugar.",
         "ru": "Держите плеер открытым в новой вкладке, и он будет собирать источники, которые вы просматриваете."
     },
     "welcome_page_usage_end": {
         "en": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions.",
+        "de": "Danke fürs installieren von FastStream! Bitte lass uns wissen, falls du irgendwelche Probleme oder Vorschläge hast.",
         "es": "Gracias por instalar FastStream! Háganos saber si tiene algún problema o sugerencia.",
         "it": "Grazie per aver installato FastStream! Facci sapere se hai problemi o suggerimenti.",
         "ja": "FastStream をインストールしていただき感謝します! 問題やご提案がありましたらお知らせください。",
         "ms": "Terima kasih kerana memasang FastStream! Sila maklumkan kepada kami jika anda mempunyai sebarang isu atau cadangan.",
+        "pt-br": "Obrigado por instalar o FastStream! Nos informe se tiver algum problema ou sugestão.",
         "ru": "Благодарим вас за установку FastStream! Пожалуйста, сообщите нам, если у вас возникнут какие-либо вопросы или предложения."
     },
     "welcome_page_keybinds_header": {
         "en": "Default Keyboard Controls",
+        "de": "Standard Tastatur Steuerung",
         "es": "Controles de Teclado Predeterminados",
         "it": "Comandi Tastiera Predefiniti",
         "ja": "デフォルトのキーボードコントロール",
         "ms": "Kawalan Papan Kekunci Lalai",
+        "pt-br": "Controles padrão do teclado",
         "ru": "Сочетания клавиш по умолчанию"
     },
     "welcome_page_keybinds_content0": {
         "en": "You can change these keybinds in extension settings",
+        "de": "Du kannst diese Tastenbelegungen in den Erweiterungseinstellungen ändern",
         "es": "Puedes cambiar estas combinaciones de teclas en la configuración de la extensión",
         "it": "È possibile modificare queste associazioni di tasti nelle impostazioni dell'estensione",
         "ja": "これらのキーバインドは拡張機能の設定で変更できます",
         "ms": "Anda boleh menukar ikatan kekunci ini dalam tetapan sambungan",
+        "pt-br": "Você pode alterar esses atalhos do teclado nas configurações da extensão",
         "ru": "Сочетания клавиш можно изменить в настройках расширения"
     },
     "welcome_page_keybinds_content1": {
         "en": "arrow keys - 1 second seek forward/back",
+        "de": "Pfeiltasten - 1 sekunde vor-/zurückspulen",
         "es": "teclas de flecha - avance/retroceso de 1 segundo",
         "it": "tasti freccia - vai avanti/indietro di 1 secondo",
         "ja": "矢印キー - 前後の 1 秒間隔のシーク",
         "ms": "kekunci anak panah - 1 saat mencari ke hadapan/belakang",
+        "pt-br": "Setas do teclado - 1 segundo de busca para frente/trás",
         "ru": "клавиша со стрелкой - перемотка на 1 секунду вперёд/назад"
     },
     "welcome_page_keybinds_content2": {
         "en": "keys - 10 second seek forward/back",
+        "de": "tasten - 10 sekunden vor-/zurückspulen",
         "es": "teclas - avance/retroceso de 10 segundos",
         "it": " - vai avanti/indietro di 10 secondi",
         "ja": "キー - 前後の 10 秒間隔のシーク",
         "ms": "kekunci - 10 saat mencari ke hadapan/belakang",
+        "pt-br": "Tecla - 10 segundo de busca para frente/trás",
         "ru": "клавиша - перемотка на 10 секунд вперёд/назад"
     },
     "welcome_page_keybinds_content3": {
         "en": "key - Undo seek",
+        "de": "taste - Spulen rückgänging machen",
         "es": "clave - Deshacer búsqueda",
         "it": " - Annulla",
         "ja": "キー - シークを戻す",
         "ms": "kunci - Buat asal carian",
+        "pt-br": "Tecla - Desfazer busca",
         "ru": "клавиша - откатить перемотку"
     },
     "welcome_page_keybinds_content4": {
         "en": "arrow keys - 10% volume up/down",
+        "de": "Pfeiltasten - Lautstärke 10% hoch/runter",
         "es": "teclas de flecha - subir/bajar el volumen 10%",
         "it": "tasti freccia - aumenta/diminuisci il volume del 10%",
         "ja": "矢印キー - 10% の音量を上下",
         "ms": "kekunci anak panah - 10% kelantangan atas/bawah",
+        "pt-br": "Setas do teclado - 10% de aumento/diminuição do volume",
         "ru": "клавиша со стрелкой - изменение громкости на 10%"
     },
     "welcome_page_keybinds_content5": {
         "en": "- Full screen",
+        "de": "- Vollbild",
         "es": "- Pantalla completa",
         "it": "- Schermo intero",
         "ja": "- フルスクリーン",
         "ms": "- Skrin penuh",
+        "pt-br": "- Tela cheia",
         "ru": "- во весь экран"
     },
     "welcome_page_keybinds_content6": {
         "en": "- Add/decrease concurrent requests",
+        "de": "- Hinzufügen/entfernen von gleichzeitigen anfragen",
         "es": "- Añadir/disminuir solicitudes concurrentes",
         "it": "- Aggiungi/diminuisci il numero di richieste simultanee",
         "ja": "- 同時リクエストの増減",
         "ms": "- Tambah/kurangkan permintaan serentak",
+        "pt-br": "- Adicionar/reduzir solicitações simultâneas",
         "ru": "- увеличение/уменьшение количества одновременных запросов"
     },
     "welcome_page_keybinds_content7": {
         "en": "- Force retry key - use this to re-attempt failed downloads",
+        "de": "- Erzwingte Neuversuch Taste - nutze dies um fehlgeschlagene downloads neu zu versuchen",
         "es": "- Tecla de reintento forzado - utilízala para volver a intentar descargas fallidas",
         "it": "- Tasto per fare un nuovo tentativo - utilizzalo per ritentare i download non riusciti",
         "ja": "- 強制再試行キー - これを使用する事で失敗をしたダウンロードを再試行します",
         "ms": "- Kekunci cuba semula paksa - gunakan ini untuk mencuba semula muat turun yang gagal",
+        "pt-br": "- Forçar nova tentativa - use-a para tentar novamente os downloads que falharam",
         "ru": "- принудительное повторение, использовать при неудачной загрузке"
     },
     "welcome_page_keybinds_content8": {
         "en": "- Skip intro/outro if applicable",
+        "de": "- Überspringe Intro/Outro falls möglich",
         "es": "- Omitir intro/outro si corresponde",
         "it": "- Salta l'intro/outro se possibile",
         "ja": "- 該当時にイントロ/アウトロをスキップ",
         "ms": "- Langkau intro/outro jika berkenaan",
+        "pt-br": "- Pular a introdução/outro, se for o caso",
         "ru": "- пропустить вступление/окончание, по возможности"
     },
     "welcome_page_keybinds_content9": {
         "en": "- Hide/show player",
+        "de": "- Verstecke/Zeige player",
         "es": "- Ocultar/mostrar jugador",
         "it": "- Nascondi/mostra lettore video",
         "ja": "- プレーヤーを表示/非表示",
         "ms": "- Sembunyikan/tunjukkan pemain",
+        "pt-br": "- Ocultar/mostrar o player",
         "ru": "- скрыть/показать плеер"
     },
     "perms_page_title": {
         "en": "FastStream Permissions",
+        "de": "FastStream Berechtigungen",
         "es": "Permisos de FastStream",
         "it": "Autorizzazioni FastStream",
         "ja": "FastStream の権限",
         "ms": "Keizinan FastStream",
+        "pt-br": "Permissões do FastStream",
         "ru": "Разрешения FastStream"
     },
     "perms_page_about_header": {
         "en": "About the Permissions Required by FastStream",
+        "de": "Informationen über die Berechtigungen die FastStream braucht",
         "es": "Acerca de los Permisos Requeridos por FastStream",
         "it": "Informazioni sulle Autorizzazioni Richieste da FastStream",
         "ja": "FastStream に必要な権限について",
         "ms": "Mengenai Kebenaran yang Diperlukan oleh FastStream",
+        "pt-br": "Sobre as permissões exigidas pelo FastStream",
         "ru": "О разрешениях, необходимых FastStream"
     },
     "perms_page_about_content0": {
         "en": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality.",
+        "de": "Damit diese Erweiterung funktioniert, braucht sie bestimmte Berechtigungen. Diese Berechtigungen sind notwendig und nur für einfache Funktionen.",
         "es": "Para que la extensión funcione, necesita tener ciertos permisos. Estos permisos solo se utilizan para la funcionalidad básica.",
         "it": "Affinché l'estensione funzioni, deve poter disporre di determinate autorizzazioni. Queste autorizzazioni vengono utilizzate solo per funzionalità di base.",
         "ja": "拡張機能を動作させるには特定の権限を許可する必要があります。これらの権限は基本的な機能のみで使用されます。",
         "ms": "Untuk membolehkan sambungan berfungsi, ia perlu mempunyai kebenaran tertentu. Kebenaran ini hanya digunakan untuk fungsi asas.",
+        "pt-br": "Para que a extensão funcione, ela precisa ter determinadas permissões. Essas permissões são usadas somente para a funcionalidade básicas.",
         "ru": "Для работы расширения требуются определённые разрешения. Эти разрешения используются только для базовой функциональности."
     },
     "perms_page_about_content1": {
         "en": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to.",
+        "de": "FastStream sammelt keine Daten von dir. Es track dich nicht. Es sendet keine Daten zu irgendeinem Server. Es gibt nicht einmal einen Server um Daten zum hin schicken.",
         "es": "FastStream no recopila ningún dato de ti. No te rastrea. No envía ningún dato a ningún servidor. Ni siquiera tiene un servidor al que enviar datos.",
         "it": "FastStream non raccoglie alcun dato da te. Non ti traccia. Non invia alcun dato a nessun server. Non ha nemmeno un server a cui inviare dati.",
         "ja": "FastStream はユーザーからデータの収集、追跡、サーバーにデータの送信は一切しません。データを送信するサーバーもありません。",
         "ms": "FastStream tidak mengumpul sebarang data daripada anda. Ia tidak menjejaki anda. Ia tidak menghantar sebarang data ke mana-mana pelayan. Ia tidak mempunyai pelayan untuk menghantar data.",
+        "pt-br": "O FastStream não coleta nenhum dado seu. Ele não rastreia você. Ele não envia nenhum dado para nenhum servidor. Ele nem mesmo tem um servidor para o qual enviar dados.",
         "ru": "FastStream не собирает никакие данные. Не отслеживает вас. Не отправляет никакие данные на сервера. И даже нет сервера для отправки данных."
     },
     "perms_page_about_content2": {
         "en": "Don't trust me? FastStream has its source available on",
+        "de": "Du vertraust dem nicht? FastStream hat den Quellcode öffentlich auf",
         "es": "¿No confías en mí? FastStream tiene su fuente disponible en",
         "it": "Non ti fidi di me? FastStream ha il suo codice sorgente disponibile su",
         "ja": "信用ができませんか? FastStream のソースは次の場所で入手ができます。",
         "ms": "Jangan percaya saya? FastStream mempunyai sumbernya tersedia di",
+        "pt-br": "Não confia em mim? O FastStream tem seu código fonte disponível em",
         "ru": "Не верите? Исходный код FastStream доступен на"
     },
     "perms_page_about_content3": {
         "en": "You can look through the code yourself, or manually install your very own custom build by following the instructions.",
+        "de": "Du kannst selber durch den Code schauen, oder manuell deinen eigenen Build installierien mit gegeben Instruktionen.",
         "es": "Puedes revisar el código tú mismo, o instalar manualmente tu propia compilación personalizada siguiendo las instrucciones.",
         "it": "Puoi esaminare il codice per conto tuo o installare manualmente la tua build personalizzata seguendo le istruzioni.",
         "ja": "自分でコードを確認する事もできますし、指示に従って自分だけのカスタムビルドを手動でインストールする事もできます。",
         "ms": "Anda boleh melihat sendiri kod tersebut, atau memasang binaan tersuai anda sendiri secara manual dengan mengikut arahan.",
+        "pt-br": "Você pode examinar o código fonte se quiser ou instalar manualmente sua própria compilação personalizada seguindo as instruções.",
         "ru": "Вы можете просмотреть код самостоятельно или установить собственную сборку, следуя инструкциям."
     },
     "perms_page_breakdown_header": {
         "en": "Breakdown of Permissions",
+        "de": "Runterbrechung der Berechtigungen",
         "es": "Desglose de Permisos",
         "it": "Riassunto delle Autorizzazioni",
         "ja": "権限の内訳",
         "ms": "Pecahan Keizinan",
+        "pt-br": "Detalhamento das permissões",
         "ru": "Требуемые разрешения"
     },
     "perms_page_breakdown_content0": {
         "en": "Here is a breakdown of the permissions FastStream requires, and why it needs them.",
+        "de": "Hier ist eine aufzählung der benötigten Berechtigungen damit FastStream und warum es sie braucht.",
         "es": "Aquí hay un desglose de los permisos que FastStream requiere y por qué los necesita.",
         "it": "Ecco un riassunto delle autorizzazioni richieste da FastStream e perché ne ha bisogno.",
         "ja": "FastStream が必要とする権限とその理由を説明します。",
         "ms": "Berikut ialah pecahan kebenaran yang diperlukan oleh FastStream, dan sebab ia memerlukannya.",
+        "pt-br": "Aqui está um detalhamento das permissões exigidas pelo FastStream e por que ele precisa delas.",
         "ru": "Здесь описаны разрешения, которые требуются FastStream, и зачем они нужны."
     },
     "perms_page_breakdown_content1": {
         "en": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance.",
+        "de": "Anmerkung: Die verlinkten Beispiele können zu älteren versionen des Quellcodes führen, die Quintessenz sollte immer noch die selbe sein. Die Liste ist nicht vollständig und Punkte sind nach Wichtigkeit geordnet.",
         "es": "Nota: Los ejemplos vinculados pueden referirse a una versión anterior del código, pero la esencia debería ser la misma en general. La lista no es exhaustiva, los elementos están ordenados por importancia.",
         "it": "Nota: gli esempi collegati potrebbero fare riferimento a una versione precedente del codice, ma il succo del discorso dovrebbe essere lo stesso. L'elenco non è esaustivo, gli elementi sono ordinati in base all'importanza.",
         "ja": "注: リンクされた例では古いバージョンのコードが参照されている場合がありますが、要点は全体的に同じであるはずです。リストはすべてを網羅している訳ではなく、項目の重要度の順で並べられています。",
         "ms": "Nota: Contoh yang dipautkan mungkin merujuk kepada versi kod yang lebih lama, tetapi intipatinya mestilah sama secara keseluruhan. Senarai ini tidak lengkap, item dipesan mengikut kepentingan.",
+        "pt-br": "Observação: os exemplos vinculados podem se referir a uma versão mais antiga do programa, mas a essência é a mesma em geral. A lista não é grande, os itens estão ordenados por importância.",
         "ru": "Примечание: примеры, на которые даны ссылки, могут относиться к более старой версии кода, но суть в целом должна быть той же. Список не является исчерпывающим, пункты упорядочены по важности."
     },
     "perms_page_breakdown_perm1h": {
         "en": "Be able to access and modify all websites",
+        "de": "Zugriff auf und Veränderung aller Webseiten",
         "es": "Poder acceder y modificar todos los sitios web",
         "it": "Poter accedere e modificare tutti i siti web",
         "ja": "すべての Web サイトにアクセスをして変更できる事",
         "ms": "Dapat mengakses dan mengubah suai semua tapak web",
+        "pt-br": "Poder acessar e modificar todos os sites",
         "ru": "Иметь доступ и изменять все веб-сайты"
     },
     "perms_page_breakdown_perm1d": {
         "en": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:",
+        "de": "FastStream braucht dies um mit dem Inhalt aller Webseiten zu interagieren und den Player in die Webseite direkt einzufügen. Dies geschiet indem es ein Inhalts-Skript in die Webseite die du besuchst einfügt um:",
         "es": "FastStream necesita poder acceder a todos los sitios web para poder inyectar el reproductor directamente en el sitio web. Inyecta un script de contenido en los sitios web que visitas con el fin de:",
         "it": "FastStream deve poter accedere a tutti i siti web in modo da poter iniettare il lettore video direttamente nel sito. Inietta uno script di contenuti nei siti web che visiti per:",
         "ja": "FastStream はプレーヤーを Web サイトに直接挿入ができるようにするため、すべての Web サイトにアクセスできるようにする必要があります。次の目的でアクセスをした Web サイトにコンテンツスクリプトを挿入します:",
         "ms": "FastStream perlu boleh mengakses semua tapak web supaya ia boleh menyuntik pemain ke dalam laman web secara langsung. Ia menyuntik skrip kandungan ke dalam tapak web yang anda lawati untuk:",
+        "pt-br": "O FastStream precisa acessar todos os sites para que possa injetar o player diretamente no site. Ele injeta um script de conteúdo nos sites que você visita para:",
         "ru": "FastStream требуется доступ ко всем веб-сайтам, чтобы внедрить плеер непосредственно на сайт. Внедряет контент-скрипт на посещаемые вами сайты, чтобы:"
     },
     "perms_page_breakdown_perm1r1": {
         "en": "Identify the largest visible video element to replace with the player.",
+        "de": "Das größte sichtbare Videoelement zu finden und mit dem Player zu ersetzen.",
         "es": "Identifica el elemento de video visible más grande para reemplazarlo con el reproductor.",
         "it": "Identificare l'elemento video visibile più grande da sostituire con il lettore video.",
         "ja": "プレーヤーの置き換え、表示されている最大の動画の要素を特定。",
         "ms": "Kenal pasti elemen video terbesar yang boleh dilihat untuk digantikan dengan pemain.",
+        "pt-br": "Identifique o maior elemento de vídeo visível a ser substituído pelo player.",
         "ru": "Определить самый большой видимый элемент видео для замены плеера"
     },
     "perms_page_breakdown_perm1r2": {
         "en": "Enable fullscreen permissions when the player is injected into a frame.",
+        "de": "Erlaube Vollbild berechtigungen wenn der Player in einen Frame eingefügt wird.",
         "es": "Habilitar permisos de pantalla completa cuando el reproductor se inyecta en un marco.",
         "it": "Abilitare le autorizzazioni per lo schermo intero quando il lettore video viene iniettato in un frame.",
         "ja": "プレーヤーがフレームに挿入されるときに全画面の権限を有効化。",
         "ms": "Dayakan kebenaran skrin penuh apabila pemain disuntik ke dalam bingkai.",
+        "pt-br": "Habilite as permissões de tela cheia quando o player for injetado em um quadro separado.",
         "ru": "Включить разрешение на полноэкранный режим для внедрения плеера во фрейм"
     },
     "perms_page_breakdown_perm1r3": {
         "en": "Scrape subtitle <track> elements from the page.",
+        "de": "Herausfiltern von Untertitel <track> Elementen von der Seite.",
         "es": "Extraer los subtítulos <track> elementos de la página.",
         "it": "Estrarre gli elementi <track> dei sottotitoli dalla pagina.",
         "ja": "字幕の <track> 要素をページから削除。",
         "ms": "Kikis Sarikata <track> elemen daripada halaman.",
+        "pt-br": "Extrair elementos de subtítulo <track> da página.",
         "ru": "Удалить элементы субтитров <track> со страницы"
     },
     "perms_page_breakdown_perm2h": {
         "en": "Access the webRequest API",
+        "de": "Zugriff auf die webRequests API",
         "es": "Accede a la API de webRequest",
         "it": "Accedere all'API webRequest",
         "ja": "webRequest API にアクセス",
         "ms": "Akses API webRequest",
+        "pt-br": "Acessar a API webRequest",
         "ru": "Доступ к webRequest API"
     },
     "perms_page_breakdown_perm2d": {
         "en": "FastStream needs to be able to intercept HTTP requests to video sources in order to:",
+        "de": "FastStream braucht dies um HTTP Anfragen auf Videoquellen abzufangen um:",
         "es": "FastStream necesita poder interceptar las solicitudes HTTP a las fuentes de video para:",
         "it": "FastStream deve essere in grado di intercettare le richieste HTTP verso le sorgenti video per:",
         "ja": "FastStream は動画ソースへの HTTP リクエストをインターセプトを可能にする必要があります:",
         "ms": "FastStream perlu dapat memintas permintaan HTTP kepada sumber video untuk:",
+        "pt-br": "O FastStream precisa interceptar solicitações HTTP para fontes de vídeo a fim de:",
         "ru": "FastStream требуется возможность перехватывать HTTP-запросы к источникам видео, чтобы:"
     },
     "perms_page_breakdown_perm2r1": {
         "en": "Identify video sources",
+        "de": "Videoquellen zu indentifizieren",
         "es": "Identificar fuentes de video",
         "it": "Identificare le sorgenti video",
         "ja": "動画のソースを特定",
         "ms": "Kenal pasti sumber video",
+        "pt-br": "Identificar fontes de vídeo",
         "ru": "Определить источники видео"
     },
     "perms_page_breakdown_perm3h": {
         "en": "Access the declarativeNetRequest API",
+        "de": "Zugriff auf declarativeNetRequest API",
         "es": "Accede a la API declarativeNetRequest",
         "it": "Accedere all'API declarativeNetRequest",
         "ja": "declarativeNetRequest API へのアクセス",
         "ms": "Akses API declarativeNetRequest",
+        "pt-br": "Acessar a API declarativeNetRequest",
         "ru": "Доступ к declarativeNetRequest API"
     },
     "perms_page_breakdown_perm3d": {
         "en": "FastStream needs to be able to modify HTTP headers of select requests in order to:",
+        "de": "FastStream braucht dies um HTTP Header auf selektierten Anfragen zu ändern um:",
         "es": "FastStream necesita poder modificar las cabeceras HTTP de ciertas solicitudes para:",
         "it": "FastStream deve essere in grado di modificare le intestazioni HTTP delle richieste selezionate per:",
         "ja": "FastStream は選択されたリクエストの HTTP ヘッダーを変更できるようにする必要があります:",
         "ms": "FastStream perlu boleh mengubah suai pengepala HTTP permintaan terpilih untuk:",
+        "pt-br": "O FastStream precisa de modificar os cabeçalhos HTTP de solicitações selecionadas para:",
         "ru": "FastStream требуется возможность изменять HTTP-заголовки выбранных запросов, чтобы:"
     },
     "perms_page_breakdown_perm3r1": {
         "en": "Override headers for video sources.",
+        "de": "Header auf Videoquellen zu überschreiben.",
         "es": "Sobrescribir encabezados para fuentes de video.",
         "it": "Sostituire le intestazioni per le sorgenti video.",
         "ja": "動画ソースのヘッダーを上書き。",
         "ms": "Gantikan pengepala untuk sumber video.",
+        "pt-br": "Substituir cabeçalhos para fontes de vídeo.",
         "ru": "Переопределить заголовки для источников видео"
     },
     "perms_page_breakdown_perm4h": {
         "en": "Store data on your browser",
+        "de": "Daten in deinem Browser speichern",
         "es": "Almacena datos en tu navegador",
         "it": "Memorizzare informazioni nel tuo browser",
         "ja": "ブラウザー上にデータを保存",
         "ms": "Simpan data pada penyemak imbas anda",
+        "pt-br": "Armazenar dados no navegador",
         "ru": "Хранить данные о вашем браузере"
     },
     "perms_page_breakdown_perm4d": {
         "en": "FastStream needs to be able to store data in your browser so that it can remember your settings.",
+        "de": "FastStream braucht dies um Daten in deimem Browser zu speichern, wie deine Einstellungen.",
         "es": "FastStream necesita poder almacenar datos en tu navegador para que pueda recordar tus configuraciones.",
         "it": "FastStream deve essere in grado di memorizzare informazioni nel tuo browser per potersi ricordare le impostazioni.",
         "ja": "FastStream は、ユーザーの設定を記憶できるようにするためブラウザーにデータを保存可能にする必要があります。",
         "ms": "FastStream perlu boleh menyimpan data dalam penyemak imbas anda supaya ia boleh mengingati tetapan anda.",
+        "pt-br": "O FastStream precisa armazenar dados em seu navegador para que possa lembrar de suas configurações.",
         "ru": "FastStream требуется возможность хранить данные в вашем браузере, чтобы запомнить ваши настройки."
     },
     "perms_page_breakdown_perm4r1": {
         "en": "General extension options.",
+        "de": "Generelle Erweiterungs optionen.",
         "es": "Opciones generales de extensión.",
         "it": "Opzioni generali dell'estensione.",
         "ja": "拡張機能の一般オプション。",
         "ms": "Pilihan sambungan am.",
+        "pt-br": "Opções gerais de extensão.",
         "ru": "Общие возможности расширения"
     },
     "perms_page_breakdown_perm5h": {
         "en": "Access the tabs API",
+        "de": "Zugriff auf die tabs API",
         "es": "Accede a la API de pestañas",
         "it": "Accedi all'API delle schede",
         "ja": "Tabs API にアクセス",
         "ms": "Akses tab API",
+        "pt-br": "Acessar a API das guias",
         "ru": "Доступ к API вкладок"
     },
     "perms_page_breakdown_perm5d": {
         "en": "FastStream needs to be able to send messages between players and content scripts in each tab.",
+        "de": "FastStream braucht dies um Nachrichten zwischen dem Player und Inhalts Skripten der jeweiligen Tabs zu senden.",
         "es": "FastStream necesita poder enviar mensajes entre reproductores y scripts de contenido en cada pestaña.",
         "it": "FastStream deve essere in grado di inviare messaggi tra i lettori video e gli script di contenuto in ogni scheda.",
         "ja": "FastStream は、各タブ上のプレーヤーとコンテンツスクリプト間でメッセージを送信可能にする必要があります。",
         "ms": "FastStream perlu boleh menghantar mesej antara pemain dan skrip kandungan dalam setiap tab.",
+        "pt-br": "O FastStream precisa enviar mensagens entre os tocadores e os scripts de conteúdo em cada guia.",
         "ru": "FastStream требуется возможность отправлять сообщения между плеерами и скриптами контента на каждой вкладке."
     },
     "perms_page_breakdown_perm5r1": {
         "en": "Sending sources to players from the background script.",
+        "de": "Videoquellen an den Player von einem Hintergrundskript zu senden.",
         "es": "Enviando fuentes a los reproductores desde el script de fondo.",
         "it": "Invio di sorgenti ai lettori video dallo script in background.",
         "ja": "バックグラウンドスクリプトからプレーヤーにソースを送信",
         "ms": "Menghantar sumber kepada pemain daripada skrip latar belakang.",
+        "pt-br": "Envio de fontes para os tocadores partir do script em segundo plano..",
         "ru": "Отправка источников плееру из фонового скрипта"
     },
     "perms_page_granted": {
         "en": "Granted",
+        "de": "Gewährt",
         "es": "Concedido",
         "it": "Concesso",
         "ja": "許可",
         "ms": "Dibenarkan",
+        "pt-br": "Concedida",
         "ru": "Предоставлено"
     },
     "perms_page_notgranted": {
         "en": "Not Granted, click to grant",
+        "de": "Nicht gewährt, klicke um zu gewähren",
         "es": "No Concedido, haga clic para conceder",
         "it": "Non concesso, fai clic per concedere",
         "ja": "許可がされていません、クリックで許可をします",
         "ms": "Tidak Diberikan, klik untuk memberikan",
+        "pt-br": "Não Concedida, click para conceder",
         "ru": "Не предоставлено, нажмите, чтобы предоставить"
     },
     "player_needs_interaction": {
         "en": "Interact to enable download acceleration",
+        "de": "Interagiere um Download Beschleunigung zu aktivieren.",
         "es": "Interactuar para habilitar la aceleración de descarga",
         "it": "Interagisci per abilitare l'accelerazione dei download",
         "ja": "ダウンロードの高速化を有効にするには、動画を再生してください",
         "ms": "Berinteraksi untuk mendayakan pecutan muat turun",
-        "ru": "Взаимодействуйте, чтобы включить ускорение загрузки"
+        "pt-br": "Interagir para ativar a aceleração de download",
+        "ru": "Воспроизведите видео для ускорения загрузки"
     },
     "player_skipintro": {
         "en": "Skip Intro",
+        "de": "Intro überspringen",
         "es": "Omitir Intro",
         "it": "Salta l'Intro",
         "ja": "イントロをスキップ",
         "ms": "Langkau Pengenalan",
+        "pt-br": "Pular Intro",
         "ru": "Пропустить вступление"
     },
     "player_skipoutro": {
         "en": "Skip Outro",
+        "de": "Outro überspringen",
         "es": "Omitir Outro",
         "it": "Salta l'Outro",
         "ja": "アウトロをスキップ",
         "ms": "Langkau Lain",
+        "pt-br": "Pular Outro",
         "ru": "Пропустить окончание"
     },
     "player_nextvideoin": {
         "en": "Next Video in $1s",
+        "de": "Nächstes Video in $1s",
         "es": "Siguiente Video en $1s",
         "it": "Prossimo video tra $1s",
         "ja": "次のビデオ $1s 後",
         "ms": "Video seterusnya dalam $1s",
+        "pt-br": "Próximo vídeo em $1s",
         "ru": "Следующее видео через $1с"
     },
     "player_hidecontrols": {
         "en": "Hide Controls",
+        "de": "Steuerung verstecken",
         "es": "Ocultar Controles",
         "it": "Nascondi i Comandi",
         "ja": "コントロールを隠す",
         "ms": "Sembunyikan Kawalan",
+        "pt-br": "Ocultar controles",
         "ru": "Скрыть элементы управления"
     },
     "player_loading": {
         "en": "Loading...",
+        "de": "Lädt...",
         "es": "Cargando...",
         "it": "Caricamento in corso...",
         "ja": "読み込み中...",
         "ms": "Memuatkan...",
+        "pt-br": "Carregando...",
         "ru": "Загрузка…"
     },
     "player_nosource_header": {
         "en": "No source is loaded!",
+        "de": "Keine Quellen geladen!",
         "es": "¡No se ha cargado ninguna fuente!",
         "it": "Nessuna sorgente caricata!",
         "ja": "ソースは読み込まれていません!",
         "ms": "Tiada sumber dimuatkan!",
+        "pt-br": "Nenhuma fonte foi carregada!",
         "ru": "Источник не загружен!"
     },
     "player_nosource_instruction1": {
         "en": "Drag and drop a video file to play it.",
+        "de": "Video Datei ziehen und fallen (drag and drop) lassen zum abspielen.",
         "es": "Arrastra y suelta un archivo de video para reproducirlo.",
         "it": "Trascina e rilascia un file video per riprodurlo.",
         "ja": "動画ファイルをドラッグ&ドロップで再生できます。",
         "ms": "Seret dan lepaskan fail video untuk memainkannya.",
+        "pt-br": "Arraste e solte um arquivo de vídeo para reproduzi-lo.",
         "ru": "Перетащите видеофайл для воспроизведения."
     },
     "player_nosource_instruction2p1": {
         "en": "Click",
+        "de": "Klicken",
         "es": "Hacer clic",
         "it": "Clicca",
         "ja": "クリック",
         "ms": "Klik",
+        "pt-br": "Click",
         "ru": "Нажмите"
     },
     "player_nosource_instruction2p2": {
         "en": "to load sources detected from other tabs.",
+        "de": "um Quellen zu laden die in anderen Tabs gefunden worden.",
         "es": "para cargar fuentes detectadas desde otras pestañas.",
         "it": "per caricare le sorgenti rilevate da altre schede.",
         "ja": "他のタブから検出されたソースを読み込み。",
         "ms": "untuk memuatkan sumber yang dikesan daripada tab lain.",
+        "pt-br": "carregar fontes detectadas em outras guias.",
         "ru": "для загрузки источников, обнаруженных на других вкладках."
     },
     "player_play_label": {
         "en": "Play video",
+        "de": "Video abspielen",
         "es": "Reproducir video",
         "it": "Riproduci il video",
         "ja": "ビデオを再生",
         "ms": "Mainkan video",
+        "pt-br": "Reproduzir vídeo",
         "ru": "Воспроизвести видео"
     },
     "player_pause_label": {
         "en": "Pause video",
+        "de": "Video pausieren",
         "es": "Pausar video",
         "it": "Metti in pausa il video",
         "ja": "ビデオを一時停止",
         "ms": "Jeda video",
+        "pt-br": "Pausar vídeo",
         "ru": "Приостановить видео"
     },
     "player_next_video_label": {
         "en": "Next video",
+        "de": "Nächstes Video",
         "es": "Siguiente video",
         "it": "Video successivo",
         "ja": "次のビデオ",
         "ms": "Video seterusnya",
+        "pt-br": "Próximo vídeo",
         "ru": "Следующее видео"
     },
     "player_previous_video_label": {
         "en": "Previous video",
+        "de": "Vorheriges Video",
         "es": "Video anterior",
         "it": "Video precedente",
         "ja": "前のビデオ",
         "ms": "Video sebelumnya",
+        "pt-br": "Vídeo anterior",
         "ru": "Предыдущее видео"
     },
     "player_volume_label": {
         "en": "Volume is $1%. Use arrow keys to adjust, enter to toggle mute.",
+        "de": "Lautsträrke bei $1%. Nutze die Pfeiltasten zum anpassen, Eingabe um Stummschaltung zu wechseln.",
         "es": "El volumen es $1%. Usa las teclas de flecha para ajustar, enter para silenciar.",
         "it": "Il volume è al $1%. Usa i tasti freccia per regolarlo, Invio per attivare/disattivare l'audio.",
         "ja": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。",
         "ms": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio.",
-        "ru": "Громкость $1%. Используйте стрелки для регулировки, Enter для отключения звука."
+        "pt-br": "O volume é de $1%. Use as Setas do teclado para ajustar, enter para alternar o mudo.",
+        "ru": "Громкость $1%. Клавиши со стрелками - регулировка, Enter - отключение звука."
     },
     "player_mute_label": {
         "en": "Mute audio",
+        "de": "Audio stummschalten",
         "es": "Silenciar el audio",
         "it": "Disattiva l'audio",
         "ja": "オーディオを消音",
         "ms": "Redamkan audio",
+        "pt-br": "Silenciar áudio",
         "ru": "Отключить звук"
     },
     "player_timestamp_label": {
         "en": "Copy URL with timestamp",
+        "de": "URL mit Zeitstempel kopieren",
         "es": "Marca de tiempo",
         "it": "Copia l'URL con il timestamp",
         "ja": "タイムスタンプ",
         "ms": "Cap masa",
+        "pt-br": "Copiar URL com registro de data e hora",
         "ru": "Время"
     },
     "player_sourcesbrowser_title": {
         "en": "Sources Browser",
+        "de": "Quellen Browser",
         "es": "Navegador de Fuentes",
         "it": "Browser delle Sorgenti",
         "ja": "ソースの参照",
         "ms": "Sumber Pelayar",
+        "pt-br": "Navegador de fontes",
         "ru": "Обзор источников"
     },
     "player_sourcesbrowser_open_label": {
         "en": "Open sources browser",
+        "de": "Quellen Browser öffnen",
         "es": "Abrir navegador de fuentes",
         "it": "Apri il browser delle sorgenti",
         "ja": "ソースの参照を開く",
         "ms": "Buka penyemak imbas sumber",
+        "pt-br": "Navegador de fontes abertas",
         "ru": "Открыть обзор источников"
     },
     "player_sourcesbrowser_close_label": {
         "en": "Close sources browser",
+        "de": "Quellen Browser schließen",
         "es": "Cerrar navegador de fuentes",
         "it": "Chiudi il browser delle sorgenti",
         "ja": "ソースの参照を閉じる",
         "ms": "Tutup penyemak imbas sumber",
+        "pt-br": "Fechar o navegador de fontes",
         "ru": "Закрыть обзор источников"
     },
     "player_audioconfig_title": {
         "en": "Audio Configuration",
+        "de": "Audio Konfigurationen",
         "es": "Configuración de Audio",
         "it": "Configurazione Audio",
         "ja": "オーディオの設定",
         "ms": "Konfigurasi Audio",
+        "pt-br": "Configuração de áudio",
         "ru": "Конфигурация звука"
     },
     "player_audioconfig_open_label": {
         "en": "Open audio config window",
+        "de": "Audio Konfigurationsfenster öffnen",
         "es": "Abrir ventana de configuración de audio",
         "it": "Apri finestra di configurazione audio",
         "ja": "オーディオ設定ウィンドウを開く",
         "ms": "Buka tetingkap konfigurasi audio",
+        "pt-br": "Abrir a janela de configuração de áudio",
         "ru": "Открыть настройки звука"
     },
     "player_audioconfig_close_label": {
         "en": "Close audio config window",
+        "de": "Audio Konfigurationsfenster schließen",
         "es": "Cerrar ventana de configuración de audio",
         "it": "Chiudi finestra di configurazione audio",
         "ja": "オーディオ設定ウィンドウを閉じる",
         "ms": "Tutup tetingkap konfigurasi audio",
+        "pt-br": "Fechar a janela de configuração de áudio",
         "ru": "Закрыть настройки звука"
     },
     "player_opensubtitles_title": {
         "en": "OpenSubtitles Search",
+        "de": "OpenSubtitles Suche",
         "es": "Búsqueda en OpenSubtitles",
         "it": "Ricerca di OpenSubtitles",
         "ja": "OpenSubtitles を検索",
         "ms": "Carian OpenSubtitles",
+        "pt-br": "Pesquisa em OpenSubtitles",
         "ru": "Поиск по OpenSubtitles"
     },
     "player_opensubtitles_close_label": {
         "en": "Close OpenSubtitles search window",
+        "de": "OpenSubtitles Suchfenster öffnen",
         "es": "Cerrar ventana de búsqueda de OpenSubtitles",
         "it": "Chiudi la finestra di ricerca di OpenSubtitles",
         "ja": "OpenSubtitles 検索ウィンドウを閉じる",
         "ms": "Tutup tingkap carian OpenSubtitles",
+        "pt-br": "Fechar a janela de pesquisa do OpenSubtitles",
         "ru": "Закрыть поиск по OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
         "en": "Search by title, filename, etc...",
+        "de": "Suche bei Titel, Dateiname, etc...",
         "es": "Buscar por título, nombre de archivo, etc...",
         "it": "Cerca per titolo, nome del file, ecc.",
         "ja": "タイトル、ファイル名などで検索...",
         "ms": "Cari mengikut tajuk, nama fail, dsb...",
+        "pt-br": "Pesquisar por título, nome de arquivo, etc....",
         "ru": "Поиск по названию, имени файла и др."
     },
     "player_opensubtitles_searchbtn": {
         "en": "Search",
+        "de": "Suche",
         "es": "Buscar",
         "it": "Cerca",
         "ja": "検索",
         "ms": "Carian",
+        "pt-br": "Buscar",
         "ru": "Поиск"
     },
     "player_opensubtitles_seasonnum": {
         "en": "Season #",
+        "de": "Staffel #",
         "es": "Estación #",
         "it": "Stagione #",
         "ja": "シーズン #",
         "ms": "Musim #",
+        "pt-br": "Temporada #",
         "ru": "Сезон #"
     },
     "player_opensubtitles_episodenum": {
         "en": "Episode #",
+        "de": "Folge #",
         "es": "Episodio #",
         "it": "Episodio #",
         "ja": "エピソード #",
         "ms": "Episod #",
+        "pt-br": "Episódio #",
         "ru": "Серия #"
     },
     "player_opensubtitles_type_all": {
         "en": "All",
+        "de": "Alle",
         "es": "Todo",
         "it": "Tutti",
         "ja": "すべて",
         "ms": "Semua",
+        "pt-br": "Tudo",
         "ru": "Все"
     },
     "player_opensubtitles_type_movie": {
         "en": "Movie",
+        "de": "Filme",
         "es": "Película",
         "it": "Film",
         "ja": "映画",
         "ms": "Filem",
+        "pt-br": "Filme",
         "ru": "Фильм"
     },
     "player_opensubtitles_type_episode": {
         "en": "Episode",
+        "de": "Folge",
         "es": "Episodio",
         "it": "Episodio",
         "ja": "エピソード",
         "ms": "Episod",
+        "pt-br": "Episódio",
         "ru": "Сериал"
     },
     "player_opensubtitles_language": {
         "en": "Language",
+        "de": "Sprache",
         "es": "Idioma",
         "it": "Lingua",
         "ja": "言語",
         "ms": "Bahasa",
+        "pt-br": "Idioma",
         "ru": "Язык"
     },
     "player_opensubtitles_year": {
         "en": "Year",
+        "de": "Jahr",
         "es": "Año",
         "it": "Anno",
         "ja": "年",
         "ms": "Tahun",
+        "pt-br": "Ano",
         "ru": "Год"
     },
     "player_opensubtitles_sortby": {
         "en": "Sort By",
+        "de": "Sortieren nach",
         "es": "Ordenar por",
         "it": "Ordina per",
         "ja": "ソート順",
         "ms": "Disusun mengikut",
+        "pt-br": "Ordenar por",
         "ru": "Сортировать по"
     },
     "player_opensubtitles_sortby_downloads": {
         "en": "Downloads",
+        "de": "Downloads",
         "es": "Descargas",
         "it": "Download",
         "ja": "ダウンロード",
         "ms": "Muat turun",
+        "pt-br": "Downloads",
         "ru": "Скачиваниям"
     },
     "player_opensubtitles_sortby_date": {
         "en": "Upload Date",
+        "de": "Upload Datum",
         "es": "Fecha de carga",
         "it": "Data di Caricamento",
         "ja": "アップロード日時",
         "ms": "Tarikh Muat naik",
+        "pt-br": "Data de envio",
         "ru": "Дате загрузки"
     },
     "player_opensubtitles_sortby_rating": {
         "en": "Rating",
+        "de": "Bewertung",
         "es": "Calificación",
         "it": "Valutazione",
         "ja": "評価",
         "ms": "Penilaian",
+        "pt-br": "Avaliação",
         "ru": "Рейтингу"
     },
     "player_opensubtitles_sortby_votes": {
         "en": "Votes",
+        "de": "Abstimmungen",
         "es": "Votos",
         "it": "Voti",
         "ja": "投票",
         "ms": "Undian",
+        "pt-br": "Votos",
         "ru": "Оценкам"
     },
     "player_opensubtitles_sort": {
         "en": "Sort",
+        "de": "Sortieren",
         "es": "Ordenar",
         "it": "Ordina",
         "ja": "ソート",
         "ms": "Disusun",
+        "pt-br": "Ordenar",
         "ru": "Сортировать"
     },
     "player_opensubtitles_sort_desc": {
         "en": "Descending",
+        "de": "Absteigend",
         "es": "Descendente",
         "it": "Decrescente",
         "ja": "下り順",
         "ms": "Menurun",
+        "pt-br": "Descendente",
         "ru": "По убыванию"
     },
     "player_opensubtitles_sort_asc": {
         "en": "Ascending",
+        "de": "Aufsteigend",
         "es": "Ascendente",
         "it": "Crescente",
         "ja": "上り順",
         "ms": "Menaik",
+        "pt-br": "Ascendente",
         "ru": "По возрастанию"
     },
     "player_opensubtitles_searching": {
         "en": "Searching...",
+        "de": "Suche...",
         "es": "Buscando...",
         "it": "Ricerca in corso...",
         "ja": "検索中...",
         "ms": "Mencari...",
+        "pt-br": "Buscando...",
         "ru": "Поиск…"
     },
     "player_opensubtitles_error": {
         "en": "Error: $1",
+        "de": "Fehler: $1",
         "es": "Error: $1",
         "it": "Errore: $1",
         "ja": "エラー: $1",
         "ms": "Ralat: $1",
+        "pt-br": "Erro: $1",
         "ru": "Ошибка: $1"
     },
     "player_opensubtitles_disabled": {
         "en": "Cannot set proper headers! Install the extension to use this feature!",
+        "de": "Kann Header nicht richtig setzten! Installiere die Erweiterung um diese Funktionen zu nutzen!",
         "es": "¡No se pueden establecer las cabeceras adecuadas! ¡Instala la extensión para usar esta función!",
         "it": "Impossibile impostare le intestazioni corrette! Installa l'estensione per utilizzare questa funzionalità!",
         "ja": "適切なヘッダーを設定できません! この機能を使用するには拡張機能をインストールしてください!",
         "ms": "Tidak dapat menetapkan pengepala yang betul! Pasang sambungan untuk menggunakan ciri ini!",
+        "pt-br": "Não é possível definir cabeçalhos adequadamente! Instale a extensão para usar esse recurso!",
         "ru": "Невозможно установить правильные заголовки! Установите расширение, чтобы использовать эту функцию!"
     },
     "player_opensubtitles_error_down": {
         "en": "OpenSubtitles is down!",
+        "de": "OpenSubtitles ist nicht verfügbar!",
         "es": "¡OpenSubtitles está caído!",
         "it": "OpenSubtitles è inattivo!",
         "ja": "OpenSubtitles はダウンしています!",
         "ms": "OpenSubtitles sudah tidak berfungsi!",
+        "pt-br": "O OpenSubtitles está inativo!",
         "ru": "OpenSubtitles недоступен!"
     },
     "player_opensubtitles_down_alert": {
         "en": "OpenSubtitles download failed! Their servers are probably down!",
+        "de": "OpenSubtitles Download fehlgeschlagen! Deren Server sind womöglich nicht erreichbar!",
         "es": "¡La descarga de OpenSubtitles ha fallado! ¡Probablemente sus servidores estén caídos!",
         "it": "Download di OpenSubtitles non riuscito! Probabilmente i loro server sono inattivi!",
         "ja": "OpenSubtitles のダウンロードに失敗しました! サーバーがダウンしているかもしれません!",
         "ms": "Muat turun OpenSubtitles gagal! Pelayan mereka mungkin tidak berfungsi!",
+        "pt-br": "O download do OpenSubtitles falhou! Seus servidores provavelmente estão fora do ar!",
         "ru": "Не удалось загрузить OpenSubtitles! Вероятно, их серверы недоступны!"
     },
     "player_opensubtitles_noresults": {
         "en": "No results found!",
+        "de": "Keine Resultate gefunden!",
         "es": "¡No se encontraron resultados!",
         "it": "Nessun risultato trovato!",
         "ja": "結果が見つかりません!",
         "ms": "Tiada keputusan dijumpai!",
+        "pt-br": "Nenhum resultado encontrado!",
         "ru": "Ничего не найдено!"
     },
     "player_opensubtitles_quota": {
         "en": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1",
+        "de": "OpenSubtitles limiter Untertitel downloads! Du hast keine Downloads mehr übrig! Dein Quota setzt sich zurück in $1",
         "es": "¡OpenSubtitles limita las descargas de subtítulos! ¡No te quedan más descargas! Tu cuota se restablece en $1",
         "it": "OpenSubtitles limita i download dei sottotitoli! Non hai più download rimasti! La tua quota si azzera tra $1",
         "ja": "OpenSubtitles は字幕のダウンロードを制限します! ダウンロードの残り回数がありません! クォータは、 $1 でリセットされます。",
         "ms": "OpenSubtitles mengehadkan muat turun sarikata! Anda tiada lagi muat turun yang tinggal! Kuota anda ditetapkan semula $1",
+        "pt-br": "O OpenSubtitles limita os downloads de legendas! Você não tem mais downloads disponíveis! Sua cota é redefinida em $1",
         "ru": "OpenSubtitles ограничивает загрузку субтитров! У вас не осталось загрузок! Ваша квота обнулится через $1"
     },
     "player_opensubtitles_askopen": {
         "en": "Would you like to open the OpenSubtitles website to download the subtitle file manually?",
+        "de": "Möchtest du OpenSubtitles direkt öffnen um die Untertitle manuell herunter zu laden?",
         "es": "¿Le gustaría abrir el sitio web de OpenSubtitles para descargar el archivo de subtítulos manualmente?",
         "it": "Vuoi aprire il sito web di OpenSubtitles per scaricare manualmente il file dei sottotitoli?",
         "ja": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?",
         "ms": "Adakah anda ingin membuka laman web OpenSubtitles untuk memuat turun fail sarikata secara manual?",
+        "pt-br": "Gostaria de abrir o site OpenSubtitles para fazer o download do arquivo de legenda manualmente?",
         "ru": "Хотите открыть сайт OpenSubtitles, чтобы загрузить субтитры вручную?"
     },
     "player_subtitlesmenu_open_label": {
         "en": "Open subtitles menu",
+        "de": "Untertitle Menü öffnen",
         "es": "Abrir menú de subtítulos",
         "it": "Apri il menu dei sottotitoli",
         "ja": "字幕メニューを開く",
         "ms": "Buka tingkap sarikata",
+        "pt-br": "Abrir o menu de legendas",
         "ru": "Открыть меню субтитров"
     },
     "player_subtitlesmenu_close_label": {
         "en": "Close subtitles menu",
+        "de": "Untertitle Menü schließen",
         "es": "Cerrar menú de subtítulos",
         "it": "Chiudi il menu dei sottotitoli",
         "ja": "字幕メニューを閉じる",
         "ms": "Tutup tingkap sarikata",
+        "pt-br": "Fechar o menu de legendas",
         "ru": "Закрыть меню субтитров"
     },
     "player_subtitlesmenu_backbtn": {
         "en": "Back",
+        "de": "Zurück",
         "es": "Volver",
         "it": "Indietro",
         "ja": "戻る",
         "ms": "Kembali",
+        "pt-br": "Voltar",
         "ru": "Назад"
     },
     "player_subtitlesmenu_settings": {
         "en": "Subtitle Settings",
+        "de": "Untertitel Einstellungen",
         "es": "Configuración de Subtítulos",
         "it": "Impostazioni Sottotitoli",
         "ja": "字幕の設定",
         "ms": "Tetapan sarikata",
+        "pt-br": "Configurações de legenda",
         "ru": "Настройки субтитров"
     },
     "player_subtitlesmenu_testbtn": {
         "en": "Test Subtitles",
+        "de": "Untertitel testen",
         "es": "Prueba Subtítulos",
         "it": "Test Sottotitoli",
         "ja": "字幕をテスト",
         "ms": "Cuba sarikata",
+        "pt-br": "Teste Legendas",
         "ru": "Тестировать субтитры"
     },
     "player_subtitlesmenu_testbtn_stop": {
         "en": "Stop Testing",
+        "de": "Aufhören zu testen",
         "es": "Deja de Probar",
         "it": "Interrompi Test",
         "ja": "テストを停止",
         "ms": "Henti Percubaan",
+        "pt-br": "Parar o teste",
         "ru": "Прекратить тестирование"
     },
     "player_subtitlesmenu_uploadbtn": {
         "en": "Upload File",
+        "de": "Datei hochladen",
         "es": "Subir Archivo",
         "it": "Carica File",
         "ja": "ファイルをアップロード",
         "ms": "Muatnaik Fail",
+        "pt-br": "Carregar arquivo",
         "ru": "Загрузить субтитры"
     },
     "player_subtitlesmenu_urlbtn": {
         "en": "From URL",
+        "de": "Von URL",
         "es": "Desde URL",
         "it": "Da un URL",
         "ja": "URL から",
         "ms": "Dari URL",
+        "pt-br": "De URL",
         "ru": "Ссылка"
     },
     "player_subtitlesmenu_urlprompt": {
         "en": "Enter URL",
+        "de": "URL eingeben",
         "es": "Ingrese URL",
         "it": "Inserisci un URL",
         "ja": "URL を入力",
         "ms": "Masuk URL",
+        "pt-br": "Digite a URL",
         "ru": "Введите адрес"
     },
     "player_subtitles_addtrack_downloading": {
         "en": "Downloading subtitle track...",
+        "de": "Lade Untertitel herunter...",
         "es": "Descargando subtítulos...",
         "it": "Download della traccia dei sottotitoli...",
         "ja": "字幕トラックをダウンロード中...",
         "ms": "Memuat turun sarikata...",
+        "pt-br": "Download da faixa de legendas...",
         "ru": "Загрузка субтитров…"
     },
     "player_subtitles_addtrack_success": {
         "en": "Subtitle track loaded!",
+        "de": "Untertitel geladen!",
         "es": "¡Pista de subtítulos cargada!",
         "it": "Traccia dei sottotitoli caricata!",
         "ja": "字幕トラックを読み込みました!",
         "ms": "Trek sarikata dimuatkan!",
+        "pt-br": "Faixa de legenda carregada!",
         "ru": "Субтитры загружены!"
     },
     "player_subtitles_addtrack_error": {
         "en": "Failed to load subtitle track!",
+        "de": "Untertitel laden fehlgeschlagen!",
         "es": "¡Error al cargar la pista de subtítulos!",
         "it": "Caricamento della traccia dei sottotitoli non riuscito!",
         "ja": "字幕トラックの読み込みに失敗しました!",
         "ms": "Gagal memuatkan trek sarikata!",
+        "pt-br": "Falha ao carregar a faixa de legenda!",
         "ru": "Не удалось загрузить субтитры!"
     },
     "player_subtitlesmenu_searchbtn": {
         "en": "Search OpenSubtitles",
+        "de": "Suche auf OpenSubtitle",
         "es": "Buscar en OpenSubtitles",
         "it": "Cerca OpenSubtitles",
         "ja": "OpenSubtitles を検索",
         "ms": "Carian OpenSubtitles",
+        "pt-br": "Pesquisar no OpenSubtitles",
         "ru": "Искать на OpenSubtitles"
     },
     "player_subtitlesmenu_clearbtn": {
         "en": "Clear Subtitles",
+        "de": "Untertitel freigeben",
         "es": "Borrar subtítulos",
         "it": "Cancella Sottotitoli",
         "ja": "字幕をクリア",
         "ms": "Kosongkan Sarikata",
+        "pt-br": "Limpar legendas",
         "ru": "Очистить субтитры"
     },
     "player_subtitlesmenu_settingsbtn": {
         "en": "Subtitle Settings",
+        "de": "Untertitel Einstellungen",
         "es": "Configuración de Subtítulos",
         "it": "Impostazioni Sottotitoli",
         "ja": "字幕の設定",
         "ms": "Tetapan Sarikata",
+        "pt-br": "Configurações de legenda",
         "ru": "Настройки субтитров"
     },
     "player_subtitlesmenu_resynctool_label": {
         "en": "Resync Tool",
+        "de": "Neusynchronisations Werkzeug",
         "es": "Herramienta de Resincronización",
         "it": "Strumento di Risincronizzazione",
         "ja": "再同期ツール",
         "ms": "Alat Segerakkan Semula",
+        "pt-br": "Ferramenta de sincronização",
         "ru": "Синхронизация"
     },
     "player_subtitlesmenu_resynctool_instructions": {
         "en": "Drag subtitles to resync",
+        "de": "Ziehe Untertitle zum neusynchonisieren",
         "es": "Arrastra los subtítulos para resincronizar",
         "it": "Trascina i sottotitoli per risincronizzare",
         "ja": "字幕をドラッグして再同期してください",
         "ms": "Seret sarikata untuk disegerakkan semula",
+        "pt-br": "Arraste as legendas para sincronizar novamente",
         "ru": "Перетащите субтитры для повторной синхронизации"
     },
     "player_subtitlesmenu_savetool_label": {
         "en": "Save subtitle file",
+        "de": "Untertiteldatei speichern",
         "es": "Guardar archivo de subtítulos",
         "it": "Salva il file dei sottotitoli",
         "ja": "字幕ファイルを保存",
         "ms": "Simpan fail sarikata",
+        "pt-br": "Salvar arquivo de legenda",
         "ru": "Сохранить файл субтитров"
     },
     "player_subtitlesmenu_removetool_label": {
         "en": "Remove subtitle track",
+        "de": "Untertitel entfernen",
         "es": "Eliminar pista de subtítulos",
         "it": "Rimuovi la traccia dei sottotitoli",
         "ja": "字幕トラックを削除",
         "ms": "Alih keluar trek sarikata",
+        "pt-br": "Remover faixa de legenda",
         "ru": "Удалить субтитры"
     },
     "player_subtitlesmenu_shifttool_label": {
         "en": "Shift subtitles $1s",
+        "de": "Untertitel verschieben um $1s",
         "es": "Cambiar subtítulos $1s",
         "it": "Sposta i sottotitoli di $1s",
         "ja": "$1 の字幕をシフト",
         "ms": "Alihkan sarikata $1s",
+        "pt-br": "Mudar as legendas $1s",
         "ru": "Сдвинуть на $1 с"
     },
     "player_subtitlesmenu_shifttool_message": {
         "en": "Shifted subtitles $1s",
+        "de": "Untertitel um $1s verschoben",
         "es": "Subtítulos cambiados $1s",
         "it": "Sposta i sottotitoli di $1s",
         "ja": "字幕を $1s シフト",
         "ms": "sarikata dialihkan $1s",
+        "pt-br": "Legendas deslocadas $1s",
         "ru": "Сдвинуть на $1 с"
     },
     "player_testsubtitle": {
         "en": "This is a test subtitle",
+        "de": "Dies is ein Test-Untertitel",
         "es": "Este es un subtítulo de prueba",
         "it": "Questo è un sottotitolo di prova",
         "ja": "これはテストの字幕です",
         "ms": "Ini adalah sarikata ujian",
+        "pt-br": "Esta é uma legenda de teste",
         "ru": "Это тестовый субтитр"
     },
     "player_qualitymenu_label": {
         "en": "Video quality",
+        "de": "Video Qualität",
         "es": "Calidad de video",
         "it": "Qualità video",
         "ja": "動画の品質",
         "ms": "Kualiti Video ",
+        "pt-br": "Qualidade do vídeo",
         "ru": "Качество видео"
     },
     "player_languagemenu_label": {
         "en": "Language selection",
+        "de": "Sprachauswahl",
         "es": "Selección de idioma",
         "it": "Selezione lingua",
         "ja": "言語の選択",
         "ms": "Pilihan Bahasa",
+        "pt-br": "Seleção de idiomas",
         "ru": "Выбор языка"
     },
     "player_languagemenu_video": {
         "en": "Video",
+        "de": "Video",
         "es": "Video",
         "it": "Video",
         "ja": "ビデオ",
         "ms": "Video",
+        "pt-br": "Vídeo",
         "ru": "Видео"
     },
     "player_languagemenu_audio": {
         "en": "Audio",
+        "de": "Audio",
         "es": "Audio",
         "it": "Audio",
         "ja": "オーディオ",
         "ms": "Audio",
+        "pt-br": "Áudio",
         "ru": "Аудио"
     },
     "player_playbackrate_label": {
         "en": "Playback rate",
+        "de": "Vidergabegeschwindigkeit",
         "es": "Velocidad de reproducción",
         "it": "Velocità di riproduzione",
         "ja": "再生速度",
         "ms": "Kadar main balik",
+        "pt-br": "Taxa de reprodução",
         "ru": "Скорость воспроизведения"
     },
     "player_settings_title": {
         "en": "FastStream Settings",
+        "de": "FastStream Einstellungen",
         "es": "Configuraciones de FastStream",
         "it": "Impostazioni FastStream",
         "ja": "FastStream の設定",
         "ms": "Tetapan FastStream",
+        "pt-br": "Configurações do FastStream",
         "ru": "Настройки FastStream"
     },
     "player_settings_open_label": {
         "en": "Open settings window",
+        "de": "Einstellungsfenster öffnen",
         "es": "Abrir ventana de configuración",
         "it": "Apri la finestra delle impostazioni",
         "ja": "設定ウィンドウを開く",
         "ms": "Buka tetingkap tetapan",
+        "pt-br": "Abrir janela de configurações",
         "ru": "Открыть окно настроек"
     },
     "player_settings_close_label": {
         "en": "Close settings window",
+        "de": "Einstellungsfenster schließen",
         "es": "Cerrar ventana de configuración",
         "it": "Chiudi la finestra delle impostazioni",
         "ja": "設定ウィンドウを閉じる",
         "ms": "Tutup tetingkap tetapan",
+        "pt-br": "Fechar janela de configurações",
         "ru": "Закрыть окно настроек"
     },
     "player_savevideo_label": {
         "en": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer.",
+        "de": "Video speichern. Halt ALT um teile des Videos zu speichern. Halt UMSCHALT um dem buffer zu leeren.",
         "es": "Guardar video. mantén presionado ALT para guardar un video parcial. mantén presionado SHIFT para vaciar el búfer.",
         "it": "Salva il video. Tieni premuto ALT per salvare un video parziale. Tieni premuto MAIUSC per scaricare il buffer.",
         "ja": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。",
         "ms": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal.",
+        "pt-br": "Salve o vídeo. mantenha pressionada a tecla ALT para salvar o vídeo parcialmente. mantenha pressionada a tecla SHIFT para despejar o que estiver armazenado..",
         "ru": "Сохранить видео. Удерживайте ALT, чтобы сохранить часть видео. Удерживайте SHIFT, чтобы сбросить буфер."
     },
     "player_screenshot_label": {
         "en": "Take screenshot",
+        "de": "Bildschirmaufnahme machen",
         "es": "Tomar captura de pantalla",
         "it": "Acquisisci uno screenshot",
         "ja": "スクリーンショットを撮る",
         "ms": "Ambil tangkapan skrin",
+        "pt-br": "Tirar captura de tela",
         "ru": "Сделать скриншот"
     },
     "player_pip_label": {
         "en": "Picture in picture",
+        "de": "Bild in Bild",
         "es": "Imagen en imagen",
         "it": "Picture-in-picture",
         "ja": "ピクチャー イン ピクチャー (PiP)",
         "ms": "Gambar dalam gambar",
+        "pt-br": "Imagem sob imagem (pip)",
         "ru": "Картинка в картинке"
     },
     "player_fullscreen_label": {
         "en": "Toggle fullscreen",
+        "de": "Vollbildmodus umschalten",
         "es": "Pantalla completa",
         "it": "Attiva/disattiva lo schermo intero",
         "ja": "フルスクリーン",
         "ms": "Skrin penuh",
+        "pt-br": "Alternar tela cheia",
         "ru": "Во весь экран"
     },
     "player_fullscreen_denied": {
         "en": "Fullscreen permissions denied!",
+        "de": "Vollbild Berechtigungen verweigert!",
         "es": "¡Permisos de pantalla completa denegados!",
         "it": "Autorizzazioni per lo schermo intero negate!",
         "ja": "フルスクリーンの許可が拒否されました!",
         "ms": "Kebenaran skrin penuh ditolak!",
-        "ru": "Отказано в разрешении на полноэкранный режим!"
+        "pt-br": "Permissões de tela cheia negadas!",
+        "ru": "Полноэкранный режим запрещён!"
     },
     "player_windowed_fullscreen_label": {
         "en": "Toggle windowed fullscreen",
+        "de": "Fenster-Vollbildmodus umschalten",
         "es": "Pantalla completa de ventana",
         "it": "Attiva/disattiva lo schermo intero nella finestra",
         "ja": "ウィンドウ化されたフルスクリーン",
         "ms": "Skrin Penuh Bertingkap",
+        "pt-br": "Alternar entre janela e tela cheia",
         "ru": "Оконный режим"
     },
     "player_skip_forward_label": {
         "en": "Skip forward 10s",
+        "de": "10s forwärts spulen",
         "es": "Saltar adelante 10s",
         "it": "Vai avanti di 10s",
         "ja": "10秒進む",
         "ms": "Skip forward 10s",
+        "pt-br": "Avançar 10s",
         "ru": "Вперёд на 10 с"
     },
     "player_skip_backward_label": {
         "en": "Skip backward 10s",
+        "de": "10s rückwärts spulen",
         "es": "Saltar hacia atrás 10s",
         "it": "Vai indietro di 10s",
         "ja": "10秒戻る",
         "ms": "Skip backward 10s",
+        "pt-br": "Retroceder 10s",
         "ru": "Назад на 10 с"
     },
     "player_more_label": {
         "en": "More tools",
+        "de": "Mehr Werkzeuge",
         "es": "Más utilidades",
         "it": "Altri strumenti",
         "ja": "その他のツール",
         "ms": "Lebih banyak alat",
+        "pt-br": "Mais ferramentas",
         "ru": "Другие инструменты"
     },
     "player_loop_label": {
         "en": "Loop",
+        "de": "Wiederholen",
         "es": "Repetir",
         "it": "Loop",
         "ja": "ループ",
         "ms": "Gelung",
+        "pt-br": "Loop",
         "ru": "Зациклить"
     },
     "loop_menu_start": {
         "en": "Start",
+        "de": "Anfang",
         "es": "Inicio",
         "it": "Inizio",
         "ja": "開始",
         "ms": "Mula",
+        "pt-br": "Início",
         "ru": "Начало"
     },
     "loop_menu_end": {
         "en": "End",
+        "de": "Ende",
         "es": "Fin",
         "it": "Fine",
         "ja": "終了",
         "ms": "Tamat",
+        "pt-br": "Fim",
         "ru": "Конец"
     },
     "loop_menu_toggle_enabled": {
         "en": "Loop Enabled",
+        "de": "Wiederholung aktiviert",
         "es": "Repetir Habilitado",
         "it": "Loop Abilitato",
         "ja": "ループ有効",
         "ms": "Gelung Didayakan",
+        "pt-br": "Loop ativado",
         "ru": "Зацикливание включено"
     },
     "loop_menu_toggle_disabled": {
         "en": "Loop Disabled",
+        "de": "Wiederholung deaktiviert",
         "es": "Repetir Deshabilitado",
         "it": "Loop Disabilitato",
         "ja": "ループ無効",
         "ms": "Gelung Dilumpuhkan",
+        "pt-br": "Loop desativado",
         "ru": "Зацикливание отключено"
     },
     "loop_menu_gif_start": {
         "en": "Recording GIF at 4x speed...",
+        "de": "Nehme GIF in 4-facher Geschwindigkeit auf...",
         "es": "Grabando GIF a velocidad 4x...",
         "it": "Registrazione di una GIF a velocità 4x in corso...",
         "ja": "4倍速でGIFを録画中...",
         "ms": "Merakam GIF pada kelajuan 4x...",
+        "pt-br": "Gravação de GIF em velocidade 4x...",
         "ru": "Запись GIF на скорости 4x…"
     },
     "loop_menu_gif_end": {
         "en": "Finished recording GIF. Now saving...",
+        "de": "Fertig mit Aufnahme vom GIF. Speichere jetzt...",
         "es": "Finalizó la grabación del GIF. Ahora guardando...",
         "it": "Registrazione della GIF completata. Salvataggio in corso...",
         "ja": "GIFの録画が終了しました。現在保存中...",
         "ms": "Selesai merakam GIF. Sekarang menyimpan...",
+        "pt-br": "Gravação terminada em GIF. Salvando...",
         "ru": "Запись GIF завершена. Сохранение…"
     },
     "loop_menu_gif_abort": {
         "en": "Aborted GIF recording!",
+        "de": "GIF Aufname abgebrochen!",
         "es": "¡Grabación de GIF abortada!",
         "it": "Registrazione della GIF interrotta!",
         "ja": "GIFの録画が中断されました!",
         "ms": "Rakaman GIF dihentikan!",
+        "pt-br": "Gravação de GIFs interrompida!",
         "ru": "Запись GIF прервана!"
     },
     "loop_menu_gif_progress": {
         "en": "Saving GIF $1%",
+        "de": "Speichere GIF $1%",
         "es": "Guardando GIF $1%",
         "it": "Salvataggio della GIF $1%",
         "ja": "GIFを保存中 $1%",
         "ms": "Menyimpan GIF $1%",
+        "pt-br": "Salvando GIF $1%",
         "ru": "Сохранение GIF $1%"
     },
     "loop_menu_gif_finished": {
         "en": "Finished saving GIF!",
+        "de": "GIF speichern abgeschlossen!",
         "es": "¡Finalizó el guardado del GIF!",
         "it": "Salvataggio della GIF completato!",
         "ja": "GIFの保存が完了しました!",
         "ms": "Selesai menyimpan GIF!",
+        "pt-br": "Terminado de salvar GIF!",
         "ru": "Сохранение GIF завершено!"
+    },
+    "player_download_paused": {
+        "en": "Download paused",
+        "de": "Download pausiert",
+        "es": "Descarga pausada",
+        "it": "Download in pausa",
+        "ja": "ダウンロードが一時停止されました",
+        "ms": "Muat turun ditangguhkan",
+        "pt-br": "Download pausado",
+        "ru": "Загрузка приостановлена"
     },
     "player_fragment_failed_singular": {
         "en": "$1 Fragment Failed! Click to retry.",
+        "de": "$1 Fragment fehlgeschlagen! Klicken um erneut zu versuchen...",
         "es": "¡$1 fragmento falló! Haz clic para reintentar.",
         "it": "$1 Frammento non riuscito! Fai clic per riprovare.",
         "ja": "$1 の分割処理に失敗しました! クリックで再試行します。",
         "ms": "$1 Serpihan Gagal! Klik untuk mencuba semula.",
+        "pt-br": "$1 Fragmento com erro! Clique para tentar novamente.",
         "ru": "Ошибка $1 фрагмента! Нажмите для повтора"
     },
     "player_fragment_failed_plural": {
         "en": "$1 Fragments Failed! Click to retry.",
+        "de": "$1 Fragmente fehlgeschlagen! Klicken um erneut zu versuchen...",
         "es": "¡$1 fragmentos fallidos! Haz clic para reintentar.",
         "it": "$1 Frammenti non riusciti! Fai clic per riprovare.",
         "ja": "$1 の分割処理に失敗しました! クリックで再試行します。",
         "ms": "$1 Serpihan Gagal! Klik untuk mencuba semula.",
+        "pt-br": "$1 Fragmento com erro! Clique para tentar novamente.",
         "ru": "Ошибка $1 фрагментов! Нажмите для повтора"
     },
     "player_fragment_allbuffered": {
         "en": "100% Buffered",
+        "de": "100% Buffered",
         "es": "100% en Buffer",
         "it": "Messo in buffer al 100%",
         "ja": "100% バッファー済み",
         "ms": "100% Ditimbal",
+        "pt-br": "100% Armazenado",
         "ru": "100% буферизация"
     },
     "player_welcometext": {
         "en": "Welcome to FastStream v$1!",
+        "de": "Willkommen zu FastStream v$1!",
         "es": "¡Bienvenido a FastStream v$1!",
         "it": "Ti diamo il benvenuto su FastStream v$1!",
         "ja": "FastStream v$1 へようこそ!",
         "ms": "Selamat datang ke FastStream v$1!",
+        "pt-br": "Bem-vindo ao FastStream v$1!",
         "ru": "Добро пожаловать в FastStream v$1!"
     },
     "player_nosource_alert": {
         "en": "No source is loaded!",
+        "de": "Keine Quelle geladen!",
         "es": "¡No se ha cargado ninguna fuente!",
         "it": "Nessuna sorgente caricata!",
         "ja": "ソースは読み込まれていません!",
         "ms": "Tiada sumber dimuatkan!",
+        "pt-br": "Nenhuma fonte foi carregada!",
         "ru": "Источник не загружен!"
     },
     "player_archive_loading": {
         "en": "Loading archive... $1%",
+        "de": "Lade Archiv... $1%",
         "es": "Cargando archivo... $1%",
         "it": "Caricamento archivio... $1%",
         "ja": "$1% のアーカイブを読み込み中...",
         "ms": "Memuatkan arkib... $1%",
+        "pt-br": "Carregando arquivo... $1%",
         "ru": "Загрузка архива… $1%"
     },
     "player_archive_loaded": {
         "en": "Loaded archive!",
+        "de": "Archiv geladen!",
         "es": "¡Archivo cargado!",
         "it": "Archivio caricato!",
         "ja": "アーカイブを読み込みました!",
         "ms": "Arkib dimuatkan!",
+        "pt-br": "Arquivo carregado!",
         "ru": "Архив загружен!"
     },
     "player_archive_fail": {
         "en": "Failed to load archive!",
+        "de": "Archiv laden fehlgeschlagen!",
         "es": "¡No se pudo cargar el archivo!",
         "it": "Caricamento dell'archivio fallito!",
         "ja": "アーカイブの読み込みに失敗しました!",
         "ms": "Gagal memuatkan arkib!",
+        "pt-br": "Falha ao carregar o arquivo!",
         "ru": "Не удалось загрузить архив!"
     },
     "player_filename_prompt": {
         "en": "Enter a name for the file",
+        "de": "Gebe einen Namen für die Datei ein",
         "es": "Introduzca un nombre para el archivo",
         "it": "Inserisci un nome per il file",
         "ja": "ファイル名を入力",
         "ms": "Masukkan nama untuk fail",
+        "pt-br": "Insira um nome para o arquivo",
         "ru": "Введите имя файла"
     },
     "player_screenshot_saving": {
         "en": "Taking screenshot...",
+        "de": "Nehme Bildschirmaufnahme auf...",
         "es": "Tomando captura de pantalla...",
         "it": "Acquisizione di uno screenshot in corso...",
         "ja": "スクリーンショットを撮る...",
         "ms": "Mengambil tangkapan skrin...",
+        "pt-br": "Capturando tela...",
         "ru": "Делаем скриншот…"
     },
     "player_screenshot_saved": {
         "en": "Screenshot saved!",
+        "de": "Bildschirmaufnahme gespeichert!",
         "es": "¡Captura de pantalla guardada!",
         "it": "Screenshot salvato!",
         "ja": "スクリーンショットを保存しました!",
         "ms": "Tangkapan skrin disimpan!",
+        "pt-br": "Captura de tela salva!",
         "ru": "Скриншот сохранён!"
     },
     "player_screenshot_fail": {
         "en": "Failed to take screenshot!",
+        "de": "Bildschirmaufnahme fehlgeschlagen!",
         "es": "¡Error al tomar la captura de pantalla!",
         "it": "Acquisizione dello screenshot fallita!",
         "ja": "スクリーンショットの撮影に失敗しました!",
         "ms": "Gagal untuk tangkapan Skrin!",
+        "pt-br": "Falha na captura de tela!",
         "ru": "Не удалось сделать скриншот!"
     },
     "player_savevideo_inprogress_alert": {
         "en": "Already making save!",
+        "de": "Speichervorgang läuft bereits!",
         "es": "¡Ya guardando!",
         "it": "Il salvataggio è già in corso!",
         "ja": "すでに保存済みです!",
         "ms": "Sudah membuat simpanan!",
+        "pt-br": "Salvando!",
         "ru": "Уже сохраняю!"
     },
     "player_savevideo_unsupported": {
         "en": "Saving is not supported for this video!",
+        "de": "Speichern ist nicht unterstüzt für dieses Video!",
         "es": "¡No se admite guardar este video!",
         "it": "Il salvataggio non è supportato per questo video!",
         "ja": "この動画は保存に対応していません!",
         "ms": "Penyimpanan tidak disokong untuk video ini!",
+        "pt-br": "Não há suporte para salvar este vídeo!",
         "ru": "Сохранение этого видео не поддерживается!"
     },
     "player_savevideo_partial_confirm": {
         "en": "Video has not finished downloading yet! Are you sure you want to save it?",
+        "de": "Videodownload noch nicht abgeschlossen! Sicher das du es speichern willst?",
         "es": "¡El video aún no ha terminado de descargarse! ¿Estás seguro de que quieres guardarlo?",
         "it": "Il video non è ancora stato scaricato! Vuoi davvero salvarlo?",
         "ja": "動画のダウンロードが完了していません! 本当に保存をしますか?",
         "ms": "Video belum selesai dimuat turun! Adakah anda pasti mahu menyimpannya?",
+        "pt-br": "O download do vídeo ainda não foi concluído! Tem certeza de que deseja salvá-lo?",
         "ru": "Загрузка видео ещё не завершена! Вы уверены, что хотите сохранить его?"
     },
     "player_savevideo_incognito_confirm": {
         "en": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?",
+        "de": "Privater Modus wird RAM benutzten um Videos zu puffern. Dein Computer hat villeicht nicht genug speicher um das gesamte video zu speichern!\nBist du sicher das du fortfahren willst?",
         "es": "El Modo Incógnito utilizará la RAM para almacenar en búfer los videos. ¡Es posible que tu computadora no tenga suficiente memoria para guardar el video completo!\n¿Estás seguro de que quieres proceder?",
         "it": "La modalità di navigazione in incognito utilizzerà la RAM per mettere in buffer i video. Il tuo computer potrebbe non avere memoria sufficiente per salvare l'intero video!\nVuoi davvero procedere?",
         "ja": "シークレットモードでは、RAM を使用して動画をバッファーします。コンピューターに動画全体を保存するのに必要なメモリがない可能性があります。\n続行してもよろしいですか?",
         "ms": "Mod Inkognito akan menggunakan RAM untuk menimbal video. Komputer anda mungkin tidak mempunyai memori yang mencukupi untuk menyimpan keseluruhan video!\nAdakah anda pasti mahu meneruskan?",
+        "pt-br": "O modo de navegação anônima usará a RAM para armazenar vídeos. Seu computador pode não ter memória suficiente para salvar o vídeo inteiro!\nTem certeza de que deseja prosseguir?",
         "ru": "Режим инкогнито будет использовать оперативную память для буферизации видео.\nВашему компьютеру может не хватить памяти для сохранения всего видео!\nВы уверены, что хотите продолжить?"
     },
     "player_savevideo_reencode": {
         "en": "Saving will require re-encoding. This may take a long time. Do you want to proceed?",
+        "de": "Speichern erfordert neukodierung. Dies kann eine lange Zeit brauchen. Willst du fortfahren?",
         "es": "Guardar requerirá re-codificación. Esto puede llevar mucho tiempo. ¿Quieres proceder?",
         "it": "Il salvataggio richiederà una nuova codifica. Potrebbe richiedere molto tempo. Vuoi procedere?",
         "ja": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?",
         "ms": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?",
-        "ru": "Сохранение потребует повторного кодирования. Это может занять много времени. Вы хотите продолжить?"
+        "pt-br": "Para salvar, será necessário recodificar o vídeo. Isso pode levar muito tempo. Você deseja continuar?",
+        "ru": "Для сохранения требуется перекодировка. Это может занять много времени. Продолжить?"
     },
     "player_savevideo_cancelling": {
         "en": "Cancelling save...",
+        "de": "Breche speichern ab...",
         "es": "Cancelando...",
         "it": "Annullamento del salvataggio...",
         "ja": "キャンセル中...",
         "ms": "Membatalkan simpanan...",
+        "pt-br": "Cancelando salvamento...",
         "ru": "Отмена…"
     },
     "player_savevideo_cancelled": {
         "en": "Save cancelled!",
+        "de": "Speichern abgebrochen!",
         "es": "¡Cancelado!",
         "it": "Salvataggio annullato!",
         "ja": "保存がキャンセルされました!",
         "ms": "Simpanan dibatalkan!",
+        "pt-br": "Salvamento cancelado!",
         "ru": "Сохранение отменено!"
     },
     "player_savevideo_start": {
         "en": "Making save...",
+        "de": "Erstelle Speicherung...",
         "es": "Guardando...",
         "it": "Salvataggio in corso...",
         "ja": "保存中...",
         "ms": "Membuat penjimatan...",
+        "pt-br": "Salvando",
         "ru": "Сохранение…"
     },
     "player_savevideo_progress": {
         "en": "Saving $1%",
+        "de": "Speichern $1%",
         "es": "Guardando $1%",
         "it": "Salvataggio $1%",
         "ja": "$1% を保存中",
         "ms": "Menyimpan $1%",
+        "pt-br": "Salvando $1%",
         "ru": "Сохранение $1%"
     },
     "player_savevideo_fail": {
         "en": "Failed to save video!",
+        "de": "Video speichern fehlgeschlagen!",
         "es": "¡Error al guardar el video!",
         "it": "Salvataggio del video fallito!",
         "ja": "動画の保存に失敗しました!",
         "ms": "Gagal menyimpan video!",
+        "pt-br": "Falha ao salvar vídeo!",
         "ru": "Не удалось сохранить видео!"
     },
     "player_savevideo_failed_ask_archive": {
         "en": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it",
+        "de": "Video speichern fehlgeschlagen!\nMöchtest du anstelle den Player-Puffer Speicher archivieren?\n- Ziehe und lass fallen (drag and drop) Archivdateien auf den Player zum laden dieser",
         "es": "Error al guardar el video!\n¿Le gustaría archivar el almacenamiento en búfer del reproductor en su lugar?\n- Arrastre y suelte los archivos de archivo en el reproductor para cargarlo",
         "it": "Salvataggio del video fallito!\nVuoi archiviare invece la memoria buffer del lettore video?\n- Trascina e rilascia i file di archivio sul lettore video per caricarla",
         "ja": "動画の保存に失敗しました!\n代わりにプレーヤーのバッファーストレージをアーカイブしますか?\n- アーカイブファイルをプレーヤーにドラッグ&ドロップで読み込みます",
         "ms": "Gagal menyimpan video!\nAdakah anda mahu mengarkibkan storan penimbal pemain sebaliknya?\n- Seret dan lepaskan fail arkib pada pemain untuk memuatkannya",
+        "pt-br": "Não foi possível salvar o vídeo!\nEm vez disso, você gostaria de arquivar o armazenamento do buffer do tocador?\n- Arraste e solte arquivos compactados no tocador para carregá-los",
         "ru": "Не удалось сохранить видео!\nХотите вместо этого заархивировать буферное хранилище плеера?\n- Перетащите файлы архива на плеер, чтобы загрузить его"
     },
     "player_savevideo_complete": {
         "en": "Save complete!",
+        "de": "Speichern abgeschlossen!",
         "es": "¡Guardado completo!",
         "it": "Salvataggio completato!",
         "ja": "保存が完了しました!",
         "ms": "Selesai disimpan!",
+        "pt-br": "Salvamento completo!",
         "ru": "Сохранение завершено!"
     },
     "player_archiver_progress": {
         "en": "Archiving $1%",
+        "de": "Archiviere $1%",
         "es": "Archivando $1%",
         "it": "Archiviazione $1%",
         "ja": "$1% をアーカイブ中",
         "ms": "Mengarkib $1%",
+        "pt-br": "Arquivando $1%",
         "ru": "Архивирование $1%"
     },
     "player_archiver_saved": {
         "en": "Archive saved!",
+        "de": "Archiv gespeichert!",
         "es": "¡Archivo guardado!",
         "it": "Archivio salvato!",
         "ja": "アーカイブを保存しました!",
         "ms": "Arkib disimpan!",
+        "pt-br": "Arquivo salvo!",
         "ru": "Архив сохранён!"
     },
     "player_quality_current": {
         "en": "(current)",
+        "de": "(aktuell)",
         "es": "(actual)",
         "it": "(attuale)",
         "ja": "(現在)",
         "ms": "(current)",
+        "pt-br": "(atual)",
         "ru": "(текущее)"
     },
     "player_buffer_incognito_warning": {
         "en": "Not enough space to predownload in incognito mode, will buffer $1",
+        "de": "Nicht genügend Speicherplatz um im Privaten Modus vor zu laden, es wird gepuffert bis $1",
         "es": "No hay suficiente espacio para predescargar en modo incógnito, se almacenará en búfer $1",
         "it": "Spazio insufficiente per il pre-download in modalità di navigazione in incognito, verrà eseguito il buffering di $1",
         "ja": "シークレットモードでプリダウンロードに必要な空き容量がないため、$1 がバッファーされます",
         "ms": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1",
+        "pt-br": "Não há espaço suficiente para fazer o download prévio no modo incógnito, o buffer será de $1",
         "ru": "Недостаточно места для предзагрузки в режиме инкогнито, будет буферизована $1"
     },
     "player_buffer_storage_warning": {
         "en": "Video size exceeds limits, will buffer $1",
+        "de": "Video größe überschreitet limit, es wird gepuffert bis $1",
         "es": "El tamaño del video excede los límites, se almacenará en búfer durante $1",
         "it": "La dimensione del video eccede i limiti, verrà eseguito il buffering di $1",
         "ja": "ビデオのサイズが制限を超えています、$1 バッファリングします",
         "ms": "Saiz video melebihi had, akan menimbal $1",
+        "pt-br": "O tamanho do vídeo excede os limites, será armazenado em $1",
         "ru": "Размер видео превышает лимит, будет буферизировано $1"
     },
     "player_error_drm": {
         "en": "Failed to load! DRM is not supported!",
+        "de": "Laden fehlgeschlagen! DRM is nicht unterstützt!",
         "es": "¡Error al cargar! ¡DRM no es compatible!",
         "it": "Caricamento fallito! DRM non è supportato!",
         "ja": "読み込みに失敗しました! DRM には対応していません!",
         "ms": "Gagal memuatkan! DRM tidak disokong!",
+        "pt-br": "Falha ao carregar! DRM não é suportado!",
         "ru": "Ошибка загрузки! DRM не поддерживается!"
     },
     "player_error_load": {
         "en": "Failed to load video!",
+        "de": "Laden vom Video fehlgeschlagen!",
         "es": "¡Error al cargar el video!",
         "it": "Caricamento del video fallito!",
         "ja": "動画の読み込みに失敗しました!",
         "ms": "Gagal memuatkan video!",
+        "pt-br": "Falha ao carregar o vídeo!",
         "ru": "Не удалось загрузить видео!"
     },
     "source_copied": {
         "en": "Copied URL to clipboard!",
+        "de": "Die Video URL wurde in die Zwischenablage gespeichert!",
         "es": "¡URL copiada al portapapeles!",
         "it": "URL copiato negli appunti!",
         "ja": "URL をクリップボードにコピーしました!",
         "ms": "URL disalin ke papan keratan!",
+        "pt-br": "URL copiado na área de transferência!",
         "ru": "Скопировано!"
     },
     "player_source_copybtn": {
         "en": "Copy",
+        "de": "Kopieren",
         "es": "Copiar",
         "it": "Copia",
         "ja": "コピー",
         "ms": "Salin",
+        "pt-br": "Copiar",
         "ru": "Копировать"
     },
     "player_source_copybtn_label": {
         "en": "Copy source URL, headers, and mode to clipboard",
+        "de": "Kopiere Quell-URL, Header und modus in die Zwischenablage",
         "es": "Copiar URL de origen, encabezados y modo al portapapeles",
         "it": "Copia l'URL della sorgente, le intestazioni e la modalità negli appunti",
         "ja": "ソースの URL、ヘッダー、モードをクリップボードにコピー",
         "ms": "Salin URL sumber, pengepala, dan mod ke papan keratan",
+        "pt-br": "Copiar URL de origem, cabeçalhos para a área de transferência",
         "ru": "Копировать адрес источника, заголовки и режим в буфер обмена"
     },
     "player_source_copybtn_copied": {
         "en": "Copied!",
+        "de": "Kopiert!",
         "es": "¡Copiado!",
         "it": "Copiato!",
         "ja": "コピー済み!",
         "ms": "Disalin!",
+        "pt-br": "Copiado!",
         "ru": "Скопировано!"
     },
     "player_source_autodetect": {
         "en": "Auto Detect",
+        "de": "Automatisch erkennen",
         "es": "Detección Auto",
         "it": "Rilevamento Automatico",
         "ja": "自動検出",
         "ms": "Auto Mengesan",
+        "pt-br": "Auto detectado",
         "ru": "Автоопределение"
     },
     "player_source_direct": {
         "en": "Direct",
+        "de": "Direkt",
         "es": "Directo",
         "it": "Diretto",
         "ja": "ダイレクト",
         "ms": "Terus",
+        "pt-br": "Direto",
         "ru": "Прямой"
     },
     "player_source_accelmp4": {
         "en": "Accelerated MP4",
+        "de": "Beschleunigte MP4",
         "es": "MP4 Acelerado",
         "it": "MP4 Accelerato",
         "ja": "高速化された MP4",
         "ms": "MP4 dipercepatkan",
+        "pt-br": "MP4 acelerado",
         "ru": "Аппарат. ускорение MP4"
     },
     "player_source_accelhls": {
         "en": "Accelerated HLS",
+        "de": "Beschleunigtes HLS",
         "es": "HLS Acelerado",
         "it": "HLS Accelerato",
         "ja": "高速化された HLS",
         "ms": "HLS dipercepatkan",
+        "pt-br": "HLS acelerado",
         "ru": "Аппарат. ускорение HLS"
     },
     "player_source_acceldash": {
         "en": "Accelerated DASH",
+        "de": "Beschleunigtes DASH",
         "es": "DASH Acelerado",
         "it": "DASH Accelerato",
         "ja": "高速化された DASH",
         "ms": "DASH dipercepatkan",
+        "pt-br": "DASH acelerado",
         "ru": "Аппарат. ускорение DASH"
     },
     "player_source_accelyt": {
         "en": "Accelerated YouTube",
+        "de": "Beschleunigtes YouTube",
         "es": "YouTube Acelerado",
         "it": "YouTube Accelerato",
         "ja": "高速化された YouTube",
         "ms": "YouTube dipercepatkan",
+        "pt-br": "YouTube acelerado",
         "ru": "Аппарат. ускорение YouTube"
+    },
+    "player_source_accelvm": {
+        "en": "Accelerated Vimeo",
+        "de": "Beschleunigtest Vimeo",
+        "es": "Vimeo Acelerado",
+        "it": "Vimeo Accelerato",
+        "ja": "高速化された Vimeo",
+        "ms": "Vimeo dipercepatkan",
+        "pt-br": "Vimeo acelerado",
+        "ru": "Аппарат. ускорение Vimeo"
     },
     "player_source_mode": {
         "en": "Mode",
+        "de": "Modus",
         "es": "Modo",
         "it": "Modalità",
         "ja": "モード",
         "ms": "Mod",
+        "pt-br": "Modo",
         "ru": "Режим"
+    },
+    "player_source_mode_auto_error": {
+        "en": "Please select a player mode!",
+        "de": "Wähle bitte einen Player Modus aus!",
+        "es": "¡Por favor, selecciona un modo de reproductor!",
+        "it": "Seleziona una modalità di riproduzione!",
+        "ja": "プレーヤーモードを選択してください!",
+        "ms": "Sila pilih mod pemain!",
+        "pt-br": "Selecione um modo de reprodução!",
+        "ru": "Выберите режим проигрывателя!"
     },
     "player_source_url_placeholder": {
         "en": "Source URL",
+        "de": "Quell URL",
         "es": "URL de origen",
         "it": "URL della Sorgente",
         "ja": "ソースの URL",
         "ms": "Sumber URL",
+        "pt-br": "URL de origem",
         "ru": "Адрес источника"
     },
     "player_source_headerbtn": {
         "en": "Header Override ($1)",
+        "de": "Header Überschreibung ($1)",
         "es": "Anulación de Encabezado ($1)",
         "it": "Sovrascrittura delle Intestazioni ($1)",
         "ja": "ヘッダーを上書き ($1)",
         "ms": "Tajuk diganti ($1)",
+        "pt-br": "Substituição de cabeçalho ($1)",
         "ru": "Переопределение заголовка ($1)"
     },
     "player_source_headerbtn_label": {
         "en": "Toggle header override input",
+        "de": "Header Überschreibungs Eingabe umschalten",
         "es": "Alternar entrada de anulación de encabezado",
         "it": "Attiva/disattiva l'input per la sovrascrittura delle intestazioni",
         "ja": "ヘッダー上書き入力へ切り替え",
         "ms": "Togol input ganti pengepala",
+        "pt-br": "Alternar a entrada de substituição de cabeçalho",
         "ru": "Ввод переопределения заголовка"
     },
     "player_source_headerbtn_disabled": {
         "en": "Header Override (Extension Only)",
+        "de": "Header Überschreibung (Nur Erweiterung)",
         "es": "Anulación de Encabezado (Solo Extensión)",
         "it": "Sovrascrittura delle Intestazioni (solo nell'estensione)",
         "ja": "ヘッダーを上書き (拡張機能のみ)",
         "ms": "Tajuk diganti (Sambungan Sahaja)",
+        "pt-br": "Substituição de cabeçalho (somente extensão)",
         "ru": "Переопределение заголовка (Только расширение)"
     },
     "player_source_playbtn": {
         "en": "Play",
+        "de": "Abspielen",
         "es": "Reproducir",
         "it": "Riproduci",
         "ja": "再生",
         "ms": "Main",
+        "pt-br": "Reproduzir",
         "ru": "Воспроизвести"
     },
     "player_source_playbtn_playing": {
         "en": "Playing",
+        "de": "Spiele ab",
         "es": "Reproduciendo",
         "it": "Riproduzione in corso",
         "ja": "再生中",
         "ms": "Bermain",
+        "pt-br": "Tocando",
         "ru": "Воспроизведение"
     },
     "player_source_playbtn_loading": {
         "en": "Loading...",
+        "de": "Lade...",
         "es": "Cargando...",
         "it": "Caricamento in corso...",
         "ja": "読み込み中...",
         "ms": "Memuatkan...",
+        "pt-br": "Carregando...",
         "ru": "Загрузка…"
     },
     "player_source_deletebtn": {
         "en": "Delete",
+        "de": "Löschen",
         "es": "Borrar",
         "it": "Elimina",
         "ja": "削除",
         "ms": "Hapus",
+        "pt-br": "Apagar",
         "ru": "Удалить"
     },
     "player_source_headers_label": {
         "en": "Header override input",
+        "de": "Header Überschreibungs Eingabe",
         "es": "Entrada de anulación de encabezado",
         "it": "Input per la sovrascrittura delle intestazioni",
         "ja": "ヘッダーの上書き入力",
         "ms": "Input mengatasi pengepala",
+        "pt-br": "Substituição de cabeçalho",
         "ru": "Ввод переопределения заголовка"
     },
     "player_source_headers_placeholder": {
         "en": "Header-Name: Header Value\nHeader2-Name: Header2 Value",
+        "de": "Header-Name: Header Wert\nHeader2-Name: Header2 Wert",
         "es": "Nombre-de-Encabezado: Valor del Encabezado\nNombre-de-Encabezado2: Valor del Encabezado2",
         "it": "Nome dell'intestazione: valore dell'intestazione\nNome dell'intestazione2: valore dell'intestazione2",
         "ja": "ヘッダー名: ヘッダーの値\nヘッダー2の名: ヘッダー2の値",
         "ms": "Nama Pengepala: Nilai Pengepala\nNama Pengepala2: Nilai Pengepala2",
+        "pt-br": "Nome do cabeçalho: Valor do cabeçalho\nHeader2-Name: Valor do Header2",
         "ru": "Имя заголовка: Значение заголовка\nИмя заголовка2: Значение заголовка2"
     },
     "player_source_nonelisted": {
         "en": "No Sources Listed",
+        "de": "Keine quellen gelistet",
         "es": "No Se Enumeran Fuentes",
         "it": "Nessuna Sorgente Elencata",
         "ja": "ソースの一覧がありません",
         "ms": "Tiada Senarai Sumber",
+        "pt-br": "Não há fontes listadas",
         "ru": "Нет источников"
     },
     "player_source_onelisted": {
         "en": "1 Source Listed",
+        "de": "1 Quelle gelistet",
         "es": "1 Fuente Listada",
         "it": "1 Sorgente Elencata",
         "ja": "1 件のソースの一覧",
         "ms": "1 Senarai Sumber",
+        "pt-br": "1 Fonte listada",
         "ru": "1 источник в списке"
     },
     "player_source_multilisted": {
         "en": "$1 Sources Listed",
+        "de": "$1 Quellen gelistet",
         "es": "$1 Fuentes Listadas",
         "it": "$1 Sorgenti Elencate",
         "ja": "$1 件のソースの一覧",
         "ms": "$1 Senarai Sumber",
+        "pt-br": "Fontes de $1 listadas",
         "ru": "$1 источников в списке"
     },
     "player_source_addbtn": {
         "en": "Add Source",
+        "de": "Quelle hinzufügen",
         "es": "Añadir Fuente",
         "it": "Aggiungi Sorgente",
         "ja": "ソースを追加",
         "ms": "Masukkan Sumber",
+        "pt-br": "Adicionar fonte",
         "ru": "Добавить источник"
     },
     "player_source_clearbtn": {
         "en": "Clear Sources",
+        "de": "Quellen leeren",
         "es": "Borrar Fuentes",
         "it": "Cancella Sorgenti",
         "ja": "ソースをクリア",
         "ms": "Kosongkan Sumber",
+        "pt-br": "Limpar fontes",
         "ru": "Очистить источники"
     },
     "player_audioconfig_duplicate_profile": {
         "en": "(loaded from file on $1)",
+        "de": "(Datei geladen von $1)",
         "es": "(cargado desde el archivo en $1)",
         "it": "(caricato dal file su $1)",
         "ja": "($1 のファイルから読み込み済み)",
         "ms": "(dimuatkan daripada fail pada $1)",
+        "pt-br": "(carregada do arquivo em $1)",
         "ru": "(импортирован из файла $1)"
     },
     "player_audioconfig_create_profile": {
         "en": "Create new profile",
+        "de": "Neues Profil erstellen",
         "es": "Crear nuevo perfil",
         "it": "Crea un nuovo profilo",
         "ja": "新規プロファイルを作成",
         "ms": "Ciptakan profil baru",
+        "pt-br": "Criar novo perfil",
         "ru": "Создать новый профиль"
     },
     "player_audioconfig_import_profile": {
         "en": "Import profiles from file",
+        "de": "Profil von datei importieren",
         "es": "Importar perfiles desde archivo",
         "it": "Importa profili dal file",
         "ja": "ファイルからプロファイルをインポート",
         "ms": "Import profil daripada fail",
+        "pt-br": "Importar perfis do arquivo",
         "ru": "Импорт профиля из файла"
     },
     "player_audioconfig_import_invalid": {
         "en": "Invalid profile file",
+        "de": "Ungültiges Profildatei",
         "es": "Archivo de perfil inválido",
         "it": "File profilo non valido",
         "ja": "無効なプロファイルファイル",
         "ms": "Fail profil tidak sah",
+        "pt-br": "Arquivo de perfil inválido",
         "ru": "Недопустимый файл профиля"
     },
     "player_audioconfig_profile": {
         "en": "Profile",
+        "de": "Profil",
         "es": "Perfil",
         "it": "Profilo",
         "ja": "プロファイル",
         "ms": "Profil",
+        "pt-br": "Perfil",
         "ru": "Профиль"
     },
     "player_audioconfig_profile_unnamed": {
         "en": "Unnamed Profile",
+        "de": "Unbenanntes Profil",
         "es": "Perfil sin Nombre",
         "it": "Profilo Senza Nome",
         "ja": "無題のプロファイル",
         "ms": "Profil Tanpa Nama",
+        "pt-br": "Perfil não identificado",
         "ru": "Безымянный профиль"
     },
     "player_audioconfig_profile_load": {
         "en": "Load Profile",
+        "de": "Profil laden",
         "es": "Cargar Perfil",
         "it": "Carica Profilo",
         "ja": "プロファイルを読み込む",
         "ms": "Muat Profile",
+        "pt-br": "Carregar perfil",
         "ru": "Загрузить профиль"
     },
     "player_audioconfig_profile_loaded": {
         "en": "Loaded Profile!",
+        "de": "Profil geladen!",
         "es": "¡Perfil cargado!",
         "it": "Profilo Caricato!",
         "ja": "プロファイルを読み込みました!",
         "ms": "Profil Dimuatkan!",
+        "pt-br": "Perfil carregado!",
         "ru": "Профиль загружен!"
     },
     "player_audioconfig_profile_save": {
         "en": "Save Profile",
+        "de": "Profil speichern!",
         "es": "Guardar Perfil",
         "it": "Salva Profilo",
         "ja": "プロファイルを保存",
         "ms": "Simpan Profil",
+        "pt-br": "Salvar perfil",
         "ru": "Сохранить профиль"
     },
     "player_audioconfig_profile_saving": {
         "en": "Saving...",
+        "de": "Speichern...",
         "es": "Guardando...",
         "it": "Salvataggio in corso...",
         "ja": "保存中...",
         "ms": "Menyimpan...",
+        "pt-br": "Salvando...",
         "ru": "Сохранение…"
     },
     "player_audioconfig_profile_saved": {
         "en": "Saved Profile!",
+        "de": "Profil gespeichert!",
         "es": "¡Perfil Guardado!",
         "it": "Profilo Salvato!",
         "ja": "プロファイルを保存しました!",
         "ms": "Profil Disimpan!",
+        "pt-br": "Perfil salvo!",
         "ru": "Профиль сохранён!"
     },
     "player_audioconfig_profile_download": {
         "en": "Download Profile",
+        "de": "Profil herunterladen",
         "es": "Descargar Perfil",
         "it": "Scarica il Profilo",
         "ja": "プロファイルをダウンロード",
         "ms": "Muat turun Profil",
+        "pt-br": "Perfil baixado",
         "ru": "Скачать профиль"
     },
     "player_audioconfig_profile_downloaded": {
         "en": "Downloaded!",
+        "de": "Heruntergeladen!",
         "es": "¡Descargado!",
         "it": "Scaricato!",
         "ja": "ダウンロードしました!",
         "ms": "Dimuat turun!",
+        "pt-br": "Baixado!",
         "ru": "Скачан!"
     },
     "player_audioconfig_profile_delete": {
         "en": "Delete",
+        "de": "Löschen",
         "es": "Borrar",
         "it": "Elimina",
         "ja": "削除",
         "ms": "Hapus",
+        "pt-br": "Apagar",
         "ru": "Удалить"
     },
     "player_audioconfig_profile_deleting": {
         "en": "Deleting...",
+        "de": "Lösche...",
         "es": "Borrando...",
         "it": "Eliminazione in corso...",
         "ja": "削除中...",
         "ms": "Menghapus...",
+        "pt-br": "Apagando...",
         "ru": "Удаление…"
     },
     "player_audioconfig_profile_deleted": {
         "en": "Deleted!",
+        "de": "Gelöscht!",
         "es": "¡Borrado!",
         "it": "Eliminato!",
         "ja": "削除しました!",
         "ms": "Dihapuskan!",
+        "pt-br": "Apagado!",
         "ru": "Удалён!"
     },
     "audiomixer_title": {
         "en": "Audio Channel Mixer",
+        "de": "Audio Kanal Mixer",
         "es": "Mezclador de Canales de Audio",
         "it": "Mixer Canali Audio",
         "ja": "オーディオチャンネルミキサー",
         "ms": "Pengadun Saluran Audio",
+        "pt-br": "Mixer de canal de áudio",
         "ru": "Микшер аудиоканала"
     },
     "audiomixer_volume_master_handle_label": {
-        "en": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mono",
-        "es": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar mono",
-        "it": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono",
-        "ja": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでモノラルを切り替えます",
-        "ms": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
-        "ru": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
+        "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mono",
+        "de": "$1 Vestärkung sind $2 db ($3%). Dücke M um Mono umzuschalten",
+        "es": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar mono",
+        "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono",
+        "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます",
+        "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
+        "pt-br": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar entre mono",
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, для переключения в моно"
     },
     "audiomixer_volume_handle_label": {
-        "en": "$1 gain is $2 dB. Use arrows to adjust. Press M to toggle mute",
-        "es": "Ganancia de $1 es $2 dB. Usa las flechas para ajustar. Presiona M para alternar silencio",
-        "it": "Il guadagno di $1 è $2 dB. Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto",
-        "ja": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでミュートを切り替えます",
-        "ms": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
-        "ru": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
+        "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mute",
+        "de": "$1 Verstärkung sind $2 db ($3%). Drücke M um Stummschaltung umzuschalten",
+        "es": "Ganancia de $1 es $2 dB ($3%). Usa las flechas para ajustar. Presiona M para alternar silencio",
+        "it": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto",
+        "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます",
+        "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
+        "pt-br": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar o mudo",
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы отключить звук"
     },
     "audiomixer_solo_label": {
         "en": "Solo",
+        "de": "Solo",
         "es": "Solo",
         "it": "Singolo",
         "ja": "ソロ",
         "ms": "Solo",
+        "pt-br": "Solo",
         "ru": "Соло"
     },
     "audiomixer_mute_label": {
         "en": "Mute",
+        "de": "Stumm",
         "es": "Silenciar",
         "it": "Muto",
         "ja": "消音",
         "ms": "Bisu",
+        "pt-br": "Mudo",
         "ru": "Отключить звук"
     },
     "audiomixer_mono": {
         "en": "Mono",
+        "de": "Mono",
         "es": "Mono",
         "it": "Mono",
         "ja": "モノ",
         "ms": "Mono",
+        "pt-br": "Mono",
         "ru": "Моно"
     },
     "audiomixer_dynamics_label": {
         "en": "Edit dynamics of channel",
+        "de": "Dynamik der Kanäle bearbeiten",
         "es": "Editar dinámica del canal",
         "it": "Modifica le dinamiche del canale",
         "ja": "チャンネルのダイナミクスを編集",
         "ms": "Edit dinamik saluran",
+        "pt-br": "Editar a dinâmica do canal",
         "ru": "Изменить динамику канала"
     },
     "audiocrosstalk_title": {
         "en": "Audio Crosstalk Correction",
+        "de": "Audio Crosstalk Behebung",
         "es": "Corrección de Crosstalk de Audio",
         "it": "Correzione Crosstalk Audio",
         "ja": "オーディオクロストーク補正",
         "ms": "Audio Crosstalk Correction",
+        "pt-br": "Correção de diafonia do áudio",
         "ru": "Коррекция перекрёстных помех"
     },
     "audiocrosstalk_enabled": {
         "en": "Crosstalk Correction Enabled",
+        "de": "Audio Crosstalk Behebung aktiviert",
         "es": "Corrección de Crosstalk Habilitada",
         "it": "Correzione Crosstalk Abilitata",
         "ja": "クロストーク補正有効",
         "ms": "Crosstalk Correction Enabled",
+        "pt-br": "Correção de diafonia ativada",
         "ru": "Коррекция перекрёстных помех включена"
     },
     "audiocrosstalk_disabled": {
         "en": "Crosstalk Correction Disabled",
+        "de": "Audio Crosstalk Behebung aktiviert",
         "es": "Corrección de Crosstalk Deshabilitada",
         "it": "Correzione Crosstalk Disabilitata",
         "ja": "クロストーク補正無効",
         "ms": "Crosstalk Correction Disabled",
+        "pt-br": "Correção de diafonia desativada",
         "ru": "Коррекция перекрёстных помех отключена"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "en": "Decay",
+        "de": "Abklingen",
         "es": "Decaimiento",
         "it": "Decadimento",
         "ja": "減衰",
         "ms": "Decay",
+        "pt-br": "Decay",
         "ru": "Затухание"
     },
     "audiocrosstalk_colorgain": {
         "en": "Max Coloration",
+        "de": "Maximale Coloration",
         "es": "Coloración Máxima",
         "it": "Colorazione Massima",
         "ja": "色付け",
         "ms": "Max Coloration",
+        "pt-br": "Coloração máxima",
         "ru": "Усиление цвета"
     },
     "audiocrosstalk_microdelay": {
         "en": "Delta T",
+        "de": "Delta T",
         "es": "Delta T",
         "it": "Delta T",
         "ja": "Delta T",
         "ms": "Delta T",
+        "pt-br": "Delta T",
         "ru": "Дельта T"
     },
     "audiocrosstalk_lowbypass": {
         "en": "Low Bypass",
+        "de": "Niedrig Bypass",
         "es": "Bypass Bajo",
         "it": "Bypass Basso",
         "ja": "低周波バイパス",
         "ms": "Low Bypass",
+        "pt-br": "Bypass baixo",
         "ru": "Низкий байпас"
     },
     "audiocrosstalk_highbypass": {
         "en": "High Bypass",
+        "de": "Hoch Bypass",
         "es": "Bypass Alto",
         "it": "Bypass Alto",
         "ja": "高周波バイパス",
         "ms": "High Bypass",
+        "pt-br": "Bypass alto",
         "ru": "Высокий байпас"
     },
     "audiocrosstalk_speakerdistance": {
         "en": "Speaker Distance",
+        "de": "Lautsprecher Distanz",
         "es": "Distancia Entre Altavoz",
         "it": "Distanza dell'Altoparlante",
         "ja": "スピーカー間の距離",
         "ms": "Speaker Distance",
+        "pt-br": "Distância do alto-falante",
         "ru": "Расстояние до динамика"
     },
     "audiocrosstalk_headdistance": {
         "en": "Head Distance",
+        "de": "Kopf Distanz",
         "es": "Distancia de la Cabeza",
         "it": "Distanza della Testa",
         "ja": "ヘッド間の距離",
         "ms": "Head Distance",
+        "pt-br": "Distância",
         "ru": "Расстояние до головы"
     },
     "audiocompressor_title": {
         "en": "Audio Compressor",
+        "de": "Audio Kompression",
         "es": "Compresor de Audio",
         "it": "Compressore Audio",
         "ja": "オーディオコンプレッサー",
         "ms": "Audio Compressor",
+        "pt-br": "Compressor de áudio",
         "ru": "Компрессор"
     },
     "audiocompressor_enabled": {
         "en": "Compressor Enabled",
+        "de": "Kompression aktiviert",
         "es": "Compresor Habilitado",
         "it": "Compressore Abilitato",
         "ja": "コンプレッサー有効",
         "ms": "Compressor Enabled",
+        "pt-br": "Compressor ativado",
         "ru": "Компрессор включен"
     },
     "audiocompressor_disabled": {
         "en": "Compressor Disabled",
+        "de": "Kompression deaktiviert",
         "es": "Compresor Desactivado",
         "it": "Compressore Disabilitato",
         "ja": "コンプレッサー無効",
         "ms": "Compressor Disabled",
+        "pt-br": "Compressor desativado",
         "ru": "Компрессор отключен"
     },
     "audiocompressor_threshold": {
         "en": "Threshold",
+        "de": "Grenzwert",
         "es": "Threshold",
         "it": "Soglia",
         "ja": "スレッショルド",
         "ms": "Threshold",
+        "pt-br": "Limite",
         "ru": "Порог"
     },
     "audiocompressor_knee": {
         "en": "Knee",
+        "de": "Knee",
         "es": "Knee",
         "it": "Passaggio",
         "ja": "ニー",
         "ms": "Knee",
+        "pt-br": "Knee",
         "ru": "Колено"
     },
     "audiocompressor_ratio": {
         "en": "Ratio",
+        "de": "Verhältnis",
         "es": "Ratio",
         "it": "Rapporto",
         "ja": "レシオ",
         "ms": "Ratio",
+        "pt-br": "Proporção",
         "ru": "Степень"
     },
     "audiocompressor_attack": {
         "en": "Attack",
+        "de": "Attack",
         "es": "Attack",
         "it": "Attacco",
         "ja": "アタック",
         "ms": "Attack",
+        "pt-br": "Ataque",
         "ru": "Атака"
     },
     "audiocompressor_release": {
         "en": "Release",
+        "de": "Release",
         "es": "Release",
         "it": "Rilascio",
         "ja": "リリース",
         "ms": "Release",
+        "pt-br": "Liberar",
         "ru": "Восстановление"
     },
     "audiocompressor_gain": {
         "en": "Gain",
+        "de": "Verstärkung",
         "es": "Ganancia",
         "it": "Guadagno",
         "ja": "ゲイン",
         "ms": "Gain",
+        "pt-br": "Ganho",
         "ru": "Усиление"
     },
     "audioeq_title": {
         "en": "Audio Equalizer",
+        "de": "Audio Equalizer",
         "es": "Ecualizador de Audio",
         "it": "Equalizzatore Audio",
         "ja": "オーディオイコライザー",
         "ms": "Audio Equalizer",
+        "pt-br": "Equalizador de áudio",
         "ru": "Эквалайзер"
     },
     "audioeq_instructions": {
         "en": "Double click to change type",
+        "de": "Doppelklick um typ zu ändern",
         "es": "Haz doble clic para cambiar el tipo",
         "it": "Fai doppio clic per cambiare tipo",
         "ja": "ダブルクリックでタイプを変更",
         "ms": "Double click to change type",
+        "pt-br": "Clique duas vezes para alterar o tipo",
         "ru": "Двойной клик для изменения типа"
     },
     "audioeq_gain": {
         "en": "Gain: $1dB",
+        "de": "Gain: $1dB",
         "es": "Ganancia: $1dB",
         "it": "Guadagno: $1dB",
         "ja": "ゲイン: $1dB",
         "ms": "Gain: $1dB",
+        "pt-br": "Ganho: $1dB",
         "ru": "Усиление: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "en": "Scroll to change Q",
+        "de": "Scroll um Q zu ändern",
         "es": "Desplázate para cambiar Q",
         "it": "Scorri per cambiare Q",
         "ja": "スクロールで Q を変更",
         "ms": "Scroll to change Q",
+        "pt-br": "Role para mudar Q",
         "ru": "Прокрутите, чтобы изменить Q"
     },
     "options_title": {
         "en": "FastStream Options",
+        "de": "FastStream Optionen",
         "es": "Configuraciones de FastStream",
         "it": "Opzioni FastStream",
         "ja": "FastStream のオプション",
         "ms": "FastStream Options",
+        "pt-br": "Opções do FastStream",
         "ru": "Параметры FastStream"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "en": "Enjoy FastStream? Leave a review!",
+        "de": "Magst du FastStream? Lass eine Bewertung da!",
         "es": "¿Te gusta FastStream? ¡Deja una reseña!",
         "it": "Ti piace FastStream? Lascia una recensione!",
         "ja": "FastStream にご満足いただけましたか? 評価をお願いします!",
         "ms": "Enjoy FastStream? Leave a review!",
+        "pt-br": "Gostou do FastStream? Deixe sua avaliação!",
         "ru": "Понравился FastStream? Оставьте отзыв!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "en": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
+        "de": "FastStream ist ein Hobby Projekt aufrechterhalten von Freiwilligen. Wir heißen dein Feedback willkommen, da es uns hilft zu wissen wo wir verbessern müssen. Sei so frei uns deine Meinung mit zu teilen:",
         "es": "FastStream es un proyecto de hobby mantenido por voluntarios. Agradecemos tus comentarios ya que nos ayudan a saber dónde mejorar. Por favor, no dudes en comentarnos:",
         "it": "FastStream è un progetto amatoriale gestito da volontari. Apprezziamo il tuo feedback perché ci aiuta a capire dove migliorare. Non esitare a dircelo:",
         "ja": "FastStream はボランティアによって維持されている趣味なプロジェクトです。改善すべき事を知るためにフィードバックをいただければ幸いです。お気軽にお申し付けください:",
         "ms": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
+        "pt-br": "O FastStream é um projeto idealizado de hobby mantido por voluntários. Agradecemos seu retorno, pois ele nos ajuda a saber onde podemos melhorar. Fique à vontade para nos dizer:",
         "ru": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "en": "How you use it",
+        "de": "Wie benutzt du es",
         "es": "Cómo lo usas",
         "it": "Come lo usi",
         "ja": "使用方法",
         "ms": "How you use it",
+        "pt-br": "Como usá-lo",
         "ru": "Как вы используете расширение"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "en": "Any bugs you encounter",
+        "de": "Irgendwelchen Fehlern begegnet",
         "es": "Cualquier error que encuentres",
         "it": "Eventuali bug che riscontri",
         "ja": "バグに遭遇した場合",
         "ms": "Any bugs you encounter",
+        "pt-br": "Quaisquer erros encontrados",
         "ru": "О проблемах, с которыми вы столкнулись"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "en": "Feature requests",
+        "de": "Funktions Anfgragen",
         "es": "Solicitudes de características",
         "it": "Richieste di funzionalità",
         "ja": "機能のリクエスト",
         "ms": "Feature requests",
+        "pt-br": "Solicitações de recursos",
         "ru": "Запросить функцию"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "en": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
+        "de": "Wir nehmen auch Zugänglichkeit sehr ernst. Falls du Annehmlichkeiten brauchst die in der aktuellen Version fehlen, dann stelle uns eine anfrage und wir werden daran arbeiten so bald wie möglich.",
         "es": "También tomamos la accesibilidad muy en serio. Si necesitas adaptaciones que faltan en la versión actual, haz una solicitud y trabajaremos en ello lo antes posible.",
         "it": "Prendiamo molto seriamente anche l'accessibilità. Se hai bisogno di sistemazioni che mancano nella versione attuale, invia una richiesta e ci lavoreremo il prima possibile.",
         "ja": "私たちはアクセシビリティについても非常に重視をしています。現在のバージョンに不足している機能があった場合は、リクエストをしてください。できるだけ早く対応をします。",
         "ms": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
+        "pt-br": "Também levamos a acessibilidade muito a sério. Se você precisar de adaptações que não estejam disponíveis na versão atual, faça uma solicitação e trabalharemos nisso o mais rápido possível.",
         "ru": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "en": "OK I'll review FastStream",
+        "de": "OK, ich werde FastStream bewerten",
         "es": "OK, revisaré FastStream",
         "it": "OK, lasciero una recensione a FastStream",
         "ja": "OK、FastStream を評価する",
         "ms": "OK I'll review FastStream",
+        "pt-br": "Farei uma avaliação do FastStream",
         "ru": "Хорошо, оценю FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "en": "I don't want to review :(",
+        "de": "Ich möchte nicht bewerten :(",
         "es": "No quiero reseñar :(",
         "it": "Non voglio lasciare una recensione :(",
         "ja": "評価しない :(",
         "ms": "I don't want to review :(",
+        "pt-br": "Não quero avaliar :(",
         "ru": "Не хочу оценивать :("
     },
     "options_feedback_header": {
         "en": "Do you have feedback?",
+        "de": "Hast du irgendein Feedback?",
         "es": "¿Tienes comentarios?",
         "it": "Hai del feedback?",
         "ja": "フィードバックをお願いします!",
         "ms": "Do you have feedback?",
-        "ru": "У вас есть отзыв?"
+        "pt-br": "Tem algum retorno ?",
+        "ru": "Оставьте свой отзыв!"
     },
     "options_feedback_reason": {
         "en": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
+        "de": "Wir freuen uns von dir zu hören! Füll bitte ein kleines Formular aus. Dies ist unsere einzige Möglichkeit uns zu verbessern, da wir dich nicht tracken oder daten sammeln.",
         "es": "¡Nos encantaría saber de ti! Por favor, completa un formulario corto. Es la única forma en que podemos mejorar ya que no te rastreamos.",
         "it": "Ci piacerebbe sentire la tua opinione! Compila un breve modulo. È l'unico modo in cui possiamo migliorare, dal momento che non ti tracciamo.",
         "ja": "あなたの意見を聞かせてください! 短いフォームを記入してください。私たちはあなたを追跡していないので、改善する唯一の方法です。",
         "ms": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
-        "ru": "Мы хотели бы услышать ваше мнение! Пожалуйста, заполните короткую форму. Это единственный способ улучшить нас, поскольку мы не отслеживаем вас."
+        "pt-br": "Adoraríamos ouvir de você! Por favor preencha um pequeno formulário. É a única maneira de melhorarmos, já que não rastreamos você.",
+        "ru": "Будем рады услышать ваше мнение! Пожалуйста, заполните небольшую форму. Это единственный способ стать лучше, поскольку мы не следим за вами."
     },
     "options_feedback_yes": {
         "en": "Yes, I have feedback",
+        "de": "Ja, Ich habe Feedback",
         "es": "Sí, tengo comentarios",
         "it": "Sì, ho del feedback",
         "ja": "はい、フィードバックを送信します",
         "ms": "Yes, I have feedback",
-        "ru": "Да, у меня есть отзыв"
+        "pt-br": "Sim, tenho um retorno",
+        "ru": "Оставить отзыв"
     },
     "options_feedback_no": {
         "en": "No, I'm good",
+        "de": "Nein, alles gut",
         "es": "No, estoy bien",
         "it": "No, sto a posto",
         "ja": "いいえ、結構です",
         "ms": "No, I'm good",
-        "ru": "Нет, мне хорошо"
+        "pt-br": "Não, Está tudo bem",
+        "ru": "Нет, спасибо"
     },
     "options_help_feedback": {
         "en": "Feedback Form",
+        "de": "Feedback Formular",
         "es": "Formulario de Comentarios",
         "it": "Modulo di Feedback",
         "ja": "フィードバックフォーム",
         "ms": "Feedback Form",
+        "pt-br": "Formulário de retorno",
         "ru": "Форма обратной связи"
     },
     "options_update_header": {
         "en": "An Update is Available!",
+        "de": "Ein Update ist verfügbar!",
         "es": "¡Hay una actualización disponible!",
         "it": "È Disponibile un Aggiornamento!",
         "ja": "アップデートが利用可能です!",
         "ms": "An Update is Available!",
+        "pt-br": "Uma atualização está disponível!",
         "ru": "Доступно обновление!"
     },
     "options_update_body": {
         "en": "FastStream v$1 is now available (current version v$2). Would you like to update?",
+        "de": "FastStream v$1 ist jetzt verfügbar (aktuelle version v$2). Möchtest du aktualisieren?",
         "es": "FastStream v$1 está disponible (versión actual v$2). ¿Te gustaría actualizar?",
         "it": "FastStream v$1 è ora disponibile (versione attuale v$2). Vuoi aggiornare?",
         "ja": "FastStream v$1 が利用可能です (現在のバージョン v$2)。アップデートしますか?",
         "ms": "FastStream v$1 is now available (current version v$2). Would you like to update?",
+        "pt-br": "FastStream v$1 já está disponível (versão atual v$2). Você gostaria de atualizar?",
         "ru": "Доступен FastStream v$1 (текущая v$2). Обновить?"
     },
     "options_update_go": {
         "en": "Take me to Github",
+        "de": "Bring mich zu Github",
         "es": "Llévame a Github",
         "it": "Portami su Github",
         "ja": "GitHub に移動",
         "ms": "Take me to Github",
+        "pt-br": "Me leve ao Github",
         "ru": "Перейти на Github"
     },
     "options_update_no": {
         "en": "Ignore this update",
+        "de": "Diese Aktualisierung ignorieren",
         "es": "Ignorar esta actualización",
         "it": "Ignora questo aggiornamento",
         "ja": "このアップデートを無視",
         "ms": "Ignore this update",
+        "pt-br": "Ignorar esta atualização",
         "ru": "Игнорировать это обновление"
     },
     "options_video_header": {
         "en": "Video Options",
+        "de": "Video Optionen",
         "es": "Opciones de video",
         "it": "Opzioni Video",
         "ja": "動画のオプション",
         "ms": "Video Options",
+        "pt-br": "Opções de vídeo",
         "ru": "Параметры видео"
     },
     "options_video_body": {
         "en": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
+        "de": "Wendet CSS filter auf das video an. Funktioniert nicht mit Bild in Bild.",
         "es": "Aplica filtros CSS al vídeo. No funciona con imagen en imagen.",
         "it": "Applica filtri CSS al video. Non funziona con picture-in-picture.",
         "ja": "動画に CSS フィルタを適用します。ピクチャー イン ピクチャー (PiP) では動作しません。",
         "ms": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
+        "pt-br": "Aplica filtros CSS ao vídeo. Não funciona no modo sobreposição (pip).",
         "ru": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»"
+    },
+    "options_video_zoom": {
+        "en": "Video Zoom",
+        "de": "Video Vergößerung",
+        "es": "Zoom de Video",
+        "it": "Zoom Video",
+        "ja": "ビデオズーム",
+        "ms": "Video Zoom",
+        "pt-br": "Zoom de vídeo",
+        "ru": "Масштабирование видео"
     },
     "options_video_delay": {
         "en": "Video Delay",
+        "de": "Video Verzögerung",
         "es": "Video Delay",
         "it": "Ritardo Video",
         "ja": "Video Delay",
         "ms": "Video Delay",
-        "ru": "Video Delay"
+        "pt-br": "Atrso de vídeo",
+        "ru": "Задержка видео"
     },
     "options_video_brightness": {
         "en": "Brightness",
+        "de": "Helligkeit",
         "es": "Brillo",
         "it": "Luminosità",
         "ja": "明るさ",
         "ms": "Brightness",
+        "pt-br": "Briho",
         "ru": "Яркость"
     },
     "options_video_contrast": {
         "en": "Contrast",
+        "de": "Kontrast",
         "es": "Contraste",
         "it": "Contrasto",
         "ja": "コントラスト",
         "ms": "Contrast",
+        "pt-br": "Contraste",
         "ru": "Контрастность"
     },
     "options_video_saturation": {
         "en": "Saturation",
+        "de": "Sättigung",
         "es": "Saturación",
         "it": "Saturazione",
         "ja": "彩度",
         "ms": "Saturation",
+        "pt-br": "Saturação",
         "ru": "Насыщенность"
     },
     "options_video_grayscale": {
         "en": "Grayscale",
+        "de": "Graustufen",
         "es": "Escala de grises",
         "it": "Scala di grigi",
         "ja": "グレースケール",
         "ms": "Grayscale",
+        "pt-br": "Escala de cinza",
         "ru": "Оттенок"
     },
     "options_video_sepia": {
         "en": "Sepia",
+        "de": "Sepia",
         "es": "Sepia",
         "it": "Seppia",
         "ja": "セピア",
         "ms": "Sepia",
+        "pt-br": "Sepia",
         "ru": "Сепия"
     },
     "options_video_invert": {
         "en": "Invert",
+        "de": "Invertiert",
         "es": "Invertir",
         "it": "Inverti",
         "ja": "反転",
         "ms": "Invert",
+        "pt-br": "Invertido",
         "ru": "Инвертирование"
     },
     "options_video_hue": {
         "en": "Hue Rotate",
+        "de": "Farbton Rotation",
         "es": "Tono Rotar",
         "it": "Ruotazione della Tonalità",
         "ja": "色相の回転",
         "ms": "Hue Rotate",
+        "pt-br": "Rotação de matiz",
         "ru": "Поворот\nоттенка"
     },
     "options_video_daltonizer_type": {
         "en": "Color blindness correction",
+        "de": "Korrekturen von Farbenblindheit",
         "es": "Corrección del daltonismo",
         "it": "Correzione per il daltonismo",
         "ja": "色覚異常の矯正",
         "ms": "Color blindness correction",
+        "pt-br": "Correção de daltonismo",
         "ru": "Коррекция дальтонизма"
     },
     "options_video_daltonizer_strength": {
         "en": "Strength",
+        "de": "Intensität",
         "es": "Intensidad",
         "it": "Intensità",
         "ja": "強度",
         "ms": "Strength",
+        "pt-br": "Força",
         "ru": "Усиление"
     },
     "options_video_daltonizer_none": {
         "en": "None",
+        "de": "Nichts",
         "es": "Ninguno",
         "it": "Nessuno",
         "ja": "なし",
         "ms": "None",
+        "pt-br": "Nenhum",
         "ru": "Нет"
     },
     "options_video_daltonizer_protanomaly": {
         "en": "Protanomaly",
+        "de": "Protanopie",
         "es": "Protanomaly",
         "it": "Protanomalia",
         "ja": "Protanomaly",
         "ms": "Protanomaly",
+        "pt-br": "Protanomalia",
         "ru": "Протаномалия"
     },
     "options_video_daltonizer_deuteranomaly": {
         "en": "Deuteranomaly",
+        "de": "Deuteranopie",
         "es": "Deuteranomaly",
         "it": "Deuteranomalia",
         "ja": "Deuteranomaly",
         "ms": "Deuteranomaly",
+        "pt-br": "Deuteranomalia",
         "ru": "Дейтераномалия"
     },
     "options_video_daltonizer_tritanomaly": {
         "en": "Tritanomaly",
+        "de": "Tritanopie",
         "es": "Tritanomaly",
         "it": "Tritanomalia",
         "ja": "Tritanomaly",
         "ms": "Tritanomaly",
+        "pt-br": "Tritanomalia",
         "ru": "Тританомалия"
     },
     "options_general_header": {
         "en": "General Options",
+        "de": "Allgemeine Einstellungen",
         "es": "Opciones Generales",
         "it": "Opzioni Generali",
         "ja": "一般設定",
         "ms": "General Options",
+        "pt-br": "Opções gerais",
         "ru": "Общие настройки"
     },
     "options_general_predownload": {
         "en": "Predownload entire video in the background if possible",
+        "de": "Lade das gesamte Video im Hintergrund vor falls möglich",
         "es": "Si es posible, predescargue el video completo en segundo plano",
         "it": "Prescarica l'intero video in background, se possibile",
         "ja": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする",
         "ms": "Predownload entire video in the background if possible",
+        "pt-br": "Baixe previamente o vídeo inteiro em segundo plano, se possível",
         "ru": "По возможности, предзагружать видео в фоновом режиме."
     },
     "options_general_targetspeed": {
         "en": "Target download speed of predownloader",
+        "de": "Download geschwindigkeit fürs vor laden",
         "es": "Velocidad de descarga objetivo del predescargador",
         "it": "Velocità di download obiettivo del predownloader",
         "ja": "プリダウンローダーのターゲット速度",
         "ms": "Target download speed of predownloader",
+        "pt-br": "Velocidade alvo de download do pré-downloader",
         "ru": "Целевая скорость предзагрузки"
     },
     "options_general_maxsize": {
         "en": "Maximum size of predownloaded video",
+        "de": "Maximal größe für das vor laden von Videos",
         "es": "Tamaño máximo de video predescargado",
         "it": "Dimensione massima del video prescaricato",
         "ja": "プリダウンローダーの最大サイズ",
         "ms": "Maximum size of predownloaded video",
+        "pt-br": "Tamanho máximo do vídeo pré-baixado",
         "ru": "Максимальный размер предзагружаемого видео"
     },
     "options_general_previewenabled": {
         "en": "Show preview when hovering over the timeline",
+        "de": "Vorschau beim halten über die Timeline anzeigen",
         "es": "Muestra la vista previa al pasar el cursor sobre la línea de tiempo",
         "it": "Mostra anteprima quando passi il mouse sulla timeline",
         "ja": "タイムライン上でマウスを移動するとプレビューが表示されます",
         "ms": "Show preview when hovering over the timeline",
+        "pt-br": "Mostrar visualização ao passar o mouse sobre a linha do tempo",
         "ru": "Отображать предпросмотр при наведении курсора на временную шкалу"
     },
     "options_general_analyze": {
         "en": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)",
+        "de": "Automatische Analyse sequenzieller Videos auf Intros/Outros\n(Schalte dies aus falls du CPU Performanz Probleme hast)",
         "es": "Analiza automáticamente videos secuenciales para intros/outros\n(desactiva si tienes problemas de rendimiento de CPU)",
         "it": "Analizza automaticamente i video sequenziali per le intro/outro\n(disattiva se hai problemi di prestazioni della CPU)",
         "ja": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)",
         "ms": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)",
+        "pt-br": "Analisa automaticamente vídeos sequenciais para introduções/outros\n(desligue se você tiver problemas de desempenho do CPU)",
         "ru": "Анализировать последовательные видео на наличие вступлений/окончаний\n(Отключите, при проблемах с производительностью)"
     },
     "options_general_storeprogress": {
         "en": "Save progress of videos in local storage",
+        "de": "Abspielfortschritt von Videos im Lokalen Speicher speichern",
         "es": "Guardar progreso de videos en el almacenamiento local",
         "it": "Salva l'avanzamento dei video nell'archiviazione locale",
         "ja": "動画の進行状況をローカルストレージに保存する",
         "ms": "Save progress of videos in local storage",
+        "pt-br": "Salve o progresso dos vídeos localmente",
         "ru": "Сохранять прогресс видео в локальном хранилище"
     },
     "options_general_autosub": {
         "en": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)",
+        "de": "Aktiviere automatisch den bestmöglichen Untertitel\n(Änder Standard Sprache in den Untertitel Einstellungen)",
         "es": "Habilitar automáticamente la mejor pista de subtítulos encontrada\n(Cambiar el idioma predeterminado en la configuración de subtítulos)",
         "it": "Abilita automaticamente la migliore traccia dei sottotitoli trovata\n(Cambia la lingua predefinita nelle impostazioni dei sottotitoli)",
         "ja": "自動的に最適な字幕トラックを有効化する\n(字幕設定でデフォルトの言語を変更できます)",
         "ms": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)",
+        "pt-br": "Ativar automaticamente a melhor faixa de legenda encontrada\n(Alterar o idioma padrão nas configurações de legenda)",
         "ru": "Автовключение наиболее подходящих субтитров\n(Измените язык по умолчанию в настройках субтитров)"
     },
     "options_general_stream": {
         "en": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)",
+        "de": "Den Player verwenden um HLS/DASH Streams abzuspielen beim öffnen von Playlisten URLs (.m3u8/.mpd)",
         "es": "Use el reproductor para reproducir transmisiones HLS/DASH al abrir URLs de listas de reproducción (.m3u8/.mpd)",
         "it": "Usa il lettore video per riprodurre flussi HLS/DASH quando apri l'URL di una playlist (.m3u8/.mpd)",
         "ja": "プレイリスト URL (.m3u8/.mpd) を開くときに HLS/DASH ストリームを再生するプレーヤーを使用する",
         "ms": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)",
+        "pt-br": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de listas de reprodução (.m3u8/.mpd)",
         "ru": "Использовать плеер для воспроизведения HLS/DASH-потоков при открытии ссылки с плейлистом (.m3u8/.mpd)"
     },
     "options_general_mp4": {
         "en": "Use player to play MP4 videos when opening video URLs (.mp4)",
+        "de": "Den Player verwenden um MP4 Videos abzuspielen beim öffnen von video URLs (.mp4)",
         "es": "Use el reproductor para reproducir videos MP4 al abrir URLs de video (.mp4)",
         "it": "Usa il lettore video per riprodurre video MP4 quando apri l'URL di un video (.mp4)",
         "ja": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する",
         "ms": "Use player to play MP4 videos when opening video URLs (.mp4)",
+        "pt-br": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de de listas de reprodução (.mp4)",
         "ru": "Использовать плеер для воспроизведения видео в MP4 при открытии ссылки с видео (.mp4)"
     },
     "options_general_seekstep": {
         "en": "Seek keybind base step size (seconds)",
+        "de": "Basis Schrittgröße für die Vor-/Zurückspul Taste (sekunden)",
         "es": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)",
         "it": "Dimensione base dell'incremento quando vai avanti/indietro (secondi)",
         "ja": "シークキーバインドのベースステップサイズ (秒)",
         "ms": "Seek keybind base step size (seconds)",
+        "pt-br": "Seek keybind base step size (seconds)",
         "ru": "Шаг перемотки горячими клавишами (секунды)"
     },
     "options_general_replace_delay": {
         "en": "Delay before auto-replacing player (ms)",
+        "de": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)",
         "es": "Retraso antes de reemplazar auto (ms)",
         "it": "Ritardo prima della sostituzione automatica del player (ms)",
         "ja": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)",
         "ms": "Delay before auto-replacing player (ms)",
+        "pt-br": "Atraso antes da substituição automática do player (ms)",
         "ru": "Задержка перед автозаменой плеера (мс)"
     },
     "options_general_autoplayyt": {
         "en": "Autoplay YouTube videos if possible",
+        "de": "Automatisches abspielen von YouTube Videos falls möglich",
         "es": "Reproducir automáticamente videos de YouTube incrustados",
         "it": "Riproduci automaticamente i video di YouTube, se possibile",
         "ja": "YouTube 動画の自動再生",
         "ms": "Autoplay YouTube videos",
+        "pt-br": "Reproduzir automaticamente vídeos do YouTube, se possível",
         "ru": "Автовоспроизведение на YouTube"
     },
     "options_general_autoplaynext": {
         "en": "Autoplay next video when current video ends",
+        "de": "Nächstes Video automatisch abspielen wenn das aktuelle endet",
         "es": "Reproducir automáticamente el siguiente video",
         "it": "Riproduci automaticamente il video successivo quando termina il video attuale",
         "ja": "次の動画の自動再生",
         "ms": "Autoplay next video",
+        "pt-br": "Reproduzir automaticamente o próximo vídeo quando o vídeo atual terminar",
         "ru": "Автовоспроизведение следующего видео"
     },
     "options_general_quality": {
         "en": "Default video quality",
+        "de": "Standard Video Qualität",
         "es": "Calidad de video predeterminada",
         "it": "Qualità video predefinita",
         "ja": "動画の品質",
         "ms": "Default video quality",
+        "pt-br": "Qualidade de vídeo padrão",
         "ru": "Качество видео"
     },
     "options_general_clickaction": {
         "en": "Single click action",
+        "de": "Ein-Klick Aktion",
         "es": "Acción de clic",
         "it": "Azione clic singolo",
         "ja": "シングルクリック時のアクション",
         "ms": "Single click action",
+        "pt-br": "Ação de clique único",
         "ru": "Действие по одиночному клику"
     },
     "options_general_dblclickaction": {
         "en": "Double click action",
+        "de": "Doppel-Klick Aktion",
         "es": "Acción de doble clic",
         "it": "Azione clic doppio",
         "ja": "ダブルクリック時のアクション",
         "ms": "Double click action",
+        "pt-br": "Ação de clique duplo",
         "ru": "Действие по двойному клику"
     },
     "options_general_tplclickaction": {
         "en": "Triple click action",
+        "de": "Dreifach-Klick Aktion",
         "es": "Acción de triple clic",
         "it": "Azione clic triplo",
         "ja": "トリプルクリック時のアクション",
         "ms": "Triple click action",
+        "pt-br": "Ação de clique triplo",
         "ru": "Действие по тройному клику"
     },
     "options_general_clickaction_playpause": {
         "en": "Toggle play/pause",
+        "de": "Abspielen/Pausieren umschalten",
         "es": "Alternar reproducir/pausar",
         "it": "Riproduci / Metti in pausa",
         "ja": "再生/一時停止に切り替え",
         "ms": "Toggle play/pause",
+        "pt-br": "Alternar reprodução/pausa",
         "ru": "Воспроизведение/Пауза"
     },
     "options_general_clickaction_fullscreen": {
         "en": "Toggle fullscreen",
+        "de": "Vollbild umschalten",
         "es": "Alternar pantalla completa",
         "it": "Attiva/disattiva lo schermo intero",
         "ja": "フルスクリーンに切り替え",
         "ms": "Toggle fullscreen",
+        "pt-br": "Alternar tela cheia",
         "ru": "Во весь экран"
     },
     "options_general_clickaction_pip": {
         "en": "Toggle picture-in-picture",
+        "de": "Bild-in-Bild umschalten",
         "es": "Alternar imagen en imagen",
         "it": "Attiva/disattiva il picture-in-picture",
         "ja": "ピクチャー イン ピクチャー (PiP) に切り替え",
         "ms": "Toggle picture-in-picture",
+        "pt-br": "Alternar imagem em imagem",
         "ru": "Картинка в картинке"
     },
     "options_general_clickaction_hidecontrols": {
         "en": "Hide controls",
+        "de": "Steuerelemente Verstecken",
         "es": "Ocultar controles",
         "it": "Nascondi i comandi",
         "ja": "コントロールを非表示",
         "ms": "Hide controls",
+        "pt-br": "Ocultar controles",
         "ru": "Скрыть элементы управления"
     },
     "options_general_clickaction_hideplayer": {
         "en": "Hide player",
+        "de": "Player verstecken",
         "es": "Ocultar reproductor",
         "it": "Nascondi il lettore video",
         "ja": "プレーヤーを非表示",
         "ms": "Hide player",
+        "pt-br": "Ocultar tocador",
         "ru": "Скрыть плеер"
     },
     "options_general_vischangeaction": {
         "en": "When player visiblity changes",
+        "de": "Wenn die Visibilität des Players sich ändert",
         "es": "Cuando cambia la visibilidad del reproductor",
         "it": "Quando cambia la visibilità del lettore video",
         "ja": "プレーヤーの可視性が変更されたとき",
         "ms": "When player visiblity changes",
+        "pt-br": "Quando a visibilidade do tocador mudar",
         "ru": "При изменении видимости плеера"
     },
     "options_general_vischangeaction_nothing": {
         "en": "Do nothing",
+        "de": "Nichts machen",
         "es": "No hacer nada",
         "it": "Non fare nulla",
         "ja": "何もしない",
         "ms": "Do nothing",
+        "pt-br": "Não fazer nada",
         "ru": "Ничего не делать"
     },
     "options_general_vischangeaction_playpause": {
         "en": "Toggle play/pause",
+        "de": "Abspielen/Pausieren umschalten",
         "es": "Alternar reproducir/pausar",
         "it": "Riproduci / Metti in pausa",
         "ja": "再生/一時停止に切り替え",
         "ms": "Toggle play/pause",
+        "pt-br": "Alternar reprodução/pausa",
         "ru": "Воспроизведение/Пауза"
     },
     "options_general_vischangeaction_miniplayer": {
         "en": "Toggle miniplayer",
+        "de": "Miniplayer umschalten",
         "es": "Alternar miniplayer",
         "it": "Attiva/disattiva il miniplayer",
         "ja": "ミニプレーヤーに切り替え",
         "ms": "Toggle miniplayer",
+        "pt-br": "Alternar miniplayer",
         "ru": "Мини-плеер"
     },
     "options_general_minipos": {
         "en": "Miniplayer position",
+        "de": "Miniplayer Position",
         "es": "Posición del miniplayer",
         "it": "Posizione miniplayer",
         "ja": "ミニプレーヤーの位置",
         "ms": "Miniplayer position",
+        "pt-br": "Posição do tocador",
         "ru": "Положение мини-плеера"
     },
     "options_general_minipos_topleft": {
         "en": "Top Left",
+        "de": "Oben Links",
         "es": "Arriba a la izquierda",
         "it": "In Alto a Sinistra",
         "ja": "左上",
         "ms": "Top Left",
+        "pt-br": "Canto superior esquerdo",
         "ru": "Сверху слева"
     },
     "options_general_minipos_topright": {
         "en": "Top Right",
+        "de": "Oben Rechts",
         "es": "Arriba a la derecha",
         "it": "In Alto a Destra",
         "ja": "右上",
         "ms": "Top Right",
+        "pt-br": "Canto superior direito",
         "ru": "Сверху справа"
     },
     "options_general_minipos_bottomleft": {
         "en": "Bottom Left",
+        "de": "Unten Links",
         "es": "Abajo a la izquierda",
         "it": "In Basso a Sinistra",
         "ja": "左下",
         "ms": "Bottom Left",
+        "pt-br": "Inferior Esquerdo",
         "ru": "Снизу слева"
     },
     "options_general_minipos_bottomright": {
         "en": "Bottom Right",
+        "de": "Unten Rechts",
         "es": "Abajo a la derecha",
         "it": "In Basso a Destra",
         "ja": "右下",
         "ms": "Bottom Right",
+        "pt-br": "Canto inferior direito",
         "ru": "Снизу справа"
     },
     "options_general_minisize": {
         "en": "Miniplayer size",
+        "de": "Miniplayer Größe",
         "es": "Tamaño del miniplayer",
         "it": "Dimensioni del miniplayer",
         "ja": "ミニプレーヤーのサイズ",
         "ms": "Miniplayer size",
+        "pt-br": "Tamanho do miniplayer",
         "ru": "Размер мини-плеера"
     },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
+        "de": "Bild-in-Bild umschalten",
         "es": "Alternar imagen en imagen",
         "it": "Attiva/disattiva il picture-in-picture",
         "ja": "ピクチャー イン ピクチャー (PiP) に切り替え",
         "ms": "Toggle picture-in-picture",
+        "pt-br": "Alternar imagem sobreposta (pip)",
         "ru": "Картинка в картинке"
     },
     "options_general_ytclient": {
         "en": "YT client to use. Try changing if you have issues.",
+        "de": "Der YouTube Client der genutzt wird. Bei Problemen versuch diesen zu ändern.",
         "es": "Cliente de YouTube. Intente cambiar si tiene problemas.",
         "it": "Client YT da usare. Prova a cambiare se hai problemi.",
         "ja": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)",
         "ms": "YT client to use. Try changing if you have issues.",
-        "ru": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
+        "pt-br": "Usar cliente YT nativo . Tente mudar se tiver problemas.",
+        "ru": "Используемый YouTube-клиент. Попробуйте изменить при возникновении проблемы"
     },
     "options_export_header": {
         "en": "Import/Export Settings",
+        "de": "Import/Export der Einstellungen",
         "es": "Importar/Exportar Configuraciones",
         "it": "Importa/Esporta le Impostazioni",
         "ja": "設定のインポート/エクスポート",
         "ms": "Import/Export Settings",
+        "pt-br": "Configurações de importação/exportação",
         "ru": "Настройки импорта/экспорта"
     },
     "options_import": {
         "en": "Import Settings From File",
+        "de": "Importiere Einstellungen von einer Datei",
         "es": "Importar Configuraciones Desde Archivo",
         "it": "Importa le Impostazioni da un File",
         "ja": "ファイルから設定をインポート",
         "ms": "Import Settings From File",
+        "pt-br": "Importar configurações do arquivo",
         "ru": "Импорт настроек из файла"
     },
     "options_export": {
         "en": "Export Settings To File",
+        "de": "Exportiere Einstellungen zu einer Datei",
         "es": "Exportar Configuraciones a Archivo",
         "it": "Esporta le Impostazioni su File",
         "ja": "設定をファイルにエクスポート",
         "ms": "Export Settings To File",
+        "pt-br": "Exportar configurações para arquivo",
         "ru": "Экспорт настроек в файл"
     },
     "options_keybinds_header": {
         "en": "Keyboard Shortcuts",
+        "de": "Tastenbelegungen",
         "es": "Atajos de Teclado",
         "it": "Associazioni di Tasti",
         "ja": "キーボードショートカット",
         "ms": "Keyboard Shortcuts",
+        "pt-br": "Atalhos de teclado",
         "ru": "Сочетания клавиш"
     },
     "options_keybinds_body": {
         "en": "Keybinds are only active when the player is focused.",
+        "de": "Tastenbelegungen sind nur aktiv wenn der Player sich im Fokus befindet.",
         "es": "Las teclas de acceso rápido solo están activas cuando el jugador está enfocado.",
         "it": "Le associazioni di tasti sono attive solo quando il lettore video è attivo.",
         "ja": "キーバインドはプレーヤーをフォーカス時のみ有効です。",
         "ms": "Keybinds are only active when the player is focused.",
+        "pt-br": "Os atalhos de teclado só ficam ativos quando o tocador estiver em foco.",
         "ru": "Сочетания клавиш активны только при фокусе на плеере"
     },
     "options_keybinds_reset": {
         "en": "Reset to Defaults",
+        "de": "Zu Werkseinstellung zurück setzen",
         "es": "Restablecer a los valores predeterminados",
         "it": "Ripristina Impostazioni Predefinite",
         "ja": "デフォルトにリセット",
         "ms": "Reset to Defaults",
+        "pt-br": "Redefinir para os padrões",
         "ru": "Сбросить по умолчанию"
     },
     "options_autourl_header": {
         "en": "Auto-enable URLs",
+        "de": "URLs für automatische Aktivierung",
         "es": "Activar URLs Automáticamente",
         "it": "Abilita automaticamente gli URL",
         "ja": "URL で自動的に有効化",
         "ms": "Auto-enable URLs",
+        "pt-br": "Habilitar URLs automaticamente",
         "ru": "Автовключение по ссылкам"
     },
     "options_autourl_body": {
         "en": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line. To exclude sites, prepend with an exclamation mark (!).",
+        "de": "Aktiviert automatisch die Erweiterung beim Besuch dieser URLs und deaktiviert sie wieder beim Verlassen. Eine URL pro Zeile, Seiten die mit der URL anfangen stimmen auch überein. Um Regex zu nutzen stell das tilde (~) Zeichen voran. Ein Regex pro Zeile. Um Seiten auszuschließen stell ein ausrufe Zeichen (!) voran.",
         "es": "Activará automáticamente la extensión al visitar estas URL y la desactivará al salir. Una URL por línea, también coincidirán las páginas que comiencen con esa URL. Para regex, prepone con una tilde (~). Una regex por línea.",
         "it": "Abiliterà automaticamente l'estensione quando si visitano questi URL e la disabiliterà quando li si lascia. Un URL per riga, anche le pagine che iniziano con quell'URL corrisponderanno. Per le regex, anteponi una tilde (~). Una regex per riga. Per escludere dei siti, anteponi un punto esclamativo (!).",
         "ja": "これらの URL にアクセスすると自動的に拡張機能が有効化され、離れる事で無効化されます。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。",
         "ms": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line.",
+        "pt-br": "A extensão será ativada automaticamente ao visitar esses links e desativada ao sair. Um link por linha, as páginas que começam com esse link também serão validados. Para uma expressão regular, acrescente um til (~). Uma expressão regular por linha. Para excluir sites, coloque um ponto de exclamação (!).",
         "ru": "Активировать расширение при посещении этих адресов и отключать при выходе. По одному адресу в строке, также применяется к страницам, начинающимся с этого адреса. Для регулярного выражения добавьте тильду (~). Одно регулярное выражение на строку."
     },
     "options_autourl_hint": {
         "en": "Hint: Test regex on",
+        "de": "Hinweise: Teste Regex auf",
         "es": "Sugerencia: Prueba regex en",
         "it": "Suggerimento: testa le regex su",
         "ja": "ヒント: 正規表現のテストができます",
         "ms": "Hint: Test regex on",
+        "pt-br": "Dica: Teste a expressão regular em",
         "ru": "Подсказка: протестируйте регулярное выражение на"
     },
     "options_pattern_header": {
         "en": "Custom Source Patterns",
+        "de": "Benutzerdefinierte Quellen Filter",
         "es": "Patrones de Fuente Personalizados",
         "it": "Modelli Sorgente Personalizzati",
         "ja": "カスタムソースパターン",
         "ms": "Custom Source Patterns",
+        "pt-br": "Padrões de origem personalizada",
         "ru": "Пользовательские шаблоны источников"
     },
     "options_pattern_body": {
         "en": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only.",
+        "de": "Diese Filter werden verwendet um benutzerdefinierte Videoquellen auf Webseiten zu erkennen. Diese werden in Reihenfolge angewendet und die erste Übereinstimmung wird verwendet. Nur für fortgeschrittene Benutzer.",
         "es": "Estos patrones se utilizan para detectar fuentes de video personalizadas en páginas web. Se aplican en orden y se usa la primera coincidencia. Solo para usuarios avanzados.",
         "it": "Questi modelli vengono utilizzati per rilevare sorgenti video personalizzate su pagine web. Vengono applicati in ordine e viene utilizzata la prima corrispondenza. Solo per utenti avanzati.",
         "ja": "これらのパターンは、Web ページ上のカスタム動画ソースを検出するために使用されます。順番に適用され、最初に一致したものが使用されます。上級者向け。",
         "ms": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only.",
+        "pt-br": "Esses padrões são usados para detectar fontes de vídeo personalizadas em páginas da Web. Serão aplicados em ordem, e a primeira correspondência será usada. Somente para usuários avançados.",
         "ru": "Эти шаблоны используются для обнаружения пользовательских источников видео на веб-страницах. Применяются по порядку и используется первое совпадение. Только для продвинутых пользователей."
     },
     "options_help_header": {
         "en": "Help",
+        "de": "Hilfe",
         "es": "Ayuda",
         "it": "Aiuto",
         "ja": "ヘルプ",
         "ms": "Help",
+        "pt-br": "Ajuda",
         "ru": "Помощь"
     },
     "options_help_welcome": {
         "en": "Welcome Page",
+        "de": "Wilkommens Seite",
         "es": "Página de Bienvenida",
         "it": "Pagina di Benvenuto",
         "ja": "ようこそのページ",
         "ms": "Welcome Page",
+        "pt-br": "Página de boas-vindas",
         "ru": "Страница приветствия"
     },
     "options_help_issues": {
         "en": "Issue Tracker",
+        "de": "Problem Tracker",
         "es": "Seguimiento de Problemas",
         "it": "Issue Tracker",
         "ja": "問題を報告",
         "ms": "Issue Tracker",
+        "pt-br": "Monitoramento de problemas",
         "ru": "Сообщить о проблеме"
     },
     "subtitles_settings_fontFamily": {
         "en": "Font Family",
+        "de": "Schriftart",
         "es": "Fuente",
         "it": "Famiglia di Font",
         "ja": "フォントファミリー",
         "ms": "Font Family",
+        "pt-br": "Família de fontes",
         "ru": "Шрифт"
     },
     "subtitles_settings_fontWeight": {
         "en": "Font Weight",
+        "de": "Schriftstärke",
         "es": "Peso de Fuente",
         "it": "Spessore del Font",
         "ja": "フォントの太さ",
         "ms": "Font Weight",
+        "pt-br": "Peso da fonte",
         "ru": "Вес шрифта"
     },
     "subtitles_settings_fontSize": {
         "en": "Font Size",
+        "de": "Schriftgröße",
         "es": "Tamaño de Fuente",
         "it": "Dimensione del Font",
         "ja": "フォントのサイズ",
         "ms": "Font Size",
+        "pt-br": "Tamanho da fonte",
         "ru": "Размер шрифта"
     },
     "subtitles_settings_color": {
         "en": "Font Color",
+        "de": "Schriftfarbe",
         "es": "Color de Fuente",
         "it": "Colore del Font",
         "ja": "フォントの色",
         "ms": "Font Color",
+        "pt-br": "Cor da fonte",
         "ru": "Цвет шрифта"
     },
     "subtitles_settings_background": {
         "en": "Background Color",
+        "de": "Hintergrundfarbe",
         "es": "Color de Fondo",
         "it": "Colore di Sfondo",
         "ja": "背景の色",
         "ms": "Background Color",
+        "pt-br": "Cor de fundo",
         "ru": "Цвет фона"
     },
     "subtitles_settings_outlineColor": {
         "en": "Outline Color",
+        "de": "Umrissfarbe",
         "es": "Outline Color",
         "it": "Colore del Contorno",
         "ja": "輪郭線の色",
         "ms": "Outline Color",
+        "pt-br": "Cor do contorno",
         "ru": "Цвет контура"
     },
     "subtitles_settings_outlineWidth": {
         "en": "Outline Width",
+        "de": "Umrissdicke",
         "es": "Outline Width",
         "it": "Larghezza del Contorno",
         "ja": "輪郭線の太さ",
         "ms": "Outline Width",
+        "pt-br": "Largura do contorno",
         "ru": "Ширина контура"
     },
     "subtitles_settings_defaultLanguage": {
         "en": "Language",
+        "de": "Sprache",
         "es": "Idioma",
         "it": "Lingua",
         "ja": "言語",
         "ms": "Language",
+        "pt-br": "Idioma",
         "ru": "Язык"
+    },
+    "subtitles_settings_bottomMargin": {
+        "en": "Bottom Margin",
+        "de": "Unterer Rand",
+        "es": "Margen Inferior",
+        "it": "Margine Inferiore",
+        "ja": "下の余白",
+        "ms": "Bottom Margin",
+        "pt-br": "Margem inferior",
+        "ru": "Нижнее поле"
     },
     "yes": {
         "en": "Yes",
+        "de": "Ja",
         "es": "Sí",
         "it": "Sì",
         "ja": "はい",
         "ms": "Ya",
+        "pt-br": "Sim",
         "ru": "Да"
     },
     "no": {
         "en": "No",
+        "de": "Nein",
         "es": "No",
         "it": "No",
         "ja": "いいえ",
         "ms": "Tidak",
+        "pt-br": "Não",
         "ru": "Нет"
     },
     "ok": {
         "en": "OK",
+        "de": "OK",
         "es": "Aceptar",
         "it": "OK",
         "ja": "OK",
         "ms": "OK",
+        "pt-br": "OK",
         "ru": "ОК"
     },
     "cancel": {
         "en": "Cancel",
+        "de": "Abbrechen",
         "es": "Cancelar",
         "it": "Annulla",
         "ja": "キャンセル",
         "ms": "Batal",
+        "pt-br": "Cancelar",
         "ru": "Отмена"
     },
     "error_popup": {
         "en": "Error: $1",
+        "de": "Fehler: $1",
         "es": "Error: $1",
         "it": "Errore: $1",
         "ja": "エラー: $1",
         "ms": "Ralat: $1",
+        "pt-br": "Erro: $1",
         "ru": "Ошибка: $1"
     },
     "error_popup_body": {
         "en": "Please report this error to the developers at https://github.com/Andrews54757/FastStream/issues with the stack trace below:",
+        "de": "Bitte melde diesen Fehler den Entwicklern auf https://github.com/Andrews54757/FastStream/issues mit den folgenden Fehlerinformationen:",
         "es": "Por favor, informe este error a los desarrolladores en https://github.com/Andrews54757/FastStream/issues con la traza de pila a continuación:",
         "it": "Segnala questo errore agli sviluppatori su https://github.com/Andrews54757/FastStream/issues con la seguente traccia dello stack:",
         "ja": "このエラーを開発者に報告してください: https://github.com/Andrews54757/FastStream/issues 以下にスタックトレースが表示されます:",
         "ms": "Sila laporkan ralat ini kepada pembangun di https://github.com/Andrews54757/FastStream/issues dengan jejak tumpukan di bawah:",
-        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам на https://github.com/Andrews54757/FastStream/issues с указанием стека вызовов ниже:"
+        "pt-br": "Informe esse erro aos desenvolvedores em https://github.com/Andrews54757/FastStream/issues com o rastreamento de detalhes a seguir:",
+        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам по адресу https://github.com/Andrews54757/FastStream/issues с приведённой ниже трассировкой стека:"
     },
     "error_popup_send": {
         "en": "Report Error",
+        "de": "Fehler melden",
         "es": "Reportar Error",
         "it": "Segnala un Errore",
         "ja": "エラーを報告",
         "ms": "Laporkan Ralat",
+        "pt-br": "Relatar erro",
         "ru": "Сообщить об ошибке"
+    },
+    "yt_error_login_required": {
+        "en": "Sorry! FastStream does not support videos which require you to be logged in to YouTube.",
+        "de": "Entschuldigung! FastStream unterstützt keine Videos, die erfordern, dass du bei YouTube angemeldet bist.",
+        "es": "¡Lo sentimos! FastStream no admite videos que requieran que inicies sesión en YouTube.",
+        "it": "Spiacenti! FastStream non supporta i video che richiedono l'accesso a YouTube.",
+        "ja": "申し訳ありませんが、FastStream は YouTube にログインする必要がある動画をサポートしていません。",
+        "ms": "Maaf! FastStream tidak menyokong video yang memerlukan anda masuk ke YouTube.",
+        "pt-br": "Desculpe! O FastStream não suporta vídeos que exigem que você esteja logado no YouTube.",
+        "ru": "Извините! FastStream не поддерживает видео, для просмотра которых требуется вход в YouTube."
     }
 }

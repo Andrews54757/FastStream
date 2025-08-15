@@ -1018,7 +1018,7 @@ body {
 }
 
 .intro_outro_container>div.chapter {
-    background-color: rgb(0, 0, 0, 0.3);
+    background-color: rgb(0, 0, 0, 0.8);
     border-radius: 0px;
     top: 0px;
     bottom: 0px;
@@ -1810,6 +1810,7 @@ body {
 
 .subtitle-track-active .subtitle-track-name {
     color: var(--subtitles-track-enabled-color);
+    font-weight: bold;
 }
 
 .subtitle-tool {
@@ -1989,6 +1990,7 @@ body {
 .equalizer_node .tooltiptext {
     width: 200px;
     margin-left: -100px;
+    background-color: rgba(255, 255, 255, 0.75);
 }
 
 .tooltip:hover .tooltiptext {

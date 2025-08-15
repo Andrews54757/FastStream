@@ -14,7 +14,6 @@ import {DefaultSubtitlesSettings} from './defaults/DefaultSubtitlesSettings.mjs'
 import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
-import {YoutubeClients} from '../enums/YoutubeClients.mjs';
 import {MessageTypes} from '../enums/MessageTypes.mjs';
 
 let Options = {};
@@ -46,7 +45,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
-const ytclient = document.getElementById('ytclient');
+// const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
@@ -72,7 +71,7 @@ if (!EnvUtils.isExtension()) {
   autoEnableURLSInput.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
-  ytclient.disabled = true;
+  // ytclient.disabled = true;
   autoplayNext.disabled = true;
 }
 
@@ -109,7 +108,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
-  setSelectMenuValue(ytclient, Options.defaultYoutubeClient4);
+  // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
 
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
@@ -219,10 +218,10 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
   optionChanged();
 });
 
-createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient4, null, (e) => {
-  Options.defaultYoutubeClient4 = e.target.value;
-  optionChanged();
-});
+// createSelectMenu(ytclient, Object.values(YoutubeClients), Options.defaultYoutubeClient, null, (e) => {
+//   Options.defaultYoutubeClient = e.target.value;
+//   optionChanged();
+// });
 
 document.querySelectorAll('.option').forEach((option) => {
   option.addEventListener('click', (e) => {
@@ -464,12 +463,7 @@ exportButton.addEventListener('click', async () => {
     toolSettings: await Utils.loadAndParseOptions('toolSettings', DefaultToolSettings),
   }, null, 2)], {type: 'application/json'});
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'faststream-options.json';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
+  Utils.downloadURL(url, 'faststream-options.json');
   URL.revokeObjectURL(url);
 });
 
@@ -578,22 +572,20 @@ if (EnvUtils.isExtension()) {
         chrome.storage.local.get('feedback', (result) => {
           if (!result || !result.feedback) {
             feedbackbox.style.display = 'block';
-          } else {
-            // Don't ask for rating for manual installs
-            // SPLICER:NO_PROMO:REMOVE_START
-            if (diff > 1000 * 60 * 60 * 24 * 7) { // 7 days, ask for review
-              chrome.storage.local.get('rateus', (result) => {
-                if (!result || !result.rateus) {
-                  ratebox.style.display = 'block';
-                }
-              });
-            }
-            // SPLICER:NO_PROMO:REMOVE_END
           }
         });
       }
     }
   });
+
+  // Don't ask for rating for manual installs
+  // SPLICER:NO_PROMO:REMOVE_START
+  chrome.storage.local.get('rateus', (result) => {
+    if (!result || !result.rateus) {
+      ratebox.style.display = 'block';
+    }
+  });
+  // SPLICER:NO_PROMO:REMOVE_END
 
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_START
   const updatebox = document.getElementById('updatebox');

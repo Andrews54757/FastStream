@@ -21,6 +21,7 @@ const mainLoadedPromise = new Promise((resolve)=>{
 });
 
 let FoundYTPlayer = null;
+let FoundYTPlayerIdentifier = null;
 let Activated = false;
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
@@ -403,10 +404,13 @@ const observer = new MutationObserver((mutations) => {
       return;
     }
 
+    const identifier = get_yt_identifier(window.location.href);
+
     playerNodes.find((playerNode) => {
       const rect = playerNode.getBoundingClientRect();
-      if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && !FoundYTPlayer) {
+      if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && (!FoundYTPlayer || FoundYTPlayerIdentifier !== identifier)) {
         FoundYTPlayer = playerNode;
+        FoundYTPlayerIdentifier = identifier;
         if (!is_live()) {
           FoundYTPlayer.dataset['faststreamytplayer'] = 'true';
           document.querySelector('.ytp-progress-bar')?.classList.add('vjs-progress-holder');

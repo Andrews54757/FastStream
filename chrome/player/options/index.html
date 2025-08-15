@@ -16,16 +16,16 @@
     </div>
 
     <div id="ratebox">
-        <h1 style="margin-top: 0px" data-i18n="options_promo_header"></h1>
-        <p data-i18n="options_promo_body"></p>
+        <h1 style="margin-top: 0px" data-i18n="options_reviewbanner_header"></h1>
+        <p data-i18n="options_reviewbanner_body"></p>
         <ul>
-            <li data-i18n="options_promo_l1"></li>
-            <li data-i18n="options_promo_l2"></li>
-            <li data-i18n="options_promo_l3"></li>
+            <li data-i18n="options_reviewbanner_l1"></li>
+            <li data-i18n="options_reviewbanner_l2"></li>
+            <li data-i18n="options_reviewbanner_l3"></li>
         </ul>
-        <p data-i18n="options_promo_end"></p>
-        <button id="rate" data-i18n="options_promo_rate"></button>
-        <button id="norate" data-i18n="options_promo_norate"></button>
+        <p data-i18n="options_reviewbanner_end"></p>
+        <button id="rate" data-i18n="options_reviewbanner_rate"></button>
+        <button id="norate" data-i18n="options_reviewbanner_norate"></button>
     </div>
 
     <div id="feedbackbox">
@@ -43,6 +43,13 @@
     <datalist id="snap-zero">
         <option value="0">
     </datalist>
+
+    <div class="video-option" data-option="videoZoom">
+        <div class="label" data-i18n="options_video_zoom"></div>
+        <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
+        <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
+            data-i18n-label="options_video_zoom"></input>
+    </div>
 
     <div class="video-option" data-option="videoDelay" data-unit="ms" data-multiplier="1">
         <div class="label" data-i18n="options_video_delay"></div>
@@ -131,7 +138,7 @@
         <input class="number" type="text" id="maxsize" data-i18n-label="options_general_maxsize"></input>
     </div>
 
-    
+
     <br>
 
     <div class="option grid1">
@@ -152,7 +159,7 @@
         <input type="checkbox" id="storeprogress" data-i18n-label="options_general_storeprogress">
         <div class="label" data-i18n="options_general_storeprogress"></div>
     </div>
-    
+
     <br>
 
     <div class="option grid1">
@@ -243,22 +250,25 @@
 
     <div class="option grid2">
         <div class="label" data-i18n="options_general_seekstep"></div>
-        <input class="number" type="number" id="seekstepsize" step="1" data-i18n-label="options_general_seekstep"></input>
+        <input class="number" type="number" id="seekstepsize" step="1"
+            data-i18n-label="options_general_seekstep"></input>
     </div>
 
     <br>
 
     <div class="option grid2">
         <div class="label" data-i18n="options_general_replace_delay"></div>
-        <input class="number" type="number" id="replacedelay" step="1" data-i18n-label="options_general_replace_delay"></input>
+        <input class="number" type="number" id="replacedelay" step="1"
+            data-i18n-label="options_general_replace_delay"></input>
     </div>
 
     <div id="dev" style="display: none;">
-        <br>
+
+        <!-- <br>
         <div class="option grid2">
             <div class="label" data-i18n="options_general_ytclient"></div>
             <div class="select" id="ytclient" data-i18n-label="options_general_ytclient"></div>
-        </div>
+        </div> -->
 
         <br>
 
@@ -267,7 +277,7 @@
             <input class="number" type="number" id="maxdownloaders" step="1"></input>
         </div>
     </div>
-   
+
 
 
     <h1 data-i18n="options_keybinds_header"></h1>
@@ -287,7 +297,7 @@
     <h1 data-i18n="options_pattern_header"></h1>
     <p>
         <span data-i18n="options_pattern_body"></span> <a target="_blank" rel="noopener noreferrer"
-        href="https://github.com/Andrews54757/FastStream/wiki/Custom-Source-Patterns">Learn more</a>
+            href="https://github.com/Andrews54757/FastStream/wiki/Custom-Source-Patterns">Learn more</a>
     </p>
     <textarea id="customSourcePatterns" data-i18n-label="options_pattern_body"></textarea>
 
@@ -302,8 +312,10 @@
     <br>
 
     <a href="#" id="welcome" target="_blank" data-i18n="options_help_welcome"></a><br><br>
-    <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank" data-i18n="options_help_issues"></a><br><br>
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfA3T8lmhKO_ih028cP0m67vhH-FaGNkeHE0EsQoyBWztpctA/viewform?usp=sf_link" target="_blank" data-i18n="options_help_feedback"></a>
+    <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank"
+        data-i18n="options_help_issues"></a><br><br>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSfA3T8lmhKO_ih028cP0m67vhH-FaGNkeHE0EsQoyBWztpctA/viewform?usp=sf_link"
+        target="_blank" data-i18n="options_help_feedback"></a>
 
     <script src='../i18n.mjs' charset="UTF-8" type="module"></script>
     <script src='options.mjs' type="module"></script>

@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "GIFの保存が完了しました!"
     },
+    "player_download_paused": {
+        "message": "ダウンロードが一時停止されました"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
     },
@@ -569,8 +572,14 @@
     "player_source_accelyt": {
         "message": "高速化された YouTube"
     },
+    "player_source_accelvm": {
+        "message": "高速化された Vimeo"
+    },
     "player_source_mode": {
         "message": "モード"
+    },
+    "player_source_mode_auto_error": {
+        "message": "プレーヤーモードを選択してください!"
     },
     "player_source_url_placeholder": {
         "message": "ソースの URL"
@@ -669,10 +678,10 @@
         "message": "オーディオチャンネルミキサー"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでモノラルを切り替えます"
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます"
     },
     "audiomixer_volume_handle_label": {
-        "message": "$1 のゲインは $2 dB です。矢印キーで調整します。M キーでミュートを切り替えます"
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます"
     },
     "audiomixer_solo_label": {
         "message": "ソロ"
@@ -695,7 +704,7 @@
     "audiocrosstalk_disabled": {
         "message": "クロストーク補正無効"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "減衰"
     },
     "audiocrosstalk_colorgain": {
@@ -752,34 +761,34 @@
     "audioeq_gain": {
         "message": "ゲイン: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "スクロールで Q を変更"
     },
     "options_title": {
         "message": "FastStream のオプション"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "FastStream にご満足いただけましたか? 評価をお願いします!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream はボランティアによって維持されている趣味なプロジェクトです。改善すべき事を知るためにフィードバックをいただければ幸いです。お気軽にお申し付けください:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "使用方法"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "バグに遭遇した場合"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "機能のリクエスト"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "私たちはアクセシビリティについても非常に重視をしています。現在のバージョンに不足している機能があった場合は、リクエストをしてください。できるだけ早く対応をします。"
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "OK、FastStream を評価する"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "評価しない :("
     },
     "options_feedback_header": {
@@ -814,6 +823,9 @@
     },
     "options_video_body": {
         "message": "動画に CSS フィルタを適用します。ピクチャー イン ピクチャー (PiP) では動作しません。"
+    },
+    "options_video_zoom": {
+        "message": "ビデオズーム"
     },
     "options_video_delay": {
         "message": "Video Delay"
@@ -1028,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "言語"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "下の余白"
+    },
     "yes": {
         "message": "はい"
     },
@@ -1048,5 +1063,8 @@
     },
     "error_popup_send": {
         "message": "エラーを報告"
+    },
+    "yt_error_login_required": {
+        "message": "申し訳ありませんが、FastStream は YouTube にログインする必要がある動画をサポートしていません。"
     }
 }

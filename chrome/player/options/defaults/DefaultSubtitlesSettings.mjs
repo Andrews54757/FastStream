@@ -7,6 +7,7 @@ export const DefaultSubtitlesSettings = {
   outlineColor: 'rgb(0,0,0)',
   outlineWidth: '0px',
   defaultLanguage: 'en',
+  bottomMargin: '40px',
 };
 
 export const SubtitleSettingsConfigData = {
@@ -40,6 +41,9 @@ export const SubtitleSettingsConfigData = {
     type: 'custom',
   },
   defaultLanguage: {
+    type: 'string',
+  },
+  bottomMargin: {
     type: 'string',
   },
 };

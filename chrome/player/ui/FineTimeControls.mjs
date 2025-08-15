@@ -163,7 +163,7 @@ export class FineTimeControls extends EventEmitter {
     // this.ui.timelineAudioCanvasContainer.addEventListener('mousedown', mouseDown);
     // this.ui.timelineImages.addEventListener('mousedown', mouseDown);
 
-    document.addEventListener('mouseup', (e) => {
+    DOMElements.playerContainer.addEventListener('mouseup', (e) => {
       if (!this.client.player) return;
       const video = this.client.player.getVideo();
       if (isGrabbing) {
@@ -178,9 +178,9 @@ export class FineTimeControls extends EventEmitter {
         }
       }
       isGrabbing = false;
-    });
+    }, true);
 
-    document.addEventListener('mousemove', (e) => {
+    DOMElements.playerContainer.addEventListener('mousemove', (e) => {
       if (!this.client.player) return;
       const video = this.client.player.getVideo();
       if (isGrabbing) {

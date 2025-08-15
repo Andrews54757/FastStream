@@ -50,4 +50,20 @@ export class CSSFilterUtils {
   static makeLMSDaltonizerFilter(type, strength) {
     return SVGDaltonizer.makeLMSDaltonizerFilter(DaltonizerTypeMap.get(type), strength, true);
   }
+
+  static getTransformString(options) {
+    const transforms = [];
+
+    if (options.videoFlip !== 0) {
+      transforms.push(`scaleX(${options.videoFlip % 2 === 0 ? options.videoZoom : -options.videoZoom}) scaleY(${options.videoFlip > 1 ? -options.videoZoom : options.videoZoom})`);
+    } else if (options.videoZoom !== 1) {
+      transforms.push(`scale(${options.videoZoom})`);
+    }
+
+    if (options.videoRotate !== 0) {
+      transforms.push(`rotate(${options.videoRotate * 90}deg)`);
+    }
+
+    return transforms.join(' ');
+  }
 }

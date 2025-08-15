@@ -2,6 +2,7 @@ import {Localize} from '../../modules/Localize.mjs';
 import {StringUtils} from '../../utils/StringUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {DOMElements} from '../DOMElements.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioEQNode} from './config/AudioEQNode.mjs';
 
@@ -315,7 +316,7 @@ export class AudioEqualizer extends AbstractAudioModule {
 
       if (typesThatUseQ.includes(node.type)) {
         description.push(`Q: ${node.Q.value.toFixed(3)}`);
-        instructions.push(Localize.getMessage('audioeq_qscroll'));
+        instructions.push(Localize.getMessage('audioeq_qscroll_instructions'));
       }
 
       if (description.length > 0) {
@@ -396,16 +397,16 @@ export class AudioEqualizer extends AbstractAudioModule {
       const mouseUp = (e) => {
         isDragging = false;
 
-        document.removeEventListener('mousemove', mouseMove);
-        document.removeEventListener('mouseup', mouseUp);
+        DOMElements.playerContainer.removeEventListener('mousemove', mouseMove);
+        DOMElements.playerContainer.removeEventListener('mouseup', mouseUp);
       };
 
       el.addEventListener('mousedown', (e) => {
         if (isDragging) return;
         isDragging = true;
         e.stopPropagation();
-        document.addEventListener('mousemove', mouseMove);
-        document.addEventListener('mouseup', mouseUp);
+        DOMElements.playerContainer.addEventListener('mousemove', mouseMove);
+        DOMElements.playerContainer.addEventListener('mouseup', mouseUp);
       });
 
       el.addEventListener('wheel', (e) => {

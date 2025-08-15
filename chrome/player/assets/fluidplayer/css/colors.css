@@ -17,7 +17,7 @@ body {
     --seek-preview-background-color: rgba(20, 20, 20, 0.7);
     --seek-preview-text-color: rgba(255, 255, 255, 0.9);
     --seek-preview-detached-tip-color: rgba(255, 255, 255, 0.9);
-    --progress-download-initiated-color: rgba(100, 255, 100, 0.3);
+    --progress-download-initiated-color: rgba(80, 255, 80, 0.7);
     --progress-download-complete-color: rgba(255, 255, 255, 0.2);
     --progress-download-failed-color: rgba(255, 100, 100, 1);
     --intro-outro-bar-color: rgb(222, 187, 0);
@@ -61,5 +61,5 @@ body {
     --status-warning-color: rgb(255, 255, 0);
     --subtitles-toggle-color: rgb(212, 169, 255);
     --subtitles-track-enabled-color: rgb(0, 255, 0);
-    --subtitles-track-disabled-color: rgb(255, 0, 0);
+    --subtitles-track-disabled-color: rgb(255, 100, 50);
 }

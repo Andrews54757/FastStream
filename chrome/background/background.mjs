@@ -738,15 +738,29 @@ function getMediaInfoFromTab(tab) {
   let season = null;
   let episode = null;
   // Remove season #, episode #, s#, e#
-  title = title.replace(/(s|\bseason)\s*([0-9]+)/gi, (match, p1, p2) => {
-    season = parseInt(p2);
+  title = title.replace(/\bseason\s*([0-9]+)/gi, (match, p1) => {
+    season = parseInt(p1);
     return '';
   });
 
-  title = title.replace(/(e|\bepisode)\s*([0-9]+)/gi, (match, p1, p2) => {
-    episode = parseInt(p2);
+  title = title.replace(/\bepisode\s*([0-9]+)/gi, (match, p1) => {
+    episode = parseInt(p1);
     return '';
   });
+
+  if (season === null) {
+    title = title.replace(/\bs([0-9]+)/gi, (match, p1) => {
+      season = parseInt(p1);
+      return '';
+    });
+  }
+
+  if (episode === null) {
+    title = title.replace(/\be([0-9]+)/gi, (match, p1) => {
+      episode = parseInt(p1);
+      return '';
+    });
+  }
 
   // Remove year
   title = title.replace(/\b[0-9]{4}\b/g, '');
@@ -1256,10 +1270,11 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
-// Exclude urls from facebook.
+// Exclude urls from facebook and vimeo.
 const initiatorBlacklist = [
   'https://www.facebook.com',
   'https://www.instagram.com',
+  'https://vimeo.com',
 ];
 
 chrome.webRequest.onHeadersReceived.addListener(
@@ -1278,7 +1293,23 @@ chrome.webRequest.onHeadersReceived.addListener(
       initiatorBlacklist.some((a) => {
         return details.initiator.startsWith(a);
       })) {
-        return;
+        if (url.startsWith('https://vod-adaptive') && url.includes('playlist.json')) {
+          ext = 'vmpatch';
+          // chrome.tabs.sendMessage(details.tabId, {
+          //   type: 'vmurl',
+          //   url: url,
+          //   headers: frame.requestHeaders.get(details.requestId),
+          // }, {
+          //   frameId: details.frameId,
+          // }, () => {
+          //   BackgroundUtils.checkMessageError('vmurl');
+          // });
+          // return;
+        } else if (ext === 'json') {
+
+        } else {
+          return;
+        }
       }
 
       const output = CustomSourcePatternsMatcher.match(url);

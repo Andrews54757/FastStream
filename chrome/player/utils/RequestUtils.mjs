@@ -3,7 +3,40 @@ import {LargeBuffer} from '../modules/LargeBuffer.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 import {URLUtils} from './URLUtils.mjs';
 
+
+export const SpecialHeaders = [
+  'origin',
+  'referer',
+  'user-agent',
+  'sec-fetch-site',
+  'sec-fetch-mode',
+  'sec-fetch-dest',
+  'sec-ch-ua',
+  'sec-ch-ua-mobile',
+  'sec-ch-ua-platform',
+  'x-client-data',
+  'cookie',
+];
+
 export class RequestUtils {
+  static splitSpecialHeaders(headers) {
+    const customHeaderCommands = [];
+    const regularHeaders = {};
+    for (const header in headers) {
+      if (!Object.hasOwn(headers, header)) continue;
+      const name = header.toLowerCase();
+      if (SpecialHeaders.includes(name)) {
+        if (headers[header] === false) {
+          customHeaderCommands.push({operation: 'remove', header});
+        } else {
+          customHeaderCommands.push({operation: 'set', header, value: headers[header]});
+        }
+      } else {
+        regularHeaders[header] = headers[header];
+      }
+    }
+    return {customHeaderCommands, regularHeaders};
+  }
   static request(options) {
     return new Promise(async (resolve, reject) => {
       const xmlHttp = new XMLHttpRequest();
@@ -46,8 +79,9 @@ export class RequestUtils {
           return encodeURIComponent(key) + '=' + encodeURIComponent(options.query[key]);
         }).join('&');
       }
+      const method = options.method || options.type || 'GET';
 
-      xmlHttp.open(options.type === undefined ? 'GET' : options.type, options.url + query, true); // true for asynchronous
+      xmlHttp.open(method, options.url + query, true); // true for asynchronous
       if (options.range !== undefined) {
         xmlHttp.setRequestHeader('Range', 'bytes=' + options.range.start + '-' + options.range.end);
       }
@@ -72,7 +106,7 @@ export class RequestUtils {
       }
 
 
-      xmlHttp.send(options.data);
+      xmlHttp.send(options.data || options.body);
     });
   }
 

@@ -716,7 +716,16 @@ export default class MP4Player extends EventEmitter {
         }
         const frag = frags[i];
         if (!options.partialSave) {
-          await this.downloadFragment(frag, -1);
+          while (true) {
+            try {
+              await this.downloadFragment(frag, -1);
+              break;
+            } catch (e) {
+              if (e.message !== 'Aborted download') {
+                throw e;
+              }
+            }
+          }
           frag.removeReference(ReferenceTypes.SAVER);
         }
         if (frag.status === DownloadStatus.DOWNLOAD_COMPLETE) {

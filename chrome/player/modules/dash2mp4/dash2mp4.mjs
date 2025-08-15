@@ -17,9 +17,20 @@ export class DASH2MP4 extends EventEmitter {
       });
       return await this.converter.convert(videoDuration, videoInitSegment, audioDuration, audioInitSegment, zippedFragments);
     } catch (e) {
-      if (e.message === 'Cancelled') {
+      const mergerErrors = [
+        'Video codec not supported!',
+        'Audio codec not supported!',
+        'Video is not an mp4!',
+        'Audio is not an mp4!',
+      ];
+      if (!mergerErrors.includes(e.message)) {
         throw e;
       }
+
+      if (!window.VideoDecoder || !window.VideoEncoder || !window.AudioDecoder || !window.AudioEncoder) {
+        throw e;
+      }
+
       const {Reencoder} = await import('../reencoder/reencoder.mjs');
       this.converter = new Reencoder(this.registerCancel);
       this.converter.on('progress', (progress) => {

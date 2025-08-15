@@ -1,7 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
-import {DashJS} from '../../modules/dash.mjs';
+import {MediaPlayer} from '../../modules/dash.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {VideoConverter} from '../../modules/fs-video-converter/VideoConverter.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -31,14 +31,14 @@ export default class DashPlayer extends EventEmitter {
 
   async setup() {
     // eslint-disable-next-line new-cap
-    this.dash = DashJS.MediaPlayer().create();
+    this.dash = MediaPlayer().create();
 
     const preEvents = new EventEmitter();
     const emitterRelay = new EmitterRelay([preEvents, this]);
     VideoUtils.addPassthroughEventListenersToVideo(this.video, emitterRelay);
 
     const newSettings = {
-      'streaming': {
+      streaming: {
         abr: {
           autoSwitchBitrate: {audio: false, video: false},
         },
@@ -52,8 +52,11 @@ export default class DashPlayer extends EventEmitter {
         text: {
           defaultEnabled: false,
         },
+        capabilities: {
+          useMediaCapabilitiesApi: false,
+        },
       },
-      'errors': {
+      errors: {
         recoverAttempts: {
           mediaErrorDecode: 1000000,
         },
@@ -61,9 +64,9 @@ export default class DashPlayer extends EventEmitter {
     };
 
     // if (this.isPreview) {
-    //   newSettings.debug ={
-    //     'logLevel': DashJS.Debug.LOG_LEVEL_DEBUG,
-    //   };
+    // newSettings.debug ={
+    //   'logLevel': Debug.LOG_LEVEL_DEBUG,
+    // };
     // }
 
     this.dash.updateSettings(newSettings);
@@ -92,6 +95,11 @@ export default class DashPlayer extends EventEmitter {
       initialize();
     });
 
+    this.dash.on('REPRESENTATION_UPDATED', (a) => {
+      const rep = a.representation;
+      this.extractFragments(rep);
+    });
+
     this.dash.on('dataUpdateCompleted', (a) => {
       this.extractAllFragments();
     });
@@ -100,7 +108,7 @@ export default class DashPlayer extends EventEmitter {
       this.extractAllFragments();
     });
 
-    this.dash.on(DashJS.MediaPlayer.events.STREAM_INITIALIZED, (e) => {
+    this.dash.on(MediaPlayer.events.STREAM_INITIALIZED, (e) => {
       this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
     });
 
@@ -109,7 +117,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   extractAllFragments() {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     processors.forEach((processor) => {
       const mediaInfo = processor.getMediaInfo();
       mediaInfo.representations.forEach((rep) => {
@@ -258,7 +266,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   getProcessor(adaptationIndex) {
-    const processors = this.dash.getStreamController().getActiveStream().getProcessors();
+    const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     for (let i = 0; i < processors.length; i++) {
       const processor = processors[i];
       if (processor.getMediaInfo().index === adaptationIndex) {
@@ -269,7 +277,7 @@ export default class DashPlayer extends EventEmitter {
   }
 
   get currentLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
     if (!processor) {
       return -1;
     }
@@ -279,14 +287,14 @@ export default class DashPlayer extends EventEmitter {
   set currentLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      this.dash.setRepresentationForTypeById('video', value, true);
+      this.dash.setRepresentationForTypeById('video', value);
     } catch (e) {
       console.warn(e);
     }
   }
 
   get currentAudioLevel() {
-    const processor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const processor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
     if (!processor) {
       return -1;
     }
@@ -296,7 +304,7 @@ export default class DashPlayer extends EventEmitter {
   set currentAudioLevel(value) {
     if (typeof value !== 'string') return;
     try {
-      this.dash.setRepresentationForTypeById('audio', value, true);
+      this.dash.setRepresentationForTypeById('audio', value);
     } catch (e) {
       console.warn(e);
     }
@@ -410,21 +418,39 @@ export default class DashPlayer extends EventEmitter {
       data.fragment.addReference(ReferenceTypes.SAVER);
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-          await this.downloadFragment(data.fragment, -1);
+          while (true) {
+            try {
+              await this.downloadFragment(data.fragment, -1);
+              break;
+            } catch (e) {
+              if (e.message !== 'Aborted download') {
+                throw e;
+              }
+            }
+          }
         }
         data.fragment.removeReference(ReferenceTypes.SAVER);
         return this.client.downloadManager.getEntry(data.fragment.getContext());
       };
     });
 
-    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'video');
-    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getProcessors()?.find((o) => o.getType() === 'audio');
+    const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
+    const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
 
     const videoDuration = videoProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
     const audioDuration = audioProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
 
     const videoInitSegment = fragments?.[-1];
     const audioInitSegment = audioFragments?.[-1];
+
+    // if init segments are not downloaded, we will try to download them
+    if (videoInitSegment && videoInitSegment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      await this.downloadFragment(videoInitSegment, -1);
+    }
+
+    if (audioInitSegment && audioInitSegment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+      await this.downloadFragment(audioInitSegment, -1);
+    }
 
     const videoInitSegmentData = videoInitSegment ? await this.client.downloadManager.getEntry(videoInitSegment.getContext()).getDataFromBlob() : null;
     const audioInitSegmentData = audioInitSegment ? await this.client.downloadManager.getEntry(audioInitSegment.getContext()).getDataFromBlob() : null;

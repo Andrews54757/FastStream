@@ -46,7 +46,7 @@ export class FastStreamClient extends EventEmitter {
       maxVideoSize: 5000000000, // 5GB max size
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
-      bufferAhead: 180,
+      bufferAhead: 300,
       bufferBehind: 20,
       freeFragments: true,
       downloadAll: false,
@@ -59,7 +59,7 @@ export class FastStreamClient extends EventEmitter {
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
-      defaultYoutubeClient: YoutubeClients.IOS,
+      defaultYoutubeClient: YoutubeClients.WEB,
       miniSize: 0.25,
       miniPos: MiniplayerPositions.BOTTOM_RIGHT,
       videoBrightness: 1,
@@ -71,10 +71,13 @@ export class FastStreamClient extends EventEmitter {
       videoHueRotate: 0,
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
+      videoZoom: 1,
       seekStepSize: 0.2,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
+      videoFlip: 0,
+      videoRotate: 0,
       disableVisualFilters: false,
       maximumDownloaders: 6,
     };
@@ -93,6 +96,7 @@ export class FastStreamClient extends EventEmitter {
       fullscreen: false,
       miniplayer: false,
       windowedFullscreen: false,
+      autoPlayTriggered: false,
     };
 
     this._needsUserInteraction = false;
@@ -116,7 +120,7 @@ export class FastStreamClient extends EventEmitter {
       this.interfaceController.updateSkipSegments();
     });
 
-    document.addEventListener('keydown', (e) => {
+    DOMElements.playerContainer.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.escapeAll();
         e.preventDefault();
@@ -252,7 +256,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.visChangeAction = options.visChangeAction;
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
-    this.options.defaultYoutubeClient = options.defaultYoutubeClient4;
+    // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.maximumDownloaders = options.maximumDownloaders;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
@@ -274,6 +278,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoHueRotate = options.videoHueRotate;
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
+    this.options.videoZoom = options.videoZoom;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
 
@@ -335,17 +340,20 @@ export class FastStreamClient extends EventEmitter {
       svg.style.position = 'absolute';
       svg.style.width = '0px';
       svg.style.height = '0px';
-      document.body.appendChild(svg);
+      DOMElements.playerContainer.appendChild(svg);
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
+    const transformStr = CSSFilterUtils.getTransformString(this.options);
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;
+      this.player.getVideo().style.transform = transformStr;
     }
 
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.filter = filterStr;
+      this.previewPlayer.getVideo().style.transform = transformStr;
     }
   }
 
@@ -480,19 +488,17 @@ export class FastStreamClient extends EventEmitter {
       }
       if (bitrate && this.duration) {
         let storageAvailable = (this.storageAvailable * 8) * 0.6;
-        let bufferAhead = 0;
         if (this.options.maxVideoSize > 0 && this.options.maxVideoSize * 8 < storageAvailable) {
           storageAvailable = this.options.maxVideoSize * 8;
-          const canBufferTime = storageAvailable / bitrate / 1.1;
-          bufferAhead = Math.floor(canBufferTime - this.state.bufferBehind);
         }
 
-        if (bufferAhead === 0 || !this.options.downloadAll) {
+        const canBufferTime = storageAvailable / bitrate / 1.1;
+        let bufferAhead = Math.max(Math.floor(canBufferTime - this.state.bufferBehind), 0);
+
+        if (bufferAhead < this.options.bufferAhead || !this.options.downloadAll) {
           this.state.bufferAhead = this.options.bufferAhead;
           bufferAhead = 0;
-        }
-
-        if (bufferAhead > 0 && Math.abs(this.state.bufferAhead - bufferAhead) > 30) {
+        } else if (bufferAhead > 0 && Math.abs(this.state.bufferAhead - bufferAhead) > 30) {
           this.state.bufferAhead = Math.max(bufferAhead, this.options.bufferAhead);
         }
 
@@ -538,6 +544,13 @@ export class FastStreamClient extends EventEmitter {
     this.options.autoPlay = value;
   }
 
+  attachProcessorsToPlayer(player) {
+    if (this.source.mode === PlayerModes.ACCELERATED_YT) {
+      player.preProcessFragment = this.player.preProcessFragment.bind(this.player);
+      player.postProcessFragment = this.player.postProcessFragment.bind(this.player);
+    }
+  }
+
   async setupPreviewPlayer() {
     if (!this.player || this.previewPlayer || !this.options.previewEnabled) {
       return;
@@ -547,6 +560,9 @@ export class FastStreamClient extends EventEmitter {
       this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
         isPreview: true,
       });
+
+      // check if its yt mode
+      this.attachProcessorsToPlayer(this.previewPlayer);
 
       await this.previewPlayer.setup();
       this.bindPreviewPlayer(this.previewPlayer);
@@ -598,8 +614,7 @@ export class FastStreamClient extends EventEmitter {
       await this.resetPlayer();
       this.source = source;
 
-      const estimate = await navigator.storage.estimate();
-      this.storageAvailable = estimate.quota - estimate.usage;
+      this.storageAvailable = await EnvUtils.getAvailableStorage();
 
       const options = {};
       if (source.mode === PlayerModes.ACCELERATED_YT) {
@@ -662,8 +677,11 @@ export class FastStreamClient extends EventEmitter {
 
       this.interfaceController.updateToolVisibility();
 
+      this.state.autoPlayTriggered = false;
       if (autoPlay) {
-        this.play();
+        this.play().then(() => {
+          this.state.autoPlayTriggered = true;
+        });
       }
 
       this.loadProgressData().then(async () => {
@@ -689,8 +707,10 @@ export class FastStreamClient extends EventEmitter {
 
         this.disableProgressSave = false;
 
-        if (autoPlay) {
-          this.play();
+        if (autoPlay && !this.state.autoPlayTriggered) {
+          this.play().then(() => {
+            this.state.autoPlayTriggered = true;
+          });
         }
       });
     } catch (e) {
@@ -1081,12 +1101,11 @@ export class FastStreamClient extends EventEmitter {
 
     });
 
-    let autoPlayTriggered = false;
     this.context.on(DefaultPlayerEvents.CANPLAY, (event) => {
       this.player.playbackRate = this.state.playbackRate;
 
-      if (!autoPlayTriggered && this.options.autoPlay && this.state.playing === false) {
-        autoPlayTriggered = true;
+      if (!this.state.autoPlayTriggered && this.options.autoPlay && this.state.playing === false) {
+        this.state.autoPlayTriggered = true;
         this.play();
       }
     });
@@ -1415,7 +1434,7 @@ export class FastStreamClient extends EventEmitter {
       return 'fullscreen';
     }
 
-    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+    if (this.interfaceController.isInPip()) {
       return 'pip';
     }
 
@@ -1440,7 +1459,7 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
-    if (document.pictureInPictureElement || window.documentPictureInPicture?.window) {
+    if (this.interfaceController.isInPip()) {
       this.interfaceController.pipToggle(false);
       return;
     }

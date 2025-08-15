@@ -78,7 +78,7 @@ export class ConvolutionXTC {
   configure(options) {
     const g = options.g;
     const tc = Math.round(options.tc);
-    const y = options.y;
+    let y = options.y;
 
     if (this.cachedOptions.g === g && this.cachedOptions.tc === tc && this.cachedOptions.y === y) {
       return;
@@ -94,6 +94,12 @@ export class ConvolutionXTC {
     const H_CROSS = new Float32Array(n * 2);
 
     const B_P = 0;
+
+    const max_y = 1.0 / (1.0 - g);
+    const min_y = Math.max(1.0, Math.sqrt(5 + Math.sqrt(5)) / 2 / Math.sqrt(gg + 1));
+    y = Math.max(min_y, y);
+    const valid = y <= max_y;
+
     for (let k = 0; k < n; k++) {
       const omegatc = 2 * Math.PI * k / n * tc;
       const cos = Math.cos(omegatc);
@@ -102,7 +108,7 @@ export class ConvolutionXTC {
       const sp = Math.max(1/cm_I, 1/cm_II);
 
       let H;
-      if (sp < y) {
+      if (sp < y || !valid) {
         H = this.calculateH(g, omegatc, B_P);
       } else if (cm_I < cm_II) {
         const B_I = -gg + 2*g*cos + cm_I / y - 1;

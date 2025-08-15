@@ -1,6 +1,7 @@
 import {DefaultKeybinds, KeybindsWithModifiers} from '../options/defaults/DefaultKeybinds.mjs';
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
+import {DOMElements} from './DOMElements.mjs';
 
 export class KeybindManager extends EventEmitter {
   constructor(client) {
@@ -15,6 +16,10 @@ export class KeybindManager extends EventEmitter {
         this.keybindMap.set(keybind, DefaultKeybinds[keybind]);
       }
     }
+
+    DOMElements.playerContainer.addEventListener('keydown', (e) => {
+      this.onKeyDown(e);
+    });
 
     document.addEventListener('keydown', (e) => {
       this.onKeyDown(e);
@@ -153,30 +158,17 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.subtitlesManager.toggleSubtitles();
     });
 
-    let flipIndex = 0;
-    let rotateIndex = 0;
 
-    const updateVideoTransform = () => {
-      const video = this.client.player.getVideo();
-      const str = [];
-      if (flipIndex !== 0) {
-        str.push(`scaleX(${flipIndex % 2 === 0 ? 1 : -1}) scaleY(${flipIndex > 1 ? -1 : 1})`);
-      }
-
-      if (rotateIndex !== 0) {
-        str.push(`rotate(${rotateIndex * 90}deg)`);
-      }
-
-      video.style.transform = str.join(' ');
-    };
     this.on('FlipVideo', (e) => {
-      flipIndex = (flipIndex + 1) % 4;
-      updateVideoTransform();
+      const options = this.client.options;
+      options.videoFlip = (options.videoFlip + 1) % 4;
+      this.client.updateCSSFilters();
     });
 
     this.on('RotateVideo', (e) => {
-      rotateIndex = (rotateIndex + 3) % 4;
-      updateVideoTransform();
+      const options = this.client.options;
+      options.videoRotate = (options.videoRotate + 3) % 4;
+      this.client.updateCSSFilters();
     });
 
     this.on('WindowedFullscreen', (e) => {
@@ -201,6 +193,14 @@ export class KeybindManager extends EventEmitter {
 
     this.on('ToggleVisualFilters', (e) => {
       this.client.interfaceController.toggleVisualFilters();
+    });
+
+    this.on('PauseDownloaders', (e) => {
+      if (!this.client.downloadManager.paused) {
+        this.client.downloadManager.pause();
+      } else {
+        this.client.downloadManager.resume();
+      }
     });
 
     this.on('keybind', (keybind, e) => {
@@ -261,6 +261,7 @@ export class KeybindManager extends EventEmitter {
 
     if (this.handleKeyString(keyString, e)) {
       e.preventDefault();
+      e.stopPropagation();
     }
   }
 }

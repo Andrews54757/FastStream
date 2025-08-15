@@ -130,7 +130,16 @@ export default class HLSPlayer extends EventEmitter {
       data.fragment.addReference(ReferenceTypes.SAVER);
       data.getEntry = async () => {
         if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-          await this.downloadFragment(data.fragment, -1);
+          while (true) {
+            try {
+              await this.downloadFragment(data.fragment, -1);
+              break;
+            } catch (e) {
+              if (e.message !== 'Aborted download') {
+                throw e;
+              }
+            }
+          }
         }
         data.fragment.removeReference(ReferenceTypes.SAVER);
         return this.client.downloadManager.getEntry(data.fragment.getContext());

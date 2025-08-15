@@ -3,6 +3,7 @@ import {AudioUtils} from '../../utils/AudioUtils.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {DOMElements} from '../DOMElements.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
@@ -35,9 +36,20 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   setConfig(config) {
-    this.channelConfigs = config.channels;
-    this.masterConfig = config.master;
+    // first, cache which channel is dyn active
+    const dynChannel = this.channelConfigs ? this.channelConfigs.find((channel) => channel.dyn) : null;
 
+    this.channelConfigs = config.channels;
+
+    // restore dyn active channel
+    if (dynChannel) {
+      const newDynChannel = this.channelConfigs.find((channel) => channel.id === dynChannel.id);
+      if (newDynChannel) {
+        newDynChannel.dyn = true;
+      }
+    }
+
+    this.masterConfig = config.master;
     this.channelConfigs.forEach((channel, i) => {
       this.channelNodes[channel.id].equalizer.setConfig(channel.equalizerNodes);
       this.channelNodes[channel.id].compressor.setConfig(channel.compressor);
@@ -117,18 +129,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     ctx.clearRect(0, 0, width, height);
 
-    const minDB = -40;
-    const maxDB = 20;
-    const dbRange = maxDB - minDB;
-    const lastVolume = analyzer._lastVolume || 0;
-    const volume = Math.max((Utils.clamp(AudioUtils.getVolume(analyzer), minDB, maxDB) - minDB) / dbRange, lastVolume * 0.95);
+    const lastVolume = analyzer._lastVolume !== undefined ? analyzer._lastVolume : -Infinity;
+    const newvolume = AudioUtils.getVolume(analyzer);
+    const volume = Math.max(newvolume, lastVolume - 0.5);
     analyzer._lastVolume = volume;
-    const yScale = height;
-
     const rectHeight = height / 50;
-    const volHeight = volume * yScale;
 
-    const rectCount = Math.ceil(volHeight / rectHeight);
+    const rectCount = Math.round((1 - AudioUtils.mixerDBToPositionRatio(volume)) * 50);
     const now = Date.now();
 
     if (!els.peak || rectCount > els.peak) {
@@ -137,7 +144,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     for (let i = 0; i < rectCount; i++) {
-      const y = height - i * rectHeight;
+      const y = height - (i + 1) * rectHeight;
 
 
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -200,9 +207,10 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.volumeAxis = WebUtils.create('div', null, 'mixer_channel_volume_axis');
     els.volume.appendChild(els.volumeAxis);
 
-    // Volume axis goes from +10 to -60 then -inf
-    for (let i = 0; i < 6; i++) {
-      const db = 10 - i * 10;
+    // Volume axis goes from +10 to -30 then -inf
+    const dbs = [10, 5, 0, -5, -10, -20, -30];
+    for (let i = 0; i < dbs.length; i++) {
+      const db = dbs[i];
       const el = WebUtils.create('div', null, 'mixer_channel_volume_tick');
       el.style.top = `${AudioUtils.mixerDBToPositionRatio(db) * 100}%`;
       els.volumeAxis.appendChild(el);
@@ -240,9 +248,9 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.channelTitle.textContent = channel.isMaster() ? 'Master' : CHANNEL_NAMES[channel.id];
 
     if (channel.isMaster()) {
-      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
     } else {
-      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+      WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
     }
 
     els.volumeHandle.style.top = `${AudioUtils.mixerDBToPositionRatio(AudioUtils.gainToDB(channel.gain)) * 100}%`;
@@ -252,7 +260,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
       els.muteButton.textContent = Localize.getMessage('audiomixer_mono');
       els.muteButton.title = els.muteButton.textContent;
       els.muteButton.classList.toggle('active', channel.mono);
-      els.dynButton.classList.toggle('active', true);
     } else {
       els.soloButton.classList.toggle('active', channel.solo);
       els.muteButton.classList.toggle('active', channel.muted);
@@ -278,21 +285,21 @@ export class AudioChannelMixer extends AbstractAudioModule {
       this.updateNodes();
 
       if (channel.isMaster()) {
-        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
       } else {
-        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain))]));
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
       }
     };
 
     const mouseUp = (e) => {
-      document.removeEventListener('mousemove', mouseMove);
-      document.removeEventListener('mouseup', mouseUp);
+      DOMElements.playerContainer.removeEventListener('mousemove', mouseMove);
+      DOMElements.playerContainer.removeEventListener('mouseup', mouseUp);
     };
 
     els.volumeHandle.addEventListener('mousedown', (e) => {
       e.stopPropagation();
-      document.addEventListener('mousemove', mouseMove);
-      document.addEventListener('mouseup', mouseUp);
+      DOMElements.playerContainer.addEventListener('mousemove', mouseMove);
+      DOMElements.playerContainer.addEventListener('mouseup', mouseUp);
     });
 
     els.volumeTrack.addEventListener('click', (e) => {
@@ -346,16 +353,12 @@ export class AudioChannelMixer extends AbstractAudioModule {
     const toggleDyn = () => {
       this.channelConfigs.forEach((otherChannel) => {
         if (otherChannel.id === channel.id) return;
-        const els = this.mixerChannelElements[otherChannel.id];
         otherChannel.dyn = false;
-        els.dynButton.classList.remove('active');
       });
 
       this.masterConfig.dyn = false;
-      this.masterElements.dynButton.classList.remove('active');
 
       channel.dyn = true;
-      els.dynButton.classList.toggle('active', channel.dyn);
       this.swapDynActive();
     };
 
@@ -425,6 +428,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   swapDynActive() {
+    // remove active labels
+    for (let i = 0; i < this.channelConfigs.length; i++) {
+      if (this.mixerChannelElements[i]) {
+        this.mixerChannelElements[i].dynButton.classList.remove('active');
+      }
+    }
+
     this.ui.equalizerContainer.replaceChildren();
     this.ui.compressorContainer.replaceChildren();
 
@@ -434,6 +444,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       if (channel.dyn) {
         this.ui.equalizerContainer.appendChild(nodes.equalizer.getElement());
         this.ui.compressorContainer.appendChild(nodes.compressor.getElement());
+        this.mixerChannelElements[i].dynButton.classList.add('active');
         return;
       }
     }
@@ -441,6 +452,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.masterConfig.dyn = true;
     this.ui.equalizerContainer.appendChild(this.masterNodes.equalizer.getElement());
     this.ui.compressorContainer.appendChild(this.masterNodes.compressor.getElement());
+    this.masterElements.dynButton.classList.add('active');
   }
 
   createAnalyzers() {

@@ -446,6 +446,9 @@
     "loop_menu_gif_finished": {
         "message": "Selesai menyimpan GIF!"
     },
+    "player_download_paused": {
+        "message": "Muat turun ditangguhkan"
+    },
     "player_fragment_failed_singular": {
         "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
     },
@@ -569,8 +572,14 @@
     "player_source_accelyt": {
         "message": "YouTube dipercepatkan"
     },
+    "player_source_accelvm": {
+        "message": "Vimeo dipercepatkan"
+    },
     "player_source_mode": {
         "message": "Mod"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Sila pilih mod pemain!"
     },
     "player_source_url_placeholder": {
         "message": "Sumber URL"
@@ -669,10 +678,10 @@
         "message": "Pengadun Saluran Audio"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
     },
     "audiomixer_volume_handle_label": {
-        "message": "$1 gain is $2 dB. Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
     },
     "audiomixer_solo_label": {
         "message": "Solo"
@@ -695,7 +704,7 @@
     "audiocrosstalk_disabled": {
         "message": "Crosstalk Correction Disabled"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "Decay"
     },
     "audiocrosstalk_colorgain": {
@@ -752,34 +761,34 @@
     "audioeq_gain": {
         "message": "Gain: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "Scroll to change Q"
     },
     "options_title": {
         "message": "FastStream Options"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "Enjoy FastStream? Leave a review!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "How you use it"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "Any bugs you encounter"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "Feature requests"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "OK I'll review FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "I don't want to review :("
     },
     "options_feedback_header": {
@@ -814,6 +823,9 @@
     },
     "options_video_body": {
         "message": "Applies CSS filters to the video. Doesn't work with picture-in-picture."
+    },
+    "options_video_zoom": {
+        "message": "Video Zoom"
     },
     "options_video_delay": {
         "message": "Video Delay"
@@ -1028,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "Language"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "Bottom Margin"
+    },
     "yes": {
         "message": "Ya"
     },
@@ -1048,5 +1063,8 @@
     },
     "error_popup_send": {
         "message": "Laporkan Ralat"
+    },
+    "yt_error_login_required": {
+        "message": "Maaf! FastStream tidak menyokong video yang memerlukan anda masuk ke YouTube."
     }
 }

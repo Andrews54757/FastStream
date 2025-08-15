@@ -39,14 +39,30 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.audioCrosstalk.on('upscale', upscale);
 
     this.setupUI();
-    this.loadProfilesFromStorage();
+    this.loadProfilesFromStorage().then(() => {
+      this.loadDefaultProfiles();
+    }).catch((e) => {
+      AlertPolyfill.errorSendToDeveloper(e);
+    });
   }
 
+  async loadDefaultProfiles() {
+    try {
+      const loadedDefaultProfiles = await Utils.getConfig('loadedDefaultAudioProfiles');
+      if (loadedDefaultProfiles === '1') {
+        return;
+      }
+      const {DefaultProfilesData} = await import('./config/DefaultProfiles.mjs');
+      await this.loadProfileFile(DefaultProfilesData);
+      await Utils.setConfig('loadedDefaultAudioProfiles', '1');
+    } catch (e) {
+      AlertPolyfill.errorSendToDeveloper(e);
+    }
+  }
   async loadProfilesFromStorage() {
     try {
       const audioProfilesStr = await Utils.getConfig('audioProfiles') || '[]';
       const currentAudioProfileStr = await Utils.getConfig('currentAudioProfile') || '-1';
-
       const audioProfiles = JSON.parse(audioProfilesStr);
       const currentAudioProfileID = parseInt(currentAudioProfileStr);
 
@@ -85,11 +101,12 @@ export class AudioConfigManager extends AbstractAudioModule {
     return id;
   }
 
-  newProfile() {
+  newProfile(copyCurrent = false) {
     const newID = this.getNextProfileID();
-    const profile = new AudioProfile(newID);
+    const profile = (copyCurrent && this.currentProfile) ? this.currentProfile.copy() : new AudioProfile(newID);
+    profile.id = newID;
+    profile.label = `Profile ${newID}`;
     this.addProfile(profile);
-
     Array.from(this.ui.profileDropdown.children[1].children).find((el) => el.dataset.val === 'p' + newID).click();
   }
 
@@ -162,27 +179,34 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.profileDropdown = createDropdown('p' + id,
         Localize.getMessage('player_audioconfig_profile'), optionsList, (val, prevVal) => {
           if (val === 'create') {
-            this.newProfile();
+            this.newProfile(true);
           } else if (val === 'import') {
             this.updateProfileDropdown(parseInt(prevVal.substring(1)));
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
-            input.addEventListener('change', () => {
-              const file = input.files[0];
-              if (!file) return;
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                try {
-                  const obj = JSON.parse(e.target.result);
-                  this.loadProfileFile(obj);
-                } catch (e) {
-                  AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'), 'error');
-                }
-              };
-              reader.readAsText(file);
+            input.multiple = true;
+            input.addEventListener('change', (e) => {
+              const files = Array.from(e.target.files);
+              files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                  try {
+                    const obj = JSON.parse(e.target.result);
+                    this.loadProfileFile(obj);
+                  } catch (e) {
+                    AlertPolyfill.alert(Localize.getMessage('player_audioconfig_import_invalid'), 'error');
+                  }
+                };
+                reader.readAsText(file);
+              });
             });
             input.click();
+          } else {
+            const profile = this.profiles.find((profile) => profile.id === parseInt(val.substring(1)));
+            if (profile) {
+              this.setCurrentProfile(profile);
+            }
           }
         }, (key, displayName)=>{
           if (key === 'create' || key === 'import') {
@@ -244,8 +268,7 @@ export class AudioConfigManager extends AbstractAudioModule {
 
     const index = this.profiles.indexOf(profile);
     if (index !== -1) this.profiles.splice(index, 1, newProfile);
-
-    this.updateProfileDropdown();
+    this.updateProfileDropdown(profile.id);
     return this.saveProfilesToStorage();
   }
 
@@ -290,24 +313,24 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.updateProfileDropdown();
 
     // load button
-    this.ui.loadButton = WebUtils.create('div', null, 'textbutton load_button');
-    this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
-    let loadTimeout = null;
-    this.ui.profileManager.appendChild(this.ui.loadButton);
-    this.ui.loadButton.addEventListener('click', () => {
-      const profile = this.getDropdownProfile();
-      if (!profile) {
-        this.updateProfileDropdown();
-        return;
-      }
-      this.setCurrentProfile(profile);
-      this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_loaded');
-      clearTimeout(loadTimeout);
-      loadTimeout = setTimeout(() => {
-        this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
-      }, 1000);
-    });
-    WebUtils.setupTabIndex(this.ui.loadButton);
+    // this.ui.loadButton = WebUtils.create('div', null, 'textbutton load_button');
+    // this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
+    // let loadTimeout = null;
+    // this.ui.profileManager.appendChild(this.ui.loadButton);
+    // this.ui.loadButton.addEventListener('click', () => {
+    //   const profile = this.getDropdownProfile();
+    //   if (!profile) {
+    //     this.updateProfileDropdown();
+    //     return;
+    //   }
+    //   this.setCurrentProfile(profile);
+    //   this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_loaded');
+    //   clearTimeout(loadTimeout);
+    //   loadTimeout = setTimeout(() => {
+    //     this.ui.loadButton.textContent = Localize.getMessage('player_audioconfig_profile_load');
+    //   }, 1000);
+    // });
+    // WebUtils.setupTabIndex(this.ui.loadButton);
 
     // save button
     this.ui.saveButton = WebUtils.create('div', null, 'textbutton save_button');
@@ -330,7 +353,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_download');
     let downloadTimeout = null;
     this.ui.profileManager.appendChild(this.ui.downloadButton);
-    this.ui.downloadButton.addEventListener('click', () => {
+    this.ui.downloadButton.addEventListener('click', (e) => {
       const profile = this.getDropdownProfile();
       if (!profile) {
         this.updateProfileDropdown();
@@ -343,14 +366,21 @@ export class AudioConfigManager extends AbstractAudioModule {
         profiles: [],
       };
 
-      const profileObj = profile.toObj();
-      delete profileObj.id;
-      data.profiles.push(profileObj);
+      const shouldDownloadAll = e.shiftKey || e.metaKey;
+      if (shouldDownloadAll) {
+        this.profiles.forEach((profile) => {
+          data.profiles.push(profile.toObj());
+        });
+      } else {
+        const profileObj = profile.toObj();
+        delete profileObj.id;
+        data.profiles.push(profileObj);
+      }
 
       const downloadBlob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(downloadBlob);
-      a.download = `${profile.label}.fsprofile.json`;
+      a.download = `${shouldDownloadAll ? 'all' : profile.label}.fsprofile.json`;
       a.click();
       this.ui.downloadButton.textContent = Localize.getMessage('player_audioconfig_profile_downloaded');
       clearTimeout(downloadTimeout);

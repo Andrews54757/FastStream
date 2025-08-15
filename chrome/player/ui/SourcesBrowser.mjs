@@ -1,6 +1,7 @@
 import {VideoSource} from '../VideoSource.mjs';
 import {PlayerModes} from '../enums/PlayerModes.mjs';
 import {Localize} from '../modules/Localize.mjs';
+import {AlertPolyfill} from '../utils/AlertPolyfill.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
 import {URLUtils} from '../utils/URLUtils.mjs';
@@ -43,6 +44,7 @@ export class SourcesBrowser {
     sourceURL.ariaLabel = sourceURL.placeholder;
     sourceURL.addEventListener('input', (e) => {
       source.url = sourceURL.value;
+      source.identifier = source.url.split(/[?#]/)[0];
       this.updateSources();
     });
     sourceContainer.appendChild(sourceURL);
@@ -59,6 +61,7 @@ export class SourcesBrowser {
     modes[PlayerModes.ACCELERATED_DASH] = Localize.getMessage('player_source_acceldash');
     if (EnvUtils.isExtension()) {
       modes[PlayerModes.ACCELERATED_YT] = Localize.getMessage('player_source_accelyt');
+      modes[PlayerModes.ACCELERATED_VM] = Localize.getMessage('player_source_accelvm');
     }
 
     const sourceMode = createDropdown(source.mode, Localize.getMessage('player_source_mode'), modes, (val) => {
@@ -134,11 +137,11 @@ export class SourcesBrowser {
 
       const input = document.createElement('input');
       input.value = copyURL;
-      document.body.appendChild(input);
+      DOMElements.playerContainer.appendChild(input);
       input.focus();
       input.select();
       document.execCommand('copy');
-      document.body.removeChild(input);
+      DOMElements.playerContainer.removeChild(input);
 
       sourceCopyBtn.textContent = Localize.getMessage('player_source_copybtn_copied');
       setTimeout(() => {
@@ -152,6 +155,17 @@ export class SourcesBrowser {
     const sourceSetBtn = WebUtils.create('div', null, 'linkui-source-set-button');
     sourceSetBtn.textContent = 'Play';
     sourceSetBtn.addEventListener('click', async (e) => {
+      // Check if source url is empty
+      if (!source.url) {
+        return;
+      }
+
+      // Check if mode is AUTO
+      if (source.mode === PlayerModes.AUTO) {
+        AlertPolyfill.alert(Localize.getMessage('player_source_mode_auto_error'), 'error');
+        return;
+      }
+
       if (sourceSetBtn.classList.contains('loading')) return;
       sourceSetBtn.classList.add('loading');
       sourceSetBtn.textContent = Localize.getMessage('player_source_playbtn_loading');

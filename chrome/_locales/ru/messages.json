@@ -150,7 +150,7 @@
         "message": "Не предоставлено, нажмите, чтобы предоставить"
     },
     "player_needs_interaction": {
-        "message": "Взаимодействуйте, чтобы включить ускорение загрузки"
+        "message": "Воспроизведите видео для ускорения загрузки"
     },
     "player_skipintro": {
         "message": "Пропустить вступление"
@@ -192,7 +192,7 @@
         "message": "Предыдущее видео"
     },
     "player_volume_label": {
-        "message": "Громкость $1%. Используйте стрелки для регулировки, Enter для отключения звука."
+        "message": "Громкость $1%. Клавиши со стрелками - регулировка, Enter - отключение звука."
     },
     "player_mute_label": {
         "message": "Отключить звук"
@@ -402,7 +402,7 @@
         "message": "Во весь экран"
     },
     "player_fullscreen_denied": {
-        "message": "Отказано в разрешении на полноэкранный режим!"
+        "message": "Полноэкранный режим запрещён!"
     },
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
@@ -445,6 +445,9 @@
     },
     "loop_menu_gif_finished": {
         "message": "Сохранение GIF завершено!"
+    },
+    "player_download_paused": {
+        "message": "Загрузка приостановлена"
     },
     "player_fragment_failed_singular": {
         "message": "Ошибка $1 фрагмента! Нажмите для повтора"
@@ -495,7 +498,7 @@
         "message": "Режим инкогнито будет использовать оперативную память для буферизации видео.\nВашему компьютеру может не хватить памяти для сохранения всего видео!\nВы уверены, что хотите продолжить?"
     },
     "player_savevideo_reencode": {
-        "message": "Сохранение потребует повторного кодирования. Это может занять много времени. Вы хотите продолжить?"
+        "message": "Для сохранения требуется перекодировка. Это может занять много времени. Продолжить?"
     },
     "player_savevideo_cancelling": {
         "message": "Отмена…"
@@ -569,8 +572,14 @@
     "player_source_accelyt": {
         "message": "Аппарат. ускорение YouTube"
     },
+    "player_source_accelvm": {
+        "message": "Аппарат. ускорение Vimeo"
+    },
     "player_source_mode": {
         "message": "Режим"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Выберите режим проигрывателя!"
     },
     "player_source_url_placeholder": {
         "message": "Адрес источника"
@@ -669,10 +678,10 @@
         "message": "Микшер аудиоканала"
     },
     "audiomixer_volume_master_handle_label": {
-        "message": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить моно"
+        "message": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, для переключения в моно"
     },
     "audiomixer_volume_handle_label": {
-        "message": "$1 усиление $2 dB. Используйте стрелки для регулировки. Нажмите M, чтобы переключить отключение звука"
+        "message": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы отключить звук"
     },
     "audiomixer_solo_label": {
         "message": "Соло"
@@ -695,7 +704,7 @@
     "audiocrosstalk_disabled": {
         "message": "Коррекция перекрёстных помех отключена"
     },
-    "audiocrosstalk_decaygain": {
+    "audiocrosstalk_decay": {
         "message": "Затухание"
     },
     "audiocrosstalk_colorgain": {
@@ -752,47 +761,47 @@
     "audioeq_gain": {
         "message": "Усиление: $1dB"
     },
-    "audioeq_qscroll": {
+    "audioeq_qscroll_instructions": {
         "message": "Прокрутите, чтобы изменить Q"
     },
     "options_title": {
         "message": "Параметры FastStream"
     },
-    "options_promo_header": {
+    "options_reviewbanner_header": {
         "message": "Понравился FastStream? Оставьте отзыв!"
     },
-    "options_promo_body": {
+    "options_reviewbanner_body": {
         "message": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:"
     },
-    "options_promo_l1": {
+    "options_reviewbanner_l1": {
         "message": "Как вы используете расширение"
     },
-    "options_promo_l2": {
+    "options_reviewbanner_l2": {
         "message": "О проблемах, с которыми вы столкнулись"
     },
-    "options_promo_l3": {
+    "options_reviewbanner_l3": {
         "message": "Запросить функцию"
     },
-    "options_promo_end": {
+    "options_reviewbanner_end": {
         "message": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними."
     },
-    "options_promo_rate": {
+    "options_reviewbanner_rate": {
         "message": "Хорошо, оценю FastStream"
     },
-    "options_promo_norate": {
+    "options_reviewbanner_norate": {
         "message": "Не хочу оценивать :("
     },
     "options_feedback_header": {
-        "message": "У вас есть отзыв?"
+        "message": "Оставьте свой отзыв!"
     },
     "options_feedback_reason": {
-        "message": "Мы хотели бы услышать ваше мнение! Пожалуйста, заполните короткую форму. Это единственный способ улучшить нас, поскольку мы не отслеживаем вас."
+        "message": "Будем рады услышать ваше мнение! Пожалуйста, заполните небольшую форму. Это единственный способ стать лучше, поскольку мы не следим за вами."
     },
     "options_feedback_yes": {
-        "message": "Да, у меня есть отзыв"
+        "message": "Оставить отзыв"
     },
     "options_feedback_no": {
-        "message": "Нет, мне хорошо"
+        "message": "Нет, спасибо"
     },
     "options_help_feedback": {
         "message": "Форма обратной связи"
@@ -815,8 +824,11 @@
     "options_video_body": {
         "message": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»"
     },
+    "options_video_zoom": {
+        "message": "Масштабирование видео"
+    },
     "options_video_delay": {
-        "message": "Video Delay"
+        "message": "Задержка видео"
     },
     "options_video_brightness": {
         "message": "Яркость"
@@ -960,7 +972,7 @@
         "message": "Картинка в картинке"
     },
     "options_general_ytclient": {
-        "message": "Клиент YouTube для использования. Попробуйте изменить, если у вас возникли проблемы."
+        "message": "Используемый YouTube-клиент. Попробуйте изменить при возникновении проблемы"
     },
     "options_export_header": {
         "message": "Настройки импорта/экспорта"
@@ -1028,6 +1040,9 @@
     "subtitles_settings_defaultLanguage": {
         "message": "Язык"
     },
+    "subtitles_settings_bottomMargin": {
+        "message": "Нижнее поле"
+    },
     "yes": {
         "message": "Да"
     },
@@ -1044,9 +1059,12 @@
         "message": "Ошибка: $1"
     },
     "error_popup_body": {
-        "message": "Пожалуйста, сообщите об этой ошибке разработчикам на https://github.com/Andrews54757/FastStream/issues с указанием стека вызовов ниже:"
+        "message": "Пожалуйста, сообщите об этой ошибке разработчикам по адресу https://github.com/Andrews54757/FastStream/issues с приведённой ниже трассировкой стека:"
     },
     "error_popup_send": {
         "message": "Сообщить об ошибке"
+    },
+    "yt_error_login_required": {
+        "message": "Извините! FastStream не поддерживает видео, для просмотра которых требуется вход в YouTube."
     }
 }

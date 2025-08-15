@@ -20,6 +20,7 @@ export const DefaultKeybinds = {
   'ResetFailed': 'Backquote',
   'AddDownloader': 'Equal',
   'RemoveDownloader': 'Minus',
+  'PauseDownloaders': 'BracketLeft',
   'SaveVideo': 'KeyD',
   'Screenshot': 'KeyX',
   'SkipIntroOutro': 'KeyS',

@@ -92,7 +92,7 @@ export class ToolManager {
   updateToolVisibility() {
     DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
 
-    if (this.client.player && document.pictureInPictureEnabled) {
+    if ((this.client.player && document.pictureInPictureEnabled) || this.interfaceController.shouldDoDocumentPip()) {
       DOMElements.pip.classList.remove('hidden');
     } else {
       DOMElements.pip.classList.add('hidden');

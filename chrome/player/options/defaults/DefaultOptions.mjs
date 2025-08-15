@@ -18,7 +18,7 @@ export const DefaultOptions = {
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),
   autoplayNext: false,
-  defaultYoutubeClient4: YoutubeClients.IOS,
+  defaultYoutubeClient: YoutubeClients.WEB,
   defaultQuality: `Auto`,
   autoEnableURLs: [],
   customSourcePatterns: ``,
@@ -32,6 +32,7 @@ export const DefaultOptions = {
   videoHueRotate: 0,
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
+  videoZoom: 1,
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,

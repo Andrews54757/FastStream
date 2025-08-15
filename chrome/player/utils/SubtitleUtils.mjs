@@ -113,6 +113,10 @@ export class SubtitleUtils {
     // srt = srt.replace(/<[a-zA-Z\/][^>]*>/g, '');
     let cue = '';
     const s = caption.split(/\n/);
+    if (s.length < 2) {
+      // file format error or comment lines
+      return '';
+    }
     // concatenate muilt-line string separated in array into one
     while (s.length > 3) {
       for (let i = 3; i < s.length; i++) {
@@ -147,5 +151,14 @@ export class SubtitleUtils {
       cue += s[line] + '\n\n';
     }
     return cue;
+  }
+
+  static convertSubtitleFormatting(text) {
+    return text
+        .replace(/\{\\([ibu])1\}/g, '<$1>') // convert {\b1}, {\i1}, {\u1} to <b>, <i>, <u>
+        .replace(/\{\\([ibu])\}/g, '</$1>') // convert {\b}, {\i}, {\u} to </b>, </i>, </u>
+        .replace(/\{([ibu])\}/g, '<$1>') // convert {b}, {i}, {u} to <b>, <i>, <u>
+        .replace(/\{\/([ibu])\}/g, '</$1>') // convert {/b}, {/i}, {/u} to </b>, </i>, </u>
+        .replace(/(\r\n|\n)\{\\an8\}/g, ' line:5%\n'); // handle top positioning
   }
 }

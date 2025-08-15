@@ -254,6 +254,9 @@ export class VideoAnalyzer extends EventEmitter {
     };
 
     player.on(DefaultPlayerEvents.LOADEDMETADATA, onLoadMeta);
+
+    this.client.attachProcessorsToPlayer(player);
+
     await player.setSource(this.source);
     return player;
   }
