@@ -81,7 +81,7 @@ export class TrackFilter {
   }
 
   static isTrackMP4(track) {
-    return !(track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4');
+    return (track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4');
   }
 
   static prioritizeLang(tracks, lang) {
