@@ -75,6 +75,11 @@ export default class DashPlayer extends EventEmitter {
       return TrackFilter.filterTracks(tracks, lang, this.defaultQuality);
     });
 
+    this.dash.setCustomBitrateSelectionFunction((representations, bitrate, mediaInfo)=>{
+      const result = TrackFilter.selectRepresentationByQuality(representations, mediaInfo, this.defaultQuality);
+      return result;
+    });
+
     this.dash.on('needkey', (e) => {
       this.emit(DefaultPlayerEvents.NEED_KEY);
     });

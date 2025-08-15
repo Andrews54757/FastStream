@@ -81,7 +81,7 @@ export class TrackFilter {
   }
 
   static isTrackMP4(track) {
-    return track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4';
+    return !(track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4');
   }
 
   static prioritizeLang(tracks, lang) {
@@ -219,8 +219,10 @@ export class TrackFilter {
     return result;
   }
 
-  static getLevelList(tracks, lang) {
-    tracks = this.prioritizeLang(tracks, lang);
+  static getLevelList(tracks, lang = null) {
+    if (lang) {
+      tracks = this.prioritizeLang(tracks, lang);
+    }
     tracks = this.filterTracksByCodec(tracks);
     const result = this.prioritizeMP4WithQuality(tracks);
     // make into map
@@ -259,6 +261,28 @@ export class TrackFilter {
     }
 
     return tracks;
+  }
+
+  static selectRepresentationByQuality(representations, mediaInfo, defaultQuality) {
+    if (representations.length > 1 && mediaInfo.type === 'video') {
+      const levelList = this.getLevelList([mediaInfo]);
+      const chosenQuality = Utils.selectQuality(levelList, defaultQuality);
+      const representation = representations.find((rep) => {
+        return rep.id === chosenQuality;
+      });
+      if (representation) {
+        return [representation];
+      }
+    }
+
+    // fallback to highest bitrate
+    // sort representations by bitrate
+    const sortedReps = representations.slice();
+    sortedReps.sort((a, b) => {
+      return a.bandwidth - b.bandwidth;
+    });
+
+    return [sortedReps[sortedReps.length - 1]];
   }
 }
 
