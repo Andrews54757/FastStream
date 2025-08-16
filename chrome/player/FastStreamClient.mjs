@@ -235,15 +235,25 @@ export class FastStreamClient extends EventEmitter {
     if (!this.options.focusMode) {
       // Clear any focus mode status if not enabled
       this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, null);
+      // Resume downloads if they were paused by focus mode
+      if (this.downloadManager.paused) {
+        this.downloadManager.resume();
+      }
       return;
     }
 
     if (this.isTabActive()) {
-      // Tab is active - downloads allowed
+      // Tab is active - allow downloads
+      if (this.downloadManager.paused) {
+        this.downloadManager.resume();
+      }
       this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
-        Localize.getMessage('player_focus_mode_active'), 'success', 3000);
+        Localize.getMessage('player_focus_mode_active'), 'success', 5000);
     } else {
-      // Tab is inactive - downloads paused  
+      // Tab is inactive - pause downloads
+      if (!this.downloadManager.paused) {
+        this.downloadManager.pause();
+      }
       this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
         Localize.getMessage('player_focus_mode_paused'), 'warning');
     }
@@ -295,6 +305,8 @@ export class FastStreamClient extends EventEmitter {
     this.options.miniPos = options.miniPos;
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.maximumDownloaders = options.maximumDownloaders;
+    this.options.lazyLoadVideos = options.lazyLoadVideos;
+    this.options.focusMode = options.focusMode;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -318,6 +330,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoZoom = options.videoZoom;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
+
+    // Update Focus Mode status when options change
+    this.updateFocusModeStatus();
 
     this.loadProgressData();
 
@@ -897,18 +912,7 @@ export class FastStreamClient extends EventEmitter {
       return false;
     }
 
-    // Don't pre-download if Focus Mode is enabled and this tab is not active
-    if (this.options.focusMode && !this.isTabActive()) {
-      // Show focus mode status when downloads are paused
-      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
-        Localize.getMessage('player_focus_mode_paused'), 'info');
-      return false;
-    }
 
-    // Clear focus mode status when downloads are active
-    if (this.options.focusMode && this.isTabActive()) {
-      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, null);
-    }
 
     // throttle download speed if needed
     const speed = this.downloadManager.getSpeed();
