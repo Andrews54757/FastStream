@@ -1068,19 +1068,32 @@
 
     const videos = Array.from(querySelectorAllIncludingShadows('video'));
 
-    let visibleVideos = await Promise.all(videos.map(async (video) => {
+    let videoData = await Promise.all(videos.map(async (video) => {
       const visibleRatio = await isVisible(video);
       const rect = video.getBoundingClientRect();
+      const totalArea = rect.width * rect.height;
       return {
         video: video,
-        visibleArea: rect.width * rect.height * visibleRatio,
+        visibleArea: totalArea * visibleRatio,
+        totalArea: totalArea,
+        visibleRatio: visibleRatio,
       };
     }));
 
-    visibleVideos = visibleVideos.filter((v) => v.visibleArea > 0);
+    // First try to find visible videos
+    let visibleVideos = videoData.filter((v) => v.visibleArea > 0);
+    
+    // If no visible videos found (e.g., in background tab or not in viewport),
+    // fall back to videos with actual dimensions
+    if (visibleVideos.length === 0) {
+      visibleVideos = videoData.filter((v) => v.totalArea > 0);
+    }
 
     const largestVideo = visibleVideos.reduce((prev, current) => {
-      return (prev && prev.visibleArea > current.visibleArea) ? prev : current;
+      // Prefer visible videos, then fall back to total area
+      const prevScore = prev ? (prev.visibleArea > 0 ? prev.visibleArea : prev.totalArea * 0.1) : 0;
+      const currentScore = current.visibleArea > 0 ? current.visibleArea : current.totalArea * 0.1;
+      return prevScore > currentScore ? prev : current;
     }, null);
 
     if (!largestVideo) {
@@ -1090,9 +1103,10 @@
     const parentElementsWithSameBounds = getParentElementsWithSameBounds(largestVideo.video);
     return {
       video: largestVideo.video,
-      size: largestVideo.visibleArea,
+      size: largestVideo.visibleArea || largestVideo.totalArea,
       parents: parentElementsWithSameBounds,
       highest: parentElementsWithSameBounds.length > 0 ? parentElementsWithSameBounds[parentElementsWithSameBounds.length - 1] : largestVideo.video,
+      isVisible: largestVideo.visibleRatio > 0,
     };
   }
 

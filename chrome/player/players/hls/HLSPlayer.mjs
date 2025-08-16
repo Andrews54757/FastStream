@@ -392,7 +392,23 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   set currentLevel(value) {
-    this.hls.currentLevel = this.getIndexes(value).levelID;
+    // Use loadLevel for quality switching instead of currentLevel
+    // currentLevel is read-only in HLS.js and represents the currently playing level
+    // loadLevel is what we should set for quality switching
+    try {
+      const levelID = this.getIndexes(value).levelID;
+      if (levelID >= 0 && levelID < this.hls.levels.length) {
+        this.hls.loadLevel = levelID;
+        // Immediately start loading the new level if playing
+        if (!this.video.paused) {
+          this.hls.currentLevel = -1; // Force level switch
+        }
+      } else {
+        console.warn('Invalid level ID for quality switch:', levelID);
+      }
+    } catch (e) {
+      console.error('Error switching quality level:', e);
+    }
   }
 
   get duration() {

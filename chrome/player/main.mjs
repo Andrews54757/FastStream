@@ -251,6 +251,8 @@ async function loadOptions() {
   try {
     OPTIONS = await Utils.getOptionsFromStorage();
     window.fastStream.setOptions(OPTIONS);
+    // Update focus mode status when options change
+    window.fastStream.updateFocusModeStatus();
   } catch (e) {
     console.error(e);
   }
@@ -277,7 +279,10 @@ async function setup() {
       }
       window.fastStream.loadAnalyzerData(data.analyzerData);
       window.fastStream.setMediaInfo(data.mediaInfo);
-      window.fastStream.setNeedsUserInteraction(!data.isMainPlayer);
+      
+      // Set user interaction requirement based on lazy loading setting and player type
+      const needsInteraction = !data.isMainPlayer || (window.fastStream.options && window.fastStream.options.lazyLoadVideos);
+      window.fastStream.setNeedsUserInteraction(needsInteraction);
 
       console.log('Recieved data', data);
       window.fastStream.setupPoll();

@@ -79,6 +79,7 @@ export class TabHolder {
 
     this.isOn = false;
     this.url = '';
+    this.active = false; // Track if tab is currently active
 
     this.reset();
   }

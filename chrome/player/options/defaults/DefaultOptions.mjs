@@ -13,6 +13,7 @@ export const DefaultOptions = {
   playStreamURLs: false,
   analyzeVideos: false,
   downloadAll: true,
+  lazyLoadVideos: true, // Only start buffering after user interaction
   previewEnabled: true,
   autoEnableBestSubtitles: false,
   storeProgress: true,
@@ -21,6 +22,8 @@ export const DefaultOptions = {
   defaultYoutubeClient: YoutubeClients.WEB,
   defaultQuality: `Auto`,
   autoEnableURLs: [],
+  autoEnableEverywhere: false, // Auto-enable on all domains
+  focusMode: false, // Only allow downloading in active tab to save bandwidth
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
   videoBrightness: 1,
@@ -44,4 +47,5 @@ export const DefaultOptions = {
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,
   videoDelay: 0,
   maximumDownloaders: 6,
+  backgroundTabDelay: 100, // Shorter delay for background tabs (ms)
 };

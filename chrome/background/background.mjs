@@ -103,8 +103,24 @@ chrome.tabs.onRemoved.addListener((tabid, removed) => {
   Tabs.removeTab(tabid);
 });
 
+// Track tab activation for better background tab handling
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  // Mark previous active tabs as inactive
+  for (const tab of Tabs.tabs.values()) {
+    tab.active = false;
+  }
+  // Mark the new active tab
+  const activeTab = Tabs.getTabOrCreate(activeInfo.tabId);
+  activeTab.active = true;
+});
+
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
   const tab = Tabs.getTabOrCreate(tabid);
+  
+  // Update active state based on tab object
+  if (tabobj && typeof tabobj.active !== 'undefined') {
+    tab.active = tabobj.active;
+  }
 
   if (changeInfo.url) {
     const url = new URL(changeInfo.url);
@@ -138,17 +154,21 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
       return false;
     });
 
-    const shouldAutoEnable = match && !match.negative;
+    // Check for global auto-enable option
+    const shouldAutoEnable = Options.autoEnableEverywhere || (match && !match.negative);
+    
+    // If global auto-enable is on, check if this domain is explicitly excluded
+    const isExcluded = Options.autoEnableEverywhere && match && match.negative;
 
 
     if (BackgroundUtils.isUrlPlayerUrl(tab.url)) {
       tab.isOn = true;
       tab.regexMatched = true;
-    } else if (shouldAutoEnable && !tab.regexMatched) {
+    } else if (shouldAutoEnable && !isExcluded && !tab.regexMatched) {
       tab.regexMatched = true;
       tab.isOn = true;
       openPlayersWithSources(tab);
-    } else if (!shouldAutoEnable && tab.regexMatched) {
+    } else if ((!shouldAutoEnable || isExcluded) && tab.regexMatched) {
       tab.isOn = false;
       tab.regexMatched = false;
     }
@@ -1206,11 +1226,14 @@ async function onSourceRecieved(details, frame, mode) {
 
   if (frame.tab.isOn) {
     clearTimeout(frame.openTimeout);
+    // Use shorter delay for background tabs to improve responsiveness
+    const backgroundDelay = Options.backgroundTabDelay || 100;
+    const delay = frame.tab.active ? Options.replaceDelay : Math.min(Options.replaceDelay, backgroundDelay);
     frame.openTimeout = setTimeout(() => {
       if (frame.tab.isOn) {
         openPlayer(frame);
       }
-    }, Options.replaceDelay);
+    }, delay);
   }
 
   sendSourcesToMainFramePlayers(frame);

@@ -13,6 +13,7 @@ export const StatusTypes = {
   SUBTITLES: 'subtitles',
   COPY: 'copy',
   CHAPTER: 'chapter',
+  FOCUS_MODE: 'focus-mode',
 };
 
 export class StatusManager {
@@ -31,6 +32,7 @@ export class StatusManager {
     this.registerStatusLevel(StatusTypes.SILENCE_SKIP, 1);
     this.registerStatusLevel(StatusTypes.SUBTITLES, 1);
     this.registerStatusLevel(StatusTypes.COPY, 1);
+    this.registerStatusLevel(StatusTypes.FOCUS_MODE, 1);
 
     this.registerStatusLevel(StatusTypes.CHAPTER, 2);
   }

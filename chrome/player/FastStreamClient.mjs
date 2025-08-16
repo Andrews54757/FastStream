@@ -128,6 +128,11 @@ export class FastStreamClient extends EventEmitter {
       }
     });
 
+    // Listen for tab visibility changes for Focus Mode
+    document.addEventListener('visibilitychange', () => {
+      this.updateFocusModeStatus();
+    });
+
     this.player = null;
     this.syncedAudioPlayer = null;
     this.previewPlayer = null;
@@ -210,6 +215,48 @@ export class FastStreamClient extends EventEmitter {
 
   setNeedsUserInteraction(value) {
     this._needsUserInteraction = value;
+    // If lazy loading is enabled, require user interaction for all non-main players
+    if (this.options && this.options.lazyLoadVideos && value) {
+      this._needsUserInteraction = true;
+    }
+  }
+
+  isTabActive() {
+    // Check if the current tab/window is active
+    if (EnvUtils.isExtension()) {
+      // In extension context, check document visibility
+      return !document.hidden;
+    }
+    // In web context, assume active
+    return true;
+  }
+
+  updateFocusModeStatus() {
+    if (!this.options.focusMode) {
+      // Clear any focus mode status if not enabled
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, null);
+      // Resume downloads if they were paused by focus mode
+      if (this.downloadManager.paused) {
+        this.downloadManager.resume();
+      }
+      return;
+    }
+
+    if (this.isTabActive()) {
+      // Tab is active - allow downloads
+      if (this.downloadManager.paused) {
+        this.downloadManager.resume();
+      }
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
+        Localize.getMessage('player_focus_mode_active'), 'success', 5000);
+    } else {
+      // Tab is inactive - pause downloads
+      if (!this.downloadManager.paused) {
+        this.downloadManager.pause();
+      }
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
+        Localize.getMessage('player_focus_mode_paused'), 'warning');
+    }
   }
 
   setSeekSave(value) {
@@ -258,6 +305,8 @@ export class FastStreamClient extends EventEmitter {
     this.options.miniPos = options.miniPos;
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.maximumDownloaders = options.maximumDownloaders;
+    this.options.lazyLoadVideos = options.lazyLoadVideos;
+    this.options.focusMode = options.focusMode;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -281,6 +330,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoZoom = options.videoZoom;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
+
+    // Update Focus Mode status when options change
+    this.updateFocusModeStatus();
 
     this.loadProgressData();
 
@@ -855,10 +907,12 @@ export class FastStreamClient extends EventEmitter {
       return false;
     }
 
-    // Don't pre-download if user needs to interact
-    if (this.needsUserInteraction()) {
+    // Don't pre-download if user needs to interact or lazy loading is enabled
+    if (this.needsUserInteraction() || (this.options.lazyLoadVideos && !this.state.hasUserInteracted)) {
       return false;
     }
+
+
 
     // throttle download speed if needed
     const speed = this.downloadManager.getSpeed();
