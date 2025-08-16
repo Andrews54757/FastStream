@@ -23,6 +23,7 @@ const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
+const autoEnableEverywhere = document.getElementById('autoEnableEverywhere');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
@@ -45,6 +46,8 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
+const backgroundTabDelay = document.getElementById('backgroundtabdelay');
+const lazyLoad = document.getElementById('lazyload');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -99,6 +102,8 @@ async function loadOptions(newOptions) {
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
+  backgroundTabDelay.value = Options.backgroundTabDelay || 100;
+  lazyLoad.checked = Options.lazyLoadVideos;
   maxdownloaders.value = Options.maximumDownloaders;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
@@ -143,6 +148,7 @@ async function loadOptions(newOptions) {
   });
 
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
+  autoEnableEverywhere.checked = Options.autoEnableEverywhere;
 
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
@@ -397,6 +403,16 @@ replaceDelay.addEventListener('change', () => {
   optionChanged();
 });
 
+backgroundTabDelay.addEventListener('change', () => {
+  Options.backgroundTabDelay = parseInt(backgroundTabDelay.value);
+  optionChanged();
+});
+
+lazyLoad.addEventListener('change', () => {
+  Options.lazyLoadVideos = lazyLoad.checked;
+  optionChanged();
+});
+
 miniSize.addEventListener('change', () => {
   Options.miniSize = Math.min(Math.max(parseFloat(miniSize.value) || 0.25, 0.01), 1);
   optionChanged();
@@ -422,6 +438,11 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('input', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  optionChanged();
+});
+
+autoEnableEverywhere.addEventListener('change', () => {
+  Options.autoEnableEverywhere = autoEnableEverywhere.checked;
   optionChanged();
 });
 

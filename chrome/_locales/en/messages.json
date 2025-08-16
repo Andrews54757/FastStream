@@ -905,6 +905,12 @@
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"
     },
+    "options_general_background_tab_delay": {
+        "message": "Delay for background tabs (ms)"
+    },
+    "options_general_lazy_load": {
+        "message": "Lazy load videos (start buffering only after interaction)"
+    },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos if possible"
     },
@@ -995,8 +1001,11 @@
     "options_autourl_header": {
         "message": "Auto-enable URLs"
     },
+    "options_auto_enable_everywhere": {
+        "message": "Auto-enable on all domains (use exclusions below to disable on specific sites)"
+    },
     "options_autourl_body": {
-        "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line. To exclude sites, prepend with an exclamation mark (!)."
+        "message": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line. To exclude sites, prepend with an exclamation mark (!). When 'Auto-enable on all domains' is checked above, the URLs below will be treated as exclusions only."
     },
     "options_autourl_hint": {
         "message": "Hint: Test regex on"
