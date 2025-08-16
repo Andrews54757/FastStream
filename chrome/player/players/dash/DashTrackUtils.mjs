@@ -1,7 +1,7 @@
-import {AudioLevel, VideoLevel} from '../../Levels.mjs';
+import {AudioLevel, VideoLevel} from '../Levels.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 
-export class TrackFilter {
+export class DashTrackUtils {
   static getTracksWithHighestSelectionPriority(trackArr) {
     let max = 0;
     let result = [];
@@ -235,8 +235,6 @@ export class TrackFilter {
   // }
 
   static getVideoLevelList(tracks) {
-    tracks = this.filterTracksByCodec(tracks); // remove unsupported codecs
-
     // make into map
     const map = new Map();
 
@@ -256,7 +254,8 @@ export class TrackFilter {
           bitrate: data.bandwidth,
           mimeType: track.mimeType,
           language: track.lang,
-          codec: track.codec,
+          videoCodec: track.codec,
+          track: track,
         }));
       });
     });
@@ -264,8 +263,6 @@ export class TrackFilter {
   }
 
   static getAudioLevelList(tracks) {
-    tracks = this.filterTracksByCodec(tracks); // remove unsupported codecs
-
     // make into map
     const map = new Map();
 
@@ -283,7 +280,8 @@ export class TrackFilter {
           bitrate: data.bandwidth,
           mimeType: track.mimeType,
           language: track.lang,
-          codec: track.codec,
+          audioCodec: track.codec,
+          track: track,
         }));
       });
     });

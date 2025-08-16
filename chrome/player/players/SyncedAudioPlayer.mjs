@@ -93,7 +93,6 @@ export class SyncedAudioPlayer extends EventEmitter {
         // TODO: fix levels
         // player.currentLevel = this.client.currentLevel;
         // player.currentAudioLevel = this.client.currentAudioLevel;
-        player.load();
       });
 
       player.on(DefaultPlayerEvents.ERROR, (msg) => {

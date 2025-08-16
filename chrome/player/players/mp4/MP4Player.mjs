@@ -225,9 +225,10 @@ export default class MP4Player extends EventEmitter {
     }
 
     this.setFragmentTimes();
-    this.emit(DefaultPlayerEvents.MANIFEST_PARSED, 0);
+    this.emit(DefaultPlayerEvents.MANIFEST_PARSED);
     this.updateDuration();
     this.setupHLS();
+    this.load();
   }
 
   getVideo() {

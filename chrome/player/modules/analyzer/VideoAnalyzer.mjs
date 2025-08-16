@@ -247,7 +247,6 @@ export class VideoAnalyzer extends EventEmitter {
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
       // TODO: fix levels
       // player.currentLevel = this.client.currentLevel;
-      player.load();
     });
 
     const onLoadMeta = () => {

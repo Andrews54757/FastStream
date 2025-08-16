@@ -1,7 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
-import {AudioLevel, VideoLevel} from '../../Levels.mjs';
+import {AudioLevel, VideoLevel} from '../Levels.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {Hls} from '../../modules/hls.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -233,11 +233,17 @@ export default class HLSPlayer extends EventEmitter {
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      const level = Utils.selectQuality(this.getVideoLevels(), this.defaultQuality);
-      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
+      this.emit(DefaultPlayerEvents.MANIFEST_PARSED);
+
+      const chosen = this.client.getLevelManager().pickVideoLevel(Array.from(this.getVideoLevels().values()));
+      if (chosen) {
+        this.setCurrentVideoLevelID(chosen.id);
+      }
 
       this.hls.subtitleDisplay = false;
       this.hls.subtitleTrack = -1;
+
+      this.load();
     });
 
     this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {
@@ -381,8 +387,8 @@ export default class HLSPlayer extends EventEmitter {
 
   getVideoLevels() {
     const result = new Map();
-    this.hls.levels.forEach((level) => {
-      const identifier = this.getIdentifier(0, level.id);
+    this.hls.levels.forEach((level, index) => {
+      const identifier = this.getIdentifier(0, index);
       result.set(identifier, new VideoLevel({
         id: identifier,
         width: level.width,
@@ -399,8 +405,8 @@ export default class HLSPlayer extends EventEmitter {
 
   getAudioLevels() {
     const result = new Map();
-    this.hls.audioTracks.forEach((track) => {
-      const identifier = this.getIdentifier(1, track.id);
+    this.hls.audioTracks.forEach((track, index) => {
+      const identifier = this.getIdentifier(1, index);
       result.set(identifier, new AudioLevel({
         id: identifier,
         bitrate: track.bitrate,
@@ -430,7 +436,7 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   getCurrentAudioLevelID() {
-    return this.getIdentifier(1, this.hls.audioTrack);
+    return this.hls.audioTrack === -1 ? null : this.getIdentifier(1, this.hls.audioTrack);
   }
 
   setCurrentAudioLevelID(value) {

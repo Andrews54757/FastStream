@@ -8,7 +8,7 @@ import {VideoUtils} from '../../utils/VideoUtils.mjs';
 import {DashFragment} from './DashFragment.mjs';
 import {DashFragmentRequester} from './DashFragmentRequester.mjs';
 import {DASHLoaderFactory} from './DashLoader.mjs';
-import {TrackFilter} from './TrackFilter.mjs';
+import {DashTrackUtils} from './DashTrackUtils.mjs';
 
 export default class DashPlayer extends EventEmitter {
   constructor(client, config) {
@@ -21,10 +21,6 @@ export default class DashPlayer extends EventEmitter {
     this.video = document.createElement(this.isAudioOnly ? 'audio' : 'video');
 
     this.fragmentRequester = new DashFragmentRequester(this);
-
-    this.desiredVideoLevel = null;
-    this.desiredAudioLevel = null;
-
     this.activeRequests = [];
   }
 
@@ -71,13 +67,56 @@ export default class DashPlayer extends EventEmitter {
     this.dash.updateSettings(newSettings);
 
     this.dash.setCustomInitialTrackSelectionFunction((tracks) => {
-      const lang = navigator.language || 'en';
-      return TrackFilter.filterTracks(tracks, lang, this.defaultQuality);
+      const type = tracks[0]?.type;
+      if (type === 'video') {
+        const levels = DashTrackUtils.getVideoLevelList(tracks);
+        const chosen = this.client.getLevelManager().pickVideoLevel(Array.from(levels.values()));
+        if (chosen) {
+          return [chosen.track];
+        } else {
+          console.warn('No matching video track found for chosen level, falling back to all tracks', tracks, chosen);
+          return tracks;
+        }
+      } else if (type === 'audio') {
+        const levels = DashTrackUtils.getAudioLevelList(tracks);
+        const chosen = this.client.getLevelManager().pickAudioLevel(Array.from(levels.values()));
+        if (chosen) {
+          return [chosen.track];
+        } else {
+          console.warn('No matching audio track found for chosen level, falling back to all tracks', tracks, chosen);
+          return tracks;
+        }
+      }
+      return tracks;
     });
 
     this.dash.setCustomBitrateSelectionFunction((representations, bitrate, mediaInfo) => {
-      const result = TrackFilter.selectRepresentationByQuality(representations, mediaInfo, this.defaultQuality);
-      return result;
+      const type = mediaInfo.type;
+      if (type === 'video') {
+        const levels = DashTrackUtils.getVideoLevelList([mediaInfo]);
+        const chosen = this.client.getLevelManager().pickVideoLevel(Array.from(levels.values()));
+        const result = representations.filter((rep) => {
+          return chosen && rep.id === chosen.id;
+        });
+        if (result.length === 0) {
+          return representations;
+        } else {
+          return result;
+        }
+      } else if (type === 'audio') {
+        const levels = DashTrackUtils.getAudioLevelList([mediaInfo]);
+        const chosen = this.client.getLevelManager().pickAudioLevel(Array.from(levels.values()));
+        const result = representations.filter((rep) => {
+          return chosen && rep.id === chosen.id;
+        });
+        if (result.length === 0) {
+          console.warn('No matching audio representation found for chosen level, falling back to all representations', representations, chosen);
+          return representations;
+        } else {
+          return result;
+        }
+      }
+      return representations;
     });
 
     this.dash.on('needkey', (e) => {
@@ -108,10 +147,6 @@ export default class DashPlayer extends EventEmitter {
 
     this.dash.on('currentTrackChanged', (a) => {
       this.extractAllFragments();
-    });
-
-    this.dash.on(MediaPlayer.events.STREAM_INITIALIZED, (e) => {
-      this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
     });
 
     // eslint-disable-next-line new-cap
@@ -252,7 +287,7 @@ export default class DashPlayer extends EventEmitter {
   getVideoLevels() {
     try {
       const tracks = this.dash.getTracksFor('video');
-      return TrackFilter.getVideoLevelList(tracks);
+      return DashTrackUtils.getVideoLevelList(tracks);
     } catch (e) {
       console.warn(e);
       return new Map();
@@ -262,7 +297,7 @@ export default class DashPlayer extends EventEmitter {
   getAudioLevels() {
     try {
       const tracks = this.dash.getTracksFor('audio');
-      return TrackFilter.getAudioLevelList(tracks);
+      return DashTrackUtils.getAudioLevelList(tracks);
     } catch (e) {
       console.warn(e);
       return new Map();
@@ -361,10 +396,10 @@ export default class DashPlayer extends EventEmitter {
   }
 
   async saveVideo(options) {
-    const fragments = this.client.getFragments(this.getCurrentVideoLevelID()) || [];
+    const videoFragments = this.client.getFragments(this.getCurrentVideoLevelID()) || [];
     const audioFragments = this.client.getFragments(this.getCurrentAudioLevelID()) || [];
 
-    let zippedFragments = Utils.zipTimedFragments([fragments, audioFragments]);
+    let zippedFragments = Utils.zipTimedFragments([videoFragments, audioFragments]);
 
     if (options.partialSave) {
       zippedFragments = zippedFragments.filter((data) => {
@@ -398,7 +433,7 @@ export default class DashPlayer extends EventEmitter {
     const videoDuration = videoProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
     const audioDuration = audioProcessor?.getMediaInfo()?.streamInfo?.duration || 0;
 
-    const videoInitSegment = fragments?.[-1];
+    const videoInitSegment = videoFragments?.[-1];
     const audioInitSegment = audioFragments?.[-1];
 
     // if init segments are not downloaded, we will try to download them

@@ -145,7 +145,8 @@ export class VideoQualityChanger extends EventEmitter {
         e.stopPropagation();
       });
 
-      if (levelKey === currentLevel) {
+      const isLevelActive = false; // levelKey === currentLevel;
+      if (isLevelActive) {
         levelelement.classList.add('source_active');
       }
 
@@ -155,11 +156,13 @@ export class VideoQualityChanger extends EventEmitter {
       const text = document.createElement('span');
       const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
 
-      text.textContent = (levelKey === currentLevel) ? label + ' ' + Localize.getMessage('player_quality_current') : label;
+      text.textContent = isLevelActive ? label + ' ' + Localize.getMessage('player_quality_current') : label;
       levelelement.appendChild(text);
 
       DOMElements.videoSourceList.appendChild(levelelement);
     });
+
+    return;
 
     const current = levels.get(currentLevel);
     if (!current) {

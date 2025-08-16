@@ -32,6 +32,7 @@ import {VirtualAudioNode} from './ui/audio/VirtualAudioNode.mjs';
 import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
 import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
 import {MessageTypes} from './enums/MessageTypes.mjs';
+import {LevelManager} from './players/LevelManager.mjs';
 
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
@@ -103,6 +104,7 @@ export class FastStreamClient extends EventEmitter {
 
     this.progressMemory = null;
     this.playerLoader = new PlayerLoader();
+    this.levelManager = new LevelManager(this);
     this.interfaceController = new InterfaceController(this);
     this.keybindManager = new KeybindManager(this);
     this.downloadManager = new DownloadManager(this);
@@ -136,6 +138,10 @@ export class FastStreamClient extends EventEmitter {
     this.pastUnseeks = [];
     this.fragmentsStore = {};
     this.mainloop();
+  }
+
+  getLevelManager() {
+    return this.levelManager;
   }
 
   async setup() {
@@ -614,6 +620,14 @@ export class FastStreamClient extends EventEmitter {
       await this.resetPlayer();
       this.source = source;
 
+      if (source.defaultLevelInfo?.level !== undefined) {
+        this.getLevelManager().setCurrentVideoLevelID(source.defaultLevelInfo.level);
+      }
+
+      if (source.defaultLevelInfo?.audio !== undefined) {
+        this.getLevelManager().setCurrentAudioLevelID(source.defaultLevelInfo.audio);
+      }
+
       this.storageAvailable = await EnvUtils.getAvailableStorage();
 
       const options = {};
@@ -1062,6 +1076,7 @@ export class FastStreamClient extends EventEmitter {
     this.hasDownloadSpace = true;
     this.previousLevel = -1;
     this.previousAudioLevel = -1;
+    this.getLevelManager().reset();
 
     await Promise.all(promises);
   }
@@ -1073,26 +1088,8 @@ export class FastStreamClient extends EventEmitter {
 
   bindPlayer(player) {
     this.context = player.createContext();
-    this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
-      console.log('MANIFEST_PARSED', maxLevel, maxAudioLevel);
-      // if (maxLevel !== undefined) { // TODO: Fix
-      //   if (source.defaultLevelInfo?.level !== undefined) {
-      //     this.currentLevel = source.defaultLevelInfo.level;
-      //   } else {
-      //     this.currentLevel = maxLevel;
-      //   }
-      // } else {
-      //   console.warn('No recommended level found');
-      // }
-      // if (maxAudioLevel !== undefined) {
-      //   if (source.defaultLevelInfo?.audio !== undefined) {
-      //     this.currentAudioLevel = source.defaultLevelInfo.audio;
-      //   } else {
-      //     this.currentAudioLevel = maxAudioLevel;
-      //   }
-      // }
-
-      this.player.load();
+    this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
+      console.log('MANIFEST_PARSED');
       this.updateQualityLevels();
     });
 
@@ -1228,9 +1225,7 @@ export class FastStreamClient extends EventEmitter {
     this.previewContext = player.createContext();
 
     this.previewContext.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      // TODO: Fix
-      // player.setCurrentVideoLevelID(this.getCurrentVideoLevelID());
-      player.load();
+      player.setCurrentVideoLevelID(this.getCurrentVideoLevelID());
     });
 
     this.previewContext.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {

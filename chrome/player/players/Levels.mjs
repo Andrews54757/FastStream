@@ -8,6 +8,7 @@ export class VideoLevel {
     language,
     videoCodec,
     audioCodec,
+    track,
   }) {
     this.id = id;
     this.width = width;
@@ -17,6 +18,7 @@ export class VideoLevel {
     this.language = language;
     this.videoCodec = videoCodec;
     this.audioCodec = audioCodec;
+    this.track = track;
   }
 }
 
@@ -27,11 +29,13 @@ export class AudioLevel {
     mimeType,
     language,
     audioCodec,
+    track,
   }) {
     this.id = id;
     this.bitrate = bitrate;
     this.mimeType = mimeType;
     this.language = language;
     this.audioCodec = audioCodec;
+    this.track = track;
   }
 }
