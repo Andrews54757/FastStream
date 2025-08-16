@@ -189,7 +189,8 @@ export class VideoAnalyzer extends EventEmitter {
       const fragments = this.client.fragments;
       if (!fragments || fragments.length === 0) return false;
 
-      if (this.client.currentLevel === -1) return false;
+      // TODO: fix levels
+      // if (this.client.currentLevel === -1) return false;
 
       const start = fragments.find((fragment) => {
         return fragment && fragment.start <= timeStart && fragment.end >= timeStart;
@@ -244,7 +245,8 @@ export class VideoAnalyzer extends EventEmitter {
     await player.setup();
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.client.currentLevel;
+      // TODO: fix levels
+      // player.currentLevel = this.client.currentLevel;
       player.load();
     });
 

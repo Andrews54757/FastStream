@@ -56,7 +56,8 @@ export class InterfaceController {
     this.videoQualityChanger = new VideoQualityChanger();
     this.videoQualityChanger.setupUI();
     this.videoQualityChanger.on('qualityChanged', (level) => {
-      this.client.currentLevel = level;
+      // TODO: set level
+      // this.client.currentLevel = level;
     });
 
     this.languageChanger = new LanguageChanger();

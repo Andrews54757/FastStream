@@ -291,7 +291,7 @@ export default class MP4Player extends EventEmitter {
   }
 
   setFragmentTimes() {
-    this.levels.forEach((level, l) => {
+    this.getVideoLevels().forEach((level, l) => {
       const frags = this.client.getFragments(l);
       let currentFragment = frags[0];
       currentFragment.start = 0;
@@ -538,8 +538,7 @@ export default class MP4Player extends EventEmitter {
     return this.video.paused;
   }
 
-
-  get levels() {
+  getVideoLevels() {
     if (!this.metaData) return new Map();
     const track = this.metaData.videoTracks[0];
     const result = new Map();
@@ -552,12 +551,8 @@ export default class MP4Player extends EventEmitter {
     return result;
   }
 
-  get currentLevel() {
+  getCurrentVideoLevelID() {
     return this.currentVideoTrack;
-  }
-
-  set currentLevel(value) {
-
   }
 
   get duration() {
@@ -654,7 +649,7 @@ export default class MP4Player extends EventEmitter {
   }
 
   canSave() {
-    const frags = this.client.getFragments(this.currentLevel);
+    const frags = this.client.getFragments(this.getCurrentVideoLevelID());
     if (!frags) {
       return {
         canSave: false,

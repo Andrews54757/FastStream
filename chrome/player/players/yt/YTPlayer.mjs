@@ -596,9 +596,9 @@ export default class YTPlayer extends DashPlayer {
   }
 
   getActiveTrackFormats(activeFormat, sabrFormats) {
-    const videoFormat = sabrFormats.find((format) => format.itag === parseInt(this.currentLevel) && format.mimeType.startsWith('video/'));
+    const videoFormat = sabrFormats.find((format) => format.itag === parseInt(this.getCurrentVideoLevelID()) && format.mimeType.startsWith('video/'));
 
-    const audioParts = (this.currentAudioLevel || '').split('-');
+    const audioParts = (this.getCurrentAudioLevelID() || '').split('-');
     const itag = parseInt(audioParts[0]);
     let audioTrackId;
     let isDrc = false;

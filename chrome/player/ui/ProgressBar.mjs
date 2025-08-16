@@ -250,11 +250,11 @@ export class ProgressBar extends EventEmitter {
     const player = this.client.player;
     const duration = player.duration;
 
-    const currentLevel = player.currentLevel;
-    const currentAudioLevel = player.currentAudioLevel;
+    const currentVideoLevelID = player.getCurrentVideoLevelID();
+    const currentAudioLevelID = player.getCurrentAudioLevelID();
 
-    const fragments = this.client.getFragments(currentLevel);
-    const audioFragments = this.client.getFragments(currentAudioLevel);
+    const fragments = this.client.getFragments(currentVideoLevelID);
+    const audioFragments = this.client.getFragments(currentAudioLevelID);
 
     let total = 0;
     let loaded = 0;

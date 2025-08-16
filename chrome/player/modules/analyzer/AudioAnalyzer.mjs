@@ -240,8 +240,9 @@ export class AudioAnalyzer extends EventEmitter {
     });
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.client.currentLevel;
-      player.currentAudioLevel = this.client.currentAudioLevel;
+      // TODO: fix levels
+      // player.currentLevel = this.client.currentLevel;
+      // player.currentAudioLevel = this.client.currentAudioLevel;
       player.load();
     });
 
@@ -448,18 +449,19 @@ export class AudioAnalyzer extends EventEmitter {
 
   setLevel(level, audioLevel) {
     if (this.backgroundAnalyzerPlayer) {
-      const changed = this.backgroundAnalyzerPlayer.currentAudioLevel !== audioLevel;
-      this.backgroundAnalyzerPlayer.currentLevel = level;
-      this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
-      if (changed) {
-        this.backgroundDoneRanges.length = 0;
-        this.vadBuffer = [];
-        this.volumeBuffer = [];
-        if (this.backgroundAnalyzerStatus !== AnalyzerStatus.RUNNING) {
-          this.reset();
-        }
-        this.emit('audioLevelChanged', audioLevel);
-      }
+      // const changed = this.backgroundAnalyzerPlayer.currentAudioLevel !== audioLevel;
+      // // TODO: fix levels
+      // // this.backgroundAnalyzerPlayer.currentLevel = level;
+      // // this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
+      // if (changed) {
+      //   this.backgroundDoneRanges.length = 0;
+      //   this.vadBuffer = [];
+      //   this.volumeBuffer = [];
+      //   if (this.backgroundAnalyzerStatus !== AnalyzerStatus.RUNNING) {
+      //     this.reset();
+      //   }
+      //   this.emit('audioLevelChanged', audioLevel);
+      // }
     }
   }
 

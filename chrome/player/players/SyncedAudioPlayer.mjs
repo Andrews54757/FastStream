@@ -90,8 +90,9 @@ export class SyncedAudioPlayer extends EventEmitter {
       player.playbackRate = this.playbackRate;
 
       player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        player.currentLevel = this.client.currentLevel;
-        player.currentAudioLevel = this.client.currentAudioLevel;
+        // TODO: fix levels
+        // player.currentLevel = this.client.currentLevel;
+        // player.currentAudioLevel = this.client.currentAudioLevel;
         player.load();
       });
 
@@ -305,11 +306,12 @@ export class SyncedAudioPlayer extends EventEmitter {
   }
 
   setLevel(level, audioLevel) {
-    let changed = false;
+    const changed = false;
     this.audioPlayers.forEach((player) => {
-      changed = changed || player.currentAudioLevel !== audioLevel;
-      player.currentLevel = level;
-      player.currentAudioLevel = audioLevel;
+      // TODO: fix levels
+      // changed = changed || player.currentAudioLevel !== audioLevel;
+      // player.currentLevel = level;
+      // player.currentAudioLevel = audioLevel;
     });
 
     if (changed) {

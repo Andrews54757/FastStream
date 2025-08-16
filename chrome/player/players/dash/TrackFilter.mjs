@@ -1,3 +1,4 @@
+import {AudioLevel, VideoLevel} from '../../Levels.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 
 export class TrackFilter {
@@ -219,17 +220,74 @@ export class TrackFilter {
     return result;
   }
 
-  static getLevelList(tracks, lang = null) {
-    if (lang) {
-      tracks = this.prioritizeLang(tracks, lang);
-    }
-    tracks = this.filterTracksByCodec(tracks);
-    const result = this.prioritizeMP4WithQuality(tracks);
+  // static getLevelList(tracks, lang = null) {
+  //   if (lang) {
+  //     tracks = this.prioritizeLang(tracks, lang);
+  //   }
+  //   tracks = this.filterTracksByCodec(tracks);
+  //   const result = this.prioritizeMP4WithQuality(tracks);
+  //   // make into map
+  //   const map = new Map();
+  //   result.forEach((data) => {
+  //     map.set(data.level, data);
+  //   });
+  //   return map;
+  // }
+
+  static getVideoLevelList(tracks) {
+    tracks = this.filterTracksByCodec(tracks); // remove unsupported codecs
+
     // make into map
     const map = new Map();
-    result.forEach((data) => {
-      map.set(data.level, data);
+
+    tracks.forEach((track) => {
+      track.bitrateList.forEach((data) => {
+        const levelId = data.id;
+        const existing = map.get(levelId);
+        if (existing) {
+          console.warn('Duplicate level id found in getVideoLevelList:', levelId, track, existing.track);
+          return;
+        }
+
+        map.set(levelId, new VideoLevel({
+          id: levelId,
+          width: data.width,
+          height: data.height,
+          bitrate: data.bandwidth,
+          mimeType: track.mimeType,
+          language: track.lang,
+          codec: track.codec,
+        }));
+      });
     });
+    return map;
+  }
+
+  static getAudioLevelList(tracks) {
+    tracks = this.filterTracksByCodec(tracks); // remove unsupported codecs
+
+    // make into map
+    const map = new Map();
+
+    tracks.forEach((track) => {
+      track.bitrateList.forEach((data) => {
+        const levelId = data.id;
+        const existing = map.get(levelId);
+        if (existing) {
+          console.warn('Duplicate level id found in getAudioLevelList:', levelId, track, existing.track);
+          return;
+        }
+
+        map.set(levelId, new AudioLevel({
+          id: levelId,
+          bitrate: data.bandwidth,
+          mimeType: track.mimeType,
+          language: track.lang,
+          codec: track.codec,
+        }));
+      });
+    });
+
     return map;
   }
 

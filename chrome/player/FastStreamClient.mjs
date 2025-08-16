@@ -448,11 +448,11 @@ export class FastStreamClient extends EventEmitter {
   }
 
   updateHasDownloadSpace() {
-    const levels = this.levels;
+    const levels = this.getVideoLevels();
     if (!levels) return;
 
-    const currentLevel = this.currentLevel;
-    const level = levels.get(currentLevel);
+    const currentVideoLevelID = this.getCurrentVideoLevelID();
+    const level = levels.get(currentVideoLevelID);
     if (!level) return;
 
     if (this.source?.loadedFromArchive) {
@@ -1074,24 +1074,23 @@ export class FastStreamClient extends EventEmitter {
   bindPlayer(player) {
     this.context = player.createContext();
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, (maxLevel, maxAudioLevel) => {
-      const source = player.getSource();
       console.log('MANIFEST_PARSED', maxLevel, maxAudioLevel);
-      if (maxLevel !== undefined) {
-        if (source.defaultLevelInfo?.level !== undefined) {
-          this.currentLevel = source.defaultLevelInfo.level;
-        } else {
-          this.currentLevel = maxLevel;
-        }
-      } else {
-        console.warn('No recommended level found');
-      }
-      if (maxAudioLevel !== undefined) {
-        if (source.defaultLevelInfo?.audio !== undefined) {
-          this.currentAudioLevel = source.defaultLevelInfo.audio;
-        } else {
-          this.currentAudioLevel = maxAudioLevel;
-        }
-      }
+      // if (maxLevel !== undefined) { // TODO: Fix
+      //   if (source.defaultLevelInfo?.level !== undefined) {
+      //     this.currentLevel = source.defaultLevelInfo.level;
+      //   } else {
+      //     this.currentLevel = maxLevel;
+      //   }
+      // } else {
+      //   console.warn('No recommended level found');
+      // }
+      // if (maxAudioLevel !== undefined) {
+      //   if (source.defaultLevelInfo?.audio !== undefined) {
+      //     this.currentAudioLevel = source.defaultLevelInfo.audio;
+      //   } else {
+      //     this.currentAudioLevel = maxAudioLevel;
+      //   }
+      // }
 
       this.player.load();
       this.updateQualityLevels();
@@ -1229,7 +1228,8 @@ export class FastStreamClient extends EventEmitter {
     this.previewContext = player.createContext();
 
     this.previewContext.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.currentLevel;
+      // TODO: Fix
+      // player.setCurrentVideoLevelID(this.getCurrentVideoLevelID());
       player.load();
     });
 
@@ -1324,7 +1324,7 @@ export class FastStreamClient extends EventEmitter {
   }
 
   isRegionBuffered(start, end) {
-    const fragments = this.getFragments(this.currentLevel);
+    const fragments = this.getFragments(this.getCurrentVideoLevelID());
     if (!fragments) {
       return true;
     }
@@ -1364,69 +1364,74 @@ export class FastStreamClient extends EventEmitter {
     return this.player?.paused || true;
   }
 
-  get levels() {
-    return this.player?.levels || new Map();
+  getVideoLevels() {
+    return this.player?.getVideoLevels() || new Map();
   }
 
-  get currentLevel() {
-    return this.player?.currentLevel;
+  getAudioLevels() {
+    return this.player?.getAudioLevels() || new Map();
   }
 
-  get currentAudioLevel() {
-    return this.player?.currentAudioLevel;
+  getCurrentVideoLevelID() {
+    return this.player?.getCurrentVideoLevelID();
   }
 
-  set currentLevel(value) {
-    this.player.currentLevel = value;
+  getCurrentAudioLevelID() {
+    return this.player?.getCurrentAudioLevelID();
+  }
+
+  setCurrentVideoLevelID(levelID) {
+    this.player.setCurrentVideoLevelID(levelID);
     this.checkLevelChange();
   }
 
-  set currentAudioLevel(value) {
-    this.player.currentAudioLevel = value;
+  setCurrentAudioLevelID(levelID) {
+    this.player.setCurrentAudioLevelID(levelID);
     this.checkLevelChange();
   }
 
   checkLevelChange() {
-    const level = this.currentLevel;
-    const audioLevel = this.currentAudioLevel;
+    // const videoLevelID = this.getCurrentVideoLevelID();
+    // const audioLevelID = this.getCurrentAudioLevelID();
 
-    let hasChanged = false;
+    // const hasChanged = false;
 
-    if (level !== this.previousLevel) {
-      if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousLevel]) {
-        this.fragmentsStore[this.previousLevel].forEach((fragment, i) => {
-          if (i === -1) return;
-          this.freeFragment(fragment);
-        });
-      }
-      if (this.previewPlayer) {
-        this.previewPlayer.currentLevel = level;
-      }
-      this.previousLevel = level;
-      hasChanged = true;
-    }
+    // TODO: Fix level changing logic
+    // if (videoLevelID !== this.previousLevel) {
+    //   if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousLevel]) {
+    //     this.fragmentsStore[this.previousLevel].forEach((fragment, i) => {
+    //       if (i === -1) return;
+    //       this.freeFragment(fragment);
+    //     });
+    //   }
+    //   if (this.previewPlayer) {
+    //     this.previewPlayer.currentLevel = videoLevelID;
+    //   }
+    //   this.previousLevel = videoLevelID;
+    //   hasChanged = true;
+    // }
 
-    if (audioLevel !== this.previousAudioLevel) {
-      if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousAudioLevel]) {
-        this.fragmentsStore[this.previousAudioLevel].forEach((fragment, i) => {
-          if (i === -1) return;
-          this.freeFragment(fragment);
-        });
-      }
-      this.previousAudioLevel = audioLevel;
-      hasChanged = true;
-    }
+    // if (audioLevelID !== this.previousAudioLevel) {
+    //   if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousAudioLevel]) {
+    //     this.fragmentsStore[this.previousAudioLevel].forEach((fragment, i) => {
+    //       if (i === -1) return;
+    //       this.freeFragment(fragment);
+    //     });
+    //   }
+    //   this.previousAudioLevel = audioLevelID;
+    //   hasChanged = true;
+    // }
 
-    if (hasChanged) {
-      this.videoAnalyzer.setLevel(level, audioLevel);
-      this.audioAnalyzer.setLevel(level, audioLevel);
-      this.frameExtractor.setLevel(level, audioLevel);
-      if (this.syncedAudioPlayer) {
-        this.syncedAudioPlayer.setLevel(level, audioLevel);
-      }
-      this.resetFailed();
-      this.updateQualityLevels();
-    }
+    // if (hasChanged) {
+    //   this.videoAnalyzer.setLevel(videoLevelID, audioLevelID);
+    //   this.audioAnalyzer.setLevel(videoLevelID, audioLevelID);
+    //   this.frameExtractor.setLevel(videoLevelID, audioLevelID);
+    //   if (this.syncedAudioPlayer) {
+    //     this.syncedAudioPlayer.setLevel(videoLevelID, audioLevelID);
+    //   }
+    //   this.resetFailed();
+    //   this.updateQualityLevels();
+    // }
   }
 
   getFullscreenState() {
@@ -1521,11 +1526,11 @@ export class FastStreamClient extends EventEmitter {
   }
 
   get fragments() {
-    return this.fragmentsStore[this.currentLevel];
+    return this.fragmentsStore[this.getCurrentVideoLevelID()];
   }
 
   get audioFragments() {
-    return this.fragmentsStore[this.currentAudioLevel];
+    return this.fragmentsStore[this.getCurrentAudioLevelID()];
   }
 
   get currentFragment() {
