@@ -911,6 +911,15 @@
     "options_general_lazy_load": {
         "message": "Lazy load videos (start buffering only after interaction)"
     },
+    "options_general_focus_mode": {
+        "message": "Focus Mode (only download in active tab to save bandwidth)"
+    },
+    "player_focus_mode_active": {
+        "message": "📡 Focus Mode: Active tab - downloading enabled"
+    },
+    "player_focus_mode_paused": {
+        "message": "⏸️ Focus Mode: Background tab - downloading paused"
+    },
     "options_general_autoplayyt": {
         "message": "Autoplay YouTube videos if possible"
     },

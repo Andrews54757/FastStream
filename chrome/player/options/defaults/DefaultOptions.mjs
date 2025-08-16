@@ -23,6 +23,7 @@ export const DefaultOptions = {
   defaultQuality: `Auto`,
   autoEnableURLs: [],
   autoEnableEverywhere: false, // Auto-enable on all domains
+  focusMode: false, // Only allow downloading in active tab to save bandwidth
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
   videoBrightness: 1,

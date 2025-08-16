@@ -48,6 +48,7 @@ const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
 const backgroundTabDelay = document.getElementById('backgroundtabdelay');
 const lazyLoad = document.getElementById('lazyload');
+const focusMode = document.getElementById('focusmode');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -104,6 +105,7 @@ async function loadOptions(newOptions) {
   replaceDelay.value = Options.replaceDelay;
   backgroundTabDelay.value = Options.backgroundTabDelay || 100;
   lazyLoad.checked = Options.lazyLoadVideos;
+  focusMode.checked = Options.focusMode;
   maxdownloaders.value = Options.maximumDownloaders;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
@@ -410,6 +412,11 @@ backgroundTabDelay.addEventListener('change', () => {
 
 lazyLoad.addEventListener('change', () => {
   Options.lazyLoadVideos = lazyLoad.checked;
+  optionChanged();
+});
+
+focusMode.addEventListener('change', () => {
+  Options.focusMode = focusMode.checked;
   optionChanged();
 });
 

@@ -251,6 +251,8 @@ async function loadOptions() {
   try {
     OPTIONS = await Utils.getOptionsFromStorage();
     window.fastStream.setOptions(OPTIONS);
+    // Update focus mode status when options change
+    window.fastStream.updateFocusModeStatus();
   } catch (e) {
     console.error(e);
   }

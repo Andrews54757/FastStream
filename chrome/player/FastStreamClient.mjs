@@ -128,6 +128,11 @@ export class FastStreamClient extends EventEmitter {
       }
     });
 
+    // Listen for tab visibility changes for Focus Mode
+    document.addEventListener('visibilitychange', () => {
+      this.updateFocusModeStatus();
+    });
+
     this.player = null;
     this.syncedAudioPlayer = null;
     this.previewPlayer = null;
@@ -213,6 +218,34 @@ export class FastStreamClient extends EventEmitter {
     // If lazy loading is enabled, require user interaction for all non-main players
     if (this.options && this.options.lazyLoadVideos && value) {
       this._needsUserInteraction = true;
+    }
+  }
+
+  isTabActive() {
+    // Check if the current tab/window is active
+    if (EnvUtils.isExtension()) {
+      // In extension context, check document visibility
+      return !document.hidden;
+    }
+    // In web context, assume active
+    return true;
+  }
+
+  updateFocusModeStatus() {
+    if (!this.options.focusMode) {
+      // Clear any focus mode status if not enabled
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, null);
+      return;
+    }
+
+    if (this.isTabActive()) {
+      // Tab is active - downloads allowed
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
+        Localize.getMessage('player_focus_mode_active'), 'success', 3000);
+    } else {
+      // Tab is inactive - downloads paused  
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
+        Localize.getMessage('player_focus_mode_paused'), 'warning');
     }
   }
 
@@ -862,6 +895,19 @@ export class FastStreamClient extends EventEmitter {
     // Don't pre-download if user needs to interact or lazy loading is enabled
     if (this.needsUserInteraction() || (this.options.lazyLoadVideos && !this.state.hasUserInteracted)) {
       return false;
+    }
+
+    // Don't pre-download if Focus Mode is enabled and this tab is not active
+    if (this.options.focusMode && !this.isTabActive()) {
+      // Show focus mode status when downloads are paused
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, 
+        Localize.getMessage('player_focus_mode_paused'), 'info');
+      return false;
+    }
+
+    // Clear focus mode status when downloads are active
+    if (this.options.focusMode && this.isTabActive()) {
+      this.interfaceController.setStatusMessage(StatusTypes.FOCUS_MODE, null);
     }
 
     // throttle download speed if needed
