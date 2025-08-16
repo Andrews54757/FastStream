@@ -210,6 +210,10 @@ export class FastStreamClient extends EventEmitter {
 
   setNeedsUserInteraction(value) {
     this._needsUserInteraction = value;
+    // If lazy loading is enabled, require user interaction for all non-main players
+    if (this.options && this.options.lazyLoadVideos && value) {
+      this._needsUserInteraction = true;
+    }
   }
 
   setSeekSave(value) {
@@ -855,8 +859,8 @@ export class FastStreamClient extends EventEmitter {
       return false;
     }
 
-    // Don't pre-download if user needs to interact
-    if (this.needsUserInteraction()) {
+    // Don't pre-download if user needs to interact or lazy loading is enabled
+    if (this.needsUserInteraction() || (this.options.lazyLoadVideos && !this.state.hasUserInteracted)) {
       return false;
     }
 
