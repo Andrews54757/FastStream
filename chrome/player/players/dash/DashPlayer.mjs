@@ -265,14 +265,6 @@ export default class DashPlayer extends EventEmitter {
     this.emit(DefaultPlayerEvents.DESTROYED);
   }
 
-  getCurrentLang() {
-    try {
-      return this.dash.getCurrentTrackFor('video')?.lang || navigator.language || 'en';
-    } catch (e) {
-      return navigator.language || 'en';
-    }
-  }
-
   getProcessor(adaptationIndex) {
     const processors = this.dash.getStreamController().getActiveStream().getStreamProcessors();
     for (let i = 0; i < processors.length; i++) {
@@ -332,7 +324,7 @@ export default class DashPlayer extends EventEmitter {
   setCurrentAudioLevelID(id) {
     if (typeof id !== 'string') return;
     try {
-      this.dash.setRepresentationForTypeById('audio', id);
+      this.dash.setRepresentationForTypeById('audio', id, true);
     } catch (e) {
       console.warn(e);
     }

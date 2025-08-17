@@ -453,6 +453,37 @@ export class FastStreamClient extends EventEmitter {
     this.updateHasDownloadSpace();
   }
 
+  changeLanguage(type, language) {
+    const levels = type === 'video' ? this.getVideoLevels() : this.getAudioLevels();
+    if (!levels) return;
+    const currentLevelID = type === 'video' ? this.getCurrentVideoLevelID() : this.getCurrentAudioLevelID();
+    const currentLevel = levels.get(currentLevelID);
+    const matchingLevels = Array.from(levels.values()).filter((level) => level.language === language);
+    if (matchingLevels.length === 0) {
+      console.warn('No matching levels for language', language, type, levels);
+      return;
+    }
+
+    if (type === 'video') {
+      this.levelManager.setCurrentVideoLanguage(language);
+    } else {
+      this.levelManager.setCurrentAudioLanguage(language);
+    }
+
+    const chosen = type === 'video' ?
+      this.levelManager.pickVideoLevel(matchingLevels, currentLevel?.height) :
+      this.levelManager.pickAudioLevel(matchingLevels);
+
+    console.log('changeLanguage chosen level', chosen, type, language);
+    if (chosen) {
+      if (type === 'video') {
+        this.setCurrentVideoLevelID(chosen.id);
+      } else {
+        this.setCurrentAudioLevelID(chosen.id);
+      }
+    }
+  }
+
   updateHasDownloadSpace() {
     const levels = this.getVideoLevels();
     if (!levels) return;
@@ -1215,10 +1246,6 @@ export class FastStreamClient extends EventEmitter {
     this.context.on(DefaultPlayerEvents.SKIP_SEGMENTS, () => {
       this.interfaceController.updateSkipSegments();
     });
-
-    this.context.on(DefaultPlayerEvents.LANGUAGE_TRACKS, (e) => {
-      this.interfaceController.updateLanguageTracks();
-    });
   }
 
   bindPreviewPlayer(player) {
@@ -1226,6 +1253,7 @@ export class FastStreamClient extends EventEmitter {
 
     this.previewContext.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
       player.setCurrentVideoLevelID(this.getCurrentVideoLevelID());
+      player.setCurrentAudioLevelID(this.getCurrentAudioLevelID());
     });
 
     this.previewContext.on(DefaultPlayerEvents.FRAGMENT_UPDATE, (fragment) => {
@@ -1368,11 +1396,11 @@ export class FastStreamClient extends EventEmitter {
   }
 
   getCurrentVideoLevelID() {
-    return this.player?.getCurrentVideoLevelID();
+    return this.player?.getCurrentVideoLevelID() ?? null;
   }
 
   getCurrentAudioLevelID() {
-    return this.player?.getCurrentAudioLevelID();
+    return this.player?.getCurrentAudioLevelID() ?? null;
   }
 
   setCurrentVideoLevelID(levelID) {
@@ -1386,47 +1414,49 @@ export class FastStreamClient extends EventEmitter {
   }
 
   checkLevelChange() {
-    // const videoLevelID = this.getCurrentVideoLevelID();
-    // const audioLevelID = this.getCurrentAudioLevelID();
+    const videoLevelID = this.getCurrentVideoLevelID();
+    const audioLevelID = this.getCurrentAudioLevelID();
 
-    // const hasChanged = false;
+    const previousVideoLevelID = this.levelManager.getCurrentVideoLevelID();
+    const previousAudioLevelID = this.levelManager.getCurrentAudioLevelID();
 
-    // TODO: Fix level changing logic
-    // if (videoLevelID !== this.previousLevel) {
-    //   if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousLevel]) {
-    //     this.fragmentsStore[this.previousLevel].forEach((fragment, i) => {
-    //       if (i === -1) return;
-    //       this.freeFragment(fragment);
-    //     });
-    //   }
-    //   if (this.previewPlayer) {
-    //     this.previewPlayer.currentLevel = videoLevelID;
-    //   }
-    //   this.previousLevel = videoLevelID;
-    //   hasChanged = true;
-    // }
+    const videoChanged = videoLevelID !== null && (videoLevelID !== previousVideoLevelID);
+    const audioChanged = audioLevelID !== null && (audioLevelID !== previousAudioLevelID);
 
-    // if (audioLevelID !== this.previousAudioLevel) {
-    //   if (this.options.freeUnusedChannels && this.fragmentsStore[this.previousAudioLevel]) {
-    //     this.fragmentsStore[this.previousAudioLevel].forEach((fragment, i) => {
-    //       if (i === -1) return;
-    //       this.freeFragment(fragment);
-    //     });
-    //   }
-    //   this.previousAudioLevel = audioLevelID;
-    //   hasChanged = true;
-    // }
+    if (videoChanged) {
+      if (this.options.freeUnusedChannels && this.fragmentsStore[previousVideoLevelID]) {
+        this.fragmentsStore[previousVideoLevelID].forEach((fragment, i) => {
+          if (i === -1) return;
+          this.freeFragment(fragment);
+        });
+      }
+      this.levelManager.setCurrentVideoLevelID(videoLevelID);
+    }
 
-    // if (hasChanged) {
-    //   this.videoAnalyzer.setLevel(videoLevelID, audioLevelID);
-    //   this.audioAnalyzer.setLevel(videoLevelID, audioLevelID);
-    //   this.frameExtractor.setLevel(videoLevelID, audioLevelID);
-    //   if (this.syncedAudioPlayer) {
-    //     this.syncedAudioPlayer.setLevel(videoLevelID, audioLevelID);
-    //   }
-    //   this.resetFailed();
-    //   this.updateQualityLevels();
-    // }
+    if (audioChanged) {
+      if (this.options.freeUnusedChannels && this.fragmentsStore[previousAudioLevelID]) {
+        this.fragmentsStore[previousAudioLevelID].forEach((fragment, i) => {
+          if (i === -1) return;
+          this.freeFragment(fragment);
+        });
+      }
+      this.levelManager.setCurrentAudioLevelID(audioLevelID);
+    }
+
+    if (videoChanged || audioChanged) {
+      this.videoAnalyzer.setLevel(videoLevelID, audioLevelID);
+      this.audioAnalyzer.setLevel(videoLevelID, audioLevelID);
+      this.frameExtractor.setLevel(videoLevelID, audioLevelID);
+      if (this.syncedAudioPlayer) {
+        this.syncedAudioPlayer.setLevel(videoLevelID, audioLevelID);
+      }
+      if (this.previewPlayer) {
+        this.previewPlayer.setCurrentVideoLevelID(videoLevelID);
+        this.previewPlayer.setCurrentAudioLevelID(audioLevelID);
+      }
+      this.resetFailed();
+      this.updateQualityLevels();
+    }
   }
 
   getFullscreenState() {
@@ -1588,17 +1618,6 @@ export class FastStreamClient extends EventEmitter {
 
   get chapters() {
     return this.player?.chapters || [];
-  }
-
-  get languageTracks() {
-    return this.player?.languageTracks || {
-      video: [],
-      audio: [],
-    };
-  }
-
-  setLanguageTrack(track) {
-    this.player.setLanguageTrack(track);
   }
 
   debugDemo() {

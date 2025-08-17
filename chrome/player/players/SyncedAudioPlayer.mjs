@@ -90,9 +90,8 @@ export class SyncedAudioPlayer extends EventEmitter {
       player.playbackRate = this.playbackRate;
 
       player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-        // TODO: fix levels
-        // player.currentLevel = this.client.currentLevel;
-        // player.currentAudioLevel = this.client.currentAudioLevel;
+        player.setCurrentVideoLevelID(this.client.getCurrentVideoLevelID());
+        player.setCurrentAudioLevelID(this.client.getCurrentAudioLevelID());
       });
 
       player.on(DefaultPlayerEvents.ERROR, (msg) => {
@@ -304,13 +303,18 @@ export class SyncedAudioPlayer extends EventEmitter {
     });
   }
 
-  setLevel(level, audioLevel) {
+  setLevel(videoLevel, audioLevel) {
     const changed = false;
     this.audioPlayers.forEach((player) => {
-      // TODO: fix levels
-      // changed = changed || player.currentAudioLevel !== audioLevel;
-      // player.currentLevel = level;
-      // player.currentAudioLevel = audioLevel;
+      const videoChanged = player.getCurrentVideoLevelID() !== videoLevel;
+      const audioChanged = player.getCurrentAudioLevelID() !== audioLevel;
+
+      if (audioChanged || (videoChanged && audioLevel === null)) {
+        changed = true;
+      }
+
+      player.setCurrentVideoLevelID(videoLevel);
+      player.setCurrentAudioLevelID(audioLevel);
     });
 
     if (changed) {

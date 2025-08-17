@@ -140,8 +140,8 @@ export class PreviewFrameExtractor extends EventEmitter {
     await player.setup();
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      // TODO: fix levels
-      // player.currentLevel = this.client.currentLevel;
+      player.setCurrentVideoLevelID(this.client.getCurrentVideoLevelID());
+      player.setCurrentAudioLevelID(this.client.getCurrentAudioLevelID());
     });
 
     const onLoadMeta = () => {
@@ -387,11 +387,10 @@ export class PreviewFrameExtractor extends EventEmitter {
   }
 
   setLevel(level, audioLevel) {
-    // TODO: fix levels
-    // if (this.backgroundAnalyzerPlayer) {
-    //   this.backgroundAnalyzerPlayer.currentLevel = level;
-    //   this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
-    // }
+    if (this.backgroundAnalyzerPlayer) {
+      this.backgroundAnalyzerPlayer.setCurrentVideoLevelID(level);
+      this.backgroundAnalyzerPlayer.setCurrentAudioLevelID(audioLevel);
+    }
   }
 
   getMarkerPosition() {

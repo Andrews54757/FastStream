@@ -57,7 +57,6 @@ export default class HLSPlayer extends EventEmitter {
       enableWorker: true,
       workerPath: workerPath,
       enableSoftwareAES: true,
-      startLevel: 5,
       startFragPrefetch: false,
       testBandwidth: false,
       progressive: false,
@@ -235,9 +234,10 @@ export default class HLSPlayer extends EventEmitter {
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
       this.emit(DefaultPlayerEvents.MANIFEST_PARSED);
 
-      const chosen = this.client.getLevelManager().pickVideoLevel(Array.from(this.getVideoLevels().values()));
-      if (chosen) {
-        this.setCurrentVideoLevelID(chosen.id);
+      const levels = this.getVideoLevels();
+      const chosenLevel = this.client.getLevelManager().pickVideoLevel(Array.from(levels.values()));
+      if (chosenLevel) {
+        this.setCurrentVideoLevelID(chosenLevel.id);
       }
 
       this.hls.subtitleDisplay = false;
@@ -292,8 +292,6 @@ export default class HLSPlayer extends EventEmitter {
         this.client.makeFragment(identifier, fragment.sn, new HLSFragment(fragment, start, end));
       }
     });
-
-    this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
   }
   getVideo() {
     return this.video;
@@ -396,8 +394,8 @@ export default class HLSPlayer extends EventEmitter {
         bitrate: level.bitrate,
         mimeType: null,
         language: null,
-        videoCodec: level.videoCodec,
-        audioCodec: level.audioCodec,
+        videoCodec: level.videoCodec || null,
+        audioCodec: level.audioCodec || null,
       }));
     });
     return result;
@@ -412,17 +410,22 @@ export default class HLSPlayer extends EventEmitter {
         bitrate: track.bitrate,
         mimeType: null,
         language: track.lang,
-        audioCodec: track.audioCodec,
+        audioCodec: track.audioCodec ? `audio/mp4; codecs="${track.audioCodec}"` : null,
       }));
     });
     return result;
   }
 
   getCurrentVideoLevelID() {
-    return this.getIdentifier(0, this.hls.currentLevel === -1 ? this.hls.loadLevel : this.hls.currentLevel);
+    let level = this.hls.currentLevel === -1 ? this.hls.loadLevel : this.hls.currentLevel;
+    if (level === -1) {
+      level = null;
+    }
+    return this.getIdentifier(0, level);
   }
 
   setCurrentVideoLevelID(value) {
+    if (value === null) return;
     this.hls.currentLevel = this.getIndexes(value).levelID;
   }
 
@@ -440,6 +443,7 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   setCurrentAudioLevelID(value) {
+    if (value === null) return;
     this.hls.audioTrack = this.getIndexes(value).levelID;
   }
 
@@ -453,31 +457,6 @@ export default class HLSPlayer extends EventEmitter {
       return time >= frag.start && time < frag.end;
     });
   }
-
-  // get languageTracks() {
-  //   const seenLanguages = [];
-  //   return {
-  //     audio: this.hls.audioTracks.map((track, i) => {
-  //       return {
-  //         type: 'audio',
-  //         lang: track.lang,
-  //         index: i,
-  //         isActive: i === this.hls.audioTrack,
-  //       };
-  //     }).filter((track) => {
-  //       if (seenLanguages.includes(track.lang)) return false;
-  //       seenLanguages.push(track.lang);
-  //       return true;
-  //     }),
-  //     video: [],
-  //   };
-  // }
-
-  // setLanguageTrack(track) {
-  //   if (track.type === 'audio') {
-  //     this.hls.audioTrack = track.index;
-  //   }
-  // }
 
   get volume() {
     return this.video.volume;

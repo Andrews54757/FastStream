@@ -254,12 +254,29 @@ export class DashTrackUtils {
           bitrate: data.bandwidth,
           mimeType: track.mimeType,
           language: track.lang,
-          videoCodec: track.codec,
+          videoCodec: this.mimeCodecToCodec(track.codec),
           track: track,
         }));
       });
     });
     return map;
+  }
+
+  static mimeCodecToCodec(mimeCodec) {
+    // mimeCodec format: video/mp4; codecs="avc1.42E01E, mp4a.40.2"
+    const parts = mimeCodec.split(';');
+    if (parts.length < 2) {
+      return null;
+    }
+    const codecPart = parts[1].trim();
+    if (!codecPart.startsWith('codecs=')) {
+      return null;
+    }
+    let codecStr = codecPart.substring(7).trim();
+    if (codecStr.startsWith('"') && codecStr.endsWith('"')) {
+      codecStr = codecStr.substring(1, codecStr.length - 1);
+    }
+    return codecStr;
   }
 
   static getAudioLevelList(tracks) {
@@ -280,7 +297,7 @@ export class DashTrackUtils {
           bitrate: data.bandwidth,
           mimeType: track.mimeType,
           language: track.lang,
-          audioCodec: track.codec,
+          audioCodec: this.mimeCodecToCodec(track.codec),
           track: track,
         }));
       });

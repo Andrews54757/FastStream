@@ -53,13 +53,13 @@ export class VideoQualityChanger extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.videoSource.addEventListener('focus', ()=>{
+    DOMElements.videoSource.addEventListener('focus', () => {
       if (!this.isOpen() && !isMouseDown) {
         this.openUI(true);
       }
     });
 
-    DOMElements.videoSource.addEventListener('blur', ()=>{
+    DOMElements.videoSource.addEventListener('blur', () => {
       isMouseDown = false;
       if (!this.stayOpen) {
         this.closeUI();
@@ -93,12 +93,16 @@ export class VideoQualityChanger extends EventEmitter {
         current.classList.remove('candidate');
         const next = (index < candidates.length - 1) ? candidates[index + 1] : candidates[0];
         next.classList.add('candidate');
+        // scroll into view
+        next.scrollIntoView({block: 'nearest'});
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'ArrowUp') {
         current.classList.remove('candidate');
         const next = (index > 0) ? candidates[index - 1] : candidates[candidates.length - 1];
         next.classList.add('candidate');
+        // scroll into view
+        next.scrollIntoView({block: 'nearest'});
         e.preventDefault();
         e.stopPropagation();
       } else if (e.key === 'Enter') {
@@ -117,54 +121,175 @@ export class VideoQualityChanger extends EventEmitter {
     });
   }
 
-  updateQualityLevels(client) {
-    const levels = client.getVideoLevels();
+  groupLevelsByDimensions(levels) {
+    const map = new Map();
+    levels.forEach((level) => {
+      const key = level.width + 'x' + level.height;
+      if (!map.has(key)) {
+        map.set(key, []);
+      }
+      map.get(key).push(level);
+    });
+    return map;
+  }
 
-    if (!levels || levels.size <= 1) {
+  updateQualityLevels(client) {
+    const videoLevels = client.getVideoLevels();
+    if (!videoLevels || videoLevels.size <= 1) {
       DOMElements.videoSource.classList.add('hidden');
       return;
     } else {
       DOMElements.videoSource.classList.remove('hidden');
     }
 
-    // TODO: get current level
-    // const currentLevel = client.currentLevel;
+    const videoLevelsByDimensions = this.groupLevelsByDimensions(client.getLevelManager().filterVideoLevelsByLanguage(Array.from(videoLevels.values())));
+    const currentVideoLevelID = client.getCurrentVideoLevelID();
 
     DOMElements.videoSourceList.replaceChildren();
 
-    levels.forEach((level, levelKey) => {
+    videoLevelsByDimensions.forEach((levels, dimensions) => {
       const levelelement = document.createElement('div');
 
       levelelement.classList.add('fluid_video_source_list_item');
       levelelement.addEventListener('click', (e) => {
+        const chosen = client.getLevelManager().pickVideoLevel(levels, null, true);
+        if (!chosen) {
+          console.warn('No level chosen');
+          e.stopPropagation();
+          return;
+        }
+
+        // if already active, do nothing
+        const currentLevelID = client.getCurrentVideoLevelID();
+        if (chosen.id === currentLevelID) {
+          e.stopPropagation();
+          return;
+        }
+
         Array.from(DOMElements.videoSourceList.getElementsByClassName('source_active')).forEach((element) => {
           element.classList.remove('source_active');
         });
-        this.emit('qualityChanged', levelKey);
+        this.emit('qualityChanged', chosen);
         levelelement.classList.add('source_active');
         e.stopPropagation();
       });
 
-      const isLevelActive = false; // levelKey === currentLevel;
-      if (isLevelActive) {
+      const isLevelActive = levels.some((level) => level.id === currentVideoLevelID);
+      if (isLevelActive && levels.length <= 1) {
         levelelement.classList.add('source_active');
+      } else if (isLevelActive) {
+        levelelement.classList.add('subsource_active');
       }
+
+      // sort levels by bitrate ascending
+      levels.sort((a, b) => a.bitrate - b.bitrate);
 
       const icon = document.createElement('span');
       icon.classList.add('source_button_icon');
 
       const text = document.createElement('span');
-      const label = level.width + 'x' + level.height + ' @' + Math.round(level.bitrate / 1000) + 'kbps';
+      const label = `${dimensions}${(levels.length > 1 && isLevelActive) ? '' : ` @${levels.length > 1 ? `${Math.round(levels[0].bitrate / 1000)}-${Math.round(levels[levels.length - 1].bitrate / 1000)}` : Math.round(levels[0].bitrate / 1000)} kbps`}`;
 
-      text.textContent = isLevelActive ? label + ' ' + Localize.getMessage('player_quality_current') : label;
+      text.textContent = (isLevelActive && levels.length <= 1) ? label + ' ' + Localize.getMessage('player_quality_current') : (isLevelActive ? (label + ' ▼') : label);
+
+      const audioCodecSet = new Set();
+      const videoCodecSet = new Set();
+      const containerSet = new Set();
+      const languageSet = new Set();
+      levels.forEach((lvl) => {
+        if (lvl.audioCodec) {
+          audioCodecSet.add(lvl.audioCodec);
+        }
+        if (lvl.videoCodec) {
+          videoCodecSet.add(lvl.videoCodec);
+        }
+        if (lvl.mimeType) {
+          const mimeParts = lvl.mimeType.split('/');
+          if (mimeParts.length >= 2) {
+            containerSet.add(mimeParts[1]);
+          }
+        }
+        if (lvl.language) {
+          languageSet.add(lvl.language);
+        }
+      });
+
+      const titleParts = [];
+      titleParts.push(`IDs: ${levels.map((o) => o.id).join(', ')}`);
+      if (containerSet.size > 0) {
+        titleParts.push(`Containers: ${Array.from(containerSet).join(', ')}`);
+      }
+      titleParts.push(`Bitrate: ${levels.length > 1 ? levels.map((lvl) => lvl.bitrate).join(', ') + ' bps' : levels[0].bitrate + ' bps'}`);
+
+      if (videoCodecSet.size > 0) {
+        titleParts.push(`Video codecs: ${Array.from(videoCodecSet).join(', ')}`);
+      }
+      if (audioCodecSet.size > 0) {
+        titleParts.push(`Audio codecs: ${Array.from(audioCodecSet).join(', ')}`);
+      }
+      if (languageSet.size > 0) {
+        titleParts.push(`Languages: ${Array.from(languageSet).join(', ')}`);
+      }
+      levelelement.title = titleParts.join('\n');
       levelelement.appendChild(text);
 
       DOMElements.videoSourceList.appendChild(levelelement);
+
+      if (levels.length > 1 && isLevelActive) {
+        // Add sub-level elements
+        levels.forEach((level) => {
+          const subLevelElement = document.createElement('div');
+          subLevelElement.classList.add('fluid_video_source_sublist_item');
+          const mimeParts = level.mimeType ? level.mimeType.split('/') : [];
+          const container = (mimeParts.length >= 2) ? mimeParts[1] : '';
+
+          const isActive = level.id === currentVideoLevelID;
+          if (isActive) {
+            subLevelElement.classList.add('source_active');
+          }
+
+          const text = document.createElement('span');
+          text.textContent = `${container} @${Math.round(level.bitrate / 1000)} kbps${level.id === currentVideoLevelID ? ' ' + Localize.getMessage('player_quality_current') : ''}`;
+          const titleParts = [];
+          titleParts.push(`ID: ${level.id}`);
+          if (container) {
+            titleParts.push(`Container: ${container}`);
+          }
+          titleParts.push(`Bitrate: ${level.bitrate} bps`);
+          if (level.videoCodec) {
+            titleParts.push(`Video codec: ${level.videoCodec}`);
+          }
+          if (level.audioCodec) {
+            titleParts.push(`Audio codec: ${level.audioCodec}`);
+          }
+          if (level.language) {
+            titleParts.push(`Language: ${level.language}`);
+          }
+          subLevelElement.title = titleParts.join('\n');
+          subLevelElement.appendChild(text);
+
+          subLevelElement.addEventListener('click', (e) => {
+            // if already active, do nothing
+            const currentLevelID = client.getCurrentVideoLevelID();
+            if (level.id === currentLevelID) {
+              e.stopPropagation();
+              return;
+            }
+
+            Array.from(DOMElements.videoSourceList.getElementsByClassName('source_active')).forEach((element) => {
+              element.classList.remove('source_active');
+            });
+            this.emit('qualityChanged', level, true);
+            subLevelElement.classList.add('source_active');
+            e.stopPropagation();
+          });
+          DOMElements.videoSourceList.appendChild(subLevelElement);
+        });
+      }
     });
 
-    return;
 
-    const current = levels.get(currentLevel);
+    const current = videoLevels.get(currentVideoLevelID);
     if (!current) {
       console.warn('No current level');
       return;

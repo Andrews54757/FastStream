@@ -118,6 +118,14 @@ export default class DirectVideoPlayer extends EventEmitter {
     this.video.playbackRate = value;
   }
 
+  getVideoLevels() {
+    return null;
+  }
+
+  getAudioLevels() {
+    return null;
+  }
+
   getCurrentVideoLevelID() {
     return null;
   }
