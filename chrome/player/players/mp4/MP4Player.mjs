@@ -5,10 +5,14 @@ import {EmitterCancel, EmitterRelay, EventEmitter} from '../../modules/eventemit
 import {MP4Box} from '../../modules/mp4box.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoUtils} from '../../utils/VideoUtils.mjs';
+import {AudioLevel, VideoLevel} from '../Levels.mjs';
 import {MP4Fragment} from './MP4Fragment.mjs';
 import {MP4FragmentRequester} from './MP4FragmentRequester.mjs';
 import {SourceBufferWrapper} from './SourceBufferWrapper.mjs';
 const FRAGMENT_SIZE = 1000000;
+
+const VIDEO_TRACK = 0;
+const AUDIO_TRACK = 1;
 
 export default class MP4Player extends EventEmitter {
   constructor(client, config) {
@@ -41,7 +45,7 @@ export default class MP4Player extends EventEmitter {
 
 
     this.currentVideoTrack = 0;
-    this.currentAudioTrack = this.isPreview ? -1 : 0;
+    this.currentAudioTrack = this.isPreview ? null : 0;
 
     this.currentFragments = [];
 
@@ -76,10 +80,12 @@ export default class MP4Player extends EventEmitter {
       this.videoSourceBuffer = new SourceBufferWrapper(this.mediaSource, videoCodec);
     }
 
-    const audioTrack = this.metaData.audioTracks[this.currentAudioTrack];
-    if (audioTrack) {
-      const audioCodec = 'audio/mp4; codecs=\"' + audioTrack.codec + '\"';
-      this.audioSourceBuffer = new SourceBufferWrapper(this.mediaSource, audioCodec);
+    if (this.currentAudioTrack !== null) {
+      const audioTrack = this.metaData.audioTracks[this.currentAudioTrack];
+      if (audioTrack) {
+        const audioCodec = 'audio/mp4; codecs=\"' + audioTrack.codec + '\"';
+        this.audioSourceBuffer = new SourceBufferWrapper(this.mediaSource, audioCodec);
+      }
     }
   }
 
@@ -193,7 +199,7 @@ export default class MP4Player extends EventEmitter {
 
     const max = Math.ceil(this.fileLength / FRAGMENT_SIZE);
     // for (let l = 0; l < info.videoTracks.length; l++) {
-    const l = this.currentVideoTrack;
+    const l = this.getCurrentVideoLevelID();
     for (let i = 0; i < max; i++) {
       if (!this.client.getFragment(l, i)) {
         this.client.makeFragment(l, i, new MP4Fragment(l, i, this.source, i * FRAGMENT_SIZE, Math.min((i + 1) * FRAGMENT_SIZE, this.fileLength)));
@@ -243,8 +249,9 @@ export default class MP4Player extends EventEmitter {
     this.source = source;
     this.needsInit = true;
 
-    if (!this.client.getFragment(0, 0)) {
-      this.client.makeFragment(0, 0, new MP4Fragment(0, 0, source, 0, FRAGMENT_SIZE));
+    const levelID = this.getCurrentVideoLevelID();
+    if (!this.client.getFragment(levelID, 0)) {
+      this.client.makeFragment(levelID, 0, new MP4Fragment(levelID, 0, source, 0, FRAGMENT_SIZE));
     }
 
     this.running = true;
@@ -284,16 +291,17 @@ export default class MP4Player extends EventEmitter {
 
   initializeFragments() {
     const max = Math.ceil(this.fileLength / FRAGMENT_SIZE);
+    const levelID = this.getCurrentVideoLevelID();
     for (let i = 1; i < max; i++) {
-      if (!this.client.getFragment(0, i)) {
-        this.client.makeFragment(0, i, new MP4Fragment(0, i, this.source, i * FRAGMENT_SIZE, Math.min((i + 1) * FRAGMENT_SIZE, this.fileLength)));
+      if (!this.client.getFragment(levelID, i)) {
+        this.client.makeFragment(levelID, i, new MP4Fragment(levelID, i, this.source, i * FRAGMENT_SIZE, Math.min((i + 1) * FRAGMENT_SIZE, this.fileLength)));
       }
     }
   }
 
   setFragmentTimes() {
     this.getVideoLevels().forEach((level, l) => {
-      const frags = this.client.getFragments(l);
+      const frags = this.client.getFragments(l.toString());
       let currentFragment = frags[0];
       currentFragment.start = 0;
       for (let i = 1; i < frags.length; i++) {
@@ -344,7 +352,7 @@ export default class MP4Player extends EventEmitter {
       this.running = false;
       throw new Error('No current fragment');
     }
-    const frags = this.client.getFragments(this.currentVideoTrack) || [];
+    const frags = this.client.getFragments(this.getCurrentVideoLevelID()) || [];
 
     const time = this.video.currentTime;
     for (let i = 0; i < this.currentFragments.length; i++) {
@@ -362,7 +370,7 @@ export default class MP4Player extends EventEmitter {
 
     const len = frags.length;
     for (let i = currentFragment.sn; i < Math.min(currentFragment.sn + this.options.maxFragmentsBuffered, len); i++) {
-      const frag = this.client.getFragment(this.currentVideoTrack, i);
+      const frag = this.client.getFragment(this.getCurrentVideoLevelID(), i);
       if (!frag) {
         this.running = false;
         throw new Error('No next fragment');
@@ -543,18 +551,48 @@ export default class MP4Player extends EventEmitter {
     if (!this.metaData) return new Map();
     const track = this.metaData.videoTracks[0];
     const result = new Map();
-    result.set(0, {
-      bitrate: track.bitrate,
+    const id = this.getCurrentVideoLevelID();
+    result.set(id, new VideoLevel({
+      id: id,
       width: track.track_width,
       height: track.track_height,
+      bitrate: track.bitrate,
+      mimeType: 'video/mp4',
       language: track.language,
-    });
+      videoCodec: track.codec,
+    }));
+    return result;
+  }
+
+  getAudioLevels() {
+    if (!this.metaData) return new Map();
+    const track = this.metaData.audioTracks[0];
+    const result = new Map();
+    const id = this.getCurrentAudioLevelID();
+    result.set(id, new AudioLevel({
+      id: id,
+      bitrate: track.bitrate,
+      mimeType: 'audio/mp4',
+      language: track.language,
+      audioCodec: track.codec,
+    }));
     return result;
   }
 
   getCurrentVideoLevelID() {
-    return this.currentVideoTrack;
+    return this.getIdentifier(VIDEO_TRACK, this.currentVideoTrack);
   }
+
+  getCurrentAudioLevelID() {
+    return this.getIdentifier(AUDIO_TRACK, this.currentAudioTrack);
+  }
+
+  setCurrentVideoLevelID(levelID) { // not implemented yet
+  }
+
+  setCurrentAudioLevelID(levelID) { // not implemented yet
+  }
+
 
   get duration() {
     return this._duration;
@@ -602,10 +640,10 @@ export default class MP4Player extends EventEmitter {
       let seekOffset = Infinity;
       const sortedSamples = [];
       if (this.videoTracks[this.currentVideoTrack]) {
-        sortedSamples.push(this.videoTracks[this.currentVideoTrack].sortedSamples);
+        sortedSamples.push(this.videoTracks[parseInt(this.currentVideoTrack)].sortedSamples);
       }
 
-      if (this.audioTracks[this.currentAudioTrack]) {
+      if (this.currentAudioTrack !== null && this.audioTracks[this.currentAudioTrack]) {
         sortedSamples.push(this.audioTracks[this.currentAudioTrack].sortedSamples);
       }
       for (let i = 0; i < sortedSamples.length; i++) {
@@ -621,7 +659,7 @@ export default class MP4Player extends EventEmitter {
 
     const index = Math.floor(startOffset / FRAGMENT_SIZE);
 
-    return this.client.getFragment(this.currentVideoTrack, index);
+    return this.client.getFragment(this.getCurrentVideoLevelID(), index);
   }
 
   getMinTimeFromOffset(samples, offset, end) {
@@ -675,7 +713,7 @@ export default class MP4Player extends EventEmitter {
   async saveVideo(options) {
     const filestream = options.filestream;
     const writer = filestream.getWriter();
-    const frags = this.client.getFragments(this.currentVideoTrack);
+    const frags = this.client.getFragments(this.getCurrentVideoLevelID());
     const emptyTemplate = new Uint8Array(FRAGMENT_SIZE);
 
     let lastFrag = 0;
@@ -768,5 +806,18 @@ export default class MP4Player extends EventEmitter {
 
   set playbackRate(value) {
     this.video.playbackRate = value;
+  }
+
+
+  getIdentifier(trackID, levelID) {
+    return `${trackID}:${levelID}`;
+  }
+
+  getIndexes(identifier) {
+    const parts = identifier.split(':');
+    return {
+      trackID: parseInt(parts[0]),
+      levelID: parseInt(parts[1]),
+    };
   }
 }
