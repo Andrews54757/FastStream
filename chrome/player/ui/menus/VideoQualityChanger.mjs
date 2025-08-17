@@ -230,6 +230,9 @@ export class VideoQualityChanger extends EventEmitter {
       if (languageSet.size > 0) {
         titleParts.push(`Languages: ${Array.from(languageSet).join(', ')}`);
       }
+      if (dimensions !== '0x0') {
+        titleParts.push(`Dimensions: ${dimensions}`);
+      }
       levelelement.title = titleParts.join('\n');
       levelelement.appendChild(text);
 
@@ -264,6 +267,9 @@ export class VideoQualityChanger extends EventEmitter {
           }
           if (level.language) {
             titleParts.push(`Language: ${level.language}`);
+          }
+          if (dimensions !== '0x0') {
+            titleParts.push(`Dimensions: ${dimensions}`);
           }
           subLevelElement.title = titleParts.join('\n');
           subLevelElement.appendChild(text);
