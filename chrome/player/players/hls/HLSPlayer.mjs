@@ -240,6 +240,12 @@ export default class HLSPlayer extends EventEmitter {
         this.setCurrentVideoLevelID(chosenLevel.id);
       }
 
+      const audioLevels = this.getAudioLevels();
+      const chosenAudioLevel = this.client.getLevelManager().pickAudioLevel(Array.from(audioLevels.values()));
+      if (chosenAudioLevel) {
+        this.setCurrentAudioLevelID(chosenAudioLevel.id);
+      }
+
       this.hls.subtitleDisplay = false;
       this.hls.subtitleTrack = -1;
 
