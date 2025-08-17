@@ -206,7 +206,7 @@ export default class MP4Player extends EventEmitter {
       }
     }
     const trak = this.mp4box.moov.traks.find((trak) => {
-      return trak.tkhd.track_id === info.videoTracks[l].id;
+      return trak.tkhd.track_id === info.videoTracks[this.currentVideoTrack].id;
     });
     const samples = trak.samples;
     this.videoTracks.push({
@@ -304,9 +304,10 @@ export default class MP4Player extends EventEmitter {
       const frags = this.client.getFragments(l.toString());
       let currentFragment = frags[0];
       currentFragment.start = 0;
+      const indexes = this.getIndexes(l);
       for (let i = 1; i < frags.length; i++) {
         const frag = frags[i];
-        const dt = this.getMinTimeFromOffset(this.videoTracks[l].samples, frag.rangeStart, frag.rangeEnd);
+        const dt = this.getMinTimeFromOffset(this.videoTracks[indexes.levelID].samples, frag.rangeStart, frag.rangeEnd);
         if (dt !== null) {
           const time = Math.floor(dt);
           currentFragment.end = time;
