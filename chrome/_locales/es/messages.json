@@ -968,6 +968,24 @@
     "options_general_minisize": {
         "message": "Tamaño del miniplayer"
     },
+    "options_general_color_theme": {
+        "message": "Tema de color del reproductor"
+    },
+    "options_general_color_theme_default": {
+        "message": "Predeterminado Oscuro"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Ártico"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Océano"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Neón"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Alto Contraste"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagen en imagen"
     },

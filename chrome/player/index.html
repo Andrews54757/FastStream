@@ -14,7 +14,10 @@
 </head>
 
 <body>
-    <div class="mainplayer fluid_video_wrapper fluid_player_layout_default controls_visible" role="application" tabindex="-1">
+    <script src="./preload.mjs" type="module" charset="UTF-8"></script>
+
+    <div class="mainplayer fluid_video_wrapper fluid_player_layout_default controls_visible" role="application"
+        tabindex="-1">
         <div class="video-container"></div>
         <div class="fluid_subtitles_container"></div>
         <div class="fluid_controls_container fade_in">
@@ -76,8 +79,7 @@
                             <use href="assets/fluidplayer/static/icons.svg#previous"></use>
                         </svg>
                     </div>
-                    <div role="button" data-i18n-label="player_next_video_label"
-                        class="fluid_button fluid_button_next">
+                    <div role="button" data-i18n-label="player_next_video_label" class="fluid_button fluid_button_next">
                         <svg>
                             <use href="assets/fluidplayer/static/icons.svg#next"></use>
                         </svg>

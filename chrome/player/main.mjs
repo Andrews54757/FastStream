@@ -10,7 +10,6 @@ import {URLUtils} from './utils/URLUtils.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {VideoSource} from './VideoSource.mjs';
 
-
 let OPTIONS = null;
 let optionSendTime = null;
 if (EnvUtils.isExtension()) {

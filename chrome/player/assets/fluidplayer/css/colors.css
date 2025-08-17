@@ -1,4 +1,4 @@
-body {
+body, body[data-theme="default"] {
     --mainplayer-background-color: black;
     --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.6) 100%);
     --progress-bar-background-color: rgba(255, 255, 255, 0.25);
@@ -14,6 +14,8 @@ body {
     --menu-textbutton-background-color: rgba(20, 20, 20, 0.7);
     --menu-textbutton-text-color: white;
     --menu-textbutton-hover-background-color: rgb(40, 40, 40, 0.7);
+    --menu-quality-sublist-indent-shadow-color: rgb(200, 200, 200);
+    --menu-quality-sublist-indent-shadow-color-active: rgb(150, 150, 150);
     --seek-preview-background-color: rgba(20, 20, 20, 0.7);
     --seek-preview-text-color: rgba(255, 255, 255, 0.9);
     --seek-preview-detached-tip-color: rgba(255, 255, 255, 0.9);
@@ -62,4 +64,453 @@ body {
     --subtitles-toggle-color: rgb(212, 169, 255);
     --subtitles-track-enabled-color: rgb(0, 255, 0);
     --subtitles-track-disabled-color: rgb(255, 100, 50);
+    --button-badge-background-color: rgb(180,0,0);
+    --nextvideo-badge-background-color: rgb(80,180,180);
+    --update-notif-badge-text-color: yellow;
+    --save-notif-badge-text-color: rgb(0,240, 0);
+    --seek-preview-video-border-color: rgba(200, 200, 200, 0.2);
+    --chapter-marker-color: rgb(0, 0, 0, 0.8);
+    --input-border: 1px solid rgba(255, 255, 255, 0.3);
+    --input-background-color: rgba(0, 0, 0, 0.2);
+    --input-text-color: white;
+    --input-focus-border: 1px solid rgba(255, 255, 255, 0.5);
+    --loudness-threshold-bar-color: rgba(255, 0, 217, 1);
+    --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.3) 100%);
+    --playback-rate-menu-item-border:  1px solid rgba(100, 100, 100, 0.2);
+    --volume-control-unity-volume-color: rgb(192, 192, 192);
+    --tooltip-background-color: rgb(200, 200, 200);
+    --tooltip-text-color: black;
+    --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================
+   Arctic Light
+   Clean light UI with blue accents
+   ========================= */
+body[data-theme="arctic"] {
+  --mainplayer-background-color: #f7f9fc;
+  --controls-background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 40%, rgba(255,255,255,0.9) 100%);
+  --progress-bar-background-color: rgba(0, 0, 0, 0.18);
+  --progress-bar-current-progress-color: #0a84ff;
+  --progress-bar-knob-color: #0b284a;
+  --volume-slider-background-color: rgba(0, 0, 0, 0.2);
+  --volume-slider-knob-color: #0b284a;
+
+  --menu-background-color: rgba(255, 255, 255, 0.95);
+  --menu-text-color: #0b1320;
+  --menu-border: 1px solid rgba(0, 0, 0, 0.12);
+  --menu-list-item-hover-background-color: rgba(10, 132, 255, 0.08);
+  --menu-list-item-active-background-color: rgba(10, 132, 255, 0.16);
+  --menu-textbutton-background-color: rgba(10, 10, 10, 0.04);
+  --menu-textbutton-text-color: #0b1320;
+  --menu-textbutton-hover-background-color: rgba(10, 132, 255, 0.1);
+  --menu-quality-sublist-indent-shadow-color: rgb(210, 210, 210);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(170, 170, 170);
+
+  --seek-preview-background-color: rgba(255, 255, 255, 0.95);
+  --seek-preview-text-color: rgba(0, 0, 0, 0.9);
+  --seek-preview-detached-tip-color: rgba(0, 0, 0, 0.9);
+
+  --progress-download-initiated-color: rgba(0, 180, 120, 0.8);
+  --progress-download-complete-color: rgba(0, 0, 0, 0.18);
+  --progress-download-failed-color: rgba(220, 70, 70, 1);
+  --intro-outro-bar-color: #ffb300;
+
+  --popbutton-background-color: rgba(255, 255, 255, 0.85);
+  --popbutton-text-color: #0b1320;
+  --popbutton-border: 1px solid rgba(0, 0, 0, 0.12);
+  --popbutton-hover-background-color: rgba(10, 132, 255, 0.15);
+  --popbutton-hover-border: 1px solid rgba(10, 132, 255, 0.4);
+
+  --seek-marker-undo-color: #00e0ff;
+  --seek-marker-redo-color: #ffe44d;
+  --analyzer-marker-color: rgb(120, 120, 120);
+
+  --close-button-color: rgba(255, 59, 48, 0.6);
+  --close-button-hover-color: rgba(255, 59, 48, 1);
+
+  --popwindow-border: 1px solid rgba(0, 0, 0, 0.1);
+  --popwindow-background-color: rgba(255, 255, 255, 0.98);
+  --popwindow-text-color: rgba(0, 0, 0, 0.85);
+  --popwindow-button-background-color: #eef2f7;
+  --popwindow-button-text-color: #1b2430;
+  --popwindow-button-titletext-color: #4f5b66;
+  --popwindow-button-hover-background-color: #e3e8f0;
+  --popwindow-button-active-background-color: #0a84ff;
+  --popwindow-dropdown-item-background-color: #f4f7fb;
+  --popwindow-dropdown-item-hover-background-color: #e9eef6;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(10, 132, 255, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(10, 132, 255, 0.6);
+
+  --source-delete-button-color: rgb(160, 0, 0);
+  --source-delete-button-hover-color: rgb(130, 0, 0);
+  --source-active-url-color: rgb(0, 140, 0);
+  --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
+
+  --timeline-current-position-color: rgba(10, 132, 255, 0.9);
+  --timeline-cue-background-color: rgba(0, 0, 0, 0.15);
+  --timeline-cue-text-color: #0b1320;
+  --timeline-tick-color: rgba(0, 0, 0, 0.7);
+  --timeline-tick-label-color: rgba(0, 0, 0, 0.85);
+  --timeline-vad-line-color: #0b1320;
+
+  --subtitle-tool-color: #0b1320;
+  --linkui-toggle-color: #0a84ff;
+  --soundwave-toggle-color: #00bcd4;
+
+  --status-success-color: #0bbf6a;
+  --status-error-color: #cc3344;
+  --status-warning-color: #ffcc00;
+
+  --subtitles-toggle-color: #7b5cff;
+  --subtitles-track-enabled-color: #0aa84f;
+  --subtitles-track-disabled-color: #ff784e;
+
+  --button-badge-background-color: #cc2b2b;
+  --nextvideo-badge-background-color: #88c7e9;
+  --update-notif-badge-text-color: #0a84ff;
+  --save-notif-badge-text-color: #0abf53;
+
+  --seek-preview-video-border-color: rgba(0, 0, 0, 0.15);
+  --chapter-marker-color: rgba(0, 0, 0, 0.75);
+
+  --input-border: 1px solid rgba(0, 0, 0, 0.25);
+  --input-background-color: rgba(255, 255, 255, 0.9);
+  --input-text-color: #0b1320;
+  --input-focus-border: 1px solid rgba(10, 132, 255, 0.7);
+
+  --loudness-threshold-bar-color: #d000ff;
+
+  --playback-rate-menu-background: linear-gradient(rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 85%, rgba(255,255,255,0.7) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(0, 0, 0, 0.1);
+
+  --volume-control-unity-volume-color: #505050;
+
+  --tooltip-background-color: #141414;
+  --tooltip-text-color: #ffffff;
+  --eq-tooltip-background-color: rgba(0, 0, 0, 0.75);
+}
+
+/* =========================
+   Ocean Blue
+   Deep navy with cyan accents
+   ========================= */
+body[data-theme="ocean"] {
+  --mainplayer-background-color: #0b1220;
+  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(8,12,22,0.45) 35%, rgba(8,12,22,0.85) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.25);
+  --progress-bar-current-progress-color: #19b7ff;
+  --progress-bar-knob-color: #ffffff;
+  --volume-slider-background-color: rgba(160, 175, 200, 0.5);
+  --volume-slider-knob-color: #e6f7ff;
+
+  --menu-background-color: rgba(14, 22, 38, 0.92);
+  --menu-text-color: #e6f7ff;
+  --menu-border: 1px solid rgba(25, 183, 255, 0.25);
+  --menu-list-item-hover-background-color: rgba(25, 183, 255, 0.15);
+  --menu-list-item-active-background-color: rgba(25, 183, 255, 0.25);
+  --menu-textbutton-background-color: rgba(10, 20, 35, 0.7);
+  --menu-textbutton-text-color: #d7f2ff;
+  --menu-textbutton-hover-background-color: rgba(25, 183, 255, 0.18);
+  --menu-quality-sublist-indent-shadow-color: rgb(140, 160, 185);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(110, 130, 155);
+
+  --seek-preview-background-color: rgba(10, 16, 28, 0.92);
+  --seek-preview-text-color: rgba(255, 255, 255, 0.95);
+  --seek-preview-detached-tip-color: rgba(230, 247, 255, 0.95);
+
+  --progress-download-initiated-color: rgba(0, 230, 170, 0.85);
+  --progress-download-complete-color: rgba(255, 255, 255, 0.18);
+  --progress-download-failed-color: rgba(255, 90, 90, 1);
+  --intro-outro-bar-color: #00d4aa;
+
+  --popbutton-background-color: rgba(10, 20, 35, 0.85);
+  --popbutton-text-color: #e6f7ff;
+  --popbutton-border: 1px solid rgba(25, 183, 255, 0.18);
+  --popbutton-hover-background-color: rgba(25, 183, 255, 0.15);
+  --popbutton-hover-border: 1px solid rgba(25, 183, 255, 0.5);
+
+  --seek-marker-undo-color: #16e3ff;
+  --seek-marker-redo-color: #ffe169;
+  --analyzer-marker-color: rgb(180, 190, 205);
+
+  --close-button-color: rgba(255, 80, 80, 0.6);
+  --close-button-hover-color: rgba(255, 80, 80, 1);
+
+  --popwindow-border: 1px solid rgba(25, 183, 255, 0.2);
+  --popwindow-background-color: rgba(12, 20, 35, 0.95);
+  --popwindow-text-color: rgba(230, 247, 255, 0.9);
+  --popwindow-button-background-color: #0e1a2b;
+  --popwindow-button-text-color: #bfeaff;
+  --popwindow-button-titletext-color: #9dd8ff;
+  --popwindow-button-hover-background-color: #12223a;
+  --popwindow-button-active-background-color: #1177bb;
+  --popwindow-dropdown-item-background-color: #0e1a2b;
+  --popwindow-dropdown-item-hover-background-color: #152842;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(25, 183, 255, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(25, 183, 255, 0.6);
+
+  --source-delete-button-color: rgb(180, 30, 30);
+  --source-delete-button-hover-color: rgb(150, 25, 25);
+  --source-active-url-color: rgb(0, 200, 120);
+  --source-headers-invalid-border: 1px solid rgb(220, 50, 50);
+
+  --timeline-current-position-color: rgba(25, 183, 255, 0.9);
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.22);
+  --timeline-cue-text-color: #0b1220;
+  --timeline-tick-color: rgba(255, 255, 255, 0.8);
+  --timeline-tick-label-color: rgba(255, 255, 255, 0.9);
+  --timeline-vad-line-color: #e6f7ff;
+
+  --subtitle-tool-color: #e6f7ff;
+  --linkui-toggle-color: #19b7ff;
+  --soundwave-toggle-color: rgb(4, 217, 255);
+
+  --status-success-color: #2ee59d;
+  --status-error-color: #ff5c5c;
+  --status-warning-color: #ffd166;
+
+  --subtitles-toggle-color: #97a6ff;
+  --subtitles-track-enabled-color: #11d67a;
+  --subtitles-track-disabled-color: #ff8a65;
+
+  --button-badge-background-color: #0a84ff;
+  --nextvideo-badge-background-color: #17a2b8;
+  --update-notif-badge-text-color: #19b7ff;
+  --save-notif-badge-text-color: #19e58a;
+
+  --seek-preview-video-border-color: rgba(230, 247, 255, 0.18);
+  --chapter-marker-color: rgba(0, 0, 0, 0.8);
+
+  --input-border: 1px solid rgba(25, 183, 255, 0.35);
+  --input-background-color: rgba(10, 16, 28, 0.7);
+  --input-text-color: #e6f7ff;
+  --input-focus-border: 1px solid rgba(25, 183, 255, 0.7);
+
+  --loudness-threshold-bar-color: #00d4ff;
+
+  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(100, 140, 170, 0.25);
+
+  --volume-control-unity-volume-color: #c0d4e6;
+
+  --tooltip-background-color: #e0f0ff;
+  --tooltip-text-color: #001421;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* =========================
+   Neon Night
+   Matte black with magenta and cyan pops
+   ========================= */
+body[data-theme="neon"] {
+  --mainplayer-background-color: #0a0a0f;
+  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(10,10,15,0.45) 35%, rgba(10,10,15,0.9) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.22);
+  --progress-bar-current-progress-color: #ff2bd6;
+  --progress-bar-knob-color: #ffffff;
+  --volume-slider-background-color: rgba(160, 160, 160, 0.5);
+  --volume-slider-knob-color: #ffffff;
+
+  --menu-background-color: rgba(20, 20, 28, 0.92);
+  --menu-text-color: #f7f7ff;
+  --menu-border: 1px solid rgba(255, 43, 214, 0.35);
+  --menu-list-item-hover-background-color: rgba(255, 43, 214, 0.15);
+  --menu-list-item-active-background-color: rgba(255, 43, 214, 0.25);
+  --menu-textbutton-background-color: rgba(18,18,26,0.7);
+  --menu-textbutton-text-color: #f7f7ff;
+  --menu-textbutton-hover-background-color: rgba(0, 240, 255, 0.15);
+  --menu-quality-sublist-indent-shadow-color: rgb(150, 150, 170);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(120, 120, 150);
+
+  --seek-preview-background-color: rgba(20, 20, 28, 0.9);
+  --seek-preview-text-color: rgba(255, 255, 255, 0.95);
+  --seek-preview-detached-tip-color: rgba(255, 255, 255, 0.95);
+
+  --progress-download-initiated-color: rgba(0, 230, 170, 0.9);
+  --progress-download-complete-color: rgba(255, 255, 255, 0.2);
+  --progress-download-failed-color: rgba(255, 50, 90, 1);
+  --intro-outro-bar-color: #ff9f1c;
+
+  --popbutton-background-color: rgba(18, 18, 26, 0.85);
+  --popbutton-text-color: #f7f7ff;
+  --popbutton-border: 1px solid rgba(0, 240, 255, 0.25);
+  --popbutton-hover-background-color: rgba(255, 43, 214, 0.18);
+  --popbutton-hover-border: 1px solid rgba(255, 43, 214, 0.5);
+
+  --seek-marker-undo-color: #00f0ff;
+  --seek-marker-redo-color: #f3ff3d;
+  --analyzer-marker-color: rgb(199, 199, 199);
+
+  --close-button-color: rgba(255, 23, 68, 0.7);
+  --close-button-hover-color: rgba(255, 23, 68, 1);
+
+  --popwindow-border: 1px solid rgba(255, 43, 214, 0.3);
+  --popwindow-background-color: rgba(16, 16, 24, 0.95);
+  --popwindow-text-color: rgba(255, 255, 255, 0.9);
+  --popwindow-button-background-color: #141420;
+  --popwindow-button-text-color: #f0f0ff;
+  --popwindow-button-titletext-color: #d9d9ff;
+  --popwindow-button-hover-background-color: #1a1a2a;
+  --popwindow-button-active-background-color: #ff2bd6;
+  --popwindow-dropdown-item-background-color: #141420;
+  --popwindow-dropdown-item-hover-background-color: #1a1a2a;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(0, 240, 255, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(0, 240, 255, 0.6);
+
+  --source-delete-button-color: rgb(190, 0, 40);
+  --source-delete-button-hover-color: rgb(160, 0, 35);
+  --source-active-url-color: rgb(0, 210, 130);
+  --source-headers-invalid-border: 1px solid rgb(230, 0, 80);
+
+  --timeline-current-position-color: rgba(255, 43, 214, 0.95);
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.25);
+  --timeline-cue-text-color: #0a0a0f;
+  --timeline-tick-color: rgba(255, 255, 255, 0.85);
+  --timeline-tick-label-color: rgba(255, 255, 255, 0.95);
+  --timeline-vad-line-color: #ffffff;
+
+  --subtitle-tool-color: #ffffff;
+  --linkui-toggle-color: #ff2bd6;
+  --soundwave-toggle-color: #00f0ff;
+
+  --status-success-color: #39ff14;
+  --status-error-color: #ff1744;
+  --status-warning-color: #ffe600;
+
+  --subtitles-toggle-color: #d4a9ff;
+  --subtitles-track-enabled-color: #00ff9a;
+  --subtitles-track-disabled-color: #ff6b4a;
+
+  --button-badge-background-color: #c2185b;
+  --nextvideo-badge-background-color: #3ec7c7;
+  --update-notif-badge-text-color: #ff2bd6;
+  --save-notif-badge-text-color: #39ff14;
+
+  --seek-preview-video-border-color: rgba(255, 255, 255, 0.2);
+  --chapter-marker-color: rgba(0, 0, 0, 0.85);
+
+  --input-border: 1px solid rgba(255, 43, 214, 0.4);
+  --input-background-color: rgba(16, 16, 24, 0.75);
+  --input-text-color: #ffffff;
+  --input-focus-border: 1px solid rgba(0, 240, 255, 0.6);
+
+  --loudness-threshold-bar-color: #ff00e1;
+
+  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(120, 120, 160, 0.25);
+
+  --volume-control-unity-volume-color: #d0d0e0;
+
+  --tooltip-background-color: #191926;
+  --tooltip-text-color: #ffffff;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================
+   High Contrast
+   Accessibility focused with large contrast ratios
+   ========================= */
+body[data-theme="contrast"] {
+  --mainplayer-background-color: #000000;
+  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.95) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.35);
+  --progress-bar-current-progress-color: #ffeb3b;
+  --progress-bar-knob-color: #ffffff;
+  --volume-slider-background-color: rgba(255, 255, 255, 0.35);
+  --volume-slider-knob-color: #ffffff;
+
+  --menu-background-color: rgba(0, 0, 0, 0.98);
+  --menu-text-color: #ffffff;
+  --menu-border: 1px solid #ffffff;
+  --menu-list-item-hover-background-color: rgba(255, 255, 255, 0.12);
+  --menu-list-item-active-background-color: rgba(255, 255, 255, 0.22);
+  --menu-textbutton-background-color: rgba(255, 255, 255, 0.08);
+  --menu-textbutton-text-color: #ffffff;
+  --menu-textbutton-hover-background-color: rgba(255, 255, 255, 0.18);
+  --menu-quality-sublist-indent-shadow-color: #ffffff;
+  --menu-quality-sublist-indent-shadow-color-active: #e0e0e0;
+
+  --seek-preview-background-color: rgba(0, 0, 0, 0.95);
+  --seek-preview-text-color: #ffffff;
+  --seek-preview-detached-tip-color: #ffffff;
+
+  --progress-download-initiated-color: #00ff95;
+  --progress-download-complete-color: rgba(255, 255, 255, 0.25);
+  --progress-download-failed-color: #ff1744;
+  --intro-outro-bar-color: #ffeb3b;
+
+  --popbutton-background-color: rgba(0, 0, 0, 0.95);
+  --popbutton-text-color: #ffffff;
+  --popbutton-border: 1px solid #ffffff;
+  --popbutton-hover-background-color: rgba(255, 255, 255, 0.12);
+  --popbutton-hover-border: 1px solid #ffeb3b;
+
+  --seek-marker-undo-color: #00e5ff;
+  --seek-marker-redo-color: #ffee58;
+  --analyzer-marker-color: #e0e0e0;
+
+  --close-button-color: rgba(255, 0, 0, 0.8);
+  --close-button-hover-color: rgba(255, 0, 0, 1);
+
+  --popwindow-border: 2px solid #ffffff;
+  --popwindow-background-color: rgba(0, 0, 0, 0.98);
+  --popwindow-text-color: #ffffff;
+  --popwindow-button-background-color: #111111;
+  --popwindow-button-text-color: #ffffff;
+  --popwindow-button-titletext-color: #d0d0d0;
+  --popwindow-button-hover-background-color: #1a1a1a;
+  --popwindow-button-active-background-color: #81771d;
+  --popwindow-dropdown-item-background-color: #0d0d0d;
+  --popwindow-dropdown-item-hover-background-color: #1a1a1a;
+  --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
+  --popwindow-textinput-focus-border-color: #ffeb3b;
+
+  --source-delete-button-color: #ff5252;
+  --source-delete-button-hover-color: #ff1744;
+  --source-active-url-color: #00ff95;
+  --source-headers-invalid-border: 2px solid #ff1744;
+
+  --timeline-current-position-color: #ffeb3b;
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.35);
+  --timeline-cue-text-color: #000000;
+  --timeline-tick-color: rgba(255, 255, 255, 0.95);
+  --timeline-tick-label-color: rgba(255, 255, 255, 1);
+  --timeline-vad-line-color: #ffffff;
+
+  --subtitle-tool-color: #ffffff;
+  --linkui-toggle-color: #ffeb3b;
+  --soundwave-toggle-color: #00e5ff;
+
+  --status-success-color: #3cff00;
+  --status-error-color: #ff1744;
+  --status-warning-color: #ffeb3b;
+
+  --subtitles-toggle-color: #f1c40f;
+  --subtitles-track-enabled-color: #00ff64;
+  --subtitles-track-disabled-color: #ff6e40;
+
+  --button-badge-background-color: #ff3d00;
+  --nextvideo-badge-background-color: #00bcd4;
+  --update-notif-badge-text-color: #ffeb3b;
+  --save-notif-badge-text-color: #00ff64;
+
+  --seek-preview-video-border-color: rgba(255, 255, 255, 0.25);
+  --chapter-marker-color: rgba(0, 0, 0, 0.85);
+
+  --input-border: 2px solid #ffffff;
+  --input-background-color: rgba(0, 0, 0, 0.9);
+  --input-text-color: #ffffff;
+  --input-focus-border: 2px solid #ffeb3b;
+
+  --loudness-threshold-bar-color: #ff00d4;
+
+  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.6) 100%);
+  --playback-rate-menu-item-border: 1px solid #ffffff;
+
+  --volume-control-unity-volume-color: #c0c0c0;
+
+  --tooltip-background-color: #ffffff;
+  --tooltip-text-color: #000000;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.9);
 }

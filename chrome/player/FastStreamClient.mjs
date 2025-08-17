@@ -287,6 +287,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoZoom = options.videoZoom;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
+    document.body.dataset.theme = options.colorTheme;
+    // save color theme to local storage
+    localStorage.setItem('faststream-color-theme', options.colorTheme);
 
     this.loadProgressData();
 
