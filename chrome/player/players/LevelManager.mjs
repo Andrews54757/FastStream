@@ -14,7 +14,7 @@ export class LevelManager {
     this.prioritizedVideoCodec = null;
     this.prioritizedAudioCodec = null;
 
-    this.shouldPreferDRCAudio = false;
+    this.shouldPreferDRCAudio = true;
 
     this.loadPreferences();
   }
