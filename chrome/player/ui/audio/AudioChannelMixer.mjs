@@ -59,7 +59,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.masterNodes.compressor.setConfig(this.masterConfig.compressor);
 
     this.refreshMixer();
-    this.updateDynLabels();
   }
 
   setupUI(equalizerContainer, compressorContainer) {
@@ -425,6 +424,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     this.updateNodes();
     this.swapDynActive();
+    this.updateDynLabels();
   }
 
   swapDynActive() {
@@ -641,8 +641,11 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     const hasNonUnityChannelGains = gains.some((gain) => gain !== 1);
+    const hasActiveNodes = this.channelNodes.some((nodes) => {
+      return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
+    });
     const needsAnalyzer = this.needsAnalyzer();
-    if (hasNonUnityChannelGains || needsAnalyzer) {
+    if (hasActiveNodes || hasNonUnityChannelGains || needsAnalyzer) {
       if (!this.channelSplitter) {
         this.channelSplitter = this.audioContext.createChannelSplitter();
         this.channelMerger = this.audioContext.createChannelMerger();
