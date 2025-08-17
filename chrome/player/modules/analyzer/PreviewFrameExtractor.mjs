@@ -140,8 +140,8 @@ export class PreviewFrameExtractor extends EventEmitter {
     await player.setup();
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.client.currentLevel;
-      player.load();
+      player.setCurrentVideoLevelID(this.client.getCurrentVideoLevelID());
+      player.setCurrentAudioLevelID(this.client.getCurrentAudioLevelID());
     });
 
     const onLoadMeta = () => {
@@ -388,8 +388,8 @@ export class PreviewFrameExtractor extends EventEmitter {
 
   setLevel(level, audioLevel) {
     if (this.backgroundAnalyzerPlayer) {
-      this.backgroundAnalyzerPlayer.currentLevel = level;
-      this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
+      this.backgroundAnalyzerPlayer.setCurrentVideoLevelID(level);
+      this.backgroundAnalyzerPlayer.setCurrentAudioLevelID(audioLevel);
     }
   }
 

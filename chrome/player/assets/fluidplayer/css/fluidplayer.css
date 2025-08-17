@@ -511,13 +511,33 @@ body {
     cursor: pointer;
 }
 
-.fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item {
+.fluid_video_source_sublist_item,
+.fluid_video_source_list_item,
+.fluid_audio_source_list_item {
     padding: 8px 5px;
     border-top: var(--menu-border);
     cursor: pointer;
 }
 
-.fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item:first-child {
+.fluid_video_source_sublist_item {
+    padding-left: 10px;
+    margin-left: 5px;
+   /* 5px solid rgb(150, 150, 150); */
+    box-shadow: -5px 0px 0px 0px rgb(200, 200, 200), 5px 0px 0px 0px rgb(200, 200, 200);
+}
+
+.fluid_video_source_sublist_item:hover,
+.fluid_video_source_sublist_item.candidate,
+.fluid_video_source_sublist_item.source_active {
+    box-shadow: -5px 0px 0px 0px rgb(150, 150, 150), 5px 0px 0px 0px rgb(150, 150, 150);
+}
+
+.fluid_video_source_list_item.subsource_active {
+    font-weight: bold;
+}
+
+.fluid_video_source_list_item:first-child,
+.fluid_audio_source_list_item:first-child {
     border-top: none;
 }
 
@@ -556,7 +576,11 @@ body {
     background-color: var(--menu-list-item-hover-background-color) !important;
 }
 
-.fluid_video_source_list_item:hover,
+.fluid_audio_source_list_item:hover,
+.fluid_audio_source_list_item.candidate,
+.fluid_video_source_sublist_item:hover,
+.fluid_video_source_sublist_item.candidate,
+.fluid_video_source_list_item:hover:not(.subsource_active),
 .fluid_video_source_list_item.candidate {
     background-color: var(--menu-list-item-hover-background-color);
 }
@@ -715,6 +739,7 @@ body {
 }
 
 .fluid_button_video_source .fluid_video_sources_list,
+.fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list,
 .fluid_video_playback_rates {
     z-index: 888888 !important;
@@ -752,6 +777,8 @@ body {
     opacity: 0;
 }
 
+.fluid_audio_source_list_item.source_active,
+.fluid_video_source_sublist_item.source_active,
 .fluid_video_source_list_item.source_active,
 .language_track.active {
     font-weight: bold;
@@ -868,6 +895,7 @@ body {
 
 
 .fluid_button_video_source .fluid_video_sources_list,
+.fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list {
     opacity: 99%;
     border-radius: 3px;

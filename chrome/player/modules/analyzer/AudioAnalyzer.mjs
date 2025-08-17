@@ -240,9 +240,8 @@ export class AudioAnalyzer extends EventEmitter {
     });
 
     player.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
-      player.currentLevel = this.client.currentLevel;
-      player.currentAudioLevel = this.client.currentAudioLevel;
-      player.load();
+      player.setCurrentVideoLevelID(this.client.getCurrentVideoLevelID());
+      player.setCurrentAudioLevelID(this.client.getCurrentAudioLevelID());
     });
 
     const onLoadMeta = () => {
@@ -446,12 +445,13 @@ export class AudioAnalyzer extends EventEmitter {
     this.stopBackgroundAnalyzer();
   }
 
-  setLevel(level, audioLevel) {
+  setLevel(videoLevel, audioLevel) {
     if (this.backgroundAnalyzerPlayer) {
-      const changed = this.backgroundAnalyzerPlayer.currentAudioLevel !== audioLevel;
-      this.backgroundAnalyzerPlayer.currentLevel = level;
-      this.backgroundAnalyzerPlayer.currentAudioLevel = audioLevel;
-      if (changed) {
+      const changedVideo = this.backgroundAnalyzerPlayer.getCurrentVideoLevelID() !== videoLevel;
+      const changedAudio = this.backgroundAnalyzerPlayer.getCurrentAudioLevelID() !== audioLevel;
+      this.backgroundAnalyzerPlayer.setCurrentVideoLevelID(videoLevel);
+      this.backgroundAnalyzerPlayer.setCurrentAudioLevelID(audioLevel);
+      if (audioLevel === null ? changedVideo : changedAudio) {
         this.backgroundDoneRanges.length = 0;
         this.vadBuffer = [];
         this.volumeBuffer = [];
