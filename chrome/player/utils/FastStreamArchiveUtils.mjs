@@ -16,9 +16,9 @@ export class FastStreamArchiveUtils {
     const header = new TextEncoder().encode(JSON.stringify({
       version: 1,
       number_of_entries: entries.length,
-      source: player ? sourceObj : null, // TODO: FIX
-      currentLevel: player?.currentLevel,
-      currentAudioLevel: player?.currentAudioLevel,
+      source: player ? sourceObj : null,
+      currentLevel: player?.getCurrentVideoLevelID(),
+      currentAudioLevel: player?.getCurrentAudioLevelID(),
     }));
 
     const headerPart = new ArrayBuffer(4 + header.byteLength);
