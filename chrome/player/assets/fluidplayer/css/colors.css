@@ -42,6 +42,7 @@ body, body[data-theme="default"] {
     --popwindow-button-hover-background-color: rgb(30, 30, 30);
     --popwindow-button-active-background-color: rgb(0, 135, 153);
     --popwindow-dropdown-item-background-color: rgb(30, 30, 30);
+    --popwindow-dropdown-item-selected-background-color: rgb(20,20,20);
     --popwindow-dropdown-item-hover-background-color: rgb(40, 40, 40);
     --popwindow-dropdown-text-focus-outline: 1px solid rgba(255, 255, 255, 0.5);
     --popwindow-textinput-focus-border-color: rgba(255, 255, 255, 0.5);
@@ -138,12 +139,13 @@ body[data-theme="arctic"] {
   --popwindow-button-hover-background-color: #e3e8f0;
   --popwindow-button-active-background-color: #0a84ff;
   --popwindow-dropdown-item-background-color: #f4f7fb;
+  --popwindow-dropdown-item-selected-background-color: #e6e8eb;
   --popwindow-dropdown-item-hover-background-color: #e9eef6;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(10, 132, 255, 0.6);
   --popwindow-textinput-focus-border-color: rgba(10, 132, 255, 0.6);
 
-  --source-delete-button-color: rgb(160, 0, 0);
-  --source-delete-button-hover-color: rgb(130, 0, 0);
+  --source-delete-button-color: rgb(255, 168, 168);
+  --source-delete-button-hover-color: rgb(223, 135, 135);
   --source-active-url-color: rgb(0, 140, 0);
   --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
 
@@ -246,6 +248,7 @@ body[data-theme="ocean"] {
   --popwindow-button-hover-background-color: #12223a;
   --popwindow-button-active-background-color: #1177bb;
   --popwindow-dropdown-item-background-color: #0e1a2b;
+  --popwindow-dropdown-item-selected-background-color: #41536b;
   --popwindow-dropdown-item-hover-background-color: #152842;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(25, 183, 255, 0.6);
   --popwindow-textinput-focus-border-color: rgba(25, 183, 255, 0.6);
@@ -354,6 +357,7 @@ body[data-theme="neon"] {
   --popwindow-button-hover-background-color: #1a1a2a;
   --popwindow-button-active-background-color: #ff2bd6;
   --popwindow-dropdown-item-background-color: #141420;
+  --popwindow-dropdown-item-selected-background-color: #0a0a0f;
   --popwindow-dropdown-item-hover-background-color: #1a1a2a;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(0, 240, 255, 0.6);
   --popwindow-textinput-focus-border-color: rgba(0, 240, 255, 0.6);
@@ -462,6 +466,7 @@ body[data-theme="contrast"] {
   --popwindow-button-hover-background-color: #1a1a1a;
   --popwindow-button-active-background-color: #81771d;
   --popwindow-dropdown-item-background-color: #0d0d0d;
+  --popwindow-dropdown-item-selected-background-color: #000000;
   --popwindow-dropdown-item-hover-background-color: #1a1a1a;
   --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
   --popwindow-textinput-focus-border-color: #ffeb3b;

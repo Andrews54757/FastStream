@@ -2068,11 +2068,11 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
 }
 
 .delete_button:hover {
-    background-color: rgb(100, 0, 0);
+    background-color: var(--source-delete-button-hover-color);
 }
 
 .delete_button {
-    background-color: rgb(120, 0, 0);
+    background-color: var(--source-delete-button-color);
 }
 
 .dynamics_container {
