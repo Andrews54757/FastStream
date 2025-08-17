@@ -169,7 +169,7 @@ export class VideoQualityChanger extends EventEmitter {
         Array.from(DOMElements.videoSourceList.getElementsByClassName('source_active')).forEach((element) => {
           element.classList.remove('source_active');
         });
-        this.emit('qualityChanged', chosen);
+        this.emit('qualityChanged', chosen, levels.length <= 1);
         levelelement.classList.add('source_active');
         e.stopPropagation();
       });
