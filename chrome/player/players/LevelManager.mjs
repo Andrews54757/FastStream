@@ -115,11 +115,11 @@ export class LevelManager {
   }
 
   getVideoLanguage() {
-    return this.currentVideoLanguage;
+    return this.currentVideoLanguage || navigator.language || navigator.userLanguage || null;
   }
 
   getAudioLanguage() {
-    return this.currentAudioLanguage;
+    return this.currentAudioLanguage || navigator.language || navigator.userLanguage || null;
   }
 
   getDesiredVideoHeight() {
