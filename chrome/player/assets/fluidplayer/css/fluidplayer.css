@@ -243,7 +243,7 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container {
-    color: white;
+    color: var(--menu-text-color);
     position: absolute;
     bottom: 0;
     left: 0;
@@ -511,13 +511,33 @@ body {
     cursor: pointer;
 }
 
-.fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item {
+.fluid_video_source_sublist_item,
+.fluid_video_source_list_item,
+.fluid_audio_source_list_item {
     padding: 8px 5px;
     border-top: var(--menu-border);
     cursor: pointer;
 }
 
-.fluid_button_video_source .fluid_video_sources_list .fluid_video_source_list_item:first-child {
+.fluid_video_source_sublist_item {
+    padding-left: 10px;
+    margin-left: 5px;
+   /* 5px solid rgb(150, 150, 150); */
+    box-shadow: -5px 0px 0px 0px var(--menu-quality-sublist-indent-shadow-color), 5px 0px 0px 0px var(--menu-quality-sublist-indent-shadow-color);
+}
+
+.fluid_video_source_sublist_item:hover,
+.fluid_video_source_sublist_item.candidate,
+.fluid_video_source_sublist_item.source_active {
+    box-shadow: -5px 0px 0px 0px var(--menu-quality-sublist-indent-shadow-color-active), 5px 0px 0px 0px var(--menu-quality-sublist-indent-shadow-color-active);
+}
+
+.fluid_video_source_list_item.subsource_active {
+    font-weight: bold;
+}
+
+.fluid_video_source_list_item:first-child,
+.fluid_audio_source_list_item:first-child {
     border-top: none;
 }
 
@@ -556,7 +576,11 @@ body {
     background-color: var(--menu-list-item-hover-background-color) !important;
 }
 
-.fluid_video_source_list_item:hover,
+.fluid_audio_source_list_item:hover,
+.fluid_audio_source_list_item.candidate,
+.fluid_video_source_sublist_item:hover,
+.fluid_video_source_sublist_item.candidate,
+.fluid_video_source_list_item:hover:not(.subsource_active),
 .fluid_video_source_list_item.candidate {
     background-color: var(--menu-list-item-hover-background-color);
 }
@@ -640,47 +664,6 @@ body {
     display: none;
 }
 
-/* Pulse class and keyframe animation */
-.transform-active {
-    animation: flash 0.5s infinite;
-    display: inline-block !important;
-    opacity: 0;
-}
-
-@-webkit-keyframes flash {
-    0% {
-        opacity: 0.6;
-        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.5);
-    }
-
-    70% {
-        -webkit-box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-    }
-
-    100% {
-        opacity: 0;
-        display: none;
-        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-}
-
-@keyframes flash {
-    0% {
-        opacity: 0.6;
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
-    }
-
-    70% {
-        box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
-    }
-
-    100% {
-        opacity: 0;
-        display: none;
-        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
-    }
-}
-
 .volume_banner,
 .rate_menu_banner,
 .nextvideo_banner,
@@ -689,7 +672,7 @@ body {
     position: absolute;
     bottom: 0px;
     right: 0px;
-    background-color: rgb(180,0,0);
+    background-color: var(--button-badge-background-color);
     font-weight: medium;
     border-radius: 2px;
     z-index: 2;
@@ -698,23 +681,27 @@ body {
 }
 
 .nextvideo_banner {
-    background-color: rgb(80,180,180);
+    background-color: var(--nextvideo-badge-background-color);
 }
 
 #update_notif_banner,
 #save_notif_banner {
-    color: yellow;
     background: none;
     font-weight: bold;
     font-size: 12px;
     padding: 0px;
 }
 
+#update_notif_banner {
+    color: var(--update-notif-badge-text-color);
+}
+
 #save_notif_banner {
-    color: rgb(0,240, 0);
+    color: var(--save-notif-badge-text-color);
 }
 
 .fluid_button_video_source .fluid_video_sources_list,
+.fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list,
 .fluid_video_playback_rates {
     z-index: 888888 !important;
@@ -752,6 +739,8 @@ body {
     opacity: 0;
 }
 
+.fluid_audio_source_list_item.source_active,
+.fluid_video_source_sublist_item.source_active,
 .fluid_video_source_list_item.source_active,
 .language_track.active {
     font-weight: bold;
@@ -797,7 +786,7 @@ body {
     bottom: 25px;
     left: 50%;
     transform: translate(-50%, 0%);
-    border: 1px solid rgba(200, 200, 200, 0.2);
+    border: 1px solid var(--seek-preview-video-border-color);
     height: 100px;
     background-color: black;
     background-clip: padding-box;
@@ -868,6 +857,7 @@ body {
 
 
 .fluid_button_video_source .fluid_video_sources_list,
+.fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list {
     opacity: 99%;
     border-radius: 3px;
@@ -1018,7 +1008,7 @@ body {
 }
 
 .intro_outro_container>div.chapter {
-    background-color: rgb(0, 0, 0, 0.8);
+    background-color: var(--chapter-marker-color);
     border-radius: 0px;
     top: 0px;
     bottom: 0px;
@@ -1146,7 +1136,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 5px 5px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: var(--menu-border);
     gap: 5px;
     margin-bottom: 5px;
 }
@@ -1181,10 +1171,10 @@ body {
 
 .loop_menu .option input,
 .subtitles_options .option input {
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    background-color: rgba(0, 0, 0, 0.2);
+    border: var(--input-border);
+    background-color: var(--input-background-color);
     border-radius: 4px;
-    color: white;
+    color: var(--input-text-color);
     position: absolute;
     top: 0px;
     bottom: 0px;
@@ -1197,7 +1187,7 @@ body {
 .loop_menu .option input:focus,
 .subtitles_options .option input:focus {
     outline: none;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: var(--input-focus-border);
 }
 
 .subtitles_test_button {
@@ -1637,7 +1627,7 @@ body {
     position: absolute;
     height: 2px;
     bottom: 0px;
-    background-color: rgba(255, 0, 217, 1);
+    background-color: var(--loudness-threshold-bar-color);
     left: 0px;
     right: 0px;
     border-radius: 1px;
@@ -1903,7 +1893,7 @@ body {
 .rate_menu {
     position: absolute;
     inset: 0px;
-    background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.3) 100%);
+    background: var(--playback-rate-menu-background);
 }
 
 .rate-changer-list {
@@ -1919,7 +1909,7 @@ body {
     width: 60px;
     text-align: center;
     padding: 3px 0px;
-    border-top: 1px solid rgba(100, 100, 100, 0.2);
+    border-top: var(--playback-rate-menu-item-border);
 }
 
 .rate-changer-list>div:first-child {
@@ -1952,7 +1942,7 @@ body {
     bottom: 0px;
     width: 3px;
     border-radius: 50% !important;
-    background-color: rgb(192, 192, 192);
+    background-color: var(--volume-control-unity-volume-color);
     left: 33.333%;
     transform: translate(-50%, 0%);
     border-radius: 1px;
@@ -1967,8 +1957,8 @@ body {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    background-color: rgb(200, 200, 200);
-    color: black;
+    background-color: var(--tooltip-background-color);
+    color: var(--tooltip-text-color);
     text-align: center;
     padding: 2px 0;
     border-radius: 3px;
@@ -1991,6 +1981,7 @@ body {
     width: 200px;
     margin-left: -100px;
     background-color: rgba(255, 255, 255, 0.75);
+    color: black;
 }
 
 .tooltip:hover .tooltiptext {
@@ -2005,7 +1996,7 @@ body {
     margin-left: -5px;
     border-width: 5px;
     border-style: solid;
-    border-color: rgb(200, 200, 200) transparent transparent transparent;
+    border-color: var(--tooltip-background-color) transparent transparent transparent;
 }
 
 .tooltip .tooltiptext.right {
@@ -2036,7 +2027,7 @@ body {
 .tooltip .tooltiptext.down::after {
     bottom: 100%;
     top: auto;
-    border-color: transparent transparent rgb(200, 200, 200) transparent;
+    border-color: transparent transparent var(--tooltip-background-color) transparent;
 }
 
 
@@ -2077,11 +2068,11 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
 }
 
 .delete_button:hover {
-    background-color: rgb(100, 0, 0);
+    background-color: var(--source-delete-button-hover-color);
 }
 
 .delete_button {
-    background-color: rgb(120, 0, 0);
+    background-color: var(--source-delete-button-color);
 }
 
 .dynamics_container {
@@ -2835,9 +2826,9 @@ input.crosstalk_calculator_input {
     position: absolute;
     right: 0px;
     bottom: 45px;
-    background-color: rgba(71, 71, 71, 0.75);
+    background-color: var(--menu-background-color);
     border-radius: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: var(--menu-border);
     padding: 5px;
     gap: 5px;
 }
@@ -2928,7 +2919,7 @@ input.crosstalk_calculator_input {
     position: absolute;
     right: 5px;
     bottom: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: var(--popwindow-dropdown-text-focus-outline);
     border-radius: 4px;
     overflow: hidden;
     cursor: pointer;

@@ -968,6 +968,24 @@
     "options_general_minisize": {
         "message": "Tamanho do miniplayer"
     },
+    "options_general_color_theme": {
+        "message": "Tema de cor do tocador"
+    },
+    "options_general_color_theme_default": {
+        "message": "Padrão Escuro"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Ártico"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Oceano"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Neon"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Alto Contraste"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagem sobreposta (pip)"
     },

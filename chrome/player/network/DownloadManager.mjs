@@ -264,7 +264,7 @@ export class DownloadManager {
               this.speedTestBuffer = [];
 
               if (speed > this.lastSpeed) {
-                const maxDownloaders = (this.client?.source?.mode === PlayerModes.ACCELERATED_YT) ? 2 : (this.client?.options?.maximumDownloaders || 0);
+                const maxDownloaders = (this.client?.source?.mode === PlayerModes.ACCELERATED_YT) ? 1 : (this.client?.options?.maximumDownloaders || 0);
                 if (this.downloaders.length < maxDownloaders) {
                   console.log('Adding downloader, speed: ' + speed);
                   this.downloaders.push(new StandardDownloader(this));

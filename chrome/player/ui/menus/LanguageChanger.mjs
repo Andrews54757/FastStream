@@ -53,13 +53,13 @@ export class LanguageChanger extends EventEmitter {
       e.stopPropagation();
     });
 
-    DOMElements.languageButton.addEventListener('focus', ()=>{
+    DOMElements.languageButton.addEventListener('focus', () => {
       if (!this.isOpen() && !isMouseDown) {
         this.openUI(true);
       }
     });
 
-    DOMElements.languageButton.addEventListener('blur', ()=>{
+    DOMElements.languageButton.addEventListener('blur', () => {
       isMouseDown = false;
       if (!this.stayOpen) {
         this.closeUI();
@@ -90,8 +90,10 @@ export class LanguageChanger extends EventEmitter {
         current.classList.remove('candidate');
         if (index < candidates.length - 1) {
           candidates[index + 1].classList.add('candidate');
+          candidates[index + 1].scrollIntoView({block: 'nearest'});
         } else {
           candidates[0].classList.add('candidate');
+          candidates[0].scrollIntoView({block: 'nearest'});
         }
         e.preventDefault();
         e.stopPropagation();
@@ -99,8 +101,10 @@ export class LanguageChanger extends EventEmitter {
         current.classList.remove('candidate');
         if (index > 0) {
           candidates[index - 1].classList.add('candidate');
+          candidates[index - 1].scrollIntoView({block: 'nearest'});
         } else {
           candidates[candidates.length - 1].classList.add('candidate');
+          candidates[candidates.length - 1].scrollIntoView({block: 'nearest'});
         }
         e.preventDefault();
         e.stopPropagation();
@@ -125,11 +129,29 @@ export class LanguageChanger extends EventEmitter {
     });
   }
 
+  groupLevelsByLanguage(levels) {
+    const languageMap = new Map();
+    levels.forEach((level) => {
+      const lang = level.language;
+      if (!languageMap.has(lang)) {
+        languageMap.set(lang, []);
+      }
+      languageMap.get(lang).push(level);
+    });
+    return languageMap;
+  }
+
   updateLanguageTracks(client) {
-    const tracks = client.languageTracks;
-    const videoTracks = tracks.video;
-    const audioTracks = tracks.audio;
-    if (videoTracks.length < 2 && audioTracks.length < 2) {
+    const videoLevels = client.getVideoLevels();
+    const audioLevels = client.getAudioLevels();
+
+    const videoLanguageMap = this.groupLevelsByLanguage(videoLevels);
+    const audioLanguageMap = this.groupLevelsByLanguage(audioLevels);
+
+    const currentVideoLevelID = client.getLevelManager().getCurrentVideoLevelID();
+    const currentAudioLevelID = client.getLevelManager().getCurrentAudioLevelID();
+
+    if (videoLanguageMap.size < 2 && audioLanguageMap.size < 2) {
       DOMElements.languageButton.classList.add('hidden');
       return;
     } else {
@@ -142,18 +164,20 @@ export class LanguageChanger extends EventEmitter {
     DOMElements.languageMenu.appendChild(languageTable);
 
     const languages = [];
-    if (videoTracks.length > 1) {
-      videoTracks.forEach((track) => {
-        if (!languages.includes(track.lang)) {
-          languages.push(track.lang);
+    const hasVideoLanguages = videoLanguageMap.size > 1;
+    const hasAudioLanguages = audioLanguageMap.size > 1;
+    if (hasVideoLanguages) {
+      videoLanguageMap.forEach((tracks, lang) => {
+        if (!languages.includes(lang)) {
+          languages.push(lang);
         }
       });
     }
 
-    if (audioTracks.length > 1) {
-      audioTracks.forEach((track) => {
-        if (!languages.includes(track.lang)) {
-          languages.push(track.lang);
+    if (hasAudioLanguages) {
+      audioLanguageMap.forEach((tracks, lang) => {
+        if (!languages.includes(lang)) {
+          languages.push(lang);
         }
       });
     }
@@ -178,25 +202,43 @@ export class LanguageChanger extends EventEmitter {
       }
       languageElement.appendChild(languageText);
 
-      const videoTrack = videoTracks.find((track) => track.lang === language);
-      const audioTrack = audioTracks.find((track) => track.lang === language);
-      const trackElements = ([videoTrack, audioTrack]).map((track) => {
-        if (!track) return;
+      const videoTracks = videoLanguageMap.get(language) || [];
+      const audioTracks = audioLanguageMap.get(language) || [];
+      const trackElements = ([videoTracks, audioTracks]).map((tracks, i) => {
+        const type = (i === 0) ? 'video' : 'audio';
+
+        if (type === 'video' && !hasVideoLanguages) return;
+        if (type === 'audio' && !hasAudioLanguages) return;
+
+        if (tracks.length === 0) {
+          // filler element to keep layout consistent
+          const filler = document.createElement('div');
+          filler.classList.add('language_track');
+          filler.classList.add('language_track_filler');
+          languageElement.appendChild(filler);
+          return;
+        }
+
+
         const trackElement = document.createElement('div');
         trackElement.classList.add('language_track');
-        trackElement.textContent = Localize.getMessage('player_languagemenu_' + track.type);
-        trackElement.setAttribute('aria-label', Localize.getMessage('player_languagemenu_' + track.type) + ': ' + language);
-        if (track.isActive) {
+        trackElement.dataset.type = type;
+        trackElement.textContent = Localize.getMessage('player_languagemenu_' + type);
+        trackElement.setAttribute('aria-label', Localize.getMessage('player_languagemenu_' + type) + ': ' + language);
+        const currentLevelID = type === 'video' ? currentVideoLevelID : currentAudioLevelID;
+        if (tracks.some((level) => level.id === currentLevelID)) {
           trackElement.classList.add('active');
         }
         languageElement.appendChild(trackElement);
         trackElement.addEventListener('click', (e) => {
           Array.from(DOMElements.languageMenu.getElementsByClassName('active')).forEach((element) => {
-            element.classList.remove('active');
+            if (element.dataset.type === type) {
+              element.classList.remove('active');
+            }
           });
 
           trackElement.classList.add('active');
-          this.emit('languageChanged', track);
+          this.emit('languageChanged', type, language, tracks);
           e.stopPropagation();
         });
         return trackElement;

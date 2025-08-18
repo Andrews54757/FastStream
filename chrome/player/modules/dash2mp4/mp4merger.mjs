@@ -1,7 +1,6 @@
 import {EventEmitter} from '../eventemitter.mjs';
 import {MP4Box, DataStream} from '../mp4box.mjs';
 import {MP4} from '../hls2mp4/MP4Generator.mjs';
-import {Mp4Sample} from '../hls.mjs';
 import {FSBlob} from '../FSBlob.mjs';
 import {BlobManager} from '../../utils/BlobManager.mjs';
 
@@ -68,7 +67,7 @@ export class MP4Merger extends EventEmitter {
     const baseDecodeTime = traf.tfdt?.baseMediaDecodeTime || 0;
     const earliestPresentationTime = mp4boxfile.sidx ? mp4boxfile.sidx.earliest_presentation_time : baseDecodeTime;
     const outputSamples = samplesList.samples.map((sample) => {
-      return new Mp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
+      return createMp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
     });
 
     if (track.chunks.length > 0) {
@@ -320,4 +319,20 @@ export class MP4Merger extends EventEmitter {
       this.blobManager = null;
     }, 120000);
   }
+}
+
+function createMp4Sample(isKeyframe, duration, size, cts) {
+  return {
+    duration,
+    size,
+    cts,
+    flags: {
+      isLeading: 0,
+      isDependedOn: 0,
+      hasRedundancy: 0,
+      degradPrio: 0,
+      dependsOn: isKeyframe ? 2 : 1,
+      isNonSync: isKeyframe ? 0 : 1,
+    },
+  };
 }

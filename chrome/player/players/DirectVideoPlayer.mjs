@@ -79,18 +79,9 @@ export default class DirectVideoPlayer extends EventEmitter {
     return null;
   }
 
-  get currentLevel() {
-    return -1;
-  }
-
-  set currentLevel(value) {
-
-  }
-
   get duration() {
     return this.video.duration;
   }
-
 
   get currentFragment() {
     return null;
@@ -125,5 +116,27 @@ export default class DirectVideoPlayer extends EventEmitter {
 
   set playbackRate(value) {
     this.video.playbackRate = value;
+  }
+
+  getVideoLevels() {
+    return null;
+  }
+
+  getAudioLevels() {
+    return null;
+  }
+
+  getCurrentVideoLevelID() {
+    return null;
+  }
+
+  getCurrentAudioLevelID() {
+    return null;
+  }
+
+  setCurrentVideoLevelID(levelID) {
+  }
+
+  setCurrentAudioLevelID(levelID) {
   }
 }

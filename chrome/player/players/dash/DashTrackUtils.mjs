@@ -1,6 +1,7 @@
+import {AudioLevel, VideoLevel} from '../Levels.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 
-export class TrackFilter {
+export class DashTrackUtils {
   static getTracksWithHighestSelectionPriority(trackArr) {
     let max = 0;
     let result = [];
@@ -81,7 +82,7 @@ export class TrackFilter {
   }
 
   static isTrackMP4(track) {
-    return track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4';
+    return (track.mimeType === 'video/mp4' || track.mimeType === 'audio/mp4');
   }
 
   static prioritizeLang(tracks, lang) {
@@ -219,15 +220,89 @@ export class TrackFilter {
     return result;
   }
 
-  static getLevelList(tracks, lang) {
-    tracks = this.prioritizeLang(tracks, lang);
-    tracks = this.filterTracksByCodec(tracks);
-    const result = this.prioritizeMP4WithQuality(tracks);
+  // static getLevelList(tracks, lang = null) {
+  //   if (lang) {
+  //     tracks = this.prioritizeLang(tracks, lang);
+  //   }
+  //   tracks = this.filterTracksByCodec(tracks);
+  //   const result = this.prioritizeMP4WithQuality(tracks);
+  //   // make into map
+  //   const map = new Map();
+  //   result.forEach((data) => {
+  //     map.set(data.level, data);
+  //   });
+  //   return map;
+  // }
+
+  static getVideoLevelList(tracks) {
     // make into map
     const map = new Map();
-    result.forEach((data) => {
-      map.set(data.level, data);
+
+    tracks.forEach((track) => {
+      track.bitrateList.forEach((data) => {
+        const levelId = data.id;
+        const existing = map.get(levelId);
+        if (existing) {
+          console.warn('Duplicate level id found in getVideoLevelList:', levelId, track, existing.track);
+          return;
+        }
+
+        map.set(levelId, new VideoLevel({
+          id: levelId,
+          width: data.width,
+          height: data.height,
+          bitrate: data.bandwidth,
+          mimeType: track.mimeType,
+          language: track.lang,
+          videoCodec: this.mimeCodecToCodec(track.codec),
+          track: track,
+        }));
+      });
     });
+    return map;
+  }
+
+  static mimeCodecToCodec(mimeCodec) {
+    // mimeCodec format: video/mp4; codecs="avc1.42E01E, mp4a.40.2"
+    const parts = mimeCodec.split(';');
+    if (parts.length < 2) {
+      return null;
+    }
+    const codecPart = parts[1].trim();
+    if (!codecPart.startsWith('codecs=')) {
+      return null;
+    }
+    let codecStr = codecPart.substring(7).trim();
+    if (codecStr.startsWith('"') && codecStr.endsWith('"')) {
+      codecStr = codecStr.substring(1, codecStr.length - 1);
+    }
+    return codecStr;
+  }
+
+  static getAudioLevelList(tracks) {
+    // make into map
+    const map = new Map();
+
+    tracks.forEach((track) => {
+      track.bitrateList.forEach((data) => {
+        const levelId = data.id;
+        const existing = map.get(levelId);
+        if (existing) {
+          console.warn('Duplicate level id found in getAudioLevelList:', levelId, track, existing.track);
+          return;
+        }
+
+        map.set(levelId, new AudioLevel({
+          id: levelId,
+          bitrate: data.bandwidth,
+          mimeType: track.mimeType,
+          language: track.lang,
+          audioCodec: this.mimeCodecToCodec(track.codec),
+          track: track,
+        }));
+      });
+    });
+
     return map;
   }
 
@@ -259,6 +334,28 @@ export class TrackFilter {
     }
 
     return tracks;
+  }
+
+  static selectRepresentationByQuality(representations, mediaInfo, defaultQuality) {
+    if (representations.length > 1 && mediaInfo.type === 'video') {
+      const levelList = this.getLevelList([mediaInfo]);
+      const chosenQuality = Utils.selectQuality(levelList, defaultQuality);
+      const representation = representations.find((rep) => {
+        return rep.id === chosenQuality;
+      });
+      if (representation) {
+        return [representation];
+      }
+    }
+
+    // fallback to highest bitrate
+    // sort representations by bitrate
+    const sortedReps = representations.slice();
+    sortedReps.sort((a, b) => {
+      return a.bandwidth - b.bandwidth;
+    });
+
+    return [sortedReps[sortedReps.length - 1]];
   }
 }
 

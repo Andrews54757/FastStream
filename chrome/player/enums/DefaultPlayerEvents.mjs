@@ -131,11 +131,6 @@ export const DefaultPlayerEvents = {
   SKIP_SEGMENTS: 'skipsegments',
 
   /**
-   * Fired when the player has language tracks
-   */
-  LANGUAGE_TRACKS: 'languagetracks',
-
-  /**
    * Fired when the player has playlist
    */
   PLAYLIST: 'playlist',

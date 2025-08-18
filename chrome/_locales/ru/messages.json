@@ -968,6 +968,24 @@
     "options_general_minisize": {
         "message": "Размер мини-плеера"
     },
+    "options_general_color_theme": {
+        "message": "Цветовая тема плеера"
+    },
+    "options_general_color_theme_default": {
+        "message": "Темная по умолчанию"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Арктика"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Океан"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Неон"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Высокая контрастность"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Картинка в картинке"
     },

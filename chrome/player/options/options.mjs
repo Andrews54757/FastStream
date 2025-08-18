@@ -15,6 +15,7 @@ import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {MessageTypes} from '../enums/MessageTypes.mjs';
+import {ColorThemes} from './defaults/ColorThemes.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -45,6 +46,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
+const colorTheme = document.getElementById('colortheme');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -106,6 +108,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
+  setSelectMenuValue(colorTheme, Options.colorTheme);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
   // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
@@ -205,6 +208,11 @@ createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visCh
   } else {
     showWhenMiniSelected.style.display = 'none';
   }
+  optionChanged();
+});
+
+createSelectMenu(colorTheme, Object.values(ColorThemes), Options.colorTheme, 'options_general_color_theme', (e) => {
+  Options.colorTheme = e.target.value;
   optionChanged();
 });
 

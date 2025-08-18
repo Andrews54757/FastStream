@@ -59,7 +59,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.masterNodes.compressor.setConfig(this.masterConfig.compressor);
 
     this.refreshMixer();
-    this.updateDynLabels();
   }
 
   setupUI(equalizerContainer, compressorContainer) {
@@ -425,6 +424,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     this.updateNodes();
     this.swapDynActive();
+    this.updateDynLabels();
   }
 
   swapDynActive() {
@@ -555,8 +555,27 @@ export class AudioChannelMixer extends AbstractAudioModule {
       nodes.equalizer.getOutputNode().connect(nodes.compressor.getInputNode());
       nodes.compressor.getOutputNode().connect(nodes.preGain);
 
-      nodes.equalizer.on('change', this.updateDynLabels.bind(this));
-      nodes.compressor.on('change', this.updateDynLabels.bind(this));
+      let oldEqualizerState = nodes.equalizer.hasNodes();
+      let oldCompressorState = nodes.compressor.isEnabled();
+
+      nodes.equalizer.on('change', ()=>{
+        const newState = nodes.equalizer.hasNodes();
+        if (newState === oldEqualizerState) {
+          return;
+        }
+        oldEqualizerState = newState;
+        this.updateDynLabels();
+        this.updateNodes();
+      });
+      nodes.compressor.on('change', ()=>{
+        const newState = nodes.compressor.isEnabled();
+        if (newState === oldCompressorState) {
+          return;
+        }
+        oldCompressorState = newState;
+        this.updateDynLabels();
+        this.updateNodes();
+      });
 
       return nodes;
     });
@@ -641,8 +660,11 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     const hasNonUnityChannelGains = gains.some((gain) => gain !== 1);
+    const hasActiveNodes = this.channelNodes.some((nodes) => {
+      return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
+    });
     const needsAnalyzer = this.needsAnalyzer();
-    if (hasNonUnityChannelGains || needsAnalyzer) {
+    if (hasActiveNodes || hasNonUnityChannelGains || needsAnalyzer) {
       if (!this.channelSplitter) {
         this.channelSplitter = this.audioContext.createChannelSplitter();
         this.channelMerger = this.audioContext.createChannelMerger();

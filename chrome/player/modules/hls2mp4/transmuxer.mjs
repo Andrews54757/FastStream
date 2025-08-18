@@ -57,6 +57,9 @@ export default class Transmuxer {
       emit: (event, name, data) => {
         console.log(event, name, data);
       },
+      removeAllListeners: () => {},
+      on: () => {},
+      off: () => {},
     };
   }
 
@@ -83,8 +86,25 @@ export default class Transmuxer {
     const remuxer = this.remuxer;
     const Remuxer = mux.remux;
     const Demuxer = mux.demux;
+    const logger = {
+      debug: (msg, ...args) => {
+        console.debug(`[Transmuxer:${vendor}] ${msg}`, ...args);
+      },
+      log: (msg, ...args) => {
+        console.log(`[Transmuxer:${vendor}] ${msg}`, ...args);
+      },
+      info: (msg, ...args) => {
+        console.info(`[Transmuxer:${vendor}] ${msg}`, ...args);
+      },
+      warn: (msg, ...args) => {
+        console.warn(`[Transmuxer:${vendor}] ${msg}`, ...args);
+      },
+      error: (msg, ...args) => {
+        console.error(`[Transmuxer:${vendor}] ${msg}`, ...args);
+      },
+    };
     if (!remuxer || !(remuxer instanceof Remuxer)) {
-      this.remuxer = new Remuxer(observer, config, typeSupported, vendor);
+      this.remuxer = new Remuxer(observer, config, typeSupported, logger);
     }
     if (!demuxer || !(demuxer instanceof Demuxer)) {
       this.demuxer = new Demuxer(observer, config, typeSupported);

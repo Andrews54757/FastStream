@@ -3229,6 +3229,66 @@
         "pt-br": "Tamanho do miniplayer",
         "ru": "Размер мини-плеера"
     },
+    "options_general_color_theme": {
+        "en": "Player color theme",
+        "de": "Farbthema des Players",
+        "es": "Tema de color del reproductor",
+        "it": "Tema colore del lettore video",
+        "ja": "プレーヤーのカラーテーマ",
+        "ms": "Player color theme",
+        "pt-br": "Tema de cor do tocador",
+        "ru": "Цветовая тема плеера"
+    },
+    "options_general_color_theme_default": {
+        "en": "Default Dark",
+        "de": "Standard Dunkel",
+        "es": "Predeterminado Oscuro",
+        "it": "Predefinito Scuro",
+        "ja": "デフォルト ダーク",
+        "ms": "Default Dark",
+        "pt-br": "Padrão Escuro",
+        "ru": "Темная по умолчанию"
+    },
+    "options_general_color_theme_arctic": {
+        "en": "Arctic",
+        "de": "Arktis",
+        "es": "Ártico",
+        "it": "Artico",
+        "ja": "北極",
+        "ms": "Arctic",
+        "pt-br": "Ártico",
+        "ru": "Арктика"
+    },
+    "options_general_color_theme_ocean": {
+        "en": "Ocean",
+        "de": "Ozean",
+        "es": "Océano",
+        "it": "Oceano",
+        "ja": "オーシャン",
+        "ms": "Ocean",
+        "pt-br": "Oceano",
+        "ru": "Океан"
+    },
+    "options_general_color_theme_neon": {
+        "en": "Neon",
+        "de": "Neon",
+        "es": "Neón",
+        "it": "Neon",
+        "ja": "ネオン",
+        "ms": "Neon",
+        "pt-br": "Neon",
+        "ru": "Неон"
+    },
+    "options_general_color_theme_contrast": {
+        "en": "High Contrast",
+        "de": "Hoher Kontrast",
+        "es": "Alto Contraste",
+        "it": "Alto Contrasto",
+        "ja": "高コントラスト",
+        "ms": "High Contrast",
+        "pt-br": "Alto Contraste",
+        "ru": "Высокая контрастность"
+    },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
         "de": "Bild-in-Bild umschalten",

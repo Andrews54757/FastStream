@@ -968,6 +968,24 @@
     "options_general_minisize": {
         "message": "Miniplayer Größe"
     },
+    "options_general_color_theme": {
+        "message": "Farbthema des Players"
+    },
+    "options_general_color_theme_default": {
+        "message": "Standard Dunkel"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Arktis"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Ozean"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Neon"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Hoher Kontrast"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Bild-in-Bild umschalten"
     },

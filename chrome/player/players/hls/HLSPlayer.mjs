@@ -1,6 +1,7 @@
 import {DefaultPlayerEvents} from '../../enums/DefaultPlayerEvents.mjs';
 import {DownloadStatus} from '../../enums/DownloadStatus.mjs';
 import {ReferenceTypes} from '../../enums/ReferenceTypes.mjs';
+import {AudioLevel, VideoLevel} from '../Levels.mjs';
 import {EmitterRelay, EventEmitter} from '../../modules/eventemitter.mjs';
 import {VideoConverter} from '../../modules/fs-video-converter/VideoConverter.mjs';
 import {Hls} from '../../modules/hls.mjs';
@@ -30,6 +31,10 @@ export default class HLSPlayer extends EventEmitter {
     const split = import.meta.url.split('/');
     const basePath = split.slice(0, split.length - 3).join('/');
     const workerPath = `${basePath}/${workerLocation}`;
+
+    /**
+     * @type {Hls}
+     */
     this.hls = new Hls({
       autoStartLoad: false,
       startPosition: -1,
@@ -53,7 +58,6 @@ export default class HLSPlayer extends EventEmitter {
       enableWorker: true,
       workerPath: workerPath,
       enableSoftwareAES: true,
-      startLevel: 5,
       startFragPrefetch: false,
       testBandwidth: false,
       progressive: false,
@@ -93,7 +97,7 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   canSave() {
-    const frags = this.client.getFragments(this.currentLevel);
+    const frags = this.client.getFragments(this.getCurrentVideoLevelID());
     if (!frags) {
       return {
         canSave: false,
@@ -115,8 +119,8 @@ export default class HLSPlayer extends EventEmitter {
   }
 
   async saveVideo(options) {
-    const fragments = this.client.getFragments(this.currentLevel) || [];
-    const audioFragments = this.client.getFragments(this.currentAudioLevel) || [];
+    const fragments = this.client.getFragments(this.getCurrentVideoLevelID()) || [];
+    const audioFragments = this.client.getFragments(this.getCurrentAudioLevelID()) || [];
 
     let zippedFragments = Utils.zipTimedFragments([fragments, audioFragments]);
 
@@ -146,7 +150,7 @@ export default class HLSPlayer extends EventEmitter {
       };
     });
 
-    const level = this.hls.levels[this.getIndexes(this.currentLevel).levelID];
+    const level = this.hls.levels[this.getIndexes(this.getCurrentVideoLevelID()).levelID];
     const audioLevel = this.hls.audioTracks[this.hls.audioTrack];
 
     let levelInitData = null;
@@ -241,11 +245,24 @@ export default class HLSPlayer extends EventEmitter {
 
 
     this.hls.on(Hls.Events.MANIFEST_PARSED, (event, data) => {
-      const level = Utils.selectQuality(this.levels, this.defaultQuality);
-      this.emit(DefaultPlayerEvents.MANIFEST_PARSED, level);
+      this.emit(DefaultPlayerEvents.MANIFEST_PARSED);
+
+      const levels = this.getVideoLevels();
+      const chosenLevel = this.client.getLevelManager().pickVideoLevel(Array.from(levels.values()));
+      if (chosenLevel) {
+        this.setCurrentVideoLevelID(chosenLevel.id);
+      }
+
+      const audioLevels = this.getAudioLevels();
+      const chosenAudioLevel = this.client.getLevelManager().pickAudioLevel(Array.from(audioLevels.values()));
+      if (chosenAudioLevel) {
+        this.setCurrentAudioLevelID(chosenAudioLevel.id);
+      }
 
       this.hls.subtitleDisplay = false;
       this.hls.subtitleTrack = -1;
+
+      this.load();
     });
 
     this.hls.on(Hls.Events.LEVEL_UPDATED, (a, data) => {
@@ -294,8 +311,6 @@ export default class HLSPlayer extends EventEmitter {
         this.client.makeFragment(identifier, fragment.sn, new HLSFragment(fragment, start, end));
       }
     });
-
-    this.emit(DefaultPlayerEvents.LANGUAGE_TRACKS);
   }
   getVideo() {
     return this.video;
@@ -387,24 +402,49 @@ export default class HLSPlayer extends EventEmitter {
     return this.video.paused;
   }
 
-  get levels() {
+  getVideoLevels() {
     const result = new Map();
     this.hls.levels.forEach((level, index) => {
-      result.set(this.getIdentifier(0, index), {
+      const identifier = this.getIdentifier(0, index);
+      result.set(identifier, new VideoLevel({
+        id: identifier,
         width: level.width,
         height: level.height,
         bitrate: level.bitrate,
-      });
+        mimeType: null,
+        language: null,
+        videoCodec: level.videoCodec || null,
+        audioCodec: level.audioCodec || null,
+      }));
     });
-
     return result;
   }
 
-  get currentLevel() {
-    return this.getIdentifier(0, this.hls.currentLevel === -1 ? this.hls.loadLevel : this.hls.currentLevel);
+  getAudioLevels() {
+    const result = new Map();
+    this.hls.audioTracks.forEach((track, index) => {
+      const identifier = this.getIdentifier(1, index);
+      result.set(identifier, new AudioLevel({
+        id: identifier,
+        bitrate: track.bitrate,
+        mimeType: null,
+        language: track.lang,
+        audioCodec: track.audioCodec ? `audio/mp4; codecs="${track.audioCodec}"` : null,
+      }));
+    });
+    return result;
   }
 
-  set currentLevel(value) {
+  getCurrentVideoLevelID() {
+    let level = this.hls.currentLevel === -1 ? this.hls.loadLevel : this.hls.currentLevel;
+    if (level === -1) {
+      level = null;
+    }
+    return this.getIdentifier(0, level);
+  }
+
+  setCurrentVideoLevelID(value) {
+    if (value === null) return;
     this.hls.currentLevel = this.getIndexes(value).levelID;
   }
 
@@ -417,16 +457,17 @@ export default class HLSPlayer extends EventEmitter {
     return this.client.getFragment(this.getIdentifier(0, this.hls.streamController.currentFrag.level), this.hls.streamController.currentFrag.sn);
   }
 
-  get currentAudioLevel() {
-    return this.getIdentifier(1, this.hls.audioTrack);
+  getCurrentAudioLevelID() {
+    return this.hls.audioTrack === -1 ? null : this.getIdentifier(1, this.hls.audioTrack);
   }
 
-  set currentAudioLevel(value) {
+  setCurrentAudioLevelID(value) {
+    if (value === null) return;
     this.hls.audioTrack = this.getIndexes(value).levelID;
   }
 
   get currentAudioFragment() {
-    const frags = this.client.getFragments(this.currentAudioLevel);
+    const frags = this.client.getFragments(this.getCurrentAudioLevelID());
     if (!frags) return null;
 
     const time = this.currentTime;
@@ -434,31 +475,6 @@ export default class HLSPlayer extends EventEmitter {
       if (!frag) return false;
       return time >= frag.start && time < frag.end;
     });
-  }
-
-  get languageTracks() {
-    const seenLanguages = [];
-    return {
-      audio: this.hls.audioTracks.map((track, i) => {
-        return {
-          type: 'audio',
-          lang: track.lang,
-          index: i,
-          isActive: i === this.hls.audioTrack,
-        };
-      }).filter((track) => {
-        if (seenLanguages.includes(track.lang)) return false;
-        seenLanguages.push(track.lang);
-        return true;
-      }),
-      video: [],
-    };
-  }
-
-  setLanguageTrack(track) {
-    if (track.type === 'audio') {
-      this.hls.audioTrack = track.index;
-    }
   }
 
   get volume() {

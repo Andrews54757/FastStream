@@ -17,8 +17,8 @@ export class FastStreamArchiveUtils {
       version: 1,
       number_of_entries: entries.length,
       source: player ? sourceObj : null,
-      currentLevel: player?.currentLevel,
-      currentAudioLevel: player?.currentAudioLevel,
+      currentLevel: player?.getCurrentVideoLevelID(),
+      currentAudioLevel: player?.getCurrentAudioLevelID(),
     }));
 
     const headerPart = new ArrayBuffer(4 + header.byteLength);
