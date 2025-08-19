@@ -135,7 +135,7 @@ export class VideoQualityChanger extends EventEmitter {
 
   updateQualityLevels(client) {
     const videoLevels = client.getVideoLevels();
-    if (!videoLevels || videoLevels.size <= 1) {
+    if (!videoLevels || videoLevels.size < 1) {
       DOMElements.videoSource.classList.add('hidden');
       return;
     } else {
