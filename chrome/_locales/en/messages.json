@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(current)"
     },
+    "player_quality_unknown": {
+        "message": "(unknown)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Not enough space to predownload in incognito mode, will buffer $1"
     },

@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(現在)"
     },
+    "player_quality_unknown": {
+        "message": "(不明)"
+    },
     "player_buffer_incognito_warning": {
         "message": "シークレットモードでプリダウンロードに必要な空き容量がないため、$1 がバッファーされます"
     },

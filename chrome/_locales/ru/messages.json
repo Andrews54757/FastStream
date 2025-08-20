@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(текущее)"
     },
+    "player_quality_unknown": {
+        "message": "(неизвестно)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Недостаточно места для предзагрузки в режиме инкогнито, будет буферизована $1"
     },

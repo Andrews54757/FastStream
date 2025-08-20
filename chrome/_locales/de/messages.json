@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(aktuell)"
     },
+    "player_quality_unknown": {
+        "message": "(unbekannt)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Nicht genügend Speicherplatz um im Privaten Modus vor zu laden, es wird gepuffert bis $1"
     },

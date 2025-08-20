@@ -1623,6 +1623,14 @@ export class FastStreamClient extends EventEmitter {
     return this.player?.chapters || [];
   }
 
+  get videoWidth() {
+    return this.player?.getVideo().videoWidth || 0;
+  }
+
+  get videoHeight() {
+    return this.player?.getVideo().videoHeight || 0;
+  }
+
   debugDemo() {
     this.interfaceController.hideControlBar = ()=>{};
 

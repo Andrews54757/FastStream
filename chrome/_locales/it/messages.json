@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(attuale)"
     },
+    "player_quality_unknown": {
+        "message": "(sconosciuto)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Spazio insufficiente per il pre-download in modalità di navigazione in incognito, verrà eseguito il buffering di $1"
     },

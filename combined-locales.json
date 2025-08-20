@@ -1769,6 +1769,16 @@
         "pt-br": "(atual)",
         "ru": "(текущее)"
     },
+    "player_quality_unknown": {
+        "en": "(unknown)",
+        "de": "(unbekannt)",
+        "es": "(desconocido)",
+        "it": "(sconosciuto)",
+        "ja": "(不明)",
+        "ms": "(tidak diketahui)",
+        "pt-br": "(desconhecido)",
+        "ru": "(неизвестно)"
+    },
     "player_buffer_incognito_warning": {
         "en": "Not enough space to predownload in incognito mode, will buffer $1",
         "de": "Nicht genügend Speicherplatz um im Privaten Modus vor zu laden, es wird gepuffert bis $1",

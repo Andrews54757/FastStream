@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(atual)"
     },
+    "player_quality_unknown": {
+        "message": "(desconhecido)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Não há espaço suficiente para fazer o download prévio no modo incógnito, o buffer será de $1"
     },
