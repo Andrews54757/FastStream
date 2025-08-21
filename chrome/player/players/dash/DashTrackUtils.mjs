@@ -1,5 +1,4 @@
 import {AudioLevel, VideoLevel} from '../Levels.mjs';
-import {Utils} from '../../utils/Utils.mjs';
 
 export class DashTrackUtils {
   static getVideoLevelList(tracks) {

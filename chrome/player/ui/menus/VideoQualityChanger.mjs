@@ -310,7 +310,7 @@ export class VideoQualityChanger extends EventEmitter {
     }
     let maxSize = Math.min(current.width, current.height);
     if (maxSize <= 0) {
-      maxSize = Math.max(client.videoWidth, client.videoHeight);
+      maxSize = Math.min(client.videoWidth, client.videoHeight);
     }
 
     const qualityList = {
