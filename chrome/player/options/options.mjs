@@ -471,7 +471,7 @@ exportButton.addEventListener('click', async () => {
     toolSettings: await Utils.loadAndParseOptions('toolSettings', DefaultToolSettings),
   }, null, 2)], {type: 'application/json'});
   const url = URL.createObjectURL(blob);
-  Utils.downloadURL(url, 'faststream-options.json');
+  Utils.downloadURL(url, 'faststream-options.json', true);
   URL.revokeObjectURL(url);
 });
 
