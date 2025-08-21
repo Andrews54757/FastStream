@@ -1178,7 +1178,7 @@ export class FastStreamClient extends EventEmitter {
 
 
     this.context.on(DefaultPlayerEvents.LOADEDMETADATA, (event) => {
-
+      this.interfaceController.updateQualityLevels();
     });
 
 
