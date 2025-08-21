@@ -123,7 +123,7 @@ export class LevelManager {
   }
 
   getDesiredVideoHeight() {
-    const defaultQuality = 'Auto'; // Placeholder, should be fetched from config
+    const defaultQuality = this.client.options.defaultQuality;
     if (defaultQuality === 'Auto') {
       const qualityMultiplier = 1.1;
       return window.innerHeight * window.devicePixelRatio * qualityMultiplier;
