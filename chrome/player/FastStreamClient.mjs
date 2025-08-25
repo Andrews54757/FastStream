@@ -34,9 +34,17 @@ import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
 import {MessageTypes} from './enums/MessageTypes.mjs';
 import {LevelManager} from './players/LevelManager.mjs';
 
+
+/**
+ * Main FastStream video player client. Handles playback, UI, options, and state management.
+ * @extends EventEmitter
+ */
 const SET_VOLUME_USING_NODE = !EnvUtils.isSafari() && EnvUtils.isWebAudioSupported();
 
 export class FastStreamClient extends EventEmitter {
+  /**
+   * Constructs a FastStreamClient instance.
+   */
   constructor() {
     super();
     this.version = EnvUtils.getVersion();
@@ -140,10 +148,18 @@ export class FastStreamClient extends EventEmitter {
     this.mainloop();
   }
 
+  /**
+   * Gets the LevelManager instance.
+   * @return {LevelManager}
+   */
   getLevelManager() {
     return this.levelManager;
   }
 
+  /**
+   * Sets up the client, loading options and progress memory.
+   * @return {Promise<void>}
+   */
   async setup() {
     await this.downloadManager.setup();
     if (SecureMemory.isSupported()) {
@@ -170,6 +186,10 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Polls for previous/next video availability.
+   * @return {Promise<Object|null>} Playlist poll response.
+   */
   pollPrevNext() {
     return new Promise((resolve) => {
       chrome.runtime.sendMessage({type: MessageTypes.REQUEST_PLAYLIST_POLL}, (response) => {
@@ -187,6 +207,9 @@ export class FastStreamClient extends EventEmitter {
     });
   }
 
+  /**
+   * Sets up polling for previous/next video state.
+   */
   setupPoll() {
     const count = 10;
     const initialTimeout = 500;
@@ -199,10 +222,17 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Determines if all fragments should be downloaded.
+   * @return {boolean}
+   */
   shouldDownloadAll() {
     return (this.options.downloadAll && this.hasDownloadSpace) || this.source?.loadedFromArchive;
   }
 
+  /**
+   * Marks that the user has interacted with the player.
+   */
   userInteracted() {
     if (!this.state.hasUserInteracted) {
       this.state.hasUserInteracted = true;
@@ -210,18 +240,33 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Checks if user interaction is needed to start playback.
+   * @return {boolean}
+   */
   needsUserInteraction() {
     return this._needsUserInteraction && !this.state.hasUserInteracted && !this.state.playing;
   }
 
+  /**
+   * Sets whether user interaction is needed.
+   * @param {boolean} value
+   */
   setNeedsUserInteraction(value) {
     this._needsUserInteraction = value;
   }
 
+  /**
+   * Enables or disables seek saving.
+   * @param {boolean} value
+   */
   setSeekSave(value) {
     this.saveSeek = value;
   }
 
+  /**
+   * Resets failed fragments to waiting status.
+   */
   resetFailed() {
     for (const levelID in this.fragmentsStore) {
       if (Object.hasOwn(this.fragmentsStore, levelID)) {
@@ -235,6 +280,9 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updateFragmentsLoaded();
   }
 
+  /**
+   * Destroys the client and cleans up resources.
+   */
   destroy() {
     this.destroyed = true;
     this.resetPlayer();
@@ -247,6 +295,10 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Sets player options and updates UI and filters.
+   * @param {Object} options - Player options.
+   */
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
 
@@ -334,6 +386,9 @@ export class FastStreamClient extends EventEmitter {
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }
 
+  /**
+   * Updates CSS filters and transforms for video elements.
+   */
   updateCSSFilters() {
     if (this.options.videoDaltonizerType !== DaltonizerTypes.NONE && this.options.videoDaltonizerStrength > 0) {
       const previous = document.getElementById('daltonizer-svg');
@@ -366,23 +421,43 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Loads analyzer data into the video analyzer.
+   * @param {Object} data
+   */
   loadAnalyzerData(data) {
     if (data) this.videoAnalyzer.loadAnalyzerData(data);
   }
 
+  /**
+   * Clears all subtitle tracks.
+   */
   clearSubtitles() {
     this.interfaceController.subtitlesManager.clearTracks();
   }
 
+  /**
+   * Loads and activates a subtitle track.
+   * @param {Object} subtitleTrack
+   * @param {boolean} [autoset=false]
+   * @return {Promise<void>}
+   */
   loadSubtitleTrack(subtitleTrack, autoset = false) {
     return this.interfaceController.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
   }
 
+  /**
+   * Updates the duration and download space indicators.
+   */
   updateDuration() {
     this.interfaceController.durationChanged();
     this.updateHasDownloadSpace();
   }
 
+  /**
+   * Updates the current playback time and saves progress.
+   * @param {number} time
+   */
   updateTime(time) {
     this.state.currentTime = time;
     this.interfaceController.timeUpdated();
@@ -397,6 +472,10 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Seeks the preview player to a given time.
+   * @param {number} time
+   */
   seekPreview(time) {
     if (this.previewPlayer) {
       this.previewPlayer.currentTime = time;
@@ -404,6 +483,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Hides the preview video.
+   */
   hidePreview() {
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.opacity = 0;
@@ -416,6 +498,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Shows the preview video.
+   */
   showPreview() {
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.opacity = 1;
@@ -424,6 +509,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Updates the preview video visibility based on buffer state.
+   */
   updatePreview() {
     if (!this.previewPlayer) return;
 
@@ -450,12 +538,20 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Updates available quality levels and language tracks.
+   */
   updateQualityLevels() {
     this.interfaceController.updateQualityLevels();
     this.interfaceController.updateLanguageTracks();
     this.updateHasDownloadSpace();
   }
 
+  /**
+   * Changes the language for video or audio tracks.
+   * @param {string} type - 'video' or 'audio'.
+   * @param {string} language - Language code.
+   */
   changeLanguage(type, language) {
     const levels = type === 'video' ? this.getVideoLevels() : this.getAudioLevels();
     if (!levels) return;
@@ -487,6 +583,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Updates the available download space and buffer indicators.
+   */
   updateHasDownloadSpace() {
     const levels = this.getVideoLevels();
     if (!levels) return;
@@ -567,6 +666,12 @@ export class FastStreamClient extends EventEmitter {
     // }
   }
 
+  /**
+   * Adds a new source and optionally sets it as current.
+   * @param {Object} source - Source object.
+   * @param {boolean} [setSource=false]
+   * @return {Promise<Object>} The added source.
+   */
   async addSource(source, setSource = false) {
     source = source.copy();
 
@@ -579,11 +684,19 @@ export class FastStreamClient extends EventEmitter {
     return source;
   }
 
+  /**
+   * Sets the autoPlay option.
+   * @param {boolean} value
+   */
   setAutoPlay(value) {
     console.log('setAutoPlay', value);
     this.options.autoPlay = value;
   }
 
+  /**
+   * Attaches fragment processors to a player for YouTube mode.
+   * @param {Object} player
+   */
   attachProcessorsToPlayer(player) {
     if (this.source.mode === PlayerModes.ACCELERATED_YT) {
       player.preProcessFragment = this.player.preProcessFragment.bind(this.player);
@@ -591,6 +704,10 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Sets up the preview player for seek preview.
+   * @return {Promise<void>}
+   */
   async setupPreviewPlayer() {
     if (!this.player || this.previewPlayer || !this.options.previewEnabled) {
       return;
@@ -613,6 +730,11 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Sets the current source and initializes the player.
+   * @param {Object} source - Source object.
+   * @return {Promise<void>}
+   */
   async setSource(source) {
     try {
       source = source.copy();
@@ -770,6 +892,10 @@ export class FastStreamClient extends EventEmitter {
   }
 
 
+  /**
+   * Sets up a hook to wait for player initialization.
+   * @return {Promise<void>}
+   */
   setupInitHook() {
     return new Promise((resolve) => {
       let interval = 0;
@@ -788,6 +914,10 @@ export class FastStreamClient extends EventEmitter {
     });
   }
 
+  /**
+   * Loads progress data from secure memory.
+   * @return {Promise<void>}
+   */
   async loadProgressData() {
     if (!this.options.storeProgress || !this.player || this.disableProgressSave || this.progressData || !this.progressMemory) {
       return;
@@ -801,6 +931,10 @@ export class FastStreamClient extends EventEmitter {
     this.disableProgressSave = false;
   }
 
+  /**
+   * Saves progress data to secure memory.
+   * @return {Promise<void>}
+   */
   async saveProgressData() {
     if (this.disableProgressSave || !this.progressData) {
       return;
@@ -809,6 +943,10 @@ export class FastStreamClient extends EventEmitter {
     return this.progressMemory.setFile(this.progressHashesCache, this.progressData);
   }
 
+  /**
+   * Gets the next fragment to download (video or audio).
+   * @return {Object|null} Next fragment.
+   */
   getNextToDownload() {
     const currentFragment = this.currentFragment;
     const audioFragment = this.currentAudioFragment;
@@ -833,6 +971,11 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Gets the next fragment to download for a track.
+   * @param {Object} currentFragment
+   * @return {Object|null}
+   */
   getNextToDownloadTrack(currentFragment) {
     if (!currentFragment) {
       return null;
@@ -850,6 +993,12 @@ export class FastStreamClient extends EventEmitter {
     return nextItem;
   }
 
+  /**
+   * Gets the next waiting fragment forward from index.
+   * @param {Array} fragments
+   * @param {number} index
+   * @return {Object|null}
+   */
   getNextForward(fragments, index) {
     for (let i = index; i < fragments.length; i++) {
       const fragment = fragments[i];
@@ -859,6 +1008,12 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Gets the next waiting fragment backward from index.
+   * @param {Array} fragments
+   * @param {number} index
+   * @return {Object|null}
+   */
   getNextBackward(fragments, index) {
     for (let i = index - 1; i >= 0; i--) {
       const fragment = fragments[i];
@@ -868,6 +1023,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Main update loop for the player client.
+   */
   mainloop() {
     if (this.destroyed) return;
     setTimeout(this.mainloop.bind(this), 1000);
@@ -897,6 +1055,10 @@ export class FastStreamClient extends EventEmitter {
     this.emit('tick', this);
   }
 
+  /**
+   * Pre-downloads fragments for smooth playback.
+   * @return {boolean} True if any fragments were downloaded.
+   */
   predownloadFragments() {
     // Don't pre-download if user is offline
     if (!navigator.onLine) {
@@ -951,6 +1113,10 @@ export class FastStreamClient extends EventEmitter {
     return hasDownloaded;
   }
 
+  /**
+   * Pre-downloads reserved fragments (not freeable).
+   * @return {boolean} True if any fragments were downloaded.
+   */
   predownloadReservedFragments() {
     const fragments = this.getWaitingReservedFragments(this.fragments);
     const audioFragments = this.getWaitingReservedFragments(this.audioFragments);
@@ -990,6 +1156,11 @@ export class FastStreamClient extends EventEmitter {
     return hasDownloaded;
   }
 
+  /**
+   * Gets reserved fragments that are waiting to be downloaded.
+   * @param {Array} fragments
+   * @return {Array} Reserved fragments.
+   */
   getWaitingReservedFragments(fragments) {
     if (!fragments) return [];
     return fragments.filter((fragment) => {
@@ -997,6 +1168,10 @@ export class FastStreamClient extends EventEmitter {
     });
   }
 
+  /**
+   * Frees fragments that are complete and can be released.
+   * @param {Array} fragments
+   */
   freeFragments(fragments) {
     for (let i = 0; i < fragments.length; i++) {
       const fragment = fragments[i];
@@ -1008,11 +1183,21 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Frees a single fragment.
+   * @param {Object} fragment
+   */
   freeFragment(fragment) {
     this.downloadManager.removeFile(fragment.getContext());
     fragment.status = DownloadStatus.WAITING;
   }
 
+  /**
+   * Gets a fragment by level and sequence number.
+   * @param {string|number} level
+   * @param {number} sn - Sequence number.
+   * @return {Object|null}
+   */
   getFragment(level, sn) {
     if (!this.fragmentsStore[level]) {
       return null;
@@ -1020,6 +1205,12 @@ export class FastStreamClient extends EventEmitter {
     return this.fragmentsStore[level][sn];
   }
 
+  /**
+   * Stores a fragment in the fragments store.
+   * @param {string|number} level
+   * @param {number} sn
+   * @param {Object} frag
+   */
   makeFragment(level, sn, frag) {
     if (!this.fragmentsStore[level]) {
       this.fragmentsStore[level] = [];
@@ -1028,11 +1219,19 @@ export class FastStreamClient extends EventEmitter {
     this.fragmentsStore[level][sn] = frag;
   }
 
+  /**
+   * Handles failure to load the player or fragments.
+   * @param {string} reason
+   */
   failedToLoad(reason) {
     this.downloadManager.removeAllDownloaders();
     this.interfaceController.failedToLoad(reason);
   }
 
+  /**
+   * Resets the player and all related state.
+   * @return {Promise<void>}
+   */
   async resetPlayer() {
     const promises = [];
     this.lastTime = 0;
@@ -1115,11 +1314,19 @@ export class FastStreamClient extends EventEmitter {
     await Promise.all(promises);
   }
 
+  /**
+   * Sets media info and updates subtitles manager.
+   * @param {Object} info
+   */
   setMediaInfo(info) {
     this.mediaInfo = info;
     this.interfaceController.subtitlesManager.mediaInfoSet();
   }
 
+  /**
+   * Binds event listeners to the main player.
+   * @param {Object} player
+   */
   bindPlayer(player) {
     this.context = player.createContext();
     this.context.on(DefaultPlayerEvents.MANIFEST_PARSED, () => {
@@ -1251,6 +1458,10 @@ export class FastStreamClient extends EventEmitter {
     });
   }
 
+  /**
+   * Binds event listeners to the preview player.
+   * @param {Object} player
+   */
   bindPreviewPlayer(player) {
     this.previewContext = player.createContext();
 
@@ -1291,6 +1502,10 @@ export class FastStreamClient extends EventEmitter {
     });
   }
 
+  /**
+   * Plays the video and synced audio.
+   * @return {Promise<void>}
+   */
   async play() {
     if (!this.player) {
       throw new Error('No source is loaded!');
@@ -1312,6 +1527,10 @@ export class FastStreamClient extends EventEmitter {
     this.audioAnalyzer.updateBackgroundAnalyzer();
   }
 
+  /**
+   * Pauses the video and synced audio.
+   * @return {Promise<void>}
+   */
   async pause() {
     await this.player.pause();
 
@@ -1322,6 +1541,9 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.pause();
   }
 
+  /**
+   * Undoes the last seek operation.
+   */
   undoSeek() {
     if (this.pastSeeks.length) {
       this.pastUnseeks.push(this.player.currentTime);
@@ -1330,6 +1552,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Redoes the last undone seek operation.
+   */
   redoSeek() {
     if (this.pastUnseeks.length) {
       this.pastSeeks.push(this.player.currentTime);
@@ -1338,6 +1563,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Saves the current playback position for undo/redo.
+   */
   savePosition() {
     if (!this.pastSeeks.length || this.pastSeeks[this.pastSeeks.length - 1] != this.state.currentTime) {
       this.pastSeeks.push(this.state.currentTime);
@@ -1349,6 +1577,12 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updateMarkers();
   }
 
+  /**
+   * Checks if a region of the video is fully buffered.
+   * @param {number} start
+   * @param {number} end
+   * @return {boolean}
+   */
   isRegionBuffered(start, end) {
     const fragments = this.getFragments(this.getCurrentVideoLevelID());
     if (!fragments) {
@@ -1367,6 +1601,10 @@ export class FastStreamClient extends EventEmitter {
     return true;
   }
 
+  /**
+   * Sets the current playback time.
+   * @param {number} value
+   */
   set currentTime(value) {
     if (this.saveSeek) {
       this.savePosition();
@@ -1378,44 +1616,83 @@ export class FastStreamClient extends EventEmitter {
     if (this.syncedAudioPlayer) this.syncedAudioPlayer.setCurrentTime(value);
   }
 
+  /**
+   * Gets the duration of the video.
+   * @return {number}
+   */
   get duration() {
     return this.player?.duration || 0;
   }
 
+  /**
+   * Gets the current playback time.
+   * @return {number}
+   */
   get currentTime() {
     return this.player?.currentTime || 0;
   }
 
+  /**
+   * Gets whether the video is paused.
+   * @return {boolean}
+   */
   get paused() {
     return this.player?.paused || true;
   }
 
+  /**
+   * Gets available video quality levels.
+   * @return {Map}
+   */
   getVideoLevels() {
     return this.player?.getVideoLevels() || new Map();
   }
 
+  /**
+   * Gets available audio quality levels.
+   * @return {Map}
+   */
   getAudioLevels() {
     return this.player?.getAudioLevels() || new Map();
   }
 
+  /**
+   * Gets the current video level ID.
+   * @return {string|number|null}
+   */
   getCurrentVideoLevelID() {
     return this.player?.getCurrentVideoLevelID() ?? null;
   }
 
+  /**
+   * Gets the current audio level ID.
+   * @return {string|number|null}
+   */
   getCurrentAudioLevelID() {
     return this.player?.getCurrentAudioLevelID() ?? null;
   }
 
+  /**
+   * Sets the current video level ID.
+   * @param {string|number} levelID
+   */
   setCurrentVideoLevelID(levelID) {
     this.player.setCurrentVideoLevelID(levelID);
     this.checkLevelChange();
   }
 
+  /**
+   * Sets the current audio level ID.
+   * @param {string|number} levelID
+   */
   setCurrentAudioLevelID(levelID) {
     this.player.setCurrentAudioLevelID(levelID);
     this.checkLevelChange();
   }
 
+  /**
+   * Checks for changes in video/audio levels and updates state.
+   */
   checkLevelChange() {
     const videoLevelID = this.getCurrentVideoLevelID();
     const audioLevelID = this.getCurrentAudioLevelID();
@@ -1462,6 +1739,10 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Gets the current fullscreen state.
+   * @return {string} 'fullscreen', 'pip', 'windowed', or 'normal'.
+   */
   getFullscreenState() {
     if (this.state.fullscreen) {
       return 'fullscreen';
@@ -1478,6 +1759,9 @@ export class FastStreamClient extends EventEmitter {
     return 'normal';
   }
 
+  /**
+   * Escapes all menus, fullscreen, and control bar.
+   */
   escapeAll() {
     if (this.interfaceController.closeAllMenus(false)) {
       return;
@@ -1505,6 +1789,9 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.hideControlBar();
   }
 
+  /**
+   * Navigates to the next video in the playlist.
+   */
   nextVideo() {
     if (!this.hasNextVideo()) return;
     if (EnvUtils.isExtension()) {
@@ -1522,6 +1809,9 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Navigates to the previous video in the playlist.
+   */
   previousVideo() {
     if (!this.hasPreviousVideo()) return;
     if (EnvUtils.isExtension()) {
@@ -1539,6 +1829,10 @@ export class FastStreamClient extends EventEmitter {
   }
 
 
+  /**
+   * Checks if there is a previous video available.
+   * @return {boolean}
+   */
   hasPreviousVideo() {
     if (!this.player) return false;
     if (window.top === window.self) return false;
@@ -1546,6 +1840,10 @@ export class FastStreamClient extends EventEmitter {
     return true;
   }
 
+  /**
+   * Checks if there is a next video available.
+   * @return {boolean}
+   */
   hasNextVideo() {
     if (!this.player) return false;
     if (window.top === window.self) return false;
@@ -1553,26 +1851,51 @@ export class FastStreamClient extends EventEmitter {
     return true;
   }
 
+  /**
+   * Gets the current video fragments.
+   * @return {Array|undefined}
+   */
   get fragments() {
     return this.fragmentsStore[this.getCurrentVideoLevelID()];
   }
 
+  /**
+   * Gets the current audio fragments.
+   * @return {Array|undefined}
+   */
   get audioFragments() {
     return this.fragmentsStore[this.getCurrentAudioLevelID()];
   }
 
+  /**
+   * Gets the current video fragment.
+   * @return {Object|null}
+   */
   get currentFragment() {
     return this.player?.currentFragment || null;
   }
 
+  /**
+   * Gets the current audio fragment.
+   * @return {Object|null}
+   */
   get currentAudioFragment() {
     return this.player?.currentAudioFragment || null;
   }
 
+  /**
+   * Gets fragments for a given level.
+   * @param {string|number} level
+   * @return {Array|undefined}
+   */
   getFragments(level) {
     return this.fragmentsStore[level];
   }
 
+  /**
+   * Sets the player volume.
+   * @param {number} volume
+   */
   setVolume(volume) {
     this.state.volume = volume;
     if (SET_VOLUME_USING_NODE || (volume > 1 && EnvUtils.isWebAudioSupported())) {
@@ -1588,18 +1911,34 @@ export class FastStreamClient extends EventEmitter {
     }
   }
 
+  /**
+   * Gets the current volume.
+   * @return {number}
+   */
   get volume() {
     return this.state.volume;
   }
 
+  /**
+   * Sets the volume and updates the UI.
+   * @param {number} value
+   */
   set volume(value) {
     this.interfaceController.setVolume(value);
   }
 
+  /**
+   * Gets the current playback rate.
+   * @return {number}
+   */
   get playbackRate() {
     return this.player?.playbackRate || this.state.playbackRate;
   }
 
+  /**
+   * Sets the playback rate and updates the UI.
+   * @param {number} value
+   */
   set playbackRate(value) {
     this.state.playbackRate = value;
     if (this.player) {
@@ -1611,26 +1950,49 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updatePlaybackRate();
   }
 
+  /**
+   * Gets the current video element.
+   * @return {HTMLVideoElement|null}
+   */
   get currentVideo() {
     return this.player?.getVideo() || null;
   }
 
+  /**
+   * Gets the skip segments for the current video.
+   * @return {Array}
+   */
   get skipSegments() {
     return this.player?.skipSegments || [];
   }
 
+  /**
+   * Gets the chapters for the current video.
+   * @return {Array}
+   */
   get chapters() {
     return this.player?.chapters || [];
   }
 
+  /**
+   * Gets the width of the current video.
+   * @return {number}
+   */
   get videoWidth() {
     return this.player?.getVideo().videoWidth || 0;
   }
 
+  /**
+   * Gets the height of the current video.
+   * @return {number}
+   */
   get videoHeight() {
     return this.player?.getVideo().videoHeight || 0;
   }
 
+  /**
+   * Runs a debug demo for the player.
+   */
   debugDemo() {
     this.interfaceController.hideControlBar = ()=>{};
 
