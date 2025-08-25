@@ -19,14 +19,17 @@ export class UpdateChecker {
     const current = currentVersion.split('.');
     const latest = latestVersion.split('.');
 
-    for (let i = 0; i < latest.length; i++) {
-      const c = parseInt(current[i]);
-      const l = parseInt(latest[i]);
+    const maxLen = Math.max(current.length, latest.length);
+    for (let i = 0; i < maxLen; i++) {
+      const c = parseInt(current[i] || '0', 10);
+      const l = parseInt(latest[i] || '0', 10);
       if (isNaN(l) || isNaN(c)) {
         return false;
-      } else if (c < l) {
+      }
+      if (c < l) {
         return true;
-      } else if (c > l) {
+      }
+      if (c > l) {
         return false;
       }
     }
