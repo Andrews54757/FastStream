@@ -106,7 +106,7 @@ export class URLUtils {
   }
 
   static get_url_extension(url) {
-    return this.strip_queryhash(url).split('.').pop().trim();
+    return this.strip_queryhash(url).split('.').pop().trim().toLowerCase();
   }
 
   static get_file_name(url) {
