@@ -3140,12 +3140,12 @@
         "ru": "Скрыть плеер"
     },
     "options_general_vischangeaction": {
-        "en": "When player visiblity changes",
+        "en": "When player visibility changes",
         "de": "Wenn die Visibilität des Players sich ändert",
         "es": "Cuando cambia la visibilidad del reproductor",
         "it": "Quando cambia la visibilità del lettore video",
         "ja": "プレーヤーの可視性が変更されたとき",
-        "ms": "When player visiblity changes",
+        "ms": "When player visibility changes",
         "pt-br": "Quando a visibilidade do tocador mudar",
         "ru": "При изменении видимости плеера"
     },

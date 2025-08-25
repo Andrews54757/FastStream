@@ -942,7 +942,7 @@
         "message": "Hide player"
     },
     "options_general_vischangeaction": {
-        "message": "When player visiblity changes"
+        "message": "When player visibility changes"
     },
     "options_general_vischangeaction_nothing": {
         "message": "Do nothing"
