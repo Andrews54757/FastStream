@@ -2,7 +2,19 @@ import {DownloadStatus} from '../enums/DownloadStatus.mjs';
 import {DownloadEntry} from '../network/DownloadEntry.mjs';
 import {Utils} from './Utils.mjs';
 
+/**
+ * Utility functions for working with FastStream archive files and streams.
+ */
 export class FastStreamArchiveUtils {
+  /**
+   * Writes FastStream archive data to a stream.
+   * @param {WritableStream} filestream - The writable stream.
+   * @param {Object} player - The player instance.
+   * @param {Array<DownloadEntry>} entries - The download entries.
+   * @param {Function} [progressCallback] - Optional progress callback.
+   * @return {Promise<void>} Resolves when writing is complete.
+   * @throws {Error} If an entry is not complete.
+   */
   static async writeFSAToStream(filestream, player, entries, progressCallback) {
     const writer = filestream.getWriter();
     const sourceObj = {};

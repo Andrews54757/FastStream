@@ -2,7 +2,16 @@ import {Localize} from '../modules/Localize.mjs';
 import {SweetAlert} from '../modules/sweetalert.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 
+/**
+ * Polyfill for alert, confirm, prompt, and toast dialogs using SweetAlert.
+ */
 export class AlertPolyfill {
+  /**
+   * Shows an alert dialog.
+   * @param {string} message - The message to display.
+   * @param {string} [icon] - Optional icon type.
+   * @return {Promise<any>} Resolves when the dialog is closed.
+   */
   static async alert(message, icon = undefined) {
     return SweetAlert.fire({
       text: message,
@@ -10,6 +19,12 @@ export class AlertPolyfill {
     });
   }
 
+  /**
+   * Shows a confirmation dialog.
+   * @param {string} message - The message to display.
+   * @param {string} [icon] - Optional icon type.
+   * @return {Promise<boolean>} Resolves with true if confirmed, false otherwise.
+   */
   static async confirm(message, icon = undefined) {
     return (await SweetAlert.fire({
       text: message,
@@ -20,6 +35,14 @@ export class AlertPolyfill {
     })).isConfirmed;
   }
 
+  /**
+   * Shows a prompt dialog for user input.
+   * @param {string} message - The message to display.
+   * @param {string} [defaultValue] - Default input value.
+   * @param {string} [icon] - Optional icon type.
+   * @param {string} [inputType='text'] - Input type.
+   * @return {Promise<string>} Resolves with the entered value.
+   */
   static async prompt(message, defaultValue = '', icon = undefined, inputType = 'text') {
     return (await SweetAlert.fire({
       text: message,
@@ -32,6 +55,13 @@ export class AlertPolyfill {
     })).value;
   }
 
+  /**
+   * Shows a toast notification.
+   * @param {string} icon - Icon type.
+   * @param {string} message - Main message.
+   * @param {string} [submessage] - Optional submessage.
+   * @return {Promise<any>} Resolves when the toast is closed.
+   */
   static async toast(icon, message, submessage = undefined) {
     return await SweetAlert.fire({
       icon: icon,
@@ -50,6 +80,11 @@ export class AlertPolyfill {
     });
   }
 
+  /**
+   * Shows an error dialog and optionally sends the error report to the developer via GitHub.
+   * @param {Error} error - The error object to report.
+   * @return {Promise<void>} Resolves when the dialog is closed and report is sent or cancelled.
+   */
   static async errorSendToDeveloper(error) {
     const errorHtml = document.createElement('div');
     const bodyText = document.createElement('p');

@@ -4,7 +4,14 @@ import {RequestUtils} from './RequestUtils.mjs';
 
 const PACKAGE_JSON_URL = 'https://raw.githubusercontent.com/Andrews54757/FastStream/main/package.json';
 
+/**
+ * Utility for checking and comparing FastStream versions.
+ */
 export class UpdateChecker {
+  /**
+   * Fetches the latest version from the remote package.json.
+   * @return {Promise<string|null>} The latest version string or null if failed.
+   */
   static async getLatestVersion() {
     const xhr = await RequestUtils.requestSimple(PACKAGE_JSON_URL);
     if (xhr.status !== 200) {
@@ -15,6 +22,12 @@ export class UpdateChecker {
     return json.version;
   }
 
+  /**
+   * Compares two version strings.
+   * @param {string} currentVersion - The current version.
+   * @param {string} latestVersion - The latest version.
+   * @return {boolean} True if currentVersion is less than latestVersion, false otherwise.
+   */
   static compareVersions(currentVersion, latestVersion) {
     const current = currentVersion.split('.');
     const latest = latestVersion.split('.');

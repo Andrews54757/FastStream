@@ -1,6 +1,13 @@
 import {DOMElements} from '../ui/DOMElements.mjs';
 
+/**
+ * Utility functions for managing UI interface windows.
+ */
 export class InterfaceUtils {
+  /**
+   * Closes all open UI windows and returns whether any were open.
+   * @return {boolean} True if any windows were open, false otherwise.
+   */
   static closeWindows() {
     const windows = [
       DOMElements.optionsContainer,

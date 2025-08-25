@@ -1,6 +1,14 @@
 import {Utils} from './Utils.mjs';
 
+/**
+ * Utility functions for audio processing and conversions.
+ */
 export class AudioUtils {
+  /**
+   * Calculates the volume in decibels from an AnalyserNode.
+   * @param {AnalyserNode} analyser - The Web Audio analyser node.
+   * @return {number} The volume in decibels.
+   */
   static getVolume(analyser) {
     const bufferLength = analyser.fftSize;
     const dataArray = new Float32Array(bufferLength);
@@ -13,22 +21,51 @@ export class AudioUtils {
     return 10 * Math.log10(rms);
   }
 
+  /**
+   * Converts decibels to gain value.
+   * @param {number} db - Decibel value.
+   * @return {number} Gain value.
+   */
   static dbToGain(db) {
     return Math.pow(10, db / 20);
   }
 
+  /**
+   * Converts gain value to decibels.
+   * @param {number} gain - Gain value.
+   * @return {number} Decibel value.
+   */
   static gainToDB(gain) {
     return 20 * Math.log10(gain);
   }
 
+  /**
+   * Applies a symmetrical logarithmic scale to a value (Y axis).
+   * @param {number} x - Input value.
+   * @param {number} c - Center value.
+   * @param {number} p - Power.
+   * @return {number} Scaled value.
+   */
   static symmetricalLogScaleY(x, c, p) {
     return Math.sign(x) * (Math.log10(Math.pow(Math.abs(x / c), p) + 1));
   }
 
+  /**
+   * Applies a symmetrical logarithmic scale to a value (X axis).
+   * @param {number} y - Input value.
+   * @param {number} c - Center value.
+   * @param {number} p - Power.
+   * @return {number} Scaled value.
+   */
   static symmetricalLogScaleX(y, c, p) {
     return Math.sign(y) * c * Math.pow(Math.pow(10, Math.abs(y)) - 1, 1/p);
   }
 
+  /**
+   * Converts mixer decibel value to position ratio for UI.
+   * @param {number} db - Decibel value.
+   * @return {number} Position ratio.
+   */
   static mixerDBToPositionRatio(db) {
     if (db <= -40) {
       return 1;
@@ -41,6 +78,11 @@ export class AudioUtils {
     return Utils.clamp((maxY - y) / (maxY - minY), 0, 1);
   }
 
+  /**
+   * Converts a position ratio to mixer decibel value for UI.
+   * @param {number} ratio - Position ratio.
+   * @return {number} Decibel value.
+   */
   static mixerPositionRatioToDB(ratio) {
     if (ratio >= 1) {
       return -Infinity;

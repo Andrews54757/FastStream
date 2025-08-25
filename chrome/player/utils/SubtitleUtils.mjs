@@ -1,4 +1,12 @@
+/**
+ * Utility functions for subtitle parsing and conversion.
+ */
 export class SubtitleUtils {
+  /**
+   * Translates XML entities in a string to their corresponding characters.
+   * @param {string} str - The input string.
+   * @return {string} The translated string.
+   */
   static translateXMLEntities(str) {
     const entitiesList = {
       '&amp;': '&',
@@ -35,6 +43,11 @@ export class SubtitleUtils {
     return entitySplit.join('');
   }
 
+  /**
+   * Converts SRT subtitle format to WebVTT format.
+   * @param {string} data - SRT subtitle data.
+   * @return {string} WebVTT subtitle data.
+   */
   static srt2webvtt(data) {
     // remove dos newlines
     let srt = data.replace(/\r+/g, '');
@@ -52,6 +65,11 @@ export class SubtitleUtils {
     return result;
   }
 
+  /**
+   * Converts XML subtitle data to WebVTT format.
+   * @param {string} data - XML subtitle data.
+   * @return {string} WebVTT subtitle data.
+   */
   static xml2vtt(data) {
     const parser = new DOMParser();
     const xml = parser.parseFromString(data, 'text/xml');
@@ -68,6 +86,11 @@ export class SubtitleUtils {
     return result.join('\n\n');
   }
 
+  /**
+   * Formats a time value in seconds to WebVTT time format.
+   * @param {number} sec - Time in seconds.
+   * @return {string} WebVTT time string.
+   */
   static vttTimeFormat(sec) {
     const h = Math.floor(sec / 3600);
     const m = Math.floor(sec / 60) % 60;
@@ -82,6 +105,11 @@ export class SubtitleUtils {
     return hh + ':' + mm + ':' + ss + '.' + msms;
   }
 
+  /**
+   * Formats a time value in seconds to SRT time format.
+   * @param {number} sec - Time in seconds.
+   * @return {string} SRT time string.
+   */
   static srtTimeFormat(sec) {
     const h = Math.floor(sec / 3600);
     const m = Math.floor(sec / 60) % 60;
@@ -96,6 +124,11 @@ export class SubtitleUtils {
     return hh + ':' + mm + ':' + ss + ',' + msms;
   }
 
+  /**
+   * Converts an array of cues to SRT subtitle format.
+   * @param {Array} cues - Array of cues.
+   * @return {string} SRT subtitle data.
+   */
   static cuesToSrt(cues) {
     const result = [];
     for (let i = 0; i < cues.length; i++) {
@@ -108,6 +141,11 @@ export class SubtitleUtils {
     return result.join('\n\n');
   }
 
+  /**
+   * Converts a single SRT caption to a formatted string.
+   * @param {Object} caption - SRT caption object.
+   * @return {string} Formatted caption string.
+   */
   static convertSrtCue(caption) {
     // remove all html tags for security reasons
     // srt = srt.replace(/<[a-zA-Z\/][^>]*>/g, '');
@@ -153,6 +191,11 @@ export class SubtitleUtils {
     return cue;
   }
 
+  /**
+   * Converts subtitle formatting tags to a supported format.
+   * @param {string} text - Subtitle text.
+   * @return {string} Formatted subtitle text.
+   */
   static convertSubtitleFormatting(text) {
     return text
         .replace(/\{\\([ibu])1\}/g, '<$1>') // convert {\b1}, {\i1}, {\u1} to <b>, <i>, <u>

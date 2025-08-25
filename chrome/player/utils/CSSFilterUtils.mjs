@@ -7,7 +7,15 @@ DaltonizerTypeMap.set(DaltonizerTypes.PROTANOMALY, 0);
 DaltonizerTypeMap.set(DaltonizerTypes.DEUTERANOMALY, 1);
 DaltonizerTypeMap.set(DaltonizerTypes.TRITANOMALY, 2);
 
+/**
+ * Utility functions for generating CSS filter strings for video effects.
+ */
 export class CSSFilterUtils {
+  /**
+   * Generates a CSS filter string based on video options.
+   * @param {Object} options - Video filter options.
+   * @return {string} The CSS filter string.
+   */
   static getFilterString(options) {
     const filters = [];
     if (!options.disableVisualFilters) {
@@ -47,10 +55,21 @@ export class CSSFilterUtils {
     return filters.join(' ');
   }
 
+  /**
+   * Creates an SVG daltonizer filter for color blindness simulation/correction.
+   * @param {string} type - Daltonizer type.
+   * @param {number} strength - Filter strength.
+   * @return {string} SVG filter string.
+   */
   static makeLMSDaltonizerFilter(type, strength) {
     return SVGDaltonizer.makeLMSDaltonizerFilter(DaltonizerTypeMap.get(type), strength, true);
   }
 
+  /**
+   * Generates a CSS transform string based on video options.
+   * @param {Object} options - Video transform options.
+   * @return {string} The CSS transform string.
+   */
   static getTransformString(options) {
     const transforms = [];
 
