@@ -94,4 +94,22 @@ export class AudioUtils {
     const y = maxY - ratio * (maxY - minY);
     return Utils.clamp(this.symmetricalLogScaleX(y, c, 4), -40, 10);
   }
+
+  static getActiveChannelsForChannelCount(numberOfChannels) {
+    let activeChannels = [];
+    if (numberOfChannels <= 1) {
+      activeChannels = [0]; // Mono
+    } else if (numberOfChannels === 2) {
+      activeChannels = [0, 1]; // Stereo
+    } else if (numberOfChannels === 3) {
+      activeChannels = [0, 1, 2]; // 2.1
+    } else if (numberOfChannels === 4) {
+      activeChannels = [0, 1, 4, 5]; // Quad
+    } else if (numberOfChannels === 5) {
+      activeChannels = [0, 1, 2, 4, 5]; // 5.0
+    } else if (numberOfChannels >= 6) {
+      activeChannels = [0, 1, 2, 3, 4, 5]; // 5.1
+    }
+    return activeChannels;
+  }
 }

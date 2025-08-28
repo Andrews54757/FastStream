@@ -5,14 +5,14 @@ import {createKnob} from '../components/Knob.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 
 export class AudioCompressor extends AbstractAudioModule {
-  constructor(skipSplitter = false, customTitlePrepend) {
+  constructor(customTitlePrepend, numberOfChannelsGetter) {
     super('AudioCompressor');
     this.compressorNode = null;
     this.compressorGain = null;
     this.compressorConfig = null;
-    this.dontPass = skipSplitter;
     this.customTitlePrepend = customTitlePrepend || '';
     this.renderCache = {};
+    this.numberOfChannelsGetter = numberOfChannelsGetter;
     this.setupUI();
   }
 
@@ -73,7 +73,7 @@ export class AudioCompressor extends AbstractAudioModule {
     this.updateCompressor();
   }
 
-  updateCompressor() {
+  async updateCompressor() {
     if (!this.compressorConfig) return;
 
     const compressor = this.compressorConfig;
@@ -81,20 +81,23 @@ export class AudioCompressor extends AbstractAudioModule {
     this.ui.compressorToggle.classList.toggle('enabled', compressor.enabled);
 
     if (compressor.enabled) {
-      this.createCompressorNodes();
-      this.compressorNode.threshold.value = compressor.threshold;
-      this.compressorNode.knee.value = compressor.knee;
-      this.compressorNode.ratio.value = compressor.ratio;
-      this.compressorNode.attack.value = compressor.attack;
-      this.compressorNode.release.value = compressor.release;
-      this.compressorGain.gain.value = compressor.gain;
+      await this.createCompressorNodes();
+      if (this.compressorNode) {
+        this.compressorNode.threshold.value = compressor.threshold;
+        this.compressorNode.knee.value = compressor.knee;
+        this.compressorNode.ratio.value = compressor.ratio;
+        this.compressorNode.attack.value = compressor.attack;
+        this.compressorNode.release.value = compressor.release;
+        this.compressorGain.gain.value = compressor.gain;
+      }
     } else {
       this.destroyCompressorNodes();
     }
   }
 
-  createCompressorNodes() {
-    if (this.compressorNode) return;
+  async createCompressorNodes() {
+    const numChannels = this.numberOfChannelsGetter ? await this.numberOfChannelsGetter().catch((e) => 0) : 2;
+    if (numChannels === 0 || this.compressorNode) return;
 
     const audioContext = this.audioContext;
 
@@ -103,13 +106,15 @@ export class AudioCompressor extends AbstractAudioModule {
 
     this.compressorNode.connect(this.compressorGain);
 
-    if (!this.dontPass) {
-      this.splitterNode = audioContext.createChannelSplitter(6);
-      this.mergerNode = audioContext.createChannelMerger(6);
+    const shouldUseSplitterMerger = numChannels > 2;
+    if (shouldUseSplitterMerger) {
+      const splitterMergerChannels = Math.min(numChannels, 6);
+      this.splitterNode = audioContext.createChannelSplitter(splitterMergerChannels);
+      this.mergerNode = audioContext.createChannelMerger(splitterMergerChannels);
       this.compressorMerger = audioContext.createChannelMerger(2);
       this.compressorSplitter = audioContext.createChannelSplitter(2);
 
-      for (let i = 2; i < 6; i++) {
+      for (let i = 2; i < splitterMergerChannels; i++) {
         this.splitterNode.connect(this.mergerNode, i, i);
       }
 
@@ -136,7 +141,7 @@ export class AudioCompressor extends AbstractAudioModule {
     if (!this.compressorNode) return;
 
     if (!skipDisconnect) {
-      if (!this.dontPass) {
+      if (this.splitterNode) {
         this.getInputNode().disconnect(this.splitterNode);
         this.splitterNode.disconnect(this.compressorMerger);
         this.compressorMerger.disconnect(this.compressorNode);

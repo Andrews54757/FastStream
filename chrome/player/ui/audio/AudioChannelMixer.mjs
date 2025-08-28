@@ -12,8 +12,10 @@ import {VirtualAudioNode} from './VirtualAudioNode.mjs';
 const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround'];
 
 export class AudioChannelMixer extends AbstractAudioModule {
-  constructor() {
+  constructor(configManager) {
     super('AudioChannelMixer');
+
+    this.configManager = configManager;
 
     this.channelConfigs = null;
     this.masterConfig = null;
@@ -27,8 +29,8 @@ export class AudioChannelMixer extends AbstractAudioModule {
     this.masterElements = null;
   }
 
-  needsUpscaler() {
-    return this.channelSplitter !== null;
+  async getChannelCount() {
+    return this.configManager.getChannelCount();
   }
 
   getElement() {
@@ -468,8 +470,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return;
     }
 
-    this.updateNodes();
-
     this.channelNodes.forEach((nodes) => {
       const analyser = this.audioContext.createAnalyser();
       analyser.fftSize = 256;
@@ -481,6 +481,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     masterAnalyzer.fftSize = 256;
     this.getOutputNode().connect(masterAnalyzer);
     this.masterNodes.analyzer = masterAnalyzer;
+    this.updateNodes();
   }
 
   destroyAnalyzers(skipDisconnect = false) {
@@ -504,7 +505,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
       this.masterNodes.analyzer.disconnect();
     }
     this.masterNodes.analyzer = null;
-
     this.updateNodes();
   }
 
@@ -539,7 +539,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
         preGain: new VirtualAudioNode(`AudioChannelMixer preGain ${i}`),
         preMerge: new VirtualAudioNode(`AudioChannelMixer preMerge ${i}`),
         equalizer: new AudioEqualizer(`${CHANNEL_NAMES[i]} `),
-        compressor: new AudioCompressor(true, `${CHANNEL_NAMES[i]} `),
+        compressor: new AudioCompressor(`${CHANNEL_NAMES[i]} `),
       };
 
       nodes.compressor.setupNodes(audioContext);
@@ -554,6 +554,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       nodes.postSplit.connect(nodes.equalizer.getInputNode());
       nodes.equalizer.getOutputNode().connect(nodes.compressor.getInputNode());
       nodes.compressor.getOutputNode().connect(nodes.preGain);
+      nodes.preGain.connect(nodes.preMerge);
 
       let oldEqualizerState = nodes.equalizer.hasNodes();
       let oldCompressorState = nodes.compressor.isEnabled();
@@ -584,7 +585,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       analyzer: null,
       postMerge: new VirtualAudioNode('AudioChannelMixer postMerge master'),
       equalizer: new AudioEqualizer('Master '),
-      compressor: new AudioCompressor(false, 'Master '),
+      compressor: new AudioCompressor('Master ', this.getChannelCount.bind(this)),
       preGain: new VirtualAudioNode(`AudioChannelMixer preGain master`),
     };
     this.masterNodes.compressor.setupNodes(audioContext);
@@ -624,7 +625,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.dynButton.classList.toggle('configured', isEqActive || isCompActive);
   }
 
-  updateNodes() {
+  async updateNodes() {
     if (!this.audioContext) return;
 
     const gains = this.getChannelGainsFromConfig();
@@ -632,10 +633,31 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return;
     }
 
+    const numberOfChannels = await this.getChannelCount().catch(() => 0);
+    if (numberOfChannels === 0) {
+      return;
+    }
+
     const hasNonUnityMasterGain = this.masterConfig.gain !== 1;
     const isMono = this.masterConfig.mono;
+    const needsMasterGain = hasNonUnityMasterGain || isMono;
+    const needsAnalyzer = this.needsAnalyzer();
 
-    if (hasNonUnityMasterGain || isMono) {
+
+    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(Math.min(numberOfChannels, 6));
+    if (numberOfChannels === 1) {
+      activeChannels.push(1); // mono sources are always stereo internally
+    }
+
+    const hasNonUnityChannelGains = activeChannels.some((i) => gains[i] !== 1);
+    const hasActiveNodes = activeChannels.some((i) => {
+      const nodes = this.channelNodes[i];
+      return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
+    });
+
+    const needsMerger = numberOfChannels > 6 || hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer;
+    const needsSplitter = needsMerger; // numberOfChannels > 1 && needsMerger;
+    if (needsMasterGain) {
       if (!this.masterNodes.gain) {
         this.masterNodes.gain = this.audioContext.createGain();
         this.masterNodes.preGain.disconnect(this.getOutputNode());
@@ -659,73 +681,92 @@ export class AudioChannelMixer extends AbstractAudioModule {
       }
     }
 
-    const hasNonUnityChannelGains = gains.some((gain) => gain !== 1);
-    const hasActiveNodes = this.channelNodes.some((nodes) => {
-      return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
-    });
-    const needsAnalyzer = this.needsAnalyzer();
-    if (hasActiveNodes || hasNonUnityChannelGains || needsAnalyzer) {
-      if (!this.channelSplitter) {
-        this.channelSplitter = this.audioContext.createChannelSplitter();
-        this.channelMerger = this.audioContext.createChannelMerger();
-        this.getInputNode().disconnect(this.masterNodes.postMerge);
-        this.getInputNode().connect(this.channelSplitter);
-        this.masterNodes.postMerge.connectFrom(this.channelMerger);
+    const shouldDestroySplitter = this.channelSplitter && (!needsSplitter || activeChannels.length !== this.channelSplitter.numberOfOutputs);
+    const shouldDestroyMerger = this.channelMerger && (!needsMerger || activeChannels.length !== this.channelMerger.numberOfInputs);
 
-        this.channelNodes.forEach((nodes, i) => {
-          nodes.postSplit.connectFrom(this.channelSplitter, i, 0);
-          nodes.preGain.connect(nodes.preMerge);
-          nodes.preMerge.connect(this.channelMerger, 0, i);
-        });
+    // if (!this.channelSplitter && this.channelMerger && (needsSplitter || shouldDestroyMerger)) {
+    //   const mergerActiveChannels = AudioUtils.getActiveChannelsForChannelCount(this.channelMerger.numberOfInputs);
+    //   mergerActiveChannels.forEach((idx, i) => {
+    //     const nodes = this.channelNodes[idx];
+    //     nodes.postSplit.disconnectFrom(this.getInputNode(), 0, 0);
+    //   });
+    // }
 
-        this.emit('upscale');
-      }
-
-      this.channelNodes.forEach((nodes, i) => {
-        const gain = gains[i];
-        if (gain === 1) {
-          if (nodes.gain) {
-            nodes.preGain.disconnect(nodes.gain);
-            nodes.preMerge.disconnectFrom(nodes.gain);
-            nodes.preGain.connect(nodes.preMerge);
-            nodes.gain = null;
-          }
-        } else {
-          if (!nodes.gain) {
-            nodes.gain = this.audioContext.createGain();
-            nodes.preGain.disconnect(nodes.preMerge);
-            nodes.preGain.connect(nodes.gain);
-            nodes.preMerge.connectFrom(nodes.gain);
-          }
-
-          nodes.gain.gain.value = gains[i];
-        }
+    if (shouldDestroySplitter) {
+      const splitterActiveChannels = AudioUtils.getActiveChannelsForChannelCount(this.channelSplitter.numberOfOutputs);
+      splitterActiveChannels.forEach((idx, i) => {
+        const nodes = this.channelNodes[idx];
+        nodes.postSplit.disconnectFrom(this.channelSplitter, i, 0);
       });
-    } else {
-      if (this.channelSplitter) {
-        this.getInputNode().disconnect(this.channelSplitter);
-        this.masterNodes.postMerge.disconnectFrom(this.channelMerger);
-        this.getInputNode().connect(this.masterNodes.postMerge);
 
-        this.channelNodes.forEach((nodes, i) => {
-          nodes.postSplit.disconnectFrom(this.channelSplitter, i, 0);
-          if (nodes.gain) {
-            nodes.preGain.disconnect(nodes.gain);
-            nodes.preMerge.disconnectFrom(nodes.gain);
-            nodes.gain = null;
-          } else {
-            nodes.preGain.disconnect(nodes.preMerge);
-          }
-          nodes.preMerge.disconnect(this.channelMerger, 0, i);
-        });
-
-        this.channelSplitter.disconnect();
-        this.channelMerger.disconnect();
-
-        this.channelSplitter = null;
-        this.channelMerger = null;
-        this.emit('upscale');
-      }
+      this.channelSplitter.disconnect();
+      this.channelSplitter = null;
     }
+
+    if (shouldDestroyMerger) {
+      const mergerActiveChannels = AudioUtils.getActiveChannelsForChannelCount(this.channelMerger.numberOfInputs);
+      mergerActiveChannels.forEach((idx, i) => {
+        const nodes = this.channelNodes[idx];
+        nodes.preMerge.disconnect(this.channelMerger, 0, i);
+      });
+
+      this.masterNodes.postMerge.disconnectFrom(this.channelMerger);
+      this.getInputNode().connect(this.masterNodes.postMerge);
+      this.channelMerger.disconnect();
+      this.channelMerger = null;
+    }
+
+    const shouldCreateSplitter = !this.channelSplitter && needsSplitter;
+    const shouldCreateMerger = !this.channelMerger && needsMerger;
+
+    if (shouldCreateSplitter) {
+      this.channelSplitter = this.audioContext.createChannelSplitter(activeChannels.length);
+      this.getInputNode().disconnect(this.masterNodes.postMerge);
+      this.getInputNode().connect(this.channelSplitter);
+
+      activeChannels.forEach((idx, i) => {
+        const nodes = this.channelNodes[idx];
+        nodes.postSplit.connectFrom(this.channelSplitter, i, 0);
+      });
+    }
+
+    if (shouldCreateMerger) {
+      this.channelMerger = this.audioContext.createChannelMerger(activeChannels.length);
+      this.masterNodes.postMerge.connectFrom(this.channelMerger);
+
+      activeChannels.forEach((idx, i) => {
+        const nodes = this.channelNodes[idx];
+        nodes.preMerge.connect(this.channelMerger, 0, i);
+      });
+    }
+
+    // if (!needsSplitter && needsMerger && (shouldCreateMerger || shouldDestroySplitter)) {
+    //   activeChannels.forEach((idx, i) => {
+    //     const nodes = this.channelNodes[idx];
+    //     nodes.postSplit.connectFrom(this.getInputNode(), 0, 0);
+    //   });
+    // }
+
+    this.channelNodes.forEach((nodes, i) => {
+      const gain = gains[i];
+      const neededGainNode = gain !== 1 && needsMerger && activeChannels.includes(i);
+      if (!neededGainNode) {
+        if (nodes.gain) {
+          nodes.preGain.disconnect(nodes.gain);
+          nodes.preMerge.disconnectFrom(nodes.gain);
+          nodes.preGain.connect(nodes.preMerge);
+          nodes.gain = null;
+        }
+      } else {
+        if (!nodes.gain) {
+          nodes.gain = this.audioContext.createGain();
+          nodes.preGain.disconnect(nodes.preMerge);
+          nodes.preGain.connect(nodes.gain);
+          nodes.preMerge.connectFrom(nodes.gain);
+        }
+
+        nodes.gain.gain.value = gain;
+      }
+    });
   }
 }
