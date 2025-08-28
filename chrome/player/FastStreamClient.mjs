@@ -1381,6 +1381,7 @@ export class FastStreamClient extends EventEmitter {
     });
 
     this.context.on(DefaultPlayerEvents.LOADEDDATA, (event) => {
+      this.audioConfigManager.updateChannelCount();
     });
 
 

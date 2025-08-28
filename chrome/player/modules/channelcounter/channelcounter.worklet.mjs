@@ -24,7 +24,7 @@ registerProcessor('channelcounter-worklet', class ChannelCounter extends AudioWo
   }
 
   close() {
-    console.debug('closing counter worklet');
+    // console.debug('closing counter worklet');
     this._closed = true;
   }
 });
