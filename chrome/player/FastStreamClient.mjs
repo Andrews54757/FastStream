@@ -1288,7 +1288,7 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (this.audioContext) {
-      this.audioContext.close();
+      this.audioContext.close().catch(()=>{});
       this.audioContext = null;
     }
 
