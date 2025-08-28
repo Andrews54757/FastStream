@@ -498,7 +498,12 @@ export class AudioConfigManager extends AbstractAudioModule {
     const node = new ChannelCounterNode(this.audioContext);
     this.channelCounterNode = node;
     this.channelCounterPromise = new Promise(async (resolve, reject) => {
-      await node.init();
+      try {
+        await node.init();
+        resolve(2); // Fallback to 2 channels if init fails for ppl who have older browsers
+      } catch (e) {
+        return;
+      }
       node.once('channelcount', (count) => {
         if (this.channelCounterNode !== node) {
           reject(new Error('Channel counter node changed'));
