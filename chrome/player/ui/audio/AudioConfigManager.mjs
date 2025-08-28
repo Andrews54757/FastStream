@@ -500,8 +500,8 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.channelCounterPromise = new Promise(async (resolve, reject) => {
       try {
         await node.init();
-        resolve(2); // Fallback to 2 channels if init fails for ppl who have older browsers
       } catch (e) {
+        resolve(2); // Fallback to 2 channels if init fails for ppl who have older browsers
         return;
       }
       node.once('channelcount', (count) => {
