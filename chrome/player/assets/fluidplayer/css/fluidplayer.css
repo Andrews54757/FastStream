@@ -2300,8 +2300,12 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     right: 2px;
     text-align: center;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     transform: translate(0%, -50%);
+}
+
+.mixer_channel_title.disabled {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .mixer_channel_buttons {

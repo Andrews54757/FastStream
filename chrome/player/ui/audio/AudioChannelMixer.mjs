@@ -625,9 +625,29 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.dynButton.classList.toggle('configured', isEqActive || isCompActive);
   }
 
-  updateChannelCount() {
+  async updateChannelCount() {
     this.updateNodes();
     if ( this.masterNodes.compressor) this.masterNodes.compressor.updateChannelCount();
+
+
+    const numberOfChannels = await this.getChannelCount().catch(() => 0);
+    if (numberOfChannels === 0) {
+      return;
+    }
+
+    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(Math.min(numberOfChannels, 6));
+    if (numberOfChannels === 1) {
+      activeChannels.push(1); // mono sources are always stereo internally
+    }
+
+    // disable unused channels
+    this.mixerChannelElements.forEach((els, i) => {
+      if (activeChannels.includes(i)) {
+        els.channelTitle.classList.remove('disabled');
+      } else {
+        els.channelTitle.classList.add('disabled');
+      }
+    });
   }
 
   async updateNodes() {
