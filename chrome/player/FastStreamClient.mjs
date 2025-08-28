@@ -1736,6 +1736,7 @@ export class FastStreamClient extends EventEmitter {
       }
       this.resetFailed();
       this.updateQualityLevels();
+      this.audioConfigManager.updateChannelCount();
     }
   }
 

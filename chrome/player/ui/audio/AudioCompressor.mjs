@@ -73,6 +73,19 @@ export class AudioCompressor extends AbstractAudioModule {
     this.updateCompressor();
   }
 
+  updateChannelCount() {
+    const count = this.numberOfChannelsGetter ? this.numberOfChannelsGetter().catch((e) => 0) : 2;
+    if (count && this.compressorNode) {
+      if (count > 2 && (!this.splitterNode || this.splitterNode.numberOfOutputs !== Math.min(count, 6))) {
+        this.destroyCompressorNodes();
+        this.createCompressorNodes();
+      } else if (count <= 2 && this.splitterNode) {
+        this.destroyCompressorNodes();
+        this.createCompressorNodes();
+      }
+    }
+  }
+
   async updateCompressor() {
     if (!this.compressorConfig) return;
 

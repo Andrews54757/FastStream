@@ -625,6 +625,11 @@ export class AudioChannelMixer extends AbstractAudioModule {
     els.dynButton.classList.toggle('configured', isEqActive || isCompActive);
   }
 
+  updateChannelCount() {
+    this.updateNodes();
+    if ( this.masterNodes.compressor) this.masterNodes.compressor.updateChannelCount();
+  }
+
   async updateNodes() {
     if (!this.audioContext) return;
 

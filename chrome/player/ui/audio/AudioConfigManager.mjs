@@ -452,7 +452,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     super.setupNodes(audioContext);
 
     try {
-      this.discardChannelCount();
+      this.updateChannelCount();
       this.audioUpscaler.setupNodes(this.audioContext);
       this.audioChannelMixer.setupNodes(this.audioContext);
       this.audioCrosstalk.setupNodes(this.audioContext);
@@ -463,20 +463,23 @@ export class AudioConfigManager extends AbstractAudioModule {
       this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
       this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
       this.finalGain.getOutputNode().connect(this.getOutputNode());
-
-      this.getChannelCount().then((count) => {
-        if (count === 1) {
-          this.audioUpscaler.enable();
-        } else {
-          this.audioUpscaler.disable();
-        }
-      }).catch((e) => {
-      });
     } catch (e) {
       AlertPolyfill.errorSendToDeveloper(e);
     }
   }
 
+  updateChannelCount() {
+    this.discardChannelCount();
+    this.getChannelCount().then((count) => {
+      if (count === 1) {
+        this.audioUpscaler.enable();
+      } else {
+        this.audioUpscaler.disable();
+      }
+      this.audioChannelMixer.updateChannelCount();
+    }).catch((e) => {
+    });
+  }
 
   async getChannelCount() {
     if (!this.audioContext) {
