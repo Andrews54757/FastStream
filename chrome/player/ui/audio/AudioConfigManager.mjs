@@ -1,5 +1,5 @@
 import {Localize} from '../../modules/Localize.mjs';
-import {ChannelCounterNode} from '../../modules/channelcounter/ChannelCounter.mjs';
+import {ChannelCounterNode} from '../../modules/channelcounter/channelcounter.mjs';
 import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
