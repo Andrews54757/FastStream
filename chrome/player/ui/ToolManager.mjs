@@ -81,8 +81,6 @@ export class ToolManager {
         }
       }, true);
     });
-
-    this.setupDragDemoTutorial();
   }
 
   canHideControls() {
@@ -263,7 +261,6 @@ export class ToolManager {
   startReorderUI() {
     if (this.specialReorderModeEnabled) return;
     this.interfaceController.closeAllMenus();
-    this.closeDragDemoTutorial();
     this.specialReorderModeEnabled = true;
     DOMElements.rightToolsContainer.classList.add('reordering');
     DOMElements.leftToolsContainer.classList.add('reordering');
@@ -276,38 +273,5 @@ export class ToolManager {
     DOMElements.rightToolsContainer.classList.remove('reordering');
     DOMElements.leftToolsContainer.classList.remove('reordering');
     DOMElements.extraTools.classList.remove('reordering');
-  }
-
-  setupDragDemoTutorial() {
-    Utils.getConfig('dragDemoTutorialSeen').then((seen) => {
-      if (!seen) {
-        this.showDragDemoTutorial();
-      }
-    });
-
-    DOMElements.dragDemoTutorial.addEventListener('click', (e) => {
-      this.closeDragDemoTutorial();
-      e.stopPropagation();
-    });
-  }
-
-  showDragDemoTutorial() {
-    if (DOMElements.dragDemoTutorial.style.display !== 'none' ) return;
-    DOMElements.dragDemoTutorial.style.display = '';
-    const video = document.createElement('video');
-    video.src = './assets/dragdemo.mp4';
-    video.muted = true;
-    video.autoplay = true;
-    video.loop = true;
-    DOMElements.dragDemoTutorial.appendChild(video);
-    WebUtils.setupTabIndex(DOMElements.dragDemoTutorial);
-  }
-
-  closeDragDemoTutorial() {
-    if (DOMElements.dragDemoTutorial.style.display !== '') return;
-    DOMElements.dragDemoTutorial.style.display = 'none';
-    VideoUtils.destroyVideo(DOMElements.dragDemoTutorial.children[0]);
-    DOMElements.dragDemoTutorial.replaceChildren();
-    Utils.setConfig('dragDemoTutorialSeen', true);
   }
 }
