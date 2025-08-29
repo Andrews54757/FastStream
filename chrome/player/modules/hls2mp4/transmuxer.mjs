@@ -86,7 +86,6 @@ export default class Transmuxer {
       config,
       observer,
       typeSupported,
-      vendor,
     } = this;
     // probe for content type
     let mux;
