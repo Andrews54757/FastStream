@@ -3,10 +3,11 @@ import {AudioCompressionControl} from './AudioCompressionControl.mjs';
 import {AudioCrosstalkControl} from './AudioCrosstalkControl.mjs';
 import {AudioEQNode} from './AudioEQNode.mjs';
 
+const MAX_CHANNELS = 6; // 8; Change to 8 when 7.1 audio is fixed.
 export class AudioProfile {
   constructor(id) {
     this.id = parseInt(id);
-    this.channels = Array.from({length: 8}, (_, i) => {
+    this.channels = Array.from({length: MAX_CHANNELS}, (_, i) => {
       return AudioChannelControl.default(i);
     });
     this.master = AudioChannelControl.default('master');
@@ -18,19 +19,20 @@ export class AudioProfile {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
 
-    if (obj.channels && obj.channels.length <= 8) {
+    if (obj.channels && obj.channels.length <= MAX_CHANNELS) {
       profile.channels = obj.channels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
-      // fill remaining with defaults if less than 8
-      for (let i = profile.channels.length; i < 8; i++) {
-        profile.channels.push(AudioChannelControl.default(i));
-      }
     } else if (obj.mixerChannels && obj.mixerChannels.length === 7) { // Legacy
       profile.channels = obj.mixerChannels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
       profile.master = profile.channels.pop();
+    }
+
+    // fill remaining with defaults if less than MAX_CHANNELS
+    for (let i = profile.channels.length; i < MAX_CHANNELS; i++) {
+      profile.channels.push(AudioChannelControl.default(i));
     }
 
     if (obj.master) {

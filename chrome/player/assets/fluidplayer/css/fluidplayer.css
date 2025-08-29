@@ -2401,8 +2401,13 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     height: 40px;
     border-radius: 4px;
     transform: translate(-50%, -50%);
-    opacity: 0.8;
+    opacity: 0.6;
     cursor: grab;
+    transition: opacity 0.1s;
+}
+
+.mixer_channel_volume_handle:hover {
+    opacity: 0.8;
 }
 
 .mixer_channel_volume_meter {

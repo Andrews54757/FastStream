@@ -9,7 +9,7 @@ import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
 import {VirtualAudioNode} from './VirtualAudioNode.mjs';
 
-const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround', 'Side Left', 'Side Right'];
+const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround']; // 'Side Left', 'Side Right' add when 7.1 audio is fixed.
 
 export class AudioChannelMixer extends AbstractAudioModule {
   constructor(configManager) {
@@ -155,7 +155,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
       ctx.fillRect(0, y, width, rectHeight);
 
-      const color = `rgb(${Utils.clamp(i * 7, 0, 255)}, ${Utils.clamp(255 - i * 7, 0, 255)}, 0)`;
+      const color = `rgb(${Utils.clamp(i * 5, 0, 255)}, ${Utils.clamp(255 - i * 5, 0, 255)}, 0)`;
       ctx.fillStyle = color;
       ctx.fillRect(0, y + 1, width, rectHeight - 2);
     }
@@ -684,7 +684,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
     });
 
-    const needsMerger = hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer;
+    const needsMerger = hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer || (numberOfChannels === CHANNEL_NAMES.length && EnvUtils.isChrome()); // Chrome bug for 7.1 audio
     const needsSplitter = needsMerger; // numberOfChannels > 1 && needsMerger;
     if (needsMasterGain) {
       if (!this.masterNodes.gain) {
