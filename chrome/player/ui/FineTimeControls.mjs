@@ -433,8 +433,8 @@ export class FineTimeControls extends EventEmitter {
     const startFrame = Math.floor(minCanvIndex * 10 * outputRate);
     const endFrame = Math.floor(maxCanvIndex * 10 * outputRate);
 
-    const minDB = -80;
-    const maxDB = 0;
+    const minDB = -100;
+    const maxDB = -30;
     const dbRange = maxDB - minDB;
 
     let silencedBitset;

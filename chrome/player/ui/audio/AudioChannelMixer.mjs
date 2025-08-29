@@ -9,7 +9,7 @@ import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
 import {VirtualAudioNode} from './VirtualAudioNode.mjs';
 
-const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround'];
+const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround', 'Side Left', 'Side Right'];
 
 export class AudioChannelMixer extends AbstractAudioModule {
   constructor(configManager) {
@@ -30,7 +30,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   async getChannelCount() {
-    return this.configManager.getChannelCount();
+    return Math.min(await this.configManager.getChannelCount().catch(() => 0), CHANNEL_NAMES.length);
   }
 
   getElement() {
@@ -136,7 +136,11 @@ export class AudioChannelMixer extends AbstractAudioModule {
     analyzer._lastVolume = volume;
     const rectHeight = height / 50;
 
-    const rectCount = Math.round((1 - AudioUtils.mixerDBToPositionRatio(volume)) * 50);
+    const minDb = analyzer.minDecibels;
+    const maxDb = analyzer.maxDecibels;
+    const ratio = (volume - minDb) / (maxDb - minDb);
+
+    const rectCount = Math.round(ratio * 50);
     const now = Date.now();
 
     if (!els.peak || rectCount > els.peak) {
@@ -531,7 +535,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     this.channelSplitter = null;
     this.channelMerger = null;
-    this.channelNodes = Array.from({length: 6}, (_, i) => {
+    this.channelNodes = Array.from({length: CHANNEL_NAMES.length}, (_, i) => {
       const nodes = {
         gain: null,
         analyzer: null,
@@ -630,12 +634,12 @@ export class AudioChannelMixer extends AbstractAudioModule {
     if ( this.masterNodes.compressor) this.masterNodes.compressor.updateChannelCount();
 
 
-    const numberOfChannels = await this.getChannelCount().catch(() => 0);
+    const numberOfChannels = await this.getChannelCount();
     if (numberOfChannels === 0) {
       return;
     }
 
-    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(Math.min(numberOfChannels, 6));
+    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(numberOfChannels);
     if (numberOfChannels === 1) {
       activeChannels.push(1); // mono sources are always stereo internally
     }
@@ -658,7 +662,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return;
     }
 
-    const numberOfChannels = await this.getChannelCount().catch(() => 0);
+    const numberOfChannels = await this.getChannelCount();
     if (numberOfChannels === 0) {
       return;
     }
@@ -669,7 +673,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     const needsAnalyzer = this.needsAnalyzer();
 
 
-    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(Math.min(numberOfChannels, 6));
+    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(numberOfChannels);
     if (numberOfChannels === 1) {
       activeChannels.push(1); // mono sources are always stereo internally
     }
@@ -680,7 +684,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
     });
 
-    const needsMerger = numberOfChannels > 6 || hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer;
+    const needsMerger = hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer;
     const needsSplitter = needsMerger; // numberOfChannels > 1 && needsMerger;
     if (needsMasterGain) {
       if (!this.masterNodes.gain) {

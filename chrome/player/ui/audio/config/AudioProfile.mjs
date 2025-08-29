@@ -6,7 +6,7 @@ import {AudioEQNode} from './AudioEQNode.mjs';
 export class AudioProfile {
   constructor(id) {
     this.id = parseInt(id);
-    this.channels = Array.from({length: 6}, (_, i) => {
+    this.channels = Array.from({length: 8}, (_, i) => {
       return AudioChannelControl.default(i);
     });
     this.master = AudioChannelControl.default('master');
@@ -18,15 +18,15 @@ export class AudioProfile {
     const profile = new AudioProfile(obj.id);
     profile.label = obj.label;
 
-    if (obj.channels && obj.channels.length <= 6) {
+    if (obj.channels && obj.channels.length <= 8) {
       profile.channels = obj.channels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });
-      // fill remaining with defaults if less than 6
-      for (let i = profile.channels.length; i < 6; i++) {
+      // fill remaining with defaults if less than 8
+      for (let i = profile.channels.length; i < 8; i++) {
         profile.channels.push(AudioChannelControl.default(i));
       }
-    } else if (obj.mixerChannels && obj.mixerChannels.length === 7) {
+    } else if (obj.mixerChannels && obj.mixerChannels.length === 7) { // Legacy
       profile.channels = obj.mixerChannels.map((channel) => {
         return AudioChannelControl.fromObj(channel);
       });

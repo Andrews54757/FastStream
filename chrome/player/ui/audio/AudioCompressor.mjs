@@ -73,10 +73,10 @@ export class AudioCompressor extends AbstractAudioModule {
     this.updateCompressor();
   }
 
-  updateChannelCount() {
-    const count = this.numberOfChannelsGetter ? this.numberOfChannelsGetter().catch((e) => 0) : 2;
+  async updateChannelCount() {
+    const count = this.numberOfChannelsGetter ? await this.numberOfChannelsGetter() : 2;
     if (count && this.compressorNode) {
-      if (count > 2 && (!this.splitterNode || this.splitterNode.numberOfOutputs !== Math.min(count, 6))) {
+      if (count > 2 && (!this.splitterNode || this.splitterNode.numberOfOutputs !== count)) {
         this.destroyCompressorNodes();
         this.createCompressorNodes();
       } else if (count <= 2 && this.splitterNode) {
@@ -109,7 +109,7 @@ export class AudioCompressor extends AbstractAudioModule {
   }
 
   async createCompressorNodes() {
-    const numChannels = this.numberOfChannelsGetter ? await this.numberOfChannelsGetter().catch((e) => 0) : 2;
+    const numChannels = this.numberOfChannelsGetter ? await this.numberOfChannelsGetter() : 2;
     if (numChannels === 0 || this.compressorNode) return;
 
     const audioContext = this.audioContext;
@@ -121,13 +121,12 @@ export class AudioCompressor extends AbstractAudioModule {
 
     const shouldUseSplitterMerger = numChannels > 2;
     if (shouldUseSplitterMerger) {
-      const splitterMergerChannels = Math.min(numChannels, 6);
-      this.splitterNode = audioContext.createChannelSplitter(splitterMergerChannels);
-      this.mergerNode = audioContext.createChannelMerger(splitterMergerChannels);
+      this.splitterNode = audioContext.createChannelSplitter(numChannels);
+      this.mergerNode = audioContext.createChannelMerger(numChannels);
       this.compressorMerger = audioContext.createChannelMerger(2);
       this.compressorSplitter = audioContext.createChannelSplitter(2);
 
-      for (let i = 2; i < splitterMergerChannels; i++) {
+      for (let i = 2; i < numChannels; i++) {
         this.splitterNode.connect(this.mergerNode, i, i);
       }
 
