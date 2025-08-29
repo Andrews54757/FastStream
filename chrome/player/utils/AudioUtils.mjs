@@ -73,11 +73,6 @@ export class AudioUtils {
     const dataArray = new Uint8Array(bufferLength);
     analyser.getByteFrequencyData(dataArray);
 
-    // Take the top 10 percent of bins
-    const topPercent = 0.1;
-    const topCount = Math.max(1, Math.floor(bufferLength * topPercent));
-    const topPower = new Float32Array(topCount); // sorted descending
-
     const minDb = analyser.minDecibels;
     const maxDb = analyser.maxDecibels;
     const minLinear = Math.pow(10, minDb / 20);
@@ -85,6 +80,7 @@ export class AudioUtils {
     const weights = get468WeightsForAnalyser(analyser);
 
     // Combine bins in linear power, rank by power
+    let sum = 0;
     for (let i = 1; i < dataArray.length; i++) {
       const byteVal = dataArray[i];
       if (byteVal === 0) continue; // at or below minDb
@@ -96,21 +92,10 @@ export class AudioUtils {
       const amp = Math.pow(10, dB / 20);
       const w = weights[i];
       const power = (amp * w) * (amp * w);
-
-      // Insert into topPower without splice
-      if (power <= topPower[topCount - 1]) continue;
-      let j = topCount - 1;
-      while (j > 0 && power > topPower[j - 1]) {
-        topPower[j] = topPower[j - 1];
-        j--;
-      }
-      topPower[j] = power;
+      sum += power;
     }
 
-    // Mean power of top bins, then RMS amplitude
-    let sum = 0;
-    for (let i = 0; i < topCount; i++) sum += topPower[i];
-    const meanPower = sum / topCount;
+    const meanPower = sum / (bufferLength - 1);
     const rms = Math.sqrt(meanPower);
 
     // Convert to dB, between minDb and maxDb
