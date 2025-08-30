@@ -3,7 +3,7 @@ import {AudioCompressionControl} from './AudioCompressionControl.mjs';
 import {AudioCrosstalkControl} from './AudioCrosstalkControl.mjs';
 import {AudioEQNode} from './AudioEQNode.mjs';
 
-export const MAX_AUDIO_CHANNELS = 6; // 8; Change to 8 when 7.1 audio is fixed.
+export const MAX_AUDIO_CHANNELS = 5; // 8; Change to 8 when 7.1 audio is fixed.
 export class AudioProfile {
   constructor(id) {
     this.id = parseInt(id);
@@ -44,6 +44,7 @@ export class AudioProfile {
           newChannels.push(AudioChannelControl.default(i));
         }
       }
+      profile.channels = newChannels;
     }
 
     if (obj.master) {
