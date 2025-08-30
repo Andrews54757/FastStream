@@ -7,9 +7,10 @@ import {DOMElements} from '../DOMElements.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
+import {MAX_AUDIO_CHANNELS} from './config/AudioProfile.mjs';
 import {VirtualAudioNode} from './VirtualAudioNode.mjs';
 
-const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround']; // 'Side Left', 'Side Right' add when 7.1 audio is fixed.
+const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround', 'Side Left', 'Side Right'];
 
 export class AudioChannelMixer extends AbstractAudioModule {
   constructor(configManager) {
@@ -30,7 +31,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   async getChannelCount() {
-    return Math.min(await this.configManager.getChannelCount().catch(() => 0), CHANNEL_NAMES.length);
+    return Math.min(await this.configManager.getChannelCount().catch(() => 0), MAX_AUDIO_CHANNELS);
   }
 
   getElement() {
@@ -535,7 +536,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
     this.channelSplitter = null;
     this.channelMerger = null;
-    this.channelNodes = Array.from({length: CHANNEL_NAMES.length}, (_, i) => {
+    this.channelNodes = Array.from({length: MAX_AUDIO_CHANNELS}, (_, i) => {
       const nodes = {
         gain: null,
         analyzer: null,
@@ -684,7 +685,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       return nodes.equalizer.hasNodes() || nodes.compressor.isEnabled();
     });
 
-    const needsMerger = hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer || (numberOfChannels === CHANNEL_NAMES.length && EnvUtils.isChrome()); // Chrome bug for 7.1 audio
+    const needsMerger = hasNonUnityChannelGains || hasActiveNodes || needsAnalyzer || (numberOfChannels === MAX_AUDIO_CHANNELS && EnvUtils.isChrome()); // Chrome bug for 7.1 audio
     const needsSplitter = needsMerger; // numberOfChannels > 1 && needsMerger;
     if (needsMasterGain) {
       if (!this.masterNodes.gain) {
