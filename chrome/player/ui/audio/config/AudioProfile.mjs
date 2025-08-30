@@ -30,9 +30,20 @@ export class AudioProfile {
       profile.master = profile.channels.pop();
     }
 
+    // Sort channels by ID, increasing
+    profile.channels.sort((a, b) => a.id - b.id);
+
     // fill remaining with defaults if less than MAX_CHANNELS
-    for (let i = profile.channels.length; i < MAX_AUDIO_CHANNELS; i++) {
-      profile.channels.push(AudioChannelControl.default(i));
+    if (profile.channels.length < MAX_AUDIO_CHANNELS) {
+      const newChannels = [];
+      for (let i = 0; i < MAX_AUDIO_CHANNELS; i++) {
+        const existingChannel = profile.channels.find((ch) => ch.id === i);
+        if (existingChannel) {
+          newChannels.push(existingChannel);
+        } else {
+          newChannels.push(AudioChannelControl.default(i));
+        }
+      }
     }
 
     if (obj.master) {
