@@ -1,13 +1,12 @@
-import {StatefulResampler} from './resampler.mjs';
+// import {StatefulResampler} from './resampler.mjs';
+import {create} from './libsamplerate.mjs';
 
-
-let resampler;
-const pastSamples = [null, null, null];
-const pastTimestamps = [-1, -1, -1];
-const remainders = [];
+const resamplers = [];
+let loadPromise = null;
+let newSampleRate = null;
 let numChannels;
 
-function pushSample(data) {
+function resampleAudioSample(data) {
   const format = data.format;
   let isInterleaved = false;
   let TypedArrayConstructor;
@@ -48,7 +47,6 @@ function pushSample(data) {
   }
   const numFrames = data.numberOfFrames;
   const channels = [];
-
   if (isInterleaved) {
     const audioDataBuffer = new TypedArrayConstructor(numChannels * numFrames);
     data.copyTo(audioDataBuffer, {
@@ -72,51 +70,12 @@ function pushSample(data) {
   }
   data.close();
 
-  if (data.timestamp <= pastTimestamps[pastTimestamps.length - 1]) {
-    throw new Error('out of order audio data');
-  }
-
-  pastSamples.push(channels);
-  pastTimestamps.push(data.timestamp);
-
-
-  // Remove first
-  pastSamples.shift();
-  pastTimestamps.shift();
-}
-
-function runResampler(shift) {
-  if (shift) {
-    pastSamples.shift();
-    pastTimestamps.shift();
-    pastSamples.push(null);
-    pastTimestamps.push(-1);
-  }
-  const past = pastSamples[0];
-  const current = pastSamples[1];
-  const next = pastSamples[2];
-  const currentTimestamp = pastTimestamps[1];
-
-  if (!current) {
-    return;
-  }
-
   const resampled = [];
   for (let i = 0; i < numChannels; i++) {
-    const pastSample = past ? past[i] : null;
-    const currentSample = current[i];
-    const nextSample = next ? next[i] : null;
-    const remainder = {
-      remainder: remainders[i],
-    };
-    const resampledChannel = resampler.resample(pastSample, currentSample, nextSample, remainder);
-    resampled.push(resampledChannel);
-
-    if (i === numChannels - 1) {
-      remainders[i] = remainder.remainder;
-    }
+    const currentSample = channels[i];
+    const resampler = resamplers[i];
+    resampled.push(resampler.full(currentSample));
   }
-
   const newNumSamples = resampled[0].length;
   const resampledData = new Float32Array(newNumSamples * numChannels);
   for (let i = 0; i < numChannels; i++) {
@@ -124,40 +83,42 @@ function runResampler(shift) {
       resampledData[i * newNumSamples + j] = v;
     });
   }
-
   const newAudio = new AudioData({
     format: 'f32-planar',
     numberOfChannels: numChannels,
     numberOfFrames: newNumSamples,
-    timestamp: currentTimestamp,
-    sampleRate: resampler.newSampleRate,
+    timestamp: data.timestamp,
+    sampleRate: newSampleRate,
     data: resampledData,
   });
-
   return newAudio;
-};
+}
 
 addEventListener('message', async (event) => {
+  await loadPromise;
   if (event.data.type === 'close') {
+    // destroy
+    resamplers.forEach((resampler) => {
+      try {
+        resampler.destroy();
+      } catch (e) {
+      }
+    });
     close();
   } else if (event.data.type === 'init') {
     numChannels = event.data.numChannels;
+    const promises = [];
     for (let i = 0; i < numChannels; i++) {
-      remainders.push(0);
+      promises.push(create(1, event.data.oldSampleRate, event.data.newSampleRate));
     }
-    resampler = new StatefulResampler(event.data.oldSampleRate, event.data.newSampleRate, event.data.details);
+    newSampleRate = event.data.newSampleRate;
+
+    loadPromise = Promise.all(promises).then((instances) => {
+      resamplers.push(...instances);
+      console.log('Resampler instances created');
+    });
   } else if (event.data.type === 'pushSample') {
-    pushSample(event.data.data);
-    const result = runResampler();
-    if (!result) {
-      return;
-    }
-    postMessage({
-      type: 'resampled',
-      data: result,
-    }, [result]);
-  } else if (event.data.type === 'finish') {
-    const result = runResampler(true);
+    const result = resampleAudioSample(event.data.data);
     if (!result) {
       return;
     }

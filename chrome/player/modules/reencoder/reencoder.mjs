@@ -399,17 +399,6 @@ export class Reencoder extends EventEmitter {
       });
 
       await this.audioDecoder.flush();
-
-      this.resamplerWorker.postMessage({
-        type: 'finish',
-      });
-
-      const resamplerWorkerPromise = new Promise((resolve) => {
-        this.resamplerWorkerPromiseResolve = resolve;
-      });
-
-      await resamplerWorkerPromise;
-
       await this.audioEncoder.flush();
     }
 
