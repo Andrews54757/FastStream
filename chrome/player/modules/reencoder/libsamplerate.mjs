@@ -420,594 +420,542 @@ const __webpack_exports__ = {};
   };
 
   ;// ./src/glue.js
-
-  const LoadSRC = (() => {
-    const _scriptName = import.meta.url;
-
-    return (
-      function(moduleArg = {}) {
-        let moduleRtn;
-
-        const Module=moduleArg; let readyPromiseResolve; let readyPromiseReject; const readyPromise=new Promise((resolve, reject)=>{
-          readyPromiseResolve=resolve; readyPromiseReject=reject;
-        }); const ENVIRONMENT_IS_WEB=typeof window=='object'; const ENVIRONMENT_IS_WORKER=typeof importScripts=='function'; const ENVIRONMENT_IS_NODE=typeof process=='object'&&typeof process.versions=='object'&&typeof process.versions.node=='string'&&process.type!='renderer'; const ENVIRONMENT_IS_SHELL=!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_NODE&&!ENVIRONMENT_IS_WORKER; let moduleOverrides=Object.assign({}, Module); let arguments_=[]; let thisProgram='./this.program'; let quit_=(status, toThrow)=>{
-          throw toThrow;
-        }; let scriptDirectory=''; function locateFile(path) {
-          if (Module['locateFile']) {
-            return Module['locateFile'](path, scriptDirectory);
-          } return scriptDirectory+path;
-        } let readAsync; let readBinary; if (ENVIRONMENT_IS_SHELL) {
-          readBinary=(f)=>{
-            if (typeof readbuffer=='function') {
-              return new Uint8Array(readbuffer(f));
-            } const data=read(f, 'binary'); assert(typeof data=='object'); return data;
-          }; readAsync=(f)=>new Promise((resolve, reject)=>{
-            setTimeout(()=>resolve(readBinary(f)));
-          }); globalThis.clearTimeout??=(id)=>{}; globalThis.setTimeout??=(f)=>typeof f=='function'?f():abort(); arguments_=globalThis.arguments||globalThis.scriptArgs; if (typeof quit=='function') {
-            quit_=(status, toThrow)=>{
-              setTimeout(()=>{
-                if (!(toThrow instanceof ExitStatus)) {
-                  let toLog=toThrow; if (toThrow&&typeof toThrow=='object'&&toThrow.stack) {
-                    toLog=[toThrow, toThrow.stack];
-                  }err(`exiting due to exception: ${toLog}`);
-                }quit(status);
-              }); throw toThrow;
-            };
-          } if (typeof print!='undefined') {
-            globalThis.console??={}; console.log=print; console.warn=console.error=globalThis.printErr??print;
-          }
-        } else if (ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER) {
-          if (ENVIRONMENT_IS_WORKER) {
-            scriptDirectory=self.location.href;
-          } else if (typeof document!='undefined'&&document.currentScript) {
-            scriptDirectory=document.currentScript.src;
-          } if (_scriptName) {
-            scriptDirectory=_scriptName;
-          } if (scriptDirectory.startsWith('blob:')) {
-            scriptDirectory='';
-          } else {
-            scriptDirectory=scriptDirectory.substr(0, scriptDirectory.replace(/[?#].*/, '').lastIndexOf('/')+1);
-          } {if (ENVIRONMENT_IS_WORKER) {
-            readBinary=(url)=>{
-              const xhr=new XMLHttpRequest; xhr.open('GET', url, false); xhr.responseType='arraybuffer'; xhr.send(null); return new Uint8Array(xhr.response);
-            };
-          }readAsync=(url)=>fetch(url, {credentials: 'same-origin'}).then((response)=>{
-            if (response.ok) {
-              return response.arrayBuffer();
-            } return Promise.reject(new Error(response.status+' : '+response.url));
-          });}
-        } else {} const out=Module['print']||console.log.bind(console); var err=Module['printErr']||console.error.bind(console); Object.assign(Module, moduleOverrides); moduleOverrides=null; if (Module['arguments'])arguments_=Module['arguments']; if (Module['thisProgram'])thisProgram=Module['thisProgram']; const wasmBinary=Module['wasmBinary']; let wasmMemory; let ABORT=false; let EXITSTATUS; function assert(condition, text) {
-          if (!condition) {
-            abort(text);
-          }
-        } let HEAP8; let HEAPU8; let HEAP16; let HEAPU16; let HEAP32; let HEAPU32; let HEAPF32; let HEAPF64; function updateMemoryViews() {
-          const b=wasmMemory.buffer; Module['HEAP8']=HEAP8=new Int8Array(b); Module['HEAP16']=HEAP16=new Int16Array(b); Module['HEAPU8']=HEAPU8=new Uint8Array(b); Module['HEAPU16']=HEAPU16=new Uint16Array(b); Module['HEAP32']=HEAP32=new Int32Array(b); Module['HEAPU32']=HEAPU32=new Uint32Array(b); Module['HEAPF32']=HEAPF32=new Float32Array(b); Module['HEAPF64']=HEAPF64=new Float64Array(b);
-        } const __ATPRERUN__=[]; const __ATINIT__=[]; const __ATMAIN__=[]; const __ATPOSTRUN__=[]; let runtimeInitialized=false; function preRun() {
-          let preRuns=Module['preRun']; if (preRuns) {
-            if (typeof preRuns=='function')preRuns=[preRuns]; preRuns.forEach(addOnPreRun);
-          }callRuntimeCallbacks(__ATPRERUN__);
-        } function initRuntime() {
-          runtimeInitialized=true; callRuntimeCallbacks(__ATINIT__);
-        } function preMain() {
-          callRuntimeCallbacks(__ATMAIN__);
-        } function postRun() {
-          let postRuns=Module['postRun']; if (postRuns) {
-            if (typeof postRuns=='function')postRuns=[postRuns]; postRuns.forEach(addOnPostRun);
-          }callRuntimeCallbacks(__ATPOSTRUN__);
-        } function addOnPreRun(cb) {
-          __ATPRERUN__.unshift(cb);
-        } function addOnInit(cb) {
-          __ATINIT__.unshift(cb);
-        } function addOnPostRun(cb) {
-          __ATPOSTRUN__.unshift(cb);
-        } let runDependencies=0; let runDependencyWatcher=null; let dependenciesFulfilled=null; function addRunDependency(id) {
-          runDependencies++; Module['monitorRunDependencies']?.(runDependencies);
-        } function removeRunDependency(id) {
-          runDependencies--; Module['monitorRunDependencies']?.(runDependencies); if (runDependencies==0) {
-            if (runDependencyWatcher!==null) {
-              clearInterval(runDependencyWatcher); runDependencyWatcher=null;
-            } if (dependenciesFulfilled) {
-              const callback=dependenciesFulfilled; dependenciesFulfilled=null; callback();
-            }
-          }
-        } function abort(what) {
-          Module['onAbort']?.(what); what='Aborted('+what+')'; err(what); ABORT=true; what+='. Build with -sASSERTIONS for more info.'; const e=new WebAssembly.RuntimeError(what); readyPromiseReject(e); throw e;
-        } const dataURIPrefix='data:application/octet-stream;base64,'; const isDataURI=(filename)=>filename.startsWith(dataURIPrefix); function findWasmBinary() {
-          if (Module['locateFile']) {
-            const f='glue.wasm'; if (!isDataURI(f)) {
-              return locateFile(f);
-            } return f;
-          } if (ENVIRONMENT_IS_SHELL) return 'glue.wasm'; return new URL(/* asset import */ __webpack_require__(/* ! glue.wasm */ './src/glue.wasm'), __webpack_require__.b).href;
-        } let wasmBinaryFile; function getBinarySync(file) {
-          if (file==wasmBinaryFile&&wasmBinary) {
-            return new Uint8Array(wasmBinary);
-          } if (readBinary) {
-            return readBinary(file);
-          } throw 'sync fetching of the wasm failed: you can preload it to Module["wasmBinary"] manually, or emcc.py will do that for you when generating HTML (but not JS)';
-        } function instantiateSync(file, info) {
-          let module; const binary=getBinarySync(file); module=new WebAssembly.Module(binary); const instance=new WebAssembly.Instance(module, info); return [instance, module];
-        } function getWasmImports() {
-          return {a: wasmImports};
-        } function createWasm() {
-          const info=getWasmImports(); function receiveInstance(instance, module) {
-            wasmExports=instance.exports; wasmMemory=wasmExports['p']; updateMemoryViews(); wasmTable=wasmExports['s']; addOnInit(wasmExports['q']); removeRunDependency('wasm-instantiate'); return wasmExports;
-          }addRunDependency('wasm-instantiate'); if (Module['instantiateWasm']) {
-            try {
-              return Module['instantiateWasm'](info, receiveInstance);
-            } catch (e) {
-              err(`Module.instantiateWasm callback failed with error: ${e}`); readyPromiseReject(e);
-            }
-          }wasmBinaryFile??=findWasmBinary(); const result=instantiateSync(wasmBinaryFile, info); return receiveInstance(result[0]);
-        } function ExitStatus(status) {
-          this.name='ExitStatus'; this.message=`Program terminated with exit(${status})`; this.status=status;
-        } var callRuntimeCallbacks=(callbacks)=>{
-          callbacks.forEach((f)=>f(Module));
-        }; const noExitRuntime=Module['noExitRuntime']||true; class ExceptionInfo {
-          constructor(excPtr) {
-            this.excPtr=excPtr; this.ptr=excPtr-24;
-          }set_type(type) {
-            HEAPU32[this.ptr+4>>2]=type;
-          }get_type() {
-            return HEAPU32[this.ptr+4>>2];
-          }set_destructor(destructor) {
-            HEAPU32[this.ptr+8>>2]=destructor;
-          }get_destructor() {
-            return HEAPU32[this.ptr+8>>2];
-          }set_caught(caught) {
-            caught=caught?1:0; HEAP8[this.ptr+12]=caught;
-          }get_caught() {
-            return HEAP8[this.ptr+12]!=0;
-          }set_rethrown(rethrown) {
-            rethrown=rethrown?1:0; HEAP8[this.ptr+13]=rethrown;
-          }get_rethrown() {
-            return HEAP8[this.ptr+13]!=0;
-          }init(type, destructor) {
-            this.set_adjusted_ptr(0); this.set_type(type); this.set_destructor(destructor);
-          }set_adjusted_ptr(adjustedPtr) {
-            HEAPU32[this.ptr+16>>2]=adjustedPtr;
-          }get_adjusted_ptr() {
-            return HEAPU32[this.ptr+16>>2];
-          }
-        } let exceptionLast=0; let uncaughtExceptionCount=0; const ___cxa_throw=(ptr, type, destructor)=>{
-          const info=new ExceptionInfo(ptr); info.init(type, destructor); exceptionLast=ptr; uncaughtExceptionCount++; throw exceptionLast;
-        }; const __abort_js=()=>{
-          abort('');
-        }; const __embind_register_bigint=(primitiveType, name, size, minRange, maxRange)=>{}; const embind_init_charCodes=()=>{
-          const codes=new Array(256); for (let i=0; i<256; ++i) {
-            codes[i]=String.fromCharCode(i);
-          }embind_charCodes=codes;
-        }; let embind_charCodes; const readLatin1String=(ptr)=>{
-          let ret=''; let c=ptr; while (HEAPU8[c]) {
-            ret+=embind_charCodes[HEAPU8[c++]];
-          } return ret;
-        }; const awaitingDependencies={}; const registeredTypes={}; const typeDependencies={}; let BindingError; const throwBindingError=(message)=>{
-          throw new BindingError(message);
-        }; let InternalError; const throwInternalError=(message)=>{
-          throw new InternalError(message);
-        }; const whenDependentTypesAreResolved=(myTypes, dependentTypes, getTypeConverters)=>{
-          myTypes.forEach((type)=>typeDependencies[type]=dependentTypes); function onComplete(typeConverters) {
-            const myTypeConverters=getTypeConverters(typeConverters); if (myTypeConverters.length!==myTypes.length) {
-              throwInternalError('Mismatched type converter count');
-            } for (let i=0; i<myTypes.length; ++i) {
-              registerType(myTypes[i], myTypeConverters[i]);
-            }
-          } const typeConverters=new Array(dependentTypes.length); const unregisteredTypes=[]; let registered=0; dependentTypes.forEach((dt, i)=>{
-            if (registeredTypes.hasOwnProperty(dt)) {
-              typeConverters[i]=registeredTypes[dt];
-            } else {
-              unregisteredTypes.push(dt); if (!awaitingDependencies.hasOwnProperty(dt)) {
-                awaitingDependencies[dt]=[];
-              }awaitingDependencies[dt].push(()=>{
-                typeConverters[i]=registeredTypes[dt]; ++registered; if (registered===unregisteredTypes.length) {
-                  onComplete(typeConverters);
-                }
-              });
-            }
-          }); if (0===unregisteredTypes.length) {
-            onComplete(typeConverters);
-          }
-        }; function sharedRegisterType(rawType, registeredInstance, options={}) {
-          const name=registeredInstance.name; if (!rawType) {
-            throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
-          } if (registeredTypes.hasOwnProperty(rawType)) {
-            if (options.ignoreDuplicateRegistrations) {
-              return;
-            } else {
-              throwBindingError(`Cannot register type '${name}' twice`);
-            }
-          }registeredTypes[rawType]=registeredInstance; delete typeDependencies[rawType]; if (awaitingDependencies.hasOwnProperty(rawType)) {
-            const callbacks=awaitingDependencies[rawType]; delete awaitingDependencies[rawType]; callbacks.forEach((cb)=>cb());
-          }
-        } function registerType(rawType, registeredInstance, options={}) {
-          return sharedRegisterType(rawType, registeredInstance, options);
-        } const GenericWireTypeSize=8; const __embind_register_bool=(rawType, name, trueValue, falseValue)=>{
-          name=readLatin1String(name); registerType(rawType, {name, fromWireType: function(wt) {
-            return !!wt;
-          }, toWireType: function(destructors, o) {
-            return o?trueValue:falseValue;
-          }, argPackAdvance: GenericWireTypeSize, readValueFromPointer: function(pointer) {
-            return this['fromWireType'](HEAPU8[pointer]);
-          }, destructorFunction: null});
-        }; const emval_freelist=[]; const emval_handles=[]; const __emval_decref=(handle)=>{
-          if (handle>9&&0===--emval_handles[handle+1]) {
-            emval_handles[handle]=undefined; emval_freelist.push(handle);
-          }
-        }; const count_emval_handles=()=>emval_handles.length/2-5-emval_freelist.length; const init_emval=()=>{
-          emval_handles.push(0, 1, undefined, 1, null, 1, true, 1, false, 1); Module['count_emval_handles']=count_emval_handles;
-        }; const Emval={toValue: (handle)=>{
-          if (!handle) {
-            throwBindingError('Cannot use deleted val. handle = '+handle);
-          } return emval_handles[handle];
-        }, toHandle: (value)=>{
-          switch (value) {
-            case undefined: return 2; case null: return 4; case true: return 6; case false: return 8; default: {const handle=emval_freelist.pop()||emval_handles.length; emval_handles[handle]=value; emval_handles[handle+1]=1; return handle;}
-          }
-        }}; function readPointer(pointer) {
-          return this['fromWireType'](HEAPU32[pointer>>2]);
-        } const EmValType={name: 'emscripten::val', fromWireType: (handle)=>{
-          const rv=Emval.toValue(handle); __emval_decref(handle); return rv;
-        }, toWireType: (destructors, value)=>Emval.toHandle(value), argPackAdvance: GenericWireTypeSize, readValueFromPointer: readPointer, destructorFunction: null}; const __embind_register_emval=(rawType)=>registerType(rawType, EmValType); const floatReadValueFromPointer=(name, width)=>{
-          switch (width) {
-            case 4: return function(pointer) {
-              return this['fromWireType'](HEAPF32[pointer>>2]);
-            }; case 8: return function(pointer) {
-              return this['fromWireType'](HEAPF64[pointer>>3]);
-            }; default: throw new TypeError(`invalid float width (${width}): ${name}`);
-          }
-        }; const __embind_register_float=(rawType, name, size)=>{
-          name=readLatin1String(name); registerType(rawType, {name, fromWireType: (value)=>value, toWireType: (destructors, value)=>value, argPackAdvance: GenericWireTypeSize, readValueFromPointer: floatReadValueFromPointer(name, size), destructorFunction: null});
-        }; const createNamedFunction=(name, body)=>Object.defineProperty(body, 'name', {value: name}); const runDestructors=(destructors)=>{
-          while (destructors.length) {
-            const ptr=destructors.pop(); const del=destructors.pop(); del(ptr);
-          }
-        }; function usesDestructorStack(argTypes) {
-          for (let i=1; i<argTypes.length; ++i) {
-            if (argTypes[i]!==null&&argTypes[i].destructorFunction===undefined) {
-              return true;
-            }
-          } return false;
-        } function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
-          const argCount=argTypes.length; if (argCount<2) {
-            throwBindingError('argTypes array size mismatch! Must at least get return value and \'this\' types!');
-          } const isClassMethodFunc=argTypes[1]!==null&&classType!==null; const needsDestructorStack=usesDestructorStack(argTypes); const returns=argTypes[0].name!=='void'; const expectedArgCount=argCount-2; const argsWired=new Array(expectedArgCount); const invokerFuncArgs=[]; const destructors=[]; const invokerFn=function(...args) {
-            destructors.length=0; let thisWired; invokerFuncArgs.length=isClassMethodFunc?2:1; invokerFuncArgs[0]=cppTargetFunc; if (isClassMethodFunc) {
-              thisWired=argTypes[1]['toWireType'](destructors, this); invokerFuncArgs[1]=thisWired;
-            } for (let i=0; i<expectedArgCount; ++i) {
-              argsWired[i]=argTypes[i+2]['toWireType'](destructors, args[i]); invokerFuncArgs.push(argsWired[i]);
-            } const rv=cppInvokerFunc(...invokerFuncArgs); function onDone(rv) {
-              if (needsDestructorStack) {
-                runDestructors(destructors);
-              } else {
-                for (let i=isClassMethodFunc?1:2; i<argTypes.length; i++) {
-                  const param=i===1?thisWired:argsWired[i-2]; if (argTypes[i].destructorFunction!==null) {
-                    argTypes[i].destructorFunction(param);
-                  }
-                }
-              } if (returns) {
-                return argTypes[0]['fromWireType'](rv);
-              }
-            } return onDone(rv);
-          }; return createNamedFunction(humanName, invokerFn);
-        } const ensureOverloadTable=(proto, methodName, humanName)=>{
-          if (undefined===proto[methodName].overloadTable) {
-            const prevFunc=proto[methodName]; proto[methodName]=function(...args) {
-              if (!proto[methodName].overloadTable.hasOwnProperty(args.length)) {
-                throwBindingError(`Function '${humanName}' called with an invalid number of arguments (${args.length}) - expects one of (${proto[methodName].overloadTable})!`);
-              } return proto[methodName].overloadTable[args.length].apply(this, args);
-            }; proto[methodName].overloadTable=[]; proto[methodName].overloadTable[prevFunc.argCount]=prevFunc;
-          }
-        }; const exposePublicSymbol=(name, value, numArguments)=>{
-          if (Module.hasOwnProperty(name)) {
-            if (undefined===numArguments||undefined!==Module[name].overloadTable&&undefined!==Module[name].overloadTable[numArguments]) {
-              throwBindingError(`Cannot register public name '${name}' twice`);
-            }ensureOverloadTable(Module, name, name); if (Module[name].overloadTable.hasOwnProperty(numArguments)) {
-              throwBindingError(`Cannot register multiple overloads of a function with the same number of arguments (${numArguments})!`);
-            }Module[name].overloadTable[numArguments]=value;
-          } else {
-            Module[name]=value; Module[name].argCount=numArguments;
-          }
-        }; const heap32VectorToArray=(count, firstElement)=>{
-          const array=[]; for (let i=0; i<count; i++) {
-            array.push(HEAPU32[firstElement+i*4>>2]);
-          } return array;
-        }; const replacePublicSymbol=(name, value, numArguments)=>{
-          if (!Module.hasOwnProperty(name)) {
-            throwInternalError('Replacing nonexistent public symbol');
-          } if (undefined!==Module[name].overloadTable&&undefined!==numArguments) {
-            Module[name].overloadTable[numArguments]=value;
-          } else {
-            Module[name]=value; Module[name].argCount=numArguments;
-          }
-        }; const dynCallLegacy=(sig, ptr, args)=>{
-          sig=sig.replace(/p/g, 'i'); const f=Module['dynCall_'+sig]; return f(ptr, ...args);
-        }; const wasmTableMirror=[]; let wasmTable; const getWasmTableEntry=(funcPtr)=>{
-          let func=wasmTableMirror[funcPtr]; if (!func) {
-            if (funcPtr>=wasmTableMirror.length)wasmTableMirror.length=funcPtr+1; wasmTableMirror[funcPtr]=func=wasmTable.get(funcPtr);
-          } return func;
-        }; const dynCall=(sig, ptr, args=[])=>{
-          if (sig.includes('j')) {
-            return dynCallLegacy(sig, ptr, args);
-          } const rtn=getWasmTableEntry(ptr)(...args); return rtn;
-        }; const getDynCaller=(sig, ptr)=>(...args)=>dynCall(sig, ptr, args); const embind__requireFunction=(signature, rawFunction)=>{
-          signature=readLatin1String(signature); function makeDynCaller() {
-            if (signature.includes('j')) {
-              return getDynCaller(signature, rawFunction);
-            } return getWasmTableEntry(rawFunction);
-          } const fp=makeDynCaller(); if (typeof fp!='function') {
-            throwBindingError(`unknown function pointer with signature ${signature}: ${rawFunction}`);
-          } return fp;
-        }; const extendError=(baseErrorType, errorName)=>{
-          const errorClass=createNamedFunction(errorName, function(message) {
-            this.name=errorName; this.message=message; const stack=new Error(message).stack; if (stack!==undefined) {
-              this.stack=this.toString()+'\n'+stack.replace(/^Error(:[^\n]*)?\n/, '');
-            }
-          }); errorClass.prototype=Object.create(baseErrorType.prototype); errorClass.prototype.constructor=errorClass; errorClass.prototype.toString=function() {
-            if (this.message===undefined) {
-              return this.name;
-            } else {
-              return `${this.name}: ${this.message}`;
-            }
-          }; return errorClass;
-        }; let UnboundTypeError; const getTypeName=(type)=>{
-          const ptr=___getTypeName(type); const rv=readLatin1String(ptr); _free(ptr); return rv;
-        }; const throwUnboundTypeError=(message, types)=>{
-          const unboundTypes=[]; const seen={}; function visit(type) {
-            if (seen[type]) {
-              return;
-            } if (registeredTypes[type]) {
-              return;
-            } if (typeDependencies[type]) {
-              typeDependencies[type].forEach(visit); return;
-            }unboundTypes.push(type); seen[type]=true;
-          }types.forEach(visit); throw new UnboundTypeError(`${message}: `+unboundTypes.map(getTypeName).join([', ']));
-        }; const getFunctionName=(signature)=>{
-          signature=signature.trim(); const argsIndex=signature.indexOf('('); if (argsIndex!==-1) {
-            return signature.substr(0, argsIndex);
-          } else {
-            return signature;
-          }
-        }; const __embind_register_function=(name, argCount, rawArgTypesAddr, signature, rawInvoker, fn, isAsync, isNonnullReturn)=>{
-          const argTypes=heap32VectorToArray(argCount, rawArgTypesAddr); name=readLatin1String(name); name=getFunctionName(name); rawInvoker=embind__requireFunction(signature, rawInvoker); exposePublicSymbol(name, function() {
-            throwUnboundTypeError(`Cannot call ${name} due to unbound types`, argTypes);
-          }, argCount-1); whenDependentTypesAreResolved([], argTypes, (argTypes)=>{
-            const invokerArgsArray=[argTypes[0], null].concat(argTypes.slice(1)); replacePublicSymbol(name, craftInvokerFunction(name, invokerArgsArray, null, rawInvoker, fn, isAsync), argCount-1); return [];
-          });
-        }; const integerReadValueFromPointer=(name, width, signed)=>{
-          switch (width) {
-            case 1: return signed?(pointer)=>HEAP8[pointer]:(pointer)=>HEAPU8[pointer]; case 2: return signed?(pointer)=>HEAP16[pointer>>1]:(pointer)=>HEAPU16[pointer>>1]; case 4: return signed?(pointer)=>HEAP32[pointer>>2]:(pointer)=>HEAPU32[pointer>>2]; default: throw new TypeError(`invalid integer width (${width}): ${name}`);
-          }
-        }; const __embind_register_integer=(primitiveType, name, size, minRange, maxRange)=>{
-          name=readLatin1String(name); if (maxRange===-1) {
-            maxRange=4294967295;
-          } let fromWireType=(value)=>value; if (minRange===0) {
-            const bitshift=32-8*size; fromWireType=(value)=>value<<bitshift>>>bitshift;
-          } const isUnsignedType=name.includes('unsigned'); const checkAssertions=(value, toTypeName)=>{}; let toWireType; if (isUnsignedType) {
-            toWireType=function(destructors, value) {
-              checkAssertions(value, this.name); return value>>>0;
-            };
-          } else {
-            toWireType=function(destructors, value) {
-              checkAssertions(value, this.name); return value;
-            };
-          }registerType(primitiveType, {name, fromWireType, toWireType, argPackAdvance: GenericWireTypeSize, readValueFromPointer: integerReadValueFromPointer(name, size, minRange!==0), destructorFunction: null});
-        }; const __embind_register_memory_view=(rawType, dataTypeIndex, name)=>{
-          const typeMapping=[Int8Array, Uint8Array, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array]; const TA=typeMapping[dataTypeIndex]; function decodeMemoryView(handle) {
-            const size=HEAPU32[handle>>2]; const data=HEAPU32[handle+4>>2]; return new TA(HEAP8.buffer, data, size);
-          }name=readLatin1String(name); registerType(rawType, {name, fromWireType: decodeMemoryView, argPackAdvance: GenericWireTypeSize, readValueFromPointer: decodeMemoryView}, {ignoreDuplicateRegistrations: true});
-        }; const stringToUTF8Array=(str, heap, outIdx, maxBytesToWrite)=>{
-          if (!(maxBytesToWrite>0)) return 0; const startIdx=outIdx; const endIdx=outIdx+maxBytesToWrite-1; for (let i=0; i<str.length; ++i) {
-            let u=str.charCodeAt(i); if (u>=55296&&u<=57343) {
-              const u1=str.charCodeAt(++i); u=65536+((u&1023)<<10)|u1&1023;
-            } if (u<=127) {
-              if (outIdx>=endIdx) break; heap[outIdx++]=u;
-            } else if (u<=2047) {
-              if (outIdx+1>=endIdx) break; heap[outIdx++]=192|u>>6; heap[outIdx++]=128|u&63;
-            } else if (u<=65535) {
-              if (outIdx+2>=endIdx) break; heap[outIdx++]=224|u>>12; heap[outIdx++]=128|u>>6&63; heap[outIdx++]=128|u&63;
-            } else {
-              if (outIdx+3>=endIdx) break; heap[outIdx++]=240|u>>18; heap[outIdx++]=128|u>>12&63; heap[outIdx++]=128|u>>6&63; heap[outIdx++]=128|u&63;
-            }
-          }heap[outIdx]=0; return outIdx-startIdx;
-        }; const stringToUTF8=(str, outPtr, maxBytesToWrite)=>stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite); const lengthBytesUTF8=(str)=>{
-          let len=0; for (let i=0; i<str.length; ++i) {
-            const c=str.charCodeAt(i); if (c<=127) {
-              len++;
-            } else if (c<=2047) {
-              len+=2;
-            } else if (c>=55296&&c<=57343) {
-              len+=4; ++i;
-            } else {
-              len+=3;
-            }
-          } return len;
-        }; const UTF8Decoder=typeof TextDecoder!='undefined'?new TextDecoder:undefined; const UTF8ArrayToString=(heapOrArray, idx=0, maxBytesToRead=NaN)=>{
-          const endIdx=idx+maxBytesToRead; let endPtr=idx; while (heapOrArray[endPtr]&&!(endPtr>=endIdx))++endPtr; if (endPtr-idx>16&&heapOrArray.buffer&&UTF8Decoder) {
-            return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
-          } let str=''; while (idx<endPtr) {
-            let u0=heapOrArray[idx++]; if (!(u0&128)) {
-              str+=String.fromCharCode(u0); continue;
-            } const u1=heapOrArray[idx++]&63; if ((u0&224)==192) {
-              str+=String.fromCharCode((u0&31)<<6|u1); continue;
-            } const u2=heapOrArray[idx++]&63; if ((u0&240)==224) {
-              u0=(u0&15)<<12|u1<<6|u2;
-            } else {
-              u0=(u0&7)<<18|u1<<12|u2<<6|heapOrArray[idx++]&63;
-            } if (u0<65536) {
-              str+=String.fromCharCode(u0);
-            } else {
-              const ch=u0-65536; str+=String.fromCharCode(55296|ch>>10, 56320|ch&1023);
-            }
-          } return str;
-        }; const UTF8ToString=(ptr, maxBytesToRead)=>ptr?UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead):''; const __embind_register_std_string=(rawType, name)=>{
-          name=readLatin1String(name); const stdStringIsUTF8=name==='std::string'; registerType(rawType, {name, fromWireType(value) {
-            const length=HEAPU32[value>>2]; const payload=value+4; let str; if (stdStringIsUTF8) {
-              let decodeStartPtr=payload; for (var i=0; i<=length; ++i) {
-                const currentBytePtr=payload+i; if (i==length||HEAPU8[currentBytePtr]==0) {
-                  const maxRead=currentBytePtr-decodeStartPtr; const stringSegment=UTF8ToString(decodeStartPtr, maxRead); if (str===undefined) {
-                    str=stringSegment;
-                  } else {
-                    str+=String.fromCharCode(0); str+=stringSegment;
-                  }decodeStartPtr=currentBytePtr+1;
-                }
-              }
-            } else {
-              const a=new Array(length); for (var i=0; i<length; ++i) {
-                a[i]=String.fromCharCode(HEAPU8[payload+i]);
-              }str=a.join('');
-            }_free(value); return str;
-          }, toWireType(destructors, value) {
-            if (value instanceof ArrayBuffer) {
-              value=new Uint8Array(value);
-            } let length; const valueIsOfTypeString=typeof value=='string'; if (!(valueIsOfTypeString||value instanceof Uint8Array||value instanceof Uint8ClampedArray||value instanceof Int8Array)) {
-              throwBindingError('Cannot pass non-string to std::string');
-            } if (stdStringIsUTF8&&valueIsOfTypeString) {
-              length=lengthBytesUTF8(value);
-            } else {
-              length=value.length;
-            } const base=_malloc(4+length+1); const ptr=base+4; HEAPU32[base>>2]=length; if (stdStringIsUTF8&&valueIsOfTypeString) {
-              stringToUTF8(value, ptr, length+1);
-            } else {
-              if (valueIsOfTypeString) {
-                for (var i=0; i<length; ++i) {
-                  const charCode=value.charCodeAt(i); if (charCode>255) {
-                    _free(ptr); throwBindingError('String has UTF-16 code units that do not fit in 8 bits');
-                  }HEAPU8[ptr+i]=charCode;
-                }
-              } else {
-                for (var i=0; i<length; ++i) {
-                  HEAPU8[ptr+i]=value[i];
-                }
-              }
-            } if (destructors!==null) {
-              destructors.push(_free, base);
-            } return base;
-          }, argPackAdvance: GenericWireTypeSize, readValueFromPointer: readPointer, destructorFunction(ptr) {
-            _free(ptr);
-          }});
-        }; const UTF16Decoder=typeof TextDecoder!='undefined'?new TextDecoder('utf-16le'):undefined; const UTF16ToString=(ptr, maxBytesToRead)=>{
-          let endPtr=ptr; let idx=endPtr>>1; const maxIdx=idx+maxBytesToRead/2; while (!(idx>=maxIdx)&&HEAPU16[idx])++idx; endPtr=idx<<1; if (endPtr-ptr>32&&UTF16Decoder) return UTF16Decoder.decode(HEAPU8.subarray(ptr, endPtr)); let str=''; for (let i=0; !(i>=maxBytesToRead/2); ++i) {
-            const codeUnit=HEAP16[ptr+i*2>>1]; if (codeUnit==0) break; str+=String.fromCharCode(codeUnit);
-          } return str;
-        }; const stringToUTF16=(str, outPtr, maxBytesToWrite)=>{
-          maxBytesToWrite??=2147483647; if (maxBytesToWrite<2) return 0; maxBytesToWrite-=2; const startPtr=outPtr; const numCharsToWrite=maxBytesToWrite<str.length*2?maxBytesToWrite/2:str.length; for (let i=0; i<numCharsToWrite; ++i) {
-            const codeUnit=str.charCodeAt(i); HEAP16[outPtr>>1]=codeUnit; outPtr+=2;
-          }HEAP16[outPtr>>1]=0; return outPtr-startPtr;
-        }; const lengthBytesUTF16=(str)=>str.length*2; const UTF32ToString=(ptr, maxBytesToRead)=>{
-          let i=0; let str=''; while (!(i>=maxBytesToRead/4)) {
-            const utf32=HEAP32[ptr+i*4>>2]; if (utf32==0) break; ++i; if (utf32>=65536) {
-              const ch=utf32-65536; str+=String.fromCharCode(55296|ch>>10, 56320|ch&1023);
-            } else {
-              str+=String.fromCharCode(utf32);
-            }
-          } return str;
-        }; const stringToUTF32=(str, outPtr, maxBytesToWrite)=>{
-          maxBytesToWrite??=2147483647; if (maxBytesToWrite<4) return 0; const startPtr=outPtr; const endPtr=startPtr+maxBytesToWrite-4; for (let i=0; i<str.length; ++i) {
-            let codeUnit=str.charCodeAt(i); if (codeUnit>=55296&&codeUnit<=57343) {
-              const trailSurrogate=str.charCodeAt(++i); codeUnit=65536+((codeUnit&1023)<<10)|trailSurrogate&1023;
-            }HEAP32[outPtr>>2]=codeUnit; outPtr+=4; if (outPtr+4>endPtr) break;
-          }HEAP32[outPtr>>2]=0; return outPtr-startPtr;
-        }; const lengthBytesUTF32=(str)=>{
-          let len=0; for (let i=0; i<str.length; ++i) {
-            const codeUnit=str.charCodeAt(i); if (codeUnit>=55296&&codeUnit<=57343)++i; len+=4;
-          } return len;
-        }; const __embind_register_std_wstring=(rawType, charSize, name)=>{
-          name=readLatin1String(name); let decodeString; let encodeString; let readCharAt; let lengthBytesUTF; if (charSize===2) {
-            decodeString=UTF16ToString; encodeString=stringToUTF16; lengthBytesUTF=lengthBytesUTF16; readCharAt=(pointer)=>HEAPU16[pointer>>1];
-          } else if (charSize===4) {
-            decodeString=UTF32ToString; encodeString=stringToUTF32; lengthBytesUTF=lengthBytesUTF32; readCharAt=(pointer)=>HEAPU32[pointer>>2];
-          }registerType(rawType, {name, fromWireType: (value)=>{
-            const length=HEAPU32[value>>2]; let str; let decodeStartPtr=value+4; for (let i=0; i<=length; ++i) {
-              const currentBytePtr=value+4+i*charSize; if (i==length||readCharAt(currentBytePtr)==0) {
-                const maxReadBytes=currentBytePtr-decodeStartPtr; const stringSegment=decodeString(decodeStartPtr, maxReadBytes); if (str===undefined) {
-                  str=stringSegment;
-                } else {
-                  str+=String.fromCharCode(0); str+=stringSegment;
-                }decodeStartPtr=currentBytePtr+charSize;
-              }
-            }_free(value); return str;
-          }, toWireType: (destructors, value)=>{
-            if (!(typeof value=='string')) {
-              throwBindingError(`Cannot pass non-string to C++ string type ${name}`);
-            } const length=lengthBytesUTF(value); const ptr=_malloc(4+length+charSize); HEAPU32[ptr>>2]=length/charSize; encodeString(value, ptr+4, length+charSize); if (destructors!==null) {
-              destructors.push(_free, ptr);
-            } return ptr;
-          }, argPackAdvance: GenericWireTypeSize, readValueFromPointer: readPointer, destructorFunction(ptr) {
-            _free(ptr);
-          }});
-        }; const __embind_register_void=(rawType, name)=>{
-          name=readLatin1String(name); registerType(rawType, {isVoid: true, name, argPackAdvance: 0, fromWireType: ()=>undefined, toWireType: (destructors, o)=>undefined});
-        }; const __emscripten_memcpy_js=(dest, src, num)=>HEAPU8.copyWithin(dest, src, src+num); const requireRegisteredType=(rawType, humanName)=>{
-          const impl=registeredTypes[rawType]; if (undefined===impl) {
-            throwBindingError(`${humanName} has unknown type ${getTypeName(rawType)}`);
-          } return impl;
-        }; const __emval_take_value=(type, arg)=>{
-          type=requireRegisteredType(type, '_emval_take_value'); const v=type['readValueFromPointer'](arg); return Emval.toHandle(v);
-        }; const getHeapMax=()=>2147483648; const alignMemory=(size, alignment)=>Math.ceil(size/alignment)*alignment; const growMemory=(size)=>{
-          const b=wasmMemory.buffer; const pages=(size-b.byteLength+65535)/65536|0; try {
-            wasmMemory.grow(pages); updateMemoryViews(); return 1;
-          } catch (e) {}
-        }; const _emscripten_resize_heap=(requestedSize)=>{
-          const oldSize=HEAPU8.length; requestedSize>>>=0; const maxHeapSize=getHeapMax(); if (requestedSize>maxHeapSize) {
-            return false;
-          } for (let cutDown=1; cutDown<=4; cutDown*=2) {
-            let overGrownHeapSize=oldSize*(1+.2/cutDown); overGrownHeapSize=Math.min(overGrownHeapSize, requestedSize+100663296); const newSize=Math.min(maxHeapSize, alignMemory(Math.max(requestedSize, overGrownHeapSize), 65536)); const replacement=growMemory(newSize); if (replacement) {
-              return true;
-            }
-          } return false;
-        }; const runtimeKeepaliveCounter=0; const keepRuntimeAlive=()=>noExitRuntime||runtimeKeepaliveCounter>0; const _proc_exit=(code)=>{
-          EXITSTATUS=code; if (!keepRuntimeAlive()) {
-            Module['onExit']?.(code); ABORT=true;
-          }quit_(code, new ExitStatus(code));
-        }; const exitJS=(status, implicit)=>{
-          EXITSTATUS=status; _proc_exit(status);
-        }; const handleException=(e)=>{
-          if (e instanceof ExitStatus||e=='unwind') {
-            return EXITSTATUS;
-          }quit_(1, e);
-        }; embind_init_charCodes(); BindingError=Module['BindingError']=class BindingError extends Error {
-          constructor(message) {
-            super(message); this.name='BindingError';
-          }
-        }; InternalError=Module['InternalError']=class InternalError extends Error {
-          constructor(message) {
-            super(message); this.name='InternalError';
-          }
-        }; init_emval(); UnboundTypeError=Module['UnboundTypeError']=extendError(Error, 'UnboundTypeError'); var wasmImports={k: ___cxa_throw, m: __abort_js, l: __embind_register_bigint, i: __embind_register_bool, h: __embind_register_emval, f: __embind_register_float, c: __embind_register_function, b: __embind_register_integer, a: __embind_register_memory_view, e: __embind_register_std_string, d: __embind_register_std_wstring, j: __embind_register_void, o: __emscripten_memcpy_js, g: __emval_take_value, n: _emscripten_resize_heap}; var wasmExports=createWasm(); const ___wasm_call_ctors=wasmExports['q']; var ___getTypeName=wasmExports['r']; const _main=Module['_main']=wasmExports['t']; var _free=wasmExports['u']; var _malloc=wasmExports['v']; let calledRun; let calledPrerun; dependenciesFulfilled=function runCaller() {
-          if (!calledRun)run(); if (!calledRun)dependenciesFulfilled=runCaller;
-        }; function callMain() {
-          const entryFunction=_main; const argc=0; const argv=0; try {
-            const ret=entryFunction(argc, argv); exitJS(ret, true); return ret;
-          } catch (e) {
-            return handleException(e);
-          }
-        } function run() {
-          if (runDependencies>0) {
-            return;
-          } if (!calledPrerun) {
-            calledPrerun=1; preRun(); if (runDependencies>0) {
-              return;
-            }
-          } function doRun() {
-            if (calledRun) return; calledRun=1; Module['calledRun']=1; if (ABORT) return; initRuntime(); preMain(); readyPromiseResolve(Module); Module['onRuntimeInitialized']?.(); if (shouldRunNow)callMain(); postRun();
-          } if (Module['setStatus']) {
-            Module['setStatus']('Running...'); setTimeout(()=>{
-              setTimeout(()=>Module['setStatus'](''), 1); doRun();
-            }, 1);
-          } else {
-            doRun();
-          }
-        } if (Module['preInit']) {
-          if (typeof Module['preInit']=='function')Module['preInit']=[Module['preInit']]; while (Module['preInit'].length>0) {
-            Module['preInit'].pop()();
-          }
-        } var shouldRunNow=true; if (Module['noInitialRun'])shouldRunNow=false; run(); moduleRtn=Module;
-
-
-        return moduleRtn;
+  async function LoadSRC(moduleArg={}) {
+    let moduleRtn; const Module=moduleArg; const ENVIRONMENT_IS_WEB=typeof window=='object'; const ENVIRONMENT_IS_WORKER=typeof WorkerGlobalScope!='undefined'; const ENVIRONMENT_IS_NODE=typeof process=='object'&&process.versions?.node&&process.type!='renderer'; const ENVIRONMENT_IS_SHELL=!ENVIRONMENT_IS_WEB&&!ENVIRONMENT_IS_NODE&&!ENVIRONMENT_IS_WORKER; let arguments_=[]; let thisProgram='./this.program'; let quit_=(status, toThrow)=>{
+      throw toThrow;
+    }; const _scriptName= import.meta.url; let scriptDirectory=''; function locateFile(path) {
+      if (Module['locateFile']) {
+        return Module['locateFile'](path, scriptDirectory);
+      } return scriptDirectory+path;
+    } let readAsync; let readBinary; if (ENVIRONMENT_IS_SHELL) {
+      readBinary=(f)=>{
+        if (typeof readbuffer=='function') {
+          return new Uint8Array(readbuffer(f));
+        } const data=read(f, 'binary'); assert(typeof data=='object'); return data;
+      }; readAsync=async (f)=>readBinary(f); globalThis.clearTimeout??=(id)=>{}; globalThis.setTimeout??=(f)=>f(); arguments_=globalThis.arguments||globalThis.scriptArgs; if (typeof quit=='function') {
+        quit_=(status, toThrow)=>{
+          setTimeout(()=>{
+            if (!(toThrow instanceof ExitStatus)) {
+              let toLog=toThrow; if (toThrow&&typeof toThrow=='object'&&toThrow.stack) {
+                toLog=[toThrow, toThrow.stack];
+              }err(`exiting due to exception: ${toLog}`);
+            }quit(status);
+          }); throw toThrow;
+        };
+      } if (typeof print!='undefined') {
+        globalThis.console??={}; console.log=print; console.warn=console.error=globalThis.printErr??print;
       }
-    );
-  })();
-  /* harmony default export */ const glue = (LoadSRC);
+    } else if (ENVIRONMENT_IS_WEB||ENVIRONMENT_IS_WORKER) {
+      try {
+        scriptDirectory=new URL('.', _scriptName).href;
+      } catch {} {if (ENVIRONMENT_IS_WORKER) {
+        readBinary=(url)=>{
+          const xhr=new XMLHttpRequest; xhr.open('GET', url, false); xhr.responseType='arraybuffer'; xhr.send(null); return new Uint8Array(xhr.response);
+        };
+      }readAsync=async (url)=>{
+        const response=await fetch(url, {credentials: 'same-origin'}); if (response.ok) {
+          return response.arrayBuffer();
+        } throw new Error(response.status+' : '+response.url);
+      };}
+    } else {} let out=console.log.bind(console); var err=console.error.bind(console); let wasmBinary; let ABORT=false; let EXITSTATUS; function assert(condition, text) {
+      if (!condition) {
+        abort(text);
+      }
+    } let readyPromiseResolve; let readyPromiseReject; let wasmMemory; let HEAP8; let HEAPU8; let HEAP16; let HEAPU16; let HEAP32; let HEAPU32; let HEAPF32; let HEAPF64; let HEAP64; let HEAPU64; let runtimeInitialized=false; function updateMemoryViews() {
+      const b=wasmMemory.buffer; HEAP8=new Int8Array(b); HEAP16=new Int16Array(b); HEAPU8=new Uint8Array(b); HEAPU16=new Uint16Array(b); HEAP32=new Int32Array(b); HEAPU32=new Uint32Array(b); HEAPF32=new Float32Array(b); HEAPF64=new Float64Array(b); HEAP64=new BigInt64Array(b); HEAPU64=new BigUint64Array(b);
+    } function preRun() {
+      if (Module['preRun']) {
+        if (typeof Module['preRun']=='function')Module['preRun']=[Module['preRun']]; while (Module['preRun'].length) {
+          addOnPreRun(Module['preRun'].shift());
+        }
+      }callRuntimeCallbacks(onPreRuns);
+    } function initRuntime() {
+      runtimeInitialized=true; wasmExports['r']();
+    } function preMain() {} function postRun() {
+      if (Module['postRun']) {
+        if (typeof Module['postRun']=='function')Module['postRun']=[Module['postRun']]; while (Module['postRun'].length) {
+          addOnPostRun(Module['postRun'].shift());
+        }
+      }callRuntimeCallbacks(onPostRuns);
+    } let runDependencies=0; let dependenciesFulfilled=null; function addRunDependency(id) {
+      runDependencies++; Module['monitorRunDependencies']?.(runDependencies);
+    } function removeRunDependency(id) {
+      runDependencies--; Module['monitorRunDependencies']?.(runDependencies); if (runDependencies==0) {
+        if (dependenciesFulfilled) {
+          const callback=dependenciesFulfilled; dependenciesFulfilled=null; callback();
+        }
+      }
+    } function abort(what) {
+      Module['onAbort']?.(what); what='Aborted('+what+')'; err(what); ABORT=true; what+='. Build with -sASSERTIONS for more info.'; const e=new WebAssembly.RuntimeError(what); readyPromiseReject?.(e); throw e;
+    } let wasmBinaryFile; function findWasmBinary() {
+      if (Module['locateFile']) {
+        return locateFile('glue.wasm');
+      } if (ENVIRONMENT_IS_SHELL) {
+        return 'glue.wasm';
+      } return new URL(/* asset import */ __webpack_require__(/* ! glue.wasm */ './src/glue.wasm'), __webpack_require__.b).href;
+    } function getBinarySync(file) {
+      if (file==wasmBinaryFile&&wasmBinary) {
+        return new Uint8Array(wasmBinary);
+      } if (readBinary) {
+        return readBinary(file);
+      } throw 'sync fetching of the wasm failed: you can preload it to Module["wasmBinary"] manually, or emcc.py will do that for you when generating HTML (but not JS)';
+    } function instantiateSync(file, info) {
+      let module; const binary=getBinarySync(file); module=new WebAssembly.Module(binary); const instance=new WebAssembly.Instance(module, info); return [instance, module];
+    } function getWasmImports() {
+      return {a: wasmImports};
+    } function createWasm() {
+      function receiveInstance(instance, module) {
+        wasmExports=instance.exports; wasmMemory=wasmExports['q']; updateMemoryViews(); wasmTable=wasmExports['t']; assignWasmExports(wasmExports); removeRunDependency('wasm-instantiate'); return wasmExports;
+      }addRunDependency('wasm-instantiate'); const info=getWasmImports(); if (Module['instantiateWasm']) {
+        return new Promise((resolve, reject)=>{
+          Module['instantiateWasm'](info, (mod, inst)=>{
+            resolve(receiveInstance(mod, inst));
+          });
+        });
+      }wasmBinaryFile??=findWasmBinary(); const result=instantiateSync(wasmBinaryFile, info); return receiveInstance(result[0]);
+    } class ExitStatus {
+      name='ExitStatus'; constructor(status) {
+        this.message=`Program terminated with exit(${status})`; this.status=status;
+      }
+    } var callRuntimeCallbacks=(callbacks)=>{
+      while (callbacks.length>0) {
+        callbacks.shift()(Module);
+      }
+    }; var onPostRuns=[]; var addOnPostRun=(cb)=>onPostRuns.push(cb); var onPreRuns=[]; var addOnPreRun=(cb)=>onPreRuns.push(cb); let noExitRuntime=true; class ExceptionInfo {
+      constructor(excPtr) {
+        this.excPtr=excPtr; this.ptr=excPtr-24;
+      }set_type(type) {
+        HEAPU32[this.ptr+4>>2]=type;
+      }get_type() {
+        return HEAPU32[this.ptr+4>>2];
+      }set_destructor(destructor) {
+        HEAPU32[this.ptr+8>>2]=destructor;
+      }get_destructor() {
+        return HEAPU32[this.ptr+8>>2];
+      }set_caught(caught) {
+        caught=caught?1:0; HEAP8[this.ptr+12]=caught;
+      }get_caught() {
+        return HEAP8[this.ptr+12]!=0;
+      }set_rethrown(rethrown) {
+        rethrown=rethrown?1:0; HEAP8[this.ptr+13]=rethrown;
+      }get_rethrown() {
+        return HEAP8[this.ptr+13]!=0;
+      }init(type, destructor) {
+        this.set_adjusted_ptr(0); this.set_type(type); this.set_destructor(destructor);
+      }set_adjusted_ptr(adjustedPtr) {
+        HEAPU32[this.ptr+16>>2]=adjustedPtr;
+      }get_adjusted_ptr() {
+        return HEAPU32[this.ptr+16>>2];
+      }
+    } let exceptionLast=0; let uncaughtExceptionCount=0; const ___cxa_throw=(ptr, type, destructor)=>{
+      const info=new ExceptionInfo(ptr); info.init(type, destructor); exceptionLast=ptr; uncaughtExceptionCount++; throw exceptionLast;
+    }; const __abort_js=()=>abort(''); const AsciiToString=(ptr)=>{
+      let str=''; while (1) {
+        const ch=HEAPU8[ptr++]; if (!ch) return str; str+=String.fromCharCode(ch);
+      }
+    }; const awaitingDependencies={}; const registeredTypes={}; const typeDependencies={}; const BindingError=class BindingError extends Error {
+      constructor(message) {
+        super(message); this.name='BindingError';
+      }
+    }; const throwBindingError=(message)=>{
+      throw new BindingError(message);
+    }; function sharedRegisterType(rawType, registeredInstance, options={}) {
+      const name=registeredInstance.name; if (!rawType) {
+        throwBindingError(`type "${name}" must have a positive integer typeid pointer`);
+      } if (registeredTypes.hasOwnProperty(rawType)) {
+        if (options.ignoreDuplicateRegistrations) {
+          return;
+        } else {
+          throwBindingError(`Cannot register type '${name}' twice`);
+        }
+      }registeredTypes[rawType]=registeredInstance; delete typeDependencies[rawType]; if (awaitingDependencies.hasOwnProperty(rawType)) {
+        const callbacks=awaitingDependencies[rawType]; delete awaitingDependencies[rawType]; callbacks.forEach((cb)=>cb());
+      }
+    } function registerType(rawType, registeredInstance, options={}) {
+      return sharedRegisterType(rawType, registeredInstance, options);
+    } const integerReadValueFromPointer=(name, width, signed)=>{
+      switch (width) {
+        case 1: return signed?(pointer)=>HEAP8[pointer]:(pointer)=>HEAPU8[pointer]; case 2: return signed?(pointer)=>HEAP16[pointer>>1]:(pointer)=>HEAPU16[pointer>>1]; case 4: return signed?(pointer)=>HEAP32[pointer>>2]:(pointer)=>HEAPU32[pointer>>2]; case 8: return signed?(pointer)=>HEAP64[pointer>>3]:(pointer)=>HEAPU64[pointer>>3]; default: throw new TypeError(`invalid integer width (${width}): ${name}`);
+      }
+    }; const __embind_register_bigint=(primitiveType, name, size, minRange, maxRange)=>{
+      name=AsciiToString(name); const isUnsignedType=minRange===0n; let fromWireType=(value)=>value; if (isUnsignedType) {
+        const bitSize=size*8; fromWireType=(value)=>BigInt.asUintN(bitSize, value); maxRange=fromWireType(maxRange);
+      }registerType(primitiveType, {name, fromWireType, toWireType: (destructors, value)=>{
+        if (typeof value=='number') {
+          value=BigInt(value);
+        } return value;
+      }, readValueFromPointer: integerReadValueFromPointer(name, size, !isUnsignedType), destructorFunction: null});
+    }; const __embind_register_bool=(rawType, name, trueValue, falseValue)=>{
+      name=AsciiToString(name); registerType(rawType, {name, fromWireType: function(wt) {
+        return !!wt;
+      }, toWireType: function(destructors, o) {
+        return o?trueValue:falseValue;
+      }, readValueFromPointer: function(pointer) {
+        return this.fromWireType(HEAPU8[pointer]);
+      }, destructorFunction: null});
+    }; const emval_freelist=[]; const emval_handles=[0, 1,, 1, null, 1, true, 1, false, 1]; const __emval_decref=(handle)=>{
+      if (handle>9&&0===--emval_handles[handle+1]) {
+        emval_handles[handle]=undefined; emval_freelist.push(handle);
+      }
+    }; const Emval={toValue: (handle)=>{
+      if (!handle) {
+        throwBindingError(`Cannot use deleted val. handle = ${handle}`);
+      } return emval_handles[handle];
+    }, toHandle: (value)=>{
+      switch (value) {
+        case undefined: return 2; case null: return 4; case true: return 6; case false: return 8; default: {const handle=emval_freelist.pop()||emval_handles.length; emval_handles[handle]=value; emval_handles[handle+1]=1; return handle;}
+      }
+    }}; function readPointer(pointer) {
+      return this.fromWireType(HEAPU32[pointer>>2]);
+    } const EmValType={name: 'emscripten::val', fromWireType: (handle)=>{
+      const rv=Emval.toValue(handle); __emval_decref(handle); return rv;
+    }, toWireType: (destructors, value)=>Emval.toHandle(value), readValueFromPointer: readPointer, destructorFunction: null}; const __embind_register_emval=(rawType)=>registerType(rawType, EmValType); const floatReadValueFromPointer=(name, width)=>{
+      switch (width) {
+        case 4: return function(pointer) {
+          return this.fromWireType(HEAPF32[pointer>>2]);
+        }; case 8: return function(pointer) {
+          return this.fromWireType(HEAPF64[pointer>>3]);
+        }; default: throw new TypeError(`invalid float width (${width}): ${name}`);
+      }
+    }; const __embind_register_float=(rawType, name, size)=>{
+      name=AsciiToString(name); registerType(rawType, {name, fromWireType: (value)=>value, toWireType: (destructors, value)=>value, readValueFromPointer: floatReadValueFromPointer(name, size), destructorFunction: null});
+    }; const createNamedFunction=(name, func)=>Object.defineProperty(func, 'name', {value: name}); const runDestructors=(destructors)=>{
+      while (destructors.length) {
+        const ptr=destructors.pop(); const del=destructors.pop(); del(ptr);
+      }
+    }; function usesDestructorStack(argTypes) {
+      for (let i=1; i<argTypes.length; ++i) {
+        if (argTypes[i]!==null&&argTypes[i].destructorFunction===undefined) {
+          return true;
+        }
+      } return false;
+    } function craftInvokerFunction(humanName, argTypes, classType, cppInvokerFunc, cppTargetFunc, isAsync) {
+      const argCount=argTypes.length; if (argCount<2) {
+        throwBindingError('argTypes array size mismatch! Must at least get return value and \'this\' types!');
+      } const isClassMethodFunc=argTypes[1]!==null&&classType!==null; const needsDestructorStack=usesDestructorStack(argTypes); const returns=!argTypes[0].isVoid; const expectedArgCount=argCount-2; const argsWired=new Array(expectedArgCount); const invokerFuncArgs=[]; const destructors=[]; const invokerFn=function(...args) {
+        destructors.length=0; let thisWired; invokerFuncArgs.length=isClassMethodFunc?2:1; invokerFuncArgs[0]=cppTargetFunc; if (isClassMethodFunc) {
+          thisWired=argTypes[1].toWireType(destructors, this); invokerFuncArgs[1]=thisWired;
+        } for (let i=0; i<expectedArgCount; ++i) {
+          argsWired[i]=argTypes[i+2].toWireType(destructors, args[i]); invokerFuncArgs.push(argsWired[i]);
+        } const rv=cppInvokerFunc(...invokerFuncArgs); function onDone(rv) {
+          if (needsDestructorStack) {
+            runDestructors(destructors);
+          } else {
+            for (let i=isClassMethodFunc?1:2; i<argTypes.length; i++) {
+              const param=i===1?thisWired:argsWired[i-2]; if (argTypes[i].destructorFunction!==null) {
+                argTypes[i].destructorFunction(param);
+              }
+            }
+          } if (returns) {
+            return argTypes[0].fromWireType(rv);
+          }
+        } return onDone(rv);
+      }; return createNamedFunction(humanName, invokerFn);
+    } const ensureOverloadTable=(proto, methodName, humanName)=>{
+      if (undefined===proto[methodName].overloadTable) {
+        const prevFunc=proto[methodName]; proto[methodName]=function(...args) {
+          if (!proto[methodName].overloadTable.hasOwnProperty(args.length)) {
+            throwBindingError(`Function '${humanName}' called with an invalid number of arguments (${args.length}) - expects one of (${proto[methodName].overloadTable})!`);
+          } return proto[methodName].overloadTable[args.length].apply(this, args);
+        }; proto[methodName].overloadTable=[]; proto[methodName].overloadTable[prevFunc.argCount]=prevFunc;
+      }
+    }; const exposePublicSymbol=(name, value, numArguments)=>{
+      if (Module.hasOwnProperty(name)) {
+        if (undefined===numArguments||undefined!==Module[name].overloadTable&&undefined!==Module[name].overloadTable[numArguments]) {
+          throwBindingError(`Cannot register public name '${name}' twice`);
+        }ensureOverloadTable(Module, name, name); if (Module[name].overloadTable.hasOwnProperty(numArguments)) {
+          throwBindingError(`Cannot register multiple overloads of a function with the same number of arguments (${numArguments})!`);
+        }Module[name].overloadTable[numArguments]=value;
+      } else {
+        Module[name]=value; Module[name].argCount=numArguments;
+      }
+    }; const heap32VectorToArray=(count, firstElement)=>{
+      const array=[]; for (let i=0; i<count; i++) {
+        array.push(HEAPU32[firstElement+i*4>>2]);
+      } return array;
+    }; const InternalError=class InternalError extends Error {
+      constructor(message) {
+        super(message); this.name='InternalError';
+      }
+    }; const throwInternalError=(message)=>{
+      throw new InternalError(message);
+    }; const replacePublicSymbol=(name, value, numArguments)=>{
+      if (!Module.hasOwnProperty(name)) {
+        throwInternalError('Replacing nonexistent public symbol');
+      } if (undefined!==Module[name].overloadTable&&undefined!==numArguments) {
+        Module[name].overloadTable[numArguments]=value;
+      } else {
+        Module[name]=value; Module[name].argCount=numArguments;
+      }
+    }; const wasmTableMirror=[]; let wasmTable; const getWasmTableEntry=(funcPtr)=>{
+      let func=wasmTableMirror[funcPtr]; if (!func) {
+        wasmTableMirror[funcPtr]=func=wasmTable.get(funcPtr);
+      } return func;
+    }; const embind__requireFunction=(signature, rawFunction, isAsync=false)=>{
+      signature=AsciiToString(signature); function makeDynCaller() {
+        const rtn=getWasmTableEntry(rawFunction); return rtn;
+      } const fp=makeDynCaller(); if (typeof fp!='function') {
+        throwBindingError(`unknown function pointer with signature ${signature}: ${rawFunction}`);
+      } return fp;
+    }; class UnboundTypeError extends Error {} const getTypeName=(type)=>{
+      const ptr=___getTypeName(type); const rv=AsciiToString(ptr); _free(ptr); return rv;
+    }; const throwUnboundTypeError=(message, types)=>{
+      const unboundTypes=[]; const seen={}; function visit(type) {
+        if (seen[type]) {
+          return;
+        } if (registeredTypes[type]) {
+          return;
+        } if (typeDependencies[type]) {
+          typeDependencies[type].forEach(visit); return;
+        }unboundTypes.push(type); seen[type]=true;
+      }types.forEach(visit); throw new UnboundTypeError(`${message}: `+unboundTypes.map(getTypeName).join([', ']));
+    }; const whenDependentTypesAreResolved=(myTypes, dependentTypes, getTypeConverters)=>{
+      myTypes.forEach((type)=>typeDependencies[type]=dependentTypes); function onComplete(typeConverters) {
+        const myTypeConverters=getTypeConverters(typeConverters); if (myTypeConverters.length!==myTypes.length) {
+          throwInternalError('Mismatched type converter count');
+        } for (let i=0; i<myTypes.length; ++i) {
+          registerType(myTypes[i], myTypeConverters[i]);
+        }
+      } const typeConverters=new Array(dependentTypes.length); const unregisteredTypes=[]; let registered=0; dependentTypes.forEach((dt, i)=>{
+        if (registeredTypes.hasOwnProperty(dt)) {
+          typeConverters[i]=registeredTypes[dt];
+        } else {
+          unregisteredTypes.push(dt); if (!awaitingDependencies.hasOwnProperty(dt)) {
+            awaitingDependencies[dt]=[];
+          }awaitingDependencies[dt].push(()=>{
+            typeConverters[i]=registeredTypes[dt]; ++registered; if (registered===unregisteredTypes.length) {
+              onComplete(typeConverters);
+            }
+          });
+        }
+      }); if (0===unregisteredTypes.length) {
+        onComplete(typeConverters);
+      }
+    }; const getFunctionName=(signature)=>{
+      signature=signature.trim(); const argsIndex=signature.indexOf('('); if (argsIndex===-1) return signature; return signature.slice(0, argsIndex);
+    }; const __embind_register_function=(name, argCount, rawArgTypesAddr, signature, rawInvoker, fn, isAsync, isNonnullReturn)=>{
+      const argTypes=heap32VectorToArray(argCount, rawArgTypesAddr); name=AsciiToString(name); name=getFunctionName(name); rawInvoker=embind__requireFunction(signature, rawInvoker, isAsync); exposePublicSymbol(name, function() {
+        throwUnboundTypeError(`Cannot call ${name} due to unbound types`, argTypes);
+      }, argCount-1); whenDependentTypesAreResolved([], argTypes, (argTypes)=>{
+        const invokerArgsArray=[argTypes[0], null].concat(argTypes.slice(1)); replacePublicSymbol(name, craftInvokerFunction(name, invokerArgsArray, null, rawInvoker, fn, isAsync), argCount-1); return [];
+      });
+    }; const __embind_register_integer=(primitiveType, name, size, minRange, maxRange)=>{
+      name=AsciiToString(name); const isUnsignedType=minRange===0; let fromWireType=(value)=>value; if (isUnsignedType) {
+        const bitshift=32-8*size; fromWireType=(value)=>value<<bitshift>>>bitshift; maxRange=fromWireType(maxRange);
+      }registerType(primitiveType, {name, fromWireType, toWireType: (destructors, value)=>value, readValueFromPointer: integerReadValueFromPointer(name, size, minRange!==0), destructorFunction: null});
+    }; const __embind_register_memory_view=(rawType, dataTypeIndex, name)=>{
+      const typeMapping=[Int8Array, Uint8Array, Int16Array, Uint16Array, Int32Array, Uint32Array, Float32Array, Float64Array, BigInt64Array, BigUint64Array]; const TA=typeMapping[dataTypeIndex]; function decodeMemoryView(handle) {
+        const size=HEAPU32[handle>>2]; const data=HEAPU32[handle+4>>2]; return new TA(HEAP8.buffer, data, size);
+      }name=AsciiToString(name); registerType(rawType, {name, fromWireType: decodeMemoryView, readValueFromPointer: decodeMemoryView}, {ignoreDuplicateRegistrations: true});
+    }; const stringToUTF8Array=(str, heap, outIdx, maxBytesToWrite)=>{
+      if (!(maxBytesToWrite>0)) return 0; const startIdx=outIdx; const endIdx=outIdx+maxBytesToWrite-1; for (let i=0; i<str.length; ++i) {
+        const u=str.codePointAt(i); if (u<=127) {
+          if (outIdx>=endIdx) break; heap[outIdx++]=u;
+        } else if (u<=2047) {
+          if (outIdx+1>=endIdx) break; heap[outIdx++]=192|u>>6; heap[outIdx++]=128|u&63;
+        } else if (u<=65535) {
+          if (outIdx+2>=endIdx) break; heap[outIdx++]=224|u>>12; heap[outIdx++]=128|u>>6&63; heap[outIdx++]=128|u&63;
+        } else {
+          if (outIdx+3>=endIdx) break; heap[outIdx++]=240|u>>18; heap[outIdx++]=128|u>>12&63; heap[outIdx++]=128|u>>6&63; heap[outIdx++]=128|u&63; i++;
+        }
+      }heap[outIdx]=0; return outIdx-startIdx;
+    }; const stringToUTF8=(str, outPtr, maxBytesToWrite)=>stringToUTF8Array(str, HEAPU8, outPtr, maxBytesToWrite); const lengthBytesUTF8=(str)=>{
+      let len=0; for (let i=0; i<str.length; ++i) {
+        const c=str.charCodeAt(i); if (c<=127) {
+          len++;
+        } else if (c<=2047) {
+          len+=2;
+        } else if (c>=55296&&c<=57343) {
+          len+=4; ++i;
+        } else {
+          len+=3;
+        }
+      } return len;
+    }; const UTF8Decoder=typeof TextDecoder!='undefined'?new TextDecoder:undefined; const findStringEnd=(heapOrArray, idx, maxBytesToRead, ignoreNul)=>{
+      const maxIdx=idx+maxBytesToRead; if (ignoreNul) return maxIdx; while (heapOrArray[idx]&&!(idx>=maxIdx))++idx; return idx;
+    }; const UTF8ArrayToString=(heapOrArray, idx=0, maxBytesToRead, ignoreNul)=>{
+      const endPtr=findStringEnd(heapOrArray, idx, maxBytesToRead, ignoreNul); if (endPtr-idx>16&&heapOrArray.buffer&&UTF8Decoder) {
+        return UTF8Decoder.decode(heapOrArray.subarray(idx, endPtr));
+      } let str=''; while (idx<endPtr) {
+        let u0=heapOrArray[idx++]; if (!(u0&128)) {
+          str+=String.fromCharCode(u0); continue;
+        } const u1=heapOrArray[idx++]&63; if ((u0&224)==192) {
+          str+=String.fromCharCode((u0&31)<<6|u1); continue;
+        } const u2=heapOrArray[idx++]&63; if ((u0&240)==224) {
+          u0=(u0&15)<<12|u1<<6|u2;
+        } else {
+          u0=(u0&7)<<18|u1<<12|u2<<6|heapOrArray[idx++]&63;
+        } if (u0<65536) {
+          str+=String.fromCharCode(u0);
+        } else {
+          const ch=u0-65536; str+=String.fromCharCode(55296|ch>>10, 56320|ch&1023);
+        }
+      } return str;
+    }; const UTF8ToString=(ptr, maxBytesToRead, ignoreNul)=>ptr?UTF8ArrayToString(HEAPU8, ptr, maxBytesToRead, ignoreNul):''; const __embind_register_std_string=(rawType, name)=>{
+      name=AsciiToString(name); const stdStringIsUTF8=true; registerType(rawType, {name, fromWireType(value) {
+        const length=HEAPU32[value>>2]; const payload=value+4; let str; if (stdStringIsUTF8) {
+          str=UTF8ToString(payload, length, true);
+        } else {
+          str=''; for (let i=0; i<length; ++i) {
+            str+=String.fromCharCode(HEAPU8[payload+i]);
+          }
+        }_free(value); return str;
+      }, toWireType(destructors, value) {
+        if (value instanceof ArrayBuffer) {
+          value=new Uint8Array(value);
+        } let length; const valueIsOfTypeString=typeof value=='string'; if (!(valueIsOfTypeString||ArrayBuffer.isView(value)&&value.BYTES_PER_ELEMENT==1)) {
+          throwBindingError('Cannot pass non-string to std::string');
+        } if (stdStringIsUTF8&&valueIsOfTypeString) {
+          length=lengthBytesUTF8(value);
+        } else {
+          length=value.length;
+        } const base=_malloc(4+length+1); const ptr=base+4; HEAPU32[base>>2]=length; if (valueIsOfTypeString) {
+          if (stdStringIsUTF8) {
+            stringToUTF8(value, ptr, length+1);
+          } else {
+            for (let i=0; i<length; ++i) {
+              const charCode=value.charCodeAt(i); if (charCode>255) {
+                _free(base); throwBindingError('String has UTF-16 code units that do not fit in 8 bits');
+              }HEAPU8[ptr+i]=charCode;
+            }
+          }
+        } else {
+          HEAPU8.set(value, ptr);
+        } if (destructors!==null) {
+          destructors.push(_free, base);
+        } return base;
+      }, readValueFromPointer: readPointer, destructorFunction(ptr) {
+        _free(ptr);
+      }});
+    }; const UTF16Decoder=typeof TextDecoder!='undefined'?new TextDecoder('utf-16le'):undefined; const UTF16ToString=(ptr, maxBytesToRead, ignoreNul)=>{
+      const idx=ptr>>1; const endIdx=findStringEnd(HEAPU16, idx, maxBytesToRead/2, ignoreNul); if (endIdx-idx>16&&UTF16Decoder) return UTF16Decoder.decode(HEAPU16.subarray(idx, endIdx)); let str=''; for (let i=idx; i<endIdx; ++i) {
+        const codeUnit=HEAPU16[i]; str+=String.fromCharCode(codeUnit);
+      } return str;
+    }; const stringToUTF16=(str, outPtr, maxBytesToWrite)=>{
+      maxBytesToWrite??=2147483647; if (maxBytesToWrite<2) return 0; maxBytesToWrite-=2; const startPtr=outPtr; const numCharsToWrite=maxBytesToWrite<str.length*2?maxBytesToWrite/2:str.length; for (let i=0; i<numCharsToWrite; ++i) {
+        const codeUnit=str.charCodeAt(i); HEAP16[outPtr>>1]=codeUnit; outPtr+=2;
+      }HEAP16[outPtr>>1]=0; return outPtr-startPtr;
+    }; const lengthBytesUTF16=(str)=>str.length*2; const UTF32ToString=(ptr, maxBytesToRead, ignoreNul)=>{
+      let str=''; const startIdx=ptr>>2; for (let i=0; !(i>=maxBytesToRead/4); i++) {
+        const utf32=HEAPU32[startIdx+i]; if (!utf32&&!ignoreNul) break; str+=String.fromCodePoint(utf32);
+      } return str;
+    }; const stringToUTF32=(str, outPtr, maxBytesToWrite)=>{
+      maxBytesToWrite??=2147483647; if (maxBytesToWrite<4) return 0; const startPtr=outPtr; const endPtr=startPtr+maxBytesToWrite-4; for (let i=0; i<str.length; ++i) {
+        const codePoint=str.codePointAt(i); if (codePoint>65535) {
+          i++;
+        }HEAP32[outPtr>>2]=codePoint; outPtr+=4; if (outPtr+4>endPtr) break;
+      }HEAP32[outPtr>>2]=0; return outPtr-startPtr;
+    }; const lengthBytesUTF32=(str)=>{
+      let len=0; for (let i=0; i<str.length; ++i) {
+        const codePoint=str.codePointAt(i); if (codePoint>65535) {
+          i++;
+        }len+=4;
+      } return len;
+    }; const __embind_register_std_wstring=(rawType, charSize, name)=>{
+      name=AsciiToString(name); let decodeString; let encodeString; let lengthBytesUTF; if (charSize===2) {
+        decodeString=UTF16ToString; encodeString=stringToUTF16; lengthBytesUTF=lengthBytesUTF16;
+      } else {
+        decodeString=UTF32ToString; encodeString=stringToUTF32; lengthBytesUTF=lengthBytesUTF32;
+      }registerType(rawType, {name, fromWireType: (value)=>{
+        const length=HEAPU32[value>>2]; const str=decodeString(value+4, length*charSize, true); _free(value); return str;
+      }, toWireType: (destructors, value)=>{
+        if (!(typeof value=='string')) {
+          throwBindingError(`Cannot pass non-string to C++ string type ${name}`);
+        } const length=lengthBytesUTF(value); const ptr=_malloc(4+length+charSize); HEAPU32[ptr>>2]=length/charSize; encodeString(value, ptr+4, length+charSize); if (destructors!==null) {
+          destructors.push(_free, ptr);
+        } return ptr;
+      }, readValueFromPointer: readPointer, destructorFunction(ptr) {
+        _free(ptr);
+      }});
+    }; const __embind_register_void=(rawType, name)=>{
+      name=AsciiToString(name); registerType(rawType, {isVoid: true, name, fromWireType: ()=>undefined, toWireType: (destructors, o)=>undefined});
+    }; const emval_methodCallers=[]; const emval_addMethodCaller=(caller)=>{
+      const id=emval_methodCallers.length; emval_methodCallers.push(caller); return id;
+    }; const requireRegisteredType=(rawType, humanName)=>{
+      const impl=registeredTypes[rawType]; if (undefined===impl) {
+        throwBindingError(`${humanName} has unknown type ${getTypeName(rawType)}`);
+      } return impl;
+    }; const emval_lookupTypes=(argCount, argTypes)=>{
+      const a=new Array(argCount); for (let i=0; i<argCount; ++i) {
+        a[i]=requireRegisteredType(HEAPU32[argTypes+i*4>>2], `parameter ${i}`);
+      } return a;
+    }; const emval_returnValue=(toReturnWire, destructorsRef, handle)=>{
+      const destructors=[]; const result=toReturnWire(destructors, handle); if (destructors.length) {
+        HEAPU32[destructorsRef>>2]=Emval.toHandle(destructors);
+      } return result;
+    }; const emval_symbols={}; const getStringOrSymbol=(address)=>{
+      const symbol=emval_symbols[address]; if (symbol===undefined) {
+        return AsciiToString(address);
+      } return symbol;
+    }; const __emval_create_invoker=(argCount, argTypesPtr, kind)=>{
+      const GenericWireTypeSize=8; const [retType, ...argTypes]=emval_lookupTypes(argCount, argTypesPtr); const toReturnWire=retType.toWireType.bind(retType); const argFromPtr=argTypes.map((type)=>type.readValueFromPointer.bind(type)); argCount--; const argN=new Array(argCount); const invokerFunction=(handle, methodName, destructorsRef, args)=>{
+        let offset=0; for (let i=0; i<argCount; ++i) {
+          argN[i]=argFromPtr[i](args+offset); offset+=GenericWireTypeSize;
+        } let rv; switch (kind) {
+          case 0: rv=Emval.toValue(handle).apply(null, argN); break; case 2: rv=Reflect.construct(Emval.toValue(handle), argN); break; case 3: rv=argN[0]; break; case 1: rv=Emval.toValue(handle)[getStringOrSymbol(methodName)](...argN); break;
+        } return emval_returnValue(toReturnWire, destructorsRef, rv);
+      }; const functionName=`methodCaller<(${argTypes.map((t)=>t.name)}) => ${retType.name}>`; return emval_addMethodCaller(createNamedFunction(functionName, invokerFunction));
+    }; const __emval_invoke=(caller, handle, methodName, destructorsRef, args)=>emval_methodCallers[caller](handle, methodName, destructorsRef, args); const __emval_run_destructors=(handle)=>{
+      const destructors=Emval.toValue(handle); runDestructors(destructors); __emval_decref(handle);
+    }; const getHeapMax=()=>2147483648; const alignMemory=(size, alignment)=>Math.ceil(size/alignment)*alignment; const growMemory=(size)=>{
+      const oldHeapSize=wasmMemory.buffer.byteLength; const pages=(size-oldHeapSize+65535)/65536|0; try {
+        wasmMemory.grow(pages); updateMemoryViews(); return 1;
+      } catch (e) {}
+    }; const _emscripten_resize_heap=(requestedSize)=>{
+      const oldSize=HEAPU8.length; requestedSize>>>=0; const maxHeapSize=getHeapMax(); if (requestedSize>maxHeapSize) {
+        return false;
+      } for (let cutDown=1; cutDown<=4; cutDown*=2) {
+        let overGrownHeapSize=oldSize*(1+.2/cutDown); overGrownHeapSize=Math.min(overGrownHeapSize, requestedSize+100663296); const newSize=Math.min(maxHeapSize, alignMemory(Math.max(requestedSize, overGrownHeapSize), 65536)); const replacement=growMemory(newSize); if (replacement) {
+          return true;
+        }
+      } return false;
+    }; const runtimeKeepaliveCounter=0; const keepRuntimeAlive=()=>noExitRuntime||runtimeKeepaliveCounter>0; const _proc_exit=(code)=>{
+      EXITSTATUS=code; if (!keepRuntimeAlive()) {
+        Module['onExit']?.(code); ABORT=true;
+      }quit_(code, new ExitStatus(code));
+    }; const exitJS=(status, implicit)=>{
+      EXITSTATUS=status; _proc_exit(status);
+    }; const handleException=(e)=>{
+      if (e instanceof ExitStatus||e=='unwind') {
+        return EXITSTATUS;
+      }quit_(1, e);
+    }; {if (Module['noExitRuntime'])noExitRuntime=Module['noExitRuntime']; if (Module['print'])out=Module['print']; if (Module['printErr'])err=Module['printErr']; if (Module['wasmBinary'])wasmBinary=Module['wasmBinary']; if (Module['arguments'])arguments_=Module['arguments']; if (Module['thisProgram'])thisProgram=Module['thisProgram'];} let ___getTypeName; let _main; let _free; let _malloc; function assignWasmExports(wasmExports) {
+      ___getTypeName=wasmExports['s']; Module['_main']=_main=wasmExports['u']; _free=wasmExports['v']; _malloc=wasmExports['w'];
+    } var wasmImports={l: ___cxa_throw, m: __abort_js, f: __embind_register_bigint, j: __embind_register_bool, o: __embind_register_emval, e: __embind_register_float, c: __embind_register_function, b: __embind_register_integer, a: __embind_register_memory_view, p: __embind_register_std_string, d: __embind_register_std_wstring, k: __embind_register_void, i: __emval_create_invoker, h: __emval_invoke, g: __emval_run_destructors, n: _emscripten_resize_heap}; var wasmExports=createWasm(); function callMain() {
+      const entryFunction=_main; const argc=0; const argv=0; try {
+        const ret=entryFunction(argc, argv); exitJS(ret, true); return ret;
+      } catch (e) {
+        return handleException(e);
+      }
+    } function run() {
+      if (runDependencies>0) {
+        dependenciesFulfilled=run; return;
+      }preRun(); if (runDependencies>0) {
+        dependenciesFulfilled=run; return;
+      } function doRun() {
+        Module['calledRun']=true; if (ABORT) return; initRuntime(); preMain(); readyPromiseResolve?.(Module); Module['onRuntimeInitialized']?.(); const noInitialRun=Module['noInitialRun']||false; if (!noInitialRun)callMain(); postRun();
+      } if (Module['setStatus']) {
+        Module['setStatus']('Running...'); setTimeout(()=>{
+          setTimeout(()=>Module['setStatus'](''), 1); doRun();
+        }, 1);
+      } else {
+        doRun();
+      }
+    } function preInit() {
+      if (Module['preInit']) {
+        if (typeof Module['preInit']=='function')Module['preInit']=[Module['preInit']]; while (Module['preInit'].length>0) {
+          Module['preInit'].shift()();
+        }
+      }
+    }preInit(); run(); if (runtimeInitialized) {
+      moduleRtn=Module;
+    } else {
+      moduleRtn=new Promise((resolve, reject)=>{
+        readyPromiseResolve=resolve; readyPromiseReject=reject;
+      });
+    }
+    ;return moduleRtn;
+  }/* harmony default export */ const glue = (LoadSRC);
 
   ;// ./src/libsamplerate.ts
   const __awaiter = (undefined && undefined.__awaiter) || function(thisArg, _arguments, P, generator) {

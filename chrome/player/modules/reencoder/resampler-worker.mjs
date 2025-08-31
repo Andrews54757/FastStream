@@ -1,5 +1,5 @@
 // import {StatefulResampler} from './resampler.mjs';
-import {create} from './libsamplerate.mjs';
+import {ConverterType, create} from './libsamplerate.mjs';
 
 const resamplers = [];
 let loadPromise = null;
@@ -109,7 +109,9 @@ addEventListener('message', async (event) => {
     numChannels = event.data.numChannels;
     const promises = [];
     for (let i = 0; i < numChannels; i++) {
-      promises.push(create(1, event.data.oldSampleRate, event.data.newSampleRate));
+      promises.push(create(1, event.data.oldSampleRate, event.data.newSampleRate, {
+        converterType: ConverterType.SRC_SINC_MEDIUM_QUALITY,
+      }));
     }
     newSampleRate = event.data.newSampleRate;
 
