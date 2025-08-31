@@ -989,6 +989,15 @@
     "options_general_color_theme_contrast": {
         "message": "Alto Contraste"
     },
+    "options_general_color_theme_sunset": {
+        "message": "Pôr do sol"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Floresta"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Lousa"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagem sobreposta (pip)"
     },

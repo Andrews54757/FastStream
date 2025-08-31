@@ -989,6 +989,15 @@
     "options_general_color_theme_contrast": {
         "message": "高コントラスト"
     },
+    "options_general_color_theme_sunset": {
+        "message": "夕日"
+    },
+    "options_general_color_theme_forest": {
+        "message": "森"
+    },
+    "options_general_color_theme_slate": {
+        "message": "スレート"
+    },
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },

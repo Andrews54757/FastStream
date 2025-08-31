@@ -989,6 +989,15 @@
     "options_general_color_theme_contrast": {
         "message": "Hoher Kontrast"
     },
+    "options_general_color_theme_sunset": {
+        "message": "Sonnenuntergang"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Wald"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Schiefer"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Bild-in-Bild umschalten"
     },

@@ -989,6 +989,15 @@
     "options_general_color_theme_contrast": {
         "message": "Высокая контрастность"
     },
+    "options_general_color_theme_sunset": {
+        "message": "Закат"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Лес"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Сланец"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Картинка в картинке"
     },

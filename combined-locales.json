@@ -3299,6 +3299,36 @@
         "pt-br": "Alto Contraste",
         "ru": "Высокая контрастность"
     },
+    "options_general_color_theme_sunset": {
+        "en": "Sunset",
+        "de": "Sonnenuntergang",
+        "es": "Puesta del sol",
+        "it": "Tramonto",
+        "ja": "夕日",
+        "ms": "Sunset",
+        "pt-br": "Pôr do sol",
+        "ru": "Закат"
+    },
+    "options_general_color_theme_forest": {
+        "en": "Forest",
+        "de": "Wald",
+        "es": "Bosque",
+        "it": "Foresta",
+        "ja": "森",
+        "ms": "Forest",
+        "pt-br": "Floresta",
+        "ru": "Лес"
+    },
+    "options_general_color_theme_slate": {
+        "en": "Slate",
+        "de": "Schiefer",
+        "es": "Pizarra",
+        "it": "Ardesia",
+        "ja": "スレート",
+        "ms": "Slate",
+        "pt-br": "Lousa",
+        "ru": "Сланец"
+    },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
         "de": "Bild-in-Bild umschalten",

@@ -989,6 +989,15 @@
     "options_general_color_theme_contrast": {
         "message": "Alto Contrasto"
     },
+    "options_general_color_theme_sunset": {
+        "message": "Tramonto"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Foresta"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Ardesia"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Attiva/disattiva il picture-in-picture"
     },
