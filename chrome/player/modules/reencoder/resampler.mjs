@@ -187,8 +187,8 @@ export class FIRLPF {
  * @private
  */
 const DEFAULT_LPF_ORDER = {
-  'IIR': 16,
-  'FIR': 71,
+  'IIR': 2,
+  'FIR': 2,
 };
 
 /**
@@ -205,10 +205,10 @@ export class StatefulResampler {
     this.oldSampleRate = oldSampleRate;
     this.newSampleRate = newSampleRate;
     this.scaleFactor = oldSampleRate / newSampleRate;
-    this.kernelSizeHalf = details.sincFilterSize || 6;
+    this.kernelSizeHalf = details.sincFilterSize || 64;
     this.kernel = this.buildKernel(this.kernelSizeHalf);
 
-    details.LPFType = details.LPFType || 'IIR';
+    details.LPFType = details.LPFType || 'FIR';
     const LPF = DEFAULT_LPF[details.LPFType];
     // Upsampling
     if (newSampleRate > oldSampleRate) {
@@ -289,40 +289,40 @@ export class StatefulResampler {
       }
 
       // Run filter
-      // this.filter.reset();
-      // for (let i = 0; i < newBuffer.length; i++) {
-      //   newBuffer[i] = this.filter.filter(newBuffer[i]);
-      // }
+      this.filter.reset();
+      for (let i = 0; i < newBuffer.length; i++) {
+        newBuffer[i] = this.filter.filter(newBuffer[i]);
+      }
 
-      // // Reverse filter
-      // this.filter.reset();
-      // for (let i = newBuffer.length - 1; i >= 0; i--) {
-      //   newBuffer[i] = this.filter.filter(newBuffer[i]);
-      // }
+      // Reverse filter
+      this.filter.reset();
+      for (let i = newBuffer.length - 1; i >= 0; i--) {
+        newBuffer[i] = this.filter.filter(newBuffer[i]);
+      }
 
       return newBuffer.slice(tailStart, newBuffer.length - tailEnd);
     } else {
       // Run filter
-      // this.filter.reset();
-      // for (let i = 0; i < samples.length; i++) {
-      //   if (!samples[i]) {
-      //     continue;
-      //   }
-      //   for (let j = 0; j < samples[i].length; j++) {
-      //     samples[i][j] = this.filter.filter(samples[i][j]);
-      //   }
-      // }
+      this.filter.reset();
+      for (let i = 0; i < samples.length; i++) {
+        if (!samples[i]) {
+          continue;
+        }
+        for (let j = 0; j < samples[i].length; j++) {
+          samples[i][j] = this.filter.filter(samples[i][j]);
+        }
+      }
 
-      // // Reverse filter
-      // this.filter.reset();
-      // for (let i = samples.length - 1; i >= 0; i--) {
-      //   if (!samples[i]) {
-      //     continue;
-      //   }
-      //   for (let j = samples[i].length - 1; j >= 0; j--) {
-      //     samples[i][j] = this.filter.filter(samples[i][j]);
-      //   }
-      // }
+      // Reverse filter
+      this.filter.reset();
+      for (let i = samples.length - 1; i >= 0; i--) {
+        if (!samples[i]) {
+          continue;
+        }
+        for (let j = samples[i].length - 1; j >= 0; j--) {
+          samples[i][j] = this.filter.filter(samples[i][j]);
+        }
+      }
 
       const newBuffer = new Float64Array(newSampleLen);
       for (let i = 0; i < newBuffer.length; i++) {
