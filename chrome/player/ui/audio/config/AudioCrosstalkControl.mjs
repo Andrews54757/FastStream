@@ -16,6 +16,16 @@ export class AudioCrosstalkControl {
     return new AudioCrosstalkControl(false, NaN, 5, NaN, 250, 5000);
   }
 
+  isDefault() {
+    const def = AudioCrosstalkControl.default();
+    return this.enabled === def.enabled &&
+      (this.decay === def.decay || (isNaN(this.decay) && isNaN(def.decay))) &&
+      this.colorgain === def.colorgain &&
+      (this.microdelay === def.microdelay || (isNaN(this.microdelay) && isNaN(def.microdelay))) &&
+      this.lowbypass === def.lowbypass &&
+      this.highbypass === def.highbypass;
+  }
+
   toObj() {
     return {
       enabled: this.enabled,
