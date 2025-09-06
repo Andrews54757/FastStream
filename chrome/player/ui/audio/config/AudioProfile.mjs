@@ -79,14 +79,26 @@ export class AudioProfile {
   }
 
   toObj() {
-    return {
+    const obj = {
       id: this.id,
       label: this.label,
-      channels: this.channels.map((channel) => {
-        return channel.toObj();
-      }),
-      master: this.master.toObj(),
-      crosstalk: this.crosstalk.toObj(),
     };
+
+    const nonDefaultChannels = this.channels.filter((channel) => !channel.isDefault());
+    if (nonDefaultChannels.length > 0) {
+      obj.channels = this.channels.map((channel) => {
+        return channel.toObj();
+      });
+    }
+
+    if (!this.master.isDefault()) {
+      obj.master = this.master.toObj();
+    }
+
+    if (!this.crosstalk.isDefault()) {
+      obj.crosstalk = this.crosstalk.toObj();
+    }
+
+    return obj;
   }
 }

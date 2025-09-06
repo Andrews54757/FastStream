@@ -34,6 +34,21 @@ export class AudioChannelControl {
     }
   }
 
+  isDefault() {
+    if (this.gain !== 1) return false;
+    if (this.isMaster()) {
+      if (this.mono !== false) return false;
+    } else {
+      if (this.muted !== false) return false;
+      if (this.solo !== false) return false;
+    }
+
+    if (this.equalizerNodes.length !== 0) return false;
+    if (!this.compressor.isDefault()) return false;
+
+    return true;
+  }
+
   toObj() {
     if (this.isMaster()) {
       return {

@@ -334,6 +334,8 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         filename: filename,
       }).then((downloadId) => {
         sendResponse(downloadId);
+      }).catch((e) => {
+        sendResponse(null);
       });
     }
     return true;

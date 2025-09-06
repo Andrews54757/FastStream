@@ -19,6 +19,10 @@ export class ConvolutionXTC {
     return this.inputNode;
   }
 
+  getBypassInputNode() {
+    return this.inputBypassNode;
+  }
+
   getOutputNode() {
     return this.outputNode;
   }
@@ -98,7 +102,7 @@ export class ConvolutionXTC {
     const max_y = 1.0 / (1.0 - g);
     const min_y = Math.max(1.0, Math.sqrt(5 + Math.sqrt(5)) / 2 / Math.sqrt(gg + 1));
     y = Math.max(min_y, y);
-    const valid = y <= max_y;
+    const valid = isFinite(y) && y <= max_y;
 
     for (let k = 0; k < n; k++) {
       const omegatc = 2 * Math.PI * k / n * tc;
@@ -168,8 +172,9 @@ export class ConvolutionXTC {
     }, 100);
   }
 
-  async init(inputCrossoverNode) {
-    this.inputNode = inputCrossoverNode;
+  async init() {
+    this.inputNode = new VirtualAudioNode('ConvolutionXTC Input');
+    this.inputBypassNode = new VirtualAudioNode('ConvolutionXTC Bypass Input');
     this.outputNode = new VirtualAudioNode('ConvolutionXTC Output');
     const ctx = this.audioContext;
     // create convolver nodes
@@ -190,7 +195,7 @@ export class ConvolutionXTC {
     this.buffer_BYPASS.getChannelData(0).set(h_BYPASS);
     this.convolver_BYPASS.buffer = this.buffer_BYPASS;
 
-    this.getInputNode().connect(this.convolver_BYPASS, 0);
+    this.getBypassInputNode().connect(this.convolver_BYPASS);
     this.getOutputNode().connectFrom(this.convolver_BYPASS);
 
     this.updateBuffers();
@@ -199,10 +204,26 @@ export class ConvolutionXTC {
   destroy() {
     clearTimeout(this.switchTimeout);
     this.switchTimeout = null;
-    this.getInputNode().disconnect();
+    this.getBypassInputNode().disconnect(this.convolver_BYPASS);
+    this.getOutputNode().disconnectFrom(this.convolver_BYPASS);
+
     this.convolvers_XTC.forEach((convolver) => {
-      convolver.disconnect();
+      try {
+        this.getInputNode().disconnect(convolver);
+      } catch (e) {
+      }
+      try {
+        this.getOutputNode().disconnectFrom(convolver);
+      } catch (e) {
+      }
     });
-    this.convolver_BYPASS.disconnect();
+    this.convolver_BYPASS = null;
+    this.convolvers_XTC = null;
+    this.buffer_XTC = null;
+    this.buffer_BYPASS = null;
+    this.inputNode = null;
+    this.inputBypassNode = null;
+    this.outputNode = null;
+    this.fft = null;
   }
 }

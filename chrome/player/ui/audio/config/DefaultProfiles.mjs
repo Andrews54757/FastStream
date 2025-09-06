@@ -70,16 +70,6 @@ export const DefaultProfilesData = {
           'gain': 1,
         },
       },
-      'crosstalk': {
-        'enabled': false,
-        'decay': -0.3,
-        'colorgain': 3,
-        'microdelay': 60,
-        'lowbypass': 300,
-        'highbypass': 5000,
-        'speakerdistance': 25,
-        'headdistance': 70,
-      },
     },
     {
       'id': 5,

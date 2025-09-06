@@ -313,6 +313,7 @@ export class Utils {
       document.body.appendChild(aElement);
       aElement.click();
       aElement.remove();
+      return true;
     }
   }
 
