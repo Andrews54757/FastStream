@@ -18,6 +18,17 @@ export class AudioCompressionControl {
     return new AudioCompressionControl(false, 0.003, 30, 12, 0.25, -24, 1);
   }
 
+  isDefault() {
+    const def = AudioCompressionControl.default();
+    return this.enabled === def.enabled &&
+      this.attack === def.attack &&
+      this.knee === def.knee &&
+      this.ratio === def.ratio &&
+      this.release === def.release &&
+      this.threshold === def.threshold &&
+      this.gain === def.gain;
+  }
+
   toObj() {
     return {
       enabled: this.enabled,

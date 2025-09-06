@@ -1,7 +1,10 @@
 export const ColorThemes = {
   DEFAULT: 'default',
+  CONTRAST: 'contrast',
   ARCTIC: 'arctic',
   OCEAN: 'ocean',
   NEON: 'neon',
-  CONTRAST: 'contrast',
+  SUNSET: 'sunset',
+  FOREST: 'forest',
+  SLATE: 'slate',
 };

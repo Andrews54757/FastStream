@@ -13,6 +13,24 @@ const muxConfig = [{
   demux: MP3Demuxer,
   remux: MP4Remuxer,
 }];
+
+const Logger = {
+  debug: (msg, ...args) => {
+    console.debug(`[Transmuxer] ${msg}`, ...args);
+  },
+  log: (msg, ...args) => {
+    console.log(`[Transmuxer] ${msg}`, ...args);
+  },
+  info: (msg, ...args) => {
+    console.info(`[Transmuxer] ${msg}`, ...args);
+  },
+  warn: (msg, ...args) => {
+    console.warn(`[Transmuxer] ${msg}`, ...args);
+  },
+  error: (msg, ...args) => {
+    console.error(`[Transmuxer] ${msg}`, ...args);
+  },
+};
 export default class Transmuxer {
   constructor(transmuxConfig) {
     this.typeSupported = {
@@ -68,12 +86,11 @@ export default class Transmuxer {
       config,
       observer,
       typeSupported,
-      vendor,
     } = this;
     // probe for content type
     let mux;
     for (let i = 0, len = muxConfig.length; i < len; i++) {
-      if (muxConfig[i].demux.probe(data)) {
+      if (muxConfig[i].demux.probe(data, Logger)) {
         mux = muxConfig[i];
         break;
       }
@@ -86,25 +103,9 @@ export default class Transmuxer {
     const remuxer = this.remuxer;
     const Remuxer = mux.remux;
     const Demuxer = mux.demux;
-    const logger = {
-      debug: (msg, ...args) => {
-        console.debug(`[Transmuxer:${vendor}] ${msg}`, ...args);
-      },
-      log: (msg, ...args) => {
-        console.log(`[Transmuxer:${vendor}] ${msg}`, ...args);
-      },
-      info: (msg, ...args) => {
-        console.info(`[Transmuxer:${vendor}] ${msg}`, ...args);
-      },
-      warn: (msg, ...args) => {
-        console.warn(`[Transmuxer:${vendor}] ${msg}`, ...args);
-      },
-      error: (msg, ...args) => {
-        console.error(`[Transmuxer:${vendor}] ${msg}`, ...args);
-      },
-    };
+
     if (!remuxer || !(remuxer instanceof Remuxer)) {
-      this.remuxer = new Remuxer(observer, config, typeSupported, logger);
+      this.remuxer = new Remuxer(observer, config, typeSupported, Logger);
     }
     if (!demuxer || !(demuxer instanceof Demuxer)) {
       this.demuxer = new Demuxer(observer, config, typeSupported);

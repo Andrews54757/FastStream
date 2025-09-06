@@ -1,4 +1,5 @@
 import {Localize} from '../../modules/Localize.mjs';
+import {ChannelCounterNode} from '../../modules/channelcounter/channelcounter.mjs';
 import {AlertPolyfill} from '../../utils/AlertPolyfill.mjs';
 import {InterfaceUtils} from '../../utils/InterfaceUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
@@ -23,33 +24,29 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.renderLoopRunning = false;
     this.shouldRunRenderLoop = false;
     this.audioUpscaler = new MonoUpscaler();
-    this.audioChannelMixer = new AudioChannelMixer();
+    this.audioChannelMixer = new AudioChannelMixer(this);
     this.audioCrosstalk = new AudioCrosstalk();
     this.finalGain = new AudioGain();
 
-    const upscale = () => {
-      return; // Webaudio is bugged
-      if (this.audioCompressor.needsUpscaler() || this.audioChannelMixer.needsUpscaler() || this.audioCrosstalk.needsUpscaler()) {
-        this.audioUpscaler.enable();
-      } else {
-        this.audioUpscaler.disable();
-      }
-    };
-    this.audioChannelMixer.on('upscale', upscale);
-    this.audioCrosstalk.on('upscale', upscale);
-
     this.setupUI();
-    this.loadProfilesFromStorage().then(() => {
-      this.loadDefaultProfiles();
+    this.loadProfilesFromStorage().then(async () => {
+      await this.loadDefaultProfiles();
+      if (this.profiles.length === 0) {
+        this.newProfile();
+      }
+
+      if (!this.currentProfile) {
+        this.setCurrentProfile(this.profiles[0]);
+      }
     }).catch((e) => {
       AlertPolyfill.errorSendToDeveloper(e);
     });
   }
 
-  async loadDefaultProfiles() {
+  async loadDefaultProfiles(force = false) {
     try {
       const loadedDefaultProfiles = await Utils.getConfig('loadedDefaultAudioProfiles');
-      if (loadedDefaultProfiles === '1') {
+      if (!force && loadedDefaultProfiles === '1') {
         return;
       }
       const {DefaultProfilesData} = await import('./config/DefaultProfiles.mjs');
@@ -66,10 +63,7 @@ export class AudioConfigManager extends AbstractAudioModule {
       const audioProfiles = JSON.parse(audioProfilesStr);
       const currentAudioProfileID = parseInt(currentAudioProfileStr);
 
-      if (audioProfiles.length === 0) {
-        this.newProfile();
-        this.setCurrentProfile(this.profiles[0]);
-      } else {
+      if (audioProfiles.length !== 0) {
         this.profiles = audioProfiles.map((profile) => {
           return AudioProfile.fromObj(profile);
         });
@@ -396,7 +390,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.profileManager.appendChild(this.ui.deleteButton);
 
     const deleteTimeout = null;
-    this.ui.deleteButton.addEventListener('click', async () => {
+    this.ui.deleteButton.addEventListener('click', async (e) => {
       const profile = this.getDropdownProfile();
       if (!profile) {
         this.updateProfileDropdown();
@@ -404,6 +398,11 @@ export class AudioConfigManager extends AbstractAudioModule {
       }
 
       this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleting');
+      // if only one profile exists, and shift or meta is held, add default profiles first
+      if (this.profiles.length === 1 && (e.shiftKey || e.metaKey)) {
+        await this.loadDefaultProfiles(true);
+      }
+
       await this.deleteProfile(profile);
       this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleted');
       clearTimeout(deleteTimeout);
@@ -458,6 +457,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     super.setupNodes(audioContext);
 
     try {
+      this.updateChannelCount();
       this.audioUpscaler.setupNodes(this.audioContext);
       this.audioChannelMixer.setupNodes(this.audioContext);
       this.audioCrosstalk.setupNodes(this.audioContext);
@@ -468,11 +468,79 @@ export class AudioConfigManager extends AbstractAudioModule {
       this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
       this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
       this.finalGain.getOutputNode().connect(this.getOutputNode());
-
-      // IDK why but webaudio is bugged
-      this.audioUpscaler.enable();
     } catch (e) {
       AlertPolyfill.errorSendToDeveloper(e);
+    }
+  }
+
+  updateChannelCount() {
+    this.discardChannelCount();
+    this.getChannelCount().then((count) => {
+      if (count === 1) {
+        this.audioUpscaler.enable();
+      } else {
+        this.audioUpscaler.disable();
+      }
+      this.audioChannelMixer.updateChannelCount();
+    }).catch((e) => {
+    });
+  }
+
+  async getChannelCount() {
+    if (!this.audioContext) {
+      return 0;
+    }
+
+    if (this.cachedChannelCount) {
+      return this.cachedChannelCount;
+    }
+
+    if (this.channelCounterPromise) {
+      await this.channelCounterPromise;
+      return this.cachedChannelCount;
+    }
+
+    const node = new ChannelCounterNode(this.audioContext);
+    this.channelCounterNode = node;
+    this.channelCounterPromise = new Promise(async (resolve, reject) => {
+      try {
+        await node.init();
+      } catch (e) {
+        resolve(2); // Fallback to 2 channels if init fails for ppl who have older browsers
+        return;
+      }
+      node.once('channelcount', (count) => {
+        if (this.channelCounterNode !== node) {
+          reject(new Error('Channel counter node changed'));
+          return;
+        }
+        this.cachedChannelCount = count;
+        this.channelCounterPromise = null;
+        this.channelCounterNode = null;
+        this.getInputNode().disconnect(node.getNode());
+        node.destroy();
+        console.log('Detected ' + count + ' audio channels');
+        resolve(count);
+      });
+
+      this.getInputNode().connect(node.getNode());
+    });
+
+    return this.channelCounterPromise;
+  }
+
+  discardChannelCount() {
+    this.cachedChannelCount = null;
+    this.channelCounterPromise = null;
+    if (this.channelCounterNode) {
+      try {
+        this.getInputNode().disconnect(this.channelCounterNode.getNode());
+      } catch (e) {
+      }
+      this.channelCounterNode.destroy();
+      const node = this.channelCounterNode;
+      this.channelCounterNode = null;
+      node.emit('channelcount', 0);
     }
   }
 

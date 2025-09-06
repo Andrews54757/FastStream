@@ -18,7 +18,15 @@ export const SpecialHeaders = [
   'cookie',
 ];
 
+/**
+ * Utility functions for HTTP requests and header manipulation.
+ */
 export class RequestUtils {
+  /**
+   * Splits headers into special and regular headers for custom handling.
+   * @param {Object} headers - The headers object.
+   * @return {Object} An object with customHeaderCommands and regularHeaders.
+   */
   static splitSpecialHeaders(headers) {
     const customHeaderCommands = [];
     const regularHeaders = {};
@@ -37,6 +45,22 @@ export class RequestUtils {
     }
     return {customHeaderCommands, regularHeaders};
   }
+  /**
+   * Makes an HTTP request using XMLHttpRequest with various options.
+   * @param {Object} options - Request options.
+   * @param {string} options.url - The request URL.
+   * @param {string} [options.method] - HTTP method (GET, POST, etc.).
+   * @param {Object} [options.headers] - Headers to set.
+   * @param {Object} [options.query] - Query parameters.
+   * @param {string} [options.responseType] - Response type.
+   * @param {Object} [options.range] - Byte range for partial requests.
+   * @param {Function} [options.onProgress] - Progress callback.
+   * @param {boolean} [options.usePlusForSpaces] - Use plus for spaces in query.
+   * @param {any} [options.data] - Data to send in the request body.
+   * @param {any} [options.body] - Alias for data.
+   * @param {Array} [options.header_commands] - Custom header commands for extension.
+   * @return {Promise<XMLHttpRequest>} Resolves with the XMLHttpRequest object.
+   */
   static request(options) {
     return new Promise(async (resolve, reject) => {
       const xmlHttp = new XMLHttpRequest();
@@ -110,6 +134,12 @@ export class RequestUtils {
     });
   }
 
+  /**
+   * Makes a simple HTTP request and returns the XMLHttpRequest object.
+   * @param {Object|string} details - Request details or URL string.
+   * @param {Function} [callback] - Optional callback(error, xhr, responseText).
+   * @return {Promise<XMLHttpRequest>} Resolves with the XMLHttpRequest object.
+   */
   static async requestSimple(details, callback) {
     if (typeof details === 'string') {
       details = {
@@ -139,6 +169,12 @@ export class RequestUtils {
     return xhr;
   }
 
+  /**
+   * Downloads a large file in fragments using range requests and returns a LargeBuffer.
+   * @param {string} source - The URL of the large file.
+   * @return {Promise<LargeBuffer>} Resolves with a LargeBuffer containing the file data.
+   * @throws {Error} If the request fails or headers are missing.
+   */
   static async httpGetLarge(source) {
     const fragSize = 1e9 / 4;
 

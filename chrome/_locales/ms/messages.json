@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(current)"
     },
+    "player_quality_unknown": {
+        "message": "(tidak diketahui)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1"
     },
@@ -939,7 +942,7 @@
         "message": "Hide player"
     },
     "options_general_vischangeaction": {
-        "message": "When player visiblity changes"
+        "message": "When player visibility changes"
     },
     "options_general_vischangeaction_nothing": {
         "message": "Do nothing"
@@ -985,6 +988,15 @@
     },
     "options_general_color_theme_contrast": {
         "message": "High Contrast"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Sunset"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Forest"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Slate"
     },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"

@@ -9,8 +9,6 @@ export class MonoUpscaler extends AbstractAudioModule {
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
     this.getInputNode().connect(this.getOutputNode());
-    this.splitter = null;
-    this.merger = null;
     this.stereoPanner = null;
     this.enabled = false;
   }
@@ -20,20 +18,11 @@ export class MonoUpscaler extends AbstractAudioModule {
       return;
     }
 
-    this.splitter = this.audioContext.createChannelSplitter(6);
-    this.merger = this.audioContext.createChannelMerger(6);
-
-    for (let i = 2; i < 6; i++) {
-      this.splitter.connect(this.merger, i, i);
-    }
-
     this.stereoPanner = this.audioContext.createStereoPanner();
     this.stereoPanner.channelInterpretation = 'discrete';
 
     this.getInputNode().disconnect(this.getOutputNode());
-    this.getInputNode().connect(this.splitter);
     this.getInputNode().connect(this.stereoPanner);
-    this.getOutputNode().connectFrom(this.merger);
     this.getOutputNode().connectFrom(this.stereoPanner);
 
     this.enabled = true;

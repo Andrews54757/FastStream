@@ -1769,6 +1769,16 @@
         "pt-br": "(atual)",
         "ru": "(текущее)"
     },
+    "player_quality_unknown": {
+        "en": "(unknown)",
+        "de": "(unbekannt)",
+        "es": "(desconocido)",
+        "it": "(sconosciuto)",
+        "ja": "(不明)",
+        "ms": "(tidak diketahui)",
+        "pt-br": "(desconhecido)",
+        "ru": "(неизвестно)"
+    },
     "player_buffer_incognito_warning": {
         "en": "Not enough space to predownload in incognito mode, will buffer $1",
         "de": "Nicht genügend Speicherplatz um im Privaten Modus vor zu laden, es wird gepuffert bis $1",
@@ -3130,12 +3140,12 @@
         "ru": "Скрыть плеер"
     },
     "options_general_vischangeaction": {
-        "en": "When player visiblity changes",
+        "en": "When player visibility changes",
         "de": "Wenn die Visibilität des Players sich ändert",
         "es": "Cuando cambia la visibilidad del reproductor",
         "it": "Quando cambia la visibilità del lettore video",
         "ja": "プレーヤーの可視性が変更されたとき",
-        "ms": "When player visiblity changes",
+        "ms": "When player visibility changes",
         "pt-br": "Quando a visibilidade do tocador mudar",
         "ru": "При изменении видимости плеера"
     },
@@ -3288,6 +3298,36 @@
         "ms": "High Contrast",
         "pt-br": "Alto Contraste",
         "ru": "Высокая контрастность"
+    },
+    "options_general_color_theme_sunset": {
+        "en": "Sunset",
+        "de": "Sonnenuntergang",
+        "es": "Puesta del sol",
+        "it": "Tramonto",
+        "ja": "夕日",
+        "ms": "Sunset",
+        "pt-br": "Pôr do sol",
+        "ru": "Закат"
+    },
+    "options_general_color_theme_forest": {
+        "en": "Forest",
+        "de": "Wald",
+        "es": "Bosque",
+        "it": "Foresta",
+        "ja": "森",
+        "ms": "Forest",
+        "pt-br": "Floresta",
+        "ru": "Лес"
+    },
+    "options_general_color_theme_slate": {
+        "en": "Slate",
+        "de": "Schiefer",
+        "es": "Pizarra",
+        "it": "Ardesia",
+        "ja": "スレート",
+        "ms": "Slate",
+        "pt-br": "Lousa",
+        "ru": "Сланец"
     },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",

@@ -1,4 +1,13 @@
+/**
+ * Utility functions for string manipulation and comparison.
+ */
 export class StringUtils {
+  /**
+   * Calculates the Levenshtein distance between two strings.
+   * @param {string} s - First string.
+   * @param {string} t - Second string.
+   * @return {number} The Levenshtein distance.
+   */
   static levenshteinDistance(s, t) {
     if (s === t) {
       return 0;
@@ -90,6 +99,11 @@ export class StringUtils {
     return h;
   }
 
+  /**
+   * Formats a time value in seconds to HH:MM:SS or MM:SS.
+   * @param {number} time - Time in seconds.
+   * @return {string} Formatted time string.
+   */
   static formatTime(time) {
     const hours = Math.floor(time / 3600);
     time = time - hours * 3600;
@@ -103,6 +117,11 @@ export class StringUtils {
     return (hours ? (hours + ':') : '') + strPadLeft(minutes, '0', 2) + ':' + strPadLeft(seconds, '0', 2);
   }
 
+  /**
+   * Formats a duration value in seconds to a human-readable string.
+   * @param {number} duration - Duration in seconds.
+   * @return {string} Formatted duration string.
+   */
   static formatDuration(duration) {
     const hours = Math.floor(duration / 3600);
     duration = duration - hours * 3600;
@@ -111,6 +130,11 @@ export class StringUtils {
     return (hours ? (hours + 'h ') : '') + (minutes ? (minutes + 'm ') : '') + seconds + 's';
   }
 
+  /**
+   * Formats a frequency value in Hz to a human-readable string.
+   * @param {number} freq - Frequency in Hz.
+   * @return {string} Formatted frequency string.
+   */
   static formatFrequency(freq) {
     if (freq > 1000) {
       return (freq / 1000).toFixed(1) + 'k';
@@ -119,6 +143,11 @@ export class StringUtils {
     }
   }
 
+  /**
+   * Parses a speed string (e.g., '1.5x') to a numeric value.
+   * @param {string} speedStr - Speed string.
+   * @return {number} Parsed speed value.
+   */
   static getSpeedValue(speedStr) {
     // regex
     const float = parseFloat(speedStr);
@@ -168,6 +197,12 @@ export class StringUtils {
     return float * multiplier;
   }
 
+  /**
+   * Formats a speed value to a string (e.g., '1.5x').
+   * @param {number} speed - Speed value.
+   * @param {boolean} [useBits=false] - Use bits instead of bytes.
+   * @return {string} Formatted speed string.
+   */
   static getSpeedString(speed, useBits = false) {
     if (speed === -1) {
       return '∞ M' + (useBits ? 'bps' : 'B/s');
@@ -202,6 +237,11 @@ export class StringUtils {
     return Math.round(value * 100) / 100 + ' ' + unit;
   }
 
+  /**
+   * Formats a size value in bytes to a human-readable string.
+   * @param {number} size - Size in bytes.
+   * @return {string} Formatted size string.
+   */
   static getSizeString(size) {
     if (size=== -1) {
       return '∞ GB';
@@ -227,6 +267,11 @@ export class StringUtils {
     return Math.round(size * 100) / 100 + ' ' + unit;
   }
 
+  /**
+   * Parses a size string (e.g., '1 MB') to a numeric value in bytes.
+   * @param {string} sizeStr - Size string.
+   * @return {number} Parsed size in bytes.
+   */
   static getSizeValue(sizeStr) {
     const float = parseFloat(sizeStr);
     const unit = sizeStr.replace(float, '').trim();
@@ -259,6 +304,11 @@ export class StringUtils {
     return float * multiplier;
   }
 
+  /**
+   * Parses an HTTP Range header string to an object.
+   * @param {string} range - HTTP Range string.
+   * @return {Object} Parsed range object.
+   */
   static parseHTTPRange(range) {
     const match = range.match(/(\d+)-(\d+)?/);
     if (!match) return [undefined, undefined];

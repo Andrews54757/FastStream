@@ -530,6 +530,9 @@
     "player_quality_current": {
         "message": "(atual)"
     },
+    "player_quality_unknown": {
+        "message": "(desconhecido)"
+    },
     "player_buffer_incognito_warning": {
         "message": "Não há espaço suficiente para fazer o download prévio no modo incógnito, o buffer será de $1"
     },
@@ -985,6 +988,15 @@
     },
     "options_general_color_theme_contrast": {
         "message": "Alto Contraste"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Pôr do sol"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Floresta"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Lousa"
     },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagem sobreposta (pip)"

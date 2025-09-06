@@ -128,7 +128,7 @@ export class AudioQualityChanger extends EventEmitter {
 
   updateQualityLevels(client) {
     const audioLevels = client.getLevelManager().filterAudioLevelsByLanguage(Array.from(client.getAudioLevels().values()));
-    if (!audioLevels || audioLevels.length <= 1) {
+    if (!audioLevels || audioLevels.length < 1) {
     //   DOMElements.audioSource.classList.add('hidden');
       this.enabled = false;
       return;

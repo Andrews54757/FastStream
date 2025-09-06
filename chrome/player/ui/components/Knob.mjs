@@ -25,7 +25,6 @@ export function createKnob(name, minValue, maxValue, callback, units = '') {
 
   let suggestedValue = null;
   let suggestedValueTracking = false;
-  let suggestedValueSet = false;
   const knobSuggestedValueTick = WebUtils.create('div', null, 'knob_suggested_value_tick');
   knobSuggestedValueTick.style.display = 'none';
   const suggestedValueTickDot = WebUtils.create('div', null, 'knob_suggested_value_tick_dot');
@@ -59,18 +58,20 @@ export function createKnob(name, minValue, maxValue, callback, units = '') {
     }
     if (shouldCall && callback) {
       checkValueIsSuggested();
-      callback(knob.val());
+      callback(knob.val(), suggestedValueTracking);
     }
   });
 
   function checkValueIsSuggested() {
     const val = knob.val();
-    if (suggestedValue !== null && Math.abs(val - suggestedValue) < (maxValue - minValue) * 0.02) {
+    if (suggestedValue !== null && !isNaN(suggestedValue) && (isNaN(val) || Math.abs(val - suggestedValue) < (maxValue - minValue) * 0.02)) {
       suggestedValueTracking = true;
       suggestedValueTickDot.classList.add('tracking');
       const prevFlag = shouldCall;
       shouldCall = false;
-      knob.val(suggestedValue);
+      if (val !== suggestedValue) {
+        knob.val(suggestedValue);
+      }
       shouldCall = prevFlag;
     } else {
       suggestedValueTickDot.classList.remove('tracking');
@@ -167,19 +168,13 @@ export function createKnob(name, minValue, maxValue, callback, units = '') {
           shouldCall = false;
           knob.val(val);
           shouldCall = prevFlag;
-          if (shouldCall) callback(val);
+          if (shouldCall) callback(val, suggestedValueTracking);
         }
       } else {
         knobSuggestedValueTick.style.display = 'none';
       }
       suggestedValue = val;
-      if (!suggestedValueSet) {
-        suggestedValueSet = true;
-        if (knob.val() === suggestedValue) {
-          suggestedValueTracking = true;
-          suggestedValueTickDot.classList.add('tracking');
-        }
-      }
+      checkValueIsSuggested();
     },
   };
 }

@@ -135,7 +135,7 @@ export class VideoQualityChanger extends EventEmitter {
 
   updateQualityLevels(client) {
     const videoLevels = client.getVideoLevels();
-    if (!videoLevels || videoLevels.size <= 1) {
+    if (!videoLevels || videoLevels.size < 1) {
       DOMElements.videoSource.classList.add('hidden');
       return;
     } else {
@@ -148,6 +148,15 @@ export class VideoQualityChanger extends EventEmitter {
     DOMElements.videoSourceList.replaceChildren();
 
     videoLevelsByDimensions.forEach((levels, dimensions) => {
+      const isLevelActive = levels.some((level) => level.id === currentVideoLevelID);
+
+      if (dimensions === '0x0') {
+        if (isLevelActive && client.videoWidth > 0 && client.videoHeight > 0) {
+          dimensions = `${client.videoWidth}x${client.videoHeight}`;
+        } else {
+          dimensions = Localize.getMessage('player_quality_unknown');
+        }
+      }
       const levelelement = document.createElement('div');
 
       levelelement.classList.add('fluid_video_source_list_item');
@@ -174,7 +183,6 @@ export class VideoQualityChanger extends EventEmitter {
         e.stopPropagation();
       });
 
-      const isLevelActive = levels.some((level) => level.id === currentVideoLevelID);
       if (isLevelActive && levels.length <= 1) {
         levelelement.classList.add('source_active');
       } else if (isLevelActive) {
@@ -300,7 +308,10 @@ export class VideoQualityChanger extends EventEmitter {
       console.warn('No current level');
       return;
     }
-    const maxSize = Math.min(current.width, current.height);
+    let maxSize = Math.min(current.width, current.height);
+    if (maxSize <= 0) {
+      maxSize = Math.min(client.videoWidth, client.videoHeight);
+    }
 
     const qualityList = {
       'sd': maxSize < 720,

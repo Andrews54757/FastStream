@@ -2300,8 +2300,12 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     right: 2px;
     text-align: center;
     font-size: 10px;
-    color: rgba(255, 255, 255, 0.8);
+    color: rgba(255, 255, 255, 0.9);
     transform: translate(0%, -50%);
+}
+
+.mixer_channel_title.disabled {
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .mixer_channel_buttons {
@@ -2397,8 +2401,13 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     height: 40px;
     border-radius: 4px;
     transform: translate(-50%, -50%);
-    opacity: 0.8;
+    opacity: 0.6;
     cursor: grab;
+    transition: opacity 0.1s;
+}
+
+.mixer_channel_volume_handle:hover {
+    opacity: 0.8;
 }
 
 .mixer_channel_volume_meter {
@@ -2915,20 +2924,6 @@ input.crosstalk_calculator_input {
     background-color: var(--menu-textbutton-hover-background-color);
 }
 
-.fluid_controls_dragdemo {
-    position: absolute;
-    right: 5px;
-    bottom: 50px;
-    border: var(--popwindow-dropdown-text-focus-outline);
-    border-radius: 4px;
-    overflow: hidden;
-    cursor: pointer;
-}
-
-.fluid_controls_dragdemo > video {
-    width: 290px;
-}
-
 @media screen and (max-width: 1000px) {
     div:not(.controls_visible) .fluid_subtitles_container {
         bottom: 0px;
@@ -3007,10 +3002,6 @@ input.crosstalk_calculator_input {
     body {
         --font-size-small: 9px;
         --volume-block-width: 100px;
-    }
-
-    .fluid_controls_dragdemo > video {
-        width: 200px;
     }
 
     .fluid_controls_right:not(.reordering) > .fluid_button_soundwave,
