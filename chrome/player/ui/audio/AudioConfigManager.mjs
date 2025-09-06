@@ -43,10 +43,10 @@ export class AudioConfigManager extends AbstractAudioModule {
     });
   }
 
-  async loadDefaultProfiles() {
+  async loadDefaultProfiles(force = false) {
     try {
       const loadedDefaultProfiles = await Utils.getConfig('loadedDefaultAudioProfiles');
-      if (loadedDefaultProfiles === '1') {
+      if (!force && loadedDefaultProfiles === '1') {
         return;
       }
       const {DefaultProfilesData} = await import('./config/DefaultProfiles.mjs');
@@ -390,7 +390,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.ui.profileManager.appendChild(this.ui.deleteButton);
 
     const deleteTimeout = null;
-    this.ui.deleteButton.addEventListener('click', async () => {
+    this.ui.deleteButton.addEventListener('click', async (e) => {
       const profile = this.getDropdownProfile();
       if (!profile) {
         this.updateProfileDropdown();
@@ -398,6 +398,11 @@ export class AudioConfigManager extends AbstractAudioModule {
       }
 
       this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleting');
+      // if only one profile exists, and shift or meta is held, add default profiles first
+      if (this.profiles.length === 1 && (e.shiftKey || e.metaKey)) {
+        await this.loadDefaultProfiles(true);
+      }
+
       await this.deleteProfile(profile);
       this.ui.deleteButton.textContent = Localize.getMessage('player_audioconfig_profile_deleted');
       clearTimeout(deleteTimeout);
