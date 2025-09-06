@@ -75,9 +75,10 @@ export class AudioCrosstalk extends AbstractAudioModule {
   }
 
   getCrosstalkConfigObj() {
+    const predicted = this.calculateCrosstalkDelayAndDecay(this.speakerDistance, this.headDistance);
     return {
-      microdelay: this.crosstalkConfig.microdelay,
-      decay: AudioUtils.dbToGain(this.crosstalkConfig.decay),
+      microdelay: isNaN(this.crosstalkConfig.microdelay) ? predicted.microdelay : this.crosstalkConfig.microdelay,
+      decay: AudioUtils.dbToGain(isNaN(this.crosstalkConfig.decay) ? predicted.decay : this.crosstalkConfig.decay),
       colorgain: AudioUtils.dbToGain(this.crosstalkConfig.colorgain),
       highbypass: this.crosstalkConfig.highbypass,
       lowbypass: this.crosstalkConfig.lowbypass,
@@ -227,7 +228,10 @@ export class AudioCrosstalk extends AbstractAudioModule {
       e.stopPropagation();
     });
 
-    this.crosstalkKnobs.decay = createKnob(Localize.getMessage('audiocrosstalk_decay'), -5, -0.01, (val) => {
+    this.crosstalkKnobs.decay = createKnob(Localize.getMessage('audiocrosstalk_decay'), -5, -0.01, (val, isSuggested) => {
+      if (isSuggested) {
+        val = NaN;
+      }
       if (this.crosstalkConfig && val !== this.crosstalkConfig.decay) {
         this.crosstalkConfig.decay = val;
         this.updateCrosstalk();
@@ -242,7 +246,10 @@ export class AudioCrosstalk extends AbstractAudioModule {
     }, 'dB');
 
 
-    this.crosstalkKnobs.microdelay = createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 30, 200, (val) => {
+    this.crosstalkKnobs.microdelay = createKnob(Localize.getMessage('audiocrosstalk_microdelay'), 30, 200, (val, isSuggested) => {
+      if (isSuggested) {
+        val = NaN;
+      }
       if (this.crosstalkConfig && val !== this.crosstalkConfig.microdelay) {
         this.crosstalkConfig.microdelay = val;
         this.updateCrosstalk();

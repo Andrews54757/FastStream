@@ -9,11 +9,11 @@ export class AudioCrosstalkControl {
   }
 
   static fromObj(obj) {
-    return new AudioCrosstalkControl(obj.enabled, obj.decay || obj.decaygain / 1000 ||-0.37, obj.colorgain, obj.microdelay, obj.lowbypass, obj.highbypass);
+    return new AudioCrosstalkControl(obj.enabled, obj.decay || obj.decaygain / 1000, obj.colorgain, obj.microdelay, obj.lowbypass, obj.highbypass);
   }
 
   static default() {
-    return new AudioCrosstalkControl(false, -0.82, 5, 145, 250, 5000);
+    return new AudioCrosstalkControl(false, NaN, 5, NaN, 250, 5000);
   }
 
   toObj() {
