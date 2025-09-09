@@ -54,10 +54,6 @@ body {
   box-sizing: border-box;
 }
 
-html {
-  color-scheme: light dark;
-}
-
 body {
   padding: var(--space-4) var(--space-4);
   font-family: var(--font-body);
