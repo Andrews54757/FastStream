@@ -38,7 +38,7 @@ body {
 
 @media (prefers-color-scheme: dark) {
   body:not(.frame) {
-    --color-bg: #0b0f14;
+    --color-bg: #23212a;
     --color-bg-muted: #0f1720;
     --color-text: #e5e7eb;
     --color-muted: #9ca3af;
@@ -135,7 +135,7 @@ body.frame .keybind-input {
 }
 
 body:not(.frame) {
-  min-width: 700px;
+  min-width: 600px;
   margin: auto;
 }
 
