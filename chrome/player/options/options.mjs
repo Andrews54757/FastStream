@@ -5,6 +5,7 @@ import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 import {Localize} from '../modules/Localize.mjs';
+import {OptionsStore} from './OptionsStore.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
@@ -14,7 +15,6 @@ import {DefaultSubtitlesSettings} from './defaults/DefaultSubtitlesSettings.mjs'
 import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
-import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {ColorThemes} from './defaults/ColorThemes.mjs';
 
 let Options = {};
@@ -61,7 +61,8 @@ customSourcePatterns.setAttribute('autocorrect', 'off');
 customSourcePatterns.setAttribute('spellcheck', false);
 customSourcePatterns.placeholder = '# This is a comment. Use the following format.\n[file extension] /[regex]/[flags]';
 
-loadOptions();
+// Initialize store and then load page controls
+OptionsStore.init().then(() => loadOptions(OptionsStore.get()));
 
 
 if (!EnvUtils.isExtension()) {
@@ -83,7 +84,7 @@ if (EnvUtils.isSafari()) {
 }
 
 async function loadOptions(newOptions) {
-  newOptions = newOptions || await Utils.getOptionsFromStorage();
+  newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
   downloadAll.checked = !!Options.downloadAll;
@@ -475,48 +476,22 @@ exportButton.addEventListener('click', async () => {
   URL.revokeObjectURL(url);
 });
 
-let optionSendTime = null;
 function optionChanged() {
-  if (EnvUtils.isExtension()) {
-    chrome.storage.local.set({
-      options: JSON.stringify(Options),
-    }, ()=>{
-      optionSendTime = Date.now();
-      chrome.runtime.sendMessage({
-        type: MessageTypes.LOAD_OPTIONS,
-        time: optionSendTime,
-      });
-    });
-  } else {
-    localStorage.setItem('options', JSON.stringify(Options));
-    const postWindow = window.opener || window.parent || window;
-    postWindow.postMessage({
-      type: 'options',
-    }, '/');
-  }
+  // Centralized save/broadcast
+  OptionsStore.replace(Options);
 }
 
 const versionDiv = document.getElementById('version');
 versionDiv.textContent = `FastStream v${EnvUtils.getVersion()}`;
 
 if (EnvUtils.isExtension()) {
-  // Load options on options event
-  chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.type === MessageTypes.UPDATE_OPTIONS) {
-      if (request.time !== optionSendTime) {
-        optionSendTime = request.time;
-        loadOptions();
-      }
-    }
-  });
+  // React to external changes via OptionsStore
+  OptionsStore.subscribe(() => loadOptions(OptionsStore.get()));
 
-  // Load options on visibility change
+  // Also refresh when becoming visible to catch recent changes
   const o = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) {
-      loadOptions();
-    }
+    if (entry.isIntersecting) loadOptions(OptionsStore.get());
   });
-
   o.observe(document.body);
 
   const ratebox = document.getElementById('ratebox');

@@ -23,6 +23,7 @@ module.exports = {
   },
   'rules': {
     'require-jsdoc': 'off',
+    'valid-jsdoc': 'off',
     'max-len': 0,
     'camelcase': 'off',
   },

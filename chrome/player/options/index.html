@@ -44,84 +44,86 @@
         <option value="0">
     </datalist>
 
-    <div class="video-option" data-option="videoZoom">
-        <div class="label" data-i18n="options_video_zoom"></div>
-        <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
-        <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
-            data-i18n-label="options_video_zoom"></input>
+    <div class="options-with-range-table">
+        <div class="video-option" data-option="videoZoom">
+            <div class="label" data-i18n="options_video_zoom"></div>
+            <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
+            <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
+                data-i18n-label="options_video_zoom"></input>
+        </div>
+
+        <div class="video-option" data-option="videoDelay" data-unit="ms" data-multiplier="1">
+            <div class="label" data-i18n="options_video_delay"></div>
+            <input class="number" type="text" data-i18n-label="options_video_delay"></input>
+            <input class="range" type="range" min="-1000" max="1000" value="0" step="1" list="snap-zero"
+                data-i18n-label="options_video_delay"></input>
+        </div>
+
+        <div class="video-option" data-option="videoBrightness">
+            <div class="label" data-i18n="options_video_brightness"></div>
+            <input class="number" type="text" data-i18n-label="options_video_brightness"></input>
+            <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
+                data-i18n-label="options_video_brightness"></input>
+        </div>
+
+
+        <div class="video-option" data-option="videoContrast">
+            <div class="label" data-i18n="options_video_contrast"></div>
+            <input class="number" type="text" data-i18n-label="options_video_contrast"></input>
+            <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
+                data-i18n-label="options_video_contrast"></input>
+        </div>
+
+
+        <div class="video-option" data-option="videoSaturation">
+            <div class="label" data-i18n="options_video_saturation"></div>
+            <input class="number" type="text" data-i18n-label="options_video_saturation"></input>
+            <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
+                data-i18n-label="options_video_saturation"></input>
+        </div>
+
+
+        <div class="video-option" data-option="videoGrayscale">
+            <div class="label" data-i18n="options_video_grayscale"></div>
+            <input class="number" type="text" data-i18n-label="options_video_grayscale"></input>
+            <input class="range" type="range" min="0" max="100" value="0" step="1"
+                data-i18n-label="options_video_grayscale"></input>
+        </div>
+
+        <div class="video-option" data-option="videoSepia">
+            <div class="label" data-i18n="options_video_sepia"></div>
+            <input class="number" type="text" data-i18n-label="options_video_sepia"></input>
+            <input class="range" type="range" min="0" max="100" value="0" step="1"
+                data-i18n-label="options_video_sepia"></input>
+        </div>
+
+        <div class="video-option" data-option="videoInvert">
+            <div class="label" data-i18n="options_video_invert"></div>
+            <input class="number" type="text" data-i18n-label="options_video_invert"></input>
+            <input class="range" type="range" min="0" max="100" value="0" step="1"
+                data-i18n-label="options_video_invert"></input>
+        </div>
+
+        <div class="video-option" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
+            <div class="label" data-i18n="options_video_hue"></div>
+            <input class="number" type="text" data-i18n-label="options_video_hue"></input>
+            <input class="range" type="range" min="0" max="360" value="0" step="1"
+                data-i18n-label="options_video_hue"></input>
+        </div>
+
+        <div class="option grid2" style="margin-top: 5px">
+            <div class="label" data-i18n="options_video_daltonizer_type" style="margin-left: 0px"></div>
+            <div class="select" id="daltonizerType" data-i18n-label="options_video_daltonizer_type"></div>
+        </div>
+
+        <div id="daltonizerStrength" class="video-option" data-option="videoDaltonizerStrength" style="margin-top: 5px">
+            <div class="label" data-i18n="options_video_daltonizer_strength"></div>
+            <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
+            <input class="range" type="range" min="0" max="100" value="0" step="1"
+                data-i18n-label="options_video_daltonizer_strength"></input>
+        </div>
     </div>
-
-    <div class="video-option" data-option="videoDelay" data-unit="ms" data-multiplier="1">
-        <div class="label" data-i18n="options_video_delay"></div>
-        <input class="number" type="text" data-i18n-label="options_video_delay"></input>
-        <input class="range" type="range" min="-1000" max="1000" value="0" step="1" list="snap-zero"
-            data-i18n-label="options_video_delay"></input>
     </div>
-
-    <div class="video-option" data-option="videoBrightness">
-        <div class="label" data-i18n="options_video_brightness"></div>
-        <input class="number" type="text" data-i18n-label="options_video_brightness"></input>
-        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
-            data-i18n-label="options_video_brightness"></input>
-    </div>
-
-
-    <div class="video-option" data-option="videoContrast">
-        <div class="label" data-i18n="options_video_contrast"></div>
-        <input class="number" type="text" data-i18n-label="options_video_contrast"></input>
-        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
-            data-i18n-label="options_video_contrast"></input>
-    </div>
-
-
-    <div class="video-option" data-option="videoSaturation">
-        <div class="label" data-i18n="options_video_saturation"></div>
-        <input class="number" type="text" data-i18n-label="options_video_saturation"></input>
-        <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
-            data-i18n-label="options_video_saturation"></input>
-    </div>
-
-
-    <div class="video-option" data-option="videoGrayscale">
-        <div class="label" data-i18n="options_video_grayscale"></div>
-        <input class="number" type="text" data-i18n-label="options_video_grayscale"></input>
-        <input class="range" type="range" min="0" max="100" value="0" step="1"
-            data-i18n-label="options_video_grayscale"></input>
-    </div>
-
-    <div class="video-option" data-option="videoSepia">
-        <div class="label" data-i18n="options_video_sepia"></div>
-        <input class="number" type="text" data-i18n-label="options_video_sepia"></input>
-        <input class="range" type="range" min="0" max="100" value="0" step="1"
-            data-i18n-label="options_video_sepia"></input>
-    </div>
-
-    <div class="video-option" data-option="videoInvert">
-        <div class="label" data-i18n="options_video_invert"></div>
-        <input class="number" type="text" data-i18n-label="options_video_invert"></input>
-        <input class="range" type="range" min="0" max="100" value="0" step="1"
-            data-i18n-label="options_video_invert"></input>
-    </div>
-
-    <div class="video-option" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
-        <div class="label" data-i18n="options_video_hue"></div>
-        <input class="number" type="text" data-i18n-label="options_video_hue"></input>
-        <input class="range" type="range" min="0" max="360" value="0" step="1"
-            data-i18n-label="options_video_hue"></input>
-    </div>
-
-    <div class="option grid2" style="margin-top: 5px">
-        <div class="label" data-i18n="options_video_daltonizer_type" style="margin-left: 0px"></div>
-        <div class="select" id="daltonizerType" data-i18n-label="options_video_daltonizer_type"></div>
-    </div>
-
-    <div id="daltonizerStrength" class="video-option" data-option="videoDaltonizerStrength" style="margin-top: 5px">
-        <div class="label" data-i18n="options_video_daltonizer_strength"></div>
-        <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
-        <input class="range" type="range" min="0" max="100" value="0" step="1"
-            data-i18n-label="options_video_daltonizer_strength"></input>
-    </div>
-
     <h1 data-i18n="options_general_header"></h1>
     <div class="option grid1">
         <input type="checkbox" id="downloadall" data-i18n-label="options_general_predownload">
