@@ -79,6 +79,9 @@ body.frame {
   --color-primary: var(--link-color);
   --color-primary-contrast: var(--popwindow-button-text-color);
   --color-focus: var(--popwindow-textinput-focus-border-color);
+  background: transparent;
+  margin: 0px;
+  padding: 4px 20px;
 }
 
 /* Inputs/selects/textarea inside frame should use exact player borders/backgrounds */
