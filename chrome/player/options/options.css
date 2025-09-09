@@ -1,7 +1,8 @@
 /* Modernized options page styles */
+@import url("../assets/fluidplayer/css/colors.css");
 
 /* Design tokens */
-:root {
+body {
   /* spacing */
   --space-1: 4px;
   --space-2: 8px;
@@ -36,7 +37,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  body:not(.frame) {
     --color-bg: #0b0f14;
     --color-bg-muted: #0f1720;
     --color-text: #e5e7eb;
@@ -58,13 +59,80 @@ html {
 }
 
 body {
-  padding: var(--space-6) var(--space-4);
+  padding: var(--space-4) var(--space-4);
   font-family: var(--font-body);
   user-select: none;
   font-size: var(--font-size-1);
   line-height: var(--line-height);
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+/* When embedded inside the player, adopt player theme variables */
+body.frame {
+  /* map tokens to player theme variables */
+  --color-bg: var(--popwindow-background-color);
+  --color-bg-muted: var(--popwindow-dropdown-item-background-color);
+  --color-text: var(--popwindow-text-color);
+  --color-muted: color-mix(in oklab, var(--color-text) 70%, transparent);
+  --color-elev: var(--input-background-color);
+  --color-primary: var(--link-color);
+  --color-primary-contrast: var(--popwindow-button-text-color);
+  --color-focus: var(--popwindow-textinput-focus-border-color);
+}
+
+/* Inputs/selects/textarea inside frame should use exact player borders/backgrounds */
+body.frame input,
+body.frame select,
+body.frame textarea {
+  border: var(--input-border);
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+}
+
+body.frame input:focus-visible,
+body.frame select:focus-visible,
+body.frame textarea:focus-visible {
+  outline: var(--input-focus-border);
+  outline-offset: 2px;
+}
+
+/* Buttons follow popwindow button styles when embedded */
+body.frame button {
+  background-color: var(--popwindow-button-background-color);
+  color: var(--popwindow-button-text-color);
+  border: var(--popwindow-border);
+}
+
+body.frame button:hover {
+  background-color: var(--popwindow-button-hover-background-color);
+  border: var(--popwindow-border);
+}
+
+/* Primary submit button inside frame */
+body.frame #submitter {
+  background-color: var(--popwindow-button-active-background-color);
+  color: var(--popwindow-button-text-color);
+}
+
+/* Link styling when embedded in player */
+body.frame a,
+body.frame a:visited {
+  color: var(--link-color);
+  text-decoration-color: color-mix(in oklab, var(--link-color) 70%, transparent);
+}
+
+body.frame a:hover,
+body.frame a:focus-visible {
+  color: color-mix(in oklab, var(--link-color) 85%, white 15%);
+  outline: none;
+}
+
+/* Keybind input chips match input styling in frame */
+body.frame .keybind-input {
+  border: var(--input-border);
+  background: var(--input-background-color);
+  color: var(--input-text-color);
 }
 
 body:not(.frame) {

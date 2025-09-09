@@ -114,6 +114,8 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
   // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
 
+  document.body.dataset.theme = Options.colorTheme;
+
   if (Options.visChangeAction === VisChangeActions.MINI_PLAYER) {
     showWhenMiniSelected.style.display = '';
   } else {
