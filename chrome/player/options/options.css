@@ -197,6 +197,7 @@ p.hint {
   width: 100%;
   height: 150px;
   resize: vertical;
+  white-space: pre;
 }
 
 #autoEnableURLs:focus-visible,
