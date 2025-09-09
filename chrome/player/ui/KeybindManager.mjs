@@ -2,6 +2,7 @@ import {DefaultKeybinds, KeybindsWithModifiers} from '../options/defaults/Defaul
 import {EventEmitter} from '../modules/eventemitter.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
+import {Utils} from '../utils/Utils.mjs';
 
 export class KeybindManager extends EventEmitter {
   constructor(client) {
@@ -168,6 +169,18 @@ export class KeybindManager extends EventEmitter {
     this.on('RotateVideo', (e) => {
       const options = this.client.options;
       options.videoRotate = (options.videoRotate + 3) % 4;
+      this.client.updateCSSFilters();
+    });
+
+    this.on('ZoomInVideo', (e) =>{
+      const options = this.client.options;
+      options.videoZoom = Utils.clamp(options.videoZoom + 0.05, 0, 2);
+      this.client.updateCSSFilters();
+    });
+
+    this.on('ZoomOutVideo', (e) =>{
+      const options = this.client.options;
+      options.videoZoom = Utils.clamp(options.videoZoom - 0.05, 0, 2);
       this.client.updateCSSFilters();
     });
 

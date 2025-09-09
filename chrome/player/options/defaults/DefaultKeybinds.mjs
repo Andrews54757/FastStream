@@ -31,6 +31,8 @@ export const DefaultKeybinds = {
   'ToggleSubtitles': 'KeyC',
   'FlipVideo': 'KeyE',
   'RotateVideo': 'KeyR',
+  'ZoomInVideo': 'None',
+  'ZoomOutVideo': 'None',
   'ToggleVisualFilters': 'KeyQ',
 };
 
