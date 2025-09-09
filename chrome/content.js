@@ -617,6 +617,7 @@
     left: auto !important;
     right: auto !important;
     bottom: auto !important;
+    pointer-events: auto !important;
     border-radius: 0px !important;`);
     updateMiniPlayer(iframeObj);
   }
@@ -708,6 +709,7 @@
     height: 100% !important;
     bottom: 0px !important;
     right: 0px !important;
+    pointer-events: auto !important;
     border-radius: 0px !important;`;
     if (!skipHide) {
       const elementsToHide = [];
@@ -881,6 +883,7 @@
     iframe.style.setProperty('height', height, 'important');
     iframe.style.setProperty('padding', '0px', 'important');
     iframe.style.setProperty('opacity', '1', 'important');
+    iframe.style.setProperty('pointer-events', 'auto', 'important');
     iframe.style.setProperty('visibility', 'visible', 'important');
     if (styles.display === 'none' || softReplace) {
       iframe.style.setProperty('display', 'block', 'important');
