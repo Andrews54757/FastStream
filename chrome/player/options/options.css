@@ -63,9 +63,13 @@ body {
   user-select: none;
   font-size: var(--font-size-1);
   line-height: var(--line-height);
-  min-width: 450px;
   color: var(--color-text);
   background: var(--color-bg);
+}
+
+body:not(.frame) {
+  min-width: 700px;
+  margin: auto;
 }
 
 #version {

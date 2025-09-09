@@ -526,6 +526,11 @@ if (EnvUtils.isExtension()) {
   const feedbackyes = document.getElementById('feedback-yes');
   const feedbackno = document.getElementById('feedback-no');
 
+  // if in iframe, add the frame class to body
+  if (parent !== window) {
+    document.body.classList.add('frame');
+  }
+
   feedbackyes.addEventListener('click', (e) => {
     chrome.storage.local.set({
       feedback: 'yes',
@@ -618,3 +623,4 @@ if (EnvUtils.isExtension()) {
   });
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
+

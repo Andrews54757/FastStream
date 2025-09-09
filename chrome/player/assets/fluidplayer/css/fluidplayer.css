@@ -2044,7 +2044,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
 
 .options_container {
     overflow: hidden;
-    max-width: 500px;
+    max-width: 600px;
     width: 90%;
     margin: auto;
     left: auto;
