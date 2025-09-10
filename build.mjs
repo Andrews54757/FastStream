@@ -209,7 +209,7 @@ function splice(fileText, target, relativePath) {
         console.log(`[Splicer-${target}] Inserting locale`, relativePath);
         continue;
       } else if (command === 'INSERT_VERSION') {
-        newLines.push(`version = '${packageJson.version}';`);
+        newLines.push(`version = '${packageJson.version}.web';`);
         console.log(`[Splicer-${target}] Inserting version`, relativePath);
         continue;
       }
