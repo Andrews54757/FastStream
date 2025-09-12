@@ -138,14 +138,14 @@ body[data-theme="contrast"] {
   --popwindow-border: 2px solid #ffffff;
   --popwindow-background-color: rgba(0, 0, 0, 0.98);
   --popwindow-text-color: #ffffff;
-  --popwindow-button-background-color: #111111;
+  --popwindow-button-background-color: #4a4a4a;
   --popwindow-button-text-color: #ffffff;
   --popwindow-button-titletext-color: #d0d0d0;
-  --popwindow-button-hover-background-color: #1a1a1a;
-  --popwindow-button-active-background-color: #81771d;
-  --popwindow-dropdown-item-background-color: #0d0d0d;
-  --popwindow-dropdown-item-selected-background-color: #000000;
-  --popwindow-dropdown-item-hover-background-color: #1a1a1a;
+  --popwindow-button-hover-background-color: #58188b;
+  --popwindow-button-active-background-color: #9f942e;
+  --popwindow-dropdown-item-background-color: #4a4a4a;
+  --popwindow-dropdown-item-selected-background-color: #58188b;
+  --popwindow-dropdown-item-hover-background-color: #6b4d83;
   --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
   --popwindow-textinput-focus-border-color: #ffeb3b;
 
@@ -155,7 +155,7 @@ body[data-theme="contrast"] {
   --source-headers-invalid-border: 2px solid #ff1744;
 
   --timeline-current-position-color: #ffeb3b;
-  --timeline-cue-background-color: rgba(255, 255, 255, 0.35);
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.8);
   --timeline-cue-text-color: #000000;
   --timeline-tick-color: rgba(255, 255, 255, 0.95);
   --timeline-tick-label-color: rgba(255, 255, 255, 1);
