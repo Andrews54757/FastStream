@@ -978,34 +978,34 @@
         "message": "Default Dark"
     },
     "options_general_color_theme_arctic": {
-        "message": "Arctic"
+        "message": "Arctic Light"
     },
     "options_general_color_theme_ocean": {
-        "message": "Ocean"
+        "message": "Ocean Blue"
     },
     "options_general_color_theme_neon": {
-        "message": "Neon"
+        "message": "Neon Night"
     },
     "options_general_color_theme_contrast": {
         "message": "High Contrast"
     },
     "options_general_color_theme_sunset": {
-        "message": "Sunset"
+        "message": "Sunset Glow"
     },
     "options_general_color_theme_forest": {
-        "message": "Forest"
+        "message": "Forest Night"
     },
     "options_general_color_theme_slate": {
-        "message": "Slate"
+        "message": "Slate Mono"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Amethyst"
+        "message": "Amethyst Haze"
     },
     "options_general_color_theme_desert": {
-        "message": "Desert"
+        "message": "Desert Sand"
     },
     "options_general_color_theme_mint": {
-        "message": "Mint"
+        "message": "Mint Fresh"
     },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"

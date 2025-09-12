@@ -978,34 +978,34 @@
         "message": "Predefinito Scuro"
     },
     "options_general_color_theme_arctic": {
-        "message": "Artico"
+        "message": "Luce Artica"
     },
     "options_general_color_theme_ocean": {
-        "message": "Oceano"
+        "message": "Blu Oceano"
     },
     "options_general_color_theme_neon": {
-        "message": "Neon"
+        "message": "Notte Neon"
     },
     "options_general_color_theme_contrast": {
         "message": "Alto Contrasto"
     },
     "options_general_color_theme_sunset": {
-        "message": "Tramonto"
+        "message": "Bagliore del Tramonto"
     },
     "options_general_color_theme_forest": {
-        "message": "Foresta"
+        "message": "Notte nella Foresta"
     },
     "options_general_color_theme_slate": {
-        "message": "Ardesia"
+        "message": "Ardesia Monocromatica"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Ametista"
+        "message": "Foschia di Ametista"
     },
     "options_general_color_theme_desert": {
-        "message": "Deserto"
+        "message": "Sabbia del Deserto"
     },
     "options_general_color_theme_mint": {
-        "message": "Menta"
+        "message": "Menta Fresca"
     },
     "options_general_vischangeaction_pip": {
         "message": "Attiva/disattiva il picture-in-picture"

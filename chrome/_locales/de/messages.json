@@ -978,34 +978,34 @@
         "message": "Standard Dunkel"
     },
     "options_general_color_theme_arctic": {
-        "message": "Arktis"
+        "message": "Arktisches Licht"
     },
     "options_general_color_theme_ocean": {
-        "message": "Ozean"
+        "message": "Ozeanblau"
     },
     "options_general_color_theme_neon": {
-        "message": "Neon"
+        "message": "Neon-Nacht"
     },
     "options_general_color_theme_contrast": {
         "message": "Hoher Kontrast"
     },
     "options_general_color_theme_sunset": {
-        "message": "Sonnenuntergang"
+        "message": "Sonnenuntergangsglühen"
     },
     "options_general_color_theme_forest": {
-        "message": "Wald"
+        "message": "Waldnacht"
     },
     "options_general_color_theme_slate": {
-        "message": "Schiefer"
+        "message": "Schiefer Monochrom"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Amethyst"
+        "message": "Amethystnebel"
     },
     "options_general_color_theme_desert": {
-        "message": "Wüste"
+        "message": "Wüstensand"
     },
     "options_general_color_theme_mint": {
-        "message": "Minze"
+        "message": "Frische Minze"
     },
     "options_general_vischangeaction_pip": {
         "message": "Bild-in-Bild umschalten"

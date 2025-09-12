@@ -978,34 +978,34 @@
         "message": "Темная по умолчанию"
     },
     "options_general_color_theme_arctic": {
-        "message": "Арктика"
+        "message": "Арктический свет"
     },
     "options_general_color_theme_ocean": {
-        "message": "Океан"
+        "message": "Океанический синий"
     },
     "options_general_color_theme_neon": {
-        "message": "Неон"
+        "message": "Неоновая ночь"
     },
     "options_general_color_theme_contrast": {
         "message": "Высокая контрастность"
     },
     "options_general_color_theme_sunset": {
-        "message": "Закат"
+        "message": "Закатное сияние"
     },
     "options_general_color_theme_forest": {
-        "message": "Лес"
+        "message": "Лесная ночь"
     },
     "options_general_color_theme_slate": {
-        "message": "Сланец"
+        "message": "Сланец монохром"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Аметист"
+        "message": "Аметистовая дымка"
     },
     "options_general_color_theme_desert": {
-        "message": "Пустыня"
+        "message": "Пустынный песок"
     },
     "options_general_color_theme_mint": {
-        "message": "Мята"
+        "message": "Свежая мята"
     },
     "options_general_vischangeaction_pip": {
         "message": "Картинка в картинке"

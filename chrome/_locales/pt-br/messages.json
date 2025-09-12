@@ -978,34 +978,34 @@
         "message": "Padrão Escuro"
     },
     "options_general_color_theme_arctic": {
-        "message": "Ártico"
+        "message": "Luz Ártica"
     },
     "options_general_color_theme_ocean": {
-        "message": "Oceano"
+        "message": "Azul Oceano"
     },
     "options_general_color_theme_neon": {
-        "message": "Neon"
+        "message": "Noite Néon"
     },
     "options_general_color_theme_contrast": {
         "message": "Alto Contraste"
     },
     "options_general_color_theme_sunset": {
-        "message": "Pôr do sol"
+        "message": "Brilho do Pôr do Sol"
     },
     "options_general_color_theme_forest": {
-        "message": "Floresta"
+        "message": "Noite na Floresta"
     },
     "options_general_color_theme_slate": {
-        "message": "Lousa"
+        "message": "Lousa Monocromática"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Ametista"
+        "message": "Névoa de Ametista"
     },
     "options_general_color_theme_desert": {
-        "message": "Deserto"
+        "message": "Areia do Deserto"
     },
     "options_general_color_theme_mint": {
-        "message": "Menta"
+        "message": "Menta Fresca"
     },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagem sobreposta (pip)"

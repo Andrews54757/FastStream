@@ -978,34 +978,34 @@
         "message": "Default Dark"
     },
     "options_general_color_theme_arctic": {
-        "message": "Arctic"
+        "message": "Cahaya Artik"
     },
     "options_general_color_theme_ocean": {
-        "message": "Ocean"
+        "message": "Biru Lautan"
     },
     "options_general_color_theme_neon": {
-        "message": "Neon"
+        "message": "Malam Neon"
     },
     "options_general_color_theme_contrast": {
         "message": "High Contrast"
     },
     "options_general_color_theme_sunset": {
-        "message": "Sunset"
+        "message": "Cahaya Senja"
     },
     "options_general_color_theme_forest": {
-        "message": "Forest"
+        "message": "Malam Hutan"
     },
     "options_general_color_theme_slate": {
-        "message": "Slate"
+        "message": "Slate Monokrom"
     },
     "options_general_color_theme_amethyst": {
-        "message": "Amethyst"
+        "message": "Kabus Ametis"
     },
     "options_general_color_theme_desert": {
-        "message": "Desert"
+        "message": "Pasir Gurun"
     },
     "options_general_color_theme_mint": {
-        "message": "Mint"
+        "message": "Pudina Segar"
     },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
