@@ -30,7 +30,7 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.toggleHide();
     });
 
-    this.on('NextChapter', (e) =>{
+    this.on('NextChapter', (e) => {
       const chapters = this.client.chapters;
       const time = this.client.currentTime;
       const chapter = chapters.findIndex((chapter) => chapter.startTime <= time && chapter.endTime >= time);
@@ -57,7 +57,12 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.showControlBarTemporarily();
     });
 
-    this.on('Mute', (e)=>{
+    this.on('VolumeReset', (e) => {
+      this.client.volume = 1;
+      this.client.interfaceController.showControlBarTemporarily();
+    });
+
+    this.on('Mute', (e) => {
       this.client.interfaceController.volumeControls.muteToggle();
     });
 
@@ -121,6 +126,11 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.showControlBarTemporarily();
     });
 
+    this.on('ResetPlaybackRate', (e) => {
+      this.client.playbackRate = 1;
+      this.client.interfaceController.showControlBarTemporarily();
+    });
+
     this.on('UndoSeek', (e) => {
       this.client.undoSeek();
       this.client.interfaceController.showControlBarTemporarily();
@@ -161,7 +171,7 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.subtitlesManager.subtitleSyncer.shiftSubtitles(-0.2);
     });
 
-    this.on('ToggleSubtitles', (e)=>{
+    this.on('ToggleSubtitles', (e) => {
       this.client.interfaceController.subtitlesManager.toggleSubtitles();
     });
 
@@ -178,15 +188,21 @@ export class KeybindManager extends EventEmitter {
       this.client.updateCSSFilters();
     });
 
-    this.on('ZoomInVideo', (e) =>{
+    this.on('ZoomInVideo', (e) => {
       const options = this.client.options;
       options.videoZoom = Utils.clamp(options.videoZoom + 0.05, 0, 2);
       this.client.updateCSSFilters();
     });
 
-    this.on('ZoomOutVideo', (e) =>{
+    this.on('ZoomOutVideo', (e) => {
       const options = this.client.options;
       options.videoZoom = Utils.clamp(options.videoZoom - 0.05, 0, 2);
+      this.client.updateCSSFilters();
+    });
+
+    this.on('ZoomReset', (e) => {
+      const options = this.client.options;
+      options.videoZoom = 1;
       this.client.updateCSSFilters();
     });
 
@@ -194,11 +210,11 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.toggleWindowedFullscreen();
     });
 
-    this.on('NextVideo', (e) =>{
+    this.on('NextVideo', (e) => {
       this.client.nextVideo();
     });
 
-    this.on('PreviousVideo', (e) =>{
+    this.on('PreviousVideo', (e) => {
       this.client.previousVideo();
     });
 
