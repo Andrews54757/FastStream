@@ -49,10 +49,12 @@ export class KeybindManager extends EventEmitter {
 
     this.on('VolumeUp', (e) => {
       this.client.volume = Math.round(Math.min(this.client.volume + 0.10, 3) * 100) / 100;
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('VolumeDown', (e) => {
       this.client.volume = Math.round(Math.max(this.client.volume - 0.10, 0) * 100) / 100;
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('Mute', (e)=>{
@@ -111,18 +113,22 @@ export class KeybindManager extends EventEmitter {
 
     this.on('IncreasePlaybackRate', (e) => {
       this.client.playbackRate = Math.min(this.client.playbackRate + 0.1, 8);
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('DecreasePlaybackRate', (e) => {
       this.client.playbackRate = Math.max(this.client.playbackRate - 0.1, 0.1);
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('UndoSeek', (e) => {
       this.client.undoSeek();
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('RedoSeek', (e) => {
       this.client.redoSeek();
+      this.client.interfaceController.showControlBarTemporarily();
     });
 
     this.on('ResetFailed', (e) => {

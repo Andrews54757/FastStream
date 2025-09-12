@@ -109,8 +109,7 @@ export class InterfaceController {
 
     this.progressBar = new ProgressBar(this.client);
     this.progressBar.on('show-skip', (segment)=>{
-      this.showControlBar();
-      this.queueControlsHide(5000);
+      this.showControlBarTemporarily(5000);
     });
     this.progressBar.setupUI();
 
@@ -1015,6 +1014,10 @@ export class InterfaceController {
     DOMElements.controlsContainer.classList.add('fade_in');
   }
 
+  showControlBarTemporarily(timeout = 1000) {
+    this.showControlBar();
+    this.queueControlsHide(timeout);
+  }
 
   updatePlaybackRate() {
     this.playbackRateChanger.setPlaybackRate(this.state.playbackRate, true);
