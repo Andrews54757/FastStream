@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "Slate"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "Amethyst"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Desert"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Mint"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Toggle picture-in-picture"
     },

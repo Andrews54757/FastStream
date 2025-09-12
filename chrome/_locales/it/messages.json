@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "Ardesia"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "Ametista"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Deserto"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Menta"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Attiva/disattiva il picture-in-picture"
     },

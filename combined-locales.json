@@ -3329,6 +3329,36 @@
         "pt-br": "Lousa",
         "ru": "Сланец"
     },
+    "options_general_color_theme_amethyst": {
+        "en": "Amethyst",
+        "de": "Amethyst",
+        "es": "Amatista",
+        "it": "Ametista",
+        "ja": "アメジスト",
+        "ms": "Amethyst",
+        "pt-br": "Ametista",
+        "ru": "Аметист"
+    },
+    "options_general_color_theme_desert": {
+        "en": "Desert",
+        "de": "Wüste",
+        "es": "Desierto",
+        "it": "Deserto",
+        "ja": "砂漠",
+        "ms": "Desert",
+        "pt-br": "Deserto",
+        "ru": "Пустыня"
+    },
+    "options_general_color_theme_mint": {
+        "en": "Mint",
+        "de": "Minze",
+        "es": "Menta",
+        "it": "Menta",
+        "ja": "ミント",
+        "ms": "Mint",
+        "pt-br": "Menta",
+        "ru": "Мята"
+    },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
         "de": "Bild-in-Bild umschalten",

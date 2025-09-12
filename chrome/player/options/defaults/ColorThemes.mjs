@@ -7,4 +7,7 @@ export const ColorThemes = {
   SUNSET: 'sunset',
   FOREST: 'forest',
   SLATE: 'slate',
+  AMETHYST: 'amethyst',
+  DESERT: 'desert',
+  MINT: 'mint',
 };

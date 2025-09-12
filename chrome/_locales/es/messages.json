@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "Pizarra"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "Amatista"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Desierto"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Menta"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Alternar imagen en imagen"
     },

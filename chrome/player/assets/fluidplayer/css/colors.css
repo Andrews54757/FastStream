@@ -1,89 +1,91 @@
-body, body[data-theme="default"] {
-    --mainplayer-background-color: black;
-    --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%,rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.6) 100%);
-    --progress-bar-background-color: rgba(255, 255, 255, 0.25);
-    --progress-bar-current-progress-color: red;
-    --progress-bar-knob-color: white;
-    --volume-slider-background-color: rgba(171, 172, 172, 0.68);
-    --volume-slider-knob-color: white;
-    --menu-background-color: rgba(70, 70, 70, 0.8);
-    --menu-text-color: white;
-    --menu-border: 1px solid rgba(255, 255, 255, 0.2);
-    --menu-list-item-hover-background-color: rgba(30, 30, 30, 0.8);
-    --menu-list-item-active-background-color: rgba(20, 20, 20, 0.8);
-    --menu-textbutton-background-color: rgba(20, 20, 20, 0.7);
-    --menu-textbutton-text-color: white;
-    --menu-textbutton-hover-background-color: rgb(40, 40, 40, 0.7);
-    --menu-quality-sublist-indent-shadow-color: rgb(200, 200, 200);
-    --menu-quality-sublist-indent-shadow-color-active: rgb(150, 150, 150);
-    --seek-preview-background-color: rgba(20, 20, 20, 0.7);
-    --seek-preview-text-color: rgba(255, 255, 255, 0.9);
-    --seek-preview-detached-tip-color: rgba(255, 255, 255, 0.9);
-    --progress-download-initiated-color: rgba(80, 255, 80, 0.7);
-    --progress-download-complete-color: rgba(255, 255, 255, 0.2);
-    --progress-download-failed-color: rgba(255, 100, 100, 1);
-    --intro-outro-bar-color: rgb(222, 187, 0);
-    --popbutton-background-color: rgba(20, 20, 20, 0.7);
-    --popbutton-text-color: white;
-    --popbutton-border: 1px solid rgba(255, 255, 255, 0.1);
-    --popbutton-hover-background-color: rgba(20, 20, 20, 1);
-    --popbutton-hover-border: 1px solid rgba(255, 255, 255, 0.5);
-    --seek-marker-undo-color: #54f4ff;
-    --seek-marker-redo-color: #F4FF54;
-    --analyzer-marker-color: rgb(199, 199, 199);
-    --close-button-color: rgba(255, 0, 0, .5);
-    --close-button-hover-color: rgba(255, 0, 0, 1);
-    --popwindow-border: 1px solid rgba(0, 0, 0, .1);
-    --popwindow-background-color: rgba(50, 50, 50, .9);
-    --popwindow-text-color: rgba(255, 255, 255, 0.8);
-    --popwindow-button-background-color: rgb(20, 20, 20);
-    --popwindow-button-text-color: rgb(200, 200, 200);
-    --popwindow-button-titletext-color: rgb(163, 163, 163);
-    --popwindow-button-hover-background-color: rgb(30, 30, 30);
-    --popwindow-button-active-background-color: rgb(0, 135, 153);
-    --popwindow-dropdown-item-background-color: rgb(30, 30, 30);
-    --popwindow-dropdown-item-selected-background-color: rgb(20,20,20);
-    --popwindow-dropdown-item-hover-background-color: rgb(40, 40, 40);
-    --popwindow-dropdown-text-focus-outline: 1px solid rgba(255, 255, 255, 0.5);
-    --popwindow-textinput-focus-border-color: rgba(255, 255, 255, 0.5);
-    --source-delete-button-color: rgb(120, 0, 0);
-    --source-delete-button-hover-color: rgb(100, 0, 0);
-    --source-active-url-color: rgb(0, 160, 0);
-    --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
-    --timeline-current-position-color: rgba(255, 80, 80, 0.9);
-    --timeline-cue-background-color: rgba(255, 255, 255, 0.6);
-    --timeline-cue-text-color: black;
-    --timeline-tick-color:rgba(255, 255, 255, 0.8);
-    --timeline-tick-label-color:rgba(255, 255, 255, 0.9);
-    --timeline-vad-line-color:white;
-    --subtitle-tool-color: white;
-    --linkui-toggle-color: #f2c94c;
-    --soundwave-toggle-color: rgb(4,217,255); /*  rgb(190, 36, 36); */
-    --status-success-color: rgb(15, 238, 75);
-    --status-error-color: rgb(203, 10, 10);
-    --status-warning-color: rgb(255, 255, 0);
-    --subtitles-toggle-color: rgb(212, 169, 255);
-    --subtitles-track-enabled-color: rgb(0, 255, 0);
-    --subtitles-track-disabled-color: rgb(255, 100, 50);
-    --button-badge-background-color: rgb(180,0,0);
-    --nextvideo-badge-background-color: rgb(80,180,180);
-    --update-notif-badge-text-color: yellow;
-    --save-notif-badge-text-color: rgb(0,240, 0);
-    --seek-preview-video-border-color: rgba(200, 200, 200, 0.2);
-    --chapter-marker-color: rgb(0, 0, 0, 0.8);
-    --input-border: 1px solid rgba(255, 255, 255, 0.3);
-    --input-background-color: rgba(0, 0, 0, 0.2);
-    --input-text-color: white;
-    --input-focus-border: 1px solid rgba(255, 255, 255, 0.5);
-    --loudness-threshold-bar-color: rgba(255, 0, 217, 1);
-    --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.3) 100%);
-    --playback-rate-menu-item-border:  1px solid rgba(100, 100, 100, 0.2);
-    --volume-control-unity-volume-color: rgb(192, 192, 192);
-    --tooltip-background-color: rgb(200, 200, 200);
-    --tooltip-text-color: black;
-    --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
-    /* New: link color used by embedded options */
-    --link-color: #4da3ff;
+body,
+body[data-theme="default"] {
+  --mainplayer-background-color: black;
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.35) 30%, rgba(0, 0, 0, 0.6) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.25);
+  --progress-bar-current-progress-color: red;
+  --progress-bar-knob-color: white;
+  --volume-slider-background-color: rgba(171, 172, 172, 0.68);
+  --volume-slider-knob-color: white;
+  --menu-background-color: rgba(70, 70, 70, 0.8);
+  --menu-text-color: white;
+  --menu-border: 1px solid rgba(255, 255, 255, 0.2);
+  --menu-list-item-hover-background-color: rgba(30, 30, 30, 0.8);
+  --menu-list-item-active-background-color: rgba(20, 20, 20, 0.8);
+  --menu-textbutton-background-color: rgba(20, 20, 20, 0.7);
+  --menu-textbutton-text-color: white;
+  --menu-textbutton-hover-background-color: rgb(40, 40, 40, 0.7);
+  --menu-quality-sublist-indent-shadow-color: rgb(200, 200, 200);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(150, 150, 150);
+  --seek-preview-background-color: rgba(20, 20, 20, 0.7);
+  --seek-preview-text-color: rgba(255, 255, 255, 0.9);
+  --seek-preview-detached-tip-color: rgba(255, 255, 255, 0.9);
+  --progress-download-initiated-color: rgba(80, 255, 80, 0.7);
+  --progress-download-complete-color: rgba(255, 255, 255, 0.2);
+  --progress-download-failed-color: rgba(255, 100, 100, 1);
+  --intro-outro-bar-color: rgb(222, 187, 0);
+  --popbutton-background-color: rgba(20, 20, 20, 0.7);
+  --popbutton-text-color: white;
+  --popbutton-border: 1px solid rgba(255, 255, 255, 0.1);
+  --popbutton-hover-background-color: rgba(20, 20, 20, 1);
+  --popbutton-hover-border: 1px solid rgba(255, 255, 255, 0.5);
+  --seek-marker-undo-color: #54f4ff;
+  --seek-marker-redo-color: #F4FF54;
+  --analyzer-marker-color: rgb(199, 199, 199);
+  --close-button-color: rgba(255, 0, 0, .5);
+  --close-button-hover-color: rgba(255, 0, 0, 1);
+  --popwindow-border: 1px solid rgba(0, 0, 0, .1);
+  --popwindow-background-color: rgba(50, 50, 50, .9);
+  --popwindow-text-color: rgba(255, 255, 255, 0.8);
+  --popwindow-button-background-color: rgb(20, 20, 20);
+  --popwindow-button-text-color: rgb(200, 200, 200);
+  --popwindow-button-titletext-color: rgb(163, 163, 163);
+  --popwindow-button-hover-background-color: rgb(30, 30, 30);
+  --popwindow-button-active-background-color: rgb(0, 135, 153);
+  --popwindow-dropdown-item-background-color: rgb(30, 30, 30);
+  --popwindow-dropdown-item-selected-background-color: rgb(20, 20, 20);
+  --popwindow-dropdown-item-hover-background-color: rgb(40, 40, 40);
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(255, 255, 255, 0.5);
+  --popwindow-textinput-focus-border-color: rgba(255, 255, 255, 0.5);
+  --source-delete-button-color: rgb(120, 0, 0);
+  --source-delete-button-hover-color: rgb(100, 0, 0);
+  --source-active-url-color: rgb(0, 160, 0);
+  --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
+  --timeline-current-position-color: rgba(255, 80, 80, 0.9);
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.6);
+  --timeline-cue-text-color: black;
+  --timeline-tick-color: rgba(255, 255, 255, 0.8);
+  --timeline-tick-label-color: rgba(255, 255, 255, 0.9);
+  --timeline-vad-line-color: white;
+  --subtitle-tool-color: white;
+  --linkui-toggle-color: #f2c94c;
+  --soundwave-toggle-color: rgb(4, 217, 255);
+  /*  rgb(190, 36, 36); */
+  --status-success-color: rgb(15, 238, 75);
+  --status-error-color: rgb(203, 10, 10);
+  --status-warning-color: rgb(255, 255, 0);
+  --subtitles-toggle-color: rgb(212, 169, 255);
+  --subtitles-track-enabled-color: rgb(0, 255, 0);
+  --subtitles-track-disabled-color: rgb(255, 100, 50);
+  --button-badge-background-color: rgb(180, 0, 0);
+  --nextvideo-badge-background-color: rgb(80, 180, 180);
+  --update-notif-badge-text-color: yellow;
+  --save-notif-badge-text-color: rgb(0, 240, 0);
+  --seek-preview-video-border-color: rgba(200, 200, 200, 0.2);
+  --chapter-marker-color: rgb(0, 0, 0, 0.8);
+  --input-border: 1px solid rgba(255, 255, 255, 0.3);
+  --input-background-color: rgba(0, 0, 0, 0.2);
+  --input-text-color: white;
+  --input-focus-border: 1px solid rgba(255, 255, 255, 0.5);
+  --loudness-threshold-bar-color: rgba(255, 0, 217, 1);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.3) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(100, 100, 100, 0.2);
+  --volume-control-unity-volume-color: rgb(192, 192, 192);
+  --tooltip-background-color: rgb(200, 200, 200);
+  --tooltip-text-color: black;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
+  /* New: link color used by embedded options */
+  --link-color: #4da3ff;
 }
 
 /* =========================
@@ -92,7 +94,7 @@ body, body[data-theme="default"] {
    ========================= */
 body[data-theme="arctic"] {
   --mainplayer-background-color: #f7f9fc;
-  --controls-background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,0.65) 40%, rgba(255,255,255,0.9) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.65) 40%, rgba(255, 255, 255, 0.9) 100%);
   --progress-bar-background-color: rgba(0, 0, 0, 0.18);
   --progress-bar-current-progress-color: #0a84ff;
   --progress-bar-knob-color: #0b284a;
@@ -185,7 +187,7 @@ body[data-theme="arctic"] {
 
   --loudness-threshold-bar-color: #d000ff;
 
-  --playback-rate-menu-background: linear-gradient(rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 85%, rgba(255,255,255,0.7) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.7) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(0, 0, 0, 0.1);
 
   --volume-control-unity-volume-color: #505050;
@@ -202,7 +204,7 @@ body[data-theme="arctic"] {
    ========================= */
 body[data-theme="ocean"] {
   --mainplayer-background-color: #0b1220;
-  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(8,12,22,0.45) 35%, rgba(8,12,22,0.85) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(8, 12, 22, 0.45) 35%, rgba(8, 12, 22, 0.85) 100%);
   --progress-bar-background-color: rgba(255, 255, 255, 0.25);
   --progress-bar-current-progress-color: #19b7ff;
   --progress-bar-knob-color: #ffffff;
@@ -295,7 +297,7 @@ body[data-theme="ocean"] {
 
   --loudness-threshold-bar-color: #00d4ff;
 
-  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.35) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(100, 140, 170, 0.25);
 
   --volume-control-unity-volume-color: #c0d4e6;
@@ -312,7 +314,7 @@ body[data-theme="ocean"] {
    ========================= */
 body[data-theme="neon"] {
   --mainplayer-background-color: #0a0a0f;
-  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(10,10,15,0.45) 35%, rgba(10,10,15,0.9) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(10, 10, 15, 0.45) 35%, rgba(10, 10, 15, 0.9) 100%);
   --progress-bar-background-color: rgba(255, 255, 255, 0.22);
   --progress-bar-current-progress-color: #ff2bd6;
   --progress-bar-knob-color: #ffffff;
@@ -324,7 +326,7 @@ body[data-theme="neon"] {
   --menu-border: 1px solid rgba(255, 43, 214, 0.35);
   --menu-list-item-hover-background-color: rgba(255, 43, 214, 0.15);
   --menu-list-item-active-background-color: rgba(255, 43, 214, 0.25);
-  --menu-textbutton-background-color: rgba(18,18,26,0.7);
+  --menu-textbutton-background-color: rgba(18, 18, 26, 0.7);
   --menu-textbutton-text-color: #f7f7ff;
   --menu-textbutton-hover-background-color: rgba(0, 240, 255, 0.15);
   --menu-quality-sublist-indent-shadow-color: rgb(150, 150, 170);
@@ -405,7 +407,7 @@ body[data-theme="neon"] {
 
   --loudness-threshold-bar-color: #ff00e1;
 
-  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.35) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(120, 120, 160, 0.25);
 
   --volume-control-unity-volume-color: #d0d0e0;
@@ -422,7 +424,7 @@ body[data-theme="neon"] {
    ========================= */
 body[data-theme="contrast"] {
   --mainplayer-background-color: #000000;
-  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 35%, rgba(0,0,0,0.95) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 100%);
   --progress-bar-background-color: rgba(255, 255, 255, 0.35);
   --progress-bar-current-progress-color: #ffeb3b;
   --progress-bar-knob-color: #ffffff;
@@ -515,7 +517,7 @@ body[data-theme="contrast"] {
 
   --loudness-threshold-bar-color: #ff00d4;
 
-  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.6) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.6) 100%);
   --playback-rate-menu-item-border: 1px solid #ffffff;
 
   --volume-control-unity-volume-color: #c0c0c0;
@@ -533,7 +535,7 @@ body[data-theme="contrast"] {
    ========================= */
 body[data-theme="sunset"] {
   --mainplayer-background-color: #fff7f2;
-  --controls-background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,230,220,0.6) 40%, rgba(255,230,220,0.95) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 230, 220, 0.6) 40%, rgba(255, 230, 220, 0.95) 100%);
   --progress-bar-background-color: rgba(0, 0, 0, 0.18);
   --progress-bar-current-progress-color: #ff6f61;
   --progress-bar-knob-color: #5a2630;
@@ -626,7 +628,7 @@ body[data-theme="sunset"] {
 
   --loudness-threshold-bar-color: #ff3ea5;
 
-  --playback-rate-menu-background: linear-gradient(rgba(255,255,255,0.7) 0%, rgba(255,255,255,0) 15%, rgba(255,255,255,0) 85%, rgba(255,255,255,0.7) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.7) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(0, 0, 0, 0.1);
 
   --volume-control-unity-volume-color: #505050;
@@ -643,7 +645,7 @@ body[data-theme="sunset"] {
    ========================= */
 body[data-theme="forest"] {
   --mainplayer-background-color: #0f1a14;
-  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(10,24,18,0.45) 35%, rgba(10,24,18,0.9) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(10, 24, 18, 0.45) 35%, rgba(10, 24, 18, 0.9) 100%);
   --progress-bar-background-color: rgba(255, 255, 255, 0.25);
   --progress-bar-current-progress-color: #2ecc71;
   --progress-bar-knob-color: #eaffea;
@@ -736,7 +738,7 @@ body[data-theme="forest"] {
 
   --loudness-threshold-bar-color: #00ff9d;
 
-  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.35) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(90, 140, 120, 0.25);
 
   --volume-control-unity-volume-color: #cfe8d6;
@@ -753,7 +755,7 @@ body[data-theme="forest"] {
    ========================= */
 body[data-theme="slate"] {
   --mainplayer-background-color: #111418;
-  --controls-background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(16,19,23,0.45) 35%, rgba(16,19,23,0.9) 100%);
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(16, 19, 23, 0.45) 35%, rgba(16, 19, 23, 0.9) 100%);
   --progress-bar-background-color: rgba(255, 255, 255, 0.25);
   --progress-bar-current-progress-color: #4da3ff;
   --progress-bar-knob-color: #ffffff;
@@ -846,7 +848,7 @@ body[data-theme="slate"] {
 
   --loudness-threshold-bar-color: #7aa2ff;
 
-  --playback-rate-menu-background: linear-gradient(rgba(0,0,0,0.35) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.35) 100%);
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.35) 100%);
   --playback-rate-menu-item-border: 1px solid rgba(120, 130, 150, 0.25);
 
   --volume-control-unity-volume-color: #c8d0da;
@@ -855,4 +857,334 @@ body[data-theme="slate"] {
   --tooltip-text-color: #ffffff;
   --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
   --link-color: #4da3ff;
+}
+
+/* =========================
+Amethyst Haze
+Dark purple with violet accents
+========================= */
+body[data-theme="amethyst"] {
+  --mainplayer-background-color: #120f1b;
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(22, 16, 36, 0.45) 35%, rgba(22, 16, 36, 0.9) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.25);
+  --progress-bar-current-progress-color: #a78bfa;
+  --progress-bar-knob-color: #ffffff;
+  --volume-slider-background-color: rgba(186, 168, 216, 0.5);
+  --volume-slider-knob-color: #f5f0ff;
+
+  --menu-background-color: rgba(28, 22, 42, 0.92);
+  --menu-text-color: #f5f0ff;
+  --menu-border: 1px solid rgba(167, 139, 250, 0.25);
+  --menu-list-item-hover-background-color: rgba(167, 139, 250, 0.15);
+  --menu-list-item-active-background-color: rgba(167, 139, 250, 0.25);
+  --menu-textbutton-background-color: rgba(20, 16, 30, 0.7);
+  --menu-textbutton-text-color: #f5f0ff;
+  --menu-textbutton-hover-background-color: rgba(167, 139, 250, 0.18);
+  --menu-quality-sublist-indent-shadow-color: rgb(160, 150, 185);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(130, 120, 160);
+
+  --seek-preview-background-color: rgba(24, 20, 36, 0.92);
+  --seek-preview-text-color: rgba(255, 255, 255, 0.95);
+  --seek-preview-detached-tip-color: rgba(245, 240, 255, 0.95);
+
+  --progress-download-initiated-color: rgba(0, 230, 190, 0.85);
+  --progress-download-complete-color: rgba(255, 255, 255, 0.18);
+  --progress-download-failed-color: rgba(255, 90, 143, 1);
+  --intro-outro-bar-color: #f5c542;
+
+  --popbutton-background-color: rgba(20, 16, 30, 0.85);
+  --popbutton-text-color: #f5f0ff;
+  --popbutton-border: 1px solid rgba(167, 139, 250, 0.18);
+  --popbutton-hover-background-color: rgba(167, 139, 250, 0.15);
+  --popbutton-hover-border: 1px solid rgba(167, 139, 250, 0.5);
+
+  --seek-marker-undo-color: #7ce8ff;
+  --seek-marker-redo-color: #ffe169;
+  --analyzer-marker-color: rgb(205, 205, 220);
+
+  --close-button-color: rgba(255, 59, 132, 0.7);
+  --close-button-hover-color: rgba(255, 59, 132, 1);
+
+  --popwindow-border: 1px solid rgba(167, 139, 250, 0.25);
+  --popwindow-background-color: rgba(22, 16, 36, 0.95);
+  --popwindow-text-color: rgba(255, 255, 255, 0.9);
+  --popwindow-button-background-color: #171228;
+  --popwindow-button-text-color: #efeaff;
+  --popwindow-button-titletext-color: #d8ccff;
+  --popwindow-button-hover-background-color: #1f1833;
+  --popwindow-button-active-background-color: #a78bfa;
+  --popwindow-dropdown-item-background-color: #171228;
+  --popwindow-dropdown-item-selected-background-color: #0f0b1c;
+  --popwindow-dropdown-item-hover-background-color: #211a35;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(167, 139, 250, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(167, 139, 250, 0.6);
+
+  --source-delete-button-color: rgb(200, 40, 90);
+  --source-delete-button-hover-color: rgb(170, 35, 80);
+  --source-active-url-color: rgb(0, 210, 130);
+  --source-headers-invalid-border: 1px solid rgb(230, 60, 120);
+
+  --timeline-current-position-color: rgba(167, 139, 250, 0.95);
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.22);
+  --timeline-cue-text-color: #120f1b;
+  --timeline-tick-color: rgba(255, 255, 255, 0.85);
+  --timeline-tick-label-color: rgba(255, 255, 255, 0.95);
+  --timeline-vad-line-color: #f5f0ff;
+
+  --subtitle-tool-color: #f5f0ff;
+  --linkui-toggle-color: #a78bfa;
+  --soundwave-toggle-color: #7cdfff;
+
+  --status-success-color: #2ee6b2;
+  --status-error-color: #ff5c8a;
+  --status-warning-color: #ffd166;
+
+  --subtitles-toggle-color: #d6b6ff;
+  --subtitles-track-enabled-color: #19d68a;
+  --subtitles-track-disabled-color: #ff8aa0;
+
+  --button-badge-background-color: #a78bfa;
+  --nextvideo-badge-background-color: #6f68b5;
+  --update-notif-badge-text-color: #a78bfa;
+  --save-notif-badge-text-color: #19e58a;
+
+  --seek-preview-video-border-color: rgba(245, 240, 255, 0.18);
+  --chapter-marker-color: rgba(0, 0, 0, 0.85);
+
+  --input-border: 1px solid rgba(167, 139, 250, 0.35);
+  --input-background-color: rgba(24, 20, 36, 0.75);
+  --input-text-color: #ffffff;
+  --input-focus-border: 1px solid rgba(167, 139, 250, 0.7);
+
+  --loudness-threshold-bar-color: #bf7aff;
+
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.35) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(130, 120, 160, 0.25);
+
+  --volume-control-unity-volume-color: #d9cff3;
+
+  --tooltip-background-color: #1d1528;
+  --tooltip-text-color: #ffffff;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
+  --link-color: #a78bfa;
+}
+
+/* =========================
+Desert Sand
+Warm sepia with amber accents
+========================= */
+body[data-theme="desert"] {
+  --mainplayer-background-color: #f8f1e5;
+  --controls-background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 244, 228, 0.6) 40%, rgba(255, 244, 228, 0.95) 100%);
+  --progress-bar-background-color: rgba(0, 0, 0, 0.18);
+  --progress-bar-current-progress-color: #c0843d;
+  --progress-bar-knob-color: #3a2a15;
+  --volume-slider-background-color: rgba(0, 0, 0, 0.2);
+  --volume-slider-knob-color: #3a2a15;
+
+  --menu-background-color: rgba(255, 255, 255, 0.98);
+  --menu-text-color: #2b1f11;
+  --menu-border: 1px solid rgba(0, 0, 0, 0.12);
+  --menu-list-item-hover-background-color: rgba(192, 132, 61, 0.12);
+  --menu-list-item-active-background-color: rgba(192, 132, 61, 0.2);
+  --menu-textbutton-background-color: rgba(10, 10, 10, 0.04);
+  --menu-textbutton-text-color: #2b1f11;
+  --menu-textbutton-hover-background-color: rgba(192, 132, 61, 0.12);
+  --menu-quality-sublist-indent-shadow-color: rgb(210, 200, 180);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(175, 165, 150);
+
+  --seek-preview-background-color: rgba(255, 255, 255, 0.98);
+  --seek-preview-text-color: rgba(0, 0, 0, 0.9);
+  --seek-preview-detached-tip-color: rgba(0, 0, 0, 0.9);
+
+  --progress-download-initiated-color: rgba(16, 180, 120, 0.85);
+  --progress-download-complete-color: rgba(0, 0, 0, 0.18);
+  --progress-download-failed-color: rgba(220, 70, 70, 1);
+  --intro-outro-bar-color: #e6b35a;
+
+  --popbutton-background-color: rgba(255, 255, 255, 0.9);
+  --popbutton-text-color: #2b1f11;
+  --popbutton-border: 1px solid rgba(0, 0, 0, 0.12);
+  --popbutton-hover-background-color: rgba(192, 132, 61, 0.18);
+  --popbutton-hover-border: 1px solid rgba(192, 132, 61, 0.45);
+
+  --seek-marker-undo-color: #00c8ff;
+  --seek-marker-redo-color: #ffd166;
+  --analyzer-marker-color: rgb(140, 130, 120);
+
+  --close-button-color: rgba(255, 59, 48, 0.6);
+  --close-button-hover-color: rgba(255, 59, 48, 1);
+
+  --popwindow-border: 1px solid rgba(0, 0, 0, 0.1);
+  --popwindow-background-color: rgba(255, 255, 255, 0.98);
+  --popwindow-text-color: rgba(0, 0, 0, 0.85);
+  --popwindow-button-background-color: #f5ead7;
+  --popwindow-button-text-color: #3a2a15;
+  --popwindow-button-titletext-color: #7a5c2d;
+  --popwindow-button-hover-background-color: #eadcc6;
+  --popwindow-button-active-background-color: #c0843d;
+  --popwindow-dropdown-item-background-color: #f5ead7;
+  --popwindow-dropdown-item-selected-background-color: #e8dbbf;
+  --popwindow-dropdown-item-hover-background-color: #f0e2c9;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(192, 132, 61, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(192, 132, 61, 0.6);
+
+  --source-delete-button-color: rgb(255, 168, 168);
+  --source-delete-button-hover-color: rgb(223, 135, 135);
+  --source-active-url-color: rgb(0, 140, 0);
+  --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
+
+  --timeline-current-position-color: rgba(192, 132, 61, 0.9);
+  --timeline-cue-background-color: rgba(0, 0, 0, 0.15);
+  --timeline-cue-text-color: #2b1f11;
+  --timeline-tick-color: rgba(0, 0, 0, 0.7);
+  --timeline-tick-label-color: rgba(0, 0, 0, 0.85);
+  --timeline-vad-line-color: #2b1f11;
+
+  --subtitle-tool-color: #2b1f11;
+  --linkui-toggle-color: #c0843d;
+  --soundwave-toggle-color: #2fb3a3;
+
+  --status-success-color: #0bbf6a;
+  --status-error-color: #cc3344;
+  --status-warning-color: #ffcc00;
+
+  --subtitles-toggle-color: #b07dff;
+  --subtitles-track-enabled-color: #16ad5f;
+  --subtitles-track-disabled-color: #ff784e;
+
+  --button-badge-background-color: #b86e2b;
+  --nextvideo-badge-background-color: #d9a66b;
+  --update-notif-badge-text-color: #c0843d;
+  --save-notif-badge-text-color: #0abf53;
+
+  --seek-preview-video-border-color: rgba(0, 0, 0, 0.15);
+  --chapter-marker-color: rgba(0, 0, 0, 0.75);
+
+  --input-border: 1px solid rgba(0, 0, 0, 0.25);
+  --input-background-color: rgba(255, 255, 255, 0.95);
+  --input-text-color: #2b1f11;
+  --input-focus-border: 1px solid rgba(192, 132, 61, 0.7);
+
+  --loudness-threshold-bar-color: #ff4fbf;
+
+  --playback-rate-menu-background: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.7) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(0, 0, 0, 0.1);
+
+  --volume-control-unity-volume-color: #505050;
+
+  --tooltip-background-color: #141414;
+  --tooltip-text-color: #ffffff;
+  --eq-tooltip-background-color: rgba(0, 0, 0, 0.75);
+  --link-color: #c0843d;
+}
+
+/* =========================
+Mint Fresh
+Clean light UI with teal accents
+========================= */
+body[data-theme="mint"] {
+  --mainplayer-background-color: #f1fbf7;
+  --controls-background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(230, 255, 247, 0.6) 40%, rgba(230, 255, 247, 0.95) 100%);
+  --progress-bar-background-color: rgba(0, 0, 0, 0.18);
+  --progress-bar-current-progress-color: #00bfa5;
+  --progress-bar-knob-color: #0b423a;
+  --volume-slider-background-color: rgba(0, 0, 0, 0.2);
+  --volume-slider-knob-color: #0b423a;
+
+  --menu-background-color: rgba(255, 255, 255, 0.98);
+  --menu-text-color: #0a221d;
+  --menu-border: 1px solid rgba(0, 0, 0, 0.12);
+  --menu-list-item-hover-background-color: rgba(0, 191, 165, 0.12);
+  --menu-list-item-active-background-color: rgba(0, 191, 165, 0.2);
+  --menu-textbutton-background-color: rgba(10, 10, 10, 0.04);
+  --menu-textbutton-text-color: #0a221d;
+  --menu-textbutton-hover-background-color: rgba(0, 191, 165, 0.12);
+  --menu-quality-sublist-indent-shadow-color: rgb(200, 220, 214);
+  --menu-quality-sublist-indent-shadow-color-active: rgb(165, 190, 184);
+
+  --seek-preview-background-color: rgba(255, 255, 255, 0.98);
+  --seek-preview-text-color: rgba(0, 0, 0, 0.9);
+  --seek-preview-detached-tip-color: rgba(0, 0, 0, 0.9);
+
+  --progress-download-initiated-color: rgba(16, 180, 120, 0.85);
+  --progress-download-complete-color: rgba(0, 0, 0, 0.18);
+  --progress-download-failed-color: rgba(220, 70, 70, 1);
+  --intro-outro-bar-color: #5ad1b2;
+
+  --popbutton-background-color: rgba(255, 255, 255, 0.9);
+  --popbutton-text-color: #0a221d;
+  --popbutton-border: 1px solid rgba(0, 0, 0, 0.12);
+  --popbutton-hover-background-color: rgba(0, 191, 165, 0.18);
+  --popbutton-hover-border: 1px solid rgba(0, 191, 165, 0.45);
+
+  --seek-marker-undo-color: #00e5ff;
+  --seek-marker-redo-color: #baff6a;
+  --analyzer-marker-color: rgb(120, 140, 130);
+
+  --close-button-color: rgba(255, 59, 48, 0.6);
+  --close-button-hover-color: rgba(255, 59, 48, 1);
+
+  --popwindow-border: 1px solid rgba(0, 0, 0, 0.1);
+  --popwindow-background-color: rgba(255, 255, 255, 0.98);
+  --popwindow-text-color: rgba(0, 0, 0, 0.85);
+  --popwindow-button-background-color: #e8f7f2;
+  --popwindow-button-text-color: #0d3028;
+  --popwindow-button-titletext-color: #3b7365;
+  --popwindow-button-hover-background-color: #d9f0e8;
+  --popwindow-button-active-background-color: #00bfa5;
+  --popwindow-dropdown-item-background-color: #e8f7f2;
+  --popwindow-dropdown-item-selected-background-color: #cfece3;
+  --popwindow-dropdown-item-hover-background-color: #dff3ed;
+  --popwindow-dropdown-text-focus-outline: 1px solid rgba(0, 191, 165, 0.6);
+  --popwindow-textinput-focus-border-color: rgba(0, 191, 165, 0.6);
+
+  --source-delete-button-color: rgb(255, 168, 168);
+  --source-delete-button-hover-color: rgb(223, 135, 135);
+  --source-active-url-color: rgb(0, 140, 0);
+  --source-headers-invalid-border: 1px solid rgb(200, 0, 0);
+
+  --timeline-current-position-color: rgba(0, 191, 165, 0.9);
+  --timeline-cue-background-color: rgba(0, 0, 0, 0.15);
+  --timeline-cue-text-color: #0a221d;
+  --timeline-tick-color: rgba(0, 0, 0, 0.7);
+  --timeline-tick-label-color: rgba(0, 0, 0, 0.85);
+  --timeline-vad-line-color: #0a221d;
+
+  --subtitle-tool-color: #0a221d;
+  --linkui-toggle-color: #00bfa5;
+  --soundwave-toggle-color: #4dd0e1;
+
+  --status-success-color: #0bbf6a;
+  --status-error-color: #cc3344;
+  --status-warning-color: #ffcc00;
+
+  --subtitles-toggle-color: #7bd4ff;
+  --subtitles-track-enabled-color: #0aa84f;
+  --subtitles-track-disabled-color: #ff784e;
+
+  --button-badge-background-color: #00bfa5;
+  --nextvideo-badge-background-color: #77d8c7;
+  --update-notif-badge-text-color: #00bfa5;
+  --save-notif-badge-text-color: #0abf53;
+
+  --seek-preview-video-border-color: rgba(0, 0, 0, 0.15);
+  --chapter-marker-color: rgba(0, 0, 0, 0.75);
+
+  --input-border: 1px solid rgba(0, 0, 0, 0.25);
+  --input-background-color: rgba(255, 255, 255, 0.95);
+  --input-text-color: #0a221d;
+  --input-focus-border: 1px solid rgba(0, 191, 165, 0.7);
+
+  --loudness-threshold-bar-color: #00ffd1;
+
+  --playback-rate-menu-background: linear-gradient(rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 15%, rgba(255, 255, 255, 0) 85%, rgba(255, 255, 255, 0.7) 100%);
+  --playback-rate-menu-item-border: 1px solid rgba(0, 0, 0, 0.1);
+
+  --volume-control-unity-volume-color: #505050;
+
+  --tooltip-background-color: #141414;
+  --tooltip-text-color: #ffffff;
+  --eq-tooltip-background-color: rgba(0, 0, 0, 0.75);
+  --link-color: #00bfa5;
 }

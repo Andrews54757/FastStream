@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "Сланец"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "Аметист"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Пустыня"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Мята"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Картинка в картинке"
     },

@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "Schiefer"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "Amethyst"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Wüste"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Minze"
+    },
     "options_general_vischangeaction_pip": {
         "message": "Bild-in-Bild umschalten"
     },

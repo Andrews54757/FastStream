@@ -998,6 +998,15 @@
     "options_general_color_theme_slate": {
         "message": "スレート"
     },
+    "options_general_color_theme_amethyst": {
+        "message": "アメジスト"
+    },
+    "options_general_color_theme_desert": {
+        "message": "砂漠"
+    },
+    "options_general_color_theme_mint": {
+        "message": "ミント"
+    },
     "options_general_vischangeaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },
