@@ -88,6 +88,117 @@ body[data-theme="default"] {
   --link-color: #4da3ff;
 }
 
+
+/* =========================
+   High Contrast
+   Accessibility focused with large contrast ratios
+   ========================= */
+body[data-theme="contrast"] {
+  --mainplayer-background-color: #000000;
+  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 100%);
+  --progress-bar-background-color: rgba(255, 255, 255, 0.35);
+  --progress-bar-current-progress-color: #ffeb3b;
+  --progress-bar-knob-color: #ffffff;
+  --volume-slider-background-color: rgba(255, 255, 255, 0.35);
+  --volume-slider-knob-color: #ffffff;
+
+  --menu-background-color: rgba(0, 0, 0, 0.98);
+  --menu-text-color: #ffffff;
+  --menu-border: 1px solid #ffffff;
+  --menu-list-item-hover-background-color: rgba(255, 255, 255, 0.12);
+  --menu-list-item-active-background-color: rgba(255, 255, 255, 0.22);
+  --menu-textbutton-background-color: rgba(255, 255, 255, 0.08);
+  --menu-textbutton-text-color: #ffffff;
+  --menu-textbutton-hover-background-color: rgba(255, 255, 255, 0.18);
+  --menu-quality-sublist-indent-shadow-color: #ffffff;
+  --menu-quality-sublist-indent-shadow-color-active: #e0e0e0;
+
+  --seek-preview-background-color: rgba(0, 0, 0, 0.95);
+  --seek-preview-text-color: #ffffff;
+  --seek-preview-detached-tip-color: #ffffff;
+
+  --progress-download-initiated-color: #00ff95;
+  --progress-download-complete-color: rgba(255, 255, 255, 0.25);
+  --progress-download-failed-color: #ff1744;
+  --intro-outro-bar-color: #ffeb3b;
+
+  --popbutton-background-color: rgba(0, 0, 0, 0.95);
+  --popbutton-text-color: #ffffff;
+  --popbutton-border: 1px solid #ffffff;
+  --popbutton-hover-background-color: rgba(255, 255, 255, 0.12);
+  --popbutton-hover-border: 1px solid #ffeb3b;
+
+  --seek-marker-undo-color: #00e5ff;
+  --seek-marker-redo-color: #ffee58;
+  --analyzer-marker-color: #e0e0e0;
+
+  --close-button-color: rgba(255, 0, 0, 0.8);
+  --close-button-hover-color: rgba(255, 0, 0, 1);
+
+  --popwindow-border: 2px solid #ffffff;
+  --popwindow-background-color: rgba(0, 0, 0, 0.98);
+  --popwindow-text-color: #ffffff;
+  --popwindow-button-background-color: #111111;
+  --popwindow-button-text-color: #ffffff;
+  --popwindow-button-titletext-color: #d0d0d0;
+  --popwindow-button-hover-background-color: #1a1a1a;
+  --popwindow-button-active-background-color: #81771d;
+  --popwindow-dropdown-item-background-color: #0d0d0d;
+  --popwindow-dropdown-item-selected-background-color: #000000;
+  --popwindow-dropdown-item-hover-background-color: #1a1a1a;
+  --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
+  --popwindow-textinput-focus-border-color: #ffeb3b;
+
+  --source-delete-button-color: #ff5252;
+  --source-delete-button-hover-color: #ff1744;
+  --source-active-url-color: #00ff95;
+  --source-headers-invalid-border: 2px solid #ff1744;
+
+  --timeline-current-position-color: #ffeb3b;
+  --timeline-cue-background-color: rgba(255, 255, 255, 0.35);
+  --timeline-cue-text-color: #000000;
+  --timeline-tick-color: rgba(255, 255, 255, 0.95);
+  --timeline-tick-label-color: rgba(255, 255, 255, 1);
+  --timeline-vad-line-color: #ffffff;
+
+  --subtitle-tool-color: #ffffff;
+  --linkui-toggle-color: #ffeb3b;
+  --soundwave-toggle-color: #00e5ff;
+
+  --status-success-color: #3cff00;
+  --status-error-color: #ff1744;
+  --status-warning-color: #ffeb3b;
+
+  --subtitles-toggle-color: rgb(196, 84, 223);
+  --subtitles-track-enabled-color: #00ff64;
+  --subtitles-track-disabled-color: #ff6e40;
+
+  --button-badge-background-color: #ff3d00;
+  --nextvideo-badge-background-color: #00bcd4;
+  --update-notif-badge-text-color: #ffeb3b;
+  --save-notif-badge-text-color: #00ff64;
+
+  --seek-preview-video-border-color: rgba(255, 255, 255, 0.25);
+  --chapter-marker-color: rgba(0, 0, 0, 0.85);
+
+  --input-border: 2px solid #ffffff;
+  --input-background-color: rgba(0, 0, 0, 0.9);
+  --input-text-color: #ffffff;
+  --input-focus-border: 2px solid #ffeb3b;
+
+  --loudness-threshold-bar-color: #ff00d4;
+
+  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.6) 100%);
+  --playback-rate-menu-item-border: 1px solid #ffffff;
+
+  --volume-control-unity-volume-color: #c0c0c0;
+
+  --tooltip-background-color: #ffffff;
+  --tooltip-text-color: #000000;
+  --eq-tooltip-background-color: rgba(255, 255, 255, 0.9);
+  --link-color: #ffeb3b;
+}
+
 /* =========================
    Arctic Light
    Clean light UI with blue accents
@@ -417,117 +528,6 @@ body[data-theme="neon"] {
   --eq-tooltip-background-color: rgba(255, 255, 255, 0.75);
   --link-color: #00f0ff;
 }
-
-/* =========================
-   High Contrast
-   Accessibility focused with large contrast ratios
-   ========================= */
-body[data-theme="contrast"] {
-  --mainplayer-background-color: #000000;
-  --controls-background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 35%, rgba(0, 0, 0, 0.95) 100%);
-  --progress-bar-background-color: rgba(255, 255, 255, 0.35);
-  --progress-bar-current-progress-color: #ffeb3b;
-  --progress-bar-knob-color: #ffffff;
-  --volume-slider-background-color: rgba(255, 255, 255, 0.35);
-  --volume-slider-knob-color: #ffffff;
-
-  --menu-background-color: rgba(0, 0, 0, 0.98);
-  --menu-text-color: #ffffff;
-  --menu-border: 1px solid #ffffff;
-  --menu-list-item-hover-background-color: rgba(255, 255, 255, 0.12);
-  --menu-list-item-active-background-color: rgba(255, 255, 255, 0.22);
-  --menu-textbutton-background-color: rgba(255, 255, 255, 0.08);
-  --menu-textbutton-text-color: #ffffff;
-  --menu-textbutton-hover-background-color: rgba(255, 255, 255, 0.18);
-  --menu-quality-sublist-indent-shadow-color: #ffffff;
-  --menu-quality-sublist-indent-shadow-color-active: #e0e0e0;
-
-  --seek-preview-background-color: rgba(0, 0, 0, 0.95);
-  --seek-preview-text-color: #ffffff;
-  --seek-preview-detached-tip-color: #ffffff;
-
-  --progress-download-initiated-color: #00ff95;
-  --progress-download-complete-color: rgba(255, 255, 255, 0.25);
-  --progress-download-failed-color: #ff1744;
-  --intro-outro-bar-color: #ffeb3b;
-
-  --popbutton-background-color: rgba(0, 0, 0, 0.95);
-  --popbutton-text-color: #ffffff;
-  --popbutton-border: 1px solid #ffffff;
-  --popbutton-hover-background-color: rgba(255, 255, 255, 0.12);
-  --popbutton-hover-border: 1px solid #ffeb3b;
-
-  --seek-marker-undo-color: #00e5ff;
-  --seek-marker-redo-color: #ffee58;
-  --analyzer-marker-color: #e0e0e0;
-
-  --close-button-color: rgba(255, 0, 0, 0.8);
-  --close-button-hover-color: rgba(255, 0, 0, 1);
-
-  --popwindow-border: 2px solid #ffffff;
-  --popwindow-background-color: rgba(0, 0, 0, 0.98);
-  --popwindow-text-color: #ffffff;
-  --popwindow-button-background-color: #111111;
-  --popwindow-button-text-color: #ffffff;
-  --popwindow-button-titletext-color: #d0d0d0;
-  --popwindow-button-hover-background-color: #1a1a1a;
-  --popwindow-button-active-background-color: #81771d;
-  --popwindow-dropdown-item-background-color: #0d0d0d;
-  --popwindow-dropdown-item-selected-background-color: #000000;
-  --popwindow-dropdown-item-hover-background-color: #1a1a1a;
-  --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
-  --popwindow-textinput-focus-border-color: #ffeb3b;
-
-  --source-delete-button-color: #ff5252;
-  --source-delete-button-hover-color: #ff1744;
-  --source-active-url-color: #00ff95;
-  --source-headers-invalid-border: 2px solid #ff1744;
-
-  --timeline-current-position-color: #ffeb3b;
-  --timeline-cue-background-color: rgba(255, 255, 255, 0.35);
-  --timeline-cue-text-color: #000000;
-  --timeline-tick-color: rgba(255, 255, 255, 0.95);
-  --timeline-tick-label-color: rgba(255, 255, 255, 1);
-  --timeline-vad-line-color: #ffffff;
-
-  --subtitle-tool-color: #ffffff;
-  --linkui-toggle-color: #ffeb3b;
-  --soundwave-toggle-color: #00e5ff;
-
-  --status-success-color: #3cff00;
-  --status-error-color: #ff1744;
-  --status-warning-color: #ffeb3b;
-
-  --subtitles-toggle-color: #f1c40f;
-  --subtitles-track-enabled-color: #00ff64;
-  --subtitles-track-disabled-color: #ff6e40;
-
-  --button-badge-background-color: #ff3d00;
-  --nextvideo-badge-background-color: #00bcd4;
-  --update-notif-badge-text-color: #ffeb3b;
-  --save-notif-badge-text-color: #00ff64;
-
-  --seek-preview-video-border-color: rgba(255, 255, 255, 0.25);
-  --chapter-marker-color: rgba(0, 0, 0, 0.85);
-
-  --input-border: 2px solid #ffffff;
-  --input-background-color: rgba(0, 0, 0, 0.9);
-  --input-text-color: #ffffff;
-  --input-focus-border: 2px solid #ffeb3b;
-
-  --loudness-threshold-bar-color: #ff00d4;
-
-  --playback-rate-menu-background: linear-gradient(rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0) 85%, rgba(0, 0, 0, 0.6) 100%);
-  --playback-rate-menu-item-border: 1px solid #ffffff;
-
-  --volume-control-unity-volume-color: #c0c0c0;
-
-  --tooltip-background-color: #ffffff;
-  --tooltip-text-color: #000000;
-  --eq-tooltip-background-color: rgba(255, 255, 255, 0.9);
-  --link-color: #ffeb3b;
-}
-
 
 /* =========================
    Sunset Glow
@@ -1049,7 +1049,7 @@ body[data-theme="desert"] {
   --status-error-color: #cc3344;
   --status-warning-color: #ffcc00;
 
-  --subtitles-toggle-color: #b07dff;
+  --subtitles-toggle-color: #7f58b8;
   --subtitles-track-enabled-color: #16ad5f;
   --subtitles-track-disabled-color: #ff784e;
 
@@ -1153,13 +1153,13 @@ body[data-theme="mint"] {
 
   --subtitle-tool-color: #0a221d;
   --linkui-toggle-color: #00bfa5;
-  --soundwave-toggle-color: #4dd0e1;
+  --soundwave-toggle-color: #31a7b6;
 
   --status-success-color: #0bbf6a;
   --status-error-color: #cc3344;
   --status-warning-color: #ffcc00;
 
-  --subtitles-toggle-color: #7bd4ff;
+  --subtitles-toggle-color: #4d6b9e;
   --subtitles-track-enabled-color: #0aa84f;
   --subtitles-track-disabled-color: #ff784e;
 

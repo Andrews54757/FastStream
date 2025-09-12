@@ -888,6 +888,8 @@ export class FastStreamClient extends EventEmitter {
       console.error(e);
     }
 
+    DOMElements.playerContainer.style.backgroundColor = 'black';
+
     this.emit('setsource', this);
   }
 
