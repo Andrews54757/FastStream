@@ -38,6 +38,11 @@ See the player in action without installing the extension! Tested on Chrome and 
 ## Youtube issues
 We've been seeing issues with Youtube not working for some people using FastStream. This is because of an ongoing effort by Google to thwart third-party clients and adblockers. If you are having trouble with Youtube, please let us know in the issue tracker!
 
+### Troubleshooting Youtube issues
+1. Make sure you are using the latest version of FastStream.
+2. Try clearing your browser cache and reinstalling the extension.
+3. Search the issue tracker to see if your issue has already been reported. If it has, please add any relevant information to the existing issue. If it hasn't, please create a new issue with as much detail as possible.
+
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
 
