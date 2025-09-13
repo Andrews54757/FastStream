@@ -1007,6 +1007,14 @@ export class InterfaceController {
     DOMElements.progressContainer.classList.remove('freeze');
   }
 
+  toggleControlBar() {
+    if (this.controlsVisible) {
+      this.hideControlBar();
+    } else {
+      this.showControlBar();
+    }
+  }
+
   showControlBar() {
     this.controlsVisible = true;
     DOMElements.playerContainer.classList.add('controls_visible');

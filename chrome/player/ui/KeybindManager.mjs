@@ -30,6 +30,10 @@ export class KeybindManager extends EventEmitter {
       this.client.interfaceController.toggleHide();
     });
 
+    this.on('ToggleControls', (e) => {
+      this.client.interfaceController.toggleControlBar();
+    });
+
     this.on('NextChapter', (e) => {
       const chapters = this.client.chapters;
       const time = this.client.currentTime;
