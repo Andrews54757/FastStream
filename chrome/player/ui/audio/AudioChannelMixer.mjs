@@ -737,9 +737,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
 
 
     const activeChannels = AudioUtils.getActiveChannelsForChannelCount(numberOfChannels);
-    if (numberOfChannels === 1) {
-      activeChannels.push(1); // mono sources are always stereo internally
-    }
 
     this.mixerChannelElements.forEach((els, i) => {
       if (!els) return;

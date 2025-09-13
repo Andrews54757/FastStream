@@ -6,12 +6,14 @@ export class OutputMeter extends AbstractAudioModule {
     super('OutputMeter');
 
     this.channelAnalysers = [];
+    this.mixerGain = null;
     this.splitterNode = null;
   }
 
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
     this.splitterNode = null;
+    this.mixerGain = null;
     this.channelAnalysers = [];
   }
 
@@ -53,13 +55,16 @@ export class OutputMeter extends AbstractAudioModule {
       return;
     }
 
-    this.splitterNode = this.audioContext.createChannelSplitter(channelCount);
-    this.splitterNode.channelCountMode = 'explicit';
+    this.mixerGain = this.audioContext.createGain();
+    this.mixerGain.gain.value = 1;
+    this.mixerGain.channelCountMode = 'explicit';
     try {
-      this.splitterNode.channelCount = channelCount;
+      this.mixerGain.channelCount = channelCount;
     } catch (e) {
-      console.warn('Failed to set channelCount on splitter', e);
+      console.warn('Failed to set channelCount on mixer gain', e);
     }
+
+    this.splitterNode = this.audioContext.createChannelSplitter(channelCount);
 
     for (let i = 0; i < channelCount; i++) {
       const analyser = this.audioContext.createAnalyser();
@@ -68,7 +73,8 @@ export class OutputMeter extends AbstractAudioModule {
       this.splitterNode.connect(analyser, i);
     }
 
-    this.getInputNode().connect(this.splitterNode);
+    this.getInputNode().connect(this.mixerGain);
+    this.mixerGain.connect(this.splitterNode);
   }
 
   destroyAnalysers() {
@@ -76,7 +82,8 @@ export class OutputMeter extends AbstractAudioModule {
       return;
     }
 
-    this.getInputNode().disconnect(this.splitterNode);
+    this.getInputNode().disconnect(this.mixerGain);
+    this.mixerGain.disconnect(this.splitterNode);
     for (let i = 0; i < this.channelAnalysers.length; i++) {
       this.splitterNode.disconnect(this.channelAnalysers[i]);
       this.channelAnalysers[i].disconnect();
@@ -84,6 +91,7 @@ export class OutputMeter extends AbstractAudioModule {
 
     this.splitterNode.disconnect();
     this.splitterNode = null;
+    this.mixerGain = null;
     this.channelAnalysers = [];
   }
 
