@@ -532,7 +532,6 @@ export class AudioConfigManager extends AbstractAudioModule {
         this.channelCounterNode = null;
         this.getInputNode().disconnect(node.getNode());
         node.destroy();
-        console.log('Detected ' + count + ' audio channels');
         resolve(count);
       });
 
