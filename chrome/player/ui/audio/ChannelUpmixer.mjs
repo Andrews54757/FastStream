@@ -10,6 +10,7 @@ export class ChannelUpmixer extends AbstractAudioModule {
     super.setupNodes(audioContext);
     this.getInputNode().connect(this.getOutputNode());
     this.mixerNode = null;
+    this.enabled = false;
   }
 
   updateChannelCount(inputChannelCount, outputChannelCount) {
