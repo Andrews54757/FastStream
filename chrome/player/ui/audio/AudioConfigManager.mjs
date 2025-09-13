@@ -242,8 +242,6 @@ export class AudioConfigManager extends AbstractAudioModule {
 
   closeUI() {
     DOMElements.audioConfigContainer.style.display = 'none';
-    this.stopRenderLoop();
-
     WebUtils.setLabels(DOMElements.audioConfigBtn, Localize.getMessage('player_audioconfig_open_label'));
   }
 
@@ -433,12 +431,10 @@ export class AudioConfigManager extends AbstractAudioModule {
 
 
   renderLoop() {
-    if (!this.shouldRunRenderLoop) {
+    if (!this.shouldRunRenderLoop || !this.isOpen()) {
       this.renderLoopRunning = false;
     } else {
-      requestAnimationFrame(() => {
-        this.renderLoop();
-      });
+      requestAnimationFrame(this.renderLoop.bind(this));
     }
 
     this.audioChannelMixer.render();
