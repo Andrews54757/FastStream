@@ -11,6 +11,8 @@ export class OutputMeter extends AbstractAudioModule {
 
   setupNodes(audioContext) {
     super.setupNodes(audioContext);
+    this.splitterNode = null;
+    this.channelAnalysers = [];
   }
 
   getMeterData() {
