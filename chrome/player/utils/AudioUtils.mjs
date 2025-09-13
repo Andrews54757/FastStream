@@ -63,6 +63,18 @@ function get468WeightsForAnalyser(analyser) {
  * Utility functions for audio processing and conversions.
  */
 export class AudioUtils {
+  static isClipping(analyser) {
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Float32Array(bufferLength);
+    analyser.getFloatTimeDomainData(dataArray);
+
+    for (let i = 0; i < bufferLength; i++) {
+      if (dataArray[i] > 1.05 || dataArray[i] < -1.05) {
+        return true;
+      }
+    }
+    return false;
+  }
   /**
    * Calculates the volume in decibels from an AnalyserNode.
    * @param {AnalyserNode} analyser - The Web Audio analyser node.

@@ -11,6 +11,7 @@ import {AudioChannelMixer} from './AudioChannelMixer.mjs';
 import {AudioCrosstalk} from './AudioCrosstalk.mjs';
 import {AudioGain} from './AudioGain.mjs';
 import {MonoUpscaler} from './MonoUpscaler.mjs';
+import {OutputMeter} from './OutputMeter.mjs';
 import {AudioProfile} from './config/AudioProfile.mjs';
 
 export class AudioConfigManager extends AbstractAudioModule {
@@ -27,6 +28,7 @@ export class AudioConfigManager extends AbstractAudioModule {
     this.audioChannelMixer = new AudioChannelMixer(this);
     this.audioCrosstalk = new AudioCrosstalk();
     this.finalGain = new AudioGain();
+    this.outputMeter = new OutputMeter();
 
     this.setupUI();
     this.loadProfilesFromStorage().then(async () => {
@@ -232,9 +234,10 @@ export class AudioConfigManager extends AbstractAudioModule {
   openUI() {
     InterfaceUtils.closeWindows();
     DOMElements.audioConfigContainer.style.display = '';
-    this.startRenderLoop();
-
     WebUtils.setLabels(DOMElements.audioConfigBtn, Localize.getMessage('player_audioconfig_close_label'));
+    setTimeout(() => {
+      this.startRenderLoop();
+    }, 1);
   }
 
   closeUI() {
@@ -462,12 +465,15 @@ export class AudioConfigManager extends AbstractAudioModule {
       this.audioChannelMixer.setupNodes(this.audioContext);
       this.audioCrosstalk.setupNodes(this.audioContext);
       this.finalGain.setupNodes(this.audioContext);
+      this.outputMeter.setupNodes(this.audioContext);
 
       this.getInputNode().connect(this.audioUpscaler.getInputNode());
       this.audioUpscaler.getOutputNode().connect(this.audioChannelMixer.getInputNode());
       this.audioChannelMixer.getOutputNode().connect(this.audioCrosstalk.getInputNode());
       this.audioCrosstalk.getOutputNode().connect(this.finalGain.getInputNode());
       this.finalGain.getOutputNode().connect(this.getOutputNode());
+
+      this.getOutputNode().connect(this.outputMeter.getInputNode());
     } catch (e) {
       AlertPolyfill.errorSendToDeveloper(e);
     }
@@ -476,6 +482,11 @@ export class AudioConfigManager extends AbstractAudioModule {
   updateChannelCount() {
     this.discardChannelCount();
     this.getChannelCount().then((count) => {
+      try {
+        this.audioContext.destination.channelCount = Utils.clamp(count, 2, this.audioContext.destination.maxChannelCount);
+      } catch (e) {
+      }
+
       if (count === 1) {
         this.audioUpscaler.enable();
       } else {
@@ -546,5 +557,9 @@ export class AudioConfigManager extends AbstractAudioModule {
 
   updateVolume(value) {
     this.finalGain.setGain(value);
+  }
+
+  getOutputMeter() {
+    return this.outputMeter;
   }
 }
