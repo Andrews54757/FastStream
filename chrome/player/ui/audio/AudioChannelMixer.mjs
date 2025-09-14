@@ -87,13 +87,13 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   needsAnalyzer() {
-    return this.ui.mixer.offsetParent !== null;
+    return this.audioContext && this.ui.mixer.offsetParent !== null;
   }
 
   render() {
     if (!this.channelConfigs) return;
 
-    if (this.ui.mixer.offsetParent !== null) {
+    if (this.needsAnalyzer()) {
       this.createAnalyzers();
     } else {
       this.destroyAnalyzers();
@@ -718,8 +718,6 @@ export class AudioChannelMixer extends AbstractAudioModule {
   }
 
   async updateNodes() {
-    if (!this.audioContext) return;
-
     const gains = this.getChannelGainsFromConfig();
     if (!gains) {
       return;

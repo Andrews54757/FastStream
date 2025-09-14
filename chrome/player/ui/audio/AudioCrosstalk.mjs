@@ -93,14 +93,14 @@ export class AudioCrosstalk extends AbstractAudioModule {
 
     if (crosstalk.enabled) {
       this.createCrosstalkNode();
-      this.crosstalkNode.configure(this.getCrosstalkConfigObj());
+      this.crosstalkNode?.configure(this.getCrosstalkConfigObj());
     } else {
       this.removeCrosstalkNode();
     }
   }
 
   async createCrosstalkNode() {
-    if (this.crosstalkNode) {
+    if (this.crosstalkNode || !this.audioContext) {
       return;
     }
 
