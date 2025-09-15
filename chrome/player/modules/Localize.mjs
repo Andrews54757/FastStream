@@ -55,13 +55,13 @@ export class Localize {
       return -1;
     }
 
-    const languageCodes = chosenLanguage.toLowerCase().split('-');
+    const languageCodes = chosenLanguage.toLowerCase().split(/[-_]/);
     if (languageCodes.length === 0) {
       return 0;
     }
 
     const languagesMapped = languages.map((lang, i) => {
-      const langParts = lang.toLowerCase().split('-');
+      const langParts = lang.toLowerCase().split(/[-_]/);
       return {
         parts: langParts,
         index: i,
