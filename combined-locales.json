@@ -14,7 +14,8 @@
         "tr": "FastStream Video Player",
         "pt_BR": "FastStream Video Player",
         "zh_CN": "FastStream 视频播放器",
-        "zh_TW": "FastStream 影片播放器"
+        "zh_TW": "FastStream 影片播放器",
+        "id": "FastStream Pemutar Video"
     },
     "extension_description": {
         "en": "Stream without buffering. Fix bad video players on the internet.",
@@ -31,7 +32,8 @@
         "tr": "Ara belleğe alma olmadan yayın yapın. İnternetteki hatalı video oynatıcılarını düzeltin.",
         "pt_BR": "Assista á transmissões sem pré-carregamento, consertando tocadores de vídeos na internet.",
         "zh_CN": "无缓冲播放，修复网络上的问题视频播放器。",
-        "zh_TW": "無緩衝串流。修復網路上壞掉的影片播放器。"
+        "zh_TW": "無緩衝串流。修復網路上壞掉的影片播放器。",
+        "id": "Streaming tanpa buffering. Memperbaiki pemutar video bermasalah di internet."
     },
     "extension_toggle_label": {
         "en": "Toggle FastStream",
@@ -48,7 +50,8 @@
         "tr": "FastStream'i Aç/Kapat",
         "pt_BR": "Alternar FastStream",
         "zh_CN": "切换 FastStream",
-        "zh_TW": "切換 FastStream"
+        "zh_TW": "切換 FastStream",
+        "id": "Aktifkan/Nonaktifkan FastStream"
     },
     "welcome_page_title": {
         "en": "Welcome to FastStream",
@@ -65,7 +68,8 @@
         "tr": "FastStream'e hoş geldiniz",
         "pt_BR": "Bem-vindo ao FastStream",
         "zh_CN": "欢迎使用 FastStream",
-        "zh_TW": "歡迎使用 FastStream"
+        "zh_TW": "歡迎使用 FastStream",
+        "id": "Selamat datang di FastStream"
     },
     "welcome_page_usage_header": {
         "en": "Usage",
@@ -82,7 +86,8 @@
         "tr": "Kullanım",
         "pt_BR": "Uso",
         "zh_CN": "使用方法",
-        "zh_TW": "使用方式"
+        "zh_TW": "使用方式",
+        "id": "Cara menggunakan"
     },
     "welcome_page_usage_content0": {
         "en": "There are four ways to use FastStream",
@@ -99,7 +104,8 @@
         "tr": "FastStream'i kullanmanın dört yolu var",
         "pt_BR": "Existem quatro formas de uso do FastStream",
         "zh_CN": "使用 FastStream 的四种方式",
-        "zh_TW": "使用 FastStream 有四種方式"
+        "zh_TW": "使用 FastStream 有四種方式",
+        "id": "Ada empat cara menggunakan FastStream"
     },
     "welcome_page_usage_content1": {
         "en": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream",
@@ -116,7 +122,8 @@
         "tr": "Video akışı olan bir web sitesine gidip simgeye tıklayarak FastStream'i açabilirsiniz. Akışı oynatın; oynatıcı otomatik olarak FastStream ile değiştirilecektir.",
         "pt_BR": "Acesse qualquer site para transmissão de vídeo, ative o FastStream pelo ícone da extensão. Reproduza o vídeo e o cliente será substituído automaticamente pelo FastStream",
         "zh_CN": "前往有视频流的网站，点击图标开启 FastStream。播放流媒体时客户端会自动被 FastStream 替换。",
-        "zh_TW": "你可以前往有影片串流的網站，點擊圖示開啟 FastStream。播放串流時，播放器會自動由 FastStream 取代。"
+        "zh_TW": "你可以前往有影片串流的網站，點擊圖示開啟 FastStream。播放串流時，播放器會自動由 FastStream 取代。",
+        "id": "Buka situs yang berisi video streaming, lalu aktifkan FastStream dengan mengklik ikonnya. Putar stream dan pemutar akan otomatis digantikan oleh FastStream."
     },
     "welcome_page_usage_content2": {
         "en": "You can go to a new tab, and press the extension icon to go to the player.",
@@ -133,7 +140,8 @@
         "tr": "Yeni bir sekme açıp eklenti simgesine tıklayarak oynatıcıya gidebilirsiniz.",
         "pt_BR": "Você pode ir para uma nova guia e pressionar o ícone da extensão para ir para o tocador.",
         "zh_CN": "在新标签页中点击扩展图标即可打开播放器。",
-        "zh_TW": "在新分頁按擴充功能圖示即可前往播放器。"
+        "zh_TW": "在新分頁按擴充功能圖示即可前往播放器。",
+        "id": "Anda dapat membuka tab baru lalu tekan ikon ekstensi untuk membuka pemutar."
     },
     "welcome_page_usage_content3": {
         "en": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it.",
@@ -150,7 +158,8 @@
         "tr": "Seçenek etkinse, bir mp4/mpd/m3u8 URL'sine gidin; oynatıcı bunları oynatacaktır.",
         "pt_BR": "Se a opção estiver ativada, acesse um URL mp4/mpd/m3u8 e o player o reproduzirá.",
         "zh_CN": "如果已启用此选项，访问 mp4/mpd/m3u8 链接即可由播放器播放。",
-        "zh_TW": "若啟用此選項，前往 mp4/mpd/m3u8 網址時播放器會播放該內容。"
+        "zh_TW": "若啟用此選項，前往 mp4/mpd/m3u8 網址時播放器會播放該內容。",
+        "id": "Jika opsi ini diaktifkan, buka URL mp4/mpd/m3u8 dan pemutar akan memainkannya."
     },
     "welcome_page_usage_content4": {
         "en": "Keep the player open in a new tab and it will collect sources as you browse elsewhere.",
@@ -167,7 +176,8 @@
         "tr": "Oynatıcıyı yeni bir sekmede açık tutun; başka yerlerde gezinirken kaynakları toplayacaktır.",
         "pt_BR": "Mantenha o player aberto em uma nova guia e ele coletará fontes enquanto você navega em outro lugar.",
         "zh_CN": "将播放器在新标签页保持打开，它会在你浏览其他页面时收集视频源。",
-        "zh_TW": "在新分頁保持播放器開啟，瀏覽其他頁面時它會收集來源。"
+        "zh_TW": "在新分頁保持播放器開啟，瀏覽其他頁面時它會收集來源。",
+        "id": "Biarkan pemutar terbuka di tab baru dan ia akan mengumpulkan sumber saat Anda menjelajah tempat lain."
     },
     "welcome_page_usage_end": {
         "en": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions.",
@@ -184,7 +194,8 @@
         "tr": "FastStream'i yüklediğiniz için teşekkürler! Herhangi bir sorun veya öneriniz olursa lütfen bize bildirin.",
         "pt_BR": "Obrigado por instalar o FastStream! Nos informe se tiver algum problema ou sugestão.",
         "zh_CN": "感谢安装 FastStream！如有问题或建议，请告知我们。",
-        "zh_TW": "感謝安裝 FastStream！如有任何問題或建議，請告訴我們。"
+        "zh_TW": "感謝安裝 FastStream！如有任何問題或建議，請告訴我們。",
+        "id": "Terima kasih telah memasang FastStream! Beri tahu kami jika Anda mengalami masalah atau punya saran."
     },
     "welcome_page_keybinds_header": {
         "en": "Default Keyboard Controls",
@@ -201,7 +212,8 @@
         "tr": "Varsayılan Klavye Kontrolleri",
         "pt_BR": "Controles padrão do teclado",
         "zh_CN": "默认键盘控制",
-        "zh_TW": "預設鍵盤操作"
+        "zh_TW": "預設鍵盤操作",
+        "id": "Kontrol Keyboard Bawaan"
     },
     "welcome_page_keybinds_content0": {
         "en": "You can change these keybinds in extension settings",
@@ -218,7 +230,8 @@
         "tr": "Bu tuş atamalarını eklenti ayarlarından değiştirebilirsiniz",
         "pt_BR": "Você pode alterar esses atalhos do teclado nas configurações da extensão",
         "zh_CN": "可在扩展设置中更改这些快捷键",
-        "zh_TW": "可在擴充功能設定中更改這些快捷鍵"
+        "zh_TW": "可在擴充功能設定中更改這些快捷鍵",
+        "id": "Anda dapat mengubah pintasan tombol ini di pengaturan ekstensi."
     },
     "welcome_page_keybinds_content1": {
         "en": "arrow keys - 1 second seek forward/back",
@@ -235,7 +248,8 @@
         "tr": "yön tuşları - 1 saniye ileri/geri sarma",
         "pt_BR": "Setas do teclado - 1 segundo de busca para frente/trás",
         "zh_CN": "方向键 - 前进/后退 1 秒",
-        "zh_TW": "方向鍵 - 前/後跳 1 秒"
+        "zh_TW": "方向鍵 - 前/後跳 1 秒",
+        "id": "tombol panah - lompat 1 detik maju/mundur"
     },
     "welcome_page_keybinds_content2": {
         "en": "keys - 10 second seek forward/back",
@@ -252,7 +266,8 @@
         "tr": "tuşlar - 10 saniye ileri/geri sarma",
         "pt_BR": "Tecla - 10 segundo de busca para frente/trás",
         "zh_CN": "键 - 前进/后退 10 秒",
-        "zh_TW": "鍵 - 前/後跳 10 秒"
+        "zh_TW": "鍵 - 前/後跳 10 秒",
+        "id": "tombol - lompat 10 detik maju/mundur"
     },
     "welcome_page_keybinds_content3": {
         "en": "key - Undo seek",
@@ -269,7 +284,8 @@
         "tr": "tuş - Sarma işlemini geri al",
         "pt_BR": "Tecla - Desfazer busca",
         "zh_CN": "键 - 撤销跳转",
-        "zh_TW": "鍵 - 復原跳轉"
+        "zh_TW": "鍵 - 復原跳轉",
+        "id": "tombol - Batalkan lompat"
     },
     "welcome_page_keybinds_content4": {
         "en": "arrow keys - 10% volume up/down",
@@ -286,7 +302,8 @@
         "tr": "yön tuşları - %10 ses açma/kısma",
         "pt_BR": "Setas do teclado - 10% de aumento/diminuição do volume",
         "zh_CN": "方向键 - 音量 ±10%",
-        "zh_TW": "方向鍵 - 音量增減 10%"
+        "zh_TW": "方向鍵 - 音量增減 10%",
+        "id": "tombol panah - naik/turun volume 10%"
     },
     "welcome_page_keybinds_content5": {
         "en": "- Full screen",
@@ -303,7 +320,8 @@
         "tr": "- Tam ekran",
         "pt_BR": "- Tela cheia",
         "zh_CN": "- 全屏",
-        "zh_TW": "- 全螢幕"
+        "zh_TW": "- 全螢幕",
+        "id": "- Layar penuh"
     },
     "welcome_page_keybinds_content6": {
         "en": "- Add/decrease concurrent requests",
@@ -320,7 +338,8 @@
         "tr": "- Eşzamanlı istek sayısını artır/azalt",
         "pt_BR": "- Adicionar/reduzir solicitações simultâneas",
         "zh_CN": "- 增减并发请求数",
-        "zh_TW": "- 增減併發請求數"
+        "zh_TW": "- 增減併發請求數",
+        "id": "- Tambah/kurangi permintaan bersamaan"
     },
     "welcome_page_keybinds_content7": {
         "en": "- Force retry key - use this to re-attempt failed downloads",
@@ -337,7 +356,8 @@
         "tr": "- Zorla tekrar dene tuşu - başarısız indirmeleri yeniden denemek için kullanın",
         "pt_BR": "- Forçar nova tentativa - use-a para tentar novamente os downloads que falharam",
         "zh_CN": "- 强制重试键 - 用于重试失败的下载",
-        "zh_TW": "- 強制重試按鍵 - 用來重新嘗試失敗的下載"
+        "zh_TW": "- 強制重試按鍵 - 用來重新嘗試失敗的下載",
+        "id": "- Tombol paksa coba lagi - gunakan ini untuk mencoba ulang unduhan yang gagal"
     },
     "welcome_page_keybinds_content8": {
         "en": "- Skip intro/outro if applicable",
@@ -354,7 +374,8 @@
         "tr": "- Giriş/çıkışları atla (uygunsa)",
         "pt_BR": "- Pular a introdução/outro, se for o caso",
         "zh_CN": "- 跳过片头/片尾（如适用）",
-        "zh_TW": "- 跳過片頭/片尾（如適用）"
+        "zh_TW": "- 跳過片頭/片尾（如適用）",
+        "id": "- Lewati intro/outro jika ada"
     },
     "welcome_page_keybinds_content9": {
         "en": "- Hide/show player",
@@ -371,7 +392,8 @@
         "tr": "- Oynatıcıyı gizle/göster",
         "pt_BR": "- Ocultar/mostrar o player",
         "zh_CN": "- 隐藏/显示播放器",
-        "zh_TW": "- 顯示/隱藏播放器"
+        "zh_TW": "- 顯示/隱藏播放器",
+        "id": "- Sembunyikan/tampilkan pemutar"
     },
     "perms_page_title": {
         "en": "FastStream Permissions",
@@ -388,7 +410,8 @@
         "tr": "FastStream İzinleri",
         "pt_BR": "Permissões do FastStream",
         "zh_CN": "FastStream 权限",
-        "zh_TW": "FastStream 權限"
+        "zh_TW": "FastStream 權限",
+        "id": "Izin FastStream"
     },
     "perms_page_about_header": {
         "en": "About the Permissions Required by FastStream",
@@ -405,7 +428,8 @@
         "tr": "FastStream'in Gerektirdiği İzinler Hakkında",
         "pt_BR": "Sobre as permissões exigidas pelo FastStream",
         "zh_CN": "关于 FastStream 所需的权限",
-        "zh_TW": "關於 FastStream 所需的權限"
+        "zh_TW": "關於 FastStream 所需的權限",
+        "id": "Tentang Izin yang Diperlukan oleh FastStream"
     },
     "perms_page_about_content0": {
         "en": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality.",
@@ -422,7 +446,8 @@
         "tr": "Eklentinin çalışabilmesi için belirli izinlere sahip olması gerekir. Bu izinler yalnızca temel işlevsellik için kullanılır.",
         "pt_BR": "Para que a extensão funcione, ela precisa ter determinadas permissões. Essas permissões são usadas somente para a funcionalidade básicas.",
         "zh_CN": "为了使扩展正常运行，需要某些权限。这些权限仅用于基本功能。",
-        "zh_TW": "為了讓擴充功能運作，需要授予某些權限。這些權限僅用於基本功能。"
+        "zh_TW": "為了讓擴充功能運作，需要授予某些權限。這些權限僅用於基本功能。",
+        "id": "Agar ekstensi berfungsi, ia memerlukan beberapa izin. Izin-izin ini hanya digunakan untuk fungsionalitas dasar."
     },
     "perms_page_about_content1": {
         "en": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to.",
@@ -439,7 +464,8 @@
         "tr": "FastStream sizden hiçbir veri toplamaz. Sizi izlemez. Herhangi bir sunucuya veri göndermez. Hatta veri gönderebileceği bir sunucusu bile yoktur.",
         "pt_BR": "O FastStream não coleta nenhum dado seu. Ele não rastreia você. Ele não envia nenhum dado para nenhum servidor. Ele nem mesmo tem um servidor para o qual enviar dados.",
         "zh_CN": "FastStream 不会收集你的任何数据，也不会追踪你，不会向任何服务器发送数据，甚至没有可发送数据的服务器。",
-        "zh_TW": "FastStream 不會收集你的任何資料，也不會追蹤你或將資料傳送到任何伺服器；它甚至沒有伺服器可以傳送資料。"
+        "zh_TW": "FastStream 不會收集你的任何資料，也不會追蹤你或將資料傳送到任何伺服器；它甚至沒有伺服器可以傳送資料。",
+        "id": "FastStream tidak mengumpulkan data apa pun dari Anda. Ia tidak melacak Anda. Ia tidak mengirimkan data ke server mana pun. Bahkan tidak memiliki server untuk mengirim data."
     },
     "perms_page_about_content2": {
         "en": "Don't trust me? FastStream has its source available on",
@@ -456,7 +482,8 @@
         "tr": "Güvenmiyor musunuz? FastStream'in kaynak kodu şurada mevcut:",
         "pt_BR": "Não confia em mim? O FastStream tem seu código fonte disponível em",
         "zh_CN": "不信？FastStream 的源码公开托管于",
-        "zh_TW": "不信？FastStream 的原始碼已公開於"
+        "zh_TW": "不信？FastStream 的原始碼已公開於",
+        "id": "Tidak percaya? Sumber FastStream tersedia di"
     },
     "perms_page_about_content3": {
         "en": "You can look through the code yourself, or manually install your very own custom build by following the instructions.",
@@ -473,7 +500,8 @@
         "tr": "Kodu kendiniz inceleyebilir veya talimatları izleyerek kendi özel derlemenizi manuel olarak kurabilirsiniz.",
         "pt_BR": "Você pode examinar o código fonte se quiser ou instalar manualmente sua própria compilação personalizada seguindo as instruções.",
         "zh_CN": "你可以查看代码，或按说明手动安装自定义构建。",
-        "zh_TW": "你可以自行檢視程式碼，或依說明手動安裝自訂版本。"
+        "zh_TW": "你可以自行檢視程式碼，或依說明手動安裝自訂版本。",
+        "id": "Anda dapat memeriksa kodenya sendiri, atau memasang build kustom Anda secara manual dengan mengikuti instruksinya."
     },
     "perms_page_breakdown_header": {
         "en": "Breakdown of Permissions",
@@ -490,7 +518,8 @@
         "tr": "İzinlerin Açıklaması",
         "pt_BR": "Detalhamento das permissões",
         "zh_CN": "权限说明",
-        "zh_TW": "權限明細"
+        "zh_TW": "權限明細",
+        "id": "Rincian Izin"
     },
     "perms_page_breakdown_content0": {
         "en": "Here is a breakdown of the permissions FastStream requires, and why it needs them.",
@@ -507,7 +536,8 @@
         "tr": "İşte FastStream'in ihtiyaç duyduğu izinler ve bunların gerekçeleri.",
         "pt_BR": "Aqui está um detalhamento das permissões exigidas pelo FastStream e por que ele precisa delas.",
         "zh_CN": "下面是 FastStream 所需权限以及原因说明。",
-        "zh_TW": "以下說明 FastStream 所需的權限及其必要性。"
+        "zh_TW": "以下說明 FastStream 所需的權限及其必要性。",
+        "id": "Berikut rincian izin yang dibutuhkan FastStream, dan alasannya."
     },
     "perms_page_breakdown_content1": {
         "en": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance.",
@@ -524,7 +554,8 @@
         "tr": "Not: Bağlantılı örnekler kodun eski bir sürümüne ait olabilir, ancak genel anlam aynı kalmalıdır. Liste kapsamlı değildir; öğeler önem sırasına göre düzenlenmiştir.",
         "pt_BR": "Observação: os exemplos vinculados podem se referir a uma versão mais antiga do programa, mas a essência é a mesma em geral. A lista não é grande, os itens estão ordenados por importância.",
         "zh_CN": "注意：链接示例可能指向旧版代码，但大意应相同。该列表并非详尽无遗，项按重要性排序。",
-        "zh_TW": "注意：連結範例可能指向舊版程式碼，但整體重點應相同。此列表非詳盡無遺，項目依重要性排序。"
+        "zh_TW": "注意：連結範例可能指向舊版程式碼，但整體重點應相同。此列表非詳盡無遺，項目依重要性排序。",
+        "id": "Catatan: Contoh yang dilink mungkin merujuk ke versi kode yang lebih lama, tapi intinya tetap sama. Daftar ini tidak lengkap; item diurutkan berdasarkan pentingnya."
     },
     "perms_page_breakdown_perm1h": {
         "en": "Be able to access and modify all websites",
@@ -541,7 +572,8 @@
         "tr": "Tüm web sitelerine erişip değiştirebilme",
         "pt_BR": "Poder acessar e modificar todos os sites",
         "zh_CN": "访问并修改所有网站",
-        "zh_TW": "存取並修改所有網站"
+        "zh_TW": "存取並修改所有網站",
+        "id": "Dapat mengakses dan memodifikasi semua situs web"
     },
     "perms_page_breakdown_perm1d": {
         "en": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:",
@@ -558,7 +590,8 @@
         "tr": "FastStream'in oynatıcıyı doğrudan siteye ekleyebilmesi için tüm web sitelerine erişebilmesi gerekir. Ziyaret ettiğiniz sitelere şu amaçlarla bir içerik betiği enjekte eder:",
         "pt_BR": "O FastStream precisa acessar todos os sites para que possa injetar o player diretamente no site. Ele injeta um script de conteúdo nos sites que você visita para:",
         "zh_CN": "FastStream 需要访问所有网站，以便将播放器直接注入到网站中。它会向你访问的网站注入内容脚本以便：",
-        "zh_TW": "FastStream 需要能夠存取所有網站，以便直接將播放器注入網站。它會在你造訪的網站注入內容腳本，以便："
+        "zh_TW": "FastStream 需要能夠存取所有網站，以便直接將播放器注入網站。它會在你造訪的網站注入內容腳本，以便：",
+        "id": "FastStream perlu mengakses semua situs web agar dapat menyelipkan pemutar langsung ke dalam situs. Ia menyisipkan skrip konten ke situs yang Anda kunjungi untuk:"
     },
     "perms_page_breakdown_perm1r1": {
         "en": "Identify the largest visible video element to replace with the player.",
@@ -575,7 +608,8 @@
         "tr": "Oynatıcıyla değiştirmek üzere en büyük görünür video öğesini belirlemek.",
         "pt_BR": "Identifique o maior elemento de vídeo visível a ser substituído pelo player.",
         "zh_CN": "识别可见的最大视频元素并替换为播放器。",
-        "zh_TW": "找出頁面中可見且最大的影片元素並替換為播放器。"
+        "zh_TW": "找出頁面中可見且最大的影片元素並替換為播放器。",
+        "id": "Mengidentifikasi elemen video terbesar yang terlihat untuk diganti dengan pemutar."
     },
     "perms_page_breakdown_perm1r2": {
         "en": "Enable fullscreen permissions when the player is injected into a frame.",
@@ -592,7 +626,8 @@
         "tr": "Oynatıcı bir çerçeveye enjekte edildiğinde tam ekran izinlerini etkinleştirmek.",
         "pt_BR": "Habilite as permissões de tela cheia quando o player for injetado em um quadro separado.",
         "zh_CN": "当播放器注入到框架内时启用全屏权限。",
-        "zh_TW": "當播放器被注入框架時，啟用全螢幕權限。"
+        "zh_TW": "當播放器被注入框架時，啟用全螢幕權限。",
+        "id": "Mengaktifkan izin layar penuh saat pemutar disisipkan ke dalam frame."
     },
     "perms_page_breakdown_perm1r3": {
         "en": "Scrape subtitle <track> elements from the page.",
@@ -609,7 +644,8 @@
         "tr": "Sayfadan altyazı <track> öğelerini çekmek.",
         "pt_BR": "Extrair elementos de subtítulo <track> da página.",
         "zh_CN": "从页面抓取字幕 <track> 元素。",
-        "zh_TW": "從頁面擷取字幕 <track> 元素。"
+        "zh_TW": "從頁面擷取字幕 <track> 元素。",
+        "id": "Mengambil elemen subtitle <track> dari halaman."
     },
     "perms_page_breakdown_perm2h": {
         "en": "Access the webRequest API",
@@ -626,7 +662,8 @@
         "tr": "webRequest API'sine erişim",
         "pt_BR": "Acessar a API webRequest",
         "zh_CN": "访问 webRequest API",
-        "zh_TW": "存取 webRequest API"
+        "zh_TW": "存取 webRequest API",
+        "id": "Akses API webRequest"
     },
     "perms_page_breakdown_perm2d": {
         "en": "FastStream needs to be able to intercept HTTP requests to video sources in order to:",
@@ -643,7 +680,8 @@
         "tr": "FastStream'in video kaynaklarına yönelik HTTP isteklerini yakalayabilmesi gerekir, böylece:",
         "pt_BR": "O FastStream precisa interceptar solicitações HTTP para fontes de vídeo a fim de:",
         "zh_CN": "FastStream 需要拦截指向视频源的 HTTP 请求以便：",
-        "zh_TW": "FastStream 需要攔截指向影片來源的 HTTP 請求以便："
+        "zh_TW": "FastStream 需要攔截指向影片來源的 HTTP 請求以便：",
+        "id": "FastStream perlu mencegat permintaan HTTP ke sumber video untuk:"
     },
     "perms_page_breakdown_perm2r1": {
         "en": "Identify video sources",
@@ -660,7 +698,8 @@
         "tr": "Video kaynaklarını tespit etmek",
         "pt_BR": "Identificar fontes de vídeo",
         "zh_CN": "识别视频源",
-        "zh_TW": "識別影片來源"
+        "zh_TW": "識別影片來源",
+        "id": "Mengidentifikasi sumber video"
     },
     "perms_page_breakdown_perm3h": {
         "en": "Access the declarativeNetRequest API",
@@ -677,7 +716,8 @@
         "tr": "declarativeNetRequest API'sine erişim",
         "pt_BR": "Acessar a API declarativeNetRequest",
         "zh_CN": "访问 declarativeNetRequest API",
-        "zh_TW": "存取 declarativeNetRequest API"
+        "zh_TW": "存取 declarativeNetRequest API",
+        "id": "Akses API declarativeNetRequest"
     },
     "perms_page_breakdown_perm3d": {
         "en": "FastStream needs to be able to modify HTTP headers of select requests in order to:",
@@ -694,7 +734,8 @@
         "tr": "FastStream'in seçili isteklerin HTTP başlıklarını değiştirebilmesi gerekir, böylece:",
         "pt_BR": "O FastStream precisa de modificar os cabeçalhos HTTP de solicitações selecionadas para:",
         "zh_CN": "FastStream 需要修改部分请求的 HTTP 头以便：",
-        "zh_TW": "FastStream 需要修改特定請求的 HTTP 標頭以便："
+        "zh_TW": "FastStream 需要修改特定請求的 HTTP 標頭以便：",
+        "id": "FastStream perlu memodifikasi header HTTP dari permintaan tertentu untuk:"
     },
     "perms_page_breakdown_perm3r1": {
         "en": "Override headers for video sources.",
@@ -711,7 +752,8 @@
         "tr": "Video kaynaklarına ait başlıkları geçersiz kılmak.",
         "pt_BR": "Substituir cabeçalhos para fontes de vídeo.",
         "zh_CN": "覆盖视频源的请求头。",
-        "zh_TW": "覆寫影片來源的標頭。"
+        "zh_TW": "覆寫影片來源的標頭。",
+        "id": "Menimpa header untuk sumber video."
     },
     "perms_page_breakdown_perm4h": {
         "en": "Store data on your browser",
@@ -728,7 +770,8 @@
         "tr": "Tarayıcınızda veri saklama",
         "pt_BR": "Armazenar dados no navegador",
         "zh_CN": "在浏览器中存储数据",
-        "zh_TW": "在你的瀏覽器中儲存資料"
+        "zh_TW": "在你的瀏覽器中儲存資料",
+        "id": "Menyimpan data di browser Anda"
     },
     "perms_page_breakdown_perm4d": {
         "en": "FastStream needs to be able to store data in your browser so that it can remember your settings.",
@@ -745,7 +788,8 @@
         "tr": "FastStream'in ayarlarınızı hatırlayabilmesi için tarayıcınızda veri saklayabilmesi gerekir.",
         "pt_BR": "O FastStream precisa armazenar dados em seu navegador para que possa lembrar de suas configurações.",
         "zh_CN": "FastStream 需要在浏览器中存储数据以记住你的设置。",
-        "zh_TW": "FastStream 需要在你的瀏覽器中儲存資料以記住你的設定。"
+        "zh_TW": "FastStream 需要在你的瀏覽器中儲存資料以記住你的設定。",
+        "id": "FastStream perlu menyimpan data di browser Anda agar dapat mengingat pengaturan Anda."
     },
     "perms_page_breakdown_perm4r1": {
         "en": "General extension options.",
@@ -762,7 +806,8 @@
         "tr": "Genel eklenti seçenekleri.",
         "pt_BR": "Opções gerais de extensão.",
         "zh_CN": "常规扩展选项。",
-        "zh_TW": "一般擴充功能選項。"
+        "zh_TW": "一般擴充功能選項。",
+        "id": "Opsi ekstensi umum."
     },
     "perms_page_breakdown_perm5h": {
         "en": "Access the tabs API",
@@ -779,7 +824,8 @@
         "tr": "tabs API'sine erişim",
         "pt_BR": "Acessar a API das guias",
         "zh_CN": "访问 tabs API",
-        "zh_TW": "存取 tabs API"
+        "zh_TW": "存取 tabs API",
+        "id": "Akses API tabs"
     },
     "perms_page_breakdown_perm5d": {
         "en": "FastStream needs to be able to send messages between players and content scripts in each tab.",
@@ -796,7 +842,8 @@
         "tr": "FastStream'in her sekmedeki oynatıcılar ile içerik betikleri arasında mesaj gönderebilmesi gerekir.",
         "pt_BR": "O FastStream precisa enviar mensagens entre os tocadores e os scripts de conteúdo em cada guia.",
         "zh_CN": "FastStream 需要在每个标签页的播放器与内容脚本之间发送消息。",
-        "zh_TW": "FastStream 需要在每個分頁中於播放器與內容腳本間傳遞訊息。"
+        "zh_TW": "FastStream 需要在每個分頁中於播放器與內容腳本間傳遞訊息。",
+        "id": "FastStream perlu mengirim pesan antara pemutar dan skrip konten di setiap tab."
     },
     "perms_page_breakdown_perm5r1": {
         "en": "Sending sources to players from the background script.",
@@ -813,7 +860,8 @@
         "tr": "Kaynakları arka plan betiğinden oynatıcılara gönderme.",
         "pt_BR": "Envio de fontes para os tocadores partir do script em segundo plano..",
         "zh_CN": "从后台脚本向播放器发送视频源。",
-        "zh_TW": "由背景腳本將來源傳送給播放器。"
+        "zh_TW": "由背景腳本將來源傳送給播放器。",
+        "id": "Mengirim sumber ke pemutar dari skrip latar belakang."
     },
     "perms_page_granted": {
         "en": "Granted",
@@ -830,7 +878,8 @@
         "tr": "Verildi",
         "pt_BR": "Concedida",
         "zh_CN": "已授权",
-        "zh_TW": "已授權"
+        "zh_TW": "已授權",
+        "id": "Diizinkan"
     },
     "perms_page_notgranted": {
         "en": "Not Granted, click to grant",
@@ -847,7 +896,8 @@
         "tr": "Verilmedi, izin vermek için tıklayın",
         "pt_BR": "Não Concedida, click para conceder",
         "zh_CN": "未授权，点击以授权",
-        "zh_TW": "尚未授權，點此授權"
+        "zh_TW": "尚未授權，點此授權",
+        "id": "Belum Diizinkan, klik untuk mengizinkan"
     },
     "player_needs_interaction": {
         "en": "Interact to enable download acceleration",
@@ -864,7 +914,8 @@
         "tr": "İndirme hızlandırmayı etkinleştirmek için etkileşime geçin",
         "pt_BR": "Interagir para ativar a aceleração de download",
         "zh_CN": "与播放器交互以启用下载加速",
-        "zh_TW": "互動以啟用下載加速"
+        "zh_TW": "互動以啟用下載加速",
+        "id": "Berinteraksi untuk mengaktifkan percepatan unduhan"
     },
     "player_skipintro": {
         "en": "Skip Intro",
@@ -881,7 +932,8 @@
         "tr": "İntroyu atla",
         "pt_BR": "Pular Intro",
         "zh_CN": "跳过片头",
-        "zh_TW": "跳過片頭"
+        "zh_TW": "跳過片頭",
+        "id": "Lewati Intro"
     },
     "player_skipoutro": {
         "en": "Skip Outro",
@@ -898,7 +950,8 @@
         "tr": "Outroyu atla",
         "pt_BR": "Pular Outro",
         "zh_CN": "跳过片尾",
-        "zh_TW": "跳過片尾"
+        "zh_TW": "跳過片尾",
+        "id": "Lewati Outro"
     },
     "player_nextvideoin": {
         "en": "Next Video in $1s",
@@ -915,7 +968,8 @@
         "tr": "Sonraki video $1s içinde",
         "pt_BR": "Próximo vídeo em $1s",
         "zh_CN": "下一个视频将在 $1s 后播放",
-        "zh_TW": "下一部影片於 $1s 後播放"
+        "zh_TW": "下一部影片於 $1s 後播放",
+        "id": "Video berikutnya dalam $1s"
     },
     "player_hidecontrols": {
         "en": "Hide Controls",
@@ -932,7 +986,8 @@
         "tr": "Kontrolleri gizle",
         "pt_BR": "Ocultar controles",
         "zh_CN": "隐藏控件",
-        "zh_TW": "隱藏控制項"
+        "zh_TW": "隱藏控制項",
+        "id": "Sembunyikan Kontrol"
     },
     "player_loading": {
         "en": "Loading...",
@@ -949,7 +1004,8 @@
         "tr": "Yükleniyor...",
         "pt_BR": "Carregando...",
         "zh_CN": "正在加载...",
-        "zh_TW": "載入中..."
+        "zh_TW": "載入中...",
+        "id": "Memuat..."
     },
     "player_nosource_header": {
         "en": "No source is loaded!",
@@ -966,7 +1022,8 @@
         "tr": "Kaynak yüklenmedi!",
         "pt_BR": "Nenhuma fonte foi carregada!",
         "zh_CN": "未加载任何视频源！",
-        "zh_TW": "尚未載入任何來源！"
+        "zh_TW": "尚未載入任何來源！",
+        "id": "Tidak ada sumber yang dimuat!"
     },
     "player_nosource_instruction1": {
         "en": "Drag and drop a video file to play it.",
@@ -983,7 +1040,8 @@
         "tr": "Oynatmak için bir video dosyasını sürükleyip bırakın.",
         "pt_BR": "Arraste e solte um arquivo de vídeo para reproduzi-lo.",
         "zh_CN": "拖放视频文件以播放。",
-        "zh_TW": "拖放影片檔案以播放。"
+        "zh_TW": "拖放影片檔案以播放。",
+        "id": "Seret dan lepas file video untuk memutarnya."
     },
     "player_nosource_instruction2p1": {
         "en": "Click",
@@ -1000,7 +1058,8 @@
         "tr": "Tıklayın",
         "pt_BR": "Click",
         "zh_CN": "点击",
-        "zh_TW": "點擊"
+        "zh_TW": "點擊",
+        "id": "Klik"
     },
     "player_nosource_instruction2p2": {
         "en": "to load sources detected from other tabs.",
@@ -1017,7 +1076,8 @@
         "tr": "diğer sekmelerden tespit edilen kaynakları yüklemek için.",
         "pt_BR": "carregar fontes detectadas em outras guias.",
         "zh_CN": "以加载从其他标签页检测到的源。",
-        "zh_TW": "以載入從其他分頁偵測到的來源。"
+        "zh_TW": "以載入從其他分頁偵測到的來源。",
+        "id": "untuk memuat sumber yang terdeteksi dari tab lain."
     },
     "player_play_label": {
         "en": "Play video",
@@ -1034,7 +1094,8 @@
         "tr": "Videoyu oynat",
         "pt_BR": "Reproduzir vídeo",
         "zh_CN": "播放视频",
-        "zh_TW": "播放影片"
+        "zh_TW": "播放影片",
+        "id": "Putar video"
     },
     "player_pause_label": {
         "en": "Pause video",
@@ -1051,7 +1112,8 @@
         "tr": "Videoyu duraklat",
         "pt_BR": "Pausar vídeo",
         "zh_CN": "暂停视频",
-        "zh_TW": "暫停影片"
+        "zh_TW": "暫停影片",
+        "id": "Jeda video"
     },
     "player_next_video_label": {
         "en": "Next video",
@@ -1068,7 +1130,8 @@
         "tr": "Sonraki video",
         "pt_BR": "Próximo vídeo",
         "zh_CN": "下一个视频",
-        "zh_TW": "下一部影片"
+        "zh_TW": "下一部影片",
+        "id": "Video berikutnya"
     },
     "player_previous_video_label": {
         "en": "Previous video",
@@ -1085,7 +1148,8 @@
         "tr": "Önceki video",
         "pt_BR": "Vídeo anterior",
         "zh_CN": "上一个视频",
-        "zh_TW": "上一部影片"
+        "zh_TW": "上一部影片",
+        "id": "Video sebelumnya"
     },
     "player_volume_label": {
         "en": "Volume is $1%. Use arrow keys to adjust, enter to toggle mute.",
@@ -1102,7 +1166,8 @@
         "tr": "Ses seviyesi $1%. Ayarlamak için ok tuşlarını, sessize almak/açmak için Enter tuşunu kullanın.",
         "pt_BR": "O volume é de $1%. Use as Setas do teclado para ajustar, enter para alternar o mudo.",
         "zh_CN": "音量为 $1%。使用方向键调整，按回车切换静音。",
-        "zh_TW": "音量為 $1%。使用方向鍵調整，按 Enter 切換靜音。"
+        "zh_TW": "音量為 $1%。使用方向鍵調整，按 Enter 切換靜音。",
+        "id": "Volume $1%. Gunakan tombol panah untuk menyesuaikan, Enter untuk mengaktifkan/menonaktifkan bisu."
     },
     "player_mute_label": {
         "en": "Mute audio",
@@ -1119,7 +1184,8 @@
         "tr": "Sesi kapat",
         "pt_BR": "Silenciar áudio",
         "zh_CN": "静音",
-        "zh_TW": "靜音"
+        "zh_TW": "靜音",
+        "id": "Bisu audio"
     },
     "player_timestamp_label": {
         "en": "Copy URL with timestamp",
@@ -1136,7 +1202,8 @@
         "tr": "Zaman damgasıyla URL'yi kopyala",
         "pt_BR": "Copiar URL com registro de data e hora",
         "zh_CN": "复制带时间戳的链接",
-        "zh_TW": "複製含時間戳的 URL"
+        "zh_TW": "複製含時間戳的 URL",
+        "id": "Salin URL dengan stempel waktu"
     },
     "player_sourcesbrowser_title": {
         "en": "Sources Browser",
@@ -1153,7 +1220,8 @@
         "tr": "Kaynaklar Tarayıcısı",
         "pt_BR": "Navegador de fontes",
         "zh_CN": "资源浏览器",
-        "zh_TW": "來源瀏覽器"
+        "zh_TW": "來源瀏覽器",
+        "id": "Penjelajah Sumber"
     },
     "player_sourcesbrowser_open_label": {
         "en": "Open sources browser",
@@ -1170,7 +1238,8 @@
         "tr": "Kaynaklar tarayıcısını aç",
         "pt_BR": "Navegador de fontes abertas",
         "zh_CN": "打开资源浏览器",
-        "zh_TW": "開啟來源瀏覽器"
+        "zh_TW": "開啟來源瀏覽器",
+        "id": "Buka penjelajah sumber"
     },
     "player_sourcesbrowser_close_label": {
         "en": "Close sources browser",
@@ -1187,7 +1256,8 @@
         "tr": "Kaynaklar tarayıcısını kapat",
         "pt_BR": "Fechar o navegador de fontes",
         "zh_CN": "关闭资源浏览器",
-        "zh_TW": "關閉來源瀏覽器"
+        "zh_TW": "關閉來源瀏覽器",
+        "id": "Tutup penjelajah sumber"
     },
     "player_audioconfig_title": {
         "en": "Audio Configuration",
@@ -1204,7 +1274,8 @@
         "tr": "Ses Yapılandırması",
         "pt_BR": "Configuração de áudio",
         "zh_CN": "音频设置",
-        "zh_TW": "音訊設定"
+        "zh_TW": "音訊設定",
+        "id": "Konfigurasi Audio"
     },
     "player_audioconfig_open_label": {
         "en": "Open audio config window",
@@ -1221,7 +1292,8 @@
         "tr": "Ses yapılandırma penceresini aç",
         "pt_BR": "Abrir a janela de configuração de áudio",
         "zh_CN": "打开音频设置窗口",
-        "zh_TW": "開啟音訊設定視窗"
+        "zh_TW": "開啟音訊設定視窗",
+        "id": "Buka jendela konfigurasi audio"
     },
     "player_audioconfig_close_label": {
         "en": "Close audio config window",
@@ -1238,7 +1310,8 @@
         "tr": "Ses yapılandırma penceresini kapat",
         "pt_BR": "Fechar a janela de configuração de áudio",
         "zh_CN": "关闭音频设置窗口",
-        "zh_TW": "關閉音訊設定視窗"
+        "zh_TW": "關閉音訊設定視窗",
+        "id": "Tutup jendela konfigurasi audio"
     },
     "player_opensubtitles_title": {
         "en": "OpenSubtitles Search",
@@ -1255,7 +1328,8 @@
         "tr": "OpenSubtitles Arama",
         "pt_BR": "Pesquisa em OpenSubtitles",
         "zh_CN": "OpenSubtitles 搜索",
-        "zh_TW": "OpenSubtitles 搜尋"
+        "zh_TW": "OpenSubtitles 搜尋",
+        "id": "Pencarian OpenSubtitles"
     },
     "player_opensubtitles_close_label": {
         "en": "Close OpenSubtitles search window",
@@ -1272,7 +1346,8 @@
         "tr": "OpenSubtitles arama penceresini kapat",
         "pt_BR": "Fechar a janela de pesquisa do OpenSubtitles",
         "zh_CN": "关闭 OpenSubtitles 搜索窗口",
-        "zh_TW": "關閉 OpenSubtitles 搜尋視窗"
+        "zh_TW": "關閉 OpenSubtitles 搜尋視窗",
+        "id": "Tutup jendela pencarian OpenSubtitles"
     },
     "player_opensubtitles_search_placeholder": {
         "en": "Search by title, filename, etc...",
@@ -1289,7 +1364,8 @@
         "tr": "Başlığa, dosya adına vb. göre ara...",
         "pt_BR": "Pesquisar por título, nome de arquivo, etc....",
         "zh_CN": "按标题、文件名等搜索...",
-        "zh_TW": "以標題、檔名等搜尋..."
+        "zh_TW": "以標題、檔名等搜尋...",
+        "id": "Cari berdasarkan judul, nama file, dll..."
     },
     "player_opensubtitles_searchbtn": {
         "en": "Search",
@@ -1306,7 +1382,8 @@
         "tr": "Ara",
         "pt_BR": "Buscar",
         "zh_CN": "搜索",
-        "zh_TW": "搜尋"
+        "zh_TW": "搜尋",
+        "id": "Cari"
     },
     "player_opensubtitles_seasonnum": {
         "en": "Season #",
@@ -1323,7 +1400,8 @@
         "tr": "Sezon #",
         "pt_BR": "Temporada #",
         "zh_CN": "季 #",
-        "zh_TW": "季 #"
+        "zh_TW": "季 #",
+        "id": "Musim #"
     },
     "player_opensubtitles_episodenum": {
         "en": "Episode #",
@@ -1340,7 +1418,8 @@
         "tr": "Bölüm #",
         "pt_BR": "Episódio #",
         "zh_CN": "集 #",
-        "zh_TW": "集 #"
+        "zh_TW": "集 #",
+        "id": "Episode #"
     },
     "player_opensubtitles_type_all": {
         "en": "All",
@@ -1357,7 +1436,8 @@
         "tr": "Tümü",
         "pt_BR": "Tudo",
         "zh_CN": "全部",
-        "zh_TW": "全部"
+        "zh_TW": "全部",
+        "id": "Semua"
     },
     "player_opensubtitles_type_movie": {
         "en": "Movie",
@@ -1374,7 +1454,8 @@
         "tr": "Film",
         "pt_BR": "Filme",
         "zh_CN": "电影",
-        "zh_TW": "電影"
+        "zh_TW": "電影",
+        "id": "Film"
     },
     "player_opensubtitles_type_episode": {
         "en": "Episode",
@@ -1391,7 +1472,8 @@
         "tr": "Bölüm",
         "pt_BR": "Episódio",
         "zh_CN": "剧集",
-        "zh_TW": "影集"
+        "zh_TW": "影集",
+        "id": "Episode"
     },
     "player_opensubtitles_language": {
         "en": "Language",
@@ -1408,7 +1490,8 @@
         "tr": "Dil",
         "pt_BR": "Idioma",
         "zh_CN": "语言",
-        "zh_TW": "語言"
+        "zh_TW": "語言",
+        "id": "Bahasa"
     },
     "player_opensubtitles_year": {
         "en": "Year",
@@ -1425,7 +1508,8 @@
         "tr": "Yıl",
         "pt_BR": "Ano",
         "zh_CN": "年份",
-        "zh_TW": "年份"
+        "zh_TW": "年份",
+        "id": "Tahun"
     },
     "player_opensubtitles_sortby": {
         "en": "Sort By",
@@ -1442,7 +1526,8 @@
         "tr": "Sırala",
         "pt_BR": "Ordenar por",
         "zh_CN": "排序方式",
-        "zh_TW": "排序依據"
+        "zh_TW": "排序依據",
+        "id": "Urutkan berdasarkan"
     },
     "player_opensubtitles_sortby_downloads": {
         "en": "Downloads",
@@ -1459,7 +1544,8 @@
         "tr": "İndirmeler",
         "pt_BR": "Downloads",
         "zh_CN": "下载量",
-        "zh_TW": "下載次數"
+        "zh_TW": "下載次數",
+        "id": "Unduhan"
     },
     "player_opensubtitles_sortby_date": {
         "en": "Upload Date",
@@ -1476,7 +1562,8 @@
         "tr": "Yükleme Tarihi",
         "pt_BR": "Data de envio",
         "zh_CN": "上传日期",
-        "zh_TW": "上傳日期"
+        "zh_TW": "上傳日期",
+        "id": "Tanggal Unggah"
     },
     "player_opensubtitles_sortby_rating": {
         "en": "Rating",
@@ -1493,7 +1580,8 @@
         "tr": "Puan",
         "pt_BR": "Avaliação",
         "zh_CN": "评分",
-        "zh_TW": "評分"
+        "zh_TW": "評分",
+        "id": "Penilaian"
     },
     "player_opensubtitles_sortby_votes": {
         "en": "Votes",
@@ -1510,7 +1598,8 @@
         "tr": "Oylar",
         "pt_BR": "Votos",
         "zh_CN": "投票数",
-        "zh_TW": "票數"
+        "zh_TW": "票數",
+        "id": "Suara"
     },
     "player_opensubtitles_sort": {
         "en": "Sort",
@@ -1527,7 +1616,8 @@
         "tr": "Sırala",
         "pt_BR": "Ordenar",
         "zh_CN": "排序",
-        "zh_TW": "排序"
+        "zh_TW": "排序",
+        "id": "Urutkan"
     },
     "player_opensubtitles_sort_desc": {
         "en": "Descending",
@@ -1544,7 +1634,8 @@
         "tr": "Azalan",
         "pt_BR": "Descendente",
         "zh_CN": "降序",
-        "zh_TW": "遞減"
+        "zh_TW": "遞減",
+        "id": "Menurun"
     },
     "player_opensubtitles_sort_asc": {
         "en": "Ascending",
@@ -1561,7 +1652,8 @@
         "tr": "Artan",
         "pt_BR": "Ascendente",
         "zh_CN": "升序",
-        "zh_TW": "遞增"
+        "zh_TW": "遞增",
+        "id": "Naik"
     },
     "player_opensubtitles_searching": {
         "en": "Searching...",
@@ -1578,7 +1670,8 @@
         "tr": "Aranıyor...",
         "pt_BR": "Buscando...",
         "zh_CN": "搜索中...",
-        "zh_TW": "搜尋中..."
+        "zh_TW": "搜尋中...",
+        "id": "Mencari..."
     },
     "player_opensubtitles_error": {
         "en": "Error: $1",
@@ -1595,7 +1688,8 @@
         "tr": "Hata: $1",
         "pt_BR": "Erro: $1",
         "zh_CN": "错误：$1",
-        "zh_TW": "錯誤：$1"
+        "zh_TW": "錯誤：$1",
+        "id": "Kesalahan: $1"
     },
     "player_opensubtitles_disabled": {
         "en": "Cannot set proper headers! Install the extension to use this feature!",
@@ -1612,7 +1706,8 @@
         "tr": "Uygun başlıkları ayarlayamıyor! Bu özelliği kullanmak için eklentiyi yükleyin!",
         "pt_BR": "Não é possível definir cabeçalhos adequadamente! Instale a extensão para usar esse recurso!",
         "zh_CN": "无法设置正确的头部信息！安装扩展以使用此功能！",
-        "zh_TW": "無法設定正確的標頭！請安裝擴充功能以使用此功能！"
+        "zh_TW": "無法設定正確的標頭！請安裝擴充功能以使用此功能！",
+        "id": "Tidak dapat mengatur header dengan benar! Pasang ekstensi untuk menggunakan fitur ini!"
     },
     "player_opensubtitles_error_down": {
         "en": "OpenSubtitles is down!",
@@ -1629,7 +1724,8 @@
         "tr": "OpenSubtitles çalışmıyor!",
         "pt_BR": "O OpenSubtitles está inativo!",
         "zh_CN": "OpenSubtitles 服务不可用！",
-        "zh_TW": "OpenSubtitles 無法使用！"
+        "zh_TW": "OpenSubtitles 無法使用！",
+        "id": "OpenSubtitles sedang tidak tersedia!"
     },
     "player_opensubtitles_down_alert": {
         "en": "OpenSubtitles download failed! Their servers are probably down!",
@@ -1646,7 +1742,8 @@
         "tr": "OpenSubtitles indirmesi başarısız oldu! Sunucuları muhtemelen hizmet vermiyor!",
         "pt_BR": "O download do OpenSubtitles falhou! Seus servidores provavelmente estão fora do ar!",
         "zh_CN": "OpenSubtitles 下载失败！服务器可能宕机！",
-        "zh_TW": "OpenSubtitles 下載失敗！伺服器可能當掉了！"
+        "zh_TW": "OpenSubtitles 下載失敗！伺服器可能當掉了！",
+        "id": "Unduhan OpenSubtitles gagal! Server mereka mungkin sedang turun!"
     },
     "player_opensubtitles_noresults": {
         "en": "No results found!",
@@ -1663,7 +1760,8 @@
         "tr": "Sonuç bulunamadı!",
         "pt_BR": "Nenhum resultado encontrado!",
         "zh_CN": "未找到结果！",
-        "zh_TW": "找不到結果！"
+        "zh_TW": "找不到結果！",
+        "id": "Tidak ada hasil!"
     },
     "player_opensubtitles_quota": {
         "en": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1",
@@ -1680,7 +1778,8 @@
         "tr": "OpenSubtitles altyazı indirme sınırı uyguluyor! Artık indirmeniz yok! Kotanız $1 içinde sıfırlanacak",
         "pt_BR": "O OpenSubtitles limita os downloads de legendas! Você não tem mais downloads disponíveis! Sua cota é redefinida em $1",
         "zh_CN": "OpenSubtitles 限制字幕下载！您的下载次数已用尽！配额将在 $1 重置",
-        "zh_TW": "OpenSubtitles 限制字幕下載！您已無剩餘下載次數！您的配額將於 $1 重置"
+        "zh_TW": "OpenSubtitles 限制字幕下載！您已無剩餘下載次數！您的配額將於 $1 重置",
+        "id": "OpenSubtitles membatasi unduhan subtitle! Anda sudah kehabisan kuota unduhan! Kuota Anda akan direset dalam $1"
     },
     "player_opensubtitles_askopen": {
         "en": "Would you like to open the OpenSubtitles website to download the subtitle file manually?",
@@ -1697,7 +1796,8 @@
         "tr": "Altyazı dosyasını manuel indirmek için OpenSubtitles web sitesini açmak ister misiniz?",
         "pt_BR": "Gostaria de abrir o site OpenSubtitles para fazer o download do arquivo de legenda manualmente?",
         "zh_CN": "是否要打开 OpenSubtitles 网站手动下载字幕文件？",
-        "zh_TW": "要開啟 OpenSubtitles 網站手動下載字幕檔嗎？"
+        "zh_TW": "要開啟 OpenSubtitles 網站手動下載字幕檔嗎？",
+        "id": "Ingin membuka situs OpenSubtitles untuk mengunduh file subtitle secara manual?"
     },
     "player_subtitlesmenu_open_label": {
         "en": "Open subtitles menu",
@@ -1714,7 +1814,8 @@
         "tr": "Altyazılar menüsünü aç",
         "pt_BR": "Abrir o menu de legendas",
         "zh_CN": "打开字幕菜单",
-        "zh_TW": "開啟字幕選單"
+        "zh_TW": "開啟字幕選單",
+        "id": "Buka menu subtitle"
     },
     "player_subtitlesmenu_close_label": {
         "en": "Close subtitles menu",
@@ -1731,7 +1832,8 @@
         "tr": "Altyazılar menüsünü kapat",
         "pt_BR": "Fechar o menu de legendas",
         "zh_CN": "关闭字幕菜单",
-        "zh_TW": "關閉字幕選單"
+        "zh_TW": "關閉字幕選單",
+        "id": "Tutup menu subtitle"
     },
     "player_subtitlesmenu_backbtn": {
         "en": "Back",
@@ -1748,7 +1850,8 @@
         "tr": "Geri",
         "pt_BR": "Voltar",
         "zh_CN": "返回",
-        "zh_TW": "返回"
+        "zh_TW": "返回",
+        "id": "Kembali"
     },
     "player_subtitlesmenu_settings": {
         "en": "Subtitle Settings",
@@ -1765,7 +1868,8 @@
         "tr": "Altyazı ayarları",
         "pt_BR": "Configurações de legenda",
         "zh_CN": "字幕设置",
-        "zh_TW": "字幕設定"
+        "zh_TW": "字幕設定",
+        "id": "Pengaturan subtitle"
     },
     "player_subtitlesmenu_testbtn": {
         "en": "Test Subtitles",
@@ -1782,7 +1886,8 @@
         "tr": "Altyazıları test et",
         "pt_BR": "Teste Legendas",
         "zh_CN": "测试字幕",
-        "zh_TW": "測試字幕"
+        "zh_TW": "測試字幕",
+        "id": "Tes subtitle"
     },
     "player_subtitlesmenu_testbtn_stop": {
         "en": "Stop Testing",
@@ -1799,7 +1904,8 @@
         "tr": "Testi durdur",
         "pt_BR": "Parar o teste",
         "zh_CN": "停止测试",
-        "zh_TW": "停止測試"
+        "zh_TW": "停止測試",
+        "id": "Hentikan tes"
     },
     "player_subtitlesmenu_uploadbtn": {
         "en": "Upload File",
@@ -1816,7 +1922,8 @@
         "tr": "Dosya yükle",
         "pt_BR": "Carregar arquivo",
         "zh_CN": "上传文件",
-        "zh_TW": "上傳檔案"
+        "zh_TW": "上傳檔案",
+        "id": "Unggah file"
     },
     "player_subtitlesmenu_urlbtn": {
         "en": "From URL",
@@ -1833,7 +1940,8 @@
         "tr": "URL'den",
         "pt_BR": "De URL",
         "zh_CN": "从 URL",
-        "zh_TW": "從 URL"
+        "zh_TW": "從 URL",
+        "id": "Dari URL"
     },
     "player_subtitlesmenu_urlprompt": {
         "en": "Enter URL",
@@ -1850,7 +1958,8 @@
         "tr": "URL girin",
         "pt_BR": "Digite a URL",
         "zh_CN": "输入 URL",
-        "zh_TW": "輸入 URL"
+        "zh_TW": "輸入 URL",
+        "id": "Masukkan URL"
     },
     "player_subtitles_addtrack_downloading": {
         "en": "Downloading subtitle track...",
@@ -1867,7 +1976,8 @@
         "tr": "Altyazı parçası indiriliyor...",
         "pt_BR": "Download da faixa de legendas...",
         "zh_CN": "正在下载字幕轨道...",
-        "zh_TW": "正在下載字幕檔..."
+        "zh_TW": "正在下載字幕檔...",
+        "id": "Mengunduh trek subtitle..."
     },
     "player_subtitles_addtrack_success": {
         "en": "Subtitle track loaded!",
@@ -1884,7 +1994,8 @@
         "tr": "Altyazı yüklendi!",
         "pt_BR": "Faixa de legenda carregada!",
         "zh_CN": "字幕轨道已加载!",
-        "zh_TW": "字幕已載入！"
+        "zh_TW": "字幕已載入！",
+        "id": "Trek subtitle dimuat!"
     },
     "player_subtitles_addtrack_error": {
         "en": "Failed to load subtitle track!",
@@ -1901,7 +2012,8 @@
         "tr": "Altyazı yüklenemedi!",
         "pt_BR": "Falha ao carregar a faixa de legenda!",
         "zh_CN": "字幕轨道加载失败!",
-        "zh_TW": "字幕載入失敗！"
+        "zh_TW": "字幕載入失敗！",
+        "id": "Gagal memuat trek subtitle!"
     },
     "player_subtitlesmenu_searchbtn": {
         "en": "Search OpenSubtitles",
@@ -1918,7 +2030,8 @@
         "tr": "OpenSubtitles'ta ara",
         "pt_BR": "Pesquisar no OpenSubtitles",
         "zh_CN": "搜索 OpenSubtitles",
-        "zh_TW": "搜尋 OpenSubtitles"
+        "zh_TW": "搜尋 OpenSubtitles",
+        "id": "Cari di OpenSubtitles"
     },
     "player_subtitlesmenu_clearbtn": {
         "en": "Clear Subtitles",
@@ -1935,7 +2048,8 @@
         "tr": "Altyazıları temizle",
         "pt_BR": "Limpar legendas",
         "zh_CN": "清除字幕",
-        "zh_TW": "清除字幕"
+        "zh_TW": "清除字幕",
+        "id": "Hapus subtitle"
     },
     "player_subtitlesmenu_settingsbtn": {
         "en": "Subtitle Settings",
@@ -1952,7 +2066,8 @@
         "tr": "Altyazı ayarları",
         "pt_BR": "Configurações de legenda",
         "zh_CN": "字幕设置",
-        "zh_TW": "字幕設定"
+        "zh_TW": "字幕設定",
+        "id": "Pengaturan subtitle"
     },
     "player_subtitlesmenu_resynctool_label": {
         "en": "Resync Tool",
@@ -1969,7 +2084,8 @@
         "tr": "Senkronizasyon aracı",
         "pt_BR": "Ferramenta de sincronização",
         "zh_CN": "重新同步工具",
-        "zh_TW": "重新同步工具"
+        "zh_TW": "重新同步工具",
+        "id": "Alat sinkronisasi"
     },
     "player_subtitlesmenu_resynctool_instructions": {
         "en": "Drag subtitles to resync",
@@ -1986,7 +2102,8 @@
         "tr": "Altyazıları yeniden senkronize etmek için sürükleyin",
         "pt_BR": "Arraste as legendas para sincronizar novamente",
         "zh_CN": "拖动字幕以重新同步",
-        "zh_TW": "拖曳字幕以重新同步"
+        "zh_TW": "拖曳字幕以重新同步",
+        "id": "Seret subtitle untuk menyinkronkan ulang"
     },
     "player_subtitlesmenu_savetool_label": {
         "en": "Save subtitle file",
@@ -2003,7 +2120,8 @@
         "tr": "Altyazı dosyasını kaydet",
         "pt_BR": "Salvar arquivo de legenda",
         "zh_CN": "保存字幕文件",
-        "zh_TW": "儲存字幕檔案"
+        "zh_TW": "儲存字幕檔案",
+        "id": "Simpan file subtitle"
     },
     "player_subtitlesmenu_removetool_label": {
         "en": "Remove subtitle track",
@@ -2020,7 +2138,8 @@
         "tr": "Altyazı parçasını kaldır",
         "pt_BR": "Remover faixa de legenda",
         "zh_CN": "移除字幕轨道",
-        "zh_TW": "移除字幕軌"
+        "zh_TW": "移除字幕軌",
+        "id": "Hapus trek subtitle"
     },
     "player_subtitlesmenu_shifttool_label": {
         "en": "Shift subtitles $1s",
@@ -2037,7 +2156,8 @@
         "tr": "Altyazıları $1s kaydır",
         "pt_BR": "Mudar as legendas $1s",
         "zh_CN": "字幕偏移 $1s",
-        "zh_TW": "字幕偏移 $1s"
+        "zh_TW": "字幕偏移 $1s",
+        "id": "Geser subtitle $1s"
     },
     "player_subtitlesmenu_shifttool_message": {
         "en": "Shifted subtitles $1s",
@@ -2054,7 +2174,8 @@
         "tr": "Altyazılar $1s kaydırıldı",
         "pt_BR": "Legendas deslocadas $1s",
         "zh_CN": "字幕已偏移 $1s",
-        "zh_TW": "字幕已偏移 $1s"
+        "zh_TW": "字幕已偏移 $1s",
+        "id": "Subtitle digeser $1s"
     },
     "player_testsubtitle": {
         "en": "This is a test subtitle",
@@ -2071,7 +2192,8 @@
         "tr": "Bu bir test altyazısı",
         "pt_BR": "Esta é uma legenda de teste",
         "zh_CN": "这是测试字幕",
-        "zh_TW": "這是測試字幕"
+        "zh_TW": "這是測試字幕",
+        "id": "Ini subtitle uji"
     },
     "player_qualitymenu_label": {
         "en": "Video quality",
@@ -2088,7 +2210,8 @@
         "tr": "Video kalitesi",
         "pt_BR": "Qualidade do vídeo",
         "zh_CN": "视频质量",
-        "zh_TW": "影片品質"
+        "zh_TW": "影片品質",
+        "id": "Kualitas video"
     },
     "player_languagemenu_label": {
         "en": "Language selection",
@@ -2105,7 +2228,8 @@
         "tr": "Dil seçimi",
         "pt_BR": "Seleção de idiomas",
         "zh_CN": "语言选择",
-        "zh_TW": "語言選擇"
+        "zh_TW": "語言選擇",
+        "id": "Pilih bahasa"
     },
     "player_languagemenu_video": {
         "en": "Video",
@@ -2122,7 +2246,8 @@
         "tr": "Video",
         "pt_BR": "Vídeo",
         "zh_CN": "视频",
-        "zh_TW": "影片"
+        "zh_TW": "影片",
+        "id": "Video"
     },
     "player_languagemenu_audio": {
         "en": "Audio",
@@ -2139,7 +2264,8 @@
         "tr": "Ses",
         "pt_BR": "Áudio",
         "zh_CN": "音频",
-        "zh_TW": "音訊"
+        "zh_TW": "音訊",
+        "id": "Audio"
     },
     "player_playbackrate_label": {
         "en": "Playback rate",
@@ -2156,7 +2282,8 @@
         "tr": "Oynatma hızı",
         "pt_BR": "Taxa de reprodução",
         "zh_CN": "播放速度",
-        "zh_TW": "播放速度"
+        "zh_TW": "播放速度",
+        "id": "Kecepatan pemutaran"
     },
     "player_settings_title": {
         "en": "FastStream Settings",
@@ -2173,7 +2300,8 @@
         "tr": "FastStream Ayarları",
         "pt_BR": "Configurações do FastStream",
         "zh_CN": "FastStream 设置",
-        "zh_TW": "FastStream 設定"
+        "zh_TW": "FastStream 設定",
+        "id": "Pengaturan FastStream"
     },
     "player_settings_open_label": {
         "en": "Open settings window",
@@ -2190,7 +2318,8 @@
         "tr": "Ayarlar penceresini aç",
         "pt_BR": "Abrir janela de configurações",
         "zh_CN": "打开设置窗口",
-        "zh_TW": "開啟設定視窗"
+        "zh_TW": "開啟設定視窗",
+        "id": "Buka jendela pengaturan"
     },
     "player_settings_close_label": {
         "en": "Close settings window",
@@ -2207,7 +2336,8 @@
         "tr": "Ayarlar penceresini kapat",
         "pt_BR": "Fechar janela de configurações",
         "zh_CN": "关闭设置窗口",
-        "zh_TW": "關閉設定視窗"
+        "zh_TW": "關閉設定視窗",
+        "id": "Tutup jendela pengaturan"
     },
     "player_savevideo_label": {
         "en": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer.",
@@ -2224,7 +2354,8 @@
         "tr": "Videoyu kaydet. Kısmi videoyu kaydetmek için ALT tuşunu basılı tut. Arabelleği boşaltmak için SHIFT tuşunu basılı tut.",
         "pt_BR": "Salve o vídeo. mantenha pressionada a tecla ALT para salvar o vídeo parcialmente. mantenha pressionada a tecla SHIFT para despejar o que estiver armazenado..",
         "zh_CN": "保存视频。按住 ALT 保存部分视频。按住 SHIFT 转储缓冲区。",
-        "zh_TW": "儲存影片。按住 ALT 可儲存部分影片。按住 SHIFT 可匯出緩衝區。"
+        "zh_TW": "儲存影片。按住 ALT 可儲存部分影片。按住 SHIFT 可匯出緩衝區。",
+        "id": "Simpan video. Tahan ALT untuk menyimpan video sebagian. Tahan SHIFT untuk mengosongkan buffer."
     },
     "player_screenshot_label": {
         "en": "Take screenshot",
@@ -2241,7 +2372,8 @@
         "tr": "Ekran görüntüsü al",
         "pt_BR": "Tirar captura de tela",
         "zh_CN": "截图",
-        "zh_TW": "截圖"
+        "zh_TW": "截圖",
+        "id": "Ambil tangkapan layar"
     },
     "player_pip_label": {
         "en": "Picture in picture",
@@ -2258,7 +2390,8 @@
         "tr": "Resim içinde resim",
         "pt_BR": "Imagem sob imagem (pip)",
         "zh_CN": "画中画",
-        "zh_TW": "畫中畫"
+        "zh_TW": "畫中畫",
+        "id": "Gambar dalam gambar"
     },
     "player_fullscreen_label": {
         "en": "Toggle fullscreen",
@@ -2275,7 +2408,8 @@
         "tr": "Tam ekranı aç/kapat",
         "pt_BR": "Alternar tela cheia",
         "zh_CN": "切换全屏",
-        "zh_TW": "切換全螢幕"
+        "zh_TW": "切換全螢幕",
+        "id": "Beralih layar penuh"
     },
     "player_fullscreen_denied": {
         "en": "Fullscreen permissions denied!",
@@ -2292,7 +2426,8 @@
         "tr": "Tam ekran izni reddedildi!",
         "pt_BR": "Permissões de tela cheia negadas!",
         "zh_CN": "全屏权限被拒绝！",
-        "zh_TW": "全螢幕權限被拒絕！"
+        "zh_TW": "全螢幕權限被拒絕！",
+        "id": "Izin layar penuh ditolak!"
     },
     "player_windowed_fullscreen_label": {
         "en": "Toggle windowed fullscreen",
@@ -2309,7 +2444,8 @@
         "tr": "Pencereli tam ekranı aç/kapat",
         "pt_BR": "Alternar entre janela e tela cheia",
         "zh_CN": "切换窗口化全屏",
-        "zh_TW": "切換視窗化全螢幕"
+        "zh_TW": "切換視窗化全螢幕",
+        "id": "Beralih ke layar penuh jendela"
     },
     "player_skip_forward_label": {
         "en": "Skip forward 10s",
@@ -2326,7 +2462,8 @@
         "tr": "10 sn ileri atla",
         "pt_BR": "Avançar 10s",
         "zh_CN": "快进 10 秒",
-        "zh_TW": "快轉 10 秒"
+        "zh_TW": "快轉 10 秒",
+        "id": "Maju 10 detik"
     },
     "player_skip_backward_label": {
         "en": "Skip backward 10s",
@@ -2343,7 +2480,8 @@
         "tr": "10 sn geri atla",
         "pt_BR": "Retroceder 10s",
         "zh_CN": "快退 10 秒",
-        "zh_TW": "快退 10 秒"
+        "zh_TW": "快退 10 秒",
+        "id": "Mundur 10 detik"
     },
     "player_more_label": {
         "en": "More tools",
@@ -2360,7 +2498,8 @@
         "tr": "Diğer araçlar",
         "pt_BR": "Mais ferramentas",
         "zh_CN": "更多工具",
-        "zh_TW": "更多工具"
+        "zh_TW": "更多工具",
+        "id": "Alat lainnya"
     },
     "player_loop_label": {
         "en": "Loop",
@@ -2377,7 +2516,8 @@
         "tr": "Tekrarla",
         "pt_BR": "Loop",
         "zh_CN": "循环",
-        "zh_TW": "重播"
+        "zh_TW": "重播",
+        "id": "Ulang"
     },
     "loop_menu_start": {
         "en": "Start",
@@ -2394,7 +2534,8 @@
         "tr": "Başlangıç",
         "pt_BR": "Início",
         "zh_CN": "开始",
-        "zh_TW": "起點"
+        "zh_TW": "起點",
+        "id": "Mulai"
     },
     "loop_menu_end": {
         "en": "End",
@@ -2411,7 +2552,8 @@
         "tr": "Bitiş",
         "pt_BR": "Fim",
         "zh_CN": "结束",
-        "zh_TW": "終點"
+        "zh_TW": "終點",
+        "id": "Akhir"
     },
     "loop_menu_toggle_enabled": {
         "en": "Loop Enabled",
@@ -2428,7 +2570,8 @@
         "tr": "Döngü etkin",
         "pt_BR": "Loop ativado",
         "zh_CN": "已启用循环",
-        "zh_TW": "已啟用重播"
+        "zh_TW": "已啟用重播",
+        "id": "Ulang aktif"
     },
     "loop_menu_toggle_disabled": {
         "en": "Loop Disabled",
@@ -2445,7 +2588,8 @@
         "tr": "Döngü devre dışı",
         "pt_BR": "Loop desativado",
         "zh_CN": "已禁用循环",
-        "zh_TW": "已停用重播"
+        "zh_TW": "已停用重播",
+        "id": "Ulang dinonaktifkan"
     },
     "loop_menu_gif_start": {
         "en": "Recording GIF at 4x speed...",
@@ -2462,7 +2606,8 @@
         "tr": "GIF 4x hızında kaydediliyor...",
         "pt_BR": "Gravação de GIF em velocidade 4x...",
         "zh_CN": "正在以 4 倍速录制 GIF...",
-        "zh_TW": "正在以 4 倍速錄製 GIF..."
+        "zh_TW": "正在以 4 倍速錄製 GIF...",
+        "id": "Merekam GIF pada kecepatan 4x..."
     },
     "loop_menu_gif_end": {
         "en": "Finished recording GIF. Now saving...",
@@ -2479,7 +2624,8 @@
         "tr": "GIF kaydı tamamlandı. Şimdi kaydediliyor...",
         "pt_BR": "Gravação terminada em GIF. Salvando...",
         "zh_CN": "GIF 录制完成，正在保存...",
-        "zh_TW": "已完成 GIF 錄製。正在儲存..."
+        "zh_TW": "已完成 GIF 錄製。正在儲存...",
+        "id": "Selesai merekam GIF. Sedang menyimpan..."
     },
     "loop_menu_gif_abort": {
         "en": "Aborted GIF recording!",
@@ -2496,7 +2642,8 @@
         "tr": "GIF kaydı iptal edildi!",
         "pt_BR": "Gravação de GIFs interrompida!",
         "zh_CN": "已中止 GIF 录制！",
-        "zh_TW": "已中止 GIF 錄製！"
+        "zh_TW": "已中止 GIF 錄製！",
+        "id": "Perekaman GIF dibatalkan!"
     },
     "loop_menu_gif_progress": {
         "en": "Saving GIF $1%",
@@ -2513,7 +2660,8 @@
         "tr": "GIF kaydediliyor $1%",
         "pt_BR": "Salvando GIF $1%",
         "zh_CN": "正在保存 GIF $1%",
-        "zh_TW": "正在儲存 GIF $1%"
+        "zh_TW": "正在儲存 GIF $1%",
+        "id": "Menyimpan GIF $1%"
     },
     "loop_menu_gif_finished": {
         "en": "Finished saving GIF!",
@@ -2530,7 +2678,8 @@
         "tr": "GIF kaydedildi!",
         "pt_BR": "Terminado de salvar GIF!",
         "zh_CN": "GIF 保存完成！",
-        "zh_TW": "GIF 儲存完成！"
+        "zh_TW": "GIF 儲存完成！",
+        "id": "Selesai menyimpan GIF!"
     },
     "player_download_paused": {
         "en": "Download paused",
@@ -2547,7 +2696,8 @@
         "tr": "İndirme duraklatıldı",
         "pt_BR": "Download pausado",
         "zh_CN": "下载已暂停",
-        "zh_TW": "下載已暫停"
+        "zh_TW": "下載已暫停",
+        "id": "Unduhan dijeda"
     },
     "player_fragment_failed_singular": {
         "en": "$1 Fragment Failed! Click to retry.",
@@ -2564,7 +2714,8 @@
         "tr": "$1 parça başarısız oldu! Tekrar denemek için tıklayın.",
         "pt_BR": "$1 Fragmento com erro! Clique para tentar novamente.",
         "zh_CN": "$1 分片失败！点击重试。",
-        "zh_TW": "$1 片段失敗！點擊重試。"
+        "zh_TW": "$1 片段失敗！點擊重試。",
+        "id": "$1 fragmen gagal! Klik untuk coba lagi."
     },
     "player_fragment_failed_plural": {
         "en": "$1 Fragments Failed! Click to retry.",
@@ -2581,7 +2732,8 @@
         "tr": "$1 parça başarısız oldu! Tekrar denemek için tıklayın.",
         "pt_BR": "$1 Fragmento com erro! Clique para tentar novamente.",
         "zh_CN": "$1 个分片失败！点击重试。",
-        "zh_TW": "$1 個片段失敗！點擊重試。"
+        "zh_TW": "$1 個片段失敗！點擊重試。",
+        "id": "$1 fragmen gagal! Klik untuk coba lagi."
     },
     "player_fragment_allbuffered": {
         "en": "100% Buffered",
@@ -2598,7 +2750,8 @@
         "tr": "100% Önbelleğe alındı",
         "pt_BR": "100% Armazenado",
         "zh_CN": "已缓冲 100%",
-        "zh_TW": "已緩衝 100%"
+        "zh_TW": "已緩衝 100%",
+        "id": "100% Terbuffer"
     },
     "player_welcometext": {
         "en": "Welcome to FastStream v$1!",
@@ -2615,7 +2768,8 @@
         "tr": "FastStream v$1'e hoş geldiniz!",
         "pt_BR": "Bem-vindo ao FastStream v$1!",
         "zh_CN": "欢迎使用 FastStream v$1！",
-        "zh_TW": "歡迎使用 FastStream v$1！"
+        "zh_TW": "歡迎使用 FastStream v$1！",
+        "id": "Selamat datang di FastStream v$1!"
     },
     "player_nosource_alert": {
         "en": "No source is loaded!",
@@ -2632,7 +2786,8 @@
         "tr": "Kaynak yüklenmedi!",
         "pt_BR": "Nenhuma fonte foi carregada!",
         "zh_CN": "未加载任何来源！",
-        "zh_TW": "尚未載入來源！"
+        "zh_TW": "尚未載入來源！",
+        "id": "Tidak ada sumber yang dimuat!"
     },
     "player_archive_loading": {
         "en": "Loading archive... $1%",
@@ -2649,7 +2804,8 @@
         "tr": "Arşiv yükleniyor... $1%",
         "pt_BR": "Carregando arquivo... $1%",
         "zh_CN": "正在加载归档... $1%",
-        "zh_TW": "正在載入封存檔... $1%"
+        "zh_TW": "正在載入封存檔... $1%",
+        "id": "Memuat arsip... $1%"
     },
     "player_archive_loaded": {
         "en": "Loaded archive!",
@@ -2666,7 +2822,8 @@
         "tr": "Arşiv yüklendi!",
         "pt_BR": "Arquivo carregado!",
         "zh_CN": "归档加载完成！",
-        "zh_TW": "已載入封存檔！"
+        "zh_TW": "已載入封存檔！",
+        "id": "Arsip dimuat!"
     },
     "player_archive_fail": {
         "en": "Failed to load archive!",
@@ -2683,7 +2840,8 @@
         "tr": "Arşiv yüklenemedi!",
         "pt_BR": "Falha ao carregar o arquivo!",
         "zh_CN": "归档加载失败！",
-        "zh_TW": "載入封存檔失敗！"
+        "zh_TW": "載入封存檔失敗！",
+        "id": "Gagal memuat arsip!"
     },
     "player_filename_prompt": {
         "en": "Enter a name for the file",
@@ -2700,7 +2858,8 @@
         "tr": "Dosya için bir isim girin",
         "pt_BR": "Insira um nome para o arquivo",
         "zh_CN": "请输入文件名",
-        "zh_TW": "輸入檔案名稱"
+        "zh_TW": "輸入檔案名稱",
+        "id": "Masukkan nama file"
     },
     "player_screenshot_saving": {
         "en": "Taking screenshot...",
@@ -2717,7 +2876,8 @@
         "tr": "Ekran görüntüsü alınıyor...",
         "pt_BR": "Capturando tela...",
         "zh_CN": "正在截屏...",
-        "zh_TW": "正在擷圖..."
+        "zh_TW": "正在擷圖...",
+        "id": "Mengambil tangkapan layar..."
     },
     "player_screenshot_saved": {
         "en": "Screenshot saved!",
@@ -2734,7 +2894,8 @@
         "tr": "Ekran görüntüsü kaydedildi!",
         "pt_BR": "Captura de tela salva!",
         "zh_CN": "截图已保存！",
-        "zh_TW": "擷圖已儲存！"
+        "zh_TW": "擷圖已儲存！",
+        "id": "Tangkapan layar tersimpan!"
     },
     "player_screenshot_fail": {
         "en": "Failed to take screenshot!",
@@ -2751,7 +2912,8 @@
         "tr": "Ekran görüntüsü alınamadı!",
         "pt_BR": "Falha na captura de tela!",
         "zh_CN": "截图失败！",
-        "zh_TW": "擷圖失敗！"
+        "zh_TW": "擷圖失敗！",
+        "id": "Gagal mengambil tangkapan layar!"
     },
     "player_savevideo_inprogress_alert": {
         "en": "Already making save!",
@@ -2768,7 +2930,8 @@
         "tr": "Kaydetme zaten devam ediyor!",
         "pt_BR": "Salvando!",
         "zh_CN": "正在保存中！",
-        "zh_TW": "已在儲存中！"
+        "zh_TW": "已在儲存中！",
+        "id": "Sedang menyimpan!"
     },
     "player_savevideo_unsupported": {
         "en": "Saving is not supported for this video!",
@@ -2785,7 +2948,8 @@
         "tr": "Bu video için kaydetme desteklenmiyor!",
         "pt_BR": "Não há suporte para salvar este vídeo!",
         "zh_CN": "此视频不支持保存！",
-        "zh_TW": "此影片不支援儲存！"
+        "zh_TW": "此影片不支援儲存！",
+        "id": "Penyimpanan tidak didukung untuk video ini!"
     },
     "player_savevideo_partial_confirm": {
         "en": "Video has not finished downloading yet! Are you sure you want to save it?",
@@ -2802,7 +2966,8 @@
         "tr": "Video henüz tamamen indirilmedi! Yine de kaydetmek istediğinize emin misiniz?",
         "pt_BR": "O download do vídeo ainda não foi concluído! Tem certeza de que deseja salvá-lo?",
         "zh_CN": "视频尚未下载完成！确定要保存吗？",
-        "zh_TW": "影片尚未下載完成！確定要儲存嗎？"
+        "zh_TW": "影片尚未下載完成！確定要儲存嗎？",
+        "id": "Video belum selesai diunduh! Yakin ingin menyimpannya?"
     },
     "player_savevideo_incognito_confirm": {
         "en": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?",
@@ -2819,7 +2984,8 @@
         "tr": "Gizli Mod videoları tamponlamak için RAM kullanır. Bilgisayarınızda tüm videoyu kaydetmek için yeterli bellek olmayabilir!\nDevam etmek istediğinize emin misiniz?",
         "pt_BR": "O modo de navegação anônima usará a RAM para armazenar vídeos. Seu computador pode não ter memória suficiente para salvar o vídeo inteiro!\nTem certeza de que deseja prosseguir?",
         "zh_CN": "隐身模式会使用内存（RAM）来缓冲视频。您的电脑可能没有足够的内存来保存整个视频！\n确定要继续吗？",
-        "zh_TW": "無痕模式會使用記憶體緩衝影片。你的電腦可能沒有足夠的記憶體來儲存整段影片！\n確定要繼續嗎？"
+        "zh_TW": "無痕模式會使用記憶體緩衝影片。你的電腦可能沒有足夠的記憶體來儲存整段影片！\n確定要繼續嗎？",
+        "id": "Mode Penyamaran akan menggunakan RAM untuk men-buffer video. Komputer Anda mungkin tidak memiliki memori yang cukup untuk menyimpan seluruh video!\nYakin ingin melanjutkan?"
     },
     "player_savevideo_reencode": {
         "en": "Saving will require re-encoding. This may take a long time. Do you want to proceed?",
@@ -2836,7 +3002,8 @@
         "tr": "Kaydetme yeniden kodlama gerektirecek. Bu uzun sürebilir. Devam etmek istiyor musunuz?",
         "pt_BR": "Para salvar, será necessário recodificar o vídeo. Isso pode levar muito tempo. Você deseja continuar?",
         "zh_CN": "保存将需要重新编码，可能会耗时较长。是否继续？",
-        "zh_TW": "儲存將需要重新編碼，可能會耗費較長時間。要繼續嗎？"
+        "zh_TW": "儲存將需要重新編碼，可能會耗費較長時間。要繼續嗎？",
+        "id": "Penyimpanan akan memerlukan pengkodean ulang. Ini mungkin memakan waktu lama. Ingin melanjutkan?"
     },
     "player_savevideo_cancelling": {
         "en": "Cancelling save...",
@@ -2853,7 +3020,8 @@
         "tr": "Kaydetme iptal ediliyor...",
         "pt_BR": "Cancelando salvamento...",
         "zh_CN": "正在取消保存...",
-        "zh_TW": "正在取消儲存..."
+        "zh_TW": "正在取消儲存...",
+        "id": "Membatalkan penyimpanan..."
     },
     "player_savevideo_cancelled": {
         "en": "Save cancelled!",
@@ -2870,7 +3038,8 @@
         "tr": "Kaydetme iptal edildi!",
         "pt_BR": "Salvamento cancelado!",
         "zh_CN": "保存已取消！",
-        "zh_TW": "已取消儲存！"
+        "zh_TW": "已取消儲存！",
+        "id": "Penyimpanan dibatalkan!"
     },
     "player_savevideo_start": {
         "en": "Making save...",
@@ -2887,7 +3056,8 @@
         "tr": "Kaydetme başlatılıyor...",
         "pt_BR": "Salvando",
         "zh_CN": "正在保存...",
-        "zh_TW": "正在儲存..."
+        "zh_TW": "正在儲存...",
+        "id": "Menyimpan..."
     },
     "player_savevideo_progress": {
         "en": "Saving $1%",
@@ -2904,7 +3074,8 @@
         "tr": "$1% kaydediliyor",
         "pt_BR": "Salvando $1%",
         "zh_CN": "保存中 $1%",
-        "zh_TW": "儲存中 $1%"
+        "zh_TW": "儲存中 $1%",
+        "id": "Menyimpan $1%"
     },
     "player_savevideo_fail": {
         "en": "Failed to save video!",
@@ -2921,7 +3092,8 @@
         "tr": "Video kaydedilemedi!",
         "pt_BR": "Falha ao salvar vídeo!",
         "zh_CN": "保存视频失败！",
-        "zh_TW": "儲存影片失敗！"
+        "zh_TW": "儲存影片失敗！",
+        "id": "Gagal menyimpan video!"
     },
     "player_savevideo_failed_ask_archive": {
         "en": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it",
@@ -2938,7 +3110,8 @@
         "tr": "Video kaydedilemedi!\nOynatıcının tampon belleğini arşivlemek ister misiniz?\n- Arşiv dosyalarını oynatıcıya sürükleyip bırakarak yükleyin",
         "pt_BR": "Não foi possível salvar o vídeo!\nEm vez disso, você gostaria de arquivar o armazenamento do buffer do tocador?\n- Arraste e solte arquivos compactados no tocador para carregá-los",
         "zh_CN": "保存视频失败！\n是否要归档播放器的缓冲区？\n- 将归档文件拖放到播放器上以加载它",
-        "zh_TW": "儲存影片失敗！\n要改為封存播放器的緩衝區儲存嗎？\n- 將封存檔案拖放到播放器以載入"
+        "zh_TW": "儲存影片失敗！\n要改為封存播放器的緩衝區儲存嗎？\n- 將封存檔案拖放到播放器以載入",
+        "id": "Gagal menyimpan video!\nApakah Anda ingin mengarsipkan penyimpanan buffer pemutar sebagai gantinya?\n- Seret dan lepaskan berkas arsip ke pemutar untuk memuatnya"
     },
     "player_savevideo_complete": {
         "en": "Save complete!",
@@ -2955,7 +3128,8 @@
         "tr": "Kaydetme tamamlandı!",
         "pt_BR": "Salvamento completo!",
         "zh_CN": "保存完成！",
-        "zh_TW": "儲存完成！"
+        "zh_TW": "儲存完成！",
+        "id": "Penyimpanan selesai!"
     },
     "player_archiver_progress": {
         "en": "Archiving $1%",
@@ -2972,7 +3146,8 @@
         "tr": "$1% arşivleniyor",
         "pt_BR": "Arquivando $1%",
         "zh_CN": "归档中 $1%",
-        "zh_TW": "封存中 $1%"
+        "zh_TW": "封存中 $1%",
+        "id": "Mengarsipkan $1%"
     },
     "player_archiver_saved": {
         "en": "Archive saved!",
@@ -2989,7 +3164,8 @@
         "tr": "Arşiv kaydedildi!",
         "pt_BR": "Arquivo salvo!",
         "zh_CN": "已保存归档！",
-        "zh_TW": "已存檔！"
+        "zh_TW": "已存檔！",
+        "id": "Arsip tersimpan!"
     },
     "player_quality_current": {
         "en": "(current)",
@@ -3006,7 +3182,8 @@
         "tr": "(mevcut)",
         "pt_BR": "(atual)",
         "zh_CN": "(当前)",
-        "zh_TW": "(目前)"
+        "zh_TW": "(目前)",
+        "id": "(saat ini)"
     },
     "player_quality_unknown": {
         "en": "(unknown)",
@@ -3023,7 +3200,8 @@
         "tr": "(bilinmiyor)",
         "pt_BR": "(desconhecido)",
         "zh_CN": "(未知)",
-        "zh_TW": "(未知)"
+        "zh_TW": "(未知)",
+        "id": "(tidak diketahui)"
     },
     "player_buffer_incognito_warning": {
         "en": "Not enough space to predownload in incognito mode, will buffer $1",
@@ -3040,7 +3218,8 @@
         "tr": "Gizli modda ön indirme için yeterli alan yok, $1 önbelleğe alınacak",
         "pt_BR": "Não há espaço suficiente para fazer o download prévio no modo incógnito, o buffer será de $1",
         "zh_CN": "隐身模式下没有足够的空间进行预下载，将缓冲 $1",
-        "zh_TW": "無痕模式下空間不足，將緩衝 $1"
+        "zh_TW": "無痕模式下空間不足，將緩衝 $1",
+        "id": "Tidak cukup ruang untuk pra-unduh di mode penyamaran, akan melakukan buffering $1"
     },
     "player_buffer_storage_warning": {
         "en": "Video size exceeds limits, will buffer $1",
@@ -3057,7 +3236,8 @@
         "tr": "Video boyutu sınırı aşıyor, $1 önbelleğe alınacak",
         "pt_BR": "O tamanho do vídeo excede os limites, será armazenado em $1",
         "zh_CN": "视频大小超出限制，将缓冲 $1",
-        "zh_TW": "影片大小超過限制，將緩衝 $1"
+        "zh_TW": "影片大小超過限制，將緩衝 $1",
+        "id": "Ukuran video melebihi batas, akan melakukan buffering $1"
     },
     "player_error_drm": {
         "en": "Failed to load! DRM is not supported!",
@@ -3074,7 +3254,8 @@
         "tr": "Yüklenemedi! DRM desteklenmiyor!",
         "pt_BR": "Falha ao carregar! DRM não é suportado!",
         "zh_CN": "加载失败！不支持 DRM！",
-        "zh_TW": "載入失敗！不支援 DRM！"
+        "zh_TW": "載入失敗！不支援 DRM！",
+        "id": "Gagal dimuat! DRM tidak didukung!"
     },
     "player_error_load": {
         "en": "Failed to load video!",
@@ -3091,7 +3272,8 @@
         "tr": "Video yüklenemedi!",
         "pt_BR": "Falha ao carregar o vídeo!",
         "zh_CN": "视频加载失败！",
-        "zh_TW": "影片載入失敗！"
+        "zh_TW": "影片載入失敗！",
+        "id": "Gagal memuat video!"
     },
     "source_copied": {
         "en": "Copied URL to clipboard!",
@@ -3108,7 +3290,8 @@
         "tr": "URL panoya kopyalandı!",
         "pt_BR": "URL copiado na área de transferência!",
         "zh_CN": "已将 URL 复制到剪贴板！",
-        "zh_TW": "已將網址複製到剪貼簿！"
+        "zh_TW": "已將網址複製到剪貼簿！",
+        "id": "URL disalin ke papan klip!"
     },
     "player_source_copybtn": {
         "en": "Copy",
@@ -3125,7 +3308,8 @@
         "tr": "Kopyala",
         "pt_BR": "Copiar",
         "zh_CN": "复制",
-        "zh_TW": "複製"
+        "zh_TW": "複製",
+        "id": "Salin"
     },
     "player_source_copybtn_label": {
         "en": "Copy source URL, headers, and mode to clipboard",
@@ -3142,7 +3326,8 @@
         "tr": "Kaynak URL'sini, başlıkları ve modu panoya kopyala",
         "pt_BR": "Copiar URL de origem, cabeçalhos para a área de transferência",
         "zh_CN": "将源 URL、请求头和模式复制到剪贴板",
-        "zh_TW": "將來源 URL、標頭與模式複製到剪貼簿"
+        "zh_TW": "將來源 URL、標頭與模式複製到剪貼簿",
+        "id": "Salin URL sumber, header, dan mode ke papan klip"
     },
     "player_source_copybtn_copied": {
         "en": "Copied!",
@@ -3159,7 +3344,8 @@
         "tr": "Kopyalandı!",
         "pt_BR": "Copiado!",
         "zh_CN": "已复制！",
-        "zh_TW": "已複製！"
+        "zh_TW": "已複製！",
+        "id": "Disalin!"
     },
     "player_source_autodetect": {
         "en": "Auto Detect",
@@ -3176,7 +3362,8 @@
         "tr": "Otomatik algılama",
         "pt_BR": "Auto detectado",
         "zh_CN": "自动检测",
-        "zh_TW": "自動偵測"
+        "zh_TW": "自動偵測",
+        "id": "Deteksi Otomatis"
     },
     "player_source_direct": {
         "en": "Direct",
@@ -3193,7 +3380,8 @@
         "tr": "Doğrudan",
         "pt_BR": "Direto",
         "zh_CN": "直连",
-        "zh_TW": "直接"
+        "zh_TW": "直接",
+        "id": "Langsung"
     },
     "player_source_accelmp4": {
         "en": "Accelerated MP4",
@@ -3210,7 +3398,8 @@
         "tr": "Hızlandırılmış MP4",
         "pt_BR": "MP4 acelerado",
         "zh_CN": "加速 MP4",
-        "zh_TW": "加速 MP4"
+        "zh_TW": "加速 MP4",
+        "id": "MP4 Dipercepat"
     },
     "player_source_accelhls": {
         "en": "Accelerated HLS",
@@ -3227,7 +3416,8 @@
         "tr": "Hızlandırılmış HLS",
         "pt_BR": "HLS acelerado",
         "zh_CN": "加速 HLS",
-        "zh_TW": "加速 HLS"
+        "zh_TW": "加速 HLS",
+        "id": "HLS Dipercepat"
     },
     "player_source_acceldash": {
         "en": "Accelerated DASH",
@@ -3244,7 +3434,8 @@
         "tr": "Hızlandırılmış DASH",
         "pt_BR": "DASH acelerado",
         "zh_CN": "加速 DASH",
-        "zh_TW": "加速 DASH"
+        "zh_TW": "加速 DASH",
+        "id": "DASH Dipercepat"
     },
     "player_source_accelyt": {
         "en": "Accelerated YouTube",
@@ -3261,7 +3452,8 @@
         "tr": "Hızlandırılmış YouTube",
         "pt_BR": "YouTube acelerado",
         "zh_CN": "加速 YouTube",
-        "zh_TW": "加速 YouTube"
+        "zh_TW": "加速 YouTube",
+        "id": "YouTube Dipercepat"
     },
     "player_source_accelvm": {
         "en": "Accelerated Vimeo",
@@ -3278,7 +3470,8 @@
         "tr": "Hızlandırılmış Vimeo",
         "pt_BR": "Vimeo acelerado",
         "zh_CN": "加速 Vimeo",
-        "zh_TW": "加速 Vimeo"
+        "zh_TW": "加速 Vimeo",
+        "id": "Vimeo Dipercepat"
     },
     "player_source_mode": {
         "en": "Mode",
@@ -3295,7 +3488,8 @@
         "tr": "Mod",
         "pt_BR": "Modo",
         "zh_CN": "模式",
-        "zh_TW": "模式"
+        "zh_TW": "模式",
+        "id": "Mode"
     },
     "player_source_mode_auto_error": {
         "en": "Please select a player mode!",
@@ -3312,7 +3506,8 @@
         "tr": "Lütfen bir oynatıcı modu seçin!",
         "pt_BR": "Selecione um modo de reprodução!",
         "zh_CN": "请选择播放器模式！",
-        "zh_TW": "請選擇播放器模式！"
+        "zh_TW": "請選擇播放器模式！",
+        "id": "Silakan pilih mode pemutar!"
     },
     "player_source_url_placeholder": {
         "en": "Source URL",
@@ -3329,7 +3524,8 @@
         "tr": "Kaynak URL",
         "pt_BR": "URL de origem",
         "zh_CN": "源 URL",
-        "zh_TW": "來源 URL"
+        "zh_TW": "來源 URL",
+        "id": "URL sumber"
     },
     "player_source_headerbtn": {
         "en": "Header Override ($1)",
@@ -3346,7 +3542,8 @@
         "tr": "Başlıkları Geçersiz Kıl ($1)",
         "pt_BR": "Substituição de cabeçalho ($1)",
         "zh_CN": "请求头覆盖 ($1)",
-        "zh_TW": "標頭覆寫 ($1)"
+        "zh_TW": "標頭覆寫 ($1)",
+        "id": "Timpa Header ($1)"
     },
     "player_source_headerbtn_label": {
         "en": "Toggle header override input",
@@ -3363,7 +3560,8 @@
         "tr": "Başlık geçersiz kılma girişini aç/kapat",
         "pt_BR": "Alternar a entrada de substituição de cabeçalho",
         "zh_CN": "切换请求头覆盖输入框",
-        "zh_TW": "切換標頭覆寫輸入"
+        "zh_TW": "切換標頭覆寫輸入",
+        "id": "Tampilkan/sembunyikan input timpa header"
     },
     "player_source_headerbtn_disabled": {
         "en": "Header Override (Extension Only)",
@@ -3380,7 +3578,8 @@
         "tr": "Başlık Geçersiz Kılma (Sadece Eklenti)",
         "pt_BR": "Substituição de cabeçalho (somente extensão)",
         "zh_CN": "请求头覆盖 (仅限扩展)",
-        "zh_TW": "標頭覆寫 (僅限擴充功能)"
+        "zh_TW": "標頭覆寫 (僅限擴充功能)",
+        "id": "Timpa Header (Hanya Ekstensi)"
     },
     "player_source_playbtn": {
         "en": "Play",
@@ -3397,7 +3596,8 @@
         "tr": "Oynat",
         "pt_BR": "Reproduzir",
         "zh_CN": "播放",
-        "zh_TW": "播放"
+        "zh_TW": "播放",
+        "id": "Putar"
     },
     "player_source_playbtn_playing": {
         "en": "Playing",
@@ -3414,7 +3614,8 @@
         "tr": "Çalıyor",
         "pt_BR": "Tocando",
         "zh_CN": "正在播放",
-        "zh_TW": "播放中"
+        "zh_TW": "播放中",
+        "id": "Memutar"
     },
     "player_source_playbtn_loading": {
         "en": "Loading...",
@@ -3431,7 +3632,8 @@
         "tr": "Yükleniyor...",
         "pt_BR": "Carregando...",
         "zh_CN": "加载中...",
-        "zh_TW": "載入中..."
+        "zh_TW": "載入中...",
+        "id": "Memuat..."
     },
     "player_source_deletebtn": {
         "en": "Delete",
@@ -3448,7 +3650,8 @@
         "tr": "Sil",
         "pt_BR": "Apagar",
         "zh_CN": "删除",
-        "zh_TW": "刪除"
+        "zh_TW": "刪除",
+        "id": "Hapus"
     },
     "player_source_headers_label": {
         "en": "Header override input",
@@ -3465,7 +3668,8 @@
         "tr": "Üstbilgi geçersiz kılma alanı",
         "pt_BR": "Substituição de cabeçalho",
         "zh_CN": "覆盖 Header 输入",
-        "zh_TW": "自訂標頭"
+        "zh_TW": "自訂標頭",
+        "id": "Isian override header"
     },
     "player_source_headers_placeholder": {
         "en": "Header-Name: Header Value\nHeader2-Name: Header2 Value",
@@ -3482,7 +3686,8 @@
         "tr": "Üstbilgi-Adı: Üstbilgi Değeri\nÜstbilgi2-Adı: Üstbilgi2 Değeri",
         "pt_BR": "Nome do cabeçalho: Valor do cabeçalho\nHeader2-Name: Valor do Header2",
         "zh_CN": "Header-Name: Header Value\nHeader2-Name: Header2 Value",
-        "zh_TW": "標頭名稱: 標頭值\n標頭2名稱: 標頭2值"
+        "zh_TW": "標頭名稱: 標頭值\n標頭2名稱: 標頭2值",
+        "id": "Nama-Header: Nilai Header\nNama-Header2: Nilai Header2"
     },
     "player_source_nonelisted": {
         "en": "No Sources Listed",
@@ -3499,7 +3704,8 @@
         "tr": "Listelenen kaynak yok",
         "pt_BR": "Não há fontes listadas",
         "zh_CN": "未列出任何来源",
-        "zh_TW": "未列出任何來源"
+        "zh_TW": "未列出任何來源",
+        "id": "Tidak ada sumber yang tercantum"
     },
     "player_source_onelisted": {
         "en": "1 Source Listed",
@@ -3516,7 +3722,8 @@
         "tr": "1 kaynak listelendi",
         "pt_BR": "1 Fonte listada",
         "zh_CN": "已列出 1 个来源",
-        "zh_TW": "列出 1 個來源"
+        "zh_TW": "列出 1 個來源",
+        "id": "1 sumber tercantum"
     },
     "player_source_multilisted": {
         "en": "$1 Sources Listed",
@@ -3533,7 +3740,8 @@
         "tr": "$1 kaynak listelendi",
         "pt_BR": "Fontes de $1 listadas",
         "zh_CN": "已列出 $1 个来源",
-        "zh_TW": "已列出 $1 個來源"
+        "zh_TW": "已列出 $1 個來源",
+        "id": "$1 sumber tercantum"
     },
     "player_source_addbtn": {
         "en": "Add Source",
@@ -3550,7 +3758,8 @@
         "tr": "Kaynak Ekle",
         "pt_BR": "Adicionar fonte",
         "zh_CN": "添加来源",
-        "zh_TW": "新增來源"
+        "zh_TW": "新增來源",
+        "id": "Tambah Sumber"
     },
     "player_source_clearbtn": {
         "en": "Clear Sources",
@@ -3567,7 +3776,8 @@
         "tr": "Kaynakları Temizle",
         "pt_BR": "Limpar fontes",
         "zh_CN": "清除来源",
-        "zh_TW": "清除來源"
+        "zh_TW": "清除來源",
+        "id": "Kosongkan Sumber"
     },
     "player_audioconfig_duplicate_profile": {
         "en": "(loaded from file on $1)",
@@ -3584,7 +3794,8 @@
         "tr": "(dosyadan $1 tarihinde yüklendi)",
         "pt_BR": "(carregada do arquivo em $1)",
         "zh_CN": "(于 $1 从文件加载)",
-        "zh_TW": "(已從檔案 $1 載入)"
+        "zh_TW": "(已從檔案 $1 載入)",
+        "id": "(dimuat dari berkas pada $1)"
     },
     "player_audioconfig_create_profile": {
         "en": "Create new profile",
@@ -3601,7 +3812,8 @@
         "tr": "Yeni profil oluştur",
         "pt_BR": "Criar novo perfil",
         "zh_CN": "创建新配置",
-        "zh_TW": "建立新設定檔"
+        "zh_TW": "建立新設定檔",
+        "id": "Buat profil baru"
     },
     "player_audioconfig_import_profile": {
         "en": "Import profiles from file",
@@ -3618,7 +3830,8 @@
         "tr": "Dosyadan profilleri içe aktar",
         "pt_BR": "Importar perfis do arquivo",
         "zh_CN": "从文件导入配置",
-        "zh_TW": "從檔案匯入設定檔"
+        "zh_TW": "從檔案匯入設定檔",
+        "id": "Impor profil dari berkas"
     },
     "player_audioconfig_import_invalid": {
         "en": "Invalid profile file",
@@ -3635,7 +3848,8 @@
         "tr": "Geçersiz profil dosyası",
         "pt_BR": "Arquivo de perfil inválido",
         "zh_CN": "配置文件无效",
-        "zh_TW": "無效的設定檔案"
+        "zh_TW": "無效的設定檔案",
+        "id": "Berkas profil tidak valid"
     },
     "player_audioconfig_profile": {
         "en": "Profile",
@@ -3652,7 +3866,8 @@
         "tr": "Profil",
         "pt_BR": "Perfil",
         "zh_CN": "配置",
-        "zh_TW": "設定檔"
+        "zh_TW": "設定檔",
+        "id": "Profil"
     },
     "player_audioconfig_profile_unnamed": {
         "en": "Unnamed Profile",
@@ -3669,7 +3884,8 @@
         "tr": "Adsız profil",
         "pt_BR": "Perfil não identificado",
         "zh_CN": "未命名配置",
-        "zh_TW": "未命名的設定檔"
+        "zh_TW": "未命名的設定檔",
+        "id": "Profil tanpa nama"
     },
     "player_audioconfig_profile_load": {
         "en": "Load Profile",
@@ -3686,7 +3902,8 @@
         "tr": "Profili Yükle",
         "pt_BR": "Carregar perfil",
         "zh_CN": "加载配置",
-        "zh_TW": "載入設定檔"
+        "zh_TW": "載入設定檔",
+        "id": "Muat Profil"
     },
     "player_audioconfig_profile_loaded": {
         "en": "Loaded Profile!",
@@ -3703,7 +3920,8 @@
         "tr": "Profil yüklendi!",
         "pt_BR": "Perfil carregado!",
         "zh_CN": "配置已加载!",
-        "zh_TW": "已載入設定檔!"
+        "zh_TW": "已載入設定檔!",
+        "id": "Profil dimuat!"
     },
     "player_audioconfig_profile_save": {
         "en": "Save Profile",
@@ -3720,7 +3938,8 @@
         "tr": "Profili Kaydet",
         "pt_BR": "Salvar perfil",
         "zh_CN": "保存配置",
-        "zh_TW": "儲存設定檔"
+        "zh_TW": "儲存設定檔",
+        "id": "Simpan Profil"
     },
     "player_audioconfig_profile_saving": {
         "en": "Saving...",
@@ -3737,7 +3956,8 @@
         "tr": "Kaydediliyor...",
         "pt_BR": "Salvando...",
         "zh_CN": "保存中...",
-        "zh_TW": "儲存中..."
+        "zh_TW": "儲存中...",
+        "id": "Menyimpan..."
     },
     "player_audioconfig_profile_saved": {
         "en": "Saved Profile!",
@@ -3754,7 +3974,8 @@
         "tr": "Profil kaydedildi!",
         "pt_BR": "Perfil salvo!",
         "zh_CN": "配置已保存!",
-        "zh_TW": "已儲存設定檔!"
+        "zh_TW": "已儲存設定檔!",
+        "id": "Profil tersimpan!"
     },
     "player_audioconfig_profile_download": {
         "en": "Download Profile",
@@ -3771,7 +3992,8 @@
         "tr": "Profili İndir",
         "pt_BR": "Perfil baixado",
         "zh_CN": "下载配置",
-        "zh_TW": "下載設定檔"
+        "zh_TW": "下載設定檔",
+        "id": "Unduh Profil"
     },
     "player_audioconfig_profile_downloaded": {
         "en": "Downloaded!",
@@ -3788,7 +4010,8 @@
         "tr": "İndirildi!",
         "pt_BR": "Baixado!",
         "zh_CN": "已下载!",
-        "zh_TW": "已下載!"
+        "zh_TW": "已下載!",
+        "id": "Diunduh!"
     },
     "player_audioconfig_profile_delete": {
         "en": "Delete",
@@ -3805,7 +4028,8 @@
         "tr": "Sil",
         "pt_BR": "Apagar",
         "zh_CN": "删除",
-        "zh_TW": "刪除"
+        "zh_TW": "刪除",
+        "id": "Hapus"
     },
     "player_audioconfig_profile_deleting": {
         "en": "Deleting...",
@@ -3822,7 +4046,8 @@
         "tr": "Siliniyor...",
         "pt_BR": "Apagando...",
         "zh_CN": "删除中...",
-        "zh_TW": "刪除中..."
+        "zh_TW": "刪除中...",
+        "id": "Menghapus..."
     },
     "player_audioconfig_profile_deleted": {
         "en": "Deleted!",
@@ -3839,7 +4064,8 @@
         "tr": "Silindi!",
         "pt_BR": "Apagado!",
         "zh_CN": "已删除！",
-        "zh_TW": "已刪除！"
+        "zh_TW": "已刪除！",
+        "id": "Dihapus!"
     },
     "audiomixer_title": {
         "en": "Audio Channel Mixer",
@@ -3856,7 +4082,8 @@
         "tr": "Ses Kanal Mikseri",
         "pt_BR": "Mixer de canal de áudio",
         "zh_CN": "音频通道混音器",
-        "zh_TW": "音訊通道混音器"
+        "zh_TW": "音訊通道混音器",
+        "id": "Mixer Saluran Audio"
     },
     "audiomixer_volume_master_handle_label": {
         "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mono",
@@ -3873,7 +4100,8 @@
         "tr": "$1 kazancı $2 dB ($3%). Ayarlamak için ok tuşlarını kullanın. Mono'yu açıp kapatmak için M'ye basın",
         "pt_BR": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar entre mono",
         "zh_CN": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换单声道",
-        "zh_TW": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換單聲道"
+        "zh_TW": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換單聲道",
+        "id": "$1 gain adalah $2 dB ($3%). Gunakan panah untuk menyesuaikan. Tekan M untuk mengaktifkan/menonaktifkan mono"
     },
     "audiomixer_volume_handle_label": {
         "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mute",
@@ -3890,7 +4118,8 @@
         "tr": "$1 kazancı $2 dB ($3%). Ayarlamak için ok tuşlarını kullanın. Sesi kapatıp açmak için M'ye basın",
         "pt_BR": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar o mudo",
         "zh_CN": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换静音",
-        "zh_TW": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換靜音"
+        "zh_TW": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換靜音",
+        "id": "$1 gain adalah $2 dB ($3%). Gunakan panah untuk menyesuaikan. Tekan M untuk mengaktifkan/menonaktifkan bisu"
     },
     "audiomixer_solo_label": {
         "en": "Solo",
@@ -3907,7 +4136,8 @@
         "tr": "Solo",
         "pt_BR": "Solo",
         "zh_CN": "独奏",
-        "zh_TW": "獨奏"
+        "zh_TW": "獨奏",
+        "id": "Solo"
     },
     "audiomixer_mute_label": {
         "en": "Mute",
@@ -3924,7 +4154,8 @@
         "tr": "Sessize Al",
         "pt_BR": "Mudo",
         "zh_CN": "静音",
-        "zh_TW": "靜音"
+        "zh_TW": "靜音",
+        "id": "Bisu"
     },
     "audiomixer_mono": {
         "en": "Mono",
@@ -3941,7 +4172,8 @@
         "tr": "Mono",
         "pt_BR": "Mono",
         "zh_CN": "单声道",
-        "zh_TW": "單聲道"
+        "zh_TW": "單聲道",
+        "id": "Mono"
     },
     "audiomixer_dynamics_label": {
         "en": "Edit dynamics of channel",
@@ -3958,7 +4190,8 @@
         "tr": "Kanal dinamiklerini düzenle",
         "pt_BR": "Editar a dinâmica do canal",
         "zh_CN": "编辑通道动态",
-        "zh_TW": "編輯通道動態"
+        "zh_TW": "編輯通道動態",
+        "id": "Sunting dinamika saluran"
     },
     "audiocrosstalk_title": {
         "en": "Audio Crosstalk Correction",
@@ -3975,7 +4208,8 @@
         "tr": "Kanal Sızıntısı Düzeltmesi",
         "pt_BR": "Correção de diafonia do áudio",
         "zh_CN": "音频串扰校正",
-        "zh_TW": "音訊串音校正"
+        "zh_TW": "音訊串音校正",
+        "id": "Koreksi Crosstalk Audio"
     },
     "audiocrosstalk_enabled": {
         "en": "Crosstalk Correction Enabled",
@@ -3992,7 +4226,8 @@
         "tr": "Kanal sızıntısı düzeltmesi etkin",
         "pt_BR": "Correção de diafonia ativada",
         "zh_CN": "已启用串扰校正",
-        "zh_TW": "已啟用串音校正"
+        "zh_TW": "已啟用串音校正",
+        "id": "Koreksi Crosstalk Diaktifkan"
     },
     "audiocrosstalk_disabled": {
         "en": "Crosstalk Correction Disabled",
@@ -4009,7 +4244,8 @@
         "tr": "Kanal sızıntısı düzeltmesi devre dışı",
         "pt_BR": "Correção de diafonia desativada",
         "zh_CN": "已禁用串扰校正",
-        "zh_TW": "已停用串音校正"
+        "zh_TW": "已停用串音校正",
+        "id": "Koreksi Crosstalk Dinonaktifkan"
     },
     "audiocrosstalk_decay": {
         "en": "Decay",
@@ -4026,7 +4262,8 @@
         "tr": "Sönüm",
         "pt_BR": "Decay",
         "zh_CN": "衰减",
-        "zh_TW": "衰減"
+        "zh_TW": "衰減",
+        "id": "Redaman"
     },
     "audiocrosstalk_colorgain": {
         "en": "Max Coloration",
@@ -4043,7 +4280,8 @@
         "tr": "Maks. Tonlama",
         "pt_BR": "Coloração máxima",
         "zh_CN": "最大染色",
-        "zh_TW": "最大著色"
+        "zh_TW": "最大著色",
+        "id": "Warna Maksimum"
     },
     "audiocrosstalk_microdelay": {
         "en": "Delta T",
@@ -4060,7 +4298,8 @@
         "tr": "Delta T",
         "pt_BR": "Delta T",
         "zh_CN": "时间差",
-        "zh_TW": "時間差"
+        "zh_TW": "時間差",
+        "id": "Delta T"
     },
     "audiocrosstalk_lowbypass": {
         "en": "Low Bypass",
@@ -4077,7 +4316,8 @@
         "tr": "Alçak Frekans Baypas",
         "pt_BR": "Bypass baixo",
         "zh_CN": "低频旁通",
-        "zh_TW": "低頻旁通"
+        "zh_TW": "低頻旁通",
+        "id": "Bypass Rendah"
     },
     "audiocrosstalk_highbypass": {
         "en": "High Bypass",
@@ -4094,7 +4334,8 @@
         "tr": "Yüksek Frekans Baypas",
         "pt_BR": "Bypass alto",
         "zh_CN": "高频旁通",
-        "zh_TW": "高頻旁通"
+        "zh_TW": "高頻旁通",
+        "id": "Bypass Tinggi"
     },
     "audiocrosstalk_speakerdistance": {
         "en": "Speaker Distance",
@@ -4111,7 +4352,8 @@
         "tr": "Hoparlör Mesafesi",
         "pt_BR": "Distância do alto-falante",
         "zh_CN": "扬声器距离",
-        "zh_TW": "喇叭距離"
+        "zh_TW": "喇叭距離",
+        "id": "Jarak Speaker"
     },
     "audiocrosstalk_headdistance": {
         "en": "Head Distance",
@@ -4128,7 +4370,8 @@
         "tr": "Kafa Mesafesi",
         "pt_BR": "Distância",
         "zh_CN": "头部距离",
-        "zh_TW": "頭部距離"
+        "zh_TW": "頭部距離",
+        "id": "Jarak Kepala"
     },
     "audiocompressor_title": {
         "en": "Audio Compressor",
@@ -4145,7 +4388,8 @@
         "tr": "Ses Kompresörü",
         "pt_BR": "Compressor de áudio",
         "zh_CN": "音频压缩器",
-        "zh_TW": "音訊壓縮器"
+        "zh_TW": "音訊壓縮器",
+        "id": "Kompresor Audio"
     },
     "audiocompressor_enabled": {
         "en": "Compressor Enabled",
@@ -4162,7 +4406,8 @@
         "tr": "Kompresör etkin",
         "pt_BR": "Compressor ativado",
         "zh_CN": "已启用压缩器",
-        "zh_TW": "已啟用壓縮器"
+        "zh_TW": "已啟用壓縮器",
+        "id": "Kompresor Diaktifkan"
     },
     "audiocompressor_disabled": {
         "en": "Compressor Disabled",
@@ -4179,7 +4424,8 @@
         "tr": "Kompresör devre dışı",
         "pt_BR": "Compressor desativado",
         "zh_CN": "已禁用压缩器",
-        "zh_TW": "已停用壓縮器"
+        "zh_TW": "已停用壓縮器",
+        "id": "Kompresor Dinonaktifkan"
     },
     "audiocompressor_threshold": {
         "en": "Threshold",
@@ -4196,7 +4442,8 @@
         "tr": "Eşik",
         "pt_BR": "Limite",
         "zh_CN": "阈值",
-        "zh_TW": "閾值"
+        "zh_TW": "閾值",
+        "id": "Ambang"
     },
     "audiocompressor_knee": {
         "en": "Knee",
@@ -4213,7 +4460,8 @@
         "tr": "Knee",
         "pt_BR": "Knee",
         "zh_CN": "转折",
-        "zh_TW": "膝形"
+        "zh_TW": "膝形",
+        "id": "Knee"
     },
     "audiocompressor_ratio": {
         "en": "Ratio",
@@ -4230,7 +4478,8 @@
         "tr": "Oran",
         "pt_BR": "Proporção",
         "zh_CN": "压缩比",
-        "zh_TW": "壓縮比"
+        "zh_TW": "壓縮比",
+        "id": "Rasio"
     },
     "audiocompressor_attack": {
         "en": "Attack",
@@ -4247,7 +4496,8 @@
         "tr": "Atak",
         "pt_BR": "Ataque",
         "zh_CN": "起始时间",
-        "zh_TW": "攻擊時間"
+        "zh_TW": "攻擊時間",
+        "id": "Attack"
     },
     "audiocompressor_release": {
         "en": "Release",
@@ -4264,7 +4514,8 @@
         "tr": "Bırakma",
         "pt_BR": "Liberar",
         "zh_CN": "释放",
-        "zh_TW": "釋放"
+        "zh_TW": "釋放",
+        "id": "Rilis"
     },
     "audiocompressor_gain": {
         "en": "Gain",
@@ -4281,7 +4532,8 @@
         "tr": "Kazanç",
         "pt_BR": "Ganho",
         "zh_CN": "增益",
-        "zh_TW": "增益"
+        "zh_TW": "增益",
+        "id": "Gain"
     },
     "audioeq_title": {
         "en": "Audio Equalizer",
@@ -4298,7 +4550,8 @@
         "tr": "Ses Ekvalayzer",
         "pt_BR": "Equalizador de áudio",
         "zh_CN": "音频均衡器",
-        "zh_TW": "音訊均衡器"
+        "zh_TW": "音訊均衡器",
+        "id": "Equalizer Audio"
     },
     "audioeq_instructions": {
         "en": "Double click to change type",
@@ -4315,7 +4568,8 @@
         "tr": "Türü değiştirmek için çift tıklayın",
         "pt_BR": "Clique duas vezes para alterar o tipo",
         "zh_CN": "双击以更改类型",
-        "zh_TW": "雙擊更改類型"
+        "zh_TW": "雙擊更改類型",
+        "id": "Klik dua kali untuk mengubah tipe"
     },
     "audioeq_gain": {
         "en": "Gain: $1dB",
@@ -4332,7 +4586,8 @@
         "tr": "Kazanç: $1dB",
         "pt_BR": "Ganho: $1dB",
         "zh_CN": "增益：$1dB",
-        "zh_TW": "增益: $1dB"
+        "zh_TW": "增益: $1dB",
+        "id": "Gain: $1dB"
     },
     "audioeq_qscroll_instructions": {
         "en": "Scroll to change Q",
@@ -4349,7 +4604,8 @@
         "tr": "Q'yu değiştirmek için kaydırın",
         "pt_BR": "Role para mudar Q",
         "zh_CN": "滚动以调整 Q 值",
-        "zh_TW": "滾動以調整 Q 值"
+        "zh_TW": "滾動以調整 Q 值",
+        "id": "Gulir untuk mengubah Q"
     },
     "options_title": {
         "en": "FastStream Options",
@@ -4366,7 +4622,8 @@
         "tr": "FastStream Seçenekleri",
         "pt_BR": "Opções do FastStream",
         "zh_CN": "FastStream 选项",
-        "zh_TW": "FastStream 選項"
+        "zh_TW": "FastStream 選項",
+        "id": "Opsi FastStream"
     },
     "options_reviewbanner_header": {
         "en": "Enjoy FastStream? Leave a review!",
@@ -4383,7 +4640,8 @@
         "tr": "FastStream'i beğendiniz mi? Bir inceleme bırakın!",
         "pt_BR": "Gostou do FastStream? Deixe sua avaliação!",
         "zh_CN": "喜欢 FastStream 吗？留下评价吧！",
-        "zh_TW": "喜歡 FastStream 嗎？請留下評價！"
+        "zh_TW": "喜歡 FastStream 嗎？請留下評價！",
+        "id": "Suka FastStream? Tinggalkan ulasan!"
     },
     "options_reviewbanner_body": {
         "en": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
@@ -4400,7 +4658,8 @@
         "tr": "FastStream, gönüllüler tarafından sürdürülen bir hobi projesidir. Nereleri geliştirebileceğimizi bilmemize yardımcı olduğu için geri bildiriminize minnettarız. Lütfen bize şunları bildirin:",
         "pt_BR": "O FastStream é um projeto idealizado de hobby mantido por voluntários. Agradecemos seu retorno, pois ele nos ajuda a saber onde podemos melhorar. Fique à vontade para nos dizer:",
         "zh_CN": "FastStream 是由志愿者维护的业余项目。我们非常重视你的反馈，它能帮助我们了解需要改进的地方。请随时告诉我们：",
-        "zh_TW": "FastStream 是由志工維護的興趣專案。我們非常感謝你的回饋，因為這能幫助我們了解改進方向。請隨時告訴我們："
+        "zh_TW": "FastStream 是由志工維護的興趣專案。我們非常感謝你的回饋，因為這能幫助我們了解改進方向。請隨時告訴我們：",
+        "id": "FastStream adalah proyek hobi yang dikelola relawan. Kami menghargai masukan Anda karena membantu kami mengetahui apa yang perlu diperbaiki. Silakan beri tahu kami:"
     },
     "options_reviewbanner_l1": {
         "en": "How you use it",
@@ -4417,7 +4676,8 @@
         "tr": "Nasıl kullandığınız",
         "pt_BR": "Como usá-lo",
         "zh_CN": "你的使用方式",
-        "zh_TW": "你如何使用它"
+        "zh_TW": "你如何使用它",
+        "id": "Bagaimana Anda menggunakannya"
     },
     "options_reviewbanner_l2": {
         "en": "Any bugs you encounter",
@@ -4434,7 +4694,8 @@
         "tr": "Karşılaştığınız hatalar",
         "pt_BR": "Quaisquer erros encontrados",
         "zh_CN": "遇到的任何问题",
-        "zh_TW": "你遇到的任何錯誤"
+        "zh_TW": "你遇到的任何錯誤",
+        "id": "Bug yang Anda temui"
     },
     "options_reviewbanner_l3": {
         "en": "Feature requests",
@@ -4451,7 +4712,8 @@
         "tr": "Özellik talepleri",
         "pt_BR": "Solicitações de recursos",
         "zh_CN": "功能建议",
-        "zh_TW": "功能建議"
+        "zh_TW": "功能建議",
+        "id": "Permintaan fitur"
     },
     "options_reviewbanner_end": {
         "en": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
@@ -4468,7 +4730,8 @@
         "tr": "Erişilebilirliği de çok ciddiye alıyoruz. Mevcut sürümde eksik olan erişim ihtiyaçlarınız varsa lütfen talep gönderin; mümkün olan en kısa sürede üzerinde çalışacağız.",
         "pt_BR": "Também levamos a acessibilidade muito a sério. Se você precisar de adaptações que não estejam disponíveis na versão atual, faça uma solicitação e trabalharemos nisso o mais rápido possível.",
         "zh_CN": "我们对无障碍功能也非常重视。如果当前版本缺少您需要的辅助功能，请提出请求，我们会尽快处理。",
-        "zh_TW": "我們也非常重視無障礙。如果目前版本缺少你需要的輔助功能，請提出需求，我們會盡快處理。"
+        "zh_TW": "我們也非常重視無障礙。如果目前版本缺少你需要的輔助功能，請提出需求，我們會盡快處理。",
+        "id": "Kami juga sangat memperhatikan aksesibilitas. Jika Anda membutuhkan akomodasi yang belum tersedia di versi saat ini, silakan ajukan permintaan dan kami akan mengusahakannya secepatnya."
     },
     "options_reviewbanner_rate": {
         "en": "OK I'll review FastStream",
@@ -4485,7 +4748,8 @@
         "tr": "Tamam, FastStream'i inceleyeceğim",
         "pt_BR": "Farei uma avaliação do FastStream",
         "zh_CN": "好的，我去评价 FastStream",
-        "zh_TW": "好，我會為 FastStream 留下評論"
+        "zh_TW": "好，我會為 FastStream 留下評論",
+        "id": "OK, saya akan mengulas FastStream"
     },
     "options_reviewbanner_norate": {
         "en": "I don't want to review :(",
@@ -4502,7 +4766,8 @@
         "tr": "İnceleme yapmak istemiyorum :(",
         "pt_BR": "Não quero avaliar :(",
         "zh_CN": "我不想评价 :(",
-        "zh_TW": "我不想評論 :("
+        "zh_TW": "我不想評論 :(",
+        "id": "Saya tidak ingin mengulas :("
     },
     "options_feedback_header": {
         "en": "Do you have feedback?",
@@ -4519,7 +4784,8 @@
         "tr": "Geri bildiriminiz var mı?",
         "pt_BR": "Tem algum retorno ?",
         "zh_CN": "有反馈吗？",
-        "zh_TW": "有回饋嗎？"
+        "zh_TW": "有回饋嗎？",
+        "id": "Punya masukan?"
     },
     "options_feedback_reason": {
         "en": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
@@ -4536,7 +4802,8 @@
         "tr": "Görüşlerinizi duymak isteriz! Lütfen kısa formu doldurun. Sizi takip etmediğimiz için gelişmemize yardımcı olacak tek yol bu.",
         "pt_BR": "Adoraríamos ouvir de você! Por favor preencha um pequeno formulário. É a única maneira de melhorarmos, já que não rastreamos você.",
         "zh_CN": "我们很想听取你的意见！请填写一份简短的表单。由于我们不追踪用户，这是我们改进的唯一途径。",
-        "zh_TW": "我們很想聽到你的意見！請填寫一份簡短表單。由於我們不會追蹤你，這是我們唯一能改進的方式。"
+        "zh_TW": "我們很想聽到你的意見！請填寫一份簡短表單。由於我們不會追蹤你，這是我們唯一能改進的方式。",
+        "id": "Kami ingin mendengar dari Anda! Silakan isi formulir singkat. Karena kami tidak melacak Anda, ini satu-satunya cara kami untuk berkembang."
     },
     "options_feedback_yes": {
         "en": "Yes, I have feedback",
@@ -4553,7 +4820,8 @@
         "tr": "Evet, geri bildirimim var",
         "pt_BR": "Sim, tenho um retorno",
         "zh_CN": "是的，我有反馈",
-        "zh_TW": "是的，我有回饋"
+        "zh_TW": "是的，我有回饋",
+        "id": "Ya, saya punya masukan"
     },
     "options_feedback_no": {
         "en": "No, I'm good",
@@ -4570,7 +4838,8 @@
         "tr": "Hayır, teşekkürler",
         "pt_BR": "Não, Está tudo bem",
         "zh_CN": "不用，谢谢",
-        "zh_TW": "不用，謝謝"
+        "zh_TW": "不用，謝謝",
+        "id": "Tidak, terima kasih"
     },
     "options_help_feedback": {
         "en": "Feedback Form",
@@ -4587,7 +4856,8 @@
         "tr": "Geri Bildirim Formu",
         "pt_BR": "Formulário de retorno",
         "zh_CN": "反馈表单",
-        "zh_TW": "回饋表單"
+        "zh_TW": "回饋表單",
+        "id": "Formulir Masukan"
     },
     "options_update_header": {
         "en": "An Update is Available!",
@@ -4604,7 +4874,8 @@
         "tr": "Bir güncelleme mevcut!",
         "pt_BR": "Uma atualização está disponível!",
         "zh_CN": "有可用更新！",
-        "zh_TW": "有更新可用！"
+        "zh_TW": "有更新可用！",
+        "id": "Pembaruan Tersedia!"
     },
     "options_update_body": {
         "en": "FastStream v$1 is now available (current version v$2). Would you like to update?",
@@ -4621,7 +4892,8 @@
         "tr": "FastStream v$1 şimdi mevcut (şu anki sürüm v$2). Güncellemek ister misiniz?",
         "pt_BR": "FastStream v$1 já está disponível (versão atual v$2). Você gostaria de atualizar?",
         "zh_CN": "FastStream v$1 已可用（当前版本 v$2）。要更新吗？",
-        "zh_TW": "FastStream v$1 現已可用 (目前版本 v$2)。要更新嗎？"
+        "zh_TW": "FastStream v$1 現已可用 (目前版本 v$2)。要更新嗎？",
+        "id": "FastStream v$1 kini tersedia (versi saat ini v$2). Ingin memperbarui?"
     },
     "options_update_go": {
         "en": "Take me to Github",
@@ -4638,7 +4910,8 @@
         "tr": "Beni Github'a götür",
         "pt_BR": "Me leve ao Github",
         "zh_CN": "前往 Github",
-        "zh_TW": "前往 GitHub"
+        "zh_TW": "前往 GitHub",
+        "id": "Bawa saya ke Github"
     },
     "options_update_no": {
         "en": "Ignore this update",
@@ -4655,7 +4928,8 @@
         "tr": "Bu güncellemeyi yok say",
         "pt_BR": "Ignorar esta atualização",
         "zh_CN": "忽略此更新",
-        "zh_TW": "忽略此更新"
+        "zh_TW": "忽略此更新",
+        "id": "Abaikan pembaruan ini"
     },
     "options_video_header": {
         "en": "Video Options",
@@ -4672,7 +4946,8 @@
         "tr": "Video Seçenekleri",
         "pt_BR": "Opções de vídeo",
         "zh_CN": "视频选项",
-        "zh_TW": "影片選項"
+        "zh_TW": "影片選項",
+        "id": "Opsi Video"
     },
     "options_video_body": {
         "en": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
@@ -4689,7 +4964,8 @@
         "tr": "Videoya CSS filtreleri uygular. Resim içinde resim ile çalışmaz.",
         "pt_BR": "Aplica filtros CSS ao vídeo. Não funciona no modo sobreposição (pip).",
         "zh_CN": "对视频应用 CSS 滤镜。与画中画模式不兼容。",
-        "zh_TW": "對影片套用 CSS 濾鏡。畫中畫模式下無法使用。"
+        "zh_TW": "對影片套用 CSS 濾鏡。畫中畫模式下無法使用。",
+        "id": "Menerapkan filter CSS ke video. Tidak berfungsi pada picture-in-picture."
     },
     "options_video_zoom": {
         "en": "Video Zoom",
@@ -4706,7 +4982,8 @@
         "tr": "Video Yakınlaştırma",
         "pt_BR": "Zoom de vídeo",
         "zh_CN": "视频缩放",
-        "zh_TW": "影片縮放"
+        "zh_TW": "影片縮放",
+        "id": "Perbesaran Video"
     },
     "options_video_delay": {
         "en": "Video Delay",
@@ -4723,7 +5000,8 @@
         "tr": "Video Gecikmesi",
         "pt_BR": "Atrso de vídeo",
         "zh_CN": "视频延迟",
-        "zh_TW": "影片延遲"
+        "zh_TW": "影片延遲",
+        "id": "Penundaan Video"
     },
     "options_video_brightness": {
         "en": "Brightness",
@@ -4740,7 +5018,8 @@
         "tr": "Parlaklık",
         "pt_BR": "Briho",
         "zh_CN": "亮度",
-        "zh_TW": "亮度"
+        "zh_TW": "亮度",
+        "id": "Kecerahan"
     },
     "options_video_contrast": {
         "en": "Contrast",
@@ -4757,7 +5036,8 @@
         "tr": "Kontrast",
         "pt_BR": "Contraste",
         "zh_CN": "对比度",
-        "zh_TW": "對比度"
+        "zh_TW": "對比度",
+        "id": "Kontras"
     },
     "options_video_saturation": {
         "en": "Saturation",
@@ -4774,7 +5054,8 @@
         "tr": "Doygunluk",
         "pt_BR": "Saturação",
         "zh_CN": "饱和度",
-        "zh_TW": "飽和度"
+        "zh_TW": "飽和度",
+        "id": "Saturasi"
     },
     "options_video_grayscale": {
         "en": "Grayscale",
@@ -4791,7 +5072,8 @@
         "tr": "Gri tonlama",
         "pt_BR": "Escala de cinza",
         "zh_CN": "灰度",
-        "zh_TW": "灰階"
+        "zh_TW": "灰階",
+        "id": "Skala Abu-abu"
     },
     "options_video_sepia": {
         "en": "Sepia",
@@ -4808,7 +5090,8 @@
         "tr": "Sepya",
         "pt_BR": "Sepia",
         "zh_CN": "棕褐色",
-        "zh_TW": "棕褐色"
+        "zh_TW": "棕褐色",
+        "id": "Sepia"
     },
     "options_video_invert": {
         "en": "Invert",
@@ -4825,7 +5108,8 @@
         "tr": "Tersine Çevir",
         "pt_BR": "Invertido",
         "zh_CN": "反色",
-        "zh_TW": "反相"
+        "zh_TW": "反相",
+        "id": "Balik Warna"
     },
     "options_video_hue": {
         "en": "Hue Rotate",
@@ -4842,7 +5126,8 @@
         "tr": "Renk Tonu Döndürme",
         "pt_BR": "Rotação de matiz",
         "zh_CN": "色相旋转",
-        "zh_TW": "色相旋轉"
+        "zh_TW": "色相旋轉",
+        "id": "Putar Hue"
     },
     "options_video_daltonizer_type": {
         "en": "Color blindness correction",
@@ -4859,7 +5144,8 @@
         "tr": "Renk körlüğü düzeltmesi",
         "pt_BR": "Correção de daltonismo",
         "zh_CN": "色盲矫正",
-        "zh_TW": "色盲校正"
+        "zh_TW": "色盲校正",
+        "id": "Koreksi buta warna"
     },
     "options_video_daltonizer_strength": {
         "en": "Strength",
@@ -4876,7 +5162,8 @@
         "tr": "Güç",
         "pt_BR": "Força",
         "zh_CN": "强度",
-        "zh_TW": "強度"
+        "zh_TW": "強度",
+        "id": "Kekuatan"
     },
     "options_video_daltonizer_none": {
         "en": "None",
@@ -4893,7 +5180,8 @@
         "tr": "Yok",
         "pt_BR": "Nenhum",
         "zh_CN": "无",
-        "zh_TW": "無"
+        "zh_TW": "無",
+        "id": "Tidak ada"
     },
     "options_video_daltonizer_protanomaly": {
         "en": "Protanomaly",
@@ -4910,7 +5198,8 @@
         "tr": "Protanomali",
         "pt_BR": "Protanomalia",
         "zh_CN": "红弱",
-        "zh_TW": "紅色異常"
+        "zh_TW": "紅色異常",
+        "id": "Protanomali"
     },
     "options_video_daltonizer_deuteranomaly": {
         "en": "Deuteranomaly",
@@ -4927,7 +5216,8 @@
         "tr": "Deuteranomali",
         "pt_BR": "Deuteranomalia",
         "zh_CN": "绿弱",
-        "zh_TW": "綠色異常"
+        "zh_TW": "綠色異常",
+        "id": "Deuteranomali"
     },
     "options_video_daltonizer_tritanomaly": {
         "en": "Tritanomaly",
@@ -4944,7 +5234,8 @@
         "tr": "Tritanomali",
         "pt_BR": "Tritanomalia",
         "zh_CN": "蓝弱",
-        "zh_TW": "藍色異常"
+        "zh_TW": "藍色異常",
+        "id": "Tritanomali"
     },
     "options_general_header": {
         "en": "General Options",
@@ -4961,7 +5252,8 @@
         "tr": "Genel Seçenekler",
         "pt_BR": "Opções gerais",
         "zh_CN": "常规选项",
-        "zh_TW": "一般選項"
+        "zh_TW": "一般選項",
+        "id": "Opsi Umum"
     },
     "options_general_predownload": {
         "en": "Predownload entire video in the background if possible",
@@ -4978,7 +5270,8 @@
         "tr": "Mümkünse tüm videoyu arka planda önceden indir",
         "pt_BR": "Baixe previamente o vídeo inteiro em segundo plano, se possível",
         "zh_CN": "若可能，后台预下载整段视频",
-        "zh_TW": "如可能，在背景預先下載整個影片"
+        "zh_TW": "如可能，在背景預先下載整個影片",
+        "id": "Unduh seluruh video di latar belakang jika memungkinkan"
     },
     "options_general_targetspeed": {
         "en": "Target download speed of predownloader",
@@ -4995,7 +5288,8 @@
         "tr": "Ön indiricinin hedef indirme hızı",
         "pt_BR": "Velocidade alvo de download do pré-downloader",
         "zh_CN": "预下载器的目标下载速度",
-        "zh_TW": "預先下載器目標下載速度"
+        "zh_TW": "預先下載器目標下載速度",
+        "id": "Kecepatan unduh target predownloader"
     },
     "options_general_maxsize": {
         "en": "Maximum size of predownloaded video",
@@ -5012,7 +5306,8 @@
         "tr": "Önceden indirilen videonun maksimum boyutu",
         "pt_BR": "Tamanho máximo do vídeo pré-baixado",
         "zh_CN": "预下载视频的最大大小",
-        "zh_TW": "預先下載影片最大大小"
+        "zh_TW": "預先下載影片最大大小",
+        "id": "Ukuran maksimum video yang dipraunduh"
     },
     "options_general_previewenabled": {
         "en": "Show preview when hovering over the timeline",
@@ -5029,7 +5324,8 @@
         "tr": "Zaman çizelgesinde üzerine gelince önizlemeyi göster",
         "pt_BR": "Mostrar visualização ao passar o mouse sobre a linha do tempo",
         "zh_CN": "在时间轴悬停时显示预览",
-        "zh_TW": "在時間軸上懸停時顯示預覽"
+        "zh_TW": "在時間軸上懸停時顯示預覽",
+        "id": "Tampilkan pratinjau saat mengarahkan kursor di atas garis waktu"
     },
     "options_general_analyze": {
         "en": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)",
@@ -5046,7 +5342,8 @@
         "tr": "Giriş/çıkış bölümlerini tespit etmek için ardışık videoları otomatik olarak analiz et\n(CPU performansı sorunları yaşıyorsanız kapatın)",
         "pt_BR": "Analisa automaticamente vídeos sequenciais para introduções/outros\n(desligue se você tiver problemas de desempenho do CPU)",
         "zh_CN": "自动分析连续视频以检测片头/片尾\n（如果有 CPU 性能问题请关闭）",
-        "zh_TW": "自動分析連續影片以偵測片頭/片尾\n(若有 CPU 效能問題請關閉)"
+        "zh_TW": "自動分析連續影片以偵測片頭/片尾\n(若有 CPU 效能問題請關閉)",
+        "id": "Secara otomatis menganalisis video berurutan untuk intro/outro\n(matikan jika Anda mengalami masalah kinerja CPU)"
     },
     "options_general_storeprogress": {
         "en": "Save progress of videos in local storage",
@@ -5063,7 +5360,8 @@
         "tr": "Videoların ilerlemesini yerel depolamada kaydet",
         "pt_BR": "Salve o progresso dos vídeos localmente",
         "zh_CN": "在本地存储中保存视频进度",
-        "zh_TW": "將影片進度儲存在本機儲存"
+        "zh_TW": "將影片進度儲存在本機儲存",
+        "id": "Simpan progres video di penyimpanan lokal"
     },
     "options_general_autosub": {
         "en": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)",
@@ -5080,7 +5378,8 @@
         "tr": "Bulunan en iyi altyazı parçasını otomatik olarak etkinleştir\n(Öntanımlı dili altyazı ayarlarından değiştirin)",
         "pt_BR": "Ativar automaticamente a melhor faixa de legenda encontrada\n(Alterar o idioma padrão nas configurações de legenda)",
         "zh_CN": "自动启用匹配到的最佳字幕轨道\n（在字幕设置中更改默认语言）",
-        "zh_TW": "自動啟用偵測到的最佳字幕軌\n(在字幕設定中變更預設語言)"
+        "zh_TW": "自動啟用偵測到的最佳字幕軌\n(在字幕設定中變更預設語言)",
+        "id": "Secara otomatis aktifkan trek subtitle terbaik yang ditemukan\n(Ubah bahasa default di pengaturan subtitle)"
     },
     "options_general_stream": {
         "en": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)",
@@ -5097,7 +5396,8 @@
         "tr": "Oynatma listesi URL'leri (.m3u8/.mpd) açıldığında HLS/DASH akışlarını oynatmak için oynatıcıyı kullan",
         "pt_BR": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de listas de reprodução (.m3u8/.mpd)",
         "zh_CN": "在打开播放列表 URL（.m3u8/.mpd）时使用播放器播放 HLS/DASH 流",
-        "zh_TW": "開啟播放清單 URL（.m3u8/.mpd）時使用播放器播放 HLS/DASH 串流"
+        "zh_TW": "開啟播放清單 URL（.m3u8/.mpd）時使用播放器播放 HLS/DASH 串流",
+        "id": "Gunakan pemutar untuk memutar stream HLS/DASH saat membuka URL daftar putar (.m3u8/.mpd)"
     },
     "options_general_mp4": {
         "en": "Use player to play MP4 videos when opening video URLs (.mp4)",
@@ -5114,7 +5414,8 @@
         "tr": "Video URL'leri (.mp4) açıldığında MP4 videoları oynatmak için oynatıcıyı kullan",
         "pt_BR": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de de listas de reprodução (.mp4)",
         "zh_CN": "在打开视频 URL（.mp4）时使用播放器播放 MP4 视频",
-        "zh_TW": "開啟 .mp4 連結時以播放器播放 MP4 影片"
+        "zh_TW": "開啟 .mp4 連結時以播放器播放 MP4 影片",
+        "id": "Gunakan pemutar untuk memutar video MP4 saat membuka URL video (.mp4)"
     },
     "options_general_seekstep": {
         "en": "Seek keybind base step size (seconds)",
@@ -5131,7 +5432,8 @@
         "tr": "İleri/geri tuş adım boyutu (saniye)",
         "pt_BR": "Seek keybind base step size (seconds)",
         "zh_CN": "跳转键基础步长（秒）",
-        "zh_TW": "跳轉鍵基本步長（秒）"
+        "zh_TW": "跳轉鍵基本步長（秒）",
+        "id": "Ukuran langkah dasar untuk tombol lompat (detik)"
     },
     "options_general_replace_delay": {
         "en": "Delay before auto-replacing player (ms)",
@@ -5148,7 +5450,8 @@
         "tr": "Otomatik oynatıcıyı değiştirmeden önce gecikme (ms)",
         "pt_BR": "Atraso antes da substituição automática do player (ms)",
         "zh_CN": "自动替换播放器前的延迟（毫秒）",
-        "zh_TW": "自動替換播放器前的延遲（毫秒）"
+        "zh_TW": "自動替換播放器前的延遲（毫秒）",
+        "id": "Tunda sebelum mengganti pemutar secara otomatis (ms)"
     },
     "options_general_autoplayyt": {
         "en": "Autoplay YouTube videos if possible",
@@ -5165,7 +5468,8 @@
         "tr": "Mümkünse YouTube videolarını otomatik oynat",
         "pt_BR": "Reproduzir automaticamente vídeos do YouTube, se possível",
         "zh_CN": "尽可能自动播放 YouTube 视频",
-        "zh_TW": "如可能則自動播放 YouTube 影片"
+        "zh_TW": "如可能則自動播放 YouTube 影片",
+        "id": "Putar otomatis video YouTube jika memungkinkan"
     },
     "options_general_autoplaynext": {
         "en": "Autoplay next video when current video ends",
@@ -5182,7 +5486,8 @@
         "tr": "Mevcut video bittiğinde sonraki videoyu otomatik oynat",
         "pt_BR": "Reproduzir automaticamente o próximo vídeo quando o vídeo atual terminar",
         "zh_CN": "当前视频结束后自动播放下一个视频",
-        "zh_TW": "當目前影片結束時自動播放下一支影片"
+        "zh_TW": "當目前影片結束時自動播放下一支影片",
+        "id": "Putar otomatis video berikutnya saat video saat ini selesai"
     },
     "options_general_quality": {
         "en": "Default video quality",
@@ -5199,7 +5504,8 @@
         "tr": "Varsayılan video kalitesi",
         "pt_BR": "Qualidade de vídeo padrão",
         "zh_CN": "默认视频清晰度",
-        "zh_TW": "預設影片畫質"
+        "zh_TW": "預設影片畫質",
+        "id": "Kualitas video default"
     },
     "options_general_clickaction": {
         "en": "Single click action",
@@ -5216,7 +5522,8 @@
         "tr": "Tek tıklama eylemi",
         "pt_BR": "Ação de clique único",
         "zh_CN": "单击操作",
-        "zh_TW": "單擊動作"
+        "zh_TW": "單擊動作",
+        "id": "Aksi klik tunggal"
     },
     "options_general_dblclickaction": {
         "en": "Double click action",
@@ -5233,7 +5540,8 @@
         "tr": "Çift tıklama eylemi",
         "pt_BR": "Ação de clique duplo",
         "zh_CN": "双击操作",
-        "zh_TW": "雙擊動作"
+        "zh_TW": "雙擊動作",
+        "id": "Aksi klik ganda"
     },
     "options_general_tplclickaction": {
         "en": "Triple click action",
@@ -5250,7 +5558,8 @@
         "tr": "Üçlü tıklama eylemi",
         "pt_BR": "Ação de clique triplo",
         "zh_CN": "三击操作",
-        "zh_TW": "三擊動作"
+        "zh_TW": "三擊動作",
+        "id": "Aksi klik tiga kali"
     },
     "options_general_clickaction_playpause": {
         "en": "Toggle play/pause",
@@ -5267,7 +5576,8 @@
         "tr": "Oynat/Duraklat",
         "pt_BR": "Alternar reprodução/pausa",
         "zh_CN": "切换播放/暂停",
-        "zh_TW": "切換播放/暫停"
+        "zh_TW": "切換播放/暫停",
+        "id": "Beralih putar/jeda"
     },
     "options_general_clickaction_fullscreen": {
         "en": "Toggle fullscreen",
@@ -5284,7 +5594,8 @@
         "tr": "Tam ekran aç/kapa",
         "pt_BR": "Alternar tela cheia",
         "zh_CN": "切换全屏",
-        "zh_TW": "切換全螢幕"
+        "zh_TW": "切換全螢幕",
+        "id": "Beralih layar penuh"
     },
     "options_general_clickaction_pip": {
         "en": "Toggle picture-in-picture",
@@ -5301,7 +5612,8 @@
         "tr": "Resim içinde resim aç/kapa",
         "pt_BR": "Alternar imagem em imagem",
         "zh_CN": "切换画中画",
-        "zh_TW": "切換畫中畫"
+        "zh_TW": "切換畫中畫",
+        "id": "Beralih gambar-dalam-gambar"
     },
     "options_general_clickaction_hidecontrols": {
         "en": "Hide controls",
@@ -5318,7 +5630,8 @@
         "tr": "Denetimleri gizle",
         "pt_BR": "Ocultar controles",
         "zh_CN": "隐藏控件",
-        "zh_TW": "隱藏控制列"
+        "zh_TW": "隱藏控制列",
+        "id": "Sembunyikan kontrol"
     },
     "options_general_clickaction_hideplayer": {
         "en": "Hide player",
@@ -5335,7 +5648,8 @@
         "tr": "Oynatıcıyı gizle",
         "pt_BR": "Ocultar tocador",
         "zh_CN": "隐藏播放器",
-        "zh_TW": "隱藏播放器"
+        "zh_TW": "隱藏播放器",
+        "id": "Sembunyikan pemutar"
     },
     "options_general_vischangeaction": {
         "en": "When player visibility changes",
@@ -5352,7 +5666,8 @@
         "tr": "Oynatıcı görünürlüğü değiştiğinde",
         "pt_BR": "Quando a visibilidade do tocador mudar",
         "zh_CN": "播放器可见性变化时",
-        "zh_TW": "當播放器顯示狀態變更時"
+        "zh_TW": "當播放器顯示狀態變更時",
+        "id": "Saat visibilitas pemutar berubah"
     },
     "options_general_vischangeaction_nothing": {
         "en": "Do nothing",
@@ -5369,7 +5684,8 @@
         "tr": "Hiçbir şey yapma",
         "pt_BR": "Não fazer nada",
         "zh_CN": "不执行任何操作",
-        "zh_TW": "不執行任何動作"
+        "zh_TW": "不執行任何動作",
+        "id": "Tidak melakukan apa-apa"
     },
     "options_general_vischangeaction_playpause": {
         "en": "Toggle play/pause",
@@ -5386,7 +5702,8 @@
         "tr": "Oynat/Duraklat",
         "pt_BR": "Alternar reprodução/pausa",
         "zh_CN": "切换播放/暂停",
-        "zh_TW": "切換播放/暫停"
+        "zh_TW": "切換播放/暫停",
+        "id": "Beralih putar/jeda"
     },
     "options_general_vischangeaction_miniplayer": {
         "en": "Toggle miniplayer",
@@ -5403,7 +5720,8 @@
         "tr": "Miniplayer aç/kapa",
         "pt_BR": "Alternar miniplayer",
         "zh_CN": "切换迷你播放器",
-        "zh_TW": "切換迷你播放器"
+        "zh_TW": "切換迷你播放器",
+        "id": "Beralih mini pemutar"
     },
     "options_general_minipos": {
         "en": "Miniplayer position",
@@ -5420,7 +5738,8 @@
         "tr": "Miniplayer konumu",
         "pt_BR": "Posição do tocador",
         "zh_CN": "迷你播放器位置",
-        "zh_TW": "迷你播放器位置"
+        "zh_TW": "迷你播放器位置",
+        "id": "Posisi mini pemutar"
     },
     "options_general_minipos_topleft": {
         "en": "Top Left",
@@ -5437,7 +5756,8 @@
         "tr": "Sol Üst",
         "pt_BR": "Canto superior esquerdo",
         "zh_CN": "左上角",
-        "zh_TW": "左上"
+        "zh_TW": "左上",
+        "id": "Kiri Atas"
     },
     "options_general_minipos_topright": {
         "en": "Top Right",
@@ -5454,7 +5774,8 @@
         "tr": "Sağ Üst",
         "pt_BR": "Canto superior direito",
         "zh_CN": "右上角",
-        "zh_TW": "右上"
+        "zh_TW": "右上",
+        "id": "Kanan Atas"
     },
     "options_general_minipos_bottomleft": {
         "en": "Bottom Left",
@@ -5471,7 +5792,8 @@
         "tr": "Sol Alt",
         "pt_BR": "Inferior Esquerdo",
         "zh_CN": "左下角",
-        "zh_TW": "左下"
+        "zh_TW": "左下",
+        "id": "Kiri Bawah"
     },
     "options_general_minipos_bottomright": {
         "en": "Bottom Right",
@@ -5488,7 +5810,8 @@
         "tr": "Sağ Alt",
         "pt_BR": "Canto inferior direito",
         "zh_CN": "右下角",
-        "zh_TW": "右下"
+        "zh_TW": "右下",
+        "id": "Kanan Bawah"
     },
     "options_general_minisize": {
         "en": "Miniplayer size",
@@ -5505,7 +5828,8 @@
         "tr": "Miniplayer boyutu",
         "pt_BR": "Tamanho do miniplayer",
         "zh_CN": "迷你播放器大小",
-        "zh_TW": "迷你播放器大小"
+        "zh_TW": "迷你播放器大小",
+        "id": "Ukuran mini pemutar"
     },
     "options_general_color_theme": {
         "en": "Player color theme",
@@ -5522,7 +5846,8 @@
         "tr": "Oynatıcı renk teması",
         "pt_BR": "Tema de cor do tocador",
         "zh_CN": "播放器颜色主题",
-        "zh_TW": "播放器配色主題"
+        "zh_TW": "播放器配色主題",
+        "id": "Tema warna pemutar"
     },
     "options_general_color_theme_default": {
         "en": "Default Dark",
@@ -5539,7 +5864,8 @@
         "tr": "Varsayılan Koyu",
         "pt_BR": "Padrão Escuro",
         "zh_CN": "默认（暗）",
-        "zh_TW": "預設（深色）"
+        "zh_TW": "預設（深色）",
+        "id": "Gelap Bawaan"
     },
     "options_general_color_theme_arctic": {
         "en": "Arctic Light",
@@ -5556,7 +5882,8 @@
         "tr": "Arktik Açık",
         "pt_BR": "Luz Ártica",
         "zh_CN": "极地（亮）",
-        "zh_TW": "極地淺色"
+        "zh_TW": "極地淺色",
+        "id": "Arktik Terang"
     },
     "options_general_color_theme_ocean": {
         "en": "Ocean Blue",
@@ -5573,7 +5900,8 @@
         "tr": "Okyanus Mavisi",
         "pt_BR": "Azul Oceano",
         "zh_CN": "海洋蓝",
-        "zh_TW": "海洋藍"
+        "zh_TW": "海洋藍",
+        "id": "Biru Laut"
     },
     "options_general_color_theme_neon": {
         "en": "Neon Night",
@@ -5590,7 +5918,8 @@
         "tr": "Neon Gece",
         "pt_BR": "Noite Néon",
         "zh_CN": "霓虹夜",
-        "zh_TW": "霓虹夜"
+        "zh_TW": "霓虹夜",
+        "id": "Malam Neon"
     },
     "options_general_color_theme_contrast": {
         "en": "High Contrast",
@@ -5607,7 +5936,8 @@
         "tr": "Yüksek Kontrast",
         "pt_BR": "Alto Contraste",
         "zh_CN": "高对比",
-        "zh_TW": "高對比"
+        "zh_TW": "高對比",
+        "id": "Kontras Tinggi"
     },
     "options_general_color_theme_sunset": {
         "en": "Sunset Glow",
@@ -5624,7 +5954,8 @@
         "tr": "Günbatımı Işıltısı",
         "pt_BR": "Brilho do Pôr do Sol",
         "zh_CN": "落日余晖",
-        "zh_TW": "夕陽光暈"
+        "zh_TW": "夕陽光暈",
+        "id": "Sinar Senja"
     },
     "options_general_color_theme_forest": {
         "en": "Forest Night",
@@ -5641,7 +5972,8 @@
         "tr": "Orman Gecesi",
         "pt_BR": "Noite na Floresta",
         "zh_CN": "森林夜",
-        "zh_TW": "森林夜"
+        "zh_TW": "森林夜",
+        "id": "Malam Hutan"
     },
     "options_general_color_theme_slate": {
         "en": "Slate Mono",
@@ -5658,7 +5990,8 @@
         "tr": "Antrasit Mono",
         "pt_BR": "Lousa Monocromática",
         "zh_CN": "石板单色",
-        "zh_TW": "石板單色"
+        "zh_TW": "石板單色",
+        "id": "Abu-abu Mono"
     },
     "options_general_color_theme_amethyst": {
         "en": "Amethyst Haze",
@@ -5675,7 +6008,8 @@
         "tr": "Ametist Sis",
         "pt_BR": "Névoa de Ametista",
         "zh_CN": "紫晶薄雾",
-        "zh_TW": "紫晶薄霧"
+        "zh_TW": "紫晶薄霧",
+        "id": "Kabut Ametis"
     },
     "options_general_color_theme_desert": {
         "en": "Desert Sand",
@@ -5692,7 +6026,8 @@
         "tr": "Çöl Kumu",
         "pt_BR": "Areia do Deserto",
         "zh_CN": "沙漠砂色",
-        "zh_TW": "沙漠沙色"
+        "zh_TW": "沙漠沙色",
+        "id": "Pasir Gurun"
     },
     "options_general_color_theme_mint": {
         "en": "Mint Fresh",
@@ -5709,7 +6044,8 @@
         "tr": "Taze Nane",
         "pt_BR": "Menta Fresca",
         "zh_CN": "薄荷清新",
-        "zh_TW": "薄荷清新"
+        "zh_TW": "薄荷清新",
+        "id": "Mint Segar"
     },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
@@ -5726,7 +6062,8 @@
         "tr": "Resim içinde resmi aç/kapat",
         "pt_BR": "Alternar imagem sobreposta (pip)",
         "zh_CN": "切换画中画",
-        "zh_TW": "切換畫中畫"
+        "zh_TW": "切換畫中畫",
+        "id": "Beralih picture-in-picture"
     },
     "options_general_ytclient": {
         "en": "YT client to use. Try changing if you have issues.",
@@ -5743,7 +6080,8 @@
         "tr": "Kullanılacak YT istemcisi. Sorun varsa değiştirmeyi deneyin.",
         "pt_BR": "Usar cliente YT nativo . Tente mudar se tiver problemas.",
         "zh_CN": "要使用的 YT 客户端。如遇问题可尝试更换。",
-        "zh_TW": "使用的 YT 用戶端。若遇到問題，請嘗試更換。"
+        "zh_TW": "使用的 YT 用戶端。若遇到問題，請嘗試更換。",
+        "id": "Klien YT yang digunakan. Coba ganti jika bermasalah."
     },
     "options_export_header": {
         "en": "Import/Export Settings",
@@ -5760,7 +6098,8 @@
         "tr": "Ayarları İçe/Dışa Aktar",
         "pt_BR": "Configurações de importação/exportação",
         "zh_CN": "导入/导出设置",
-        "zh_TW": "匯入/匯出設定"
+        "zh_TW": "匯入/匯出設定",
+        "id": "Impor/Ekspor Pengaturan"
     },
     "options_import": {
         "en": "Import Settings From File",
@@ -5777,7 +6116,8 @@
         "tr": "Dosyadan Ayarları İçe Aktar",
         "pt_BR": "Importar configurações do arquivo",
         "zh_CN": "从文件导入设置",
-        "zh_TW": "從檔案匯入設定"
+        "zh_TW": "從檔案匯入設定",
+        "id": "Impor Pengaturan dari Berkas"
     },
     "options_export": {
         "en": "Export Settings To File",
@@ -5794,7 +6134,8 @@
         "tr": "Ayarları Dosyaya Dışa Aktar",
         "pt_BR": "Exportar configurações para arquivo",
         "zh_CN": "导出设置到文件",
-        "zh_TW": "匯出設定為檔案"
+        "zh_TW": "匯出設定為檔案",
+        "id": "Ekspor Pengaturan ke Berkas"
     },
     "options_keybinds_header": {
         "en": "Keyboard Shortcuts",
@@ -5811,7 +6152,8 @@
         "tr": "Klavye Kısayolları",
         "pt_BR": "Atalhos de teclado",
         "zh_CN": "键盘快捷键",
-        "zh_TW": "快捷鍵"
+        "zh_TW": "快捷鍵",
+        "id": "Pintasan Keyboard"
     },
     "options_keybinds_body": {
         "en": "Keybinds are only active when the player is focused.",
@@ -5828,7 +6170,8 @@
         "tr": "Kısayol tuşları yalnızca oynatıcı odaklandığında etkindir.",
         "pt_BR": "Os atalhos de teclado só ficam ativos quando o tocador estiver em foco.",
         "zh_CN": "仅当播放器获得焦点时，快捷键才生效。",
-        "zh_TW": "僅當播放器獲得焦點時，快捷鍵才會生效。"
+        "zh_TW": "僅當播放器獲得焦點時，快捷鍵才會生效。",
+        "id": "Pintasan hanya aktif saat pemutar sedang fokus."
     },
     "options_keybinds_reset": {
         "en": "Reset to Defaults",
@@ -5845,7 +6188,8 @@
         "tr": "Varsayılara Sıfırla",
         "pt_BR": "Redefinir para os padrões",
         "zh_CN": "重置为默认",
-        "zh_TW": "回復預設"
+        "zh_TW": "回復預設",
+        "id": "Kembalikan ke Default"
     },
     "options_autourl_header": {
         "en": "Auto-enable URLs",
@@ -5862,7 +6206,8 @@
         "tr": "Otomatik Etkinleştirilen URL'ler",
         "pt_BR": "Habilitar URLs automaticamente",
         "zh_CN": "自动启用 URL",
-        "zh_TW": "自動啟用網址"
+        "zh_TW": "自動啟用網址",
+        "id": "Aktifkan Otomatis untuk URL"
     },
     "options_autourl_body": {
         "en": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line. To exclude sites, prepend with an exclamation mark (!).",
@@ -5879,7 +6224,8 @@
         "tr": "Bu URL'leri ziyaret ettiğinizde uzantıyı otomatik olarak etkinleştirir ve ayrılınca devre dışı bırakır. Her satıra bir URL yazın; o URL ile başlayan sayfalar da eşleşir. Regex için başına tilde (~) koyun. Her satıra bir regex. Siteleri hariç tutmak için başına ünlem işareti (!) ekleyin.",
         "pt_BR": "A extensão será ativada automaticamente ao visitar esses links e desativada ao sair. Um link por linha, as páginas que começam com esse link também serão validados. Para uma expressão regular, acrescente um til (~). Uma expressão regular por linha. Para excluir sites, coloque um ponto de exclamação (!).",
         "zh_CN": "访问这些 URL 时会自动启用扩展，离开时会自动禁用。每行一个 URL，以该 URL 开头的页面也会匹配。使用正则时在前面加波浪号 (~)，每行一个正则。要排除站点，在前面加感叹号 (!)。",
-        "zh_TW": "造訪這些網址時會自動啟用擴充功能，離開時會自動停用。每行一個網址，且以該網址開頭的頁面也會被匹配。若為正則表達式，請在前面加上波浪號 (~)，每行一個正則。若要排除網站，請在前面加上驚嘆號 (!)。"
+        "zh_TW": "造訪這些網址時會自動啟用擴充功能，離開時會自動停用。每行一個網址，且以該網址開頭的頁面也會被匹配。若為正則表達式，請在前面加上波浪號 (~)，每行一個正則。若要排除網站，請在前面加上驚嘆號 (!)。",
+        "id": "Akan otomatis mengaktifkan ekstensi saat mengunjungi URL ini dan menonaktifkannya saat meninggalkan. Satu URL per baris; halaman yang dimulai dengan URL tersebut juga akan cocok. Untuk regex, awali dengan tilde (~). Satu regex per baris. Untuk mengecualikan situs, awali dengan tanda seru (!)."
     },
     "options_autourl_hint": {
         "en": "Hint: Test regex on",
@@ -5896,7 +6242,8 @@
         "tr": "İpucu: Regex'i burada test edin",
         "pt_BR": "Dica: Teste a expressão regular em",
         "zh_CN": "提示：在此处测试正则",
-        "zh_TW": "提示：在此測試正則表達式"
+        "zh_TW": "提示：在此測試正則表達式",
+        "id": "Petunjuk: Uji regex di"
     },
     "options_pattern_header": {
         "en": "Custom Source Patterns",
@@ -5913,7 +6260,8 @@
         "tr": "Özel Kaynak Desenleri",
         "pt_BR": "Padrões de origem personalizada",
         "zh_CN": "自定义源模式",
-        "zh_TW": "自訂來源模式"
+        "zh_TW": "自訂來源模式",
+        "id": "Pola Sumber Kustom"
     },
     "options_pattern_body": {
         "en": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only.",
@@ -5930,7 +6278,8 @@
         "tr": "Bu desenler, web sayfalarında özel video kaynaklarını tespit etmek için kullanılır. Sırayla uygulanır ve ilk eşleşme kullanılır. Sadece ileri düzey kullanıcılar içindir.",
         "pt_BR": "Esses padrões são usados para detectar fontes de vídeo personalizadas em páginas da Web. Serão aplicados em ordem, e a primeira correspondência será usada. Somente para usuários avançados.",
         "zh_CN": "这些模式用于检测网页上的自定义视频来源。按顺序应用，采用第一个匹配项。仅供高级用户使用。",
-        "zh_TW": "這些模式用於偵測網頁上的自訂視訊來源。會依順序套用，採第一個符合的結果。僅供進階使用者。"
+        "zh_TW": "這些模式用於偵測網頁上的自訂視訊來源。會依順序套用，採第一個符合的結果。僅供進階使用者。",
+        "id": "Pola-pola ini digunakan untuk mendeteksi sumber video kustom di halaman web. Mereka diterapkan berurutan, dan kecocokan pertama yang digunakan. Hanya untuk pengguna lanjutan."
     },
     "options_help_header": {
         "en": "Help",
@@ -5947,7 +6296,8 @@
         "tr": "Yardım",
         "pt_BR": "Ajuda",
         "zh_CN": "帮助",
-        "zh_TW": "說明"
+        "zh_TW": "說明",
+        "id": "Bantuan"
     },
     "options_help_welcome": {
         "en": "Welcome Page",
@@ -5964,7 +6314,8 @@
         "tr": "Hoş Geldiniz",
         "pt_BR": "Página de boas-vindas",
         "zh_CN": "欢迎页",
-        "zh_TW": "歡迎頁面"
+        "zh_TW": "歡迎頁面",
+        "id": "Halaman Selamat Datang"
     },
     "options_help_issues": {
         "en": "Issue Tracker",
@@ -5981,7 +6332,8 @@
         "tr": "Hata İzleyici",
         "pt_BR": "Monitoramento de problemas",
         "zh_CN": "问题追踪",
-        "zh_TW": "問題追蹤"
+        "zh_TW": "問題追蹤",
+        "id": "Pelacak Masalah"
     },
     "subtitles_settings_fontFamily": {
         "en": "Font Family",
@@ -5998,7 +6350,8 @@
         "tr": "Yazı Tipi",
         "pt_BR": "Família de fontes",
         "zh_CN": "字体",
-        "zh_TW": "字體"
+        "zh_TW": "字體",
+        "id": "Jenis Huruf"
     },
     "subtitles_settings_fontWeight": {
         "en": "Font Weight",
@@ -6015,7 +6368,8 @@
         "tr": "Yazı Kalınlığı",
         "pt_BR": "Peso da fonte",
         "zh_CN": "字体粗细",
-        "zh_TW": "字重"
+        "zh_TW": "字重",
+        "id": "Ketebalan Huruf"
     },
     "subtitles_settings_fontSize": {
         "en": "Font Size",
@@ -6032,7 +6386,8 @@
         "tr": "Yazı Boyutu",
         "pt_BR": "Tamanho da fonte",
         "zh_CN": "字体大小",
-        "zh_TW": "字體大小"
+        "zh_TW": "字體大小",
+        "id": "Ukuran Huruf"
     },
     "subtitles_settings_color": {
         "en": "Font Color",
@@ -6049,7 +6404,8 @@
         "tr": "Yazı Rengi",
         "pt_BR": "Cor da fonte",
         "zh_CN": "字体颜色",
-        "zh_TW": "文字顏色"
+        "zh_TW": "文字顏色",
+        "id": "Warna Huruf"
     },
     "subtitles_settings_background": {
         "en": "Background Color",
@@ -6066,7 +6422,8 @@
         "tr": "Arka Plan Rengi",
         "pt_BR": "Cor de fundo",
         "zh_CN": "背景颜色",
-        "zh_TW": "背景顏色"
+        "zh_TW": "背景顏色",
+        "id": "Warna Latar Belakang"
     },
     "subtitles_settings_outlineColor": {
         "en": "Outline Color",
@@ -6083,7 +6440,8 @@
         "tr": "Kontur Rengi",
         "pt_BR": "Cor do contorno",
         "zh_CN": "描边颜色",
-        "zh_TW": "描邊顏色"
+        "zh_TW": "描邊顏色",
+        "id": "Warna Garis Luar"
     },
     "subtitles_settings_outlineWidth": {
         "en": "Outline Width",
@@ -6100,7 +6458,8 @@
         "tr": "Kontur Genişliği",
         "pt_BR": "Largura do contorno",
         "zh_CN": "描边宽度",
-        "zh_TW": "描邊寬度"
+        "zh_TW": "描邊寬度",
+        "id": "Lebar Garis Luar"
     },
     "subtitles_settings_defaultLanguage": {
         "en": "Language",
@@ -6117,7 +6476,8 @@
         "tr": "Dil",
         "pt_BR": "Idioma",
         "zh_CN": "语言",
-        "zh_TW": "語言"
+        "zh_TW": "語言",
+        "id": "Bahasa"
     },
     "subtitles_settings_bottomMargin": {
         "en": "Bottom Margin",
@@ -6134,7 +6494,8 @@
         "tr": "Alt Boşluk",
         "pt_BR": "Margem inferior",
         "zh_CN": "底部边距",
-        "zh_TW": "底部邊距"
+        "zh_TW": "底部邊距",
+        "id": "Margin Bawah"
     },
     "yes": {
         "en": "Yes",
@@ -6151,7 +6512,8 @@
         "tr": "Evet",
         "pt_BR": "Sim",
         "zh_CN": "是",
-        "zh_TW": "是"
+        "zh_TW": "是",
+        "id": "Ya"
     },
     "no": {
         "en": "No",
@@ -6168,7 +6530,8 @@
         "tr": "Hayır",
         "pt_BR": "Não",
         "zh_CN": "否",
-        "zh_TW": "否"
+        "zh_TW": "否",
+        "id": "Tidak"
     },
     "ok": {
         "en": "OK",
@@ -6185,7 +6548,8 @@
         "tr": "Tamam",
         "pt_BR": "OK",
         "zh_CN": "确定",
-        "zh_TW": "確定"
+        "zh_TW": "確定",
+        "id": "OK"
     },
     "cancel": {
         "en": "Cancel",
@@ -6202,7 +6566,8 @@
         "tr": "İptal",
         "pt_BR": "Cancelar",
         "zh_CN": "取消",
-        "zh_TW": "取消"
+        "zh_TW": "取消",
+        "id": "Batal"
     },
     "error_popup": {
         "en": "Error: $1",
@@ -6219,7 +6584,8 @@
         "tr": "Hata: $1",
         "pt_BR": "Erro: $1",
         "zh_CN": "错误：$1",
-        "zh_TW": "錯誤：$1"
+        "zh_TW": "錯誤：$1",
+        "id": "Kesalahan: $1"
     },
     "error_popup_body": {
         "en": "Please report this error to the developers at https://github.com/Andrews54757/FastStream/issues with the stack trace below:",
@@ -6236,7 +6602,8 @@
         "tr": "Lütfen bu hatayı ve aşağıdaki stack trace'i geliştiricilere https://github.com/Andrews54757/FastStream/issues adresinden bildirin:",
         "pt_BR": "Informe esse erro aos desenvolvedores em https://github.com/Andrews54757/FastStream/issues com o rastreamento de detalhes a seguir:",
         "zh_CN": "请将此错误及下面的堆栈信息报告给开发者，地址：https://github.com/Andrews54757/FastStream/issues：",
-        "zh_TW": "請將此錯誤與下方的堆疊追蹤一併回報給開發者，網址：https://github.com/Andrews54757/FastStream/issues："
+        "zh_TW": "請將此錯誤與下方的堆疊追蹤一併回報給開發者，網址：https://github.com/Andrews54757/FastStream/issues：",
+        "id": "Silakan laporkan kesalahan ini ke pengembang di https://github.com/Andrews54757/FastStream/issues beserta stack trace di bawah:"
     },
     "error_popup_send": {
         "en": "Report Error",
@@ -6253,7 +6620,8 @@
         "tr": "Hata Bildir",
         "pt_BR": "Relatar erro",
         "zh_CN": "报告错误",
-        "zh_TW": "回報錯誤"
+        "zh_TW": "回報錯誤",
+        "id": "Laporkan Kesalahan"
     },
     "yt_error_login_required": {
         "en": "Sorry! FastStream does not support videos which require you to be logged in to YouTube.",
@@ -6270,6 +6638,7 @@
         "tr": "Üzgünüz! FastStream, YouTube girişinizi gerektiren videoları desteklemiyor.",
         "pt_BR": "Desculpe! O FastStream não suporta vídeos que exigem que você esteja logado no YouTube.",
         "zh_CN": "抱歉！FastStream 不支持需要在 YouTube 登录才能观看的视频。",
-        "zh_TW": "抱歉！FastStream 不支援需要登入 YouTube 才能觀看的影片。"
+        "zh_TW": "抱歉！FastStream 不支援需要登入 YouTube 才能觀看的影片。",
+        "id": "Maaf! FastStream tidak mendukung video yang mengharuskan Anda masuk ke YouTube."
     }
 }
