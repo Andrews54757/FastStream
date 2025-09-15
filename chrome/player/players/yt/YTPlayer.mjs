@@ -216,17 +216,23 @@ export default class YTPlayer extends DashPlayer {
       }
       const tracks = this.videoInfo.captions.caption_tracks.slice();
       tracks.sort((a, b) => {
-        const aMatches = a.language_code.substring(0, defLang.length) === defLang;
-        const bMatches = b.language_code.substring(0, defLang.length) === defLang;
-        if (aMatches && !bMatches) return -1;
-        if (!aMatches && bMatches) return 1;
-        if (aMatches && bMatches) {
-          // if one is auto (a.kind === 'asr') and the other is not, prefer the non-auto
-          const aIsAuto = a.kind === 'asr';
-          const bIsAuto = b.kind === 'asr';
-          if (aIsAuto && !bIsAuto) return 1;
-          if (!aIsAuto && bIsAuto) return -1;
+        const aMatchLevel = Localize.getLanguageMatchLevel(a.language_code, defLang);
+        const bMatchLevel = Localize.getLanguageMatchLevel(b.language_code, defLang);
+        const aIsAuto = a.kind === 'asr';
+        const bIsAuto = b.kind === 'asr';
+
+        if (aMatchLevel === 0 && bMatchLevel === 0) {
+          return 0;
         }
+
+        // if one is auto (a.kind === 'asr') and the other is not, prefer the non-auto
+        if (aIsAuto && !bIsAuto) return 1;
+        if (!aIsAuto && bIsAuto) return -1;
+
+        if (aMatchLevel !== bMatchLevel) {
+          return bMatchLevel - aMatchLevel; // higher match level first
+        }
+
         return 0;
       });
 

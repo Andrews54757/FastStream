@@ -44,7 +44,7 @@ export class SubtitlesManager extends EventEmitter {
 
     const defLang = this.settingsManager.getSettings().defaultLanguage;
     if (autoset && this.activeTracks.length <= 1 && this.client.options.autoEnableBestSubtitles) {
-      if (subtitleTrack.language && subtitleTrack.language.substring(0, defLang.length) === defLang) {
+      if (Localize.getLanguageMatchLevel(subtitleTrack.language, defLang) > 0) {
         // check if active tracks exist with same language
         const existingActive = this.activeTracks.find((t) => {
           return t.language && subtitleTrack.language && t.language.substring(0, defLang.length) === defLang;

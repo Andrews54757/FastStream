@@ -226,7 +226,15 @@ async function sortSubtitles(subs) {
   await Promise.all(subs.map((sub) => {
     return new Promise((resolve, reject)=>{
       chrome.i18n.detectLanguage(sub.data, (result) => {
-        const lang = result.languages.find((lang) => lang.language === defLang);
+        const langCandidates = result.languages.map((lang) => {
+          return {
+            matchLevel: Localize.getLanguageMatchLevel(lang.language, defLang),
+            percentage: lang.percentage,
+          };
+        }).filter((lang) => lang.matchLevel > 0);
+        langCandidates.sort((a, b) => b.matchLevel - a.matchLevel);
+        const lang = langCandidates[0];
+
         const score = lang ? lang.percentage : 0;
         sub.score = score;
 
