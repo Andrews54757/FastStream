@@ -55,44 +55,41 @@ export class Localize {
       return -1;
     }
 
-    const languageCodes = chosenLanguage.toLowerCase().split(/[-_]/);
-    if (languageCodes.length === 0) {
-      return 0;
-    }
-
-    const languagesMapped = languages.map((lang, i) => {
-      const langParts = lang.toLowerCase().split(/[-_]/);
-      return {
-        parts: langParts,
-        index: i,
-      };
+    const matches = [];
+    languages.forEach((lang, index) => {
+      const matchLevel = Localize.getLanguageMatchLevel(chosenLanguage, lang);
+      if (matchLevel > 0) {
+        matches.push({index, matchLevel});
+      }
     });
 
-    const matchedFirstPart = languagesMapped.filter((lang) => lang.parts[0] === languageCodes[0]);
-    if (matchedFirstPart.length === 0) {
-      return 0;
+    if (matches.length === 0) {
+      return -1;
     }
 
-    if (languageCodes.length === 1) {
-      return matchedFirstPart[0].index;
-    }
+    // Sort by match level descending
+    matches.sort((a, b) => b.matchLevel - a.matchLevel);
+    return matches[0].index;
+  }
 
-    const matchedFull = matchedFirstPart.filter((lang) => {
-      if (lang.parts.length !== languageCodes.length) {
-        return false;
+  static getLanguageMatchLevel(lang1, lang2) {
+    if (!lang1 || !lang2) {
+      return 0; // no match
+    }
+    const langArr1 = lang1.toLowerCase().split(/[-_]/);
+    const langArr2 = lang2.toLowerCase().split(/[-_]/);
+
+    const minLength = Math.min(langArr1.length, langArr2.length);
+    let matchLevel = 0; // number of matching parts
+
+    for (let i = 0; i < minLength; i++) {
+      if (langArr1[i] === langArr2[i]) {
+        matchLevel++;
+      } else {
+        break;
       }
-      for (let i = 1; i < lang.parts.length; i++) {
-        if (lang.parts[i] !== languageCodes[i]) {
-          return false;
-        }
-      }
-      return true;
-    });
-
-    if (matchedFull.length > 0) {
-      return matchedFull[0].index;
     }
 
-    return matchedFirstPart[0].index;
+    return matchLevel;
   }
 }

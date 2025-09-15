@@ -1,3 +1,5 @@
+import {Localize} from '../modules/Localize.mjs';
+
 export class LevelManager {
   constructor(client) {
     this.client = client;
@@ -152,25 +154,6 @@ export class LevelManager {
     return list.map((item) => item.level);
   }
 
-  doLanguagesMatch(lang1, lang2) {
-    if (!lang1 || !lang2) {
-      return false;
-    }
-
-    const langArr1 = lang1.split('-');
-    const langArr2 = lang2.split('-');
-
-    if (langArr1[0] !== langArr2[0]) {
-      return false;
-    }
-
-    if (langArr1.length > 1 && langArr2.length > 1) {
-      return langArr1[1] === langArr2[1];
-    }
-
-    return true;
-  }
-
   isLevelContainerPrioritized(level) {
     if (!level || !level.mimeType) {
       return false;
@@ -292,24 +275,40 @@ export class LevelManager {
   }
 
   filterVideoLevelsByLanguage(availableLevels) {
-    const lang = this.getAudioLanguage();
-    const filtered = availableLevels.filter((level) => {
-      return !level.language || this.doLanguagesMatch(level.language, lang);
+    const lang = this.getVideoLanguage();
+    const matched = [];
+    availableLevels.forEach((level) => {
+      const matchLevel = Localize.getLanguageMatchLevel(level.language, lang);
+      if (matchLevel > 0) {
+        matched.push({level, matchLevel});
+      }
     });
-    if (filtered.length === 0) {
+
+    if (matched.length === 0) {
       return availableLevels;
     }
-    return filtered;
+
+    // Sort by match level descending
+    matched.sort((a, b) => b.matchLevel - a.matchLevel);
+    return matched.map((item) => item.level);
   }
 
   filterAudioLevelsByLanguage(availableLevels) {
     const lang = this.getAudioLanguage();
-    const filtered = availableLevels.filter((level) => {
-      return !level.language || this.doLanguagesMatch(level.language, lang);
+    const matched = [];
+    availableLevels.forEach((level) => {
+      const matchLevel = Localize.getLanguageMatchLevel(level.language, lang);
+      if (matchLevel > 0) {
+        matched.push({level, matchLevel});
+      }
     });
-    if (filtered.length === 0) {
+
+    if (matched.length === 0) {
       return availableLevels;
     }
-    return filtered;
+
+    // Sort by match level descending
+    matched.sort((a, b) => b.matchLevel - a.matchLevel);
+    return matched.map((item) => item.level);
   }
 }
