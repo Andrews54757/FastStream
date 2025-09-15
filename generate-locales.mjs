@@ -152,31 +152,41 @@ function callOpenAI({model, messages}) {
   });
 }
 
-function buildPrompt({appName, sourceLang, targetLang, pairs}) {
-  const instructions = `You are an expert product localizer for a browser video player UI named "${appName}".
+function buildPrompt({appName, sourceLang, targetLang, pairs, feedback = null}) {
+  let instructions = `You are an expert product localizer for a browser video player UI named "${appName}".
 Translate the following UI strings from ${sourceLang} to ${targetLang}.
 Guidelines:
 - Keep the product/brand name "${appName}" untranslated.
-- Preserve placeholders, punctuation, emojis and capitalization as appropriate.
+- Preserve placeholders ($1, $2, etc...), punctuation, emojis and capitalization as appropriate.
 - Use natural, concise UI phrasing for the target locale.
 - Return a strict JSON object with exactly and only the provided keys, unchanged: { "key": "translated text", ... }.
 - Do not add, remove, rename, or reformat keys. Do not wrap in markdown code fences.
 `;
 
+  if (feedback) {
+    instructions += `
+Previous validation feedback for this batch:
+${feedback}
+Address every issue above in your next response.`;
+  }
+
   const list = pairs.map(({key, source, description}) => ({key, source, description})).slice(0);
+  const payload = {entries: list};
+  if (feedback) payload.validation_feedback = feedback;
 
   return [
     {role: 'system', content: instructions},
-    {role: 'user', content: JSON.stringify({entries: list})},
+    {role: 'user', content: JSON.stringify(payload)},
   ];
 }
 
-async function translateBatch(opts, batch) {
+async function translateBatch(opts, batch, feedback = null) {
   const messages = buildPrompt({
     appName: 'FastStream',
     sourceLang: opts.source,
     targetLang: opts.lang,
     pairs: batch,
+    feedback,
   });
   const content = await callOpenAI({model: opts.model, messages});
   let obj;
@@ -278,6 +288,19 @@ function validateBatchResult(batch, obj, appName) {
   return {ok, issues, valid};
 }
 
+function summarizeIssues(issues) {
+  const parts = [];
+  if (issues.missingKeys.length > 0) parts.push(`missing keys: ${issues.missingKeys.join(', ')}`);
+  if (issues.unexpectedKeys.length > 0) parts.push(`unexpected keys returned: ${issues.unexpectedKeys.join(', ')}`);
+  if (issues.badValues.length > 0) parts.push(`invalid values for: ${issues.badValues.join(', ')}`);
+  if (issues.placeholderMismatches.length > 0) {
+    const placeholderDetails = issues.placeholderMismatches.map(({key, missing}) => `${key} (missing ${missing.join(', ')})`);
+    parts.push(`missing placeholders: ${placeholderDetails.join('; ')}`);
+  }
+  if (issues.brandMissing.length > 0) parts.push(`must include brand name in: ${issues.brandMissing.join(', ')}`);
+  return parts.join('; ') || 'unknown validation issues';
+}
+
 async function run() {
   const opts = parseArgs(process.argv.slice(2));
   const items = readCombinedLocales(opts.input);
@@ -296,21 +319,24 @@ async function run() {
     let attempt = 0;
     let lastValid = {};
     let lastIssues = null;
+    let feedback = null;
     while (attempt < 3) {
       attempt++;
-      process.stdout.write(`  Batch ${i + 1}/${batches.length} (items=${batch.length}) attempt ${attempt}... `);
+      const attemptLabel = `Batch ${i + 1}/${batches.length} (items=${batch.length}) attempt ${attempt}`;
       try {
-        const r = await translateBatch(opts, batch);
+        const r = await translateBatch(opts, batch, feedback);
         const {ok, issues, valid} = validateBatchResult(batch, r, 'FastStream');
         lastValid = valid;
         lastIssues = issues;
         if (ok) {
-          console.log('ok');
+          console.log(`  ${attemptLabel}... ok`);
           return valid;
         }
-        console.log('invalid');
+        const issueSummary = summarizeIssues(issues);
+        console.log(`  ${attemptLabel}... invalid: ${issueSummary}`);
+        feedback = issueSummary;
       } catch (e) {
-        console.log('failed');
+        console.log(`  ${attemptLabel}... failed`);
         if (attempt >= 3) throw e;
       }
     }
