@@ -84,6 +84,10 @@ function saveLocalesToMultiPath(locales, whiteList) {
     if (whiteList && !whiteList.includes(locale)) {
       continue;
     }
+    const folderPath = path.join(localesPath, locale);
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
     const messagesPath = path.join(localesPath, locale, 'messages.json');
     const messages = {};
     for (const [key, value] of translations.entries()) {

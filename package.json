@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node localescript.mjs && node build.mjs",
+    "gen-locale": "node generate-locales.mjs",
     "combine-locales": "node localescript.mjs --combine",
     "split-locales": "node localescript.mjs --split"
   },

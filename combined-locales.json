@@ -7,7 +7,8 @@
         "ja": "FastStream Video Player",
         "ms": "Pemain Video FastStream",
         "pt-br": "FastStream Video Player",
-        "ru": "FastStream Video Player"
+        "ru": "FastStream Video Player",
+        "zh-cn": "FastStream 视频播放器"
     },
     "extension_description": {
         "en": "Stream without buffering. Fix bad video players on the internet.",
@@ -17,7 +18,8 @@
         "ja": "バッファリングなしでストリーム。インターネット上の悪質なビデオプレーヤーを修正します。",
         "ms": "Strim tanpa penimbalan. Betulkan pemain video yang buruk di Internet.",
         "pt-br": "Assista á transmissões sem pré-carregamento, consertando tocadores de vídeos na internet.",
-        "ru": "Потоковая передача без буферизации. Исправляет плохие видеоплееры в интернете."
+        "ru": "Потоковая передача без буферизации. Исправляет плохие видеоплееры в интернете.",
+        "zh-cn": "无缓冲播放，修复网络上的问题视频播放器。"
     },
     "extension_toggle_label": {
         "en": "Toggle FastStream",
@@ -27,7 +29,8 @@
         "ja": "FastStream に切り替える",
         "ms": "Togol FastStream",
         "pt-br": "Alternar FastStream",
-        "ru": "Переключить FastStream"
+        "ru": "Переключить FastStream",
+        "zh-cn": "切换 FastStream"
     },
     "welcome_page_title": {
         "en": "Welcome to FastStream",
@@ -37,7 +40,8 @@
         "ja": "FastStream へようこそ",
         "ms": "Selamat datang ke FastStream",
         "pt-br": "Bem-vindo ao FastStream",
-        "ru": "Добро пожаловать в FastStream!"
+        "ru": "Добро пожаловать в FastStream!",
+        "zh-cn": "欢迎使用 FastStream"
     },
     "welcome_page_usage_header": {
         "en": "Usage",
@@ -47,7 +51,8 @@
         "ja": "使用方法",
         "ms": "Penggunaan",
         "pt-br": "Uso",
-        "ru": "Использование"
+        "ru": "Использование",
+        "zh-cn": "使用方法"
     },
     "welcome_page_usage_content0": {
         "en": "There are four ways to use FastStream",
@@ -57,7 +62,8 @@
         "ja": "FastStream の使用方法は 4 つあります",
         "ms": "Terdapat empat cara untuk menggunakan FastStream",
         "pt-br": "Existem quatro formas de uso do FastStream",
-        "ru": "Существует четыре способа использования FastStream:"
+        "ru": "Существует четыре способа использования FastStream:",
+        "zh-cn": "使用 FastStream 的四种方式"
     },
     "welcome_page_usage_content1": {
         "en": "You can go to a website with a video stream, and turn faststream on by clicking on the icon. Play the stream and the client will be auto-replaced with FastStream",
@@ -67,7 +73,8 @@
         "ja": "動画のある Web サイトを開いてアイコンをクリックで FastStream を ON にする事ができます。動画を再生するとクライアントは自動的に FastStream に置き換わります。",
         "ms": "Anda boleh pergi ke tapak web dengan strim video dan hidupkan strim pantas dengan mengklik pada ikon. Mainkan strim dan pelanggan akan digantikan secara automatik dengan FastStream",
         "pt-br": "Acesse qualquer site para transmissão de vídeo, ative o FastStream pelo ícone da extensão. Reproduza o vídeo e o cliente será substituído automaticamente pelo FastStream",
-        "ru": "Вы можете зайти на сайт с потоковым видео и включить FastStream, нажав на значок. При воспроизведении клиент будет автоматически заменён на FastStream."
+        "ru": "Вы можете зайти на сайт с потоковым видео и включить FastStream, нажав на значок. При воспроизведении клиент будет автоматически заменён на FastStream.",
+        "zh-cn": "前往有视频流的网站，点击图标开启 FastStream。播放流媒体时客户端会自动被 FastStream 替换。"
     },
     "welcome_page_usage_content2": {
         "en": "You can go to a new tab, and press the extension icon to go to the player.",
@@ -77,7 +84,8 @@
         "ja": "新しいタブを開いて拡張機能のアイコンをクリックでプレーヤーを開く事ができます。",
         "ms": "Anda boleh pergi ke tab baharu dan tekan ikon sambungan untuk pergi ke pemain.",
         "pt-br": "Você pode ir para uma nova guia e pressionar o ícone da extensão para ir para o tocador.",
-        "ru": "Откройте новую вкладку и нажмите на значок расширения, чтобы перейти к плееру."
+        "ru": "Откройте новую вкладку и нажмите на значок расширения, чтобы перейти к плееру.",
+        "zh-cn": "在新标签页中点击扩展图标即可打开播放器。"
     },
     "welcome_page_usage_content3": {
         "en": "If you have the option enabled, go to a mp4/mpd/m3u8 url and the player will play it.",
@@ -87,7 +95,8 @@
         "ja": "オプションを有効化している場合に、mp4/mpd/m3u8 の URL にアクセスする事でプレーヤーが再生をします。",
         "ms": "Jika anda mempunyai pilihan yang didayakan, pergi ke url mp4/mpd/m3u8 dan pemain akan memainkannya.",
         "pt-br": "Se a opção estiver ativada, acesse um URL mp4/mpd/m3u8 e o player o reproduzirá.",
-        "ru": "При включенной опции (см. настройки) перейдите по адресу с mp4/mpd/m3u8, и плеер воспроизведёт его."
+        "ru": "При включенной опции (см. настройки) перейдите по адресу с mp4/mpd/m3u8, и плеер воспроизведёт его.",
+        "zh-cn": "如果已启用此选项，访问 mp4/mpd/m3u8 链接即可由播放器播放。"
     },
     "welcome_page_usage_content4": {
         "en": "Keep the player open in a new tab and it will collect sources as you browse elsewhere.",
@@ -97,7 +106,8 @@
         "ja": "新しいタブでプレーヤーを開いておく事で、他の場所を参照してソースを取得します。",
         "ms": "Pastikan pemain dibuka dalam tab baharu dan ia akan mengumpul sumber semasa anda menyemak imbas di tempat lain.",
         "pt-br": "Mantenha o player aberto em uma nova guia e ele coletará fontes enquanto você navega em outro lugar.",
-        "ru": "Держите плеер открытым в новой вкладке, и он будет собирать источники, которые вы просматриваете."
+        "ru": "Держите плеер открытым в новой вкладке, и он будет собирать источники, которые вы просматриваете.",
+        "zh-cn": "将播放器在新标签页保持打开，它会在你浏览其他页面时收集视频源。"
     },
     "welcome_page_usage_end": {
         "en": "Thank you for installing FastStream! Please let us know if you have any issues or suggestions.",
@@ -107,7 +117,8 @@
         "ja": "FastStream をインストールしていただき感謝します! 問題やご提案がありましたらお知らせください。",
         "ms": "Terima kasih kerana memasang FastStream! Sila maklumkan kepada kami jika anda mempunyai sebarang isu atau cadangan.",
         "pt-br": "Obrigado por instalar o FastStream! Nos informe se tiver algum problema ou sugestão.",
-        "ru": "Благодарим вас за установку FastStream! Пожалуйста, сообщите нам, если у вас возникнут какие-либо вопросы или предложения."
+        "ru": "Благодарим вас за установку FastStream! Пожалуйста, сообщите нам, если у вас возникнут какие-либо вопросы или предложения.",
+        "zh-cn": "感谢安装 FastStream！如有问题或建议，请告知我们。"
     },
     "welcome_page_keybinds_header": {
         "en": "Default Keyboard Controls",
@@ -117,7 +128,8 @@
         "ja": "デフォルトのキーボードコントロール",
         "ms": "Kawalan Papan Kekunci Lalai",
         "pt-br": "Controles padrão do teclado",
-        "ru": "Сочетания клавиш по умолчанию"
+        "ru": "Сочетания клавиш по умолчанию",
+        "zh-cn": "默认键盘控制"
     },
     "welcome_page_keybinds_content0": {
         "en": "You can change these keybinds in extension settings",
@@ -127,7 +139,8 @@
         "ja": "これらのキーバインドは拡張機能の設定で変更できます",
         "ms": "Anda boleh menukar ikatan kekunci ini dalam tetapan sambungan",
         "pt-br": "Você pode alterar esses atalhos do teclado nas configurações da extensão",
-        "ru": "Сочетания клавиш можно изменить в настройках расширения"
+        "ru": "Сочетания клавиш можно изменить в настройках расширения",
+        "zh-cn": "可在扩展设置中更改这些快捷键"
     },
     "welcome_page_keybinds_content1": {
         "en": "arrow keys - 1 second seek forward/back",
@@ -137,7 +150,8 @@
         "ja": "矢印キー - 前後の 1 秒間隔のシーク",
         "ms": "kekunci anak panah - 1 saat mencari ke hadapan/belakang",
         "pt-br": "Setas do teclado - 1 segundo de busca para frente/trás",
-        "ru": "клавиша со стрелкой - перемотка на 1 секунду вперёд/назад"
+        "ru": "клавиша со стрелкой - перемотка на 1 секунду вперёд/назад",
+        "zh-cn": "方向键 - 前进/后退 1 秒"
     },
     "welcome_page_keybinds_content2": {
         "en": "keys - 10 second seek forward/back",
@@ -147,7 +161,8 @@
         "ja": "キー - 前後の 10 秒間隔のシーク",
         "ms": "kekunci - 10 saat mencari ke hadapan/belakang",
         "pt-br": "Tecla - 10 segundo de busca para frente/trás",
-        "ru": "клавиша - перемотка на 10 секунд вперёд/назад"
+        "ru": "клавиша - перемотка на 10 секунд вперёд/назад",
+        "zh-cn": "键 - 前进/后退 10 秒"
     },
     "welcome_page_keybinds_content3": {
         "en": "key - Undo seek",
@@ -157,7 +172,8 @@
         "ja": "キー - シークを戻す",
         "ms": "kunci - Buat asal carian",
         "pt-br": "Tecla - Desfazer busca",
-        "ru": "клавиша - откатить перемотку"
+        "ru": "клавиша - откатить перемотку",
+        "zh-cn": "键 - 撤销跳转"
     },
     "welcome_page_keybinds_content4": {
         "en": "arrow keys - 10% volume up/down",
@@ -167,7 +183,8 @@
         "ja": "矢印キー - 10% の音量を上下",
         "ms": "kekunci anak panah - 10% kelantangan atas/bawah",
         "pt-br": "Setas do teclado - 10% de aumento/diminuição do volume",
-        "ru": "клавиша со стрелкой - изменение громкости на 10%"
+        "ru": "клавиша со стрелкой - изменение громкости на 10%",
+        "zh-cn": "方向键 - 音量 ±10%"
     },
     "welcome_page_keybinds_content5": {
         "en": "- Full screen",
@@ -177,7 +194,8 @@
         "ja": "- フルスクリーン",
         "ms": "- Skrin penuh",
         "pt-br": "- Tela cheia",
-        "ru": "- во весь экран"
+        "ru": "- во весь экран",
+        "zh-cn": "- 全屏"
     },
     "welcome_page_keybinds_content6": {
         "en": "- Add/decrease concurrent requests",
@@ -187,7 +205,8 @@
         "ja": "- 同時リクエストの増減",
         "ms": "- Tambah/kurangkan permintaan serentak",
         "pt-br": "- Adicionar/reduzir solicitações simultâneas",
-        "ru": "- увеличение/уменьшение количества одновременных запросов"
+        "ru": "- увеличение/уменьшение количества одновременных запросов",
+        "zh-cn": "- 增减并发请求数"
     },
     "welcome_page_keybinds_content7": {
         "en": "- Force retry key - use this to re-attempt failed downloads",
@@ -197,7 +216,8 @@
         "ja": "- 強制再試行キー - これを使用する事で失敗をしたダウンロードを再試行します",
         "ms": "- Kekunci cuba semula paksa - gunakan ini untuk mencuba semula muat turun yang gagal",
         "pt-br": "- Forçar nova tentativa - use-a para tentar novamente os downloads que falharam",
-        "ru": "- принудительное повторение, использовать при неудачной загрузке"
+        "ru": "- принудительное повторение, использовать при неудачной загрузке",
+        "zh-cn": "- 强制重试键 - 用于重试失败的下载"
     },
     "welcome_page_keybinds_content8": {
         "en": "- Skip intro/outro if applicable",
@@ -207,7 +227,8 @@
         "ja": "- 該当時にイントロ/アウトロをスキップ",
         "ms": "- Langkau intro/outro jika berkenaan",
         "pt-br": "- Pular a introdução/outro, se for o caso",
-        "ru": "- пропустить вступление/окончание, по возможности"
+        "ru": "- пропустить вступление/окончание, по возможности",
+        "zh-cn": "- 跳过片头/片尾（如适用）"
     },
     "welcome_page_keybinds_content9": {
         "en": "- Hide/show player",
@@ -217,7 +238,8 @@
         "ja": "- プレーヤーを表示/非表示",
         "ms": "- Sembunyikan/tunjukkan pemain",
         "pt-br": "- Ocultar/mostrar o player",
-        "ru": "- скрыть/показать плеер"
+        "ru": "- скрыть/показать плеер",
+        "zh-cn": "- 隐藏/显示播放器"
     },
     "perms_page_title": {
         "en": "FastStream Permissions",
@@ -227,7 +249,8 @@
         "ja": "FastStream の権限",
         "ms": "Keizinan FastStream",
         "pt-br": "Permissões do FastStream",
-        "ru": "Разрешения FastStream"
+        "ru": "Разрешения FastStream",
+        "zh-cn": "FastStream 权限"
     },
     "perms_page_about_header": {
         "en": "About the Permissions Required by FastStream",
@@ -237,7 +260,8 @@
         "ja": "FastStream に必要な権限について",
         "ms": "Mengenai Kebenaran yang Diperlukan oleh FastStream",
         "pt-br": "Sobre as permissões exigidas pelo FastStream",
-        "ru": "О разрешениях, необходимых FastStream"
+        "ru": "О разрешениях, необходимых FastStream",
+        "zh-cn": "关于 FastStream 所需的权限"
     },
     "perms_page_about_content0": {
         "en": "In order for the extension to function, it needs to be able to have certain permissions. These permissions are only used for basic functionality.",
@@ -247,7 +271,8 @@
         "ja": "拡張機能を動作させるには特定の権限を許可する必要があります。これらの権限は基本的な機能のみで使用されます。",
         "ms": "Untuk membolehkan sambungan berfungsi, ia perlu mempunyai kebenaran tertentu. Kebenaran ini hanya digunakan untuk fungsi asas.",
         "pt-br": "Para que a extensão funcione, ela precisa ter determinadas permissões. Essas permissões são usadas somente para a funcionalidade básicas.",
-        "ru": "Для работы расширения требуются определённые разрешения. Эти разрешения используются только для базовой функциональности."
+        "ru": "Для работы расширения требуются определённые разрешения. Эти разрешения используются только для базовой функциональности.",
+        "zh-cn": "为了使扩展正常运行，需要某些权限。这些权限仅用于基本功能。"
     },
     "perms_page_about_content1": {
         "en": "FastStream does not collect any data from you. It does not track you. It does not send any data to any servers. It does not even have a server to send data to.",
@@ -257,7 +282,8 @@
         "ja": "FastStream はユーザーからデータの収集、追跡、サーバーにデータの送信は一切しません。データを送信するサーバーもありません。",
         "ms": "FastStream tidak mengumpul sebarang data daripada anda. Ia tidak menjejaki anda. Ia tidak menghantar sebarang data ke mana-mana pelayan. Ia tidak mempunyai pelayan untuk menghantar data.",
         "pt-br": "O FastStream não coleta nenhum dado seu. Ele não rastreia você. Ele não envia nenhum dado para nenhum servidor. Ele nem mesmo tem um servidor para o qual enviar dados.",
-        "ru": "FastStream не собирает никакие данные. Не отслеживает вас. Не отправляет никакие данные на сервера. И даже нет сервера для отправки данных."
+        "ru": "FastStream не собирает никакие данные. Не отслеживает вас. Не отправляет никакие данные на сервера. И даже нет сервера для отправки данных.",
+        "zh-cn": "FastStream 不会收集你的任何数据，也不会追踪你，不会向任何服务器发送数据，甚至没有可发送数据的服务器。"
     },
     "perms_page_about_content2": {
         "en": "Don't trust me? FastStream has its source available on",
@@ -267,7 +293,8 @@
         "ja": "信用ができませんか? FastStream のソースは次の場所で入手ができます。",
         "ms": "Jangan percaya saya? FastStream mempunyai sumbernya tersedia di",
         "pt-br": "Não confia em mim? O FastStream tem seu código fonte disponível em",
-        "ru": "Не верите? Исходный код FastStream доступен на"
+        "ru": "Не верите? Исходный код FastStream доступен на",
+        "zh-cn": "不信？FastStream 的源码公开托管于"
     },
     "perms_page_about_content3": {
         "en": "You can look through the code yourself, or manually install your very own custom build by following the instructions.",
@@ -277,7 +304,8 @@
         "ja": "自分でコードを確認する事もできますし、指示に従って自分だけのカスタムビルドを手動でインストールする事もできます。",
         "ms": "Anda boleh melihat sendiri kod tersebut, atau memasang binaan tersuai anda sendiri secara manual dengan mengikut arahan.",
         "pt-br": "Você pode examinar o código fonte se quiser ou instalar manualmente sua própria compilação personalizada seguindo as instruções.",
-        "ru": "Вы можете просмотреть код самостоятельно или установить собственную сборку, следуя инструкциям."
+        "ru": "Вы можете просмотреть код самостоятельно или установить собственную сборку, следуя инструкциям.",
+        "zh-cn": "你可以查看代码，或按说明手动安装自定义构建。"
     },
     "perms_page_breakdown_header": {
         "en": "Breakdown of Permissions",
@@ -287,7 +315,8 @@
         "ja": "権限の内訳",
         "ms": "Pecahan Keizinan",
         "pt-br": "Detalhamento das permissões",
-        "ru": "Требуемые разрешения"
+        "ru": "Требуемые разрешения",
+        "zh-cn": "权限说明"
     },
     "perms_page_breakdown_content0": {
         "en": "Here is a breakdown of the permissions FastStream requires, and why it needs them.",
@@ -297,7 +326,8 @@
         "ja": "FastStream が必要とする権限とその理由を説明します。",
         "ms": "Berikut ialah pecahan kebenaran yang diperlukan oleh FastStream, dan sebab ia memerlukannya.",
         "pt-br": "Aqui está um detalhamento das permissões exigidas pelo FastStream e por que ele precisa delas.",
-        "ru": "Здесь описаны разрешения, которые требуются FastStream, и зачем они нужны."
+        "ru": "Здесь описаны разрешения, которые требуются FastStream, и зачем они нужны.",
+        "zh-cn": "下面是 FastStream 所需权限以及原因说明。"
     },
     "perms_page_breakdown_content1": {
         "en": "Note: The linked examples may refer to an older version of the code, but the gist should be the same overall. The list is not exhaustive, items are ordered by importance.",
@@ -307,7 +337,8 @@
         "ja": "注: リンクされた例では古いバージョンのコードが参照されている場合がありますが、要点は全体的に同じであるはずです。リストはすべてを網羅している訳ではなく、項目の重要度の順で並べられています。",
         "ms": "Nota: Contoh yang dipautkan mungkin merujuk kepada versi kod yang lebih lama, tetapi intipatinya mestilah sama secara keseluruhan. Senarai ini tidak lengkap, item dipesan mengikut kepentingan.",
         "pt-br": "Observação: os exemplos vinculados podem se referir a uma versão mais antiga do programa, mas a essência é a mesma em geral. A lista não é grande, os itens estão ordenados por importância.",
-        "ru": "Примечание: примеры, на которые даны ссылки, могут относиться к более старой версии кода, но суть в целом должна быть той же. Список не является исчерпывающим, пункты упорядочены по важности."
+        "ru": "Примечание: примеры, на которые даны ссылки, могут относиться к более старой версии кода, но суть в целом должна быть той же. Список не является исчерпывающим, пункты упорядочены по важности.",
+        "zh-cn": "注意：链接示例可能指向旧版代码，但大意应相同。该列表并非详尽无遗，项按重要性排序。"
     },
     "perms_page_breakdown_perm1h": {
         "en": "Be able to access and modify all websites",
@@ -317,7 +348,8 @@
         "ja": "すべての Web サイトにアクセスをして変更できる事",
         "ms": "Dapat mengakses dan mengubah suai semua tapak web",
         "pt-br": "Poder acessar e modificar todos os sites",
-        "ru": "Иметь доступ и изменять все веб-сайты"
+        "ru": "Иметь доступ и изменять все веб-сайты",
+        "zh-cn": "访问并修改所有网站"
     },
     "perms_page_breakdown_perm1d": {
         "en": "FastStream needs to be able to access all websites so that it can inject the player into the website directly. It injects a content script into websites you visit in order to:",
@@ -327,7 +359,8 @@
         "ja": "FastStream はプレーヤーを Web サイトに直接挿入ができるようにするため、すべての Web サイトにアクセスできるようにする必要があります。次の目的でアクセスをした Web サイトにコンテンツスクリプトを挿入します:",
         "ms": "FastStream perlu boleh mengakses semua tapak web supaya ia boleh menyuntik pemain ke dalam laman web secara langsung. Ia menyuntik skrip kandungan ke dalam tapak web yang anda lawati untuk:",
         "pt-br": "O FastStream precisa acessar todos os sites para que possa injetar o player diretamente no site. Ele injeta um script de conteúdo nos sites que você visita para:",
-        "ru": "FastStream требуется доступ ко всем веб-сайтам, чтобы внедрить плеер непосредственно на сайт. Внедряет контент-скрипт на посещаемые вами сайты, чтобы:"
+        "ru": "FastStream требуется доступ ко всем веб-сайтам, чтобы внедрить плеер непосредственно на сайт. Внедряет контент-скрипт на посещаемые вами сайты, чтобы:",
+        "zh-cn": "FastStream 需要访问所有网站，以便将播放器直接注入到网站中。它会向你访问的网站注入内容脚本以便："
     },
     "perms_page_breakdown_perm1r1": {
         "en": "Identify the largest visible video element to replace with the player.",
@@ -337,7 +370,8 @@
         "ja": "プレーヤーの置き換え、表示されている最大の動画の要素を特定。",
         "ms": "Kenal pasti elemen video terbesar yang boleh dilihat untuk digantikan dengan pemain.",
         "pt-br": "Identifique o maior elemento de vídeo visível a ser substituído pelo player.",
-        "ru": "Определить самый большой видимый элемент видео для замены плеера"
+        "ru": "Определить самый большой видимый элемент видео для замены плеера",
+        "zh-cn": "识别可见的最大视频元素并替换为播放器。"
     },
     "perms_page_breakdown_perm1r2": {
         "en": "Enable fullscreen permissions when the player is injected into a frame.",
@@ -347,7 +381,8 @@
         "ja": "プレーヤーがフレームに挿入されるときに全画面の権限を有効化。",
         "ms": "Dayakan kebenaran skrin penuh apabila pemain disuntik ke dalam bingkai.",
         "pt-br": "Habilite as permissões de tela cheia quando o player for injetado em um quadro separado.",
-        "ru": "Включить разрешение на полноэкранный режим для внедрения плеера во фрейм"
+        "ru": "Включить разрешение на полноэкранный режим для внедрения плеера во фрейм",
+        "zh-cn": "当播放器注入到框架内时启用全屏权限。"
     },
     "perms_page_breakdown_perm1r3": {
         "en": "Scrape subtitle <track> elements from the page.",
@@ -357,7 +392,8 @@
         "ja": "字幕の <track> 要素をページから削除。",
         "ms": "Kikis Sarikata <track> elemen daripada halaman.",
         "pt-br": "Extrair elementos de subtítulo <track> da página.",
-        "ru": "Удалить элементы субтитров <track> со страницы"
+        "ru": "Удалить элементы субтитров <track> со страницы",
+        "zh-cn": "从页面抓取字幕 <track> 元素。"
     },
     "perms_page_breakdown_perm2h": {
         "en": "Access the webRequest API",
@@ -367,7 +403,8 @@
         "ja": "webRequest API にアクセス",
         "ms": "Akses API webRequest",
         "pt-br": "Acessar a API webRequest",
-        "ru": "Доступ к webRequest API"
+        "ru": "Доступ к webRequest API",
+        "zh-cn": "访问 webRequest API"
     },
     "perms_page_breakdown_perm2d": {
         "en": "FastStream needs to be able to intercept HTTP requests to video sources in order to:",
@@ -377,7 +414,8 @@
         "ja": "FastStream は動画ソースへの HTTP リクエストをインターセプトを可能にする必要があります:",
         "ms": "FastStream perlu dapat memintas permintaan HTTP kepada sumber video untuk:",
         "pt-br": "O FastStream precisa interceptar solicitações HTTP para fontes de vídeo a fim de:",
-        "ru": "FastStream требуется возможность перехватывать HTTP-запросы к источникам видео, чтобы:"
+        "ru": "FastStream требуется возможность перехватывать HTTP-запросы к источникам видео, чтобы:",
+        "zh-cn": "FastStream 需要拦截指向视频源的 HTTP 请求以便："
     },
     "perms_page_breakdown_perm2r1": {
         "en": "Identify video sources",
@@ -387,7 +425,8 @@
         "ja": "動画のソースを特定",
         "ms": "Kenal pasti sumber video",
         "pt-br": "Identificar fontes de vídeo",
-        "ru": "Определить источники видео"
+        "ru": "Определить источники видео",
+        "zh-cn": "识别视频源"
     },
     "perms_page_breakdown_perm3h": {
         "en": "Access the declarativeNetRequest API",
@@ -397,7 +436,8 @@
         "ja": "declarativeNetRequest API へのアクセス",
         "ms": "Akses API declarativeNetRequest",
         "pt-br": "Acessar a API declarativeNetRequest",
-        "ru": "Доступ к declarativeNetRequest API"
+        "ru": "Доступ к declarativeNetRequest API",
+        "zh-cn": "访问 declarativeNetRequest API"
     },
     "perms_page_breakdown_perm3d": {
         "en": "FastStream needs to be able to modify HTTP headers of select requests in order to:",
@@ -407,7 +447,8 @@
         "ja": "FastStream は選択されたリクエストの HTTP ヘッダーを変更できるようにする必要があります:",
         "ms": "FastStream perlu boleh mengubah suai pengepala HTTP permintaan terpilih untuk:",
         "pt-br": "O FastStream precisa de modificar os cabeçalhos HTTP de solicitações selecionadas para:",
-        "ru": "FastStream требуется возможность изменять HTTP-заголовки выбранных запросов, чтобы:"
+        "ru": "FastStream требуется возможность изменять HTTP-заголовки выбранных запросов, чтобы:",
+        "zh-cn": "FastStream 需要修改部分请求的 HTTP 头以便："
     },
     "perms_page_breakdown_perm3r1": {
         "en": "Override headers for video sources.",
@@ -417,7 +458,8 @@
         "ja": "動画ソースのヘッダーを上書き。",
         "ms": "Gantikan pengepala untuk sumber video.",
         "pt-br": "Substituir cabeçalhos para fontes de vídeo.",
-        "ru": "Переопределить заголовки для источников видео"
+        "ru": "Переопределить заголовки для источников видео",
+        "zh-cn": "覆盖视频源的请求头。"
     },
     "perms_page_breakdown_perm4h": {
         "en": "Store data on your browser",
@@ -427,7 +469,8 @@
         "ja": "ブラウザー上にデータを保存",
         "ms": "Simpan data pada penyemak imbas anda",
         "pt-br": "Armazenar dados no navegador",
-        "ru": "Хранить данные о вашем браузере"
+        "ru": "Хранить данные о вашем браузере",
+        "zh-cn": "在浏览器中存储数据"
     },
     "perms_page_breakdown_perm4d": {
         "en": "FastStream needs to be able to store data in your browser so that it can remember your settings.",
@@ -437,7 +480,8 @@
         "ja": "FastStream は、ユーザーの設定を記憶できるようにするためブラウザーにデータを保存可能にする必要があります。",
         "ms": "FastStream perlu boleh menyimpan data dalam penyemak imbas anda supaya ia boleh mengingati tetapan anda.",
         "pt-br": "O FastStream precisa armazenar dados em seu navegador para que possa lembrar de suas configurações.",
-        "ru": "FastStream требуется возможность хранить данные в вашем браузере, чтобы запомнить ваши настройки."
+        "ru": "FastStream требуется возможность хранить данные в вашем браузере, чтобы запомнить ваши настройки.",
+        "zh-cn": "FastStream 需要在浏览器中存储数据以记住你的设置。"
     },
     "perms_page_breakdown_perm4r1": {
         "en": "General extension options.",
@@ -447,7 +491,8 @@
         "ja": "拡張機能の一般オプション。",
         "ms": "Pilihan sambungan am.",
         "pt-br": "Opções gerais de extensão.",
-        "ru": "Общие возможности расширения"
+        "ru": "Общие возможности расширения",
+        "zh-cn": "常规扩展选项。"
     },
     "perms_page_breakdown_perm5h": {
         "en": "Access the tabs API",
@@ -457,7 +502,8 @@
         "ja": "Tabs API にアクセス",
         "ms": "Akses tab API",
         "pt-br": "Acessar a API das guias",
-        "ru": "Доступ к API вкладок"
+        "ru": "Доступ к API вкладок",
+        "zh-cn": "访问 tabs API"
     },
     "perms_page_breakdown_perm5d": {
         "en": "FastStream needs to be able to send messages between players and content scripts in each tab.",
@@ -467,7 +513,8 @@
         "ja": "FastStream は、各タブ上のプレーヤーとコンテンツスクリプト間でメッセージを送信可能にする必要があります。",
         "ms": "FastStream perlu boleh menghantar mesej antara pemain dan skrip kandungan dalam setiap tab.",
         "pt-br": "O FastStream precisa enviar mensagens entre os tocadores e os scripts de conteúdo em cada guia.",
-        "ru": "FastStream требуется возможность отправлять сообщения между плеерами и скриптами контента на каждой вкладке."
+        "ru": "FastStream требуется возможность отправлять сообщения между плеерами и скриптами контента на каждой вкладке.",
+        "zh-cn": "FastStream 需要在每个标签页的播放器与内容脚本之间发送消息。"
     },
     "perms_page_breakdown_perm5r1": {
         "en": "Sending sources to players from the background script.",
@@ -477,7 +524,8 @@
         "ja": "バックグラウンドスクリプトからプレーヤーにソースを送信",
         "ms": "Menghantar sumber kepada pemain daripada skrip latar belakang.",
         "pt-br": "Envio de fontes para os tocadores partir do script em segundo plano..",
-        "ru": "Отправка источников плееру из фонового скрипта"
+        "ru": "Отправка источников плееру из фонового скрипта",
+        "zh-cn": "从后台脚本向播放器发送视频源。"
     },
     "perms_page_granted": {
         "en": "Granted",
@@ -487,7 +535,8 @@
         "ja": "許可",
         "ms": "Dibenarkan",
         "pt-br": "Concedida",
-        "ru": "Предоставлено"
+        "ru": "Предоставлено",
+        "zh-cn": "已授权"
     },
     "perms_page_notgranted": {
         "en": "Not Granted, click to grant",
@@ -497,7 +546,8 @@
         "ja": "許可がされていません、クリックで許可をします",
         "ms": "Tidak Diberikan, klik untuk memberikan",
         "pt-br": "Não Concedida, click para conceder",
-        "ru": "Не предоставлено, нажмите, чтобы предоставить"
+        "ru": "Не предоставлено, нажмите, чтобы предоставить",
+        "zh-cn": "未授权，点击以授权"
     },
     "player_needs_interaction": {
         "en": "Interact to enable download acceleration",
@@ -507,7 +557,8 @@
         "ja": "ダウンロードの高速化を有効にするには、動画を再生してください",
         "ms": "Berinteraksi untuk mendayakan pecutan muat turun",
         "pt-br": "Interagir para ativar a aceleração de download",
-        "ru": "Воспроизведите видео для ускорения загрузки"
+        "ru": "Воспроизведите видео для ускорения загрузки",
+        "zh-cn": "与播放器交互以启用下载加速"
     },
     "player_skipintro": {
         "en": "Skip Intro",
@@ -517,7 +568,8 @@
         "ja": "イントロをスキップ",
         "ms": "Langkau Pengenalan",
         "pt-br": "Pular Intro",
-        "ru": "Пропустить вступление"
+        "ru": "Пропустить вступление",
+        "zh-cn": "跳过片头"
     },
     "player_skipoutro": {
         "en": "Skip Outro",
@@ -527,7 +579,8 @@
         "ja": "アウトロをスキップ",
         "ms": "Langkau Lain",
         "pt-br": "Pular Outro",
-        "ru": "Пропустить окончание"
+        "ru": "Пропустить окончание",
+        "zh-cn": "跳过片尾"
     },
     "player_nextvideoin": {
         "en": "Next Video in $1s",
@@ -537,7 +590,8 @@
         "ja": "次のビデオ $1s 後",
         "ms": "Video seterusnya dalam $1s",
         "pt-br": "Próximo vídeo em $1s",
-        "ru": "Следующее видео через $1с"
+        "ru": "Следующее видео через $1с",
+        "zh-cn": "下一个视频将在 $1s 后播放"
     },
     "player_hidecontrols": {
         "en": "Hide Controls",
@@ -547,7 +601,8 @@
         "ja": "コントロールを隠す",
         "ms": "Sembunyikan Kawalan",
         "pt-br": "Ocultar controles",
-        "ru": "Скрыть элементы управления"
+        "ru": "Скрыть элементы управления",
+        "zh-cn": "隐藏控件"
     },
     "player_loading": {
         "en": "Loading...",
@@ -557,7 +612,8 @@
         "ja": "読み込み中...",
         "ms": "Memuatkan...",
         "pt-br": "Carregando...",
-        "ru": "Загрузка…"
+        "ru": "Загрузка…",
+        "zh-cn": "正在加载..."
     },
     "player_nosource_header": {
         "en": "No source is loaded!",
@@ -567,7 +623,8 @@
         "ja": "ソースは読み込まれていません!",
         "ms": "Tiada sumber dimuatkan!",
         "pt-br": "Nenhuma fonte foi carregada!",
-        "ru": "Источник не загружен!"
+        "ru": "Источник не загружен!",
+        "zh-cn": "未加载任何视频源！"
     },
     "player_nosource_instruction1": {
         "en": "Drag and drop a video file to play it.",
@@ -577,7 +634,8 @@
         "ja": "動画ファイルをドラッグ&ドロップで再生できます。",
         "ms": "Seret dan lepaskan fail video untuk memainkannya.",
         "pt-br": "Arraste e solte um arquivo de vídeo para reproduzi-lo.",
-        "ru": "Перетащите видеофайл для воспроизведения."
+        "ru": "Перетащите видеофайл для воспроизведения.",
+        "zh-cn": "拖放视频文件以播放。"
     },
     "player_nosource_instruction2p1": {
         "en": "Click",
@@ -587,7 +645,8 @@
         "ja": "クリック",
         "ms": "Klik",
         "pt-br": "Click",
-        "ru": "Нажмите"
+        "ru": "Нажмите",
+        "zh-cn": "点击"
     },
     "player_nosource_instruction2p2": {
         "en": "to load sources detected from other tabs.",
@@ -597,7 +656,8 @@
         "ja": "他のタブから検出されたソースを読み込み。",
         "ms": "untuk memuatkan sumber yang dikesan daripada tab lain.",
         "pt-br": "carregar fontes detectadas em outras guias.",
-        "ru": "для загрузки источников, обнаруженных на других вкладках."
+        "ru": "для загрузки источников, обнаруженных на других вкладках.",
+        "zh-cn": "以加载从其他标签页检测到的源。"
     },
     "player_play_label": {
         "en": "Play video",
@@ -607,7 +667,8 @@
         "ja": "ビデオを再生",
         "ms": "Mainkan video",
         "pt-br": "Reproduzir vídeo",
-        "ru": "Воспроизвести видео"
+        "ru": "Воспроизвести видео",
+        "zh-cn": "播放视频"
     },
     "player_pause_label": {
         "en": "Pause video",
@@ -617,7 +678,8 @@
         "ja": "ビデオを一時停止",
         "ms": "Jeda video",
         "pt-br": "Pausar vídeo",
-        "ru": "Приостановить видео"
+        "ru": "Приостановить видео",
+        "zh-cn": "暂停视频"
     },
     "player_next_video_label": {
         "en": "Next video",
@@ -627,7 +689,8 @@
         "ja": "次のビデオ",
         "ms": "Video seterusnya",
         "pt-br": "Próximo vídeo",
-        "ru": "Следующее видео"
+        "ru": "Следующее видео",
+        "zh-cn": "下一个视频"
     },
     "player_previous_video_label": {
         "en": "Previous video",
@@ -637,7 +700,8 @@
         "ja": "前のビデオ",
         "ms": "Video sebelumnya",
         "pt-br": "Vídeo anterior",
-        "ru": "Предыдущее видео"
+        "ru": "Предыдущее видео",
+        "zh-cn": "上一个视频"
     },
     "player_volume_label": {
         "en": "Volume is $1%. Use arrow keys to adjust, enter to toggle mute.",
@@ -647,7 +711,8 @@
         "ja": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。",
         "ms": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio.",
         "pt-br": "O volume é de $1%. Use as Setas do teclado para ajustar, enter para alternar o mudo.",
-        "ru": "Громкость $1%. Клавиши со стрелками - регулировка, Enter - отключение звука."
+        "ru": "Громкость $1%. Клавиши со стрелками - регулировка, Enter - отключение звука.",
+        "zh-cn": "音量为 $1%。使用方向键调整，按回车切换静音。"
     },
     "player_mute_label": {
         "en": "Mute audio",
@@ -657,7 +722,8 @@
         "ja": "オーディオを消音",
         "ms": "Redamkan audio",
         "pt-br": "Silenciar áudio",
-        "ru": "Отключить звук"
+        "ru": "Отключить звук",
+        "zh-cn": "静音"
     },
     "player_timestamp_label": {
         "en": "Copy URL with timestamp",
@@ -667,7 +733,8 @@
         "ja": "タイムスタンプ",
         "ms": "Cap masa",
         "pt-br": "Copiar URL com registro de data e hora",
-        "ru": "Время"
+        "ru": "Время",
+        "zh-cn": "复制带时间戳的链接"
     },
     "player_sourcesbrowser_title": {
         "en": "Sources Browser",
@@ -677,7 +744,8 @@
         "ja": "ソースの参照",
         "ms": "Sumber Pelayar",
         "pt-br": "Navegador de fontes",
-        "ru": "Обзор источников"
+        "ru": "Обзор источников",
+        "zh-cn": "资源浏览器"
     },
     "player_sourcesbrowser_open_label": {
         "en": "Open sources browser",
@@ -687,7 +755,8 @@
         "ja": "ソースの参照を開く",
         "ms": "Buka penyemak imbas sumber",
         "pt-br": "Navegador de fontes abertas",
-        "ru": "Открыть обзор источников"
+        "ru": "Открыть обзор источников",
+        "zh-cn": "打开资源浏览器"
     },
     "player_sourcesbrowser_close_label": {
         "en": "Close sources browser",
@@ -697,7 +766,8 @@
         "ja": "ソースの参照を閉じる",
         "ms": "Tutup penyemak imbas sumber",
         "pt-br": "Fechar o navegador de fontes",
-        "ru": "Закрыть обзор источников"
+        "ru": "Закрыть обзор источников",
+        "zh-cn": "关闭资源浏览器"
     },
     "player_audioconfig_title": {
         "en": "Audio Configuration",
@@ -707,7 +777,8 @@
         "ja": "オーディオの設定",
         "ms": "Konfigurasi Audio",
         "pt-br": "Configuração de áudio",
-        "ru": "Конфигурация звука"
+        "ru": "Конфигурация звука",
+        "zh-cn": "音频设置"
     },
     "player_audioconfig_open_label": {
         "en": "Open audio config window",
@@ -717,7 +788,8 @@
         "ja": "オーディオ設定ウィンドウを開く",
         "ms": "Buka tetingkap konfigurasi audio",
         "pt-br": "Abrir a janela de configuração de áudio",
-        "ru": "Открыть настройки звука"
+        "ru": "Открыть настройки звука",
+        "zh-cn": "打开音频设置窗口"
     },
     "player_audioconfig_close_label": {
         "en": "Close audio config window",
@@ -727,7 +799,8 @@
         "ja": "オーディオ設定ウィンドウを閉じる",
         "ms": "Tutup tetingkap konfigurasi audio",
         "pt-br": "Fechar a janela de configuração de áudio",
-        "ru": "Закрыть настройки звука"
+        "ru": "Закрыть настройки звука",
+        "zh-cn": "关闭音频设置窗口"
     },
     "player_opensubtitles_title": {
         "en": "OpenSubtitles Search",
@@ -737,7 +810,8 @@
         "ja": "OpenSubtitles を検索",
         "ms": "Carian OpenSubtitles",
         "pt-br": "Pesquisa em OpenSubtitles",
-        "ru": "Поиск по OpenSubtitles"
+        "ru": "Поиск по OpenSubtitles",
+        "zh-cn": "OpenSubtitles 搜索"
     },
     "player_opensubtitles_close_label": {
         "en": "Close OpenSubtitles search window",
@@ -747,7 +821,8 @@
         "ja": "OpenSubtitles 検索ウィンドウを閉じる",
         "ms": "Tutup tingkap carian OpenSubtitles",
         "pt-br": "Fechar a janela de pesquisa do OpenSubtitles",
-        "ru": "Закрыть поиск по OpenSubtitles"
+        "ru": "Закрыть поиск по OpenSubtitles",
+        "zh-cn": "关闭 OpenSubtitles 搜索窗口"
     },
     "player_opensubtitles_search_placeholder": {
         "en": "Search by title, filename, etc...",
@@ -757,7 +832,8 @@
         "ja": "タイトル、ファイル名などで検索...",
         "ms": "Cari mengikut tajuk, nama fail, dsb...",
         "pt-br": "Pesquisar por título, nome de arquivo, etc....",
-        "ru": "Поиск по названию, имени файла и др."
+        "ru": "Поиск по названию, имени файла и др.",
+        "zh-cn": "按标题、文件名等搜索..."
     },
     "player_opensubtitles_searchbtn": {
         "en": "Search",
@@ -767,7 +843,8 @@
         "ja": "検索",
         "ms": "Carian",
         "pt-br": "Buscar",
-        "ru": "Поиск"
+        "ru": "Поиск",
+        "zh-cn": "搜索"
     },
     "player_opensubtitles_seasonnum": {
         "en": "Season #",
@@ -777,7 +854,8 @@
         "ja": "シーズン #",
         "ms": "Musim #",
         "pt-br": "Temporada #",
-        "ru": "Сезон #"
+        "ru": "Сезон #",
+        "zh-cn": "季 #"
     },
     "player_opensubtitles_episodenum": {
         "en": "Episode #",
@@ -787,7 +865,8 @@
         "ja": "エピソード #",
         "ms": "Episod #",
         "pt-br": "Episódio #",
-        "ru": "Серия #"
+        "ru": "Серия #",
+        "zh-cn": "集 #"
     },
     "player_opensubtitles_type_all": {
         "en": "All",
@@ -797,7 +876,8 @@
         "ja": "すべて",
         "ms": "Semua",
         "pt-br": "Tudo",
-        "ru": "Все"
+        "ru": "Все",
+        "zh-cn": "全部"
     },
     "player_opensubtitles_type_movie": {
         "en": "Movie",
@@ -807,7 +887,8 @@
         "ja": "映画",
         "ms": "Filem",
         "pt-br": "Filme",
-        "ru": "Фильм"
+        "ru": "Фильм",
+        "zh-cn": "电影"
     },
     "player_opensubtitles_type_episode": {
         "en": "Episode",
@@ -817,7 +898,8 @@
         "ja": "エピソード",
         "ms": "Episod",
         "pt-br": "Episódio",
-        "ru": "Сериал"
+        "ru": "Сериал",
+        "zh-cn": "剧集"
     },
     "player_opensubtitles_language": {
         "en": "Language",
@@ -827,7 +909,8 @@
         "ja": "言語",
         "ms": "Bahasa",
         "pt-br": "Idioma",
-        "ru": "Язык"
+        "ru": "Язык",
+        "zh-cn": "语言"
     },
     "player_opensubtitles_year": {
         "en": "Year",
@@ -837,7 +920,8 @@
         "ja": "年",
         "ms": "Tahun",
         "pt-br": "Ano",
-        "ru": "Год"
+        "ru": "Год",
+        "zh-cn": "年份"
     },
     "player_opensubtitles_sortby": {
         "en": "Sort By",
@@ -847,7 +931,8 @@
         "ja": "ソート順",
         "ms": "Disusun mengikut",
         "pt-br": "Ordenar por",
-        "ru": "Сортировать по"
+        "ru": "Сортировать по",
+        "zh-cn": "排序方式"
     },
     "player_opensubtitles_sortby_downloads": {
         "en": "Downloads",
@@ -857,7 +942,8 @@
         "ja": "ダウンロード",
         "ms": "Muat turun",
         "pt-br": "Downloads",
-        "ru": "Скачиваниям"
+        "ru": "Скачиваниям",
+        "zh-cn": "下载量"
     },
     "player_opensubtitles_sortby_date": {
         "en": "Upload Date",
@@ -867,7 +953,8 @@
         "ja": "アップロード日時",
         "ms": "Tarikh Muat naik",
         "pt-br": "Data de envio",
-        "ru": "Дате загрузки"
+        "ru": "Дате загрузки",
+        "zh-cn": "上传日期"
     },
     "player_opensubtitles_sortby_rating": {
         "en": "Rating",
@@ -877,7 +964,8 @@
         "ja": "評価",
         "ms": "Penilaian",
         "pt-br": "Avaliação",
-        "ru": "Рейтингу"
+        "ru": "Рейтингу",
+        "zh-cn": "评分"
     },
     "player_opensubtitles_sortby_votes": {
         "en": "Votes",
@@ -887,7 +975,8 @@
         "ja": "投票",
         "ms": "Undian",
         "pt-br": "Votos",
-        "ru": "Оценкам"
+        "ru": "Оценкам",
+        "zh-cn": "投票数"
     },
     "player_opensubtitles_sort": {
         "en": "Sort",
@@ -897,7 +986,8 @@
         "ja": "ソート",
         "ms": "Disusun",
         "pt-br": "Ordenar",
-        "ru": "Сортировать"
+        "ru": "Сортировать",
+        "zh-cn": "排序"
     },
     "player_opensubtitles_sort_desc": {
         "en": "Descending",
@@ -907,7 +997,8 @@
         "ja": "下り順",
         "ms": "Menurun",
         "pt-br": "Descendente",
-        "ru": "По убыванию"
+        "ru": "По убыванию",
+        "zh-cn": "降序"
     },
     "player_opensubtitles_sort_asc": {
         "en": "Ascending",
@@ -917,7 +1008,8 @@
         "ja": "上り順",
         "ms": "Menaik",
         "pt-br": "Ascendente",
-        "ru": "По возрастанию"
+        "ru": "По возрастанию",
+        "zh-cn": "升序"
     },
     "player_opensubtitles_searching": {
         "en": "Searching...",
@@ -927,7 +1019,8 @@
         "ja": "検索中...",
         "ms": "Mencari...",
         "pt-br": "Buscando...",
-        "ru": "Поиск…"
+        "ru": "Поиск…",
+        "zh-cn": "搜索中..."
     },
     "player_opensubtitles_error": {
         "en": "Error: $1",
@@ -937,7 +1030,8 @@
         "ja": "エラー: $1",
         "ms": "Ralat: $1",
         "pt-br": "Erro: $1",
-        "ru": "Ошибка: $1"
+        "ru": "Ошибка: $1",
+        "zh-cn": "错误：$1"
     },
     "player_opensubtitles_disabled": {
         "en": "Cannot set proper headers! Install the extension to use this feature!",
@@ -947,7 +1041,8 @@
         "ja": "適切なヘッダーを設定できません! この機能を使用するには拡張機能をインストールしてください!",
         "ms": "Tidak dapat menetapkan pengepala yang betul! Pasang sambungan untuk menggunakan ciri ini!",
         "pt-br": "Não é possível definir cabeçalhos adequadamente! Instale a extensão para usar esse recurso!",
-        "ru": "Невозможно установить правильные заголовки! Установите расширение, чтобы использовать эту функцию!"
+        "ru": "Невозможно установить правильные заголовки! Установите расширение, чтобы использовать эту функцию!",
+        "zh-cn": "无法设置正确的头部信息！安装扩展以使用此功能！"
     },
     "player_opensubtitles_error_down": {
         "en": "OpenSubtitles is down!",
@@ -957,7 +1052,8 @@
         "ja": "OpenSubtitles はダウンしています!",
         "ms": "OpenSubtitles sudah tidak berfungsi!",
         "pt-br": "O OpenSubtitles está inativo!",
-        "ru": "OpenSubtitles недоступен!"
+        "ru": "OpenSubtitles недоступен!",
+        "zh-cn": "OpenSubtitles 服务不可用！"
     },
     "player_opensubtitles_down_alert": {
         "en": "OpenSubtitles download failed! Their servers are probably down!",
@@ -967,7 +1063,8 @@
         "ja": "OpenSubtitles のダウンロードに失敗しました! サーバーがダウンしているかもしれません!",
         "ms": "Muat turun OpenSubtitles gagal! Pelayan mereka mungkin tidak berfungsi!",
         "pt-br": "O download do OpenSubtitles falhou! Seus servidores provavelmente estão fora do ar!",
-        "ru": "Не удалось загрузить OpenSubtitles! Вероятно, их серверы недоступны!"
+        "ru": "Не удалось загрузить OpenSubtitles! Вероятно, их серверы недоступны!",
+        "zh-cn": "OpenSubtitles 下载失败！服务器可能宕机！"
     },
     "player_opensubtitles_noresults": {
         "en": "No results found!",
@@ -977,7 +1074,8 @@
         "ja": "結果が見つかりません!",
         "ms": "Tiada keputusan dijumpai!",
         "pt-br": "Nenhum resultado encontrado!",
-        "ru": "Ничего не найдено!"
+        "ru": "Ничего не найдено!",
+        "zh-cn": "未找到结果！"
     },
     "player_opensubtitles_quota": {
         "en": "OpenSubtitles limits subtitle downloads! You have no more downloads left! Your quota resets in $1",
@@ -987,7 +1085,8 @@
         "ja": "OpenSubtitles は字幕のダウンロードを制限します! ダウンロードの残り回数がありません! クォータは、 $1 でリセットされます。",
         "ms": "OpenSubtitles mengehadkan muat turun sarikata! Anda tiada lagi muat turun yang tinggal! Kuota anda ditetapkan semula $1",
         "pt-br": "O OpenSubtitles limita os downloads de legendas! Você não tem mais downloads disponíveis! Sua cota é redefinida em $1",
-        "ru": "OpenSubtitles ограничивает загрузку субтитров! У вас не осталось загрузок! Ваша квота обнулится через $1"
+        "ru": "OpenSubtitles ограничивает загрузку субтитров! У вас не осталось загрузок! Ваша квота обнулится через $1",
+        "zh-cn": "OpenSubtitles 限制字幕下载！您的下载次数已用尽！配额将在 $1 重置"
     },
     "player_opensubtitles_askopen": {
         "en": "Would you like to open the OpenSubtitles website to download the subtitle file manually?",
@@ -997,7 +1096,8 @@
         "ja": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?",
         "ms": "Adakah anda ingin membuka laman web OpenSubtitles untuk memuat turun fail sarikata secara manual?",
         "pt-br": "Gostaria de abrir o site OpenSubtitles para fazer o download do arquivo de legenda manualmente?",
-        "ru": "Хотите открыть сайт OpenSubtitles, чтобы загрузить субтитры вручную?"
+        "ru": "Хотите открыть сайт OpenSubtitles, чтобы загрузить субтитры вручную?",
+        "zh-cn": "是否要打开 OpenSubtitles 网站手动下载字幕文件？"
     },
     "player_subtitlesmenu_open_label": {
         "en": "Open subtitles menu",
@@ -1007,7 +1107,8 @@
         "ja": "字幕メニューを開く",
         "ms": "Buka tingkap sarikata",
         "pt-br": "Abrir o menu de legendas",
-        "ru": "Открыть меню субтитров"
+        "ru": "Открыть меню субтитров",
+        "zh-cn": "打开字幕菜单"
     },
     "player_subtitlesmenu_close_label": {
         "en": "Close subtitles menu",
@@ -1017,7 +1118,8 @@
         "ja": "字幕メニューを閉じる",
         "ms": "Tutup tingkap sarikata",
         "pt-br": "Fechar o menu de legendas",
-        "ru": "Закрыть меню субтитров"
+        "ru": "Закрыть меню субтитров",
+        "zh-cn": "关闭字幕菜单"
     },
     "player_subtitlesmenu_backbtn": {
         "en": "Back",
@@ -1027,7 +1129,8 @@
         "ja": "戻る",
         "ms": "Kembali",
         "pt-br": "Voltar",
-        "ru": "Назад"
+        "ru": "Назад",
+        "zh-cn": "返回"
     },
     "player_subtitlesmenu_settings": {
         "en": "Subtitle Settings",
@@ -1037,7 +1140,8 @@
         "ja": "字幕の設定",
         "ms": "Tetapan sarikata",
         "pt-br": "Configurações de legenda",
-        "ru": "Настройки субтитров"
+        "ru": "Настройки субтитров",
+        "zh-cn": "字幕设置"
     },
     "player_subtitlesmenu_testbtn": {
         "en": "Test Subtitles",
@@ -1047,7 +1151,8 @@
         "ja": "字幕をテスト",
         "ms": "Cuba sarikata",
         "pt-br": "Teste Legendas",
-        "ru": "Тестировать субтитры"
+        "ru": "Тестировать субтитры",
+        "zh-cn": "测试字幕"
     },
     "player_subtitlesmenu_testbtn_stop": {
         "en": "Stop Testing",
@@ -1057,7 +1162,8 @@
         "ja": "テストを停止",
         "ms": "Henti Percubaan",
         "pt-br": "Parar o teste",
-        "ru": "Прекратить тестирование"
+        "ru": "Прекратить тестирование",
+        "zh-cn": "停止测试"
     },
     "player_subtitlesmenu_uploadbtn": {
         "en": "Upload File",
@@ -1067,7 +1173,8 @@
         "ja": "ファイルをアップロード",
         "ms": "Muatnaik Fail",
         "pt-br": "Carregar arquivo",
-        "ru": "Загрузить субтитры"
+        "ru": "Загрузить субтитры",
+        "zh-cn": "上传文件"
     },
     "player_subtitlesmenu_urlbtn": {
         "en": "From URL",
@@ -1077,7 +1184,8 @@
         "ja": "URL から",
         "ms": "Dari URL",
         "pt-br": "De URL",
-        "ru": "Ссылка"
+        "ru": "Ссылка",
+        "zh-cn": "从 URL"
     },
     "player_subtitlesmenu_urlprompt": {
         "en": "Enter URL",
@@ -1087,7 +1195,8 @@
         "ja": "URL を入力",
         "ms": "Masuk URL",
         "pt-br": "Digite a URL",
-        "ru": "Введите адрес"
+        "ru": "Введите адрес",
+        "zh-cn": "输入 URL"
     },
     "player_subtitles_addtrack_downloading": {
         "en": "Downloading subtitle track...",
@@ -1097,7 +1206,8 @@
         "ja": "字幕トラックをダウンロード中...",
         "ms": "Memuat turun sarikata...",
         "pt-br": "Download da faixa de legendas...",
-        "ru": "Загрузка субтитров…"
+        "ru": "Загрузка субтитров…",
+        "zh-cn": "正在下载字幕轨道..."
     },
     "player_subtitles_addtrack_success": {
         "en": "Subtitle track loaded!",
@@ -1107,7 +1217,8 @@
         "ja": "字幕トラックを読み込みました!",
         "ms": "Trek sarikata dimuatkan!",
         "pt-br": "Faixa de legenda carregada!",
-        "ru": "Субтитры загружены!"
+        "ru": "Субтитры загружены!",
+        "zh-cn": "字幕轨道已加载!"
     },
     "player_subtitles_addtrack_error": {
         "en": "Failed to load subtitle track!",
@@ -1117,7 +1228,8 @@
         "ja": "字幕トラックの読み込みに失敗しました!",
         "ms": "Gagal memuatkan trek sarikata!",
         "pt-br": "Falha ao carregar a faixa de legenda!",
-        "ru": "Не удалось загрузить субтитры!"
+        "ru": "Не удалось загрузить субтитры!",
+        "zh-cn": "字幕轨道加载失败!"
     },
     "player_subtitlesmenu_searchbtn": {
         "en": "Search OpenSubtitles",
@@ -1127,7 +1239,8 @@
         "ja": "OpenSubtitles を検索",
         "ms": "Carian OpenSubtitles",
         "pt-br": "Pesquisar no OpenSubtitles",
-        "ru": "Искать на OpenSubtitles"
+        "ru": "Искать на OpenSubtitles",
+        "zh-cn": "搜索 OpenSubtitles"
     },
     "player_subtitlesmenu_clearbtn": {
         "en": "Clear Subtitles",
@@ -1137,7 +1250,8 @@
         "ja": "字幕をクリア",
         "ms": "Kosongkan Sarikata",
         "pt-br": "Limpar legendas",
-        "ru": "Очистить субтитры"
+        "ru": "Очистить субтитры",
+        "zh-cn": "清除字幕"
     },
     "player_subtitlesmenu_settingsbtn": {
         "en": "Subtitle Settings",
@@ -1147,7 +1261,8 @@
         "ja": "字幕の設定",
         "ms": "Tetapan Sarikata",
         "pt-br": "Configurações de legenda",
-        "ru": "Настройки субтитров"
+        "ru": "Настройки субтитров",
+        "zh-cn": "字幕设置"
     },
     "player_subtitlesmenu_resynctool_label": {
         "en": "Resync Tool",
@@ -1157,7 +1272,8 @@
         "ja": "再同期ツール",
         "ms": "Alat Segerakkan Semula",
         "pt-br": "Ferramenta de sincronização",
-        "ru": "Синхронизация"
+        "ru": "Синхронизация",
+        "zh-cn": "重新同步工具"
     },
     "player_subtitlesmenu_resynctool_instructions": {
         "en": "Drag subtitles to resync",
@@ -1167,7 +1283,8 @@
         "ja": "字幕をドラッグして再同期してください",
         "ms": "Seret sarikata untuk disegerakkan semula",
         "pt-br": "Arraste as legendas para sincronizar novamente",
-        "ru": "Перетащите субтитры для повторной синхронизации"
+        "ru": "Перетащите субтитры для повторной синхронизации",
+        "zh-cn": "拖动字幕以重新同步"
     },
     "player_subtitlesmenu_savetool_label": {
         "en": "Save subtitle file",
@@ -1177,7 +1294,8 @@
         "ja": "字幕ファイルを保存",
         "ms": "Simpan fail sarikata",
         "pt-br": "Salvar arquivo de legenda",
-        "ru": "Сохранить файл субтитров"
+        "ru": "Сохранить файл субтитров",
+        "zh-cn": "保存字幕文件"
     },
     "player_subtitlesmenu_removetool_label": {
         "en": "Remove subtitle track",
@@ -1187,7 +1305,8 @@
         "ja": "字幕トラックを削除",
         "ms": "Alih keluar trek sarikata",
         "pt-br": "Remover faixa de legenda",
-        "ru": "Удалить субтитры"
+        "ru": "Удалить субтитры",
+        "zh-cn": "移除字幕轨道"
     },
     "player_subtitlesmenu_shifttool_label": {
         "en": "Shift subtitles $1s",
@@ -1197,7 +1316,8 @@
         "ja": "$1 の字幕をシフト",
         "ms": "Alihkan sarikata $1s",
         "pt-br": "Mudar as legendas $1s",
-        "ru": "Сдвинуть на $1 с"
+        "ru": "Сдвинуть на $1 с",
+        "zh-cn": "字幕偏移 $1s"
     },
     "player_subtitlesmenu_shifttool_message": {
         "en": "Shifted subtitles $1s",
@@ -1207,7 +1327,8 @@
         "ja": "字幕を $1s シフト",
         "ms": "sarikata dialihkan $1s",
         "pt-br": "Legendas deslocadas $1s",
-        "ru": "Сдвинуть на $1 с"
+        "ru": "Сдвинуть на $1 с",
+        "zh-cn": "字幕已偏移 $1s"
     },
     "player_testsubtitle": {
         "en": "This is a test subtitle",
@@ -1217,7 +1338,8 @@
         "ja": "これはテストの字幕です",
         "ms": "Ini adalah sarikata ujian",
         "pt-br": "Esta é uma legenda de teste",
-        "ru": "Это тестовый субтитр"
+        "ru": "Это тестовый субтитр",
+        "zh-cn": "这是测试字幕"
     },
     "player_qualitymenu_label": {
         "en": "Video quality",
@@ -1227,7 +1349,8 @@
         "ja": "動画の品質",
         "ms": "Kualiti Video ",
         "pt-br": "Qualidade do vídeo",
-        "ru": "Качество видео"
+        "ru": "Качество видео",
+        "zh-cn": "视频质量"
     },
     "player_languagemenu_label": {
         "en": "Language selection",
@@ -1237,7 +1360,8 @@
         "ja": "言語の選択",
         "ms": "Pilihan Bahasa",
         "pt-br": "Seleção de idiomas",
-        "ru": "Выбор языка"
+        "ru": "Выбор языка",
+        "zh-cn": "语言选择"
     },
     "player_languagemenu_video": {
         "en": "Video",
@@ -1247,7 +1371,8 @@
         "ja": "ビデオ",
         "ms": "Video",
         "pt-br": "Vídeo",
-        "ru": "Видео"
+        "ru": "Видео",
+        "zh-cn": "视频"
     },
     "player_languagemenu_audio": {
         "en": "Audio",
@@ -1257,7 +1382,8 @@
         "ja": "オーディオ",
         "ms": "Audio",
         "pt-br": "Áudio",
-        "ru": "Аудио"
+        "ru": "Аудио",
+        "zh-cn": "音频"
     },
     "player_playbackrate_label": {
         "en": "Playback rate",
@@ -1267,7 +1393,8 @@
         "ja": "再生速度",
         "ms": "Kadar main balik",
         "pt-br": "Taxa de reprodução",
-        "ru": "Скорость воспроизведения"
+        "ru": "Скорость воспроизведения",
+        "zh-cn": "播放速度"
     },
     "player_settings_title": {
         "en": "FastStream Settings",
@@ -1277,7 +1404,8 @@
         "ja": "FastStream の設定",
         "ms": "Tetapan FastStream",
         "pt-br": "Configurações do FastStream",
-        "ru": "Настройки FastStream"
+        "ru": "Настройки FastStream",
+        "zh-cn": "FastStream 设置"
     },
     "player_settings_open_label": {
         "en": "Open settings window",
@@ -1287,7 +1415,8 @@
         "ja": "設定ウィンドウを開く",
         "ms": "Buka tetingkap tetapan",
         "pt-br": "Abrir janela de configurações",
-        "ru": "Открыть окно настроек"
+        "ru": "Открыть окно настроек",
+        "zh-cn": "打开设置窗口"
     },
     "player_settings_close_label": {
         "en": "Close settings window",
@@ -1297,7 +1426,8 @@
         "ja": "設定ウィンドウを閉じる",
         "ms": "Tutup tetingkap tetapan",
         "pt-br": "Fechar janela de configurações",
-        "ru": "Закрыть окно настроек"
+        "ru": "Закрыть окно настроек",
+        "zh-cn": "关闭设置窗口"
     },
     "player_savevideo_label": {
         "en": "Save video. hold ALT to save partial video. hold SHIFT to dump buffer.",
@@ -1307,7 +1437,8 @@
         "ja": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。",
         "ms": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal.",
         "pt-br": "Salve o vídeo. mantenha pressionada a tecla ALT para salvar o vídeo parcialmente. mantenha pressionada a tecla SHIFT para despejar o que estiver armazenado..",
-        "ru": "Сохранить видео. Удерживайте ALT, чтобы сохранить часть видео. Удерживайте SHIFT, чтобы сбросить буфер."
+        "ru": "Сохранить видео. Удерживайте ALT, чтобы сохранить часть видео. Удерживайте SHIFT, чтобы сбросить буфер.",
+        "zh-cn": "保存视频。按住 ALT 保存部分视频。按住 SHIFT 转储缓冲区。"
     },
     "player_screenshot_label": {
         "en": "Take screenshot",
@@ -1317,7 +1448,8 @@
         "ja": "スクリーンショットを撮る",
         "ms": "Ambil tangkapan skrin",
         "pt-br": "Tirar captura de tela",
-        "ru": "Сделать скриншот"
+        "ru": "Сделать скриншот",
+        "zh-cn": "截图"
     },
     "player_pip_label": {
         "en": "Picture in picture",
@@ -1327,7 +1459,8 @@
         "ja": "ピクチャー イン ピクチャー (PiP)",
         "ms": "Gambar dalam gambar",
         "pt-br": "Imagem sob imagem (pip)",
-        "ru": "Картинка в картинке"
+        "ru": "Картинка в картинке",
+        "zh-cn": "画中画"
     },
     "player_fullscreen_label": {
         "en": "Toggle fullscreen",
@@ -1337,7 +1470,8 @@
         "ja": "フルスクリーン",
         "ms": "Skrin penuh",
         "pt-br": "Alternar tela cheia",
-        "ru": "Во весь экран"
+        "ru": "Во весь экран",
+        "zh-cn": "切换全屏"
     },
     "player_fullscreen_denied": {
         "en": "Fullscreen permissions denied!",
@@ -1347,7 +1481,8 @@
         "ja": "フルスクリーンの許可が拒否されました!",
         "ms": "Kebenaran skrin penuh ditolak!",
         "pt-br": "Permissões de tela cheia negadas!",
-        "ru": "Полноэкранный режим запрещён!"
+        "ru": "Полноэкранный режим запрещён!",
+        "zh-cn": "全屏权限被拒绝！"
     },
     "player_windowed_fullscreen_label": {
         "en": "Toggle windowed fullscreen",
@@ -1357,7 +1492,8 @@
         "ja": "ウィンドウ化されたフルスクリーン",
         "ms": "Skrin Penuh Bertingkap",
         "pt-br": "Alternar entre janela e tela cheia",
-        "ru": "Оконный режим"
+        "ru": "Оконный режим",
+        "zh-cn": "切换窗口化全屏"
     },
     "player_skip_forward_label": {
         "en": "Skip forward 10s",
@@ -1367,7 +1503,8 @@
         "ja": "10秒進む",
         "ms": "Skip forward 10s",
         "pt-br": "Avançar 10s",
-        "ru": "Вперёд на 10 с"
+        "ru": "Вперёд на 10 с",
+        "zh-cn": "快进 10 秒"
     },
     "player_skip_backward_label": {
         "en": "Skip backward 10s",
@@ -1377,7 +1514,8 @@
         "ja": "10秒戻る",
         "ms": "Skip backward 10s",
         "pt-br": "Retroceder 10s",
-        "ru": "Назад на 10 с"
+        "ru": "Назад на 10 с",
+        "zh-cn": "快退 10 秒"
     },
     "player_more_label": {
         "en": "More tools",
@@ -1387,7 +1525,8 @@
         "ja": "その他のツール",
         "ms": "Lebih banyak alat",
         "pt-br": "Mais ferramentas",
-        "ru": "Другие инструменты"
+        "ru": "Другие инструменты",
+        "zh-cn": "更多工具"
     },
     "player_loop_label": {
         "en": "Loop",
@@ -1397,7 +1536,8 @@
         "ja": "ループ",
         "ms": "Gelung",
         "pt-br": "Loop",
-        "ru": "Зациклить"
+        "ru": "Зациклить",
+        "zh-cn": "循环"
     },
     "loop_menu_start": {
         "en": "Start",
@@ -1407,7 +1547,8 @@
         "ja": "開始",
         "ms": "Mula",
         "pt-br": "Início",
-        "ru": "Начало"
+        "ru": "Начало",
+        "zh-cn": "开始"
     },
     "loop_menu_end": {
         "en": "End",
@@ -1417,7 +1558,8 @@
         "ja": "終了",
         "ms": "Tamat",
         "pt-br": "Fim",
-        "ru": "Конец"
+        "ru": "Конец",
+        "zh-cn": "结束"
     },
     "loop_menu_toggle_enabled": {
         "en": "Loop Enabled",
@@ -1427,7 +1569,8 @@
         "ja": "ループ有効",
         "ms": "Gelung Didayakan",
         "pt-br": "Loop ativado",
-        "ru": "Зацикливание включено"
+        "ru": "Зацикливание включено",
+        "zh-cn": "已启用循环"
     },
     "loop_menu_toggle_disabled": {
         "en": "Loop Disabled",
@@ -1437,7 +1580,8 @@
         "ja": "ループ無効",
         "ms": "Gelung Dilumpuhkan",
         "pt-br": "Loop desativado",
-        "ru": "Зацикливание отключено"
+        "ru": "Зацикливание отключено",
+        "zh-cn": "已禁用循环"
     },
     "loop_menu_gif_start": {
         "en": "Recording GIF at 4x speed...",
@@ -1447,7 +1591,8 @@
         "ja": "4倍速でGIFを録画中...",
         "ms": "Merakam GIF pada kelajuan 4x...",
         "pt-br": "Gravação de GIF em velocidade 4x...",
-        "ru": "Запись GIF на скорости 4x…"
+        "ru": "Запись GIF на скорости 4x…",
+        "zh-cn": "正在以 4 倍速录制 GIF..."
     },
     "loop_menu_gif_end": {
         "en": "Finished recording GIF. Now saving...",
@@ -1457,7 +1602,8 @@
         "ja": "GIFの録画が終了しました。現在保存中...",
         "ms": "Selesai merakam GIF. Sekarang menyimpan...",
         "pt-br": "Gravação terminada em GIF. Salvando...",
-        "ru": "Запись GIF завершена. Сохранение…"
+        "ru": "Запись GIF завершена. Сохранение…",
+        "zh-cn": "GIF 录制完成，正在保存..."
     },
     "loop_menu_gif_abort": {
         "en": "Aborted GIF recording!",
@@ -1467,7 +1613,8 @@
         "ja": "GIFの録画が中断されました!",
         "ms": "Rakaman GIF dihentikan!",
         "pt-br": "Gravação de GIFs interrompida!",
-        "ru": "Запись GIF прервана!"
+        "ru": "Запись GIF прервана!",
+        "zh-cn": "已中止 GIF 录制！"
     },
     "loop_menu_gif_progress": {
         "en": "Saving GIF $1%",
@@ -1477,7 +1624,8 @@
         "ja": "GIFを保存中 $1%",
         "ms": "Menyimpan GIF $1%",
         "pt-br": "Salvando GIF $1%",
-        "ru": "Сохранение GIF $1%"
+        "ru": "Сохранение GIF $1%",
+        "zh-cn": "正在保存 GIF $1%"
     },
     "loop_menu_gif_finished": {
         "en": "Finished saving GIF!",
@@ -1487,7 +1635,8 @@
         "ja": "GIFの保存が完了しました!",
         "ms": "Selesai menyimpan GIF!",
         "pt-br": "Terminado de salvar GIF!",
-        "ru": "Сохранение GIF завершено!"
+        "ru": "Сохранение GIF завершено!",
+        "zh-cn": "GIF 保存完成！"
     },
     "player_download_paused": {
         "en": "Download paused",
@@ -1497,7 +1646,8 @@
         "ja": "ダウンロードが一時停止されました",
         "ms": "Muat turun ditangguhkan",
         "pt-br": "Download pausado",
-        "ru": "Загрузка приостановлена"
+        "ru": "Загрузка приостановлена",
+        "zh-cn": "下载已暂停"
     },
     "player_fragment_failed_singular": {
         "en": "$1 Fragment Failed! Click to retry.",
@@ -1507,7 +1657,8 @@
         "ja": "$1 の分割処理に失敗しました! クリックで再試行します。",
         "ms": "$1 Serpihan Gagal! Klik untuk mencuba semula.",
         "pt-br": "$1 Fragmento com erro! Clique para tentar novamente.",
-        "ru": "Ошибка $1 фрагмента! Нажмите для повтора"
+        "ru": "Ошибка $1 фрагмента! Нажмите для повтора",
+        "zh-cn": "$1 分片失败！点击重试。"
     },
     "player_fragment_failed_plural": {
         "en": "$1 Fragments Failed! Click to retry.",
@@ -1517,7 +1668,8 @@
         "ja": "$1 の分割処理に失敗しました! クリックで再試行します。",
         "ms": "$1 Serpihan Gagal! Klik untuk mencuba semula.",
         "pt-br": "$1 Fragmento com erro! Clique para tentar novamente.",
-        "ru": "Ошибка $1 фрагментов! Нажмите для повтора"
+        "ru": "Ошибка $1 фрагментов! Нажмите для повтора",
+        "zh-cn": "$1 个分片失败！点击重试。"
     },
     "player_fragment_allbuffered": {
         "en": "100% Buffered",
@@ -1527,7 +1679,8 @@
         "ja": "100% バッファー済み",
         "ms": "100% Ditimbal",
         "pt-br": "100% Armazenado",
-        "ru": "100% буферизация"
+        "ru": "100% буферизация",
+        "zh-cn": "已缓冲 100%"
     },
     "player_welcometext": {
         "en": "Welcome to FastStream v$1!",
@@ -1537,7 +1690,8 @@
         "ja": "FastStream v$1 へようこそ!",
         "ms": "Selamat datang ke FastStream v$1!",
         "pt-br": "Bem-vindo ao FastStream v$1!",
-        "ru": "Добро пожаловать в FastStream v$1!"
+        "ru": "Добро пожаловать в FastStream v$1!",
+        "zh-cn": "欢迎使用 FastStream v$1！"
     },
     "player_nosource_alert": {
         "en": "No source is loaded!",
@@ -1547,7 +1701,8 @@
         "ja": "ソースは読み込まれていません!",
         "ms": "Tiada sumber dimuatkan!",
         "pt-br": "Nenhuma fonte foi carregada!",
-        "ru": "Источник не загружен!"
+        "ru": "Источник не загружен!",
+        "zh-cn": "未加载任何来源！"
     },
     "player_archive_loading": {
         "en": "Loading archive... $1%",
@@ -1557,7 +1712,8 @@
         "ja": "$1% のアーカイブを読み込み中...",
         "ms": "Memuatkan arkib... $1%",
         "pt-br": "Carregando arquivo... $1%",
-        "ru": "Загрузка архива… $1%"
+        "ru": "Загрузка архива… $1%",
+        "zh-cn": "正在加载归档... $1%"
     },
     "player_archive_loaded": {
         "en": "Loaded archive!",
@@ -1567,7 +1723,8 @@
         "ja": "アーカイブを読み込みました!",
         "ms": "Arkib dimuatkan!",
         "pt-br": "Arquivo carregado!",
-        "ru": "Архив загружен!"
+        "ru": "Архив загружен!",
+        "zh-cn": "归档加载完成！"
     },
     "player_archive_fail": {
         "en": "Failed to load archive!",
@@ -1577,7 +1734,8 @@
         "ja": "アーカイブの読み込みに失敗しました!",
         "ms": "Gagal memuatkan arkib!",
         "pt-br": "Falha ao carregar o arquivo!",
-        "ru": "Не удалось загрузить архив!"
+        "ru": "Не удалось загрузить архив!",
+        "zh-cn": "归档加载失败！"
     },
     "player_filename_prompt": {
         "en": "Enter a name for the file",
@@ -1587,7 +1745,8 @@
         "ja": "ファイル名を入力",
         "ms": "Masukkan nama untuk fail",
         "pt-br": "Insira um nome para o arquivo",
-        "ru": "Введите имя файла"
+        "ru": "Введите имя файла",
+        "zh-cn": "请输入文件名"
     },
     "player_screenshot_saving": {
         "en": "Taking screenshot...",
@@ -1597,7 +1756,8 @@
         "ja": "スクリーンショットを撮る...",
         "ms": "Mengambil tangkapan skrin...",
         "pt-br": "Capturando tela...",
-        "ru": "Делаем скриншот…"
+        "ru": "Делаем скриншот…",
+        "zh-cn": "正在截屏..."
     },
     "player_screenshot_saved": {
         "en": "Screenshot saved!",
@@ -1607,7 +1767,8 @@
         "ja": "スクリーンショットを保存しました!",
         "ms": "Tangkapan skrin disimpan!",
         "pt-br": "Captura de tela salva!",
-        "ru": "Скриншот сохранён!"
+        "ru": "Скриншот сохранён!",
+        "zh-cn": "截图已保存！"
     },
     "player_screenshot_fail": {
         "en": "Failed to take screenshot!",
@@ -1617,7 +1778,8 @@
         "ja": "スクリーンショットの撮影に失敗しました!",
         "ms": "Gagal untuk tangkapan Skrin!",
         "pt-br": "Falha na captura de tela!",
-        "ru": "Не удалось сделать скриншот!"
+        "ru": "Не удалось сделать скриншот!",
+        "zh-cn": "截图失败！"
     },
     "player_savevideo_inprogress_alert": {
         "en": "Already making save!",
@@ -1627,7 +1789,8 @@
         "ja": "すでに保存済みです!",
         "ms": "Sudah membuat simpanan!",
         "pt-br": "Salvando!",
-        "ru": "Уже сохраняю!"
+        "ru": "Уже сохраняю!",
+        "zh-cn": "正在保存中！"
     },
     "player_savevideo_unsupported": {
         "en": "Saving is not supported for this video!",
@@ -1637,7 +1800,8 @@
         "ja": "この動画は保存に対応していません!",
         "ms": "Penyimpanan tidak disokong untuk video ini!",
         "pt-br": "Não há suporte para salvar este vídeo!",
-        "ru": "Сохранение этого видео не поддерживается!"
+        "ru": "Сохранение этого видео не поддерживается!",
+        "zh-cn": "此视频不支持保存！"
     },
     "player_savevideo_partial_confirm": {
         "en": "Video has not finished downloading yet! Are you sure you want to save it?",
@@ -1647,7 +1811,8 @@
         "ja": "動画のダウンロードが完了していません! 本当に保存をしますか?",
         "ms": "Video belum selesai dimuat turun! Adakah anda pasti mahu menyimpannya?",
         "pt-br": "O download do vídeo ainda não foi concluído! Tem certeza de que deseja salvá-lo?",
-        "ru": "Загрузка видео ещё не завершена! Вы уверены, что хотите сохранить его?"
+        "ru": "Загрузка видео ещё не завершена! Вы уверены, что хотите сохранить его?",
+        "zh-cn": "视频尚未下载完成！确定要保存吗？"
     },
     "player_savevideo_incognito_confirm": {
         "en": "Incognito Mode will use RAM to buffer videos. Your computer may not have enough memory to save the entire video!\nAre you sure you want to proceed?",
@@ -1657,7 +1822,8 @@
         "ja": "シークレットモードでは、RAM を使用して動画をバッファーします。コンピューターに動画全体を保存するのに必要なメモリがない可能性があります。\n続行してもよろしいですか?",
         "ms": "Mod Inkognito akan menggunakan RAM untuk menimbal video. Komputer anda mungkin tidak mempunyai memori yang mencukupi untuk menyimpan keseluruhan video!\nAdakah anda pasti mahu meneruskan?",
         "pt-br": "O modo de navegação anônima usará a RAM para armazenar vídeos. Seu computador pode não ter memória suficiente para salvar o vídeo inteiro!\nTem certeza de que deseja prosseguir?",
-        "ru": "Режим инкогнито будет использовать оперативную память для буферизации видео.\nВашему компьютеру может не хватить памяти для сохранения всего видео!\nВы уверены, что хотите продолжить?"
+        "ru": "Режим инкогнито будет использовать оперативную память для буферизации видео.\nВашему компьютеру может не хватить памяти для сохранения всего видео!\nВы уверены, что хотите продолжить?",
+        "zh-cn": "隐身模式会使用内存（RAM）来缓冲视频。您的电脑可能没有足够的内存来保存整个视频！\n确定要继续吗？"
     },
     "player_savevideo_reencode": {
         "en": "Saving will require re-encoding. This may take a long time. Do you want to proceed?",
@@ -1667,7 +1833,8 @@
         "ja": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?",
         "ms": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?",
         "pt-br": "Para salvar, será necessário recodificar o vídeo. Isso pode levar muito tempo. Você deseja continuar?",
-        "ru": "Для сохранения требуется перекодировка. Это может занять много времени. Продолжить?"
+        "ru": "Для сохранения требуется перекодировка. Это может занять много времени. Продолжить?",
+        "zh-cn": "保存将需要重新编码，可能会耗时较长。是否继续？"
     },
     "player_savevideo_cancelling": {
         "en": "Cancelling save...",
@@ -1677,7 +1844,8 @@
         "ja": "キャンセル中...",
         "ms": "Membatalkan simpanan...",
         "pt-br": "Cancelando salvamento...",
-        "ru": "Отмена…"
+        "ru": "Отмена…",
+        "zh-cn": "正在取消保存..."
     },
     "player_savevideo_cancelled": {
         "en": "Save cancelled!",
@@ -1687,7 +1855,8 @@
         "ja": "保存がキャンセルされました!",
         "ms": "Simpanan dibatalkan!",
         "pt-br": "Salvamento cancelado!",
-        "ru": "Сохранение отменено!"
+        "ru": "Сохранение отменено!",
+        "zh-cn": "保存已取消！"
     },
     "player_savevideo_start": {
         "en": "Making save...",
@@ -1697,7 +1866,8 @@
         "ja": "保存中...",
         "ms": "Membuat penjimatan...",
         "pt-br": "Salvando",
-        "ru": "Сохранение…"
+        "ru": "Сохранение…",
+        "zh-cn": "正在保存..."
     },
     "player_savevideo_progress": {
         "en": "Saving $1%",
@@ -1707,7 +1877,8 @@
         "ja": "$1% を保存中",
         "ms": "Menyimpan $1%",
         "pt-br": "Salvando $1%",
-        "ru": "Сохранение $1%"
+        "ru": "Сохранение $1%",
+        "zh-cn": "保存中 $1%"
     },
     "player_savevideo_fail": {
         "en": "Failed to save video!",
@@ -1717,7 +1888,8 @@
         "ja": "動画の保存に失敗しました!",
         "ms": "Gagal menyimpan video!",
         "pt-br": "Falha ao salvar vídeo!",
-        "ru": "Не удалось сохранить видео!"
+        "ru": "Не удалось сохранить видео!",
+        "zh-cn": "保存视频失败！"
     },
     "player_savevideo_failed_ask_archive": {
         "en": "Failed to save video!\nWould you like to archive the player's buffer storage instead?\n- Drag and drop archive files on the player to load it",
@@ -1727,7 +1899,8 @@
         "ja": "動画の保存に失敗しました!\n代わりにプレーヤーのバッファーストレージをアーカイブしますか?\n- アーカイブファイルをプレーヤーにドラッグ&ドロップで読み込みます",
         "ms": "Gagal menyimpan video!\nAdakah anda mahu mengarkibkan storan penimbal pemain sebaliknya?\n- Seret dan lepaskan fail arkib pada pemain untuk memuatkannya",
         "pt-br": "Não foi possível salvar o vídeo!\nEm vez disso, você gostaria de arquivar o armazenamento do buffer do tocador?\n- Arraste e solte arquivos compactados no tocador para carregá-los",
-        "ru": "Не удалось сохранить видео!\nХотите вместо этого заархивировать буферное хранилище плеера?\n- Перетащите файлы архива на плеер, чтобы загрузить его"
+        "ru": "Не удалось сохранить видео!\nХотите вместо этого заархивировать буферное хранилище плеера?\n- Перетащите файлы архива на плеер, чтобы загрузить его",
+        "zh-cn": "保存视频失败！\n是否要归档播放器的缓冲区？\n- 将归档文件拖放到播放器上以加载它"
     },
     "player_savevideo_complete": {
         "en": "Save complete!",
@@ -1737,7 +1910,8 @@
         "ja": "保存が完了しました!",
         "ms": "Selesai disimpan!",
         "pt-br": "Salvamento completo!",
-        "ru": "Сохранение завершено!"
+        "ru": "Сохранение завершено!",
+        "zh-cn": "保存完成！"
     },
     "player_archiver_progress": {
         "en": "Archiving $1%",
@@ -1747,7 +1921,8 @@
         "ja": "$1% をアーカイブ中",
         "ms": "Mengarkib $1%",
         "pt-br": "Arquivando $1%",
-        "ru": "Архивирование $1%"
+        "ru": "Архивирование $1%",
+        "zh-cn": "归档中 $1%"
     },
     "player_archiver_saved": {
         "en": "Archive saved!",
@@ -1757,7 +1932,8 @@
         "ja": "アーカイブを保存しました!",
         "ms": "Arkib disimpan!",
         "pt-br": "Arquivo salvo!",
-        "ru": "Архив сохранён!"
+        "ru": "Архив сохранён!",
+        "zh-cn": "已保存归档！"
     },
     "player_quality_current": {
         "en": "(current)",
@@ -1767,7 +1943,8 @@
         "ja": "(現在)",
         "ms": "(current)",
         "pt-br": "(atual)",
-        "ru": "(текущее)"
+        "ru": "(текущее)",
+        "zh-cn": "(当前)"
     },
     "player_quality_unknown": {
         "en": "(unknown)",
@@ -1777,7 +1954,8 @@
         "ja": "(不明)",
         "ms": "(tidak diketahui)",
         "pt-br": "(desconhecido)",
-        "ru": "(неизвестно)"
+        "ru": "(неизвестно)",
+        "zh-cn": "(未知)"
     },
     "player_buffer_incognito_warning": {
         "en": "Not enough space to predownload in incognito mode, will buffer $1",
@@ -1787,7 +1965,8 @@
         "ja": "シークレットモードでプリダウンロードに必要な空き容量がないため、$1 がバッファーされます",
         "ms": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1",
         "pt-br": "Não há espaço suficiente para fazer o download prévio no modo incógnito, o buffer será de $1",
-        "ru": "Недостаточно места для предзагрузки в режиме инкогнито, будет буферизована $1"
+        "ru": "Недостаточно места для предзагрузки в режиме инкогнито, будет буферизована $1",
+        "zh-cn": "隐身模式下没有足够的空间进行预下载，将缓冲 $1"
     },
     "player_buffer_storage_warning": {
         "en": "Video size exceeds limits, will buffer $1",
@@ -1797,7 +1976,8 @@
         "ja": "ビデオのサイズが制限を超えています、$1 バッファリングします",
         "ms": "Saiz video melebihi had, akan menimbal $1",
         "pt-br": "O tamanho do vídeo excede os limites, será armazenado em $1",
-        "ru": "Размер видео превышает лимит, будет буферизировано $1"
+        "ru": "Размер видео превышает лимит, будет буферизировано $1",
+        "zh-cn": "视频大小超出限制，将缓冲 $1"
     },
     "player_error_drm": {
         "en": "Failed to load! DRM is not supported!",
@@ -1807,7 +1987,8 @@
         "ja": "読み込みに失敗しました! DRM には対応していません!",
         "ms": "Gagal memuatkan! DRM tidak disokong!",
         "pt-br": "Falha ao carregar! DRM não é suportado!",
-        "ru": "Ошибка загрузки! DRM не поддерживается!"
+        "ru": "Ошибка загрузки! DRM не поддерживается!",
+        "zh-cn": "加载失败！不支持 DRM！"
     },
     "player_error_load": {
         "en": "Failed to load video!",
@@ -1817,7 +1998,8 @@
         "ja": "動画の読み込みに失敗しました!",
         "ms": "Gagal memuatkan video!",
         "pt-br": "Falha ao carregar o vídeo!",
-        "ru": "Не удалось загрузить видео!"
+        "ru": "Не удалось загрузить видео!",
+        "zh-cn": "视频加载失败！"
     },
     "source_copied": {
         "en": "Copied URL to clipboard!",
@@ -1827,7 +2009,8 @@
         "ja": "URL をクリップボードにコピーしました!",
         "ms": "URL disalin ke papan keratan!",
         "pt-br": "URL copiado na área de transferência!",
-        "ru": "Скопировано!"
+        "ru": "Скопировано!",
+        "zh-cn": "已将 URL 复制到剪贴板！"
     },
     "player_source_copybtn": {
         "en": "Copy",
@@ -1837,7 +2020,8 @@
         "ja": "コピー",
         "ms": "Salin",
         "pt-br": "Copiar",
-        "ru": "Копировать"
+        "ru": "Копировать",
+        "zh-cn": "复制"
     },
     "player_source_copybtn_label": {
         "en": "Copy source URL, headers, and mode to clipboard",
@@ -1847,7 +2031,8 @@
         "ja": "ソースの URL、ヘッダー、モードをクリップボードにコピー",
         "ms": "Salin URL sumber, pengepala, dan mod ke papan keratan",
         "pt-br": "Copiar URL de origem, cabeçalhos para a área de transferência",
-        "ru": "Копировать адрес источника, заголовки и режим в буфер обмена"
+        "ru": "Копировать адрес источника, заголовки и режим в буфер обмена",
+        "zh-cn": "将源 URL、请求头和模式复制到剪贴板"
     },
     "player_source_copybtn_copied": {
         "en": "Copied!",
@@ -1857,7 +2042,8 @@
         "ja": "コピー済み!",
         "ms": "Disalin!",
         "pt-br": "Copiado!",
-        "ru": "Скопировано!"
+        "ru": "Скопировано!",
+        "zh-cn": "已复制！"
     },
     "player_source_autodetect": {
         "en": "Auto Detect",
@@ -1867,7 +2053,8 @@
         "ja": "自動検出",
         "ms": "Auto Mengesan",
         "pt-br": "Auto detectado",
-        "ru": "Автоопределение"
+        "ru": "Автоопределение",
+        "zh-cn": "自动检测"
     },
     "player_source_direct": {
         "en": "Direct",
@@ -1877,7 +2064,8 @@
         "ja": "ダイレクト",
         "ms": "Terus",
         "pt-br": "Direto",
-        "ru": "Прямой"
+        "ru": "Прямой",
+        "zh-cn": "直连"
     },
     "player_source_accelmp4": {
         "en": "Accelerated MP4",
@@ -1887,7 +2075,8 @@
         "ja": "高速化された MP4",
         "ms": "MP4 dipercepatkan",
         "pt-br": "MP4 acelerado",
-        "ru": "Аппарат. ускорение MP4"
+        "ru": "Аппарат. ускорение MP4",
+        "zh-cn": "加速 MP4"
     },
     "player_source_accelhls": {
         "en": "Accelerated HLS",
@@ -1897,7 +2086,8 @@
         "ja": "高速化された HLS",
         "ms": "HLS dipercepatkan",
         "pt-br": "HLS acelerado",
-        "ru": "Аппарат. ускорение HLS"
+        "ru": "Аппарат. ускорение HLS",
+        "zh-cn": "加速 HLS"
     },
     "player_source_acceldash": {
         "en": "Accelerated DASH",
@@ -1907,7 +2097,8 @@
         "ja": "高速化された DASH",
         "ms": "DASH dipercepatkan",
         "pt-br": "DASH acelerado",
-        "ru": "Аппарат. ускорение DASH"
+        "ru": "Аппарат. ускорение DASH",
+        "zh-cn": "加速 DASH"
     },
     "player_source_accelyt": {
         "en": "Accelerated YouTube",
@@ -1917,7 +2108,8 @@
         "ja": "高速化された YouTube",
         "ms": "YouTube dipercepatkan",
         "pt-br": "YouTube acelerado",
-        "ru": "Аппарат. ускорение YouTube"
+        "ru": "Аппарат. ускорение YouTube",
+        "zh-cn": "加速 YouTube"
     },
     "player_source_accelvm": {
         "en": "Accelerated Vimeo",
@@ -1927,7 +2119,8 @@
         "ja": "高速化された Vimeo",
         "ms": "Vimeo dipercepatkan",
         "pt-br": "Vimeo acelerado",
-        "ru": "Аппарат. ускорение Vimeo"
+        "ru": "Аппарат. ускорение Vimeo",
+        "zh-cn": "加速 Vimeo"
     },
     "player_source_mode": {
         "en": "Mode",
@@ -1937,7 +2130,8 @@
         "ja": "モード",
         "ms": "Mod",
         "pt-br": "Modo",
-        "ru": "Режим"
+        "ru": "Режим",
+        "zh-cn": "模式"
     },
     "player_source_mode_auto_error": {
         "en": "Please select a player mode!",
@@ -1947,7 +2141,8 @@
         "ja": "プレーヤーモードを選択してください!",
         "ms": "Sila pilih mod pemain!",
         "pt-br": "Selecione um modo de reprodução!",
-        "ru": "Выберите режим проигрывателя!"
+        "ru": "Выберите режим проигрывателя!",
+        "zh-cn": "请选择播放器模式！"
     },
     "player_source_url_placeholder": {
         "en": "Source URL",
@@ -1957,7 +2152,8 @@
         "ja": "ソースの URL",
         "ms": "Sumber URL",
         "pt-br": "URL de origem",
-        "ru": "Адрес источника"
+        "ru": "Адрес источника",
+        "zh-cn": "源 URL"
     },
     "player_source_headerbtn": {
         "en": "Header Override ($1)",
@@ -1967,7 +2163,8 @@
         "ja": "ヘッダーを上書き ($1)",
         "ms": "Tajuk diganti ($1)",
         "pt-br": "Substituição de cabeçalho ($1)",
-        "ru": "Переопределение заголовка ($1)"
+        "ru": "Переопределение заголовка ($1)",
+        "zh-cn": "请求头覆盖 ($1)"
     },
     "player_source_headerbtn_label": {
         "en": "Toggle header override input",
@@ -1977,7 +2174,8 @@
         "ja": "ヘッダー上書き入力へ切り替え",
         "ms": "Togol input ganti pengepala",
         "pt-br": "Alternar a entrada de substituição de cabeçalho",
-        "ru": "Ввод переопределения заголовка"
+        "ru": "Ввод переопределения заголовка",
+        "zh-cn": "切换请求头覆盖输入框"
     },
     "player_source_headerbtn_disabled": {
         "en": "Header Override (Extension Only)",
@@ -1987,7 +2185,8 @@
         "ja": "ヘッダーを上書き (拡張機能のみ)",
         "ms": "Tajuk diganti (Sambungan Sahaja)",
         "pt-br": "Substituição de cabeçalho (somente extensão)",
-        "ru": "Переопределение заголовка (Только расширение)"
+        "ru": "Переопределение заголовка (Только расширение)",
+        "zh-cn": "请求头覆盖 (仅限扩展)"
     },
     "player_source_playbtn": {
         "en": "Play",
@@ -1997,7 +2196,8 @@
         "ja": "再生",
         "ms": "Main",
         "pt-br": "Reproduzir",
-        "ru": "Воспроизвести"
+        "ru": "Воспроизвести",
+        "zh-cn": "播放"
     },
     "player_source_playbtn_playing": {
         "en": "Playing",
@@ -2007,7 +2207,8 @@
         "ja": "再生中",
         "ms": "Bermain",
         "pt-br": "Tocando",
-        "ru": "Воспроизведение"
+        "ru": "Воспроизведение",
+        "zh-cn": "正在播放"
     },
     "player_source_playbtn_loading": {
         "en": "Loading...",
@@ -2017,7 +2218,8 @@
         "ja": "読み込み中...",
         "ms": "Memuatkan...",
         "pt-br": "Carregando...",
-        "ru": "Загрузка…"
+        "ru": "Загрузка…",
+        "zh-cn": "加载中..."
     },
     "player_source_deletebtn": {
         "en": "Delete",
@@ -2027,7 +2229,8 @@
         "ja": "削除",
         "ms": "Hapus",
         "pt-br": "Apagar",
-        "ru": "Удалить"
+        "ru": "Удалить",
+        "zh-cn": "删除"
     },
     "player_source_headers_label": {
         "en": "Header override input",
@@ -2037,7 +2240,8 @@
         "ja": "ヘッダーの上書き入力",
         "ms": "Input mengatasi pengepala",
         "pt-br": "Substituição de cabeçalho",
-        "ru": "Ввод переопределения заголовка"
+        "ru": "Ввод переопределения заголовка",
+        "zh-cn": "覆盖 Header 输入"
     },
     "player_source_headers_placeholder": {
         "en": "Header-Name: Header Value\nHeader2-Name: Header2 Value",
@@ -2047,7 +2251,8 @@
         "ja": "ヘッダー名: ヘッダーの値\nヘッダー2の名: ヘッダー2の値",
         "ms": "Nama Pengepala: Nilai Pengepala\nNama Pengepala2: Nilai Pengepala2",
         "pt-br": "Nome do cabeçalho: Valor do cabeçalho\nHeader2-Name: Valor do Header2",
-        "ru": "Имя заголовка: Значение заголовка\nИмя заголовка2: Значение заголовка2"
+        "ru": "Имя заголовка: Значение заголовка\nИмя заголовка2: Значение заголовка2",
+        "zh-cn": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
     },
     "player_source_nonelisted": {
         "en": "No Sources Listed",
@@ -2057,7 +2262,8 @@
         "ja": "ソースの一覧がありません",
         "ms": "Tiada Senarai Sumber",
         "pt-br": "Não há fontes listadas",
-        "ru": "Нет источников"
+        "ru": "Нет источников",
+        "zh-cn": "未列出任何来源"
     },
     "player_source_onelisted": {
         "en": "1 Source Listed",
@@ -2067,7 +2273,8 @@
         "ja": "1 件のソースの一覧",
         "ms": "1 Senarai Sumber",
         "pt-br": "1 Fonte listada",
-        "ru": "1 источник в списке"
+        "ru": "1 источник в списке",
+        "zh-cn": "已列出 1 个来源"
     },
     "player_source_multilisted": {
         "en": "$1 Sources Listed",
@@ -2077,7 +2284,8 @@
         "ja": "$1 件のソースの一覧",
         "ms": "$1 Senarai Sumber",
         "pt-br": "Fontes de $1 listadas",
-        "ru": "$1 источников в списке"
+        "ru": "$1 источников в списке",
+        "zh-cn": "已列出 $1 个来源"
     },
     "player_source_addbtn": {
         "en": "Add Source",
@@ -2087,7 +2295,8 @@
         "ja": "ソースを追加",
         "ms": "Masukkan Sumber",
         "pt-br": "Adicionar fonte",
-        "ru": "Добавить источник"
+        "ru": "Добавить источник",
+        "zh-cn": "添加来源"
     },
     "player_source_clearbtn": {
         "en": "Clear Sources",
@@ -2097,7 +2306,8 @@
         "ja": "ソースをクリア",
         "ms": "Kosongkan Sumber",
         "pt-br": "Limpar fontes",
-        "ru": "Очистить источники"
+        "ru": "Очистить источники",
+        "zh-cn": "清除来源"
     },
     "player_audioconfig_duplicate_profile": {
         "en": "(loaded from file on $1)",
@@ -2107,7 +2317,8 @@
         "ja": "($1 のファイルから読み込み済み)",
         "ms": "(dimuatkan daripada fail pada $1)",
         "pt-br": "(carregada do arquivo em $1)",
-        "ru": "(импортирован из файла $1)"
+        "ru": "(импортирован из файла $1)",
+        "zh-cn": "(于 $1 从文件加载)"
     },
     "player_audioconfig_create_profile": {
         "en": "Create new profile",
@@ -2117,7 +2328,8 @@
         "ja": "新規プロファイルを作成",
         "ms": "Ciptakan profil baru",
         "pt-br": "Criar novo perfil",
-        "ru": "Создать новый профиль"
+        "ru": "Создать новый профиль",
+        "zh-cn": "创建新配置"
     },
     "player_audioconfig_import_profile": {
         "en": "Import profiles from file",
@@ -2127,7 +2339,8 @@
         "ja": "ファイルからプロファイルをインポート",
         "ms": "Import profil daripada fail",
         "pt-br": "Importar perfis do arquivo",
-        "ru": "Импорт профиля из файла"
+        "ru": "Импорт профиля из файла",
+        "zh-cn": "从文件导入配置"
     },
     "player_audioconfig_import_invalid": {
         "en": "Invalid profile file",
@@ -2137,7 +2350,8 @@
         "ja": "無効なプロファイルファイル",
         "ms": "Fail profil tidak sah",
         "pt-br": "Arquivo de perfil inválido",
-        "ru": "Недопустимый файл профиля"
+        "ru": "Недопустимый файл профиля",
+        "zh-cn": "配置文件无效"
     },
     "player_audioconfig_profile": {
         "en": "Profile",
@@ -2147,7 +2361,8 @@
         "ja": "プロファイル",
         "ms": "Profil",
         "pt-br": "Perfil",
-        "ru": "Профиль"
+        "ru": "Профиль",
+        "zh-cn": "配置"
     },
     "player_audioconfig_profile_unnamed": {
         "en": "Unnamed Profile",
@@ -2157,7 +2372,8 @@
         "ja": "無題のプロファイル",
         "ms": "Profil Tanpa Nama",
         "pt-br": "Perfil não identificado",
-        "ru": "Безымянный профиль"
+        "ru": "Безымянный профиль",
+        "zh-cn": "未命名配置"
     },
     "player_audioconfig_profile_load": {
         "en": "Load Profile",
@@ -2167,7 +2383,8 @@
         "ja": "プロファイルを読み込む",
         "ms": "Muat Profile",
         "pt-br": "Carregar perfil",
-        "ru": "Загрузить профиль"
+        "ru": "Загрузить профиль",
+        "zh-cn": "加载配置"
     },
     "player_audioconfig_profile_loaded": {
         "en": "Loaded Profile!",
@@ -2177,7 +2394,8 @@
         "ja": "プロファイルを読み込みました!",
         "ms": "Profil Dimuatkan!",
         "pt-br": "Perfil carregado!",
-        "ru": "Профиль загружен!"
+        "ru": "Профиль загружен!",
+        "zh-cn": "配置已加载!"
     },
     "player_audioconfig_profile_save": {
         "en": "Save Profile",
@@ -2187,7 +2405,8 @@
         "ja": "プロファイルを保存",
         "ms": "Simpan Profil",
         "pt-br": "Salvar perfil",
-        "ru": "Сохранить профиль"
+        "ru": "Сохранить профиль",
+        "zh-cn": "保存配置"
     },
     "player_audioconfig_profile_saving": {
         "en": "Saving...",
@@ -2197,7 +2416,8 @@
         "ja": "保存中...",
         "ms": "Menyimpan...",
         "pt-br": "Salvando...",
-        "ru": "Сохранение…"
+        "ru": "Сохранение…",
+        "zh-cn": "保存中..."
     },
     "player_audioconfig_profile_saved": {
         "en": "Saved Profile!",
@@ -2207,7 +2427,8 @@
         "ja": "プロファイルを保存しました!",
         "ms": "Profil Disimpan!",
         "pt-br": "Perfil salvo!",
-        "ru": "Профиль сохранён!"
+        "ru": "Профиль сохранён!",
+        "zh-cn": "配置已保存!"
     },
     "player_audioconfig_profile_download": {
         "en": "Download Profile",
@@ -2217,7 +2438,8 @@
         "ja": "プロファイルをダウンロード",
         "ms": "Muat turun Profil",
         "pt-br": "Perfil baixado",
-        "ru": "Скачать профиль"
+        "ru": "Скачать профиль",
+        "zh-cn": "下载配置"
     },
     "player_audioconfig_profile_downloaded": {
         "en": "Downloaded!",
@@ -2227,7 +2449,8 @@
         "ja": "ダウンロードしました!",
         "ms": "Dimuat turun!",
         "pt-br": "Baixado!",
-        "ru": "Скачан!"
+        "ru": "Скачан!",
+        "zh-cn": "已下载!"
     },
     "player_audioconfig_profile_delete": {
         "en": "Delete",
@@ -2237,7 +2460,8 @@
         "ja": "削除",
         "ms": "Hapus",
         "pt-br": "Apagar",
-        "ru": "Удалить"
+        "ru": "Удалить",
+        "zh-cn": "删除"
     },
     "player_audioconfig_profile_deleting": {
         "en": "Deleting...",
@@ -2247,7 +2471,8 @@
         "ja": "削除中...",
         "ms": "Menghapus...",
         "pt-br": "Apagando...",
-        "ru": "Удаление…"
+        "ru": "Удаление…",
+        "zh-cn": "删除中..."
     },
     "player_audioconfig_profile_deleted": {
         "en": "Deleted!",
@@ -2257,7 +2482,8 @@
         "ja": "削除しました!",
         "ms": "Dihapuskan!",
         "pt-br": "Apagado!",
-        "ru": "Удалён!"
+        "ru": "Удалён!",
+        "zh-cn": "已删除！"
     },
     "audiomixer_title": {
         "en": "Audio Channel Mixer",
@@ -2267,7 +2493,8 @@
         "ja": "オーディオチャンネルミキサー",
         "ms": "Pengadun Saluran Audio",
         "pt-br": "Mixer de canal de áudio",
-        "ru": "Микшер аудиоканала"
+        "ru": "Микшер аудиоканала",
+        "zh-cn": "音频通道混音器"
     },
     "audiomixer_volume_master_handle_label": {
         "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mono",
@@ -2277,7 +2504,8 @@
         "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます",
         "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono",
         "pt-br": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar entre mono",
-        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, для переключения в моно"
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, для переключения в моно",
+        "zh-cn": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换单声道"
     },
     "audiomixer_volume_handle_label": {
         "en": "$1 gain is $2 dB ($3%). Use arrows to adjust. Press M to toggle mute",
@@ -2287,7 +2515,8 @@
         "ja": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます",
         "ms": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu",
         "pt-br": "O ganho de $1 é de $2 dB ($3%). Use as setas para ajustar. Pressione M para alternar o mudo",
-        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы отключить звук"
+        "ru": "$1 усиление $2 dB ($3%). Используйте стрелки для регулировки. Нажмите M, чтобы отключить звук",
+        "zh-cn": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换静音"
     },
     "audiomixer_solo_label": {
         "en": "Solo",
@@ -2297,7 +2526,8 @@
         "ja": "ソロ",
         "ms": "Solo",
         "pt-br": "Solo",
-        "ru": "Соло"
+        "ru": "Соло",
+        "zh-cn": "独奏"
     },
     "audiomixer_mute_label": {
         "en": "Mute",
@@ -2307,7 +2537,8 @@
         "ja": "消音",
         "ms": "Bisu",
         "pt-br": "Mudo",
-        "ru": "Отключить звук"
+        "ru": "Отключить звук",
+        "zh-cn": "静音"
     },
     "audiomixer_mono": {
         "en": "Mono",
@@ -2317,7 +2548,8 @@
         "ja": "モノ",
         "ms": "Mono",
         "pt-br": "Mono",
-        "ru": "Моно"
+        "ru": "Моно",
+        "zh-cn": "单声道"
     },
     "audiomixer_dynamics_label": {
         "en": "Edit dynamics of channel",
@@ -2327,7 +2559,8 @@
         "ja": "チャンネルのダイナミクスを編集",
         "ms": "Edit dinamik saluran",
         "pt-br": "Editar a dinâmica do canal",
-        "ru": "Изменить динамику канала"
+        "ru": "Изменить динамику канала",
+        "zh-cn": "编辑通道动态"
     },
     "audiocrosstalk_title": {
         "en": "Audio Crosstalk Correction",
@@ -2337,7 +2570,8 @@
         "ja": "オーディオクロストーク補正",
         "ms": "Audio Crosstalk Correction",
         "pt-br": "Correção de diafonia do áudio",
-        "ru": "Коррекция перекрёстных помех"
+        "ru": "Коррекция перекрёстных помех",
+        "zh-cn": "音频串扰校正"
     },
     "audiocrosstalk_enabled": {
         "en": "Crosstalk Correction Enabled",
@@ -2347,7 +2581,8 @@
         "ja": "クロストーク補正有効",
         "ms": "Crosstalk Correction Enabled",
         "pt-br": "Correção de diafonia ativada",
-        "ru": "Коррекция перекрёстных помех включена"
+        "ru": "Коррекция перекрёстных помех включена",
+        "zh-cn": "已启用串扰校正"
     },
     "audiocrosstalk_disabled": {
         "en": "Crosstalk Correction Disabled",
@@ -2357,7 +2592,8 @@
         "ja": "クロストーク補正無効",
         "ms": "Crosstalk Correction Disabled",
         "pt-br": "Correção de diafonia desativada",
-        "ru": "Коррекция перекрёстных помех отключена"
+        "ru": "Коррекция перекрёстных помех отключена",
+        "zh-cn": "已禁用串扰校正"
     },
     "audiocrosstalk_decay": {
         "en": "Decay",
@@ -2367,7 +2603,8 @@
         "ja": "減衰",
         "ms": "Decay",
         "pt-br": "Decay",
-        "ru": "Затухание"
+        "ru": "Затухание",
+        "zh-cn": "衰减"
     },
     "audiocrosstalk_colorgain": {
         "en": "Max Coloration",
@@ -2377,7 +2614,8 @@
         "ja": "色付け",
         "ms": "Max Coloration",
         "pt-br": "Coloração máxima",
-        "ru": "Усиление цвета"
+        "ru": "Усиление цвета",
+        "zh-cn": "最大染色"
     },
     "audiocrosstalk_microdelay": {
         "en": "Delta T",
@@ -2387,7 +2625,8 @@
         "ja": "Delta T",
         "ms": "Delta T",
         "pt-br": "Delta T",
-        "ru": "Дельта T"
+        "ru": "Дельта T",
+        "zh-cn": "时间差"
     },
     "audiocrosstalk_lowbypass": {
         "en": "Low Bypass",
@@ -2397,7 +2636,8 @@
         "ja": "低周波バイパス",
         "ms": "Low Bypass",
         "pt-br": "Bypass baixo",
-        "ru": "Низкий байпас"
+        "ru": "Низкий байпас",
+        "zh-cn": "低频旁通"
     },
     "audiocrosstalk_highbypass": {
         "en": "High Bypass",
@@ -2407,7 +2647,8 @@
         "ja": "高周波バイパス",
         "ms": "High Bypass",
         "pt-br": "Bypass alto",
-        "ru": "Высокий байпас"
+        "ru": "Высокий байпас",
+        "zh-cn": "高频旁通"
     },
     "audiocrosstalk_speakerdistance": {
         "en": "Speaker Distance",
@@ -2417,7 +2658,8 @@
         "ja": "スピーカー間の距離",
         "ms": "Speaker Distance",
         "pt-br": "Distância do alto-falante",
-        "ru": "Расстояние до динамика"
+        "ru": "Расстояние до динамика",
+        "zh-cn": "扬声器距离"
     },
     "audiocrosstalk_headdistance": {
         "en": "Head Distance",
@@ -2427,7 +2669,8 @@
         "ja": "ヘッド間の距離",
         "ms": "Head Distance",
         "pt-br": "Distância",
-        "ru": "Расстояние до головы"
+        "ru": "Расстояние до головы",
+        "zh-cn": "头部距离"
     },
     "audiocompressor_title": {
         "en": "Audio Compressor",
@@ -2437,7 +2680,8 @@
         "ja": "オーディオコンプレッサー",
         "ms": "Audio Compressor",
         "pt-br": "Compressor de áudio",
-        "ru": "Компрессор"
+        "ru": "Компрессор",
+        "zh-cn": "音频压缩器"
     },
     "audiocompressor_enabled": {
         "en": "Compressor Enabled",
@@ -2447,7 +2691,8 @@
         "ja": "コンプレッサー有効",
         "ms": "Compressor Enabled",
         "pt-br": "Compressor ativado",
-        "ru": "Компрессор включен"
+        "ru": "Компрессор включен",
+        "zh-cn": "已启用压缩器"
     },
     "audiocompressor_disabled": {
         "en": "Compressor Disabled",
@@ -2457,7 +2702,8 @@
         "ja": "コンプレッサー無効",
         "ms": "Compressor Disabled",
         "pt-br": "Compressor desativado",
-        "ru": "Компрессор отключен"
+        "ru": "Компрессор отключен",
+        "zh-cn": "已禁用压缩器"
     },
     "audiocompressor_threshold": {
         "en": "Threshold",
@@ -2467,7 +2713,8 @@
         "ja": "スレッショルド",
         "ms": "Threshold",
         "pt-br": "Limite",
-        "ru": "Порог"
+        "ru": "Порог",
+        "zh-cn": "阈值"
     },
     "audiocompressor_knee": {
         "en": "Knee",
@@ -2477,7 +2724,8 @@
         "ja": "ニー",
         "ms": "Knee",
         "pt-br": "Knee",
-        "ru": "Колено"
+        "ru": "Колено",
+        "zh-cn": "转折"
     },
     "audiocompressor_ratio": {
         "en": "Ratio",
@@ -2487,7 +2735,8 @@
         "ja": "レシオ",
         "ms": "Ratio",
         "pt-br": "Proporção",
-        "ru": "Степень"
+        "ru": "Степень",
+        "zh-cn": "压缩比"
     },
     "audiocompressor_attack": {
         "en": "Attack",
@@ -2497,7 +2746,8 @@
         "ja": "アタック",
         "ms": "Attack",
         "pt-br": "Ataque",
-        "ru": "Атака"
+        "ru": "Атака",
+        "zh-cn": "起始时间"
     },
     "audiocompressor_release": {
         "en": "Release",
@@ -2507,7 +2757,8 @@
         "ja": "リリース",
         "ms": "Release",
         "pt-br": "Liberar",
-        "ru": "Восстановление"
+        "ru": "Восстановление",
+        "zh-cn": "释放"
     },
     "audiocompressor_gain": {
         "en": "Gain",
@@ -2517,7 +2768,8 @@
         "ja": "ゲイン",
         "ms": "Gain",
         "pt-br": "Ganho",
-        "ru": "Усиление"
+        "ru": "Усиление",
+        "zh-cn": "增益"
     },
     "audioeq_title": {
         "en": "Audio Equalizer",
@@ -2527,7 +2779,8 @@
         "ja": "オーディオイコライザー",
         "ms": "Audio Equalizer",
         "pt-br": "Equalizador de áudio",
-        "ru": "Эквалайзер"
+        "ru": "Эквалайзер",
+        "zh-cn": "音频均衡器"
     },
     "audioeq_instructions": {
         "en": "Double click to change type",
@@ -2537,7 +2790,8 @@
         "ja": "ダブルクリックでタイプを変更",
         "ms": "Double click to change type",
         "pt-br": "Clique duas vezes para alterar o tipo",
-        "ru": "Двойной клик для изменения типа"
+        "ru": "Двойной клик для изменения типа",
+        "zh-cn": "双击以更改类型"
     },
     "audioeq_gain": {
         "en": "Gain: $1dB",
@@ -2547,7 +2801,8 @@
         "ja": "ゲイン: $1dB",
         "ms": "Gain: $1dB",
         "pt-br": "Ganho: $1dB",
-        "ru": "Усиление: $1dB"
+        "ru": "Усиление: $1dB",
+        "zh-cn": "增益：$1dB"
     },
     "audioeq_qscroll_instructions": {
         "en": "Scroll to change Q",
@@ -2557,7 +2812,8 @@
         "ja": "スクロールで Q を変更",
         "ms": "Scroll to change Q",
         "pt-br": "Role para mudar Q",
-        "ru": "Прокрутите, чтобы изменить Q"
+        "ru": "Прокрутите, чтобы изменить Q",
+        "zh-cn": "滚动以调整 Q 值"
     },
     "options_title": {
         "en": "FastStream Options",
@@ -2567,7 +2823,8 @@
         "ja": "FastStream のオプション",
         "ms": "FastStream Options",
         "pt-br": "Opções do FastStream",
-        "ru": "Параметры FastStream"
+        "ru": "Параметры FastStream",
+        "zh-cn": "FastStream 选项"
     },
     "options_reviewbanner_header": {
         "en": "Enjoy FastStream? Leave a review!",
@@ -2577,7 +2834,8 @@
         "ja": "FastStream にご満足いただけましたか? 評価をお願いします!",
         "ms": "Enjoy FastStream? Leave a review!",
         "pt-br": "Gostou do FastStream? Deixe sua avaliação!",
-        "ru": "Понравился FastStream? Оставьте отзыв!"
+        "ru": "Понравился FastStream? Оставьте отзыв!",
+        "zh-cn": "喜欢 FastStream 吗？留下评价吧！"
     },
     "options_reviewbanner_body": {
         "en": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
@@ -2587,7 +2845,8 @@
         "ja": "FastStream はボランティアによって維持されている趣味なプロジェクトです。改善すべき事を知るためにフィードバックをいただければ幸いです。お気軽にお申し付けください:",
         "ms": "FastStream is a hobby project maintained by volunteers. We appreciate your feedback as it helps us to know where to improve. Please feel free tell us:",
         "pt-br": "O FastStream é um projeto idealizado de hobby mantido por voluntários. Agradecemos seu retorno, pois ele nos ajuda a saber onde podemos melhorar. Fique à vontade para nos dizer:",
-        "ru": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:"
+        "ru": "FastStream - это хобби-проект, поддерживаемый добровольцами. Мы ценим ваши отзывы, так как они помогают понять, что можно улучшить. Не стесняйтесь, расскажите нам:",
+        "zh-cn": "FastStream 是由志愿者维护的业余项目。我们非常重视你的反馈，它能帮助我们了解需要改进的地方。请随时告诉我们："
     },
     "options_reviewbanner_l1": {
         "en": "How you use it",
@@ -2597,7 +2856,8 @@
         "ja": "使用方法",
         "ms": "How you use it",
         "pt-br": "Como usá-lo",
-        "ru": "Как вы используете расширение"
+        "ru": "Как вы используете расширение",
+        "zh-cn": "你的使用方式"
     },
     "options_reviewbanner_l2": {
         "en": "Any bugs you encounter",
@@ -2607,7 +2867,8 @@
         "ja": "バグに遭遇した場合",
         "ms": "Any bugs you encounter",
         "pt-br": "Quaisquer erros encontrados",
-        "ru": "О проблемах, с которыми вы столкнулись"
+        "ru": "О проблемах, с которыми вы столкнулись",
+        "zh-cn": "遇到的任何问题"
     },
     "options_reviewbanner_l3": {
         "en": "Feature requests",
@@ -2617,7 +2878,8 @@
         "ja": "機能のリクエスト",
         "ms": "Feature requests",
         "pt-br": "Solicitações de recursos",
-        "ru": "Запросить функцию"
+        "ru": "Запросить функцию",
+        "zh-cn": "功能建议"
     },
     "options_reviewbanner_end": {
         "en": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
@@ -2627,7 +2889,8 @@
         "ja": "私たちはアクセシビリティについても非常に重視をしています。現在のバージョンに不足している機能があった場合は、リクエストをしてください。できるだけ早く対応をします。",
         "ms": "We also take accessibility very seriously. If you need accommodations that are lacking in the current version, please make a request and we will work on it ASAP.",
         "pt-br": "Também levamos a acessibilidade muito a sério. Se você precisar de adaptações que não estejam disponíveis na versão atual, faça uma solicitação e trabalharemos nisso o mais rápido possível.",
-        "ru": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними."
+        "ru": "Также мы серьёзно относимся к удобству использования. Если вам нужны дополнительные возможности, которых нет в текущей версии, отправьте запрос, и мы поработаем над ними.",
+        "zh-cn": "我们对无障碍功能也非常重视。如果当前版本缺少您需要的辅助功能，请提出请求，我们会尽快处理。"
     },
     "options_reviewbanner_rate": {
         "en": "OK I'll review FastStream",
@@ -2637,7 +2900,8 @@
         "ja": "OK、FastStream を評価する",
         "ms": "OK I'll review FastStream",
         "pt-br": "Farei uma avaliação do FastStream",
-        "ru": "Хорошо, оценю FastStream"
+        "ru": "Хорошо, оценю FastStream",
+        "zh-cn": "好的，我去评价 FastStream"
     },
     "options_reviewbanner_norate": {
         "en": "I don't want to review :(",
@@ -2647,7 +2911,8 @@
         "ja": "評価しない :(",
         "ms": "I don't want to review :(",
         "pt-br": "Não quero avaliar :(",
-        "ru": "Не хочу оценивать :("
+        "ru": "Не хочу оценивать :(",
+        "zh-cn": "我不想评价 :("
     },
     "options_feedback_header": {
         "en": "Do you have feedback?",
@@ -2657,7 +2922,8 @@
         "ja": "フィードバックをお願いします!",
         "ms": "Do you have feedback?",
         "pt-br": "Tem algum retorno ?",
-        "ru": "Оставьте свой отзыв!"
+        "ru": "Оставьте свой отзыв!",
+        "zh-cn": "有反馈吗？"
     },
     "options_feedback_reason": {
         "en": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
@@ -2667,7 +2933,8 @@
         "ja": "あなたの意見を聞かせてください! 短いフォームを記入してください。私たちはあなたを追跡していないので、改善する唯一の方法です。",
         "ms": "We'd love to hear from you! Please fill out a short form. It's the only way we can improve since we don't track you.",
         "pt-br": "Adoraríamos ouvir de você! Por favor preencha um pequeno formulário. É a única maneira de melhorarmos, já que não rastreamos você.",
-        "ru": "Будем рады услышать ваше мнение! Пожалуйста, заполните небольшую форму. Это единственный способ стать лучше, поскольку мы не следим за вами."
+        "ru": "Будем рады услышать ваше мнение! Пожалуйста, заполните небольшую форму. Это единственный способ стать лучше, поскольку мы не следим за вами.",
+        "zh-cn": "我们很想听取你的意见！请填写一份简短的表单。由于我们不追踪用户，这是我们改进的唯一途径。"
     },
     "options_feedback_yes": {
         "en": "Yes, I have feedback",
@@ -2677,7 +2944,8 @@
         "ja": "はい、フィードバックを送信します",
         "ms": "Yes, I have feedback",
         "pt-br": "Sim, tenho um retorno",
-        "ru": "Оставить отзыв"
+        "ru": "Оставить отзыв",
+        "zh-cn": "是的，我有反馈"
     },
     "options_feedback_no": {
         "en": "No, I'm good",
@@ -2687,7 +2955,8 @@
         "ja": "いいえ、結構です",
         "ms": "No, I'm good",
         "pt-br": "Não, Está tudo bem",
-        "ru": "Нет, спасибо"
+        "ru": "Нет, спасибо",
+        "zh-cn": "不用，谢谢"
     },
     "options_help_feedback": {
         "en": "Feedback Form",
@@ -2697,7 +2966,8 @@
         "ja": "フィードバックフォーム",
         "ms": "Feedback Form",
         "pt-br": "Formulário de retorno",
-        "ru": "Форма обратной связи"
+        "ru": "Форма обратной связи",
+        "zh-cn": "反馈表单"
     },
     "options_update_header": {
         "en": "An Update is Available!",
@@ -2707,7 +2977,8 @@
         "ja": "アップデートが利用可能です!",
         "ms": "An Update is Available!",
         "pt-br": "Uma atualização está disponível!",
-        "ru": "Доступно обновление!"
+        "ru": "Доступно обновление!",
+        "zh-cn": "有可用更新！"
     },
     "options_update_body": {
         "en": "FastStream v$1 is now available (current version v$2). Would you like to update?",
@@ -2717,7 +2988,8 @@
         "ja": "FastStream v$1 が利用可能です (現在のバージョン v$2)。アップデートしますか?",
         "ms": "FastStream v$1 is now available (current version v$2). Would you like to update?",
         "pt-br": "FastStream v$1 já está disponível (versão atual v$2). Você gostaria de atualizar?",
-        "ru": "Доступен FastStream v$1 (текущая v$2). Обновить?"
+        "ru": "Доступен FastStream v$1 (текущая v$2). Обновить?",
+        "zh-cn": "FastStream v$1 已可用（当前版本 v$2）。要更新吗？"
     },
     "options_update_go": {
         "en": "Take me to Github",
@@ -2727,7 +2999,8 @@
         "ja": "GitHub に移動",
         "ms": "Take me to Github",
         "pt-br": "Me leve ao Github",
-        "ru": "Перейти на Github"
+        "ru": "Перейти на Github",
+        "zh-cn": "前往 Github"
     },
     "options_update_no": {
         "en": "Ignore this update",
@@ -2737,7 +3010,8 @@
         "ja": "このアップデートを無視",
         "ms": "Ignore this update",
         "pt-br": "Ignorar esta atualização",
-        "ru": "Игнорировать это обновление"
+        "ru": "Игнорировать это обновление",
+        "zh-cn": "忽略此更新"
     },
     "options_video_header": {
         "en": "Video Options",
@@ -2747,7 +3021,8 @@
         "ja": "動画のオプション",
         "ms": "Video Options",
         "pt-br": "Opções de vídeo",
-        "ru": "Параметры видео"
+        "ru": "Параметры видео",
+        "zh-cn": "视频选项"
     },
     "options_video_body": {
         "en": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
@@ -2757,7 +3032,8 @@
         "ja": "動画に CSS フィルタを適用します。ピクチャー イン ピクチャー (PiP) では動作しません。",
         "ms": "Applies CSS filters to the video. Doesn't work with picture-in-picture.",
         "pt-br": "Aplica filtros CSS ao vídeo. Não funciona no modo sobreposição (pip).",
-        "ru": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»"
+        "ru": "Применять CSS-фильтры к видео. Не работает в режиме «Картинка в картинке»",
+        "zh-cn": "对视频应用 CSS 滤镜。与画中画模式不兼容。"
     },
     "options_video_zoom": {
         "en": "Video Zoom",
@@ -2767,7 +3043,8 @@
         "ja": "ビデオズーム",
         "ms": "Video Zoom",
         "pt-br": "Zoom de vídeo",
-        "ru": "Масштабирование видео"
+        "ru": "Масштабирование видео",
+        "zh-cn": "视频缩放"
     },
     "options_video_delay": {
         "en": "Video Delay",
@@ -2777,7 +3054,8 @@
         "ja": "Video Delay",
         "ms": "Video Delay",
         "pt-br": "Atrso de vídeo",
-        "ru": "Задержка видео"
+        "ru": "Задержка видео",
+        "zh-cn": "视频延迟"
     },
     "options_video_brightness": {
         "en": "Brightness",
@@ -2787,7 +3065,8 @@
         "ja": "明るさ",
         "ms": "Brightness",
         "pt-br": "Briho",
-        "ru": "Яркость"
+        "ru": "Яркость",
+        "zh-cn": "亮度"
     },
     "options_video_contrast": {
         "en": "Contrast",
@@ -2797,7 +3076,8 @@
         "ja": "コントラスト",
         "ms": "Contrast",
         "pt-br": "Contraste",
-        "ru": "Контрастность"
+        "ru": "Контрастность",
+        "zh-cn": "对比度"
     },
     "options_video_saturation": {
         "en": "Saturation",
@@ -2807,7 +3087,8 @@
         "ja": "彩度",
         "ms": "Saturation",
         "pt-br": "Saturação",
-        "ru": "Насыщенность"
+        "ru": "Насыщенность",
+        "zh-cn": "饱和度"
     },
     "options_video_grayscale": {
         "en": "Grayscale",
@@ -2817,7 +3098,8 @@
         "ja": "グレースケール",
         "ms": "Grayscale",
         "pt-br": "Escala de cinza",
-        "ru": "Оттенок"
+        "ru": "Оттенок",
+        "zh-cn": "灰度"
     },
     "options_video_sepia": {
         "en": "Sepia",
@@ -2827,7 +3109,8 @@
         "ja": "セピア",
         "ms": "Sepia",
         "pt-br": "Sepia",
-        "ru": "Сепия"
+        "ru": "Сепия",
+        "zh-cn": "棕褐色"
     },
     "options_video_invert": {
         "en": "Invert",
@@ -2837,7 +3120,8 @@
         "ja": "反転",
         "ms": "Invert",
         "pt-br": "Invertido",
-        "ru": "Инвертирование"
+        "ru": "Инвертирование",
+        "zh-cn": "反色"
     },
     "options_video_hue": {
         "en": "Hue Rotate",
@@ -2847,7 +3131,8 @@
         "ja": "色相の回転",
         "ms": "Hue Rotate",
         "pt-br": "Rotação de matiz",
-        "ru": "Поворот\nоттенка"
+        "ru": "Поворот\nоттенка",
+        "zh-cn": "色相旋转"
     },
     "options_video_daltonizer_type": {
         "en": "Color blindness correction",
@@ -2857,7 +3142,8 @@
         "ja": "色覚異常の矯正",
         "ms": "Color blindness correction",
         "pt-br": "Correção de daltonismo",
-        "ru": "Коррекция дальтонизма"
+        "ru": "Коррекция дальтонизма",
+        "zh-cn": "色盲矫正"
     },
     "options_video_daltonizer_strength": {
         "en": "Strength",
@@ -2867,7 +3153,8 @@
         "ja": "強度",
         "ms": "Strength",
         "pt-br": "Força",
-        "ru": "Усиление"
+        "ru": "Усиление",
+        "zh-cn": "强度"
     },
     "options_video_daltonizer_none": {
         "en": "None",
@@ -2877,7 +3164,8 @@
         "ja": "なし",
         "ms": "None",
         "pt-br": "Nenhum",
-        "ru": "Нет"
+        "ru": "Нет",
+        "zh-cn": "无"
     },
     "options_video_daltonizer_protanomaly": {
         "en": "Protanomaly",
@@ -2887,7 +3175,8 @@
         "ja": "Protanomaly",
         "ms": "Protanomaly",
         "pt-br": "Protanomalia",
-        "ru": "Протаномалия"
+        "ru": "Протаномалия",
+        "zh-cn": "红弱"
     },
     "options_video_daltonizer_deuteranomaly": {
         "en": "Deuteranomaly",
@@ -2897,7 +3186,8 @@
         "ja": "Deuteranomaly",
         "ms": "Deuteranomaly",
         "pt-br": "Deuteranomalia",
-        "ru": "Дейтераномалия"
+        "ru": "Дейтераномалия",
+        "zh-cn": "绿弱"
     },
     "options_video_daltonizer_tritanomaly": {
         "en": "Tritanomaly",
@@ -2907,7 +3197,8 @@
         "ja": "Tritanomaly",
         "ms": "Tritanomaly",
         "pt-br": "Tritanomalia",
-        "ru": "Тританомалия"
+        "ru": "Тританомалия",
+        "zh-cn": "蓝弱"
     },
     "options_general_header": {
         "en": "General Options",
@@ -2917,7 +3208,8 @@
         "ja": "一般設定",
         "ms": "General Options",
         "pt-br": "Opções gerais",
-        "ru": "Общие настройки"
+        "ru": "Общие настройки",
+        "zh-cn": "常规选项"
     },
     "options_general_predownload": {
         "en": "Predownload entire video in the background if possible",
@@ -2927,7 +3219,8 @@
         "ja": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする",
         "ms": "Predownload entire video in the background if possible",
         "pt-br": "Baixe previamente o vídeo inteiro em segundo plano, se possível",
-        "ru": "По возможности, предзагружать видео в фоновом режиме."
+        "ru": "По возможности, предзагружать видео в фоновом режиме.",
+        "zh-cn": "若可能，后台预下载整段视频"
     },
     "options_general_targetspeed": {
         "en": "Target download speed of predownloader",
@@ -2937,7 +3230,8 @@
         "ja": "プリダウンローダーのターゲット速度",
         "ms": "Target download speed of predownloader",
         "pt-br": "Velocidade alvo de download do pré-downloader",
-        "ru": "Целевая скорость предзагрузки"
+        "ru": "Целевая скорость предзагрузки",
+        "zh-cn": "预下载器的目标下载速度"
     },
     "options_general_maxsize": {
         "en": "Maximum size of predownloaded video",
@@ -2947,7 +3241,8 @@
         "ja": "プリダウンローダーの最大サイズ",
         "ms": "Maximum size of predownloaded video",
         "pt-br": "Tamanho máximo do vídeo pré-baixado",
-        "ru": "Максимальный размер предзагружаемого видео"
+        "ru": "Максимальный размер предзагружаемого видео",
+        "zh-cn": "预下载视频的最大大小"
     },
     "options_general_previewenabled": {
         "en": "Show preview when hovering over the timeline",
@@ -2957,7 +3252,8 @@
         "ja": "タイムライン上でマウスを移動するとプレビューが表示されます",
         "ms": "Show preview when hovering over the timeline",
         "pt-br": "Mostrar visualização ao passar o mouse sobre a linha do tempo",
-        "ru": "Отображать предпросмотр при наведении курсора на временную шкалу"
+        "ru": "Отображать предпросмотр при наведении курсора на временную шкалу",
+        "zh-cn": "在时间轴悬停时显示预览"
     },
     "options_general_analyze": {
         "en": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)",
@@ -2967,7 +3263,8 @@
         "ja": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)",
         "ms": "Automatically analyze sequential videos for intros/outros\n(turn off if you have CPU performance issues)",
         "pt-br": "Analisa automaticamente vídeos sequenciais para introduções/outros\n(desligue se você tiver problemas de desempenho do CPU)",
-        "ru": "Анализировать последовательные видео на наличие вступлений/окончаний\n(Отключите, при проблемах с производительностью)"
+        "ru": "Анализировать последовательные видео на наличие вступлений/окончаний\n(Отключите, при проблемах с производительностью)",
+        "zh-cn": "自动分析连续视频以检测片头/片尾\n（如果有 CPU 性能问题请关闭）"
     },
     "options_general_storeprogress": {
         "en": "Save progress of videos in local storage",
@@ -2977,7 +3274,8 @@
         "ja": "動画の進行状況をローカルストレージに保存する",
         "ms": "Save progress of videos in local storage",
         "pt-br": "Salve o progresso dos vídeos localmente",
-        "ru": "Сохранять прогресс видео в локальном хранилище"
+        "ru": "Сохранять прогресс видео в локальном хранилище",
+        "zh-cn": "在本地存储中保存视频进度"
     },
     "options_general_autosub": {
         "en": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)",
@@ -2987,7 +3285,8 @@
         "ja": "自動的に最適な字幕トラックを有効化する\n(字幕設定でデフォルトの言語を変更できます)",
         "ms": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)",
         "pt-br": "Ativar automaticamente a melhor faixa de legenda encontrada\n(Alterar o idioma padrão nas configurações de legenda)",
-        "ru": "Автовключение наиболее подходящих субтитров\n(Измените язык по умолчанию в настройках субтитров)"
+        "ru": "Автовключение наиболее подходящих субтитров\n(Измените язык по умолчанию в настройках субтитров)",
+        "zh-cn": "自动启用匹配到的最佳字幕轨道\n（在字幕设置中更改默认语言）"
     },
     "options_general_stream": {
         "en": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)",
@@ -2997,7 +3296,8 @@
         "ja": "プレイリスト URL (.m3u8/.mpd) を開くときに HLS/DASH ストリームを再生するプレーヤーを使用する",
         "ms": "Use player to play HLS/DASH streams when opening playlist URLs (.m3u8/.mpd)",
         "pt-br": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de listas de reprodução (.m3u8/.mpd)",
-        "ru": "Использовать плеер для воспроизведения HLS/DASH-потоков при открытии ссылки с плейлистом (.m3u8/.mpd)"
+        "ru": "Использовать плеер для воспроизведения HLS/DASH-потоков при открытии ссылки с плейлистом (.m3u8/.mpd)",
+        "zh-cn": "在打开播放列表 URL（.m3u8/.mpd）时使用播放器播放 HLS/DASH 流"
     },
     "options_general_mp4": {
         "en": "Use player to play MP4 videos when opening video URLs (.mp4)",
@@ -3007,7 +3307,8 @@
         "ja": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する",
         "ms": "Use player to play MP4 videos when opening video URLs (.mp4)",
         "pt-br": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de de listas de reprodução (.mp4)",
-        "ru": "Использовать плеер для воспроизведения видео в MP4 при открытии ссылки с видео (.mp4)"
+        "ru": "Использовать плеер для воспроизведения видео в MP4 при открытии ссылки с видео (.mp4)",
+        "zh-cn": "在打开视频 URL（.mp4）时使用播放器播放 MP4 视频"
     },
     "options_general_seekstep": {
         "en": "Seek keybind base step size (seconds)",
@@ -3017,7 +3318,8 @@
         "ja": "シークキーバインドのベースステップサイズ (秒)",
         "ms": "Seek keybind base step size (seconds)",
         "pt-br": "Seek keybind base step size (seconds)",
-        "ru": "Шаг перемотки горячими клавишами (секунды)"
+        "ru": "Шаг перемотки горячими клавишами (секунды)",
+        "zh-cn": "跳转键基础步长（秒）"
     },
     "options_general_replace_delay": {
         "en": "Delay before auto-replacing player (ms)",
@@ -3027,7 +3329,8 @@
         "ja": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)",
         "ms": "Delay before auto-replacing player (ms)",
         "pt-br": "Atraso antes da substituição automática do player (ms)",
-        "ru": "Задержка перед автозаменой плеера (мс)"
+        "ru": "Задержка перед автозаменой плеера (мс)",
+        "zh-cn": "自动替换播放器前的延迟（毫秒）"
     },
     "options_general_autoplayyt": {
         "en": "Autoplay YouTube videos if possible",
@@ -3037,7 +3340,8 @@
         "ja": "YouTube 動画の自動再生",
         "ms": "Autoplay YouTube videos",
         "pt-br": "Reproduzir automaticamente vídeos do YouTube, se possível",
-        "ru": "Автовоспроизведение на YouTube"
+        "ru": "Автовоспроизведение на YouTube",
+        "zh-cn": "尽可能自动播放 YouTube 视频"
     },
     "options_general_autoplaynext": {
         "en": "Autoplay next video when current video ends",
@@ -3047,7 +3351,8 @@
         "ja": "次の動画の自動再生",
         "ms": "Autoplay next video",
         "pt-br": "Reproduzir automaticamente o próximo vídeo quando o vídeo atual terminar",
-        "ru": "Автовоспроизведение следующего видео"
+        "ru": "Автовоспроизведение следующего видео",
+        "zh-cn": "当前视频结束后自动播放下一个视频"
     },
     "options_general_quality": {
         "en": "Default video quality",
@@ -3057,7 +3362,8 @@
         "ja": "動画の品質",
         "ms": "Default video quality",
         "pt-br": "Qualidade de vídeo padrão",
-        "ru": "Качество видео"
+        "ru": "Качество видео",
+        "zh-cn": "默认视频清晰度"
     },
     "options_general_clickaction": {
         "en": "Single click action",
@@ -3067,7 +3373,8 @@
         "ja": "シングルクリック時のアクション",
         "ms": "Single click action",
         "pt-br": "Ação de clique único",
-        "ru": "Действие по одиночному клику"
+        "ru": "Действие по одиночному клику",
+        "zh-cn": "单击操作"
     },
     "options_general_dblclickaction": {
         "en": "Double click action",
@@ -3077,7 +3384,8 @@
         "ja": "ダブルクリック時のアクション",
         "ms": "Double click action",
         "pt-br": "Ação de clique duplo",
-        "ru": "Действие по двойному клику"
+        "ru": "Действие по двойному клику",
+        "zh-cn": "双击操作"
     },
     "options_general_tplclickaction": {
         "en": "Triple click action",
@@ -3087,7 +3395,8 @@
         "ja": "トリプルクリック時のアクション",
         "ms": "Triple click action",
         "pt-br": "Ação de clique triplo",
-        "ru": "Действие по тройному клику"
+        "ru": "Действие по тройному клику",
+        "zh-cn": "三击操作"
     },
     "options_general_clickaction_playpause": {
         "en": "Toggle play/pause",
@@ -3097,7 +3406,8 @@
         "ja": "再生/一時停止に切り替え",
         "ms": "Toggle play/pause",
         "pt-br": "Alternar reprodução/pausa",
-        "ru": "Воспроизведение/Пауза"
+        "ru": "Воспроизведение/Пауза",
+        "zh-cn": "切换播放/暂停"
     },
     "options_general_clickaction_fullscreen": {
         "en": "Toggle fullscreen",
@@ -3107,7 +3417,8 @@
         "ja": "フルスクリーンに切り替え",
         "ms": "Toggle fullscreen",
         "pt-br": "Alternar tela cheia",
-        "ru": "Во весь экран"
+        "ru": "Во весь экран",
+        "zh-cn": "切换全屏"
     },
     "options_general_clickaction_pip": {
         "en": "Toggle picture-in-picture",
@@ -3117,7 +3428,8 @@
         "ja": "ピクチャー イン ピクチャー (PiP) に切り替え",
         "ms": "Toggle picture-in-picture",
         "pt-br": "Alternar imagem em imagem",
-        "ru": "Картинка в картинке"
+        "ru": "Картинка в картинке",
+        "zh-cn": "切换画中画"
     },
     "options_general_clickaction_hidecontrols": {
         "en": "Hide controls",
@@ -3127,7 +3439,8 @@
         "ja": "コントロールを非表示",
         "ms": "Hide controls",
         "pt-br": "Ocultar controles",
-        "ru": "Скрыть элементы управления"
+        "ru": "Скрыть элементы управления",
+        "zh-cn": "隐藏控件"
     },
     "options_general_clickaction_hideplayer": {
         "en": "Hide player",
@@ -3137,7 +3450,8 @@
         "ja": "プレーヤーを非表示",
         "ms": "Hide player",
         "pt-br": "Ocultar tocador",
-        "ru": "Скрыть плеер"
+        "ru": "Скрыть плеер",
+        "zh-cn": "隐藏播放器"
     },
     "options_general_vischangeaction": {
         "en": "When player visibility changes",
@@ -3147,7 +3461,8 @@
         "ja": "プレーヤーの可視性が変更されたとき",
         "ms": "When player visibility changes",
         "pt-br": "Quando a visibilidade do tocador mudar",
-        "ru": "При изменении видимости плеера"
+        "ru": "При изменении видимости плеера",
+        "zh-cn": "播放器可见性变化时"
     },
     "options_general_vischangeaction_nothing": {
         "en": "Do nothing",
@@ -3157,7 +3472,8 @@
         "ja": "何もしない",
         "ms": "Do nothing",
         "pt-br": "Não fazer nada",
-        "ru": "Ничего не делать"
+        "ru": "Ничего не делать",
+        "zh-cn": "不执行任何操作"
     },
     "options_general_vischangeaction_playpause": {
         "en": "Toggle play/pause",
@@ -3167,7 +3483,8 @@
         "ja": "再生/一時停止に切り替え",
         "ms": "Toggle play/pause",
         "pt-br": "Alternar reprodução/pausa",
-        "ru": "Воспроизведение/Пауза"
+        "ru": "Воспроизведение/Пауза",
+        "zh-cn": "切换播放/暂停"
     },
     "options_general_vischangeaction_miniplayer": {
         "en": "Toggle miniplayer",
@@ -3177,7 +3494,8 @@
         "ja": "ミニプレーヤーに切り替え",
         "ms": "Toggle miniplayer",
         "pt-br": "Alternar miniplayer",
-        "ru": "Мини-плеер"
+        "ru": "Мини-плеер",
+        "zh-cn": "切换迷你播放器"
     },
     "options_general_minipos": {
         "en": "Miniplayer position",
@@ -3187,7 +3505,8 @@
         "ja": "ミニプレーヤーの位置",
         "ms": "Miniplayer position",
         "pt-br": "Posição do tocador",
-        "ru": "Положение мини-плеера"
+        "ru": "Положение мини-плеера",
+        "zh-cn": "迷你播放器位置"
     },
     "options_general_minipos_topleft": {
         "en": "Top Left",
@@ -3197,7 +3516,8 @@
         "ja": "左上",
         "ms": "Top Left",
         "pt-br": "Canto superior esquerdo",
-        "ru": "Сверху слева"
+        "ru": "Сверху слева",
+        "zh-cn": "左上角"
     },
     "options_general_minipos_topright": {
         "en": "Top Right",
@@ -3207,7 +3527,8 @@
         "ja": "右上",
         "ms": "Top Right",
         "pt-br": "Canto superior direito",
-        "ru": "Сверху справа"
+        "ru": "Сверху справа",
+        "zh-cn": "右上角"
     },
     "options_general_minipos_bottomleft": {
         "en": "Bottom Left",
@@ -3217,7 +3538,8 @@
         "ja": "左下",
         "ms": "Bottom Left",
         "pt-br": "Inferior Esquerdo",
-        "ru": "Снизу слева"
+        "ru": "Снизу слева",
+        "zh-cn": "左下角"
     },
     "options_general_minipos_bottomright": {
         "en": "Bottom Right",
@@ -3227,7 +3549,8 @@
         "ja": "右下",
         "ms": "Bottom Right",
         "pt-br": "Canto inferior direito",
-        "ru": "Снизу справа"
+        "ru": "Снизу справа",
+        "zh-cn": "右下角"
     },
     "options_general_minisize": {
         "en": "Miniplayer size",
@@ -3237,7 +3560,8 @@
         "ja": "ミニプレーヤーのサイズ",
         "ms": "Miniplayer size",
         "pt-br": "Tamanho do miniplayer",
-        "ru": "Размер мини-плеера"
+        "ru": "Размер мини-плеера",
+        "zh-cn": "迷你播放器大小"
     },
     "options_general_color_theme": {
         "en": "Player color theme",
@@ -3247,7 +3571,8 @@
         "ja": "プレーヤーのカラーテーマ",
         "ms": "Player color theme",
         "pt-br": "Tema de cor do tocador",
-        "ru": "Цветовая тема плеера"
+        "ru": "Цветовая тема плеера",
+        "zh-cn": "播放器颜色主题"
     },
     "options_general_color_theme_default": {
         "en": "Default Dark",
@@ -3257,7 +3582,8 @@
         "ja": "デフォルト ダーク",
         "ms": "Default Dark",
         "pt-br": "Padrão Escuro",
-        "ru": "Темная по умолчанию"
+        "ru": "Темная по умолчанию",
+        "zh-cn": "默认（暗）"
     },
     "options_general_color_theme_arctic": {
         "en": "Arctic Light",
@@ -3267,7 +3593,8 @@
         "ja": "北極ライト",
         "ms": "Cahaya Artik",
         "pt-br": "Luz Ártica",
-        "ru": "Арктический свет"
+        "ru": "Арктический свет",
+        "zh-cn": "极地（亮）"
     },
     "options_general_color_theme_ocean": {
         "en": "Ocean Blue",
@@ -3277,7 +3604,8 @@
         "ja": "オーシャンブルー",
         "ms": "Biru Lautan",
         "pt-br": "Azul Oceano",
-        "ru": "Океанический синий"
+        "ru": "Океанический синий",
+        "zh-cn": "海洋蓝"
     },
     "options_general_color_theme_neon": {
         "en": "Neon Night",
@@ -3287,7 +3615,8 @@
         "ja": "ネオンナイト",
         "ms": "Malam Neon",
         "pt-br": "Noite Néon",
-        "ru": "Неоновая ночь"
+        "ru": "Неоновая ночь",
+        "zh-cn": "霓虹夜"
     },
     "options_general_color_theme_contrast": {
         "en": "High Contrast",
@@ -3297,7 +3626,8 @@
         "ja": "高コントラスト",
         "ms": "High Contrast",
         "pt-br": "Alto Contraste",
-        "ru": "Высокая контрастность"
+        "ru": "Высокая контрастность",
+        "zh-cn": "高对比"
     },
     "options_general_color_theme_sunset": {
         "en": "Sunset Glow",
@@ -3307,7 +3637,8 @@
         "ja": "夕焼けの輝き",
         "ms": "Cahaya Senja",
         "pt-br": "Brilho do Pôr do Sol",
-        "ru": "Закатное сияние"
+        "ru": "Закатное сияние",
+        "zh-cn": "落日余晖"
     },
     "options_general_color_theme_forest": {
         "en": "Forest Night",
@@ -3317,7 +3648,8 @@
         "ja": "森の夜",
         "ms": "Malam Hutan",
         "pt-br": "Noite na Floresta",
-        "ru": "Лесная ночь"
+        "ru": "Лесная ночь",
+        "zh-cn": "森林夜"
     },
     "options_general_color_theme_slate": {
         "en": "Slate Mono",
@@ -3327,7 +3659,8 @@
         "ja": "スレート単色",
         "ms": "Slate Monokrom",
         "pt-br": "Lousa Monocromática",
-        "ru": "Сланец монохром"
+        "ru": "Сланец монохром",
+        "zh-cn": "石板单色"
     },
     "options_general_color_theme_amethyst": {
         "en": "Amethyst Haze",
@@ -3337,7 +3670,8 @@
         "ja": "アメジストの霞",
         "ms": "Kabus Ametis",
         "pt-br": "Névoa de Ametista",
-        "ru": "Аметистовая дымка"
+        "ru": "Аметистовая дымка",
+        "zh-cn": "紫晶薄雾"
     },
     "options_general_color_theme_desert": {
         "en": "Desert Sand",
@@ -3347,7 +3681,8 @@
         "ja": "砂漠の砂",
         "ms": "Pasir Gurun",
         "pt-br": "Areia do Deserto",
-        "ru": "Пустынный песок"
+        "ru": "Пустынный песок",
+        "zh-cn": "沙漠砂色"
     },
     "options_general_color_theme_mint": {
         "en": "Mint Fresh",
@@ -3357,7 +3692,8 @@
         "ja": "フレッシュミント",
         "ms": "Pudina Segar",
         "pt-br": "Menta Fresca",
-        "ru": "Свежая мята"
+        "ru": "Свежая мята",
+        "zh-cn": "薄荷清新"
     },
     "options_general_vischangeaction_pip": {
         "en": "Toggle picture-in-picture",
@@ -3367,7 +3703,8 @@
         "ja": "ピクチャー イン ピクチャー (PiP) に切り替え",
         "ms": "Toggle picture-in-picture",
         "pt-br": "Alternar imagem sobreposta (pip)",
-        "ru": "Картинка в картинке"
+        "ru": "Картинка в картинке",
+        "zh-cn": "切换画中画"
     },
     "options_general_ytclient": {
         "en": "YT client to use. Try changing if you have issues.",
@@ -3377,7 +3714,8 @@
         "ja": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)",
         "ms": "YT client to use. Try changing if you have issues.",
         "pt-br": "Usar cliente YT nativo . Tente mudar se tiver problemas.",
-        "ru": "Используемый YouTube-клиент. Попробуйте изменить при возникновении проблемы"
+        "ru": "Используемый YouTube-клиент. Попробуйте изменить при возникновении проблемы",
+        "zh-cn": "要使用的 YT 客户端。如遇问题可尝试更换。"
     },
     "options_export_header": {
         "en": "Import/Export Settings",
@@ -3387,7 +3725,8 @@
         "ja": "設定のインポート/エクスポート",
         "ms": "Import/Export Settings",
         "pt-br": "Configurações de importação/exportação",
-        "ru": "Настройки импорта/экспорта"
+        "ru": "Настройки импорта/экспорта",
+        "zh-cn": "导入/导出设置"
     },
     "options_import": {
         "en": "Import Settings From File",
@@ -3397,7 +3736,8 @@
         "ja": "ファイルから設定をインポート",
         "ms": "Import Settings From File",
         "pt-br": "Importar configurações do arquivo",
-        "ru": "Импорт настроек из файла"
+        "ru": "Импорт настроек из файла",
+        "zh-cn": "从文件导入设置"
     },
     "options_export": {
         "en": "Export Settings To File",
@@ -3407,7 +3747,8 @@
         "ja": "設定をファイルにエクスポート",
         "ms": "Export Settings To File",
         "pt-br": "Exportar configurações para arquivo",
-        "ru": "Экспорт настроек в файл"
+        "ru": "Экспорт настроек в файл",
+        "zh-cn": "导出设置到文件"
     },
     "options_keybinds_header": {
         "en": "Keyboard Shortcuts",
@@ -3417,7 +3758,8 @@
         "ja": "キーボードショートカット",
         "ms": "Keyboard Shortcuts",
         "pt-br": "Atalhos de teclado",
-        "ru": "Сочетания клавиш"
+        "ru": "Сочетания клавиш",
+        "zh-cn": "键盘快捷键"
     },
     "options_keybinds_body": {
         "en": "Keybinds are only active when the player is focused.",
@@ -3427,7 +3769,8 @@
         "ja": "キーバインドはプレーヤーをフォーカス時のみ有効です。",
         "ms": "Keybinds are only active when the player is focused.",
         "pt-br": "Os atalhos de teclado só ficam ativos quando o tocador estiver em foco.",
-        "ru": "Сочетания клавиш активны только при фокусе на плеере"
+        "ru": "Сочетания клавиш активны только при фокусе на плеере",
+        "zh-cn": "仅当播放器获得焦点时，快捷键才生效。"
     },
     "options_keybinds_reset": {
         "en": "Reset to Defaults",
@@ -3437,7 +3780,8 @@
         "ja": "デフォルトにリセット",
         "ms": "Reset to Defaults",
         "pt-br": "Redefinir para os padrões",
-        "ru": "Сбросить по умолчанию"
+        "ru": "Сбросить по умолчанию",
+        "zh-cn": "重置为默认"
     },
     "options_autourl_header": {
         "en": "Auto-enable URLs",
@@ -3447,7 +3791,8 @@
         "ja": "URL で自動的に有効化",
         "ms": "Auto-enable URLs",
         "pt-br": "Habilitar URLs automaticamente",
-        "ru": "Автовключение по ссылкам"
+        "ru": "Автовключение по ссылкам",
+        "zh-cn": "自动启用 URL"
     },
     "options_autourl_body": {
         "en": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line. To exclude sites, prepend with an exclamation mark (!).",
@@ -3457,7 +3802,8 @@
         "ja": "これらの URL にアクセスすると自動的に拡張機能が有効化され、離れる事で無効化されます。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。",
         "ms": "Will automatically enable the extension upon visiting these URLs and disable upon leaving. One URL per line, pages starting with that URL will also match. For regex, prepend with a tilde (~). One regex per line.",
         "pt-br": "A extensão será ativada automaticamente ao visitar esses links e desativada ao sair. Um link por linha, as páginas que começam com esse link também serão validados. Para uma expressão regular, acrescente um til (~). Uma expressão regular por linha. Para excluir sites, coloque um ponto de exclamação (!).",
-        "ru": "Активировать расширение при посещении этих адресов и отключать при выходе. По одному адресу в строке, также применяется к страницам, начинающимся с этого адреса. Для регулярного выражения добавьте тильду (~). Одно регулярное выражение на строку."
+        "ru": "Активировать расширение при посещении этих адресов и отключать при выходе. По одному адресу в строке, также применяется к страницам, начинающимся с этого адреса. Для регулярного выражения добавьте тильду (~). Одно регулярное выражение на строку.",
+        "zh-cn": "访问这些 URL 时会自动启用扩展，离开时会自动禁用。每行一个 URL，以该 URL 开头的页面也会匹配。使用正则时在前面加波浪号 (~)，每行一个正则。要排除站点，在前面加感叹号 (!)。"
     },
     "options_autourl_hint": {
         "en": "Hint: Test regex on",
@@ -3467,7 +3813,8 @@
         "ja": "ヒント: 正規表現のテストができます",
         "ms": "Hint: Test regex on",
         "pt-br": "Dica: Teste a expressão regular em",
-        "ru": "Подсказка: протестируйте регулярное выражение на"
+        "ru": "Подсказка: протестируйте регулярное выражение на",
+        "zh-cn": "提示：在此处测试正则"
     },
     "options_pattern_header": {
         "en": "Custom Source Patterns",
@@ -3477,7 +3824,8 @@
         "ja": "カスタムソースパターン",
         "ms": "Custom Source Patterns",
         "pt-br": "Padrões de origem personalizada",
-        "ru": "Пользовательские шаблоны источников"
+        "ru": "Пользовательские шаблоны источников",
+        "zh-cn": "自定义源模式"
     },
     "options_pattern_body": {
         "en": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only.",
@@ -3487,7 +3835,8 @@
         "ja": "これらのパターンは、Web ページ上のカスタム動画ソースを検出するために使用されます。順番に適用され、最初に一致したものが使用されます。上級者向け。",
         "ms": "These patterns are used to detect custom video sources on webpages. They are applied in order, and the first match is used. For advanced users only.",
         "pt-br": "Esses padrões são usados para detectar fontes de vídeo personalizadas em páginas da Web. Serão aplicados em ordem, e a primeira correspondência será usada. Somente para usuários avançados.",
-        "ru": "Эти шаблоны используются для обнаружения пользовательских источников видео на веб-страницах. Применяются по порядку и используется первое совпадение. Только для продвинутых пользователей."
+        "ru": "Эти шаблоны используются для обнаружения пользовательских источников видео на веб-страницах. Применяются по порядку и используется первое совпадение. Только для продвинутых пользователей.",
+        "zh-cn": "这些模式用于检测网页上的自定义视频来源。按顺序应用，采用第一个匹配项。仅供高级用户使用。"
     },
     "options_help_header": {
         "en": "Help",
@@ -3497,7 +3846,8 @@
         "ja": "ヘルプ",
         "ms": "Help",
         "pt-br": "Ajuda",
-        "ru": "Помощь"
+        "ru": "Помощь",
+        "zh-cn": "帮助"
     },
     "options_help_welcome": {
         "en": "Welcome Page",
@@ -3507,7 +3857,8 @@
         "ja": "ようこそのページ",
         "ms": "Welcome Page",
         "pt-br": "Página de boas-vindas",
-        "ru": "Страница приветствия"
+        "ru": "Страница приветствия",
+        "zh-cn": "欢迎页"
     },
     "options_help_issues": {
         "en": "Issue Tracker",
@@ -3517,7 +3868,8 @@
         "ja": "問題を報告",
         "ms": "Issue Tracker",
         "pt-br": "Monitoramento de problemas",
-        "ru": "Сообщить о проблеме"
+        "ru": "Сообщить о проблеме",
+        "zh-cn": "问题追踪"
     },
     "subtitles_settings_fontFamily": {
         "en": "Font Family",
@@ -3527,7 +3879,8 @@
         "ja": "フォントファミリー",
         "ms": "Font Family",
         "pt-br": "Família de fontes",
-        "ru": "Шрифт"
+        "ru": "Шрифт",
+        "zh-cn": "字体"
     },
     "subtitles_settings_fontWeight": {
         "en": "Font Weight",
@@ -3537,7 +3890,8 @@
         "ja": "フォントの太さ",
         "ms": "Font Weight",
         "pt-br": "Peso da fonte",
-        "ru": "Вес шрифта"
+        "ru": "Вес шрифта",
+        "zh-cn": "字体粗细"
     },
     "subtitles_settings_fontSize": {
         "en": "Font Size",
@@ -3547,7 +3901,8 @@
         "ja": "フォントのサイズ",
         "ms": "Font Size",
         "pt-br": "Tamanho da fonte",
-        "ru": "Размер шрифта"
+        "ru": "Размер шрифта",
+        "zh-cn": "字体大小"
     },
     "subtitles_settings_color": {
         "en": "Font Color",
@@ -3557,7 +3912,8 @@
         "ja": "フォントの色",
         "ms": "Font Color",
         "pt-br": "Cor da fonte",
-        "ru": "Цвет шрифта"
+        "ru": "Цвет шрифта",
+        "zh-cn": "字体颜色"
     },
     "subtitles_settings_background": {
         "en": "Background Color",
@@ -3567,7 +3923,8 @@
         "ja": "背景の色",
         "ms": "Background Color",
         "pt-br": "Cor de fundo",
-        "ru": "Цвет фона"
+        "ru": "Цвет фона",
+        "zh-cn": "背景颜色"
     },
     "subtitles_settings_outlineColor": {
         "en": "Outline Color",
@@ -3577,7 +3934,8 @@
         "ja": "輪郭線の色",
         "ms": "Outline Color",
         "pt-br": "Cor do contorno",
-        "ru": "Цвет контура"
+        "ru": "Цвет контура",
+        "zh-cn": "描边颜色"
     },
     "subtitles_settings_outlineWidth": {
         "en": "Outline Width",
@@ -3587,7 +3945,8 @@
         "ja": "輪郭線の太さ",
         "ms": "Outline Width",
         "pt-br": "Largura do contorno",
-        "ru": "Ширина контура"
+        "ru": "Ширина контура",
+        "zh-cn": "描边宽度"
     },
     "subtitles_settings_defaultLanguage": {
         "en": "Language",
@@ -3597,7 +3956,8 @@
         "ja": "言語",
         "ms": "Language",
         "pt-br": "Idioma",
-        "ru": "Язык"
+        "ru": "Язык",
+        "zh-cn": "语言"
     },
     "subtitles_settings_bottomMargin": {
         "en": "Bottom Margin",
@@ -3607,7 +3967,8 @@
         "ja": "下の余白",
         "ms": "Bottom Margin",
         "pt-br": "Margem inferior",
-        "ru": "Нижнее поле"
+        "ru": "Нижнее поле",
+        "zh-cn": "底部边距"
     },
     "yes": {
         "en": "Yes",
@@ -3617,7 +3978,8 @@
         "ja": "はい",
         "ms": "Ya",
         "pt-br": "Sim",
-        "ru": "Да"
+        "ru": "Да",
+        "zh-cn": "是"
     },
     "no": {
         "en": "No",
@@ -3627,7 +3989,8 @@
         "ja": "いいえ",
         "ms": "Tidak",
         "pt-br": "Não",
-        "ru": "Нет"
+        "ru": "Нет",
+        "zh-cn": "否"
     },
     "ok": {
         "en": "OK",
@@ -3637,7 +4000,8 @@
         "ja": "OK",
         "ms": "OK",
         "pt-br": "OK",
-        "ru": "ОК"
+        "ru": "ОК",
+        "zh-cn": "确定"
     },
     "cancel": {
         "en": "Cancel",
@@ -3647,7 +4011,8 @@
         "ja": "キャンセル",
         "ms": "Batal",
         "pt-br": "Cancelar",
-        "ru": "Отмена"
+        "ru": "Отмена",
+        "zh-cn": "取消"
     },
     "error_popup": {
         "en": "Error: $1",
@@ -3657,7 +4022,8 @@
         "ja": "エラー: $1",
         "ms": "Ralat: $1",
         "pt-br": "Erro: $1",
-        "ru": "Ошибка: $1"
+        "ru": "Ошибка: $1",
+        "zh-cn": "错误：$1"
     },
     "error_popup_body": {
         "en": "Please report this error to the developers at https://github.com/Andrews54757/FastStream/issues with the stack trace below:",
@@ -3667,7 +4033,8 @@
         "ja": "このエラーを開発者に報告してください: https://github.com/Andrews54757/FastStream/issues 以下にスタックトレースが表示されます:",
         "ms": "Sila laporkan ralat ini kepada pembangun di https://github.com/Andrews54757/FastStream/issues dengan jejak tumpukan di bawah:",
         "pt-br": "Informe esse erro aos desenvolvedores em https://github.com/Andrews54757/FastStream/issues com o rastreamento de detalhes a seguir:",
-        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам по адресу https://github.com/Andrews54757/FastStream/issues с приведённой ниже трассировкой стека:"
+        "ru": "Пожалуйста, сообщите об этой ошибке разработчикам по адресу https://github.com/Andrews54757/FastStream/issues с приведённой ниже трассировкой стека:",
+        "zh-cn": "请将此错误及下面的堆栈信息报告给开发者，地址：https://github.com/Andrews54757/FastStream/issues："
     },
     "error_popup_send": {
         "en": "Report Error",
@@ -3677,7 +4044,8 @@
         "ja": "エラーを報告",
         "ms": "Laporkan Ralat",
         "pt-br": "Relatar erro",
-        "ru": "Сообщить об ошибке"
+        "ru": "Сообщить об ошибке",
+        "zh-cn": "报告错误"
     },
     "yt_error_login_required": {
         "en": "Sorry! FastStream does not support videos which require you to be logged in to YouTube.",
@@ -3687,6 +4055,7 @@
         "ja": "申し訳ありませんが、FastStream は YouTube にログインする必要がある動画をサポートしていません。",
         "ms": "Maaf! FastStream tidak menyokong video yang memerlukan anda masuk ke YouTube.",
         "pt-br": "Desculpe! O FastStream não suporta vídeos que exigem que você esteja logado no YouTube.",
-        "ru": "Извините! FastStream не поддерживает видео, для просмотра которых требуется вход в YouTube."
+        "ru": "Извините! FastStream не поддерживает видео, для просмотра которых требуется вход в YouTube.",
+        "zh-cn": "抱歉！FastStream 不支持需要在 YouTube 登录才能观看的视频。"
     }
 }
