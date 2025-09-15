@@ -3,7 +3,7 @@
         "message": "FastStream Video Player"
     },
     "extension_description": {
-        "message": "Assista á transmissões sem pré-carregamento, consertando tocadores de vídeos na internet."
+        "message": "Assista a transmissões sem pré-carregamento. Conserte tocadores de vídeo problemáticos na internet."
     },
     "extension_toggle_label": {
         "message": "Alternar FastStream"
@@ -72,7 +72,7 @@
         "message": "Sobre as permissões exigidas pelo FastStream"
     },
     "perms_page_about_content0": {
-        "message": "Para que a extensão funcione, ela precisa ter determinadas permissões. Essas permissões são usadas somente para a funcionalidade básicas."
+        "message": "Para que a extensão funcione, ela precisa ter determinadas permissões. Essas permissões são usadas somente para funcionalidades básicas."
     },
     "perms_page_about_content1": {
         "message": "O FastStream não coleta nenhum dado seu. Ele não rastreia você. Ele não envia nenhum dado para nenhum servidor. Ele nem mesmo tem um servidor para o qual enviar dados."
@@ -174,7 +174,7 @@
         "message": "Arraste e solte um arquivo de vídeo para reproduzi-lo."
     },
     "player_nosource_instruction2p1": {
-        "message": "Click"
+        "message": "Clique"
     },
     "player_nosource_instruction2p2": {
         "message": "carregar fontes detectadas em outras guias."
@@ -708,7 +708,7 @@
         "message": "Correção de diafonia desativada"
     },
     "audiocrosstalk_decay": {
-        "message": "Decay"
+        "message": "Decaimento"
     },
     "audiocrosstalk_colorgain": {
         "message": "Coloração máxima"
@@ -750,7 +750,7 @@
         "message": "Ataque"
     },
     "audiocompressor_release": {
-        "message": "Liberar"
+        "message": "Liberação"
     },
     "audiocompressor_gain": {
         "message": "Ganho"
@@ -831,7 +831,7 @@
         "message": "Zoom de vídeo"
     },
     "options_video_delay": {
-        "message": "Atrso de vídeo"
+        "message": "Atraso de vídeo"
     },
     "options_video_brightness": {
         "message": "Briho"
@@ -903,7 +903,7 @@
         "message": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de de listas de reprodução (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Seek keybind base step size (seconds)"
+        "message": "Seek keybind base do atalho de busca (segundos)"
     },
     "options_general_replace_delay": {
         "message": "Atraso antes da substituição automática do player (ms)"

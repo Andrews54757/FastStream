@@ -831,7 +831,7 @@
         "message": "Video Vergößerung"
     },
     "options_video_delay": {
-        "message": "Video Verzögerung"
+        "message": "Videoverzögerung"
     },
     "options_video_brightness": {
         "message": "Helligkeit"
@@ -1050,10 +1050,10 @@
         "message": "Hilfe"
     },
     "options_help_welcome": {
-        "message": "Wilkommens Seite"
+        "message": "Willkommensseite"
     },
     "options_help_issues": {
-        "message": "Problem Tracker"
+        "message": "Fehlerverfolgung"
     },
     "subtitles_settings_fontFamily": {
         "message": "Schriftart"

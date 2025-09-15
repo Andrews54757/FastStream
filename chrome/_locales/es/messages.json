@@ -738,19 +738,19 @@
         "message": "Compresor Desactivado"
     },
     "audiocompressor_threshold": {
-        "message": "Threshold"
+        "message": "Umbral"
     },
     "audiocompressor_knee": {
-        "message": "Knee"
+        "message": "Curva"
     },
     "audiocompressor_ratio": {
-        "message": "Ratio"
+        "message": "Relación"
     },
     "audiocompressor_attack": {
-        "message": "Attack"
+        "message": "Ataque"
     },
     "audiocompressor_release": {
-        "message": "Release"
+        "message": "Liberación"
     },
     "audiocompressor_gain": {
         "message": "Ganancia"
@@ -831,7 +831,7 @@
         "message": "Zoom de Video"
     },
     "options_video_delay": {
-        "message": "Video Delay"
+        "message": "Retraso de video"
     },
     "options_video_brightness": {
         "message": "Brillo"
@@ -1071,10 +1071,10 @@
         "message": "Color de Fondo"
     },
     "subtitles_settings_outlineColor": {
-        "message": "Outline Color"
+        "message": "Color del contorno"
     },
     "subtitles_settings_outlineWidth": {
-        "message": "Outline Width"
+        "message": "Ancho del contorno"
     },
     "subtitles_settings_defaultLanguage": {
         "message": "Idioma"
