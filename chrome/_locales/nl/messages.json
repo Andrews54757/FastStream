@@ -1,0 +1,1109 @@
+{
+    "extension_name": {
+        "message": "FastStream Videospeler"
+    },
+    "extension_description": {
+        "message": "Streamen zonder bufferen. Herstelt gebrekkige videospelers op het internet."
+    },
+    "extension_toggle_label": {
+        "message": "FastStream in-/uitschakelen"
+    },
+    "welcome_page_title": {
+        "message": "Welkom bij FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "Gebruik"
+    },
+    "welcome_page_usage_content0": {
+        "message": "Er zijn vier manieren om FastStream te gebruiken"
+    },
+    "welcome_page_usage_content1": {
+        "message": "Ga naar een website met een videostream en zet FastStream aan door op het pictogram te klikken. Start de stream en de speler wordt automatisch vervangen door FastStream"
+    },
+    "welcome_page_usage_content2": {
+        "message": "Open een nieuw tabblad en klik op het extensiepictogram om naar de speler te gaan."
+    },
+    "welcome_page_usage_content3": {
+        "message": "Als je de optie hebt ingeschakeld, ga naar een mp4/mpd/m3u8-url en de speler speelt deze af."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Houd de speler open in een nieuw tabblad; hij verzamelt bronnen terwijl je elders surft."
+    },
+    "welcome_page_usage_end": {
+        "message": "Bedankt voor het installeren van FastStream! Laat het ons weten als je problemen of suggesties hebt."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "Standaard toetsenbordbediening"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "Je kunt deze toetscombinaties wijzigen in de extensie-instellingen"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "pijltjestoetsen - 1 seconde vooruit/achteruit springen"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "toetsen - 10 seconden vooruit/achteruit springen"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "toets - sprong ongedaan maken"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "pijltjestoetsen - volume met 10% omhoog/omlaag"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- Volledig scherm"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Aantal gelijktijdige verzoeken verhogen/verlagen"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Forceer retry-toets - gebruik deze om mislukte downloads opnieuw te proberen"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Intro/outro overslaan indien van toepassing"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- Speler verbergen/tonen"
+    },
+    "perms_page_title": {
+        "message": "FastStream-machtigingen"
+    },
+    "perms_page_about_header": {
+        "message": "Over de machtigingen die FastStream nodig heeft"
+    },
+    "perms_page_about_content0": {
+        "message": "Om de extensie te laten werken, heeft deze bepaalde machtigingen nodig. Deze machtigingen worden alleen voor basisfunctionaliteit gebruikt."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream verzamelt geen gegevens van je. Het volgt je niet. Het stuurt geen gegevens naar servers. Het heeft zelfs geen server om gegevens naartoe te sturen."
+    },
+    "perms_page_about_content2": {
+        "message": "Niet overtuigd? De broncode van FastStream is beschikbaar op"
+    },
+    "perms_page_about_content3": {
+        "message": "Je kunt de code zelf bekijken, of je eigen aangepaste build handmatig installeren via de instructies."
+    },
+    "perms_page_breakdown_header": {
+        "message": "Toelichting op machtigingen"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "Hier is een toelichting op de machtigingen die FastStream nodig heeft en waarom."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "Opmerking: de gekoppelde voorbeelden kunnen naar een oudere versie van de code verwijzen, maar de kern blijft grotendeels hetzelfde. De lijst is niet uitputtend; items zijn geordend op belangrijkheid."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "Toegang tot en wijzigen van alle websites"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream moet toegang hebben tot alle websites zodat het de speler rechtstreeks op de site kan injecteren. Het injecteert een content script in bezochte websites om:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "Het grootste zichtbare video-element identificeren om te vervangen door de speler."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "Volledig scherm toestaan wanneer de speler in een frame is geïnjecteerd."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "Ondertitel-<track>-elementen van de pagina uitlezen."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "Toegang tot de webRequest-API"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream moet HTTP-verzoeken naar video-bronnen kunnen onderscheppen om:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "Videobronnen identificeren"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "Toegang tot de declarativeNetRequest-API"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream moet HTTP-headers van bepaalde verzoeken kunnen aanpassen om:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "Headers voor videobronnen overschrijven."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "Gegevens in je browser opslaan"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream moet gegevens in je browser kunnen opslaan zodat het je instellingen kan onthouden."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "Algemene extensie-opties."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "Toegang tot de tabs-API"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream moet berichten kunnen verzenden tussen spelers en content scripts in elk tabblad."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "Verzenden van bronnen naar spelers vanuit het achtergrondscript."
+    },
+    "perms_page_granted": {
+        "message": "Toegestaan"
+    },
+    "perms_page_notgranted": {
+        "message": "Niet toegestaan, klik om toe te staan"
+    },
+    "player_needs_interaction": {
+        "message": "Interactie vereist om downloadversnelling in te schakelen"
+    },
+    "player_skipintro": {
+        "message": "Intro overslaan"
+    },
+    "player_skipoutro": {
+        "message": "Outro overslaan"
+    },
+    "player_nextvideoin": {
+        "message": "Volgende video over $1s"
+    },
+    "player_hidecontrols": {
+        "message": "Bediening verbergen"
+    },
+    "player_loading": {
+        "message": "Laden..."
+    },
+    "player_nosource_header": {
+        "message": "Geen bron geladen!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Sleep een videobestand hierheen om het af te spelen."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "Klik"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "om bronnen uit andere tabbladen te laden."
+    },
+    "player_play_label": {
+        "message": "Video afspelen"
+    },
+    "player_pause_label": {
+        "message": "Video pauzeren"
+    },
+    "player_next_video_label": {
+        "message": "Volgende video"
+    },
+    "player_previous_video_label": {
+        "message": "Vorige video"
+    },
+    "player_volume_label": {
+        "message": "Volume is $1%. Gebruik de pijltjestoetsen om het aan te passen, Enter om dempen in/uit te schakelen."
+    },
+    "player_mute_label": {
+        "message": "Geluid dempen"
+    },
+    "player_timestamp_label": {
+        "message": "URL met tijdstempel kopiëren"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "Bronnenbrowser"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "Open bronnenbrowser"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "Sluit bronnenbrowser"
+    },
+    "player_audioconfig_title": {
+        "message": "Audio-instellingen"
+    },
+    "player_audioconfig_open_label": {
+        "message": "Open audio-instellingen"
+    },
+    "player_audioconfig_close_label": {
+        "message": "Sluit audio-instellingen"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles zoeken"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "Sluit OpenSubtitles-zoekvenster"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Zoeken op titel, bestandsnaam, enz..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "Zoeken"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "Seizoen #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "Aflevering #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "Alles"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "Film"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "Aflevering"
+    },
+    "player_opensubtitles_language": {
+        "message": "Taal"
+    },
+    "player_opensubtitles_year": {
+        "message": "Jaar"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Sorteren op"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "Downloads"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "Uploaddatum"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "Beoordeling"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "Stemmen"
+    },
+    "player_opensubtitles_sort": {
+        "message": "Sorteren"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Aflopend"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Oplopend"
+    },
+    "player_opensubtitles_searching": {
+        "message": "Zoeken..."
+    },
+    "player_opensubtitles_error": {
+        "message": "Fout: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Kan de juiste headers niet instellen! Installeer de extensie om deze functie te gebruiken!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles is niet beschikbaar!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "Download van OpenSubtitles mislukt! Hun servers zijn waarschijnlijk offline!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "Geen resultaten gevonden!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles beperkt het aantal ondertitel-downloads! Je hebt geen downloads meer over! Je limiet wordt gereset over $1"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Wil je de OpenSubtitles-website openen om het ondertitelbestand handmatig te downloaden?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "Ondertitelsmenu openen"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Ondertitelsmenu sluiten"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "Terug"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "Ondertitelinstellingen"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "Ondertitels testen"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "Test stoppen"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "Bestand uploaden"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "Van URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "URL invoeren"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "Ondertitelbestand downloaden..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "Ondertitelbestand geladen!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "Ondertitelbestand laden mislukt!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "Zoeken op OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "Ondertitels wissen"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "Ondertitelinstellingen"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Synchronisatietool"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Sleep ondertitels om te resynchroniseren"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "Ondertitelbestand opslaan"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "Ondertitelspoor verwijderen"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Verschuif ondertitels $1s"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "Ondertitels met $1s verschoven"
+    },
+    "player_testsubtitle": {
+        "message": "Dit is een testondertitel"
+    },
+    "player_qualitymenu_label": {
+        "message": "Videokwaliteit"
+    },
+    "player_languagemenu_label": {
+        "message": "Taalkeuze"
+    },
+    "player_languagemenu_video": {
+        "message": "Video"
+    },
+    "player_languagemenu_audio": {
+        "message": "Audio"
+    },
+    "player_playbackrate_label": {
+        "message": "Afspelsnelheid"
+    },
+    "player_settings_title": {
+        "message": "FastStream-instellingen"
+    },
+    "player_settings_open_label": {
+        "message": "Instellingenvenster openen"
+    },
+    "player_settings_close_label": {
+        "message": "Instellingenvenster sluiten"
+    },
+    "player_savevideo_label": {
+        "message": "Video opslaan. Houd ALT ingedrukt om gedeeltelijke video op te slaan. Houd SHIFT ingedrukt om de buffer te legen."
+    },
+    "player_screenshot_label": {
+        "message": "Schermafbeelding maken"
+    },
+    "player_pip_label": {
+        "message": "Beeld-in-beeld"
+    },
+    "player_fullscreen_label": {
+        "message": "Volledig scherm in-/uitschakelen"
+    },
+    "player_fullscreen_denied": {
+        "message": "Toestemming voor volledig scherm geweigerd!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Venster-volledig scherm in-/uitschakelen"
+    },
+    "player_skip_forward_label": {
+        "message": "10s vooruit springen"
+    },
+    "player_skip_backward_label": {
+        "message": "10s terugspringen"
+    },
+    "player_more_label": {
+        "message": "Meer tools"
+    },
+    "player_loop_label": {
+        "message": "Herhalen"
+    },
+    "loop_menu_start": {
+        "message": "Begin"
+    },
+    "loop_menu_end": {
+        "message": "Einde"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Herhalen ingeschakeld"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Herhalen uitgeschakeld"
+    },
+    "loop_menu_gif_start": {
+        "message": "GIF opnemen op 4x snelheid..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIF-opname voltooid. Nu opslaan..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "GIF-opname afgebroken!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "GIF wordt opgeslagen $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIF opslaan voltooid!"
+    },
+    "player_download_paused": {
+        "message": "Download gepauzeerd"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 fragment mislukt! Klik om opnieuw te proberen."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 fragmenten zijn mislukt! Klik om opnieuw te proberen."
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% gebufferd"
+    },
+    "player_welcometext": {
+        "message": "Welkom bij FastStream v$1!"
+    },
+    "player_nosource_alert": {
+        "message": "Geen bron geladen!"
+    },
+    "player_archive_loading": {
+        "message": "Archief laden... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "Archief geladen!"
+    },
+    "player_archive_fail": {
+        "message": "Archief laden mislukt!"
+    },
+    "player_filename_prompt": {
+        "message": "Voer een bestandsnaam in"
+    },
+    "player_screenshot_saving": {
+        "message": "Screenshot maken..."
+    },
+    "player_screenshot_saved": {
+        "message": "Screenshot opgeslagen!"
+    },
+    "player_screenshot_fail": {
+        "message": "Screenshot maken mislukt!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Er wordt al opgeslagen!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Opslaan wordt niet ondersteund voor deze video!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "De video is nog niet volledig gedownload! Weet je zeker dat je hem wilt opslaan?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "Incognito-modus gebruikt RAM om video's te bufferen. Je computer heeft mogelijk niet genoeg geheugen om de hele video op te slaan!\nWeet je zeker dat je wilt doorgaan?"
+    },
+    "player_savevideo_reencode": {
+        "message": "Opslaan vereist hercodering. Dit kan lang duren. Wil je doorgaan?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "Opslaan annuleren..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Opslaan geannuleerd!"
+    },
+    "player_savevideo_start": {
+        "message": "Bezig met opslaan..."
+    },
+    "player_savevideo_progress": {
+        "message": "Opslaan $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "Video opslaan mislukt!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Video opslaan mislukt!\nWil je in plaats daarvan de bufferopslag van de speler archiveren?\n- Sleep archiefbestanden naar de speler om ze te laden"
+    },
+    "player_savevideo_complete": {
+        "message": "Opslaan voltooid!"
+    },
+    "player_archiver_progress": {
+        "message": "Archiveren $1%"
+    },
+    "player_archiver_saved": {
+        "message": "Archief opgeslagen!"
+    },
+    "player_quality_current": {
+        "message": "(huidig)"
+    },
+    "player_quality_unknown": {
+        "message": "(onbekend)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Niet genoeg ruimte om vooraf te downloaden in incognitomodus, er wordt $1 gebufferd"
+    },
+    "player_buffer_storage_warning": {
+        "message": "Videobestand overschrijdt de limiet, er wordt $1 gebufferd"
+    },
+    "player_error_drm": {
+        "message": "Laden mislukt! DRM wordt niet ondersteund!"
+    },
+    "player_error_load": {
+        "message": "Video laden mislukt!"
+    },
+    "source_copied": {
+        "message": "URL gekopieerd naar klembord!"
+    },
+    "player_source_copybtn": {
+        "message": "Kopiëren"
+    },
+    "player_source_copybtn_label": {
+        "message": "Kopieer bron-URL, headers en modus naar klembord"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Gekopieerd!"
+    },
+    "player_source_autodetect": {
+        "message": "Automatisch detecteren"
+    },
+    "player_source_direct": {
+        "message": "Direct"
+    },
+    "player_source_accelmp4": {
+        "message": "Versnelde MP4"
+    },
+    "player_source_accelhls": {
+        "message": "Versnelde HLS"
+    },
+    "player_source_acceldash": {
+        "message": "Versnelde DASH"
+    },
+    "player_source_accelyt": {
+        "message": "Versnelde YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "Versnelde Vimeo"
+    },
+    "player_source_mode": {
+        "message": "Modus"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Selecteer een afspeelmodus!"
+    },
+    "player_source_url_placeholder": {
+        "message": "Bron-URL"
+    },
+    "player_source_headerbtn": {
+        "message": "Header-override ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Invoer voor header-override in/uitschakelen"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Header-override (alleen extensie)"
+    },
+    "player_source_playbtn": {
+        "message": "Afspelen"
+    },
+    "player_source_playbtn_playing": {
+        "message": "Wordt afgespeeld"
+    },
+    "player_source_playbtn_loading": {
+        "message": "Laden..."
+    },
+    "player_source_deletebtn": {
+        "message": "Verwijderen"
+    },
+    "player_source_headers_label": {
+        "message": "Header-override invoer"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Header-Naam: Header Waarde\nHeader2-Naam: Header2 Waarde"
+    },
+    "player_source_nonelisted": {
+        "message": "Geen bronnen"
+    },
+    "player_source_onelisted": {
+        "message": "1 bron vermeld"
+    },
+    "player_source_multilisted": {
+        "message": "$1 bronnen vermeld"
+    },
+    "player_source_addbtn": {
+        "message": "Bron toevoegen"
+    },
+    "player_source_clearbtn": {
+        "message": "Bronnen wissen"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(geladen van bestand op $1)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "Nieuw profiel aanmaken"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "Profielen importeren uit bestand"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "Ongeldig profielbestand"
+    },
+    "player_audioconfig_profile": {
+        "message": "Profiel"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Naamloos profiel"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "Profiel laden"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "Profiel geladen!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "Profiel opslaan"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "Opslaan..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "Profiel opgeslagen!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "Profiel downloaden"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "Gedownload!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "Verwijderen"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "Verwijderen..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "Verwijderd!"
+    },
+    "audiomixer_title": {
+        "message": "Audiokanaalmixer"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 versterking is $2 dB ($3%). Gebruik de pijltjestoetsen om aan te passen. Druk op M om mono aan/uit te schakelen"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 versterking is $2 dB ($3%). Gebruik de pijltjestoetsen om aan te passen. Druk op M om dempen aan/uit te schakelen"
+    },
+    "audiomixer_solo_label": {
+        "message": "Solo"
+    },
+    "audiomixer_mute_label": {
+        "message": "Dempen"
+    },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "Kanaaldynamiek bewerken"
+    },
+    "audiocrosstalk_title": {
+        "message": "Overspraakcorrectie"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "Overspraakcorrectie ingeschakeld"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "Overspraakcorrectie uitgeschakeld"
+    },
+    "audiocrosstalk_decay": {
+        "message": "Verval"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "Maximale kleuring"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "Laag bypass"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "Hoog bypass"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "Luidsprekerafstand"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "Afstand tot hoofd"
+    },
+    "audiocompressor_title": {
+        "message": "Audiocompressor"
+    },
+    "audiocompressor_enabled": {
+        "message": "Compressor ingeschakeld"
+    },
+    "audiocompressor_disabled": {
+        "message": "Compressor uitgeschakeld"
+    },
+    "audiocompressor_threshold": {
+        "message": "Drempel"
+    },
+    "audiocompressor_knee": {
+        "message": "Knee"
+    },
+    "audiocompressor_ratio": {
+        "message": "Ratio"
+    },
+    "audiocompressor_attack": {
+        "message": "Aanvalstijd"
+    },
+    "audiocompressor_release": {
+        "message": "Release"
+    },
+    "audiocompressor_gain": {
+        "message": "Gain"
+    },
+    "audioeq_title": {
+        "message": "Audio-equalizer"
+    },
+    "audioeq_instructions": {
+        "message": "Dubbelklik om het type te wijzigen"
+    },
+    "audioeq_gain": {
+        "message": "Gain: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "Scroll om Q te wijzigen"
+    },
+    "options_title": {
+        "message": "FastStream-opties"
+    },
+    "options_reviewbanner_header": {
+        "message": "Vind je FastStream leuk? Laat een beoordeling achter!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream is een hobbyproject dat door vrijwilligers wordt onderhouden. We waarderen je feedback; dat helpt ons te weten waar we kunnen verbeteren. Vertel ons gerust:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "Hoe je het gebruikt"
+    },
+    "options_reviewbanner_l2": {
+        "message": "Eventuele bugs die je tegenkomt"
+    },
+    "options_reviewbanner_l3": {
+        "message": "Functieverzoeken"
+    },
+    "options_reviewbanner_end": {
+        "message": "We nemen toegankelijkheid ook zeer serieus. Als je aanpassingen nodig hebt die in de huidige versie ontbreken, dien dan een verzoek in en we werken er zo snel mogelijk aan."
+    },
+    "options_reviewbanner_rate": {
+        "message": "Oké, ik beoordeel FastStream"
+    },
+    "options_reviewbanner_norate": {
+        "message": "Ik wil geen beoordeling achterlaten :("
+    },
+    "options_feedback_header": {
+        "message": "Heb je feedback?"
+    },
+    "options_feedback_reason": {
+        "message": "We horen graag van je! Vul alsjeblieft een kort formulier in. Het is de enige manier waarop we kunnen verbeteren, omdat we je niet volgen."
+    },
+    "options_feedback_yes": {
+        "message": "Ja, ik heb feedback"
+    },
+    "options_feedback_no": {
+        "message": "Nee, het gaat goed"
+    },
+    "options_help_feedback": {
+        "message": "Feedbackformulier"
+    },
+    "options_update_header": {
+        "message": "Er is een update beschikbaar!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 is nu beschikbaar (huidige versie v$2). Wil je updaten?"
+    },
+    "options_update_go": {
+        "message": "Breng me naar Github"
+    },
+    "options_update_no": {
+        "message": "Negeer deze update"
+    },
+    "options_video_header": {
+        "message": "Video-opties"
+    },
+    "options_video_body": {
+        "message": "Past CSS-filters toe op de video. Werkt niet in beeld-in-beeld."
+    },
+    "options_video_zoom": {
+        "message": "Videozoom"
+    },
+    "options_video_delay": {
+        "message": "Videovertraging"
+    },
+    "options_video_brightness": {
+        "message": "Helderheid"
+    },
+    "options_video_contrast": {
+        "message": "Contrast"
+    },
+    "options_video_saturation": {
+        "message": "Verzadiging"
+    },
+    "options_video_grayscale": {
+        "message": "Grijstinten"
+    },
+    "options_video_sepia": {
+        "message": "Sepia"
+    },
+    "options_video_invert": {
+        "message": "Omkeren"
+    },
+    "options_video_hue": {
+        "message": "Kleurtoon roteren"
+    },
+    "options_video_daltonizer_type": {
+        "message": "Correctie voor kleurenblindheid"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Sterkte"
+    },
+    "options_video_daltonizer_none": {
+        "message": "Geen"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomalie"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomalie"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomalie"
+    },
+    "options_general_header": {
+        "message": "Algemene opties"
+    },
+    "options_general_predownload": {
+        "message": "Laad, indien mogelijk, de volledige video op de achtergrond."
+    },
+    "options_general_targetspeed": {
+        "message": "Gewenste downloadsnelheid voor het voorladen"
+    },
+    "options_general_maxsize": {
+        "message": "Maximale grootte van vooraf gedownloade video"
+    },
+    "options_general_previewenabled": {
+        "message": "Toon voorbeeld bij aanwijzen van de tijdlijn"
+    },
+    "options_general_analyze": {
+        "message": "Analyseer automatisch opeenvolgende video's op intro's/outro's\n(schakel uit bij CPU-prestatieproblemen)"
+    },
+    "options_general_storeprogress": {
+        "message": "Sla voortgang van video's op in lokale opslag"
+    },
+    "options_general_autosub": {
+        "message": "Schakel automatisch het beste gevonden ondertitelingsspoor in\n(Verander de standaardtaal in de ondertitelingsinstellingen)"
+    },
+    "options_general_stream": {
+        "message": "Gebruik de speler om HLS/DASH-streams af te spelen bij het openen van afspeellijst-URL's (.m3u8/.mpd)"
+    },
+    "options_general_mp4": {
+        "message": "Gebruik de speler om MP4-video's af te spelen bij het openen van video-URL's (.mp4)"
+    },
+    "options_general_seekstep": {
+        "message": "Basisstapgrootte voor zoeken (seconden)"
+    },
+    "options_general_replace_delay": {
+        "message": "Vertraging voordat speler automatisch wordt vervangen (ms)"
+    },
+    "options_general_autoplayyt": {
+        "message": "YouTube-video's automatisch afspelen indien mogelijk"
+    },
+    "options_general_autoplaynext": {
+        "message": "Volgende video automatisch afspelen wanneer huidige video eindigt"
+    },
+    "options_general_quality": {
+        "message": "Standaard videokwaliteit"
+    },
+    "options_general_clickaction": {
+        "message": "Actie bij enkele klik"
+    },
+    "options_general_dblclickaction": {
+        "message": "Actie bij dubbelklik"
+    },
+    "options_general_tplclickaction": {
+        "message": "Actie bij drievoudige klik"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Afspelen/pauzeren"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Volledig scherm in-/uitschakelen"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Beeld-in-beeld in-/uitschakelen"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Bediening verbergen"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Speler verbergen"
+    },
+    "options_general_vischangeaction": {
+        "message": "Wanneer de zichtbaarheid van de speler verandert"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "Niets doen"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "Afspelen/pauzeren"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Mini-speler in-/uitschakelen"
+    },
+    "options_general_minipos": {
+        "message": "Positie mini-speler"
+    },
+    "options_general_minipos_topleft": {
+        "message": "Boven links"
+    },
+    "options_general_minipos_topright": {
+        "message": "Boven rechts"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "Onder links"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "Onder rechts"
+    },
+    "options_general_minisize": {
+        "message": "Grootte mini-speler"
+    },
+    "options_general_color_theme": {
+        "message": "Kleurthema van de speler"
+    },
+    "options_general_color_theme_default": {
+        "message": "Standaard donker"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Arctisch licht"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Oceaanblauw"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Neonnacht"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Hoog contrast"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Zonsonderganggloed"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Bosnacht"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Leisteen mono"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "Amethistnevel"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Woestijnzand"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Frisse munt"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "Schakel picture-in-picture"
+    },
+    "options_general_ytclient": {
+        "message": "Welke YT-client te gebruiken. Wijzig dit als je problemen ondervindt."
+    },
+    "options_export_header": {
+        "message": "Instellingen importeren/exporteren"
+    },
+    "options_import": {
+        "message": "Instellingen importeren uit bestand"
+    },
+    "options_export": {
+        "message": "Instellingen exporteren naar bestand"
+    },
+    "options_keybinds_header": {
+        "message": "Sneltoetsen"
+    },
+    "options_keybinds_body": {
+        "message": "Sneltoetsen werken alleen als de speler de focus heeft."
+    },
+    "options_keybinds_reset": {
+        "message": "Herstel standaardinstellingen"
+    },
+    "options_autourl_header": {
+        "message": "URL's automatisch inschakelen"
+    },
+    "options_autourl_body": {
+        "message": "Schakelt de extensie automatisch in bij het bezoeken van deze URL's en uit bij het verlaten. Eén URL per regel; pagina's die met die URL beginnen, komen ook overeen. Voor regex, plaats een tilde (~) vooraan. Eén regex per regel. Om sites uit te sluiten, plaats een uitroepteken (!)."
+    },
+    "options_autourl_hint": {
+        "message": "Tip: test regex op"
+    },
+    "options_pattern_header": {
+        "message": "Aangepaste bronpatronen"
+    },
+    "options_pattern_body": {
+        "message": "Deze patronen worden gebruikt om aangepaste videobronnen op webpagina's te detecteren. Ze worden in volgorde toegepast en de eerste match wordt gebruikt. Alleen voor gevorderde gebruikers."
+    },
+    "options_help_header": {
+        "message": "Help"
+    },
+    "options_help_welcome": {
+        "message": "Welkomstpagina"
+    },
+    "options_help_issues": {
+        "message": "Probleemtracker"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "Lettertype"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Lettertypegewicht"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Lettergrootte"
+    },
+    "subtitles_settings_color": {
+        "message": "Tekstkleur"
+    },
+    "subtitles_settings_background": {
+        "message": "Achtergrondkleur"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "Randkleur"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "Randdikte"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Taal"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "Onderste marge"
+    },
+    "yes": {
+        "message": "Ja"
+    },
+    "no": {
+        "message": "Nee"
+    },
+    "ok": {
+        "message": "OK"
+    },
+    "cancel": {
+        "message": "Annuleren"
+    },
+    "error_popup": {
+        "message": "Fout: $1"
+    },
+    "error_popup_body": {
+        "message": "Rapporteer deze fout alstublieft aan de ontwikkelaars op https://github.com/Andrews54757/FastStream/issues met de onderstaande stacktrace:"
+    },
+    "error_popup_send": {
+        "message": "Fout melden"
+    },
+    "yt_error_login_required": {
+        "message": "Sorry! FastStream ondersteunt geen video's waarvoor je bij YouTube moet inloggen."
+    }
+}
