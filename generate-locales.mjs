@@ -18,7 +18,7 @@ function parseArgs(argv) {
     overwrite: false,
     dryRun: false,
     batch: 25,
-    threads: 5,
+    threads: 10,
   };
 
   for (let i = 0; i < argv.length; i++) {
