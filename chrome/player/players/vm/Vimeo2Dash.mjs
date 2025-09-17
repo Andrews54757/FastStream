@@ -10,7 +10,7 @@ export class Vimeo2Dash {
     const MPD = this.makeMPD(new_base_url, playlist);
     const xml = new XMLSerializer().serializeToString(MPD);
     // console.log(JSON.stringify(playlist));
-    // console.log(xml, playlist);
+    console.log(xml, playlist);
     return '<?xml version="1.0" encoding="utf-8"?>' + xml;
   }
 
@@ -32,6 +32,9 @@ export class Vimeo2Dash {
     const width = track.width;
     const height = track.height;
     const frameRate = track.framerate;
+    const index_segment = track.index_segment;
+    const init_segment_data_b64 = track.init_segment;
+    const segments = track.segments;
     // sconst startWithSap = 1;
 
     // const codecid = track.codecid;
@@ -55,14 +58,55 @@ export class Vimeo2Dash {
     Representation.appendChild(BaseURL);
 
     const SegmentList = this.document.createElement('SegmentList');
-    SegmentList.setAttribute('duration', track.max_segment_duration);
-    SegmentList.setAttribute('timescale', 1);
+
 
     Representation.appendChild(SegmentList);
 
-    const index_segment = track.index_segment;
-    const init_segment_data_b64 = track.init_segment;
-    const segments = track.segments;
+    // segment timeline
+    const SegmentTimeline = this.document.createElement('SegmentTimeline');
+    const timeScale = 1000;
+    SegmentList.setAttribute('timescale', timeScale);
+    // adjust segment times to timescale
+    segments.forEach((segment)=>{
+      segment.start = Math.floor(segment.start * timeScale);
+      segment.end = Math.floor(segment.end * timeScale);
+    });
+
+    // adjust so that the first segment starts at 0
+    const firstStart = segments[0].start;
+    if (firstStart !== 0) {
+      segments.forEach((segment)=>{
+        segment.start -= firstStart;
+        segment.end -= firstStart;
+      });
+    }
+
+    // group segments with same duration
+    const timeline = [];
+    let current = {start: segments[0].start, duration: segments[0].end - segments[0].start, count: 1};
+    for (let i = 1; i < segments.length; i++) {
+      const segment = segments[i];
+      const duration = segment.end - segment.start;
+      if (duration === current.duration) {
+        current.count++;
+      } else {
+        timeline.push(current);
+        current = {start: segment.start, duration: duration, count: 1};
+      }
+    }
+    timeline.push(current);
+
+    timeline.forEach((entry, i)=>{
+      const S = this.document.createElement('S');
+      S.setAttribute('t', entry.start);
+      S.setAttribute('d', entry.duration);
+      if (entry.count > 1) {
+        S.setAttribute('r', entry.count - 1);
+      }
+      SegmentTimeline.appendChild(S);
+    });
+
+    SegmentList.appendChild(SegmentTimeline);
 
     if (index_segment !== undefined) {
       const RepresentationIndex = this.document.createElement('RepresentationIndex');
