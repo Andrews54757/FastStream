@@ -96,7 +96,7 @@ export default class DashPlayer extends EventEmitter {
         const levels = DashTrackUtils.getVideoLevelList([mediaInfo]);
         const chosen = this.client.getLevelManager().pickVideoLevel(Array.from(levels.values()));
         const result = representations.filter((rep) => {
-          return chosen && rep.id === chosen.id;
+          return chosen && DashTrackUtils.getLevelFromRepresentation(rep) === chosen.id;
         });
         if (result.length === 0) {
           return representations;
@@ -107,7 +107,7 @@ export default class DashPlayer extends EventEmitter {
         const levels = DashTrackUtils.getAudioLevelList([mediaInfo]);
         const chosen = this.client.getLevelManager().pickAudioLevel(Array.from(levels.values()));
         const result = representations.filter((rep) => {
-          return chosen && rep.id === chosen.id;
+          return chosen && DashTrackUtils.getLevelFromRepresentation(rep) === chosen.id;
         });
         if (result.length === 0) {
           console.warn('No matching audio representation found for chosen level, falling back to all representations', representations, chosen);

@@ -68,7 +68,6 @@ export class DashTrackUtils {
 
     tracks.forEach((track) => {
       track.bitrateList.forEach((data) => {
-        console.log(data);
         const levelId = 'audio-' + data.id;
         const existing = map.get(levelId);
         if (existing) {
