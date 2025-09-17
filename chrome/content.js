@@ -1196,6 +1196,31 @@
 
   function getNextOrPreviousButton(isNext = false) {
     const aElements = querySelectorAllIncludingShadows('a');
+    // Check if next or previous button is in a elements
+    const matches = aElements.filter((a) => {
+      const textContent = a.textContent.trim().toLowerCase();
+      if (isNext) {
+        return textContent === 'next' || textContent === 'next episode';
+      } else {
+        return textContent === 'previous' || textContent === 'previous episode' || textContent === 'prev' || textContent === 'prev episode';
+      }
+    }).filter((a) => {
+      // make sure identical origin
+      if (!a.href) {
+        return false;
+      }
+      try {
+        const url = url_to_absolute(a.href);
+        return (new URL(url)).origin === window.location.origin;
+      } catch (e) {
+        return false;
+      }
+    });
+
+    if (matches.length === 1) {
+      return matches[0];
+    }
+
     const currentURL = window.location.href;
     let matchedElements = aElements.filter((a) => {
       if (!a.href) {
