@@ -540,7 +540,7 @@ export class InterfaceController {
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += 10;
+      this.client.currentTime += this.client.options.seekStepSize * 5;
       this.client.setSeekSave(true);
       e.stopPropagation();
     });
@@ -549,7 +549,7 @@ export class InterfaceController {
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -10;
+      this.client.currentTime += -this.client.options.seekStepSize * 5;
       this.client.setSeekSave(true);
       e.stopPropagation();
     });
