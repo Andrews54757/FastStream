@@ -1,4 +1,5 @@
 import {StringUtils} from '../../utils/StringUtils.mjs';
+import {DashTrackUtils} from './DashTrackUtils.mjs';
 
 
 export function DASHLoaderFactory(player) {
@@ -32,10 +33,10 @@ export function DASHLoaderFactory(player) {
           segmentIndex = -1;
         }
 
-        const identifier = representation.id;
-        const frag = player.client.getFragment(identifier, segmentIndex);
+        const level = DashTrackUtils.getLevelFromRepresentation(representation);
+        const frag = player.client.getFragment(level, segmentIndex);
         if (!frag) {
-          console.warn('Fragment not found', requestObj, identifier, player.client.getFragments(identifier));
+          console.warn('Fragment not found', requestObj, level, player.client.getFragments(level));
           // throw new Error("Fragment not found");
           request(httpRequest, true, requestObj.startTime || 0, requestObj.type === 'InitializationSegment' || isNaN(segmentIndex));
           return;

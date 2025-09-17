@@ -10,13 +10,14 @@ export class Vimeo2Dash {
     const MPD = this.makeMPD(new_base_url, playlist);
     const xml = new XMLSerializer().serializeToString(MPD);
     // console.log(JSON.stringify(playlist));
-    // console.log(xml);
+    // console.log(xml, playlist);
     return '<?xml version="1.0" encoding="utf-8"?>' + xml;
   }
 
-  loadDashTracks(tracks) {
+  loadDashTracks(tracks, type) {
     const AdaptationSet = this.document.createElement('AdaptationSet');
-    tracks.forEach((track)=>{
+    AdaptationSet.setAttribute('contentType', type);
+    tracks.forEach((track, i)=>{
       AdaptationSet.appendChild(this.loadDashTrack(track));
     });
     return AdaptationSet;
@@ -97,8 +98,8 @@ export class Vimeo2Dash {
     });
 
     const minBufferTime = 1.5;
-    const videoAdaptationSet = this.loadDashTracks(dashData.video);
-    const audioAdaptationSet = this.loadDashTracks(dashData.audio);
+    const videoAdaptationSet = this.loadDashTracks(dashData.video, 'video');
+    const audioAdaptationSet = this.loadDashTracks(dashData.audio, 'audio');
     // const dolby = dashData.dolby;
     // const flac = dashData.flac;
 

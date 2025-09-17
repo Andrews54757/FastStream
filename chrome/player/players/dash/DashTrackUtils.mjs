@@ -1,13 +1,29 @@
 import {AudioLevel, VideoLevel} from '../Levels.mjs';
 
 export class DashTrackUtils {
+  static getLevelFromRepresentation(rep) {
+    const type = rep.adaptation.type;
+    const id = rep.id;
+    return `${type}-${id}`;
+  }
+
+  static deconstructLevel(levelId) {
+    const parts = levelId.split('-');
+    if (parts.length < 2) {
+      return levelId;
+    }
+    const type = parts[0];
+    const id = parts.slice(1).join('-');
+    return {type, id};
+  }
+
   static getVideoLevelList(tracks) {
     // make into map
     const map = new Map();
 
     tracks.forEach((track) => {
       track.bitrateList.forEach((data) => {
-        const levelId = data.id;
+        const levelId = 'video-' + data.id;
         const existing = map.get(levelId);
         if (existing) {
           console.warn('Duplicate level id found in getVideoLevelList:', levelId, track, existing.track);
@@ -52,7 +68,8 @@ export class DashTrackUtils {
 
     tracks.forEach((track) => {
       track.bitrateList.forEach((data) => {
-        const levelId = data.id;
+        console.log(data);
+        const levelId = 'audio-' + data.id;
         const existing = map.get(levelId);
         if (existing) {
           console.warn('Duplicate level id found in getAudioLevelList:', levelId, track, existing.track);
