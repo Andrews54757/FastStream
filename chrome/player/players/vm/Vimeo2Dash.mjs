@@ -10,7 +10,7 @@ export class Vimeo2Dash {
     const MPD = this.makeMPD(new_base_url, playlist);
     const xml = new XMLSerializer().serializeToString(MPD);
     // console.log(JSON.stringify(playlist));
-    console.log(xml, playlist);
+    // console.log(xml, playlist);
     return '<?xml version="1.0" encoding="utf-8"?>' + xml;
   }
 
