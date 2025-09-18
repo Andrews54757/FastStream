@@ -1291,23 +1291,13 @@ chrome.webRequest.onHeadersReceived.addListener(
         return; // Client or server error. Ignore it
       }
 
-      if (details.initiator &&
+      if (url.startsWith('https://vod-adaptive') && url.includes('playlist.json') && url.includes('vimeo')) {
+        ext = 'vmpatch';
+      } else if (details.initiator &&
       initiatorBlacklist.some((a) => {
         return details.initiator.startsWith(a);
       })) {
-        if (url.startsWith('https://vod-adaptive') && url.includes('playlist.json')) {
-          ext = 'vmpatch';
-          // chrome.tabs.sendMessage(details.tabId, {
-          //   type: 'vmurl',
-          //   url: url,
-          //   headers: frame.requestHeaders.get(details.requestId),
-          // }, {
-          //   frameId: details.frameId,
-          // }, () => {
-          //   BackgroundUtils.checkMessageError('vmurl');
-          // });
-          // return;
-        } else if (ext === 'json') {
+        if (ext === 'json') {
 
         } else {
           return;
