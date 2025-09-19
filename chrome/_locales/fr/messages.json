@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Faites défiler pour modifier le Q"
     },
+    "audioconvolver_title": {
+        "message": "Filtre de convolution audio"
+    },
+    "audioconvolver_channel": {
+        "message": "Canal"
+    },
+    "audioconvolver_enable": {
+        "message": "Activer"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normaliser"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Réponse impulsionnelle"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Sélectionner un fichier"
+    },
+    "audioconvolver_enabled": {
+        "message": "Convolution activée"
+    },
+    "audioconvolver_disabled": {
+        "message": "Convolution désactivée"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Mixage avant"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Pas de mixage"
+    },
     "options_title": {
         "message": "Options de FastStream"
     },

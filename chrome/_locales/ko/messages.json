@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "스크롤로 Q 변경"
     },
+    "audioconvolver_title": {
+        "message": "오디오 컨볼루션 필터"
+    },
+    "audioconvolver_channel": {
+        "message": "채널"
+    },
+    "audioconvolver_enable": {
+        "message": "사용"
+    },
+    "audioconvolver_normalize": {
+        "message": "정규화"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "임펄스 응답"
+    },
+    "audioconvolver_selectfile": {
+        "message": "파일 선택"
+    },
+    "audioconvolver_enabled": {
+        "message": "컨볼루션 사용"
+    },
+    "audioconvolver_disabled": {
+        "message": "컨볼루션 사용 안 함"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "다운믹스 전"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "다운믹스 없음"
+    },
     "options_title": {
         "message": "FastStream 옵션"
     },

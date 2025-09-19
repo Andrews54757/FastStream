@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Scroll om Q te wijzigen"
     },
+    "audioconvolver_title": {
+        "message": "Audio-convolutiefilter"
+    },
+    "audioconvolver_channel": {
+        "message": "Kanaal"
+    },
+    "audioconvolver_enable": {
+        "message": "Inschakelen"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normaliseren"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Impulsrespons"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Bestand selecteren"
+    },
+    "audioconvolver_enabled": {
+        "message": "Convolutie ingeschakeld"
+    },
+    "audioconvolver_disabled": {
+        "message": "Convolutie uitgeschakeld"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Downmix ervoor"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Geen downmix"
+    },
     "options_title": {
         "message": "FastStream-opties"
     },

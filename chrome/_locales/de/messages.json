@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Scroll um Q zu ändern"
     },
+    "audioconvolver_title": {
+        "message": "Audio Faltung Filter"
+    },
+    "audioconvolver_channel": {
+        "message": "Kanal"
+    },
+    "audioconvolver_enable": {
+        "message": "Aktivieren"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalisieren"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Impulsantwort"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Datei auswählen"
+    },
+    "audioconvolver_enabled": {
+        "message": "Faltung aktiviert"
+    },
+    "audioconvolver_disabled": {
+        "message": "Faltung deaktiviert"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Downmix Vorher"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Kein Downmix"
+    },
     "options_title": {
         "message": "FastStream Optionen"
     },

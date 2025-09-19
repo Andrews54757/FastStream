@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "スクロールで Q を変更"
     },
+    "audioconvolver_title": {
+        "message": "オーディオコンボリューションフィルター"
+    },
+    "audioconvolver_channel": {
+        "message": "チャンネル"
+    },
+    "audioconvolver_enable": {
+        "message": "有効化"
+    },
+    "audioconvolver_normalize": {
+        "message": "正規化"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "インパルス応答"
+    },
+    "audioconvolver_selectfile": {
+        "message": "ファイルを選択"
+    },
+    "audioconvolver_enabled": {
+        "message": "コンボリューション有効"
+    },
+    "audioconvolver_disabled": {
+        "message": "コンボリューション無効"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "ダウンミックス前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "ダウンミックスなし"
+    },
     "options_title": {
         "message": "FastStream のオプション"
     },

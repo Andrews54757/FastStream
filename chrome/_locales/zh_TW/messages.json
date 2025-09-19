@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "滾動以調整 Q 值"
     },
+    "audioconvolver_title": {
+        "message": "音訊捲積濾波器"
+    },
+    "audioconvolver_channel": {
+        "message": "通道"
+    },
+    "audioconvolver_enable": {
+        "message": "啟用"
+    },
+    "audioconvolver_normalize": {
+        "message": "正規化"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "脈衝響應"
+    },
+    "audioconvolver_selectfile": {
+        "message": "選擇檔案"
+    },
+    "audioconvolver_enabled": {
+        "message": "已啟用捲積"
+    },
+    "audioconvolver_disabled": {
+        "message": "已停用捲積"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "下混前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "無下混"
+    },
     "options_title": {
         "message": "FastStream 選項"
     },

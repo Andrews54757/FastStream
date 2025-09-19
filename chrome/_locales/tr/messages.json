@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Q'yu değiştirmek için kaydırın"
     },
+    "audioconvolver_title": {
+        "message": "Ses Konvolüsyon Filtresi"
+    },
+    "audioconvolver_channel": {
+        "message": "Kanal"
+    },
+    "audioconvolver_enable": {
+        "message": "Etkinleştir"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalize Et"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "İmpuls Tepkisi"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Dosya Seç"
+    },
+    "audioconvolver_enabled": {
+        "message": "Konvolüsyon etkin"
+    },
+    "audioconvolver_disabled": {
+        "message": "Konvolüsyon devre dışı"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Önce Downmix"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Downmix Yok"
+    },
     "options_title": {
         "message": "FastStream Seçenekleri"
     },

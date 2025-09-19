@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Прокрутите, чтобы изменить Q"
     },
+    "audioconvolver_title": {
+        "message": "Фильтр свёртки"
+    },
+    "audioconvolver_channel": {
+        "message": "Канал"
+    },
+    "audioconvolver_enable": {
+        "message": "Включить"
+    },
+    "audioconvolver_normalize": {
+        "message": "Нормализация"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Импульсная характеристика"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Выбрать файл"
+    },
+    "audioconvolver_enabled": {
+        "message": "Свёртка включена"
+    },
+    "audioconvolver_disabled": {
+        "message": "Свёртка отключена"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Сведение до"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Без сведения"
+    },
     "options_title": {
         "message": "Параметры FastStream"
     },

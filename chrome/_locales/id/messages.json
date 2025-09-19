@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "Gulir untuk mengubah Q"
     },
+    "audioconvolver_title": {
+        "message": "Filter Konvolusi Audio"
+    },
+    "audioconvolver_channel": {
+        "message": "Saluran"
+    },
+    "audioconvolver_enable": {
+        "message": "Aktifkan"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalisasi"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Respon Impuls"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Pilih Berkas"
+    },
+    "audioconvolver_enabled": {
+        "message": "Konvolusi Diaktifkan"
+    },
+    "audioconvolver_disabled": {
+        "message": "Konvolusi Dinonaktifkan"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Downmix Sebelumnya"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Tanpa Downmix"
+    },
     "options_title": {
         "message": "Opsi FastStream"
     },

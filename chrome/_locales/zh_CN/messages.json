@@ -767,6 +767,36 @@
     "audioeq_qscroll_instructions": {
         "message": "滚动以调整 Q 值"
     },
+    "audioconvolver_title": {
+        "message": "音频卷积滤波器"
+    },
+    "audioconvolver_channel": {
+        "message": "通道"
+    },
+    "audioconvolver_enable": {
+        "message": "启用"
+    },
+    "audioconvolver_normalize": {
+        "message": "归一化"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "脉冲响应"
+    },
+    "audioconvolver_selectfile": {
+        "message": "选择文件"
+    },
+    "audioconvolver_enabled": {
+        "message": "已启用卷积"
+    },
+    "audioconvolver_disabled": {
+        "message": "已禁用卷积"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "下混前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "无下混"
+    },
     "options_title": {
         "message": "FastStream 选项"
     },

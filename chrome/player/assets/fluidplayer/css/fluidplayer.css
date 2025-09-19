@@ -2426,6 +2426,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
 }
 
 .compressor,
+.convolver,
 .crosstalk {
     position: relative;
     background-color: black;
@@ -2437,6 +2438,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     height: 100%;
 }
 
+.convolver,
 .crosstalk {
     flex: 1 1 auto;
     width: 30%;
@@ -2450,6 +2452,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     }
 
     .compressor-swap,
+    .convolver,
     .crosstalk {
         min-width: 300px;
         width: 100%;
@@ -2460,6 +2463,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     }
 }
 
+.convolver_title,
 .compressor_title {
     top: 5px;
     left: 0px;
@@ -2470,6 +2474,7 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     color: rgba(255, 255, 255, 0.8);
 }
 
+.convolver_container,
 .compressor_container,
 .crosstalk_container {
     display: flex;
@@ -2480,6 +2485,9 @@ div:not(.reordering) > .volume_block:focus .tooltip .tooltiptext {
     right: 0px;
 }
 
+.convolver_container {
+    flex-direction: column;
+}
 
 .compressor_graph {
     position: relative;
@@ -2633,13 +2641,11 @@ input.crosstalk_calculator_input {
     border-radius: 3px;
     text-align: center;
     cursor: pointer;
-    color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: rgba(220, 80, 80, 0.9);
     width: 100%;
     height: 30px;
     line-height: 30px;
-    ;
 }
 
 .compressor_toggle:hover {
@@ -3025,4 +3031,139 @@ input.crosstalk_calculator_input {
     .disable-when-mini {
         display: none;
     }
+}
+
+/* ---------- Base & theme ---------- */
+.convolver_container {
+  --surface: #111214;
+  --surface-2: #181a1f;
+  --border: rgba(255,255,255,0.08);
+  --text: rgba(255, 255, 255, 0.9);
+  --muted: #c7cbd1;
+  --accent: #22d3ee;
+  font-size: 12px;
+
+  color: var(--text);
+  width: 100%;
+}
+
+/* ---------- Controls row ---------- */
+.convolver_controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 0px 14px;
+}
+
+/* ---------- Channel table ---------- */
+.convolver_channel_table {
+  padding: 0px 14px;
+  display: grid;
+  gap: 0px 16px;
+  overflow-y: auto;
+  grid-template-columns: 1fr auto auto auto;
+}
+
+/* Grid template for both header and rows */
+.convolver_channel_row {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  padding: 4px 0px;
+}
+.convolver_channel_row:first-child { border-top: 0; }
+
+/* Header styling */
+.convolver_channel_row.header {
+  background: linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02));
+  color: var(--muted);
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  padding-block: 8px;
+}
+
+/* Zebra rows for readability */
+.convolver_channel_row:not(.header):nth-child(even) {
+  background: rgba(255,255,255,0.03);
+}
+
+.convolver_channel_enable,
+.convolver_channel_normalize {
+  justify-self: start;
+}
+
+/* Checkbox sizing and color */
+.convolver_channel_row input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* File button */
+.convolver_channel_file[role="button"] {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  transition: transform 80ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.convolver_channel_file[role="button"]::before {
+  content: "📁";
+  font-size: 12px;
+}
+.convolver_channel_file[role="button"]:hover {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.16);
+}
+.convolver_channel_file[role="button"]:active { transform: translateY(1px); }
+
+.convolver_downmix_toggle,
+.convolver_toggle {
+    flex: 1 1 auto;
+    top: 0px;
+    font-size: 12px;
+    border-radius: 3px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(220, 80, 80, 0.9);
+    height: 30px;
+    line-height: 30px;
+}
+
+.convolver_downmix_toggle:hover,
+.convolver_toggle:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.convolver_toggle.enabled {
+    color: rgba(80, 220, 80, 0.9);
+}
+
+.convolver_downmix_toggle {
+    color: rgba(204, 80, 220, 0.9);
+}
+
+.convolver_downmix_toggle.enabled {
+    color: rgba(80, 180, 255, 0.9);
+}
+
+.convolver_channel_label.disabled {
+    color: rgba(255, 255, 255, 0.6);
 }

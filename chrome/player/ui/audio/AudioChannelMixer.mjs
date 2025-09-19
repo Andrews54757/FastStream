@@ -7,10 +7,8 @@ import {DOMElements} from '../DOMElements.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioCompressor} from './AudioCompressor.mjs';
 import {AudioEqualizer} from './AudioEqualizer.mjs';
-import {MAX_AUDIO_CHANNELS} from './config/AudioProfile.mjs';
+import {MAX_AUDIO_CHANNELS, CHANNEL_NAMES} from './config/AudioProfile.mjs';
 import {VirtualAudioNode} from './VirtualAudioNode.mjs';
-
-const CHANNEL_NAMES = ['Left', 'Right', 'Center', 'Bass (LFE)', 'Left Surround', 'Right Surround', 'Side Left', 'Side Right'];
 
 export class AudioChannelMixer extends AbstractAudioModule {
   constructor(configManager) {
