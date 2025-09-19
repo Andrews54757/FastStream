@@ -16,6 +16,7 @@ export class OutputConvolver extends AbstractAudioModule {
     this.configManager = configManager;
 
     this.db = new IndexedDBManager('faststream-impulse-responses');
+    this.initPromise = this.db.setup();
     this.loadConfig();
     this.setupUI();
   }
@@ -51,8 +52,8 @@ export class OutputConvolver extends AbstractAudioModule {
     return Math.min(await this.configManager.getChannelCount().catch(() => 0), MAX_AUDIO_CHANNELS);
   }
 
-  static async isSupported() {
-    return IndexedDBManager.isSupportedAndAvailable();
+  static isSupported() {
+    return IndexedDBManager.isSupported();
   }
 
   async getImpulseResponse(file) {
@@ -84,13 +85,6 @@ export class OutputConvolver extends AbstractAudioModule {
 
     // or return as is
     return audioData;
-  }
-
-  async setImpulseResponse(name, data) {
-    if (!this.db.getDatabase()) {
-      await this.db.setup();
-    }
-    return this.db.setFile(name, data);
   }
 
   setupNodes(audioContext) {
@@ -439,12 +433,19 @@ export class OutputConvolver extends AbstractAudioModule {
     // this.updateNodes();
   }
 
+  async setImpulseResponse(name, data) {
+    await this.initPromise;
+    return this.db.setFile(name, data);
+  }
+
   async loadImpulseResponses() {
-    if (!this.db) {
+    try {
+      await this.initPromise;
+    } catch (e) {
+      // not supported, disable
+      this.getElement().style.display = 'none';
+      console.warn('IndexedDB not supported, disabling convolver', e);
       return;
-    }
-    if (!this.db.getDatabase()) {
-      await this.db.setup();
     }
 
     for (let i = 0; i < MAX_AUDIO_CHANNELS; i++) {
