@@ -145,12 +145,12 @@ export class OutputConvolver extends AbstractAudioModule {
       return;
     }
 
-    const isEnabled = this.config.enabled && this.config.channels.some((ch, i) => ch.enabled && this.convolverChannels[i] && this.convolverChannels[i].impulseBuffer);
-    const needsGain = isEnabled && this.config.downmix && this.audioContext.destination.channelCount < channelCount;
     const finalChannelCount = (this.config.downmix && this.audioContext.destination.channelCount < channelCount) ? this.audioContext.destination.channelCount : channelCount;
+    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(finalChannelCount);
+    const isEnabled = this.config.enabled && this.config.channels.some((ch, i) => ch.enabled && this.convolverChannels[i] && this.convolverChannels[i].impulseBuffer && activeChannels.includes(i));
+    const needsGain = isEnabled && this.config.downmix && this.audioContext.destination.channelCount < channelCount;
     const needsDeleteSplitter = !isEnabled || (this.splitterNode && this.splitterNode.numberOfOutputs !== finalChannelCount);
 
-    const activeChannels = AudioUtils.getActiveChannelsForChannelCount(finalChannelCount);
     this.convolverChannels.forEach((ch, i) => {
       if (activeChannels.includes(i)) {
         ch.label.classList.remove('disabled');
