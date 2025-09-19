@@ -532,6 +532,8 @@ export class AudioChannelMixer extends AbstractAudioModule {
       }
     }
 
+    this.masterElements.dynButton.classList.remove('active');
+
     this.ui.equalizerContainer.replaceChildren();
     this.ui.compressorContainer.replaceChildren();
 
