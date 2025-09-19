@@ -774,11 +774,35 @@
   }
 
   function hideSoft(player) {
-    player.style.setProperty('display', 'none', 'important');
+    // player.style.setProperty('display', 'none', 'important');
+    // set height and width to 0, overflow hidden
+
+    if (player.style.width && player.style.width !== '0px') {
+      player.dataset.oldWidth = player.style.width;
+    }
+    if (player.style.height && player.style.height !== '0px') {
+      player.dataset.oldHeight = player.style.height;
+    }
+
+    player.style.setProperty('width', '0px', 'important');
+    player.style.setProperty('height', '0px', 'important');
+    player.style.setProperty('overflow', 'hidden', 'important');
+    player.style.setProperty('margin', '0px', 'important');
   }
 
   function showSoft(player) {
-    player.style.display = '';
+    if (player.style.width === '0px') {
+      player.style.width = player.dataset.oldWidth || '';
+    }
+    if (player.style.height === '0px') {
+      player.style.height = player.dataset.oldHeight || '';
+    }
+    if (player.style.overflow === 'hidden') {
+      player.style.overflow = '';
+    }
+    if (player.style.margin === '0px') {
+      player.style.margin = '';
+    }
   }
 
   function updateReplacedPlayers(convert = null) {
