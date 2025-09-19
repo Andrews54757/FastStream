@@ -128,6 +128,11 @@ export class OutputConvolver extends AbstractAudioModule {
       channel.normalizeCheckbox.checked = channelConfig.normalize;
       channel.fileButton.textContent = channel.fileName ? StringUtils.truncateFilename(channel.fileName, 32) : Localize.getMessage('audioconvolver_selectfile');
       channel.fileButton.classList.toggle('has_file', !!channel.fileName);
+      if (channel.fileName === 'Error' && channel.impulseBuffer === null) {
+        channel.fileButton.classList.add('error');
+      } else {
+        channel.fileButton.classList.remove('error');
+      }
     }
   }
 

@@ -3127,6 +3127,18 @@ input.crosstalk_calculator_input {
   content: "📁";
   font-size: 12px;
 }
+
+.convolver_channel_file.has_file[role="button"]::before {
+  content: "✅";
+  font-size: 12px;
+}
+
+.convolver_channel_file.error[role="button"]::before {
+  content: "❌";
+  font-size: 12px;
+}
+
+
 .convolver_channel_file[role="button"]:hover {
   background: rgba(255,255,255,0.06);
   border-color: rgba(255,255,255,0.16);
