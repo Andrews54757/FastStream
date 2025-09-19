@@ -780,8 +780,17 @@
     if (player.style.width && player.style.width !== '0px') {
       player.dataset.oldWidth = player.style.width;
     }
+
     if (player.style.height && player.style.height !== '0px') {
       player.dataset.oldHeight = player.style.height;
+    }
+
+    if (player.style.overflow && player.style.overflow !== 'hidden') {
+      player.dataset.oldOverflow = player.style.overflow;
+    }
+
+    if (player.style.margin && player.style.margin !== '0px') {
+      player.dataset.oldMargin = player.style.margin;
     }
 
     player.style.setProperty('width', '0px', 'important');
@@ -798,10 +807,10 @@
       player.style.height = player.dataset.oldHeight || '';
     }
     if (player.style.overflow === 'hidden') {
-      player.style.overflow = '';
+      player.style.overflow = player.dataset.oldOverflow || '';
     }
     if (player.style.margin === '0px') {
-      player.style.margin = '';
+      player.style.margin = player.dataset.oldMargin || '';
     }
   }
 
