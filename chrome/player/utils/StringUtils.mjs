@@ -316,4 +316,24 @@ export class StringUtils {
     const end = parseInt(match[2], 10);
     return [start, end];
   }
+
+  static truncateFilename(filename, maxLength) {
+    const extIndex = filename.lastIndexOf('.');
+    const ext = extIndex !== -1 ? filename.slice(extIndex) : '';
+    const name = extIndex !== -1 ? filename.slice(0, extIndex) : filename;
+
+    if (filename.length <= maxLength) {
+      return filename;
+    }
+
+    // max ext length is 5 chars
+    const maxExtLength = Math.min(ext.length, 5);
+    const maxNameLength = maxLength - maxExtLength - 3; // 3 for "..."
+
+    if (maxNameLength <= 0) {
+      return '...' + ext.slice(0, maxExtLength);
+    }
+
+    return name.slice(0, maxNameLength) + '...' + ext;
+  }
 }

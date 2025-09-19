@@ -1,6 +1,7 @@
 import {Localize} from '../../modules/Localize.mjs';
 import {IndexedDBManager} from '../../network/IndexedDBManager.mjs';
 import {AudioUtils} from '../../utils/AudioUtils.mjs';
+import {StringUtils} from '../../utils/StringUtils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
 import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioConvolverControl} from './config/AudioConvolverControl.mjs';
@@ -125,7 +126,7 @@ export class OutputConvolver extends AbstractAudioModule {
       }
       channel.enableCheckbox.checked = channelConfig.enabled;
       channel.normalizeCheckbox.checked = channelConfig.normalize;
-      channel.fileButton.textContent = channel.fileName ? channel.fileName : Localize.getMessage('audioconvolver_selectfile');
+      channel.fileButton.textContent = channel.fileName ? StringUtils.truncateFilename(channel.fileName, 32) : Localize.getMessage('audioconvolver_selectfile');
       channel.fileButton.classList.toggle('has_file', !!channel.fileName);
     }
   }
