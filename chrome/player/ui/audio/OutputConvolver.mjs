@@ -7,7 +7,7 @@ import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioConvolverControl} from './config/AudioConvolverControl.mjs';
 import {CHANNEL_NAMES, MAX_AUDIO_CHANNELS} from './config/AudioProfile.mjs';
 
-const IMPULSE_LENGTH = 2048;
+const IMPULSE_LENGTH = 4096; // max length of impulse response in samples
 
 export class OutputConvolver extends AbstractAudioModule {
   constructor(configManager) {
