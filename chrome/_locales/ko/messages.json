@@ -779,6 +779,9 @@
     "audioconvolver_normalize": {
         "message": "정규화"
     },
+    "audioconvolver_impulselength": {
+        "message": "임펄스 길이"
+    },
     "audioconvolver_impulseresponse": {
         "message": "임펄스 응답"
     },

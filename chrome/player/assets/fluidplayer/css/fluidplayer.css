@@ -3050,7 +3050,7 @@ input.crosstalk_calculator_input {
 /* ---------- Controls row ---------- */
 .convolver_controls {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
@@ -3178,4 +3178,45 @@ input.crosstalk_calculator_input {
 
 .convolver_channel_label.disabled {
     color: rgba(255, 255, 255, 0.6);
+}
+
+.convolver_impulse_length_container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    line-height: 30px;
+    padding: 0px 10px;
+    gap: 4px;
+}
+
+.convolver_impulse_length_container .convolver_impulse_length_label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    user-select: none;
+}
+
+.convolver_impulse_length_container .convolver_impulse_length_input {
+    width: 50px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 2px;
+    text-align: center;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: none;
+    outline: none;
+}
+
+.convolver_impulse_length_container .convolver_impulse_length_input:focus {
+    outline: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.convolver_impulse_length_container .convolver_impulse_length_input::-webkit-inner-spin-button,
+.convolver_impulse_length_container .convolver_impulse_length_input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

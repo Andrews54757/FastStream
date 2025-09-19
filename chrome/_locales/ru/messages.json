@@ -779,6 +779,9 @@
     "audioconvolver_normalize": {
         "message": "Нормализация"
     },
+    "audioconvolver_impulselength": {
+        "message": "Длина импульса"
+    },
     "audioconvolver_impulseresponse": {
         "message": "Импульсная характеристика"
     },

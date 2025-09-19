@@ -31,9 +31,11 @@ export class AudioConvolverChannel {
 }
 
 export class AudioConvolverControl {
-  constructor(enabled, downmix, channels) {
+  constructor(enabled, downmix, bufferSize, channels) {
     this.enabled = !!enabled;
     this.downmix = !!downmix;
+    this.bufferSize = bufferSize;
+
     this.channels = channels || [];
   }
 
@@ -48,7 +50,7 @@ export class AudioConvolverControl {
         newChannels.push(AudioConvolverChannel.default(i));
       }
     }
-    return new AudioConvolverControl(obj.enabled, obj.downmix, newChannels);
+    return new AudioConvolverControl(obj.enabled, obj.downmix, obj.bufferSize ?? 2048, newChannels);
   }
 
   static default() {
@@ -56,12 +58,12 @@ export class AudioConvolverControl {
     for (let i = 0; i < MAX_AUDIO_CHANNELS; i++) {
       channels.push(AudioConvolverChannel.default(i));
     }
-    return new AudioConvolverControl(false, true, channels);
+    return new AudioConvolverControl(false, true, 2048, channels);
   }
 
   isDefault() {
     const def = AudioConvolverControl.default();
-    if (this.enabled !== def.enabled || this.downmix !== def.downmix) {
+    if (this.enabled !== def.enabled || this.downmix !== def.downmix || this.bufferSize !== def.bufferSize) {
       return false;
     }
     if (this.channels.length !== def.channels.length) {
@@ -79,6 +81,7 @@ export class AudioConvolverControl {
     return {
       enabled: this.enabled,
       downmix: this.downmix,
+      bufferSize: this.bufferSize,
       channels: this.channels.filter((ch) => !ch.isDefault()).map((ch) => ch.toObj()),
     };
   }

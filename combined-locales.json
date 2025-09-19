@@ -4679,6 +4679,24 @@
         "zh_CN": "归一化",
         "zh_TW": "正規化"
     },
+    "audioconvolver_impulselength": {
+        "en": "Impulse Length",
+        "de": "Impuls Länge",
+        "es": "Longitud del Impulso",
+        "fr": "Durée de l'impulsion",
+        "id": "Panjang Impuls",
+        "it": "Lunghezza Impulso",
+        "ja": "インパルス長",
+        "ko": "임펄스 길이",
+        "ms": "Impulse Length",
+        "nl": "Impulslengte",
+        "pl": "Długość impulsu",
+        "pt_BR": "Duração do impulso",
+        "ru": "Длина импульса",
+        "tr": "İmpuls Uzunluğu",
+        "zh_CN": "脉冲长度",
+        "zh_TW": "脈衝長度"
+    },
     "audioconvolver_impulseresponse": {
         "en": "Impulse Response",
         "de": "Impulsantwort",

@@ -779,6 +779,9 @@
     "audioconvolver_normalize": {
         "message": "正規化"
     },
+    "audioconvolver_impulselength": {
+        "message": "インパルス長"
+    },
     "audioconvolver_impulseresponse": {
         "message": "インパルス応答"
     },

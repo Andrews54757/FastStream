@@ -7,8 +7,6 @@ import {AbstractAudioModule} from './AbstractAudioModule.mjs';
 import {AudioConvolverControl} from './config/AudioConvolverControl.mjs';
 import {CHANNEL_NAMES, MAX_AUDIO_CHANNELS} from './config/AudioProfile.mjs';
 
-const IMPULSE_LENGTH = 4096; // max length of impulse response in samples
-
 export class OutputConvolver extends AbstractAudioModule {
   constructor(configManager) {
     super('OutputConvolver');
@@ -76,6 +74,7 @@ export class OutputConvolver extends AbstractAudioModule {
     const channelData = audioData.getChannelData(0);
 
     // trim to IMPULSE_LENGTH
+    const IMPULSE_LENGTH = this.config ? this.config.bufferSize : 2048;
     if (channelData.length > IMPULSE_LENGTH) {
       const trimmedData = channelData.slice(0, IMPULSE_LENGTH);
       const newBuffer = this.audioContext.createBuffer(1, IMPULSE_LENGTH, audioData.sampleRate);
@@ -112,6 +111,7 @@ export class OutputConvolver extends AbstractAudioModule {
     this.ui.convolverToggle.textContent = this.config.enabled ? Localize.getMessage('audioconvolver_enabled') : Localize.getMessage('audioconvolver_disabled');
     this.ui.downmixToggle.classList.toggle('enabled', this.config.downmix);
     this.ui.downmixToggle.textContent = this.config.downmix ? Localize.getMessage('audioconvolver_downmix_on') : Localize.getMessage('audioconvolver_downmix_off');
+    this.ui.impulseLengthInput.value = this.config.bufferSize;
 
     for (const channel of this.convolverChannels) {
       const channelConfig = this.config.channels[channel.id];
@@ -287,6 +287,40 @@ export class OutputConvolver extends AbstractAudioModule {
       this.updateNodes();
       this.saveConfig();
     });
+
+    this.ui.impulseLengthContainer = WebUtils.create('div', null, 'convolver_impulse_length_container');
+    this.ui.convolverControls.appendChild(this.ui.impulseLengthContainer);
+
+    const impulseLengthLabel = WebUtils.create('div', null, 'convolver_impulse_length_label');
+    impulseLengthLabel.textContent = Localize.getMessage('audioconvolver_impulselength');
+    this.ui.impulseLengthContainer.appendChild(impulseLengthLabel);
+    const impulseLengthInput = WebUtils.create('input', null, 'convolver_impulse_length_input');
+    impulseLengthInput.type = 'number';
+    impulseLengthInput.addEventListener('keydown', (e) => {
+      e.stopPropagation();
+    });
+    impulseLengthInput.addEventListener('keyup', (e) => {
+      e.stopPropagation();
+    });
+    impulseLengthInput.addEventListener('change', () => {
+      if (!this.config) {
+        return;
+      }
+      let val = parseInt(impulseLengthInput.value);
+      if (isNaN(val) || val < 128) {
+        val = 128;
+      } else if (val > 16384) {
+        val = 16384;
+      }
+      impulseLengthInput.value = val;
+      this.config.bufferSize = val;
+      this.saveConfig();
+      this.loadImpulseResponses();
+    });
+
+    this.ui.impulseLengthInput = impulseLengthInput;
+    this.ui.impulseLengthContainer.appendChild(impulseLengthInput);
+
 
     this.ui.convolverChannelTable = WebUtils.create('div', null, 'convolver_channel_table');
     this.ui.convolverContainer.appendChild(this.ui.convolverChannelTable);

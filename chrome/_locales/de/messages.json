@@ -779,6 +779,9 @@
     "audioconvolver_normalize": {
         "message": "Normalisieren"
     },
+    "audioconvolver_impulselength": {
+        "message": "Impuls Länge"
+    },
     "audioconvolver_impulseresponse": {
         "message": "Impulsantwort"
     },

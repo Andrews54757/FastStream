@@ -779,6 +779,9 @@
     "audioconvolver_normalize": {
         "message": "Normalize Et"
     },
+    "audioconvolver_impulselength": {
+        "message": "İmpuls Uzunluğu"
+    },
     "audioconvolver_impulseresponse": {
         "message": "İmpuls Tepkisi"
     },
