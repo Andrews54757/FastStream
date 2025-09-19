@@ -1453,6 +1453,10 @@ export class FastStreamClient extends EventEmitter {
 
 
     this.context.on(DefaultPlayerEvents.WAITING, (event) => {
+      if (this.options.autoplayNext && this.duration - this.currentTime < 1) {
+        this.nextVideo();
+        return;
+      }
       this.interfaceController.setBuffering(true);
     });
 
