@@ -5499,7 +5499,11 @@ BoxParser.Box.prototype.writeHeader = function (stream, msg) {
     }
     stream.writeString(this.type, null, 4);
     if (this.type === "uuid") {
-        stream.writeUint8Array(this.uuid);
+        const uuidBytes = new Uint8Array(16);
+        for (let i = 0; i < 16; i++) {
+            uuidBytes[i] = parseInt(this.uuid.substring(i * 2, i * 2 + 2), 16);
+        }
+        stream.writeUint8Array(uuidBytes);
     }
     if (this.size > MAX_SIZE) {
         stream.writeUint64(this.size);
