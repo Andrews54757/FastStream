@@ -63,7 +63,7 @@ export class AudioConvolverProfile {
   }
 
   isDefault() {
-    const def = AudioConvolverProfile.default();
+    const def = AudioConvolverProfile.default(this.id);
     if (this.label !== def.label || this.downmix !== def.downmix || this.bufferSize !== def.bufferSize) {
       return false;
     }
