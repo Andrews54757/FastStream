@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Przełącz tryb pełnoekranowy"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Przełącz tryb pełnoekranowy w oknie"
+    },
     "options_general_clickaction_pip": {
         "message": "Przełącz obraz w obrazie"
     },

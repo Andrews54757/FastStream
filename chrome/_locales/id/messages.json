@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Beralih layar penuh"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Beralih layar penuh dalam jendela"
+    },
     "options_general_clickaction_pip": {
         "message": "Beralih gambar-dalam-gambar"
     },

@@ -5795,6 +5795,24 @@
         "zh_CN": "切换全屏",
         "zh_TW": "切換全螢幕"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "en": "Toggle windowed fullscreen",
+        "de": "Fenster-Vollbild umschalten",
+        "es": "Alternar pantalla completa en ventana",
+        "fr": "Basculer plein écran fenêtré",
+        "id": "Beralih layar penuh dalam jendela",
+        "it": "Attiva/disattiva lo schermo intero in finestra",
+        "ja": "ウィンドウド フルスクリーンに切り替え",
+        "ko": "창 모드 전체화면 전환",
+        "ms": "Toggle windowed fullscreen",
+        "nl": "Venster-modus volledig scherm in-/uitschakelen",
+        "pl": "Przełącz tryb pełnoekranowy w oknie",
+        "pt_BR": "Alternar tela cheia em janela",
+        "ru": "Во весь экран в оконном режиме",
+        "tr": "Pencereli tam ekran aç/kapa",
+        "zh_CN": "切换窗口化全屏",
+        "zh_TW": "切換視窗化全螢幕"
+    },
     "options_general_clickaction_pip": {
         "en": "Toggle picture-in-picture",
         "de": "Bild-in-Bild umschalten",

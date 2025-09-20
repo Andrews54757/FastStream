@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Basculer plein écran"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Basculer plein écran fenêtré"
+    },
     "options_general_clickaction_pip": {
         "message": "Basculer image dans l'image"
     },

@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "전체화면 전환"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "창 모드 전체화면 전환"
+    },
     "options_general_clickaction_pip": {
         "message": "픽처인픽처(PiP) 전환"
     },

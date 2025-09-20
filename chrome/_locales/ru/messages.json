@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Во весь экран"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Во весь экран в оконном режиме"
+    },
     "options_general_clickaction_pip": {
         "message": "Картинка в картинке"
     },

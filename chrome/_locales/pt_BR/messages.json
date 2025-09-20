@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Alternar tela cheia"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Alternar tela cheia em janela"
+    },
     "options_general_clickaction_pip": {
         "message": "Alternar imagem em imagem"
     },

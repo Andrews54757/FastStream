@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Tam ekran aç/kapa"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Pencereli tam ekran aç/kapa"
+    },
     "options_general_clickaction_pip": {
         "message": "Resim içinde resim aç/kapa"
     },

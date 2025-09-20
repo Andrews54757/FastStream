@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Volledig scherm in-/uitschakelen"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Venster-modus volledig scherm in-/uitschakelen"
+    },
     "options_general_clickaction_pip": {
         "message": "Beeld-in-beeld in-/uitschakelen"
     },

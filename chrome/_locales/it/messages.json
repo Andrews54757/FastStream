@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Attiva/disattiva lo schermo intero"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Attiva/disattiva lo schermo intero in finestra"
+    },
     "options_general_clickaction_pip": {
         "message": "Attiva/disattiva il picture-in-picture"
     },

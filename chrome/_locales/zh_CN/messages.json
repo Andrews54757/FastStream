@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "切换全屏"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "切换窗口化全屏"
+    },
     "options_general_clickaction_pip": {
         "message": "切换画中画"
     },

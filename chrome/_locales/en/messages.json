@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Toggle fullscreen"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Toggle windowed fullscreen"
+    },
     "options_general_clickaction_pip": {
         "message": "Toggle picture-in-picture"
     },

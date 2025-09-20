@@ -965,6 +965,9 @@
     "options_general_clickaction_fullscreen": {
         "message": "Vollbild umschalten"
     },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Fenster-Vollbild umschalten"
+    },
     "options_general_clickaction_pip": {
         "message": "Bild-in-Bild umschalten"
     },

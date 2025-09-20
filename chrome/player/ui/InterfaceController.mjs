@@ -465,6 +465,9 @@ export class InterfaceController {
           case ClickActions.FULLSCREEN:
             this.fullscreenToggle();
             break;
+          case ClickActions.WINDOWED_FULLSCREEN:
+            this.toggleWindowedFullscreen();
+            break;
           case ClickActions.PIP:
             this.pipToggle();
             break;
