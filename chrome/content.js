@@ -797,9 +797,11 @@
     player.style.setProperty('height', '0px', 'important');
     player.style.setProperty('overflow', 'hidden', 'important');
     player.style.setProperty('margin', '0px', 'important');
+    player.style.setProperty('transition', 'none', 'important');
   }
 
   function showSoft(player) {
+    player.style.setProperty('transition', 'none', 'important');
     if (player.style.width === '0px') {
       player.style.width = player.dataset.oldWidth || '';
     }
