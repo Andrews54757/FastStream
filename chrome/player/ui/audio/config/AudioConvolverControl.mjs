@@ -51,7 +51,7 @@ export class AudioConvolverProfile {
         newChannels.push(AudioConvolverChannel.default(i));
       }
     }
-    return new AudioConvolverProfile(obj.id, obj.label, obj.downmix, obj.bufferSize ?? 2048, newChannels);
+    return new AudioConvolverProfile(obj.id, obj.label, obj.downmix, obj.bufferSize, newChannels);
   }
 
   static default(id) {
@@ -59,7 +59,7 @@ export class AudioConvolverProfile {
     for (let i = 0; i < MAX_AUDIO_CHANNELS; i++) {
       channels.push(AudioConvolverChannel.default(i));
     }
-    return new AudioConvolverProfile(id, `Profile ${id + 1}`, true, 2048, channels);
+    return new AudioConvolverProfile(id, `Profile ${id + 1}`, true, 4096, channels);
   }
 
   isDefault() {
