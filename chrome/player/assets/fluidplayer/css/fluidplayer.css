@@ -3102,7 +3102,17 @@ input.crosstalk_calculator_input {
     gap: 0px 16px;
     overflow-y: auto;
     grid-template-columns: 1fr auto auto auto;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 600px;
+    box-sizing: border-box;
 }
+/* 
+.convolver_container {
+    flex-direction: column;
+    align-items: center;
+} */
 
 /* Grid template for both header and rows */
 .convolver_channel_row {
