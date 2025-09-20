@@ -3184,6 +3184,7 @@ input.crosstalk_calculator_input {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 3px;
     line-height: 30px;
