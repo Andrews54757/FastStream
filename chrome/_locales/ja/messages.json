@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "コンボリューション有効"
     },
+    "audioconvolver_convolver": {
+        "message": "コンボリューション"
+    },
+    "audioconvolver_disable": {
+        "message": "無効化"
+    },
     "audioconvolver_disabled": {
         "message": "コンボリューション無効"
     },

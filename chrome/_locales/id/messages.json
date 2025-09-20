@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "Konvolusi Diaktifkan"
     },
+    "audioconvolver_convolver": {
+        "message": "Konvolusi"
+    },
+    "audioconvolver_disable": {
+        "message": "Nonaktifkan"
+    },
     "audioconvolver_disabled": {
         "message": "Konvolusi Dinonaktifkan"
     },

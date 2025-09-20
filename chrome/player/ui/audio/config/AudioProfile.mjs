@@ -1,6 +1,6 @@
 import {AudioChannelControl} from './AudioChannelControl.mjs';
 import {AudioCompressionControl} from './AudioCompressionControl.mjs';
-import {AudioConvolverControl} from './AudioConvolverControl.mjs';
+import {AudioConvolverProfile} from './AudioConvolverControl.mjs';
 import {AudioCrosstalkControl} from './AudioCrosstalkControl.mjs';
 import {AudioEQNode} from './AudioEQNode.mjs';
 
@@ -15,7 +15,7 @@ export class AudioProfile {
     });
     this.master = AudioChannelControl.default('master');
     this.crosstalk = AudioCrosstalkControl.default();
-    this.convolver = AudioConvolverControl.default();
+    this.convolver = AudioConvolverProfile.default();
     this.label = `Profile ${id}`;
   }
 
@@ -75,7 +75,7 @@ export class AudioProfile {
     }
 
     if (obj.convolver) {
-      profile.convolver = AudioConvolverControl.fromObj(obj.convolver);
+      profile.convolver = AudioConvolverProfile.fromObj(obj.convolver);
     }
 
     // console.log('Loaded audio profile:', profile, obj);

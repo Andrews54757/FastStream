@@ -43,6 +43,7 @@ body[data-theme="default"] {
   --popwindow-button-hover-background-color: rgb(30, 30, 30);
   --popwindow-button-active-background-color: rgb(0, 135, 153);
   --popwindow-dropdown-item-background-color: rgb(30, 30, 30);
+  --popwindow-dropdown-item-odd-background-color: rgb(35, 35, 35);
   --popwindow-dropdown-item-selected-background-color: rgb(20, 20, 20);
   --popwindow-dropdown-item-hover-background-color: rgb(40, 40, 40);
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(255, 255, 255, 0.5);
@@ -144,6 +145,7 @@ body[data-theme="contrast"] {
   --popwindow-button-hover-background-color: #58188b;
   --popwindow-button-active-background-color: #9f942e;
   --popwindow-dropdown-item-background-color: #4a4a4a;
+  --popwindow-dropdown-item-odd-background-color: #3a3a3a;
   --popwindow-dropdown-item-selected-background-color: #58188b;
   --popwindow-dropdown-item-hover-background-color: #6b4d83;
   --popwindow-dropdown-text-focus-outline: 2px solid #ffeb3b;
@@ -254,6 +256,7 @@ body[data-theme="arctic"] {
   --popwindow-button-hover-background-color: #e3e8f0;
   --popwindow-button-active-background-color: #0a84ff;
   --popwindow-dropdown-item-background-color: #f4f7fb;
+  --popwindow-dropdown-item-odd-background-color: #e9eef6;
   --popwindow-dropdown-item-selected-background-color: #e6e8eb;
   --popwindow-dropdown-item-hover-background-color: #e9eef6;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(10, 132, 255, 0.6);
@@ -364,6 +367,7 @@ body[data-theme="ocean"] {
   --popwindow-button-hover-background-color: #12223a;
   --popwindow-button-active-background-color: #1177bb;
   --popwindow-dropdown-item-background-color: #0e1a2b;
+  --popwindow-dropdown-item-odd-background-color: #0c1626;
   --popwindow-dropdown-item-selected-background-color: #41536b;
   --popwindow-dropdown-item-hover-background-color: #152842;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(25, 183, 255, 0.6);
@@ -474,6 +478,7 @@ body[data-theme="neon"] {
   --popwindow-button-hover-background-color: #1a1a2a;
   --popwindow-button-active-background-color: #ff2bd6;
   --popwindow-dropdown-item-background-color: #141420;
+  --popwindow-dropdown-item-odd-background-color: #0a0a0f;
   --popwindow-dropdown-item-selected-background-color: #0a0a0f;
   --popwindow-dropdown-item-hover-background-color: #1a1a2a;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(0, 240, 255, 0.6);
@@ -584,6 +589,7 @@ body[data-theme="sunset"] {
   --popwindow-button-hover-background-color: #ffe3d6;
   --popwindow-button-active-background-color: #ff6f61;
   --popwindow-dropdown-item-background-color: #fff1ea;
+  --popwindow-dropdown-item-odd-background-color: #ffebe3;
   --popwindow-dropdown-item-selected-background-color: #f5d7cc;
   --popwindow-dropdown-item-hover-background-color: #ffe0d2;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(255, 111, 97, 0.6);
@@ -694,6 +700,7 @@ body[data-theme="forest"] {
   --popwindow-button-hover-background-color: #132820;
   --popwindow-button-active-background-color: #2ecc71;
   --popwindow-dropdown-item-background-color: #0f2018;
+  --popwindow-dropdown-item-odd-background-color: #0b1812;
   --popwindow-dropdown-item-selected-background-color: #233a2e;
   --popwindow-dropdown-item-hover-background-color: #163427;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(46, 204, 113, 0.6);
@@ -804,6 +811,7 @@ body[data-theme="slate"] {
   --popwindow-button-hover-background-color: #1d2127;
   --popwindow-button-active-background-color: #4da3ff;
   --popwindow-dropdown-item-background-color: #171a1f;
+  --popwindow-dropdown-item-odd-background-color: #111418;
   --popwindow-dropdown-item-selected-background-color: #0f1216;
   --popwindow-dropdown-item-hover-background-color: #1d2127;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(77, 163, 255, 0.6);
@@ -914,6 +922,7 @@ body[data-theme="amethyst"] {
   --popwindow-button-hover-background-color: #1f1833;
   --popwindow-button-active-background-color: #a78bfa;
   --popwindow-dropdown-item-background-color: #171228;
+  --popwindow-dropdown-item-odd-background-color: #120f1b;
   --popwindow-dropdown-item-selected-background-color: #0f0b1c;
   --popwindow-dropdown-item-hover-background-color: #211a35;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(167, 139, 250, 0.6);
@@ -1024,6 +1033,7 @@ body[data-theme="desert"] {
   --popwindow-button-hover-background-color: #eadcc6;
   --popwindow-button-active-background-color: #c0843d;
   --popwindow-dropdown-item-background-color: #f5ead7;
+  --popwindow-dropdown-item-odd-background-color: #f0e2c9;
   --popwindow-dropdown-item-selected-background-color: #e8dbbf;
   --popwindow-dropdown-item-hover-background-color: #f0e2c9;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(192, 132, 61, 0.6);
@@ -1134,6 +1144,7 @@ body[data-theme="mint"] {
   --popwindow-button-hover-background-color: #d9f0e8;
   --popwindow-button-active-background-color: #00bfa5;
   --popwindow-dropdown-item-background-color: #e8f7f2;
+  --popwindow-dropdown-item-odd-background-color: #dff3ed;
   --popwindow-dropdown-item-selected-background-color: #cfece3;
   --popwindow-dropdown-item-hover-background-color: #dff3ed;
   --popwindow-dropdown-text-focus-outline: 1px solid rgba(0, 191, 165, 0.6);

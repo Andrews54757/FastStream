@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "Свёртка включена"
     },
+    "audioconvolver_convolver": {
+        "message": "Свёртка"
+    },
+    "audioconvolver_disable": {
+        "message": "Отключить"
+    },
     "audioconvolver_disabled": {
         "message": "Свёртка отключена"
     },

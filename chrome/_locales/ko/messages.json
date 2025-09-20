@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "컨볼루션 사용"
     },
+    "audioconvolver_convolver": {
+        "message": "컨볼루션"
+    },
+    "audioconvolver_disable": {
+        "message": "사용 안 함"
+    },
     "audioconvolver_disabled": {
         "message": "컨볼루션 사용 안 함"
     },

@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "已启用卷积"
     },
+    "audioconvolver_convolver": {
+        "message": "卷积器"
+    },
+    "audioconvolver_disable": {
+        "message": "禁用"
+    },
     "audioconvolver_disabled": {
         "message": "已禁用卷积"
     },

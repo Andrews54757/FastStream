@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "Konvolüsyon etkin"
     },
+    "audioconvolver_convolver": {
+        "message": "Konvolüsyon"
+    },
+    "audioconvolver_disable": {
+        "message": "Devre Dışı Bırak"
+    },
     "audioconvolver_disabled": {
         "message": "Konvolüsyon devre dışı"
     },

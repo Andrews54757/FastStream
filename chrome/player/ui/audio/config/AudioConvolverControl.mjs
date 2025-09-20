@@ -30,9 +30,10 @@ export class AudioConvolverChannel {
   }
 }
 
-export class AudioConvolverControl {
-  constructor(enabled, downmix, bufferSize, channels) {
-    this.enabled = !!enabled;
+export class AudioConvolverProfile {
+  constructor(id, label, downmix, bufferSize, channels) {
+    this.id = id;
+    this.label = label;
     this.downmix = !!downmix;
     this.bufferSize = bufferSize;
 
@@ -50,20 +51,20 @@ export class AudioConvolverControl {
         newChannels.push(AudioConvolverChannel.default(i));
       }
     }
-    return new AudioConvolverControl(obj.enabled, obj.downmix, obj.bufferSize ?? 2048, newChannels);
+    return new AudioConvolverProfile(obj.id, obj.label, obj.downmix, obj.bufferSize ?? 2048, newChannels);
   }
 
-  static default() {
+  static default(id) {
     const channels = [];
     for (let i = 0; i < MAX_AUDIO_CHANNELS; i++) {
       channels.push(AudioConvolverChannel.default(i));
     }
-    return new AudioConvolverControl(false, true, 2048, channels);
+    return new AudioConvolverProfile(id, `Profile ${id + 1}`, true, 2048, channels);
   }
 
   isDefault() {
-    const def = AudioConvolverControl.default();
-    if (this.enabled !== def.enabled || this.downmix !== def.downmix || this.bufferSize !== def.bufferSize) {
+    const def = AudioConvolverProfile.default();
+    if (this.label !== def.label || this.downmix !== def.downmix || this.bufferSize !== def.bufferSize) {
       return false;
     }
     if (this.channels.length !== def.channels.length) {
@@ -79,10 +80,58 @@ export class AudioConvolverControl {
 
   toObj() {
     return {
-      enabled: this.enabled,
+      id: this.id,
+      label: this.label,
       downmix: this.downmix,
       bufferSize: this.bufferSize,
       channels: this.channels.filter((ch) => !ch.isDefault()).map((ch) => ch.toObj()),
+    };
+  }
+}
+
+
+export const NUM_CONVOLVER_PROFILES = 8;
+
+export class AudioConvolverControl {
+  constructor(enabled, profiles) {
+    this.enabled = !!enabled;
+    this.profiles = profiles || [];
+  }
+  static fromObj(obj) {
+    const profiles = (obj.profiles || []).map((p) => AudioConvolverProfile.fromObj(p));
+    const newProfiles = [];
+    for (let i = 0; i < NUM_CONVOLVER_PROFILES; i++) {
+      const existingProfile = profiles.find((p) => p.id === i);
+      if (existingProfile) {
+        newProfiles.push(existingProfile);
+      } else {
+        newProfiles.push(AudioConvolverProfile.default(i));
+      }
+    }
+    return new AudioConvolverControl(obj.enabled, newProfiles);
+  }
+
+  static default() {
+    const profiles = [];
+    for (let i = 0; i < NUM_CONVOLVER_PROFILES; i++) {
+      profiles.push(AudioConvolverProfile.default(i));
+    }
+    return new AudioConvolverControl(false, profiles);
+  }
+
+  isDefault() {
+    for (let i = 0; i < this.profiles.length; i++) {
+      if (!this.profiles[i].isDefault()) {
+        return false;
+      }
+    }
+    return this.enabled === false;
+  }
+
+  toObj() {
+    return {
+      enabled: this.enabled,
+      profiles: this.profiles.filter((p) => !p.isDefault()).map((p) => p.toObj()),
     };
   }
 }

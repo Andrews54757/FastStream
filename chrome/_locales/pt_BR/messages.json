@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "Convolução ativada"
     },
+    "audioconvolver_convolver": {
+        "message": "Convolução"
+    },
+    "audioconvolver_disable": {
+        "message": "Desativar"
+    },
     "audioconvolver_disabled": {
         "message": "Convolução desativada"
     },

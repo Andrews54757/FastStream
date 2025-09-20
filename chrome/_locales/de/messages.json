@@ -791,6 +791,12 @@
     "audioconvolver_enabled": {
         "message": "Faltung aktiviert"
     },
+    "audioconvolver_convolver": {
+        "message": "Faltung"
+    },
+    "audioconvolver_disable": {
+        "message": "Deaktivieren"
+    },
     "audioconvolver_disabled": {
         "message": "Faltung deaktiviert"
     },
