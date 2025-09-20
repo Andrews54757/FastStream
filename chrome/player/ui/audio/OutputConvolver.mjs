@@ -311,17 +311,18 @@ export class OutputConvolver extends AbstractAudioModule {
 
           displayName = displayName.replaceAll('\n', ' ').trim();
 
-          if (displayName.length === 0) {
-            displayName = Localize.getMessage('player_audioconfig_profile_unnamed');
-          }
-
           const profile = this.config.profiles.find((profile) => profile.id === parseInt(key.substring(1)));
           if (profile) {
-            profile.label = displayName;
+            profile.label = displayName ? displayName : `Profile ${profile.id + 1}`;
             this.saveConfig();
           }
         },
     );
+
+    this.ui.profileDropdown.children[0].children[0].addEventListener('blur', ()=>{
+      this.updateProfileDropdown(parseInt(this.ui.profileDropdown.dataset.val.substring(1)));
+    });
+
     if (oldDropdown) {
       this.ui.convolverControls.replaceChild(this.ui.profileDropdown, oldDropdown);
     } else {
