@@ -495,6 +495,25 @@ export class OutputConvolver extends AbstractAudioModule {
           if (!this.currentProfile) {
             return;
           }
+
+          // if shift is held, then download current file
+          if (e.shiftKey && channel.fileName) {
+            const name = this.getImpulseNameForChannel(this.currentProfile.id, i);
+            const file = await this.db.getFile(name).catch((e) => null);
+            if (file) {
+              const url = URL.createObjectURL(file);
+              const a = WebUtils.create('a');
+              a.href = url;
+              a.download = channel.fileName;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            }
+            e.stopPropagation();
+            return;
+          }
+
           const input = WebUtils.create('input');
           input.type = 'file';
           input.accept = '.wav,.mp3,.ogg,.flac,.aiff,.aif';
