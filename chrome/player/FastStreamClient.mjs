@@ -89,6 +89,7 @@ export class FastStreamClient extends EventEmitter {
       videoRotate: 0,
       disableVisualFilters: false,
       maximumDownloaders: 6,
+      maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
     };
     this.state = {
       playing: false,
