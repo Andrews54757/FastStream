@@ -417,6 +417,7 @@ export default class YTPlayer extends DashPlayer {
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       client_type: mode === ClientType.IOS ? undefined : mode,
       runner_location: 'https://sandbox.faststream.online/',
+      player_id: '0004de42',
     });
 
     const tokens = await getPoTokens(youtube.session, identifier);
