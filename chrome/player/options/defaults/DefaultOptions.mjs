@@ -46,4 +46,5 @@ export const DefaultOptions = {
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,
   videoDelay: 0,
   maximumDownloaders: 6,
+  youtubePlayerID: '',
 };

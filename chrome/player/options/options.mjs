@@ -47,6 +47,7 @@ const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
 const colorTheme = document.getElementById('colortheme');
+const ytPlayerID = document.getElementById('ytplayerid');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -103,6 +104,7 @@ async function loadOptions(newOptions) {
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
   maxdownloaders.value = Options.maximumDownloaders;
+  ytPlayerID.value = Options.youtubePlayerID;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -381,6 +383,11 @@ autoplayYoutube.addEventListener('change', () => {
 autoplayNext.addEventListener('change', () => {
   Options.autoplayNext = autoplayNext.checked;
   sessionStorage.removeItem('autoplayNext');
+  optionChanged();
+});
+
+ytPlayerID.addEventListener('change', () => {
+  Options.youtubePlayerID = ytPlayerID.value.trim();
   optionChanged();
 });
 

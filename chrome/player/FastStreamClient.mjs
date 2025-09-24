@@ -90,6 +90,7 @@ export class FastStreamClient extends EventEmitter {
       disableVisualFilters: false,
       maximumDownloaders: 6,
       maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
+      youtubePlayerID: '',
     };
     this.state = {
       playing: false,
@@ -316,6 +317,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
+    this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
@@ -805,6 +807,7 @@ export class FastStreamClient extends EventEmitter {
       const options = {};
       if (source.mode === PlayerModes.ACCELERATED_YT) {
         options.defaultClient = this.options.defaultYoutubeClient;
+        options.forcedPlayerID = this.options.youtubePlayerID;
       }
       this.player = await this.playerLoader.createPlayer(source.mode, this, options);
 
