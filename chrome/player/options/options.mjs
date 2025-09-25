@@ -498,10 +498,10 @@ if (parent !== window) {
   document.body.classList.add('frame');
 }
 
-if (EnvUtils.isExtension()) {
-  // React to external changes via OptionsStore
-  OptionsStore.subscribe(() => loadOptions(OptionsStore.get()));
+// React to external changes via OptionsStore
+OptionsStore.subscribe(() => loadOptions(OptionsStore.get()));
 
+if (EnvUtils.isExtension()) {
   // Also refresh when becoming visible to catch recent changes
   const o = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) loadOptions(OptionsStore.get());
