@@ -1039,12 +1039,21 @@
   }
 
   function testSimilarity(originalElement, childElement, parentElement) {
+    const parentStyle = window.getComputedStyle(parentElement);
+    // const childStyle = window.getComputedStyle(childElement);
     const parentRect = parentElement.getBoundingClientRect();
+    const childRect = childElement.getBoundingClientRect();
+
+    // Check if child element has fixed position
+    if (parentStyle.position === 'fixed') {
+      return false;
+    }
+
+    const originalRect = originalElement.getBoundingClientRect();
     if (parentRect.width === 0 || parentRect.height === 0) {
       return true;
     }
 
-    const originalRect = originalElement.getBoundingClientRect();
     const tolerance = Math.max(Math.min(originalRect.width, originalRect.height, 5000), 100) * 0.1;
     if (
       Math.abs(originalRect.x - parentRect.x) < tolerance &&
@@ -1056,8 +1065,6 @@
     }
 
     // Check if parent element is overflow hidden and child element can cover the parent element
-    const parentStyle = window.getComputedStyle(parentElement);
-    const childRect = childElement.getBoundingClientRect();
     if (parentStyle.overflow === 'hidden') {
       if (childRect.x <= parentRect.x &&
         childRect.y <= parentRect.y &&

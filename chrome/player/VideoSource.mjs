@@ -22,6 +22,8 @@ const headerBlacklist = [
   'sec-fetch-storage-access',
   'sec-fetch-user',
   'upgrade-insecure-requests',
+  'access-control-request-method',
+  'access-control-request-headers',
 ];
 
 
