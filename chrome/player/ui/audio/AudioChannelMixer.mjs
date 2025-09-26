@@ -400,6 +400,19 @@ export class AudioChannelMixer extends AbstractAudioModule {
       DOMElements.playerContainer.addEventListener('mouseup', mouseUp);
     });
 
+    els.volumeHandle.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      channel.gain = 1;
+      els.volumeHandle.style.top = `${zeroPos * 100}%`;
+      this.updateNodes();
+
+      if (channel.isMaster()) {
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_master_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
+      } else {
+        WebUtils.setLabels(els.volumeHandle, Localize.getMessage('audiomixer_volume_handle_label', [els.channelTitle.textContent, Math.round(AudioUtils.gainToDB(channel.gain)), Math.round(channel.gain * 100)]));
+      }
+    });
+
     els.volumeTrack.addEventListener('click', (e) => {
       mouseMove(e);
     });

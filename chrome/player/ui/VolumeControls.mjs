@@ -22,6 +22,10 @@ export class VolumeControls extends EventEmitter {
 
   setupUI() {
     DOMElements.volumeContainer.addEventListener('mousedown', this.onVolumeBarMouseDown.bind(this));
+    DOMElements.volumeContainer.addEventListener('dblclick', (e) => {
+      this.setVolume(1);
+      e.stopPropagation();
+    });
     DOMElements.muteBtn.addEventListener('click', this.muteToggle.bind(this));
     DOMElements.volumeBlock.tabIndex = 0;
     DOMElements.volumeBlock.addEventListener('keydown', (e) => {

@@ -285,6 +285,12 @@ document.querySelectorAll('.video-option').forEach((option) => {
   numberInput.addEventListener('input', numberInputChanged);
   rangeInput.addEventListener('change', rangeInputChanged);
   rangeInput.addEventListener('input', rangeInputChanged);
+  rangeInput.addEventListener('dblclick', (e) => {
+    Options[optionKey] = DefaultOptions[optionKey];
+    rangeInput.value = Math.round(Options[optionKey] * unitMultiplier);
+    numberInput.value = rangeInput.value + unit;
+    optionChanged();
+  });
 });
 
 function createKeybindElement(keybind) {
