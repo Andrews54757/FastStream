@@ -376,12 +376,6 @@ export class OpenSubtitlesSearch extends EventEmitter {
       container.appendChild(rank);
 
       WebUtils.setupTabIndex(container);
-      container.addEventListener('mouseenter', (e) => {
-        container.style.color = 'rgba(255,200,200,.8)';
-      });
-      container.addEventListener('mouseleave', (e) => {
-        container.style.color = 'rgba(255,255,255,.8)';
-      });
       container.addEventListener('click', async (e) => {
         console.log(item.attributes.files[0].file_id);
         let body;
