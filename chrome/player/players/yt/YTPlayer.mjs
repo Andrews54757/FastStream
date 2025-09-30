@@ -113,7 +113,7 @@ export default class YTPlayer extends DashPlayer {
           adapter.setServerAbrFormats(sabrFormats);
           adapter.setUstreamerConfig(videoPlaybackUstreamerConfig);
           adapter.onMintPoToken(async () => {
-            return (await getPoTokens(this.ytclient.session, identifier)).sessionToken;
+            return (await getPoTokens(this.ytclient.session, identifier)).contentToken;
           });
 
           adapter.onSnackbarMessage((message) => {
