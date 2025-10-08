@@ -1065,38 +1065,6 @@ async function getVideoSize(frame) {
   });
 }
 
-async function pingContentScript() {
-  return new Promise(async (resolve, reject) => {
-    const tabs = await BackgroundUtils.queryTabs();
-    const message = {
-      type: MessageTypes.PING_TAB,
-    };
-
-    // try one tab at a time. If it fails, try the next one
-    for (const tab of tabs) {
-      const result = await new Promise((resolve, reject) => {
-        try {
-          chrome.tabs.sendMessage(tab.id, message, (returnMessage) => {
-            if (chrome.runtime.lastError || returnMessage !== MessageTypes.PONG_TAB) {
-              resolve(false);
-            } else {
-              resolve(true);
-            }
-          });
-        } catch (e) {
-          resolve(false);
-        }
-      });
-
-      if (result) {
-        resolve(true);
-        return;
-      }
-    }
-    resolve(false);
-  });
-}
-
 async function openPlayer(frame) {
   if (frame.playerOpening || frame.hasPlayer()) {
     return;
@@ -1369,11 +1337,6 @@ function deleteHeaderCache(details) {
 }
 
 loadOptions().catch(console.error);
-
-setInterval(async () => {
-  await chrome.runtime.getPlatformInfo();
-  await pingContentScript();
-}, 10e3);
 
 const streamSaverBackend = new StreamSaverBackend();
 try {
