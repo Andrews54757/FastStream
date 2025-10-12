@@ -444,12 +444,12 @@ document.getElementById('resetdefault').addEventListener('click', () => {
 
 WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
-autoEnableURLSInput.addEventListener('input', (e) => {
+autoEnableURLSInput.addEventListener('change', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
   optionChanged();
 });
 
-customSourcePatterns.addEventListener('input', (e) => {
+customSourcePatterns.addEventListener('change', (e) => {
   Options.customSourcePatterns = customSourcePatterns.value;
   optionChanged();
 });
