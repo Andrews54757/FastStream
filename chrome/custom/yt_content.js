@@ -84,7 +84,7 @@ function pollPlaylistButtons(request, sender, sendResponse) {
 async function sendToOtherContents(message) {
   await mainLoadedPromise;
   chrome.runtime.sendMessage({
-    type: 'SEND_TO_CONTENT',
+    type: MessageTypes.SEND_TO_CONTENT,
     data: message,
     destination: 'main',
   });

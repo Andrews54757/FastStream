@@ -37,7 +37,9 @@
     customIframeId: null,
   };
 
-  if (window.location.origin === 'https://www.twitch.tv') {
+  const origin = window.location.origin;
+  // If twitch.tv, or vimeo, disable soft replace by default
+  if (origin.includes('twitch.tv') || origin.includes('vimeo.com')) {
     Config.softReplaceByDefault = false;
   }
 
