@@ -174,11 +174,6 @@ export class HLS2MP4 extends EventEmitter {
       throw new Error('level.details is null');
     }
 
-    if (audioLevel && !audioLevel.details) {
-      throw new Error('audioLevel.details is null');
-    }
-
-
     this.transmuxer = new Transmuxer({
       audioCodec: level.audioCodec,
       videoCodec: level.videoCodec,
