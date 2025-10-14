@@ -498,15 +498,15 @@ export class FineTimeControls extends EventEmitter {
         const barWidth = Math.ceil(el.element.width / outputRate / 10);
         // Draw volume bars using buffer
         for (let i = startFrame2; i < endFrame2; i++) {
-          const volumeVal = volumeBuffer[i] === undefined ? 0 : Utils.clamp((volumeBuffer[i] - minDB) / dbRange, 0, 1) * 255;
+          const volumeVal = volumeBuffer[i] === undefined ? 0 : Utils.clamp((volumeBuffer[i] - minDB) / dbRange, 0, 1);
           // draw volume bar. vertical rectangle. with color blue -> red. Fillrect
-          let color = `rgb(${volumeVal}, ${255 - volumeVal}, 255)`;
-          if (this.audioSilenceThreshold !== null && volumeVal <= this.audioSilenceThreshold * 255) {
+          let color = `rgb(${volumeVal * 255}, ${255 - volumeVal * 255}, 255)`;
+          if (this.audioSilenceThreshold !== null && volumeVal <= this.audioSilenceThreshold) {
             // white grey
             color = 'rgb(200, 200, 200)';
           }
           context.fillStyle = color;
-          context.fillRect((i - startFrame2) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 255 / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil((volumeVal / 255) * el.element.height));
+          context.fillRect((i - startFrame2) / (10 * outputRate) * el.element.width, Math.floor((0.5 - volumeVal / 2) * el.element.height), Math.floor(barWidth / 2), Math.ceil(volumeVal * el.element.height));
         }
       }
 
