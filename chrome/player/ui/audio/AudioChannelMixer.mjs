@@ -33,6 +33,10 @@ export class AudioChannelMixer extends AbstractAudioModule {
     return Math.min(await this.configManager.getChannelCount().catch(() => 0), MAX_AUDIO_CHANNELS);
   }
 
+  isMonoOutput() {
+    return this.masterConfig ? this.masterConfig.mono : false;
+  }
+
   getElement() {
     return this.ui.mixer;
   }
@@ -436,6 +440,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
       if (channel.isMaster()) { // master
         channel.mono = !channel.mono;
         els.muteButton.classList.toggle('active', channel.mono);
+        this.emit('monochange', channel.mono);
       } else {
         channel.muted = !channel.muted;
         els.muteButton.classList.toggle('active', channel.mute);

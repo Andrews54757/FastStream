@@ -76,6 +76,9 @@ export class OutputConvolver extends AbstractAudioModule {
   }
 
   async getChannelCount() {
+    if (this.configManager.audioChannelMixer.isMonoOutput()) {
+      return 1;
+    }
     return Math.min(await this.configManager.getChannelCount().catch(() => 0), MAX_AUDIO_CHANNELS);
   }
 
