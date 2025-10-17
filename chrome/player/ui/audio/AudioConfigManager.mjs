@@ -33,10 +33,6 @@ export class AudioConfigManager extends AbstractAudioModule {
 
     if (OutputConvolver.isSupported()) {
       this.outputConvolver = new OutputConvolver(this);
-
-      this.audioChannelMixer.on('monochange', () =>{
-        this.outputConvolver.updateChannelCount();
-      });
     }
 
     this.setupUI();
