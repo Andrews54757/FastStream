@@ -67,8 +67,7 @@ export class OutputMeter extends AbstractAudioModule {
     this.splitterNode = this.audioContext.createChannelSplitter(channelCount);
 
     for (let i = 0; i < channelCount; i++) {
-      const analyser = this.audioContext.createAnalyser();
-      analyser.fftSize = 256;
+      const analyser = AudioUtils.createVolumeAnalyserNode(this.audioContext);
       this.channelAnalysers[i] = analyser;
       this.splitterNode.connect(analyser, i);
     }

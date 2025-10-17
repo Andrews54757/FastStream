@@ -708,8 +708,8 @@ export class AudioEqualizer extends AbstractAudioModule {
     this.preAnalyzer.fftSize = 2048 * 2;
     this.postAnalyzer.fftSize = 2048 * 2;
 
-    this.preAnalyzer.smoothingTimeConstant = 0.6;
-    this.postAnalyzer.smoothingTimeConstant = 0.6;
+    this.preAnalyzer.smoothingTimeConstant = 0.5;
+    this.postAnalyzer.smoothingTimeConstant = 0.5;
     this.preAnalyzer.maxDecibels = -20;
     this.postAnalyzer.maxDecibels = -20;
 

@@ -583,8 +583,7 @@ export class AudioChannelMixer extends AbstractAudioModule {
     }
 
     this.channelNodes.forEach((nodes) => {
-      const analyser = this.audioContext.createAnalyser();
-      analyser.fftSize = 256;
+      const analyser = AudioUtils.createVolumeAnalyserNode(this.audioContext);
       nodes.preMerge.connect(analyser);
       nodes.analyzer = analyser;
     });

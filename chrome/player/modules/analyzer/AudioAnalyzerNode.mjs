@@ -35,9 +35,8 @@ export class AudioAnalyzerNode extends EventEmitter {
   startRecordingVolume() {
     if (this.volumeLoopShouldRun) return;
     this.volumeLoopShouldRun = true;
-    const analyser = this.audioContext.createAnalyser();
+    const analyser = AudioUtils.createVolumeAnalyserNode(this.audioContext);
     this.volumeAnalyserNode = analyser;
-    analyser.fftSize = 256;
     this.audioSource.connect(analyser);
 
     if (this.volumeLoopRunning) return;
