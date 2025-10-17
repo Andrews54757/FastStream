@@ -166,8 +166,8 @@ export class PlaybackRateChanger extends EventEmitter {
   }
 
   shouldSkipSilence(time) {
-    const minDB = -80;
-    const maxDB = 0;
+    const minDB = -100;
+    const maxDB = -30;
     const dbRange = maxDB - minDB;
 
     const volumeBuffer = this.client.audioAnalyzer.getVolumeData();
