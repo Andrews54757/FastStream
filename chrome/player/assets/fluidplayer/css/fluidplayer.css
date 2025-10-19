@@ -237,6 +237,7 @@ body {
     font-style: normal;
     text-align: left;
     text-decoration: none;
+    font-variant-numeric: tabular-nums;
     line-height: 22px;
     padding: 0px 2px;
     cursor: pointer;
@@ -674,6 +675,7 @@ body {
     right: 0px;
     background-color: var(--button-badge-background-color);
     font-weight: medium;
+    font-variant-numeric: tabular-nums;
     border-radius: 2px;
     z-index: 2;
     font-size: 8px;
@@ -751,6 +753,7 @@ body {
     position: absolute;
     background-color: var(--seek-preview-background-color);
     font-size: var(--font-size-small);
+    font-variant-numeric: tabular-nums;
     text-align: center;
     padding: 3px 10px;
     border-radius: 3px;
@@ -1915,6 +1918,7 @@ body {
 
 .rate-changer-list>div {
     font-size: var(--font-size-medium);
+    font-variant-numeric: tabular-nums;
     width: 60px;
     text-align: center;
     padding: 3px 0px;
@@ -1973,6 +1977,7 @@ body {
     border-radius: 3px;
     position: absolute;
     z-index: 1;
+    font-variant-numeric: tabular-nums;
 
     width: 50px;
     bottom: 100%;
@@ -2778,6 +2783,7 @@ input.crosstalk_calculator_input {
 .knob_value {
     position: absolute;
     display: inline-block;
+    font-variant-numeric: tabular-nums;
     font-size: 12px;
     color: rgba(255, 255, 255, 0.8);
     text-align: center;
