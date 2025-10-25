@@ -37,6 +37,12 @@ export class ToolManager {
     this.sortableLeft = Sortable.create(DOMElements.leftToolsContainer, options);
     this.sortableExtra = Sortable.create(DOMElements.extraTools, options);
 
+    if (EnvUtils.isMobile()) {
+      this.sortableRight.option('disabled', true);
+      this.sortableLeft.option('disabled', true);
+      this.sortableExtra.option('disabled', true);
+    }
+
     const tools = Array.from(DOMElements.leftToolsContainer.children).concat(Array.from(DOMElements.rightToolsContainer.children), Array.from(DOMElements.extraTools.children));
     tools.forEach((el) => {
       let skipClick = false;
@@ -264,6 +270,12 @@ export class ToolManager {
     DOMElements.rightToolsContainer.classList.add('reordering');
     DOMElements.leftToolsContainer.classList.add('reordering');
     DOMElements.extraTools.classList.add('reordering');
+
+    if (EnvUtils.isMobile()) {
+      this.sortableRight.option('disabled', false);
+      this.sortableLeft.option('disabled', false);
+      this.sortableExtra.option('disabled', false);
+    }
   }
 
   stopReorderUI() {
@@ -272,5 +284,11 @@ export class ToolManager {
     DOMElements.rightToolsContainer.classList.remove('reordering');
     DOMElements.leftToolsContainer.classList.remove('reordering');
     DOMElements.extraTools.classList.remove('reordering');
+
+    if (EnvUtils.isMobile()) {
+      this.sortableRight.option('disabled', true);
+      this.sortableLeft.option('disabled', true);
+      this.sortableExtra.option('disabled', true);
+    }
   }
 }

@@ -53,6 +53,14 @@ export class EnvUtils {
   }
 
   /**
+   * Checks if the device is mobile.
+   * @return {boolean} True if mobile, false otherwise.
+   */
+  static isMobile() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+  }
+
+  /**
    * Gets the version of the extension or web app.
    * @return {string} The version string.
    */
