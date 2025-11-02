@@ -186,7 +186,8 @@ export class SubtitleUtils {
     }
     // get cue text
     if (s[line]) {
-      cue += s[line] + '\n\n';
+      const cueText = s[line].replace(/<\s*\/?\s*br\b[^>]*>/gi, '\n');
+      cue += cueText + '\n\n';
     }
     return cue;
   }

@@ -291,6 +291,7 @@ body {
     border-radius: 4px;
     display: inline-block;
     user-select: text;
+    white-space: pre-line;
 }
 
 .subtitle-track-wrapper {
