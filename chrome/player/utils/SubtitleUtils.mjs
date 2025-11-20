@@ -198,11 +198,32 @@ export class SubtitleUtils {
    * @return {string} Formatted subtitle text.
    */
   static convertSubtitleFormatting(text) {
-    return text
-        .replace(/\{\\([ibu])1\}/g, '<$1>') // convert {\b1}, {\i1}, {\u1} to <b>, <i>, <u>
-        .replace(/\{\\([ibu])\}/g, '</$1>') // convert {\b}, {\i}, {\u} to </b>, </i>, </u>
-        .replace(/\{([ibu])\}/g, '<$1>') // convert {b}, {i}, {u} to <b>, <i>, <u>
-        .replace(/\{\/([ibu])\}/g, '</$1>') // convert {/b}, {/i}, {/u} to </b>, </i>, </u>
-        .replace(/(\r\n|\n)\{\\an8\}/g, ' line:5%\n'); // handle top positioning
+    const alignmentSettings = {
+      1: 'line:95% position:0% align:start',
+      2: 'line:95% position:50% align:center',
+      3: 'line:95% position:100% align:end',
+      4: 'line:50% position:0% align:start',
+      5: 'line:50% position:50% align:center',
+      6: 'line:50% position:100% align:end',
+      7: 'line:5% position:0% align:start',
+      8: 'line:5% position:50% align:center',
+      9: 'line:5% position:100% align:end',
+    };
+
+    const withAlignment = text.replace(/(\r\n|\n)\{\\?an(\d)\}/gi, (match, _newline, alignment) => {
+      const settings = alignmentSettings[alignment];
+      if (settings) {
+        return ` ${settings}\n`;
+      }
+      return '\n';
+    });
+
+    return withAlignment
+        .replace(/\{\\([ibu])1\}/gi, '<$1>') // convert {\b1}, {\i1}, {\u1} to <b>, <i>, <u>
+        .replace(/\{\\([ibu])\}/gi, '</$1>') // convert {\b}, {\i}, {\u} to </b>, </i>, </u>
+        .replace(/\{([ibu])\}/gi, '<$1>') // convert {b}, {i}, {u} to <b>, <i>, <u>
+        .replace(/\{\/([ibu])\}/gi, '</$1>') // convert {/b}, {/i}, {/u} to </b>, </i>, </u>
+        .replace(/\{\\?an\d\}/gi, '') // strip any remaining alignment tags
+        .replace(/\\h/gi, ' '); // convert hard spaces to regular spaces
   }
 }
