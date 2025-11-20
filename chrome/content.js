@@ -795,11 +795,16 @@
       player.dataset.oldMargin = player.style.margin;
     }
 
+    if (player.style.contain && player.style.contain !== 'paint') {
+      player.dataset.oldContain = player.style.contain;
+    }
+
     player.style.setProperty('width', '0px', 'important');
     player.style.setProperty('height', '0px', 'important');
     player.style.setProperty('overflow', 'hidden', 'important');
     player.style.setProperty('margin', '0px', 'important');
     player.style.setProperty('transition', 'none', 'important');
+    player.style.setProperty('contain', 'paint', 'important');
   }
 
   function showSoft(player) {
@@ -815,6 +820,9 @@
     }
     if (player.style.margin === '0px') {
       player.style.margin = player.dataset.oldMargin || '';
+    }
+    if (player.style.contain === 'paint') {
+      player.style.contain = player.dataset.oldContain || '';
     }
   }
 
