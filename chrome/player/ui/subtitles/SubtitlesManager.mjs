@@ -647,14 +647,15 @@ export class SubtitlesManager extends EventEmitter {
       let cueIndex = Utils.binarySearch(cues, this.client.state.currentTime, (time, cue) => {
         if (cue.startTime > time) {
           return -1;
-        } else if (cue.endTime < time) {
+        } else if (cue.startTime < time) {
           return 1;
         }
         return 0;
       });
 
       const toAdd = [];
-      if (cueIndex > -1) {
+      if (cueIndex < -1) {
+        cueIndex = -cueIndex - 2;
         while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
           cueIndex--;
         }
