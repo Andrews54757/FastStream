@@ -410,9 +410,13 @@ const observer = new MutationObserver((mutations) => {
       const rect = playerNode.getBoundingClientRect();
       if ((isEmbed || rect.x !== 0 || playerNode.id !== 'player') && rect.width * rect.height > 0 && (!FoundYTPlayer || FoundYTPlayerIdentifier !== identifier)) {
         // check if element contains the ytd-player element
-        const ytdPlayer = playerNode.querySelector('ytd-player');
-        if (!ytdPlayer) {
-          return false;
+
+        // if not embed
+        if (!isEmbed) {
+          const ytdPlayer = playerNode.querySelector('ytd-player');
+          if (!ytdPlayer) {
+            return false;
+          }
         }
 
         FoundYTPlayer = playerNode;

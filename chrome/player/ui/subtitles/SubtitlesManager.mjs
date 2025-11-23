@@ -662,7 +662,7 @@ export class SubtitlesManager extends EventEmitter {
         cueIndex--;
       }
 
-      while (cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
+      while (cueIndex >= 0 &&cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
         const cue = cues[cueIndex];
         if (!cue.dom) {
           cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
