@@ -656,20 +656,20 @@ export class SubtitlesManager extends EventEmitter {
       const toAdd = [];
       if (cueIndex < -1) {
         cueIndex = -cueIndex - 2;
-        while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
-          cueIndex--;
-        }
-
-        while (cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
-          const cue = cues[cueIndex];
-          if (!cue.dom) {
-            cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
-          }
-          toAdd.push(cue.dom);
-          cueIndex++;
-        }
       }
 
+      while (cueIndex > 0 && cues[cueIndex - 1].endTime >= currentTime && cues[cueIndex - 1].startTime <= currentTime) {
+        cueIndex--;
+      }
+
+      while (cueIndex < cues.length && cues[cueIndex].endTime >= currentTime && cues[cueIndex].startTime <= currentTime) {
+        const cue = cues[cueIndex];
+        if (!cue.dom) {
+          cue.dom = WebVTT.convertCueToDOMTree(window, cue.text);
+        }
+        toAdd.push(cue.dom);
+        cueIndex++;
+      }
 
       if (!toAdd.length) {
         trackContainer.style.opacity = 0;
