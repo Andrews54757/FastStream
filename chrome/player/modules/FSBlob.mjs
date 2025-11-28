@@ -10,12 +10,20 @@ export class FSBlob {
     this.blobStore = new Map();
     this.blobStorePromises = new Map();
 
-    if (UseCache) {
-      this.cache = true;
-      this.setupPromise = this.setupOrphanedCache();
-    } else if (UseIndexedDB) {
-      this.indexedDBManager = new IndexedDBManager();
-      this.setupPromise = this.indexedDBManager.setup();
+    try {
+      if (UseCache) {
+        this.cache = true;
+        this.setupPromise = this.setupOrphanedCache();
+      } else if (UseIndexedDB) {
+        this.indexedDBManager = new IndexedDBManager();
+        this.setupPromise = this.indexedDBManager.setup();
+      }
+    } catch (e) {
+      console.warn('FSBlob setup failed, falling back to memory storage', e);
+      this.cache = null;
+      this.indexedDBManager = null;
+      this.setupPromise = null;
+      this.blobStorePromises.clear();
     }
 
     this.blobIndex = 0;
