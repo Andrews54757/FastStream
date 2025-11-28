@@ -640,24 +640,27 @@ export class InterfaceController {
     });
 
     o.observe(document.body);
-
-    // eslint-disable-next-line new-cap
-    Coloris({
-      parent: '.mainplayer',
-      theme: 'pill',
-      themeMode: 'dark',
-      formatToggle: true,
-      swatches: [
-        'rgb(255,255,255)',
-        'rgba(10,10,10,0.3)',
-        '#067bc2',
-        '#ecc30b',
-        '#f37748',
-        '#d56062',
-      ],
-      alpha: true,
-      focusInput: false,
-    });
+    try {
+      // eslint-disable-next-line new-cap
+      Coloris({
+        parent: '.mainplayer',
+        theme: 'pill',
+        themeMode: 'dark',
+        formatToggle: true,
+        swatches: [
+          'rgb(255,255,255)',
+          'rgba(10,10,10,0.3)',
+          '#067bc2',
+          '#ecc30b',
+          '#f37748',
+          '#d56062',
+        ],
+        alpha: true,
+        focusInput: false,
+      });
+    } catch (e) {
+      console.warn('Coloris failed to initialize', e);
+    }
 
     const mouseUpHandler = (e) => {
       DOMElements.playerContainer.removeEventListener('mousemove', mouseMoveHandler);
