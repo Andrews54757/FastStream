@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Przepraszamy! FastStream nie obsługuje filmów, które wymagają zalogowania się na YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Ostrzeżenie: Twoja przeglądarka nie obsługuje w pełni funkcji przechowywania plików. Może to być spowodowane brakiem miejsca na dysku lub brakiem ponownego uruchomienia przeglądarki przez długi czas. Niektóre funkcje mogą nie działać zgodnie z oczekiwaniami."
     }
 }

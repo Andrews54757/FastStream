@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Sorry! FastStream ondersteunt geen video's waarvoor je bij YouTube moet inloggen."
+    },
+    "player_outofstorage": {
+        "message": "Waarschuwing: Uw browser ondersteunt de bestandsopslagfuncties niet volledig. Dit kan komen doordat uw browser geen opslagruimte meer heeft of al lange tijd niet is herstart. Sommige functies werken mogelijk niet zoals verwacht."
     }
 }

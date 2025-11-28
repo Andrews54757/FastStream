@@ -6892,5 +6892,23 @@
         "tr": "Üzgünüz! FastStream, YouTube girişinizi gerektiren videoları desteklemiyor.",
         "zh_CN": "抱歉！FastStream 不支持需要在 YouTube 登录才能观看的视频。",
         "zh_TW": "抱歉！FastStream 不支援需要登入 YouTube 才能觀看的影片。"
+    },
+    "player_outofstorage": {
+        "en": "Warning: Your browser does not fully support file storage features. This may be because your browser ran out of storage space or has not been restarted in a long time. Some features may not work as expected.",
+        "de": "Warnung: Dein Browser unterstützt die Dateispeicherfunktionen nicht vollständig. Dies kann daran liegen, dass der Speicherplatz deines Browsers erschöpft ist oder er seit langer Zeit nicht neu gestartet wurde. Einige Funktionen funktionieren möglicherweise nicht wie erwartet.",
+        "es": "Advertencia: Su navegador no admite completamente las funciones de almacenamiento de archivos. Esto puede deberse a que su navegador se quedó sin espacio de almacenamiento o no se ha reiniciado en mucho tiempo. Algunas funciones pueden no funcionar como se espera.",
+        "fr": "Attention : Votre navigateur ne prend pas entièrement en charge les fonctionnalités de stockage de fichiers. Cela peut être dû au fait que votre navigateur a manqué d'espace de stockage ou n'a pas été redémarré depuis longtemps. Certaines fonctionnalités peuvent ne pas fonctionner comme prévu.",
+        "id": "Peringatan: Browser Anda tidak sepenuhnya mendukung fitur penyimpanan file. Ini mungkin karena browser Anda kehabisan ruang penyimpanan atau belum di-restart dalam waktu yang lama. Beberapa fitur mungkin tidak berfungsi seperti yang diharapkan.",
+        "it": "Avviso: il tuo browser non supporta completamente le funzionalità di archiviazione dei file. Questo può essere dovuto al fatto che il tuo browser ha esaurito lo spazio di archiviazione o non è stato riavviato da molto tempo. Alcune funzionalità potrebbero non funzionare come previsto.",
+        "ja": "警告: お使いのブラウザはファイルストレージ機能を完全にはサポートしていません。これは、ブラウザのストレージ容量が不足しているか、長時間再起動されていないためです。一部の機能が期待通りに動作しない場合があります。",
+        "ko": "경고: 사용 중인 브라우저가 파일 저장 기능을 완전히 지원하지 않습니다. 이는 브라우저의 저장 공간이 부족하거나 오랜 시간 동안 재시작되지 않았기 때문일 수 있습니다. 일부 기능이 예상대로 작동하지 않을 수 있습니다.",
+        "ms": "Amaran: Pelayar anda tidak menyokong sepenuhnya ciri penyimpanan fail. Ini mungkin kerana pelayar anda kehabisan ruang simpanan atau tidak dimulakan semula dalam jangka masa yang lama. Sesetengah ciri mungkin tidak berfungsi seperti yang dijangkakan.",
+        "nl": "Waarschuwing: Uw browser ondersteunt de bestandsopslagfuncties niet volledig. Dit kan komen doordat uw browser geen opslagruimte meer heeft of al lange tijd niet is herstart. Sommige functies werken mogelijk niet zoals verwacht.",
+        "pl": "Ostrzeżenie: Twoja przeglądarka nie obsługuje w pełni funkcji przechowywania plików. Może to być spowodowane brakiem miejsca na dysku lub brakiem ponownego uruchomienia przeglądarki przez długi czas. Niektóre funkcje mogą nie działać zgodnie z oczekiwaniami.",
+        "pt_BR": "Aviso: Seu navegador não suporta totalmente os recursos de armazenamento de arquivos. Isso pode ser porque seu navegador ficou sem espaço de armazenamento ou não foi reiniciado por um longo tempo. Alguns recursos podem não funcionar como esperado.",
+        "ru": "Внимание: Ваш браузер не полностью поддерживает функции хранения файлов. Это может быть связано с тем, что в браузере закончилось место для хранения или он давно не перезагружался. Некоторые функции могут работать не так, как ожидалось.",
+        "tr": "Uyarı: Tarayıcınız dosya depolama özelliklerini tam olarak desteklemiyor. Bunun nedeni, tarayıcınızın depolama alanının dolmuş olması veya uzun süredir yeniden başlatılmamış olması olabilir. Bazı özellikler beklendiği gibi çalışmayabilir.",
+        "zh_CN": "警告：您的浏览器不完全支持文件存储功能。这可能是因为您的浏览器存储空间已满或长时间未重启。某些功能可能无法按预期工作。",
+        "zh_TW": "警告：您的瀏覽器不完全支援檔案儲存功能。這可能是因為您的瀏覽器儲存空間已滿或長時間未重新啟動。某些功能可能無法如預期般運作。"
     }
 }

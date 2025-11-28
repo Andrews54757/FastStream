@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Désolé ! FastStream ne prend pas en charge les vidéos qui nécessitent que vous soyez connecté à YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Attention : Votre navigateur ne prend pas entièrement en charge les fonctionnalités de stockage de fichiers. Cela peut être dû au fait que votre navigateur a manqué d'espace de stockage ou n'a pas été redémarré depuis longtemps. Certaines fonctionnalités peuvent ne pas fonctionner comme prévu."
     }
 }

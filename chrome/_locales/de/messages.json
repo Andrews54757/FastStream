@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Entschuldigung! FastStream unterstützt keine Videos, die erfordern, dass du bei YouTube angemeldet bist."
+    },
+    "player_outofstorage": {
+        "message": "Warnung: Dein Browser unterstützt die Dateispeicherfunktionen nicht vollständig. Dies kann daran liegen, dass der Speicherplatz deines Browsers erschöpft ist oder er seit langer Zeit nicht neu gestartet wurde. Einige Funktionen funktionieren möglicherweise nicht wie erwartet."
     }
 }

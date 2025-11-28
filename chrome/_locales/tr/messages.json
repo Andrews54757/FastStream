@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Üzgünüz! FastStream, YouTube girişinizi gerektiren videoları desteklemiyor."
+    },
+    "player_outofstorage": {
+        "message": "Uyarı: Tarayıcınız dosya depolama özelliklerini tam olarak desteklemiyor. Bunun nedeni, tarayıcınızın depolama alanının dolmuş olması veya uzun süredir yeniden başlatılmamış olması olabilir. Bazı özellikler beklendiği gibi çalışmayabilir."
     }
 }

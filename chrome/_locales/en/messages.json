@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Sorry! FastStream does not support videos which require you to be logged in to YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Warning: Your browser does not fully support file storage features. This may be because your browser ran out of storage space or has not been restarted in a long time. Some features may not work as expected."
     }
 }

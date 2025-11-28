@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Maaf! FastStream tidak mendukung video yang mengharuskan Anda masuk ke YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Peringatan: Browser Anda tidak sepenuhnya mendukung fitur penyimpanan file. Ini mungkin karena browser Anda kehabisan ruang penyimpanan atau belum di-restart dalam waktu yang lama. Beberapa fitur mungkin tidak berfungsi seperti yang diharapkan."
     }
 }

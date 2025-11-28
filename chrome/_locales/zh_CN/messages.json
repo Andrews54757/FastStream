@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "抱歉！FastStream 不支持需要在 YouTube 登录才能观看的视频。"
+    },
+    "player_outofstorage": {
+        "message": "警告：您的浏览器不完全支持文件存储功能。这可能是因为您的浏览器存储空间已满或长时间未重启。某些功能可能无法按预期工作。"
     }
 }

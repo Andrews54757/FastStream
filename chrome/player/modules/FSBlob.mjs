@@ -1,6 +1,7 @@
 import {IndexedDBManager} from '../network/IndexedDBManager.mjs';
 import {AlertPolyfill} from '../utils/AlertPolyfill.mjs';
 import {EnvUtils} from '../utils/EnvUtils.mjs';
+import {Localize} from './Localize.mjs';
 
 const BrowserCanAutoOffloadBlobs = EnvUtils.isChrome();
 const UseCache = !BrowserCanAutoOffloadBlobs && window.caches;
@@ -25,7 +26,7 @@ export class FSBlob {
       this.indexedDBManager = null;
       this.setupPromise = null;
       this.blobStorePromises.clear();
-      AlertPolyfill.alert('Warning: Your browser does not fully support file storage features. This may be because your browser ran out of storage space or has not been restarted in a long time. Some features may not work as expected.');
+      AlertPolyfill.alert(Localize.getMessage('player_outofstorage'));
     }
 
     this.blobIndex = 0;

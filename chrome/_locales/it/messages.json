@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "Spiacenti! FastStream non supporta i video che richiedono l'accesso a YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Avviso: il tuo browser non supporta completamente le funzionalità di archiviazione dei file. Questo può essere dovuto al fatto che il tuo browser ha esaurito lo spazio di archiviazione o non è stato riavviato da molto tempo. Alcune funzionalità potrebbero non funzionare come previsto."
     }
 }

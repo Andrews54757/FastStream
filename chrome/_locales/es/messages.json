@@ -1147,5 +1147,8 @@
     },
     "yt_error_login_required": {
         "message": "¡Lo sentimos! FastStream no admite videos que requieran que inicies sesión en YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Advertencia: Su navegador no admite completamente las funciones de almacenamiento de archivos. Esto puede deberse a que su navegador se quedó sin espacio de almacenamiento o no se ha reiniciado en mucho tiempo. Algunas funciones pueden no funcionar como se espera."
     }
 }
