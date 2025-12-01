@@ -930,7 +930,7 @@
         "message": "Analyseer automatisch opeenvolgende video's op intro's/outro's\n(schakel uit bij CPU-prestatieproblemen)"
     },
     "options_general_storeprogress": {
-        "message": "Sla voortgang van video's op in lokale opslag"
+        "message": "Video's afspelen vanaf de laatst bekeken positie"
     },
     "options_general_autosub": {
         "message": "Schakel automatisch het beste gevonden ondertitelingsspoor in\n(Verander de standaardtaal in de ondertitelingsinstellingen)"

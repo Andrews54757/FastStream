@@ -930,7 +930,7 @@
         "message": "Automatische Analyse sequenzieller Videos auf Intros/Outros\n(Schalte dies aus falls du CPU Performanz Probleme hast)"
     },
     "options_general_storeprogress": {
-        "message": "Abspielfortschritt von Videos im Lokalen Speicher speichern"
+        "message": "Spiele Videos von der zuletzt angesehenen Position ab"
     },
     "options_general_autosub": {
         "message": "Aktiviere automatisch den bestmöglichen Untertitel\n(Änder Standard Sprache in den Untertitel Einstellungen)"

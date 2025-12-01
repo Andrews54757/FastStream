@@ -930,7 +930,7 @@
         "message": "Automatycznie analizuj kolejne wideo pod kątem intro/outro\n(wyłącz, jeśli masz problemy z wydajnością CPU)"
     },
     "options_general_storeprogress": {
-        "message": "Zapisuj postępy wideo w pamięci lokalnej"
+        "message": "Odtwarzaj filmy od ostatnio oglądanej pozycji"
     },
     "options_general_autosub": {
         "message": "Automatycznie włączaj najlepszą znalezioną ścieżkę napisów\n(Zmień domyślny język w ustawieniach napisów)"

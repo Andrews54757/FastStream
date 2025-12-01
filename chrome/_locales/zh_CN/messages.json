@@ -930,7 +930,7 @@
         "message": "自动分析连续视频以检测片头/片尾\n（如果有 CPU 性能问题请关闭）"
     },
     "options_general_storeprogress": {
-        "message": "在本地存储中保存视频进度"
+        "message": "从上次观看位置播放视频"
     },
     "options_general_autosub": {
         "message": "自动启用匹配到的最佳字幕轨道\n（在字幕设置中更改默认语言）"

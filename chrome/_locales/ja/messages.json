@@ -930,7 +930,7 @@
         "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
     },
     "options_general_storeprogress": {
-        "message": "動画の進行状況をローカルストレージに保存する"
+        "message": "最後に視聴した位置から動画を再生する"
     },
     "options_general_autosub": {
         "message": "自動的に最適な字幕トラックを有効化する\n(字幕設定でデフォルトの言語を変更できます)"

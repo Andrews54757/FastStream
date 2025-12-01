@@ -930,7 +930,7 @@
         "message": "연속 재생 영상의 인트로/아웃트로를 자동으로 분석합니다\n(CPU 성능 문제가 있으면 끄세요)"
     },
     "options_general_storeprogress": {
-        "message": "비디오 진행 상황을 로컬 스토리지에 저장"
+        "message": "마지막으로 본 위치에서 비디오 재생"
     },
     "options_general_autosub": {
         "message": "자동으로 가장 적합한 자막 트랙을 활성화합니다\n(기본 언어는 자막 설정에서 변경하세요)"

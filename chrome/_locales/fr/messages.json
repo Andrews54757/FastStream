@@ -930,7 +930,7 @@
         "message": "Analyser automatiquement les vidéos séquentielles pour les intros/outros\n(désactivez si vous avez des problèmes de performances CPU)"
     },
     "options_general_storeprogress": {
-        "message": "Enregistrer la progression des vidéos dans le stockage local"
+        "message": "Lire les vidéos depuis la dernière position regardée"
     },
     "options_general_autosub": {
         "message": "Activer automatiquement la meilleure piste de sous-titres trouvée\n(Changer la langue par défaut dans les paramètres des sous-titres)"

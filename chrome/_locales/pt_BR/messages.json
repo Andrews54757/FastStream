@@ -930,7 +930,7 @@
         "message": "Analisa automaticamente vídeos sequenciais para introduções/outros\n(desligue se você tiver problemas de desempenho do CPU)"
     },
     "options_general_storeprogress": {
-        "message": "Salve o progresso dos vídeos localmente"
+        "message": "Reproduzir vídeos a partir da última posição assistida"
     },
     "options_general_autosub": {
         "message": "Ativar automaticamente a melhor faixa de legenda encontrada\n(Alterar o idioma padrão nas configurações de legenda)"

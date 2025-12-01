@@ -930,7 +930,7 @@
         "message": "自動分析連續影片以偵測片頭/片尾\n(若有 CPU 效能問題請關閉)"
     },
     "options_general_storeprogress": {
-        "message": "將影片進度儲存在本機儲存"
+        "message": "從上次觀看位置播放影片"
     },
     "options_general_autosub": {
         "message": "自動啟用偵測到的最佳字幕軌\n(在字幕設定中變更預設語言)"

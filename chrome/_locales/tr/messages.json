@@ -930,7 +930,7 @@
         "message": "Giriş/çıkış bölümlerini tespit etmek için ardışık videoları otomatik olarak analiz et\n(CPU performansı sorunları yaşıyorsanız kapatın)"
     },
     "options_general_storeprogress": {
-        "message": "Videoların ilerlemesini yerel depolamada kaydet"
+        "message": "Videoları son izlenen konumdan oynat"
     },
     "options_general_autosub": {
         "message": "Bulunan en iyi altyazı parçasını otomatik olarak etkinleştir\n(Öntanımlı dili altyazı ayarlarından değiştirin)"

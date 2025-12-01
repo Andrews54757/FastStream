@@ -930,7 +930,7 @@
         "message": "Secara otomatis menganalisis video berurutan untuk intro/outro\n(matikan jika Anda mengalami masalah kinerja CPU)"
     },
     "options_general_storeprogress": {
-        "message": "Simpan progres video di penyimpanan lokal"
+        "message": "Putar video dari posisi terakhir yang ditonton"
     },
     "options_general_autosub": {
         "message": "Secara otomatis aktifkan trek subtitle terbaik yang ditemukan\n(Ubah bahasa default di pengaturan subtitle)"
