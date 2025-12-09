@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "Actie bij drievoudige klik"
     },
+    "options_general_clickaction_nothing": {
+        "message": "Niets doen"
+    },
     "options_general_clickaction_playpause": {
         "message": "Afspelen/pauzeren"
     },

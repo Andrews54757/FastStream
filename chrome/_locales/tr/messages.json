@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "Üçlü tıklama eylemi"
     },
+    "options_general_clickaction_nothing": {
+        "message": "Hiçbir şey yapma"
+    },
     "options_general_clickaction_playpause": {
         "message": "Oynat/Duraklat"
     },

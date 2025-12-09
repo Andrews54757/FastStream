@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "Akcja przy potrójnym kliknięciu"
     },
+    "options_general_clickaction_nothing": {
+        "message": "Nic nie rób"
+    },
     "options_general_clickaction_playpause": {
         "message": "Przełącz odtwarzanie/pauzę"
     },

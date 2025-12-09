@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "三击操作"
     },
+    "options_general_clickaction_nothing": {
+        "message": "不执行任何操作"
+    },
     "options_general_clickaction_playpause": {
         "message": "切换播放/暂停"
     },

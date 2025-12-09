@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "Acción de triple clic"
     },
+    "options_general_clickaction_nothing": {
+        "message": "No hacer nada"
+    },
     "options_general_clickaction_playpause": {
         "message": "Alternar reproducir/pausar"
     },

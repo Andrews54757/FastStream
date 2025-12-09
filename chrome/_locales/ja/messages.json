@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "トリプルクリック時のアクション"
     },
+    "options_general_clickaction_nothing": {
+        "message": "何もしない"
+    },
     "options_general_clickaction_playpause": {
         "message": "再生/一時停止に切り替え"
     },

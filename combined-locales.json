@@ -5795,6 +5795,24 @@
         "zh_CN": "三击操作",
         "zh_TW": "三擊動作"
     },
+    "options_general_clickaction_nothing": {
+        "en": "Do nothing",
+        "de": "Nichts tun",
+        "es": "No hacer nada",
+        "fr": "Ne rien faire",
+        "id": "Jangan lakukan apa-apa",
+        "it": "Non fare nulla",
+        "ja": "何もしない",
+        "ko": "아무 작업도 하지 않음",
+        "ms": "Do nothing",
+        "nl": "Niets doen",
+        "pl": "Nic nie rób",
+        "pt_BR": "Não fazer nada",
+        "ru": "Ничего не делать",
+        "tr": "Hiçbir şey yapma",
+        "zh_CN": "不执行任何操作",
+        "zh_TW": "不執行任何動作"
+    },
     "options_general_clickaction_playpause": {
         "en": "Toggle play/pause",
         "de": "Abspielen/Pausieren umschalten",

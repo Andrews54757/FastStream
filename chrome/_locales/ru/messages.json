@@ -965,6 +965,9 @@
     "options_general_tplclickaction": {
         "message": "Действие по тройному клику"
     },
+    "options_general_clickaction_nothing": {
+        "message": "Ничего не делать"
+    },
     "options_general_clickaction_playpause": {
         "message": "Воспроизведение/Пауза"
     },
