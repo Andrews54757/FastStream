@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "忽略此更新"
     },
+    "options_search_header": {
+        "message": "选项过滤器"
+    },
+    "options_search_label": {
+        "message": "在框中键入内容以按文本过滤选项。"
+    },
+    "options_reset_search": {
+        "message": "重置"
+    },
     "options_video_header": {
         "message": "视频选项"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "三击操作"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "不执行任何操作"
     },
     "options_general_clickaction_playpause": {
         "message": "切换播放/暂停"

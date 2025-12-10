@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "Zignoruj tę aktualizację"
     },
+    "options_search_header": {
+        "message": "Opcje Filtr"
+    },
+    "options_search_label": {
+        "message": "Wpisz w polu, aby filtrować opcje według tekstu."
+    },
+    "options_reset_search": {
+        "message": "Nastawić"
+    },
     "options_video_header": {
         "message": "Opcje wideo"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "Akcja przy potrójnym kliknięciu"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "Nic nie rób"
     },
     "options_general_clickaction_playpause": {
         "message": "Przełącz odtwarzanie/pauzę"

@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "このアップデートを無視"
     },
+    "options_search_header": {
+        "message": "オプションフィルター"
+    },
+    "options_search_label": {
+        "message": "オプションをテキストでフィルターするには、ボックスに入力します。"
+    },
+    "options_reset_search": {
+        "message": "リセット"
+    },
     "options_video_header": {
         "message": "動画のオプション"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "トリプルクリック時のアクション"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "何もしない"
     },
     "options_general_clickaction_playpause": {
         "message": "再生/一時停止に切り替え"

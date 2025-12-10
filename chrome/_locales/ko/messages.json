@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "이 업데이트 무시"
     },
+    "options_search_header": {
+        "message": "옵션 필터"
+    },
+    "options_search_label": {
+        "message": "텍스트별로 옵션을 필터링하려면 상자에 입력하세요."
+    },
+    "options_reset_search": {
+        "message": "다시 놓기"
+    },
     "options_video_header": {
         "message": "비디오 옵션"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "트리플 클릭 동작"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "아무 작업도 하지 않음"
     },
     "options_general_clickaction_playpause": {
         "message": "재생/일시정지 전환"

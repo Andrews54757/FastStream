@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "Bu güncellemeyi yok say"
     },
+    "options_search_header": {
+        "message": "Seçenekler Filtresi"
+    },
+    "options_search_label": {
+        "message": "Seçenekleri metne göre filtrelemek için kutuya yazın."
+    },
+    "options_reset_search": {
+        "message": "Sıfırla"
+    },
     "options_video_header": {
         "message": "Video Seçenekleri"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "Üçlü tıklama eylemi"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "Hiçbir şey yapma"
     },
     "options_general_clickaction_playpause": {
         "message": "Oynat/Duraklat"

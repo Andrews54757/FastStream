@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "Игнорировать это обновление"
     },
+    "options_search_header": {
+        "message": "Фильтр опций"
+    },
+    "options_search_label": {
+        "message": "Введите поле для фильтрации параметров по тексту."
+    },
+    "options_reset_search": {
+        "message": "Перезагрузить"
+    },
     "options_video_header": {
         "message": "Параметры видео"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "Действие по тройному клику"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "Ничего не делать"
     },
     "options_general_clickaction_playpause": {
         "message": "Воспроизведение/Пауза"

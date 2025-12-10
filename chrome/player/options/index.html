@@ -34,8 +34,13 @@
         <button id="feedback-yes" data-i18n="options_feedback_yes"></button>
         <button id="feedback-no" data-i18n="options_feedback_no"></button>
     </div>
-
-    <h1 style="margin-top: 0px" data-i18n="options_video_header"></h1>
+    <h1 style="margin: 0px auto;" data-i18n="options_search_header"></h1>
+    <p data-i18n="options_search_label" class="searchlabel"></p>
+    <div class="searchcontainer">
+        <input id="searchbar" class="searchbar"/>
+        <button data-i18n="options_reset_search" id="resetsearch" class="resetsearch"></button>
+    </div>
+    <h1 data-i18n="options_video_header"></h1>
     <p data-i18n="options_video_body"></p>
     <datalist id="snap-hundred">
         <option value="100">
@@ -45,79 +50,79 @@
     </datalist>
 
     <div class="options-with-range-table">
-        <div class="video-option" data-option="videoZoom">
-            <div class="label" data-i18n="options_video_zoom"></div>
+        <div class="video-option search-target-remove" data-option="videoZoom">
+            <div class="label search-target-text" data-i18n="options_video_zoom"></div>
             <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
             <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
                 data-i18n-label="options_video_zoom"></input>
         </div>
 
-        <div class="video-option" data-option="videoDelay" data-unit="ms" data-multiplier="1" data-nolimits="true">
-            <div class="label" data-i18n="options_video_delay"></div>
+        <div class="video-option search-target-remove" data-option="videoDelay" data-unit="ms" data-multiplier="1">
+            <div class="label search-target-text" data-i18n="options_video_delay"></div>
             <input class="number" type="text" data-i18n-label="options_video_delay"></input>
             <input class="range" type="range" min="-1000" max="1000" value="0" step="1" list="snap-zero"
                 data-i18n-label="options_video_delay"></input>
         </div>
 
-        <div class="video-option" data-option="videoBrightness">
-            <div class="label" data-i18n="options_video_brightness"></div>
+        <div class="video-option search-target-remove" data-option="videoBrightness">
+            <div class="label search-target-text" data-i18n="options_video_brightness"></div>
             <input class="number" type="text" data-i18n-label="options_video_brightness"></input>
             <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
                 data-i18n-label="options_video_brightness"></input>
         </div>
 
 
-        <div class="video-option" data-option="videoContrast">
-            <div class="label" data-i18n="options_video_contrast"></div>
+        <div class="video-option search-target-remove" data-option="videoContrast">
+            <div class="label search-target-text" data-i18n="options_video_contrast"></div>
             <input class="number" type="text" data-i18n-label="options_video_contrast"></input>
             <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
                 data-i18n-label="options_video_contrast"></input>
         </div>
 
 
-        <div class="video-option" data-option="videoSaturation">
-            <div class="label" data-i18n="options_video_saturation"></div>
+        <div class="video-option search-target-remove" data-option="videoSaturation">
+            <div class="label search-target-text" data-i18n="options_video_saturation"></div>
             <input class="number" type="text" data-i18n-label="options_video_saturation"></input>
             <input class="range" type="range" min="0" max="200" value="100" step="1" list="snap-hundred"
                 data-i18n-label="options_video_saturation"></input>
         </div>
 
 
-        <div class="video-option" data-option="videoGrayscale">
-            <div class="label" data-i18n="options_video_grayscale"></div>
+        <div class="video-option search-target-remove" data-option="videoGrayscale">
+            <div class="label search-target-text" data-i18n="options_video_grayscale"></div>
             <input class="number" type="text" data-i18n-label="options_video_grayscale"></input>
             <input class="range" type="range" min="0" max="100" value="0" step="1"
                 data-i18n-label="options_video_grayscale"></input>
         </div>
 
-        <div class="video-option" data-option="videoSepia">
-            <div class="label" data-i18n="options_video_sepia"></div>
+        <div class="video-option search-target-remove" data-option="videoSepia">
+            <div class="label search-target-text" data-i18n="options_video_sepia"></div>
             <input class="number" type="text" data-i18n-label="options_video_sepia"></input>
             <input class="range" type="range" min="0" max="100" value="0" step="1"
                 data-i18n-label="options_video_sepia"></input>
         </div>
 
-        <div class="video-option" data-option="videoInvert">
-            <div class="label" data-i18n="options_video_invert"></div>
+        <div class="video-option search-target-remove" data-option="videoInvert">
+            <div class="label search-target-text" data-i18n="options_video_invert"></div>
             <input class="number" type="text" data-i18n-label="options_video_invert"></input>
             <input class="range" type="range" min="0" max="100" value="0" step="1"
                 data-i18n-label="options_video_invert"></input>
         </div>
 
-        <div class="video-option" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
-            <div class="label" data-i18n="options_video_hue"></div>
+        <div class="video-option search-target-remove" data-option="videoHueRotate" data-unit="°" data-multiplier="1">
+            <div class="label search-target-text" data-i18n="options_video_hue"></div>
             <input class="number" type="text" data-i18n-label="options_video_hue"></input>
             <input class="range" type="range" min="0" max="360" value="0" step="1"
                 data-i18n-label="options_video_hue"></input>
         </div>
 
-        <div class="option grid2" style="margin-top: 5px">
-            <div class="label" data-i18n="options_video_daltonizer_type" style="margin-left: 0px"></div>
+        <div class="option search-target-remove grid2" style="margin-top: 5px">
+            <div class="label search-target-text" data-i18n="options_video_daltonizer_type" style="margin-left: 0px"></div>
             <div class="select" id="daltonizerType" data-i18n-label="options_video_daltonizer_type"></div>
         </div>
 
-        <div id="daltonizerStrength" class="video-option" data-option="videoDaltonizerStrength" style="margin-top: 5px">
-            <div class="label" data-i18n="options_video_daltonizer_strength"></div>
+        <div id="daltonizerStrength" class="video-option search-target-remove" data-option="videoDaltonizerStrength" style="margin-top: 5px">
+            <div class="label search-target-text" data-i18n="options_video_daltonizer_strength"></div>
             <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
             <input class="range" type="range" min="0" max="100" value="0" step="1"
                 data-i18n-label="options_video_daltonizer_strength"></input>
@@ -125,172 +130,198 @@
     </div>
     </div>
     <h1 data-i18n="options_general_header"></h1>
-    <div class="option grid1">
-        <input type="checkbox" id="downloadall" data-i18n-label="options_general_predownload">
-        <div class="label" data-i18n="options_general_predownload"></div>
-    </div>
-
-    <div class="option grid2" style="margin-left: 25px">
-        <div class="label" data-i18n="options_general_targetspeed"></div>
-        <input class="number" type="text" id="maxspeed" data-i18n-label="options_general_targetspeed"></input>
-    </div>
-
-    <div class="option grid2" style="margin-left: 25px; margin-top: 3px">
-        <div class="label" data-i18n="options_general_maxsize"></div>
-        <input class="number" type="text" id="maxsize" data-i18n-label="options_general_maxsize"></input>
-    </div>
-
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="autoplaynext" data-i18n-label="options_general_autoplaynext">
-        <div class="label" data-i18n="options_general_autoplaynext"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="autoplayyt" data-i18n-label="options_general_autoplayyt">
-        <div class="label" data-i18n="options_general_autoplayyt"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="storeprogress" data-i18n-label="options_general_storeprogress">
-        <div class="label" data-i18n="options_general_storeprogress"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="previewenabled" data-i18n-label="options_general_previewenabled">
-        <div class="label" data-i18n="options_general_previewenabled"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="autosub" data-i18n-label="options_general_autosub">
-        <div class="label" data-i18n="options_general_autosub"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="analyzevideos" data-i18n-label="options_general_analyze">
-        <div class="label" data-i18n="options_general_analyze"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="playstreamurls" data-i18n-label="options_general_stream">
-        <div class="label" data-i18n="options_general_stream"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid1">
-        <input type="checkbox" id="playmp4urls" data-i18n-label="options_general_mp4">
-        <div class="label" data-i18n="options_general_mp4"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_quality"></div>
-        <div class="select" id="quality" data-i18n-label="options_general_quality"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_vischangeaction"></div>
-        <div class="select" id="vischangeaction" data-i18n-label="options_general_vischangeaction"></div>
-    </div>
-
-    <div id="showWhenMiniSelected" style="display: none;">
-        <br>
-
-        <div class="option grid2">
-            <div class="label" data-i18n="options_general_minipos"></div>
-            <div class="select" id="minipos" data-i18n-label="options_general_minipos"></div>
+    <div id="top-general-options">
+        <div class="option search-target-remove grid1">
+            <input type="checkbox" id="downloadall" data-i18n-label="options_general_predownload">
+            <div class="label search-target-text" data-i18n="options_general_predownload"></div>
         </div>
 
-        <br>
-
-        <div class="option grid2">
-            <div class="label" data-i18n="options_general_minisize"></div>
-            <input class="number" type="number" id="minisize" step="0.1"
-                data-i18n-label="options_general_minisize"></input>
-        </div>
-    </div>
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_clickaction"></div>
-        <div class="select" id="clickaction" data-i18n-label="options_general_clickaction"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_dblclickaction"></div>
-        <div class="select" id="dblclickaction" data-i18n-label="options_general_dblclickaction"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_tplclickaction"></div>
-        <div class="select" id="tplclickaction" data-i18n-label="options_general_tplclickaction"></div>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_seekstep"></div>
-        <input class="number" type="number" id="seekstepsize" step="1"
-            data-i18n-label="options_general_seekstep"></input>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_replace_delay"></div>
-        <input class="number" type="number" id="replacedelay" step="1"
-            data-i18n-label="options_general_replace_delay"></input>
-    </div>
-
-    <br>
-
-    <div class="option grid2">
-        <div class="label" data-i18n="options_general_color_theme"></div>
-        <div class="select" id="colortheme" data-i18n-label="options_general_color_theme"></div>
-    </div>
-
-
-    <div id="dev" style="display: none;">
-
-        <!-- <br>
-        <div class="option grid2">
-            <div class="label" data-i18n="options_general_ytclient"></div>
-            <div class="select" id="ytclient" data-i18n-label="options_general_ytclient"></div>
-        </div> -->
-
-        <br>
-        <div class="option grid2">
-            <div class="label">Forced Youtube Player ID</div>
-            <input class="text" type="text" id="ytplayerid"></input>
+        <div class="option search-target-remove grid2" style="margin-left: 25px">
+            <div class="label search-target-text" data-i18n="options_general_targetspeed"></div>
+            <input class="number" type="text" id="maxspeed" data-i18n-label="options_general_targetspeed"></input>
         </div>
 
-        <br>
+        <div class="option search-target-remove grid2" style="margin-left: 25px; margin-top: 3px">
+            <div class="label search-target-text" data-i18n="options_general_maxsize"></div>
+            <input class="number" type="text" id="maxsize" data-i18n-label="options_general_maxsize"></input>
+        </div>
+    </div>
 
-        <div class="option grid2">
-            <div class="label">Max downloaders (browsers limit to 6)</div>
-            <input class="number" type="number" id="maxdownloaders" step="1"></input>
+    <div id="bottom-general-options">
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="autoplaynext" data-i18n-label="options_general_autoplaynext">
+                <div class="label search-target-text" data-i18n="options_general_autoplaynext"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="autoplayyt" data-i18n-label="options_general_autoplayyt">
+                <div class="label search-target-text" data-i18n="options_general_autoplayyt"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="storeprogress" data-i18n-label="options_general_storeprogress">
+                <div class="label search-target-text" data-i18n="options_general_storeprogress"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="previewenabled" data-i18n-label="options_general_previewenabled">
+                <div class="label search-target-text" data-i18n="options_general_previewenabled"></div>
+            </div>
+        </div>
+
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="autosub" data-i18n-label="options_general_autosub">
+                <div class="label search-target-text" data-i18n="options_general_autosub"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="analyzevideos" data-i18n-label="options_general_analyze">
+                <div class="label search-target-text" data-i18n="options_general_analyze"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="playstreamurls" data-i18n-label="options_general_stream">
+                <div class="label search-target-text" data-i18n="options_general_stream"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid1">
+                <input type="checkbox" id="playmp4urls" data-i18n-label="options_general_mp4">
+                <div class="label search-target-text" data-i18n="options_general_mp4"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_quality"></div>
+                <div class="select" id="quality" data-i18n-label="options_general_quality"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_vischangeaction"></div>
+                <div class="select" id="vischangeaction" data-i18n-label="options_general_vischangeaction"></div>
+            </div>
+        </div>
+
+        <div id="showWhenMiniSelected" style="display: none;">
+            <div class="search-target-remove">
+                <br>
+                <div class="option grid2">
+                    <div class="label search-target-text" data-i18n="options_general_minipos"></div>
+                    <div class="select" id="minipos" data-i18n-label="options_general_minipos"></div>
+                </div>
+            </div>
+
+            <div class="search-target-remove">
+                <br>
+                <div class="option grid2">
+                    <div class="label search-target-text" data-i18n="options_general_minisize"></div>
+                    <input class="number" type="number" id="minisize" step="0.1"
+                        data-i18n-label="options_general_minisize"></input>
+                </div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_clickaction"></div>
+                <div class="select" id="clickaction" data-i18n-label="options_general_clickaction"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_dblclickaction"></div>
+                <div class="select" id="dblclickaction" data-i18n-label="options_general_dblclickaction"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_tplclickaction"></div>
+                <div class="select" id="tplclickaction" data-i18n-label="options_general_tplclickaction"></div>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_seekstep"></div>
+                <input class="number" type="number" id="seekstepsize" step="1"
+                    data-i18n-label="options_general_seekstep"></input>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_replace_delay"></div>
+                <input class="number" type="number" id="replacedelay" step="1"
+                    data-i18n-label="options_general_replace_delay"></input>
+            </div>
+        </div>
+
+        <div class="search-target-remove">
+            <br>
+            <div class="option grid2">
+                <div class="label search-target-text" data-i18n="options_general_color_theme"></div>
+                <div class="select" id="colortheme" data-i18n-label="options_general_color_theme"></div>
+            </div>
+        </div>
+
+
+        <div id="dev" style="display: none;">
+
+            <!-- <br>
+            <div class="option search-target-remove grid2">
+                <div class="label search-target-text" data-i18n="options_general_ytclient"></div>
+                <div class="select" id="ytclient" data-i18n-label="options_general_ytclient"></div>
+            </div> -->
+
+            <div class="search-target-remove">
+                <br>
+                <div class="option grid2">
+                    <div class="label search-target-text">Forced Youtube Player ID</div>
+                    <input class="text" type="text" id="ytplayerid"></input>
+                </div>
+            </div>
+
+            <div class="search-target-remove">
+                <br>
+                <div class="option grid2">
+                    <div class="label search-target-text">Max downloaders (browsers limit to 6)</div>
+                    <input class="number" type="number" id="maxdownloaders" step="1"></input>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -298,7 +329,7 @@
 
     <h1 data-i18n="options_keybinds_header"></h1>
     <p data-i18n="options_keybinds_body"></p>
-    <button id="resetdefault" data-i18n="options_keybinds_reset"></button>
+    <button class="search-target-remove search-target-text" id="resetdefault" data-i18n="options_keybinds_reset"></button>
     <div>
 
     </div>

@@ -860,6 +860,15 @@
     "options_update_no": {
         "message": "Ignorar esta atualização"
     },
+    "options_search_header": {
+        "message": "Filtro de opções"
+    },
+    "options_search_label": {
+        "message": "Digite na caixa para filtrar as opções por texto." 
+    },
+    "options_reset_search": {
+        "message": "Reiniciar"
+    },
     "options_video_header": {
         "message": "Opções de vídeo"
     },
@@ -964,9 +973,6 @@
     },
     "options_general_tplclickaction": {
         "message": "Ação de clique triplo"
-    },
-    "options_general_clickaction_nothing": {
-        "message": "Não fazer nada"
     },
     "options_general_clickaction_playpause": {
         "message": "Alternar reprodução/pausa"

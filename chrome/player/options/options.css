@@ -343,7 +343,7 @@ button:focus-visible {
 .video-option .number {
   text-align: center;
   font-variant-numeric: tabular-nums;
-  width: 80px;
+  width: 60px;
 }
 
 #ratebox {
@@ -371,6 +371,22 @@ button:focus-visible {
   background: color-mix(in oklab, var(--color-bg-muted) 80%, seagreen 20%);
   padding: var(--space-3);
   margin-bottom: var(--space-4);
+}
+
+.searchbar{
+  display: block;
+  font-size: 1rem;
+}
+
+.searchlabel{
+  display: block;
+}
+
+.searchcontainer{
+  display: grid;
+  gap: var(--space-2);
+  grid-template-columns: 3fr 1fr;
+  align-items: center;
 }
 
 .option.grid1 {
@@ -469,3 +485,4 @@ input[type="checkbox"]:focus-visible {
   gap: var(--space-2) var(--space-3);
   align-items: center;
 }
+
