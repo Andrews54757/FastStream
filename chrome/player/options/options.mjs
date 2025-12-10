@@ -270,8 +270,9 @@ document.querySelectorAll('.video-option').forEach((option) => {
   const optionKey = option.dataset.option;
 
   function numberInputChanged() {
-    rangeInput.value = parseInt(numberInput.value.replace(unit, '')) || 0;
-    Options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    const value = parseInt(numberInput.value.replace(unit, '')) || 0;
+    rangeInput.value = value;
+    Options[optionKey] = (option.dataset.nolimits ? value : parseInt(rangeInput.value)) / unitMultiplier;
     optionChanged();
   }
 
@@ -282,7 +283,6 @@ document.querySelectorAll('.video-option').forEach((option) => {
   }
 
   numberInput.addEventListener('change', numberInputChanged);
-  numberInput.addEventListener('input', numberInputChanged);
   rangeInput.addEventListener('change', rangeInputChanged);
   rangeInput.addEventListener('input', rangeInputChanged);
   rangeInput.addEventListener('dblclick', (e) => {
