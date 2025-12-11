@@ -288,7 +288,7 @@ function insertLicense(buildDir) {
 }
 
 async function buildChromeDist() {
-  spliceAndCopy(chromeSourceDir, chromeDistBuildDir, ['EXTENSION']);
+  spliceAndCopy(chromeSourceDir, chromeDistBuildDir, ['EXTENSION', 'CENSORYT', 'NO_UPDATE_CHECKER']);
   insertLicense(chromeDistBuildDir);
   const builtPath = await runWebExtBuild(chromeDistBuildDir, path.join(chromeDistBuildDir, 'dist'));
   const name = path.basename(builtPath);
@@ -298,7 +298,7 @@ async function buildChromeDist() {
 }
 
 async function buildChromeLibre() {
-  spliceAndCopy(chromeSourceDir, chromeLibreBuildDir, ['EXTENSION']);
+  spliceAndCopy(chromeSourceDir, chromeLibreBuildDir, ['EXTENSION', 'NO_PROMO']);
   insertLicense(chromeLibreBuildDir);
   const builtPath = await runWebExtBuild(chromeLibreBuildDir, path.join(chromeLibreBuildDir, 'libre'));
   const name = path.basename(builtPath);
@@ -308,7 +308,7 @@ async function buildChromeLibre() {
 }
 
 async function buildFirefoxLibre() {
-  spliceAndCopy(chromeSourceDir, firefoxLibreBuildDir, ['EXTENSION', 'FIREFOX']);
+  spliceAndCopy(chromeSourceDir, firefoxLibreBuildDir, ['EXTENSION', 'FIREFOX', 'NO_PROMO']);
   insertLicense(firefoxLibreBuildDir);
 
   const manifestPath = path.join(firefoxLibreBuildDir, 'manifest.json');
@@ -344,7 +344,7 @@ async function buildFirefoxLibre() {
 
 
 async function buildFirefoxDist() {
-  spliceAndCopy(chromeSourceDir, firefoxDistBuildDir, ['EXTENSION', 'FIREFOX']);
+  spliceAndCopy(chromeSourceDir, firefoxDistBuildDir, ['EXTENSION', 'FIREFOX', 'NO_UPDATE_CHECKER']);
   insertLicense(firefoxDistBuildDir);
 
   const manifestPath = path.join(firefoxDistBuildDir, 'manifest.json');
@@ -379,7 +379,7 @@ async function buildFirefoxDist() {
 
 
 async function buildWeb() {
-  spliceAndCopy(chromeSourceDir, webBuildDir, ['WEB'], [
+  spliceAndCopy(chromeSourceDir, webBuildDir, ['WEB', 'NO_UPDATE_CHECKER'], [
     'manifest.json',
     'content.js',
     'background',

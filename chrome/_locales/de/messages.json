@@ -974,6 +974,9 @@
     "options_general_tplclickaction": {
         "message": "Dreifach-Klick Aktion"
     },
+    "options_general_clickaction_nothing": {
+        "message": "Nichts tun"
+    },
     "options_general_clickaction_playpause": {
         "message": "Abspielen/Pausieren umschalten"
     },

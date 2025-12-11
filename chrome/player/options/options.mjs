@@ -50,7 +50,7 @@ const replaceDelay = document.getElementById('replacedelay');
 const colorTheme = document.getElementById('colortheme');
 const ytPlayerID = document.getElementById('ytplayerid');
 const optionsSearchBar = document.getElementById('searchbar');
-const optionsResetButton = document.getElementById("resetsearch");
+const optionsResetButton = document.getElementById('resetsearch');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -274,8 +274,9 @@ document.querySelectorAll('.video-option').forEach((option) => {
   const optionKey = option.dataset.option;
 
   function numberInputChanged() {
-    rangeInput.value = parseInt(numberInput.value.replace(unit, '')) || 0;
-    Options[optionKey] = parseInt(rangeInput.value) / unitMultiplier;
+    const value = parseInt(numberInput.value.replace(unit, '')) || 0;
+    rangeInput.value = value;
+    Options[optionKey] = (option.dataset.nolimits ? value : parseInt(rangeInput.value)) / unitMultiplier;
     optionChanged();
   }
 
@@ -439,29 +440,29 @@ maxdownloaders.addEventListener('change', () => {
 });
 
 optionsSearchBar.addEventListener('keyup', () => {
-  if (optionsSearchBar.value == ""){
-    console.log("Reset search called from searchbar keyup")
+  if (optionsSearchBar.value == '') {
+    console.log('Reset search called from searchbar keyup');
     resetSearch();
   } else {
     const searchVal = optionsSearchBar.value;
     console.log(searchWithQuery(searchVal));
   }
-})
+});
 
 optionsSearchBar.addEventListener('keydown', () => {
-  if (optionsSearchBar.value == ""){
-    console.log("Reset search called from searchbar keydown")
+  if (optionsSearchBar.value == '') {
+    console.log('Reset search called from searchbar keydown');
     resetSearch();
   } else {
     const searchVal = optionsSearchBar.value;
     console.log(searchWithQuery(searchVal));
   }
-})
+});
 
 optionsResetButton.addEventListener('click', () => {
-  optionsSearchBar.value = "";
+  optionsSearchBar.value = '';
   resetSearch();
-})
+});
 
 document.getElementById('resetdefault').addEventListener('click', () => {
   Options.keybinds = JSON.parse(JSON.stringify(DefaultKeybinds));
@@ -670,6 +671,4 @@ if (EnvUtils.isExtension()) {
   });
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
-
-
 

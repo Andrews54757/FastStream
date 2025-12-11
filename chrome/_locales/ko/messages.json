@@ -974,6 +974,9 @@
     "options_general_tplclickaction": {
         "message": "트리플 클릭 동작"
     },
+    "options_general_clickaction_nothing": {
+        "message": "아무 작업도 하지 않음"
+    },
     "options_general_clickaction_playpause": {
         "message": "재생/일시정지 전환"
     },
