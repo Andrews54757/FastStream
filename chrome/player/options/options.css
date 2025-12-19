@@ -395,7 +395,7 @@ button:focus-visible {
   width: 100%;
   max-width: none;
   background: var(--color-elev);
-  border: none;
+  border: var(--input-border);
   border-radius: 999px;
 }
 
