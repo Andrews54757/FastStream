@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream 選項"
     },
+    "options_search_placeholder": {
+        "message": "搜尋"
+    },
     "options_reviewbanner_header": {
         "message": "喜歡 FastStream 嗎？請留下評價！"
     },

@@ -4859,6 +4859,24 @@
         "zh_CN": "FastStream 选项",
         "zh_TW": "FastStream 選項"
     },
+    "options_search_placeholder": {
+        "en": "Search",
+        "de": "Suche",
+        "es": "Buscar",
+        "fr": "Rechercher",
+        "id": "Cari",
+        "it": "Cerca",
+        "ja": "検索",
+        "ko": "검색",
+        "ms": "Search",
+        "nl": "Zoeken",
+        "pl": "Szukaj",
+        "pt_BR": "Pesquisar",
+        "ru": "Поиск",
+        "tr": "Ara",
+        "zh_CN": "搜索",
+        "zh_TW": "搜尋"
+    },
     "options_reviewbanner_header": {
         "en": "Enjoy FastStream? Leave a review!",
         "de": "Magst du FastStream? Lass eine Bewertung da!",

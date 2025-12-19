@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream のオプション"
     },
+    "options_search_placeholder": {
+        "message": "検索"
+    },
     "options_reviewbanner_header": {
         "message": "FastStream にご満足いただけましたか? 評価をお願いします!"
     },

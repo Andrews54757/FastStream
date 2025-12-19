@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream 选项"
     },
+    "options_search_placeholder": {
+        "message": "搜索"
+    },
     "options_reviewbanner_header": {
         "message": "喜欢 FastStream 吗？留下评价吧！"
     },

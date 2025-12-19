@@ -809,6 +809,9 @@
     "options_title": {
         "message": "Opzioni FastStream"
     },
+    "options_search_placeholder": {
+        "message": "Cerca"
+    },
     "options_reviewbanner_header": {
         "message": "Ti piace FastStream? Lascia una recensione!"
     },

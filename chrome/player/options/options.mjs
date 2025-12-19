@@ -439,6 +439,9 @@ maxdownloaders.addEventListener('change', () => {
   optionChanged();
 });
 
+optionsSearchBar.placeholder = Localize.getMessage('options_search_placeholder');
+
+
 optionsSearchBar.addEventListener('keyup', () => {
   if (optionsSearchBar.value == '') {
     console.log('Reset search called from searchbar keyup');

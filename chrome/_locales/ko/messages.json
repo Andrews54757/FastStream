@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream 옵션"
     },
+    "options_search_placeholder": {
+        "message": "검색"
+    },
     "options_reviewbanner_header": {
         "message": "FastStream이 마음에 드시나요? 리뷰를 남겨주세요!"
     },

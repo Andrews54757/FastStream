@@ -809,6 +809,9 @@
     "options_title": {
         "message": "Opsi FastStream"
     },
+    "options_search_placeholder": {
+        "message": "Cari"
+    },
     "options_reviewbanner_header": {
         "message": "Suka FastStream? Tinggalkan ulasan!"
     },
