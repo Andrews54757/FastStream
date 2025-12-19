@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "Negeer deze update"
     },
-    "options_search_header": {
-        "message": "Optiesfilter"
-    },
-    "options_search_label": {
-        "message": "Typ in het vak om opties op tekst te filteren."
-    },
     "options_reset_search": {
         "message": "Opnieuw instellen"
     },

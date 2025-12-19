@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "Abaikan pembaruan ini"
     },
-    "options_search_header": {
-        "message": "Filter Opsi"
-    },
-    "options_search_label": {
-        "message": "Ketik di kotak untuk memfilter opsi berdasarkan teks."
-    },
     "options_reset_search": {
         "message": "Mengatur ulang"
     },

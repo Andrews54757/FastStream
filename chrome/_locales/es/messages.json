@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "Ignorar esta actualización"
     },
-    "options_search_header": {
-        "message": "Filtro de opciones"
-    },
-    "options_search_label": {
-        "message": "Escriba en el cuadro para filtrar opciones por texto."
-    },
     "options_reset_search": {
         "message": "Reiniciar"
     },

@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "忽略此更新"
     },
-    "options_search_header": {
-        "message": "選項過濾器"
-    },
-    "options_search_label": {
-        "message": "在框中鍵入內容以按文字過濾選項。"
-    },
     "options_reset_search": {
         "message": "重置"
     },

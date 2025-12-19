@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "이 업데이트 무시"
     },
-    "options_search_header": {
-        "message": "옵션 필터"
-    },
-    "options_search_label": {
-        "message": "텍스트별로 옵션을 필터링하려면 상자에 입력하세요."
-    },
     "options_reset_search": {
         "message": "다시 놓기"
     },

@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "Bu güncellemeyi yok say"
     },
-    "options_search_header": {
-        "message": "Seçenekler Filtresi"
-    },
-    "options_search_label": {
-        "message": "Seçenekleri metne göre filtrelemek için kutuya yazın."
-    },
     "options_reset_search": {
         "message": "Sıfırla"
     },

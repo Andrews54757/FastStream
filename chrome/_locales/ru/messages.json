@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "Игнорировать это обновление"
     },
-    "options_search_header": {
-        "message": "Фильтр опций"
-    },
-    "options_search_label": {
-        "message": "Введите поле для фильтрации параметров по тексту."
-    },
     "options_reset_search": {
         "message": "Перезагрузить"
     },

@@ -863,12 +863,6 @@
     "options_update_no": {
         "message": "このアップデートを無視"
     },
-    "options_search_header": {
-        "message": "オプションフィルター"
-    },
-    "options_search_label": {
-        "message": "オプションをテキストでフィルターするには、ボックスに入力します。"
-    },
     "options_reset_search": {
         "message": "リセット"
     },
