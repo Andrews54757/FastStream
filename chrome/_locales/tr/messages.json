@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream Seçenekleri"
     },
+    "options_search_placeholder": {
+        "message": "Ara"
+    },
     "options_reviewbanner_header": {
         "message": "FastStream'i beğendiniz mi? Bir inceleme bırakın!"
     },
@@ -859,6 +862,9 @@
     },
     "options_update_no": {
         "message": "Bu güncellemeyi yok say"
+    },
+    "options_reset_search": {
+        "message": "Sıfırla"
     },
     "options_video_header": {
         "message": "Video Seçenekleri"

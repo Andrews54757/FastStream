@@ -6,6 +6,7 @@ import {WebUtils} from '../utils/WebUtils.mjs';
 import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {OptionsStore} from './OptionsStore.mjs';
+import {resetSearch, searchWithQuery, initsearch} from '../utils/SearchUtils.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
@@ -48,6 +49,8 @@ const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
 const colorTheme = document.getElementById('colortheme');
 const ytPlayerID = document.getElementById('ytplayerid');
+const optionsSearchBar = document.getElementById('searchbar');
+const optionsResetButton = document.getElementById('resetsearch');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -155,6 +158,7 @@ async function loadOptions(newOptions) {
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
   }
+  initsearch();
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -283,6 +287,7 @@ document.querySelectorAll('.video-option').forEach((option) => {
   }
 
   numberInput.addEventListener('change', numberInputChanged);
+  numberInput.addEventListener('input', numberInputChanged);
   rangeInput.addEventListener('change', rangeInputChanged);
   rangeInput.addEventListener('input', rangeInputChanged);
   rangeInput.addEventListener('dblclick', (e) => {
@@ -296,15 +301,18 @@ document.querySelectorAll('.video-option').forEach((option) => {
 function createKeybindElement(keybind) {
   const containerElement = document.createElement('div');
   containerElement.classList.add('keybind-container');
+  containerElement.classList.add('search-target-remove-keybind');
 
   const keybindNameElement = document.createElement('div');
   keybindNameElement.classList.add('keybind-name');
+  keybindNameElement.classList.add('search-target-keybind');
   const keybindName = keybind.replace(/([A-Z])/g, ' $1').trim();
   keybindNameElement.textContent = keybindName;
   containerElement.appendChild(keybindNameElement);
 
   const keybindInput = document.createElement('div');
   keybindInput.classList.add('keybind-input');
+  keybindInput.classList.add('search-target-keybind');
   keybindInput.tabIndex = 0;
   keybindInput.title = keybindName;
   keybindInput.role = 'button';
@@ -429,6 +437,34 @@ miniSize.addEventListener('change', () => {
 maxdownloaders.addEventListener('change', () => {
   Options.maximumDownloaders = parseInt(maxdownloaders.value) || 0;
   optionChanged();
+});
+
+optionsSearchBar.placeholder = Localize.getMessage('options_search_placeholder');
+
+
+optionsSearchBar.addEventListener('keyup', () => {
+  if (optionsSearchBar.value == '') {
+    console.log('Reset search called from searchbar keyup');
+    resetSearch();
+  } else {
+    const searchVal = optionsSearchBar.value;
+    console.log(searchWithQuery(searchVal));
+  }
+});
+
+optionsSearchBar.addEventListener('keydown', () => {
+  if (optionsSearchBar.value == '') {
+    console.log('Reset search called from searchbar keydown');
+    resetSearch();
+  } else {
+    const searchVal = optionsSearchBar.value;
+    console.log(searchWithQuery(searchVal));
+  }
+});
+
+optionsResetButton.addEventListener('click', () => {
+  optionsSearchBar.value = '';
+  resetSearch();
 });
 
 document.getElementById('resetdefault').addEventListener('click', () => {

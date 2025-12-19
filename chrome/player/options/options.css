@@ -373,6 +373,124 @@ button:focus-visible {
   margin-bottom: var(--space-4);
 }
 
+.searchcontainer {
+  top: var(--space-2);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  background: transparent;
+  border-radius: var(--radius-2);
+}
+
+.searchbar-shell {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: 0px 14px;
+  min-height: 36px;
+  width: 100%;
+  max-width: none;
+  background: var(--color-elev);
+  border: var(--input-border);
+  border-radius: 999px;
+}
+
+.searchbar-shell:focus-within {
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-focus) 25%, transparent);
+}
+
+.searchbar {
+  border: none;
+  background: transparent;
+  padding: 0;
+  min-height: 0;
+  font-size: var(--font-size-1);
+}
+
+.searchbar::placeholder {
+  color: var(--color-muted);
+}
+
+.searchbar:focus-visible {
+  outline: none;
+}
+
+.search-icon {
+  width: 16px;
+  height: 16px;
+  fill: var(--color-muted);
+  align-self: center;
+}
+
+.searchbar-shell .resetsearch {
+  border: none;
+  background: none;
+  color: var(--color-muted);
+  padding: 0 var(--space-2);
+  min-height: 0;
+  height: 100%;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.searchbar-shell .resetsearch:hover {
+  color: var(--color-text);
+  background: color-mix(in oklab, var(--color-bg-muted) 75%, var(--color-primary) 25%);
+  border-radius: var(--radius-1);
+}
+
+.searchbar-shell .resetsearch:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.options-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.options-section {
+  scroll-margin-top: 80px;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.section-heading h1 {
+  margin: var(--space-6) 0 var(--space-2);
+}
+
+.section-count {
+  display: none;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 2px 8px;
+  border-radius: var(--radius-1);
+  background: color-mix(in oklab, var(--color-bg-muted) 70%, transparent);
+}
+
+.search-active .section-count {
+  display: inline-flex;
+}
+
+.section-hidden-by-search {
+  display: none;
+}
+
 .option.grid1 {
   display: grid;
   gap: var(--space-2);
@@ -429,6 +547,31 @@ select:focus-visible,
 textarea:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+.searchbar-shell .searchbar {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  min-height: 0;
+  height: 100%;
+  width: 100%;
+  align-self: stretch;
+  line-height: 1.2;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.searchbar-shell .searchbar::-webkit-search-cancel-button,
+.searchbar-shell .searchbar::-webkit-search-decoration {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none;
+}
+
+.searchbar-shell .searchbar:focus-visible {
+  outline: none;
 }
 
 .option.grid2 .select {

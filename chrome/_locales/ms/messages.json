@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream Options"
     },
+    "options_search_placeholder": {
+        "message": "Search"
+    },
     "options_reviewbanner_header": {
         "message": "Enjoy FastStream? Leave a review!"
     },
@@ -859,6 +862,9 @@
     },
     "options_update_no": {
         "message": "Ignore this update"
+    },
+    "options_reset_search": {
+        "message": "Tetapkan semula"
     },
     "options_video_header": {
         "message": "Video Options"

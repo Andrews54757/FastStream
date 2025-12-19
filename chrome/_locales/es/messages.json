@@ -809,6 +809,9 @@
     "options_title": {
         "message": "Configuraciones de FastStream"
     },
+    "options_search_placeholder": {
+        "message": "Buscar"
+    },
     "options_reviewbanner_header": {
         "message": "¿Te gusta FastStream? ¡Deja una reseña!"
     },
@@ -859,6 +862,9 @@
     },
     "options_update_no": {
         "message": "Ignorar esta actualización"
+    },
+    "options_reset_search": {
+        "message": "Reiniciar"
     },
     "options_video_header": {
         "message": "Opciones de video"

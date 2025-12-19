@@ -123,7 +123,7 @@ export class CrosstalkNode {
   }
 
   destroy() {
-    this.crossover.destroy();
-    this.xtc.destroy();
+    this.crossover?.destroy();
+    this.xtc?.destroy();
   }
 }

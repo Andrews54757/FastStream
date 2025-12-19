@@ -809,6 +809,9 @@
     "options_title": {
         "message": "Параметры FastStream"
     },
+    "options_search_placeholder": {
+        "message": "Поиск"
+    },
     "options_reviewbanner_header": {
         "message": "Понравился FastStream? Оставьте отзыв!"
     },
@@ -859,6 +862,9 @@
     },
     "options_update_no": {
         "message": "Игнорировать это обновление"
+    },
+    "options_reset_search": {
+        "message": "Перезагрузить"
     },
     "options_video_header": {
         "message": "Параметры видео"

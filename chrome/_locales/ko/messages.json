@@ -809,6 +809,9 @@
     "options_title": {
         "message": "FastStream 옵션"
     },
+    "options_search_placeholder": {
+        "message": "검색"
+    },
     "options_reviewbanner_header": {
         "message": "FastStream이 마음에 드시나요? 리뷰를 남겨주세요!"
     },
@@ -859,6 +862,9 @@
     },
     "options_update_no": {
         "message": "이 업데이트 무시"
+    },
+    "options_reset_search": {
+        "message": "다시 놓기"
     },
     "options_video_header": {
         "message": "비디오 옵션"
