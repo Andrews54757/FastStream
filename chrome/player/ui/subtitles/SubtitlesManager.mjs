@@ -12,7 +12,6 @@ import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSea
 import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
 import {SubtitleSyncer} from './SubtitleSyncer.mjs';
 
-// NOTE: Removed top-level SubtitleTranslator import to prevent player crash if file missing
 
 const LANGUAGES = {
 
@@ -191,7 +190,7 @@ export class SubtitlesManager extends EventEmitter {
                 const option = document.createElement('option');
                 option.value = code;
                 option.textContent = LANGUAGES[code];
-                if (code === 'es') option.selected = true; 
+                if (code === 'my') option.selected = true; 
                 option.style.backgroundColor = '#222'; 
                 option.style.color = 'white';
                 langSelect.appendChild(option);
@@ -231,17 +230,62 @@ export class SubtitlesManager extends EventEmitter {
                 const totalCues = sourceCues.length;
                 let processedCount = 0;
                 
+                // --- CREATE STATUS BADGE WITH AUTO-HIDE ---
                 const statusEl = document.createElement('div');
                 statusEl.id = 'fs-translation-status';
                 statusEl.style.cssText = `
-                    position: absolute; top: 20px; right: 20px; z-index: 2147483647; 
-                    background-color: rgba(20, 20, 20, 0.9); color: white; padding: 10px 15px; 
-                    border-radius: 6px; font-family: sans-serif; font-size: 14px; 
-                    border: 1px solid rgba(255,255,255,0.2); display: flex; align-items: center; 
-                    gap: 10px; pointer-events: none; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                    position: absolute; 
+                    top: 20px; 
+                    right: 20px; 
+                    z-index: 2147483647; 
+                    background-color: rgba(20, 20, 20, 0.9); 
+                    color: white; 
+                    padding: 10px 15px; 
+                    border-radius: 6px; 
+                    font-family: sans-serif; 
+                    font-size: 14px; 
+                    border: 1px solid rgba(255,255,255,0.2);
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    pointer-events: none;
+                    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+                    transition: opacity 0.5s ease-in-out; 
+                    opacity: 1;
                 `;
                 statusEl.innerHTML = `<span>Translating...</span> <span style="color: #4caf50; font-weight: bold;">0%</span>`;
-                if (DOMElements.playerContainer) DOMElements.playerContainer.appendChild(statusEl);
+                
+                if (DOMElements.playerContainer) {
+                    DOMElements.playerContainer.appendChild(statusEl);
+                }
+
+                // --- AUTO-HIDE LOGIC ---
+                let hideTimeout;
+                const resetHideTimer = () => {
+                    // Show badge immediately on activity
+                    statusEl.style.opacity = '1';
+                    clearTimeout(hideTimeout);
+                    
+                    // Fade out after 2.5 seconds of inactivity
+                    hideTimeout = setTimeout(() => {
+                        statusEl.style.opacity = '0';
+                    }, 2500);
+                };
+
+                // Wake up badge when mouse moves anywhere on player
+                DOMElements.playerContainer.addEventListener('mousemove', resetHideTimer);
+                DOMElements.playerContainer.addEventListener('mouseenter', resetHideTimer);
+                
+                // Start timer immediately
+                resetHideTimer();
+
+                // Clean up helper (call this when translation finishes)
+                const removeStatus = () => {
+                    DOMElements.playerContainer.removeEventListener('mousemove', resetHideTimer);
+                    DOMElements.playerContainer.removeEventListener('mouseenter', resetHideTimer);
+                    clearTimeout(hideTimeout);
+                    statusEl.remove();
+                };
 
                 if (!this.translator) {
                     try {
