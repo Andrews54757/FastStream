@@ -10,7 +10,7 @@ Tired of having videos buffer with slow internet speeds? Frustrated by a website
 4. 20+ remappable keybinds and accessible tool buttons for easy control of the player.
 5. Available in multiple languages! Translated into Spanish, Japanese, Russian, Malay, and Italian by the FastStream community. Support for more languages is coming soon!
 
-My mobile usability improvements:
+Mobile usability improvements:
 - **Skip buttons display the correct skip amount** (instead of a hard-coded "10").
 - **Seek feedback animations** now also play when pressing the skip buttons.
 - **Tap-to-seek** greatly improves the experience when using a mobile device.
