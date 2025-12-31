@@ -948,7 +948,7 @@
         "message": "Use player to play MP4 videos when opening video URLs (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Seek keybind base step size (seconds)"
+        "message": "Seek step size (Seconds)"
     },
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"
@@ -991,6 +991,9 @@
     },
     "options_general_clickaction_hideplayer": {
         "message": "Hide player"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Seek forwards/backwards"
     },
     "options_general_vischangeaction": {
         "message": "When player visibility changes"

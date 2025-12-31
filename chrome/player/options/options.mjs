@@ -420,7 +420,13 @@ maxSize.addEventListener('change', () => {
 });
 
 seekStepSize.addEventListener('change', () => {
-  Options.seekStepSize = parseFloat(seekStepSize.value);
+  const nextValue = seekStepSize.valueAsNumber;
+  if (!Number.isFinite(nextValue) || nextValue <= 0) {
+    Options.seekStepSize = DefaultOptions.seekStepSize;
+    seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
+  } else {
+    Options.seekStepSize = nextValue;
+  }
   optionChanged();
 });
 

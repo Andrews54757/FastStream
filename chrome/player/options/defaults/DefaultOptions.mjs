@@ -39,8 +39,8 @@ export const DefaultOptions = {
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
   singleClickAction: ClickActions.PLAY_PAUSE,
-  doubleClickAction: ClickActions.FULLSCREEN,
-  tripleClickAction: ClickActions.HIDE_CONTROLS,
+  doubleClickAction: ClickActions.SEEK,
+  tripleClickAction: ClickActions.NOTHING,
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,

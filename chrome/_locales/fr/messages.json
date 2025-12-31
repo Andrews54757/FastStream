@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Masquer le lecteur"
     },
+    "options_general_clickaction_seek": {
+        "message": "Avancer/reculer"
+    },
     "options_general_vischangeaction": {
         "message": "Quand la visibilité du lecteur change"
     },

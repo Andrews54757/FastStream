@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "隱藏播放器"
     },
+    "options_general_clickaction_seek": {
+        "message": "快轉/快退"
+    },
     "options_general_vischangeaction": {
         "message": "當播放器顯示狀態變更時"
     },

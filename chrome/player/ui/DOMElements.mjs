@@ -1,6 +1,9 @@
 export const DOMElements = {
   playerContainer: document.querySelector('.mainplayer'),
   videoContainer: document.querySelector('.mainplayer .video-container'),
+  seekTapPopup: document.querySelector('.mainplayer .seek_tap_popup'),
+  seekTapPopupIconUse: document.querySelector('.mainplayer .seek_tap_popup_icon use'),
+  seekTapPopupText: document.querySelector('.mainplayer .seek_tap_popup_text'),
   controlsContainer: document.querySelector('.mainplayer .fluid_controls_container'),
   controlsLeft: document.querySelector('.mainplayer .fluid_controls_left'),
   playPauseButton: document.querySelector('.mainplayer .fluid_control_playpause'),

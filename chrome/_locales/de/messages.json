@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Player verstecken"
     },
+    "options_general_clickaction_seek": {
+        "message": "Vor-/Zurückspulen"
+    },
     "options_general_vischangeaction": {
         "message": "Wenn die Visibilität des Players sich ändert"
     },

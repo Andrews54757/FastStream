@@ -447,6 +447,7 @@ export class InterfaceController {
         clickCount = 1;
       }
       clearTimeout(clickTimeout);
+      const multiClickDelayMs = 140;
       clickTimeout = setTimeout(() => {
         clickTimeout = null;
 
@@ -471,6 +472,9 @@ export class InterfaceController {
           case ClickActions.PIP:
             this.pipToggle();
             break;
+          case ClickActions.SEEK:
+            this.seekByTapSide(e);
+            break;
           case ClickActions.PLAY_PAUSE:
             this.playPauseToggle();
             break;
@@ -483,7 +487,7 @@ export class InterfaceController {
             this.toggleHide();
             break;
         }
-      }, clickCount < 3 ? 300 : 0);
+      }, clickCount < 3 ? multiClickDelayMs : 0);
     });
     DOMElements.hideButton.addEventListener('click', () => {
       DOMElements.hideButton.blur();
@@ -542,18 +546,24 @@ export class InterfaceController {
     });
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
+      const delta = (this.client.options.seekStepSize || 0);
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += delta;
       this.client.setSeekSave(true);
+
+      this.showSeekTapPopup(true, delta);
       e.stopPropagation();
     });
 
     WebUtils.setupTabIndex(DOMElements.skipForwardButton);
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
+      const delta = (this.client.options.seekStepSize || 0);
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -delta;
       this.client.setSeekSave(true);
+
+      this.showSeekTapPopup(false, delta);
       e.stopPropagation();
     });
 
@@ -1116,6 +1126,30 @@ export class InterfaceController {
     this.setFullscreenStatus(document.fullscreenElement);
   }
 
+  updateSkipButtonLabels() {
+    const seconds = this.client?.options?.seekStepSize;
+    if (!Number.isFinite(seconds) || seconds <= 0) return;
+
+    const rounded = Math.round(seconds * 100) / 100;
+    const secondsText = String(rounded);
+
+    const setLabel = (button, key) => {
+      if (!button) return;
+      const overlay = button.querySelector('.skip_amount');
+      if (overlay) overlay.textContent = secondsText;
+
+      const base = Localize.getMessage(key);
+      const updated = typeof base === 'string' ? base.replace(/(\d+(?:[\.,]\d+)?)/, secondsText) : base;
+      if (updated) {
+        button.title = updated;
+        button.setAttribute('aria-label', updated);
+      }
+    };
+
+    setLabel(DOMElements.skipForwardButton, 'player_skip_forward_label');
+    setLabel(DOMElements.skipBackwardButton, 'player_skip_backward_label');
+  }
+
   setFullscreenStatus(status) {
     const fullScreenButton = DOMElements.fullscreen;
     if (status) {
@@ -1128,6 +1162,55 @@ export class InterfaceController {
         this.fullscreenToggle(false);
       }
     }
+  }
+
+  seekByTapSide(e) {
+    if (!this.client.player) return;
+    if (this.isUserSeeking()) return;
+
+    const target = e?.currentTarget || DOMElements.videoContainer;
+    const rect = target?.getBoundingClientRect?.();
+    if (!rect || rect.width <= 0) return;
+
+    const clientX = typeof e?.clientX === 'number' ? e.clientX : (e?.touches?.[0]?.clientX ?? e?.changedTouches?.[0]?.clientX);
+    if (typeof clientX !== 'number') return;
+
+    const x = clientX - rect.left;
+
+    // Exclude a small center zone so center taps can still toggle play/pause.
+    const centerDeadZoneRatio = 0.20;
+    const deadZoneHalfWidth = (rect.width * centerDeadZoneRatio) / 2;
+    const centerX = rect.width / 2;
+    if (Math.abs(x - centerX) <= deadZoneHalfWidth) {
+      this.playPauseToggle();
+      return;
+    }
+
+    const isRightSide = x > centerX;
+
+    const delta = (this.client.options.seekStepSize || 0);
+    if (!delta) return;
+
+    this.client.setSeekSave(false);
+    this.client.currentTime += isRightSide ? delta : -delta;
+    this.client.setSeekSave(true);
+
+    this.showSeekTapPopup(isRightSide, delta);
+  }
+
+  showSeekTapPopup(isForward, deltaSeconds) {
+    if (!DOMElements.seekTapPopup || !DOMElements.seekTapPopupIconUse || !DOMElements.seekTapPopupText) return;
+
+    const seconds = Math.round(deltaSeconds * 100) / 100;
+    DOMElements.seekTapPopupText.textContent = `${isForward ? '+' : '-'}${seconds}s`;
+    DOMElements.seekTapPopupIconUse.setAttribute('href', `assets/fluidplayer/static/icons2.svg#${isForward ? 'skip-forward' : 'skip-backward'}`);
+
+    DOMElements.seekTapPopup.classList.remove('left', 'right');
+    DOMElements.seekTapPopup.classList.add(isForward ? 'right' : 'left');
+
+    DOMElements.seekTapPopup.classList.remove('active');
+    void DOMElements.seekTapPopup.offsetWidth;
+    DOMElements.seekTapPopup.classList.add('active');
   }
 
   playPauseToggle() {

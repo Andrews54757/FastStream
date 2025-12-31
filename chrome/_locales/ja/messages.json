@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "プレーヤーを非表示"
     },
+    "options_general_clickaction_seek": {
+        "message": "早送り/巻き戻し"
+    },
     "options_general_vischangeaction": {
         "message": "プレーヤーの可視性が変更されたとき"
     },

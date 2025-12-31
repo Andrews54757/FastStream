@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Скрыть плеер"
     },
+    "options_general_clickaction_seek": {
+        "message": "Перемотка вперед/назад"
+    },
     "options_general_vischangeaction": {
         "message": "При изменении видимости плеера"
     },

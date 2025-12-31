@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Speler verbergen"
     },
+    "options_general_clickaction_seek": {
+        "message": "Vooruit/achteruit zoeken"
+    },
     "options_general_vischangeaction": {
         "message": "Wanneer de zichtbaarheid van de speler verandert"
     },

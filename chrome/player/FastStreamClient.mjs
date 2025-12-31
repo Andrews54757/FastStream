@@ -81,7 +81,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
-      seekStepSize: 0.2,
+      seekStepSize: 2,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -319,6 +319,8 @@ export class FastStreamClient extends EventEmitter {
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
+
+    this.interfaceController.updateSkipButtonLabels();
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';

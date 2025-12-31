@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Oynatıcıyı gizle"
     },
+    "options_general_clickaction_seek": {
+        "message": "İleri/geri sar"
+    },
     "options_general_vischangeaction": {
         "message": "Oynatıcı görünürlüğü değiştiğinde"
     },

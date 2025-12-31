@@ -5688,7 +5688,7 @@
         "zh_TW": "開啟 .mp4 連結時以播放器播放 MP4 影片"
     },
     "options_general_seekstep": {
-        "en": "Seek keybind base step size (seconds)",
+        "en": "Seek step size (Seconds)",
         "de": "Basis Schrittgröße für die Vor-/Zurückspul Taste (sekunden)",
         "es": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)",
         "fr": "Taille du pas pour les touches de saut (secondes)",
@@ -5696,7 +5696,7 @@
         "it": "Dimensione base dell'incremento quando vai avanti/indietro (secondi)",
         "ja": "シークキーバインドのベースステップサイズ (秒)",
         "ko": "건너뛰기 키 기본 단위(초)",
-        "ms": "Seek keybind base step size (seconds)",
+        "ms": "Seek step size (Seconds)",
         "nl": "Basisstapgrootte voor zoeken (seconden)",
         "pl": "Podstawowy krok przewijania (sekundy)",
         "pt_BR": "Seek keybind base do atalho de busca (segundos)",

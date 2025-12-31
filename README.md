@@ -10,6 +10,11 @@ Tired of having videos buffer with slow internet speeds? Frustrated by a website
 4. 20+ remappable keybinds and accessible tool buttons for easy control of the player.
 5. Available in multiple languages! Translated into Spanish, Japanese, Russian, Malay, and Italian by the FastStream community. Support for more languages is coming soon!
 
+My mobile usability improvements:
+- **Skip buttons display the correct skip amount** (instead of a hard-coded "10").
+- **Seek feedback animations** now also play when pressing the skip buttons.
+- **Tap-to-seek** greatly improves the experience when using a mobile device.
+
 The player currently supports:
 - MP4 videos (.mp4)
 - HLS streams (.m3u8)
@@ -46,7 +51,11 @@ We've been seeing issues with Youtube not working for some people using FastStre
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
 
-Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox for the desktop is already an exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist like me. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+FastStream is primarily developed and tested for desktop browsers. Mobile browser support varies a lot by platform (and whether your mobile browser supports extensions).
+
+That said, recent changes to the seek controls (tap-to-seek responsiveness, correct seek-step handling, and dynamic skip labels) **greatly improve mobile/touch compatibility** in environments where FastStream can run.
+
+If you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
 
 ## Installation For Chrome and Firefox
 

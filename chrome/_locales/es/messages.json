@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "Ocultar reproductor"
     },
+    "options_general_clickaction_seek": {
+        "message": "Avanzar/retroceder"
+    },
     "options_general_vischangeaction": {
         "message": "Cuando cambia la visibilidad del reproductor"
     },

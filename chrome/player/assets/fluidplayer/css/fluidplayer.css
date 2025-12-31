@@ -202,6 +202,69 @@ body {
     pointer-events: auto;
 }
 
+@keyframes faststream_seek_tap_popup {
+    0% {
+        opacity: 0;
+        transform: scale(0.85);
+    }
+    20% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    80% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+.seek_tap_popup {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    pointer-events: none;
+}
+
+.seek_tap_popup.left {
+    left: 24px;
+}
+
+.seek_tap_popup.right {
+    right: 24px;
+}
+
+.seek_tap_popup_inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 6px;
+    border: var(--menu-border);
+    background-color: var(--menu-background-color);
+    color: var(--menu-text-color);
+    opacity: 0;
+    transform: scale(0.85);
+}
+
+.seek_tap_popup.active .seek_tap_popup_inner {
+    animation: faststream_seek_tap_popup 450ms ease-out;
+}
+
+.seek_tap_popup_icon {
+    width: 22px;
+    height: 22px;
+}
+
+.seek_tap_popup_text {
+    font-size: 16px;
+    line-height: 18px;
+    font-variant-numeric: tabular-nums;
+}
+
 .fluid_initial_play {
     width: 60px;
     height: 60px;
@@ -619,6 +682,21 @@ body {
 
 .fluid_button svg:hover {
     opacity: 1;
+}
+
+.fluid_control_skip_forward .skip_amount,
+.fluid_control_skip_backward .skip_amount {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--menu-text-color);
+    text-shadow: 0 0 2px var(--menu-background-color);
 }
 
 .fluid_control_mute .speaker-muted {

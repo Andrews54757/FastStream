@@ -992,6 +992,9 @@
     "options_general_clickaction_hideplayer": {
         "message": "플레이어 숨기기"
     },
+    "options_general_clickaction_seek": {
+        "message": "앞/뒤로 이동"
+    },
     "options_general_vischangeaction": {
         "message": "플레이어 표시 상태 변경 시"
     },
