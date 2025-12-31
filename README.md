@@ -53,9 +53,7 @@ Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) wi
 
 FastStream is primarily developed and tested for desktop browsers. Mobile browser support varies a lot by platform (and whether your mobile browser supports extensions).
 
-That said, recent changes to the seek controls (tap-to-seek responsiveness, correct seek-step handling, and dynamic skip labels) **greatly improve mobile/touch compatibility** in environments where FastStream can run.
-
-If you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+That said, recent changes to the seek controls **greatly improve mobile/touch compatibility** in environments where FastStream can run.
 
 ## Installation For Chrome and Firefox
 
