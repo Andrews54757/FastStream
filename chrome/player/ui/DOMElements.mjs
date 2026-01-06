@@ -88,4 +88,6 @@ export const DOMElements = {
   loopMenu: document.querySelector('.mainplayer .loop_menu'),
   skipForwardButton: document.querySelector('.mainplayer .fluid_control_skip_forward'),
   skipBackwardButton: document.querySelector('.mainplayer .fluid_control_skip_backward'),
+  skipForwardLabel: document.querySelector('.mainplayer .fluid_control_skip_forward .fluid_seek_amount'),
+  skipBackwardLabel: document.querySelector('.mainplayer .fluid_control_skip_backward .fluid_seek_amount'),
 };

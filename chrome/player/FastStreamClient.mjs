@@ -81,7 +81,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
-      seekStepSize: 0.2,
+      seekStepSize: 5,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -366,6 +366,10 @@ export class FastStreamClient extends EventEmitter {
 
     if (options.keybinds) {
       this.keybindManager.setKeybinds(options.keybinds);
+    }
+
+    if (this.interfaceController && typeof this.interfaceController.updateSeekButtons === 'function') {
+      this.interfaceController.updateSeekButtons();
     }
 
     if (this.options.analyzeVideos) {

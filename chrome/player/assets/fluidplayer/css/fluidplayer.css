@@ -591,10 +591,26 @@ body {
     display: inline-block;
     position: relative;
     flex: none;
-    height: 24px;
-    width: 24px;
+    --fluid-button-size: 24px;
+    height: var(--fluid-button-size);
+    width: var(--fluid-button-size);
     padding: 2px;
     color: var(--menu-text-color);
+}
+
+.fluid_control_skip_forward .fluid_seek_amount,
+.fluid_control_skip_backward .fluid_seek_amount {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: calc(var(--fluid-button-size) * 0.38);
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    user-select: none;
 }
 
 .fluid_button svg {
@@ -2999,8 +3015,7 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_button {
-        width: 18px;
-        height: 18px;
+        --fluid-button-size: 18px;
     }
 
     .fluid_controls_right,

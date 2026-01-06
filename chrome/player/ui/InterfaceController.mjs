@@ -125,6 +125,24 @@ export class InterfaceController {
     this.setupDOM();
   }
 
+  updateSeekButtons() {
+    const step = this.client?.options?.seekStepSize;
+    if (!DOMElements.skipForwardLabel || !DOMElements.skipBackwardLabel) {
+      return;
+    }
+
+    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+      DOMElements.skipForwardLabel.textContent = '';
+      DOMElements.skipBackwardLabel.textContent = '';
+      return;
+    }
+
+    const rounded = Math.round(step * 100) / 100;
+    const label = rounded.toString();
+    DOMElements.skipForwardLabel.textContent = label;
+    DOMElements.skipBackwardLabel.textContent = label;
+  }
+
   updateAutoNextIndicator() {
     if (this.client.options.autoplayNext) {
       DOMElements.autoNextIndicator.style.display = '';
@@ -543,7 +561,7 @@ export class InterfaceController {
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
       e.stopPropagation();
     });
@@ -552,12 +570,14 @@ export class InterfaceController {
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
       e.stopPropagation();
     });
 
     WebUtils.setupTabIndex(DOMElements.skipBackwardButton);
+
+    this.updateSeekButtons();
 
     DOMElements.moreButton.addEventListener('click', (e) => {
       if (!DOMElements.extraTools.classList.contains('visible')) {
