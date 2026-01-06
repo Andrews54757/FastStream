@@ -25,6 +25,7 @@ const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
+const autoEnableAllWebsites = document.getElementById('autoenableallwebsites');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
@@ -76,6 +77,7 @@ if (!EnvUtils.isExtension()) {
   autoSub.disabled = true;
   autoplayYoutube.disabled = true;
   autoEnableURLSInput.disabled = true;
+  autoEnableAllWebsites.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
   // ytclient.disabled = true;
@@ -154,6 +156,7 @@ async function loadOptions(newOptions) {
   });
 
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
+  autoEnableAllWebsites.checked = !!Options.autoEnableAllWebsites;
 
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
@@ -482,6 +485,11 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('change', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  optionChanged();
+});
+
+autoEnableAllWebsites.addEventListener('change', (e) => {
+  Options.autoEnableAllWebsites = !!autoEnableAllWebsites.checked;
   optionChanged();
 });
 

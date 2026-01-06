@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "힌트: 정규식을 다음에서 테스트하세요"
     },
+    "options_autourl_allwebsites": {
+        "message": "모든 웹사이트에서 자동 활성화"
+    },
     "options_pattern_header": {
         "message": "사용자 지정 소스 패턴"
     },

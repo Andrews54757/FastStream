@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Wskazówka: przetestuj regex na"
     },
+    "options_autourl_allwebsites": {
+        "message": "Włącz automatycznie na wszystkich stronach"
+    },
     "options_pattern_header": {
         "message": "Niestandardowe wzorce źródeł"
     },

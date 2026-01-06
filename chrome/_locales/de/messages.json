@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Hinweise: Teste Regex auf"
     },
+    "options_autourl_allwebsites": {
+        "message": "Auf allen Websites automatisch aktivieren"
+    },
     "options_pattern_header": {
         "message": "Benutzerdefinierte Quellen Filter"
     },

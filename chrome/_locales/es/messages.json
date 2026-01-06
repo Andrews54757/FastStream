@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Sugerencia: Prueba regex en"
     },
+    "options_autourl_allwebsites": {
+        "message": "Activar automáticamente en todos los sitios web"
+    },
     "options_pattern_header": {
         "message": "Patrones de Fuente Personalizados"
     },

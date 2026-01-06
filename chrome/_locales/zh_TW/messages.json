@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "提示：在此測試正則表達式"
     },
+    "options_autourl_allwebsites": {
+        "message": "在所有網站上自動啟用"
+    },
     "options_pattern_header": {
         "message": "自訂來源模式"
     },

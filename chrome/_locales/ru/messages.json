@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Подсказка: протестируйте регулярное выражение на"
     },
+    "options_autourl_allwebsites": {
+        "message": "Автоматически включать на всех сайтах"
+    },
     "options_pattern_header": {
         "message": "Пользовательские шаблоны источников"
     },

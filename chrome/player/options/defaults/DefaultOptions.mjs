@@ -22,6 +22,7 @@ export const DefaultOptions = {
   defaultYoutubeClient: YoutubeClients.WEB,
   defaultQuality: `Auto`,
   colorTheme: ColorThemes.DEFAULT,
+  autoEnableAllWebsites: false,
   autoEnableURLs: [],
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,

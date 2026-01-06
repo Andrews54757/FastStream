@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Dica: Teste a expressão regular em"
     },
+    "options_autourl_allwebsites": {
+        "message": "Habilitar automaticamente em todos os sites"
+    },
     "options_pattern_header": {
         "message": "Padrões de origem personalizada"
     },

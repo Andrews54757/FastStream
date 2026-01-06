@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
     },
+    "options_autourl_allwebsites": {
+        "message": "すべてのウェブサイトで自動的に有効化"
+    },
     "options_pattern_header": {
         "message": "カスタムソースパターン"
     },

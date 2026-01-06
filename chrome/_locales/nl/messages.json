@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Tip: test regex op"
     },
+    "options_autourl_allwebsites": {
+        "message": "Automatisch inschakelen op alle websites"
+    },
     "options_pattern_header": {
         "message": "Aangepaste bronpatronen"
     },

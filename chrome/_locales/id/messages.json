@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "Petunjuk: Uji regex di"
     },
+    "options_autourl_allwebsites": {
+        "message": "Aktifkan otomatis di semua situs web"
+    },
     "options_pattern_header": {
         "message": "Pola Sumber Kustom"
     },

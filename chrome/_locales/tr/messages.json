@@ -1091,6 +1091,9 @@
     "options_autourl_hint": {
         "message": "İpucu: Regex'i burada test edin"
     },
+    "options_autourl_allwebsites": {
+        "message": "Tüm web sitelerinde otomatik etkinleştir"
+    },
     "options_pattern_header": {
         "message": "Özel Kaynak Desenleri"
     },
