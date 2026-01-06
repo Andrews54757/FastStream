@@ -986,6 +986,9 @@
     "options_general_clickaction_pip": {
         "message": "Beralih gambar-dalam-gambar"
     },
+    "options_general_clickaction_seek": {
+        "message": "Seek"
+    },
     "options_general_clickaction_hidecontrols": {
         "message": "Sembunyikan kontrol"
     },

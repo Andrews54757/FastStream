@@ -8,6 +8,50 @@ import {EnvUtils} from './EnvUtils.mjs';
  */
 export class Utils {
   /**
+   * Classifies a click/tap as left/right side of an element, or ignores the middle region.
+   *
+   * With the default sideRatio (0.4), the element is split into:
+   * - left 40% => 'left'
+   * - middle 20% => null (ignored)
+   * - right 40% => 'right'
+   *
+   * @param {MouseEvent|PointerEvent|TouchEvent} event - Input event.
+   * @param {HTMLElement} element - Element whose width defines the regions.
+   * @param {number} [sideRatio=0.4] - Portion (0..0.5) on each side.
+   * @return {'left'|'right'|null} Side classification, or null when ignored.
+   */
+  static getClickSide(event, element, sideRatio = 0.4) {
+    if (!element || typeof element.getBoundingClientRect !== 'function') {
+      return null;
+    }
+
+    const rect = element.getBoundingClientRect();
+    if (!rect || rect.width <= 0) {
+      return null;
+    }
+
+    const ratio = Utils.clamp(sideRatio, 0, 0.5);
+
+    let clientX = event?.clientX;
+    if (typeof clientX !== 'number' && event?.changedTouches?.length) {
+      clientX = event.changedTouches[0]?.clientX;
+    }
+    if (typeof clientX !== 'number') {
+      return null;
+    }
+
+    const x = clientX - rect.left;
+    const xRatio = x / rect.width;
+    if (xRatio < ratio) {
+      return 'left';
+    }
+    if (xRatio > 1 - ratio) {
+      return 'right';
+    }
+    return null;
+  }
+
+  /**
    * Loads player options from storage.
    * @return {Object} The loaded options object.
    */

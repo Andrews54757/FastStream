@@ -568,6 +568,24 @@ export class InterfaceController {
           case ClickActions.PLAY_PAUSE:
             this.playPauseToggle();
             break;
+          case ClickActions.SEEK: {
+            const clickSide = Utils.getClickSide(e, DOMElements.videoContainer, 0.4);
+            if (clickSide !== 'left' && clickSide !== 'right') {
+              // Middle 20%: no-op for seek action.
+              break;
+            }
+
+            const step = this.client?.options?.seekStepSize;
+            if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+              break;
+            }
+
+            this.client.setSeekSave(false);
+            this.client.currentTime += clickSide === 'left' ? -step : step;
+            this.client.setSeekSave(true);
+            this.showSkipPopup(clickSide === 'left' ? 'backward' : 'forward');
+            break;
+          }
           case ClickActions.HIDE_CONTROLS:
             this.focusingControls = false;
             this.mouseOverControls = false;
@@ -575,6 +593,9 @@ export class InterfaceController {
             break;
           case ClickActions.HIDE_PLAYER:
             this.toggleHide();
+            break;
+          case ClickActions.NOTHING:
+          default:
             break;
         }
       }, clickCount < 3 ? 300 : 0);

@@ -986,6 +986,9 @@
     "options_general_clickaction_pip": {
         "message": "切換畫中畫"
     },
+    "options_general_clickaction_seek": {
+        "message": "Seek"
+    },
     "options_general_clickaction_hidecontrols": {
         "message": "隱藏控制列"
     },

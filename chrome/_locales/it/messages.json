@@ -986,6 +986,9 @@
     "options_general_clickaction_pip": {
         "message": "Attiva/disattiva il picture-in-picture"
     },
+    "options_general_clickaction_seek": {
+        "message": "Seek"
+    },
     "options_general_clickaction_hidecontrols": {
         "message": "Nascondi i comandi"
     },

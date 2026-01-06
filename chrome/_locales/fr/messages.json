@@ -986,6 +986,9 @@
     "options_general_clickaction_pip": {
         "message": "Basculer image dans l'image"
     },
+    "options_general_clickaction_seek": {
+        "message": "Seek"
+    },
     "options_general_clickaction_hidecontrols": {
         "message": "Masquer les contrôles"
     },
