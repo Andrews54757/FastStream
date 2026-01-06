@@ -122,7 +122,83 @@ export class InterfaceController {
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
 
+    this.skipPopupForwardEl = null;
+    this.skipPopupBackwardEl = null;
+    this.skipPopupForwardTimeout = null;
+    this.skipPopupBackwardTimeout = null;
+
     this.setupDOM();
+  }
+
+  ensureSkipPopups() {
+    if (!DOMElements?.playerContainer) {
+      return;
+    }
+
+    if (!this.skipPopupForwardEl) {
+      const el = document.createElement('div');
+      el.className = 'fluid_control_skip_forward_popup';
+      const label = document.createElement('div');
+      label.className = 'fluid_seek_amount';
+      label.setAttribute('aria-hidden', 'true');
+      el.appendChild(label);
+      DOMElements.playerContainer.appendChild(el);
+      this.skipPopupForwardEl = el;
+    }
+
+    if (!this.skipPopupBackwardEl) {
+      const el = document.createElement('div');
+      el.className = 'fluid_control_skip_backward_popup';
+      const label = document.createElement('div');
+      label.className = 'fluid_seek_amount';
+      label.setAttribute('aria-hidden', 'true');
+      el.appendChild(label);
+      DOMElements.playerContainer.appendChild(el);
+      this.skipPopupBackwardEl = el;
+    }
+  }
+
+  showSkipPopup(direction) {
+    this.ensureSkipPopups();
+
+    const step = this.client?.options?.seekStepSize;
+    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+      return;
+    }
+
+    const rounded = Math.round(Math.abs(step) * 100) / 100;
+    const amountText = rounded.toString();
+    const sign = direction === 'backward' ? '-' : '+';
+
+    if (direction === 'backward' && this.skipPopupBackwardEl) {
+      const label = this.skipPopupBackwardEl.querySelector('.fluid_seek_amount');
+      if (label) label.textContent = `${sign}${amountText}`;
+
+      this.skipPopupBackwardEl.classList.remove('active');
+      // Force reflow so the animation retriggers on repeated clicks.
+      void this.skipPopupBackwardEl.offsetWidth;
+      this.skipPopupBackwardEl.classList.add('active');
+
+      clearTimeout(this.skipPopupBackwardTimeout);
+      this.skipPopupBackwardTimeout = setTimeout(() => {
+        this.skipPopupBackwardEl?.classList.remove('active');
+      }, 650);
+    }
+
+    if (direction === 'forward' && this.skipPopupForwardEl) {
+      const label = this.skipPopupForwardEl.querySelector('.fluid_seek_amount');
+      if (label) label.textContent = `${sign}${amountText}`;
+
+      this.skipPopupForwardEl.classList.remove('active');
+      // Force reflow so the animation retriggers on repeated clicks.
+      void this.skipPopupForwardEl.offsetWidth;
+      this.skipPopupForwardEl.classList.add('active');
+
+      clearTimeout(this.skipPopupForwardTimeout);
+      this.skipPopupForwardTimeout = setTimeout(() => {
+        this.skipPopupForwardEl?.classList.remove('active');
+      }, 650);
+    }
   }
 
   updateSeekButtons() {
@@ -563,6 +639,7 @@ export class InterfaceController {
       this.client.setSeekSave(false);
       this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSkipPopup('forward');
       e.stopPropagation();
     });
 
@@ -572,6 +649,7 @@ export class InterfaceController {
       this.client.setSeekSave(false);
       this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSkipPopup('backward');
       e.stopPropagation();
     });
 

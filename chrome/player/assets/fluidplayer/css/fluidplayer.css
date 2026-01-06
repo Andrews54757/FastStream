@@ -613,6 +613,101 @@ body {
     user-select: none;
 }
 
+
+.fluid_control_skip_forward_popup,
+.fluid_control_skip_backward_popup {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999999;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+
+    width: min(220px, 45vw);
+    height: min(110px, 30vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fluid_control_skip_forward_popup {
+    right: 0;
+}
+
+.fluid_control_skip_backward_popup {
+    left: 0;
+}
+
+.fluid_control_skip_forward_popup .fluid_seek_amount,
+.fluid_control_skip_backward_popup .fluid_seek_amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: calc(var(--font-size-medium) * 1.6);
+    line-height: 1;
+    opacity: 0.98;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: var(--seek-preview-text-color);
+    background-color: var(--seek-preview-background-color);
+}
+
+.fluid_control_skip_forward_popup.active {
+    animation: faststream-skip-popup-right 650ms ease-out 0ms 1 both;
+}
+
+.fluid_control_skip_backward_popup.active {
+    animation: faststream-skip-popup-left 650ms ease-out 0ms 1 both;
+}
+
+@keyframes faststream-skip-popup-right {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(32px) scale(0.98);
+    }
+    22% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-14px) scale(1);
+    }
+    72% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(10px) scale(0.995);
+    }
+}
+
+@keyframes faststream-skip-popup-left {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-32px) scale(0.98);
+    }
+    22% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(14px) scale(1);
+    }
+    72% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-10px) scale(0.995);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fluid_control_skip_forward_popup.active,
+    .fluid_control_skip_backward_popup.active {
+        animation: none;
+        opacity: 1;
+    }
+}
+
 .fluid_button svg {
     width: 100%;
     height: 100%;
@@ -750,6 +845,7 @@ body {
     user-select: none;
     justify-content: center;
     display: flex;
+    position: relative;
     width: 100%;
     height: 100%;
 }
