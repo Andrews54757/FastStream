@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "画中画"
     },
+    "player_cinema_mode_label": {
+        "message": "切换影院模式"
+    },
     "player_fullscreen_label": {
         "message": "切换全屏"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "控件自动隐藏延迟（毫秒）"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "始终在播放器底部显示进度条"
+    },
     "options_general_replace_delay": {
         "message": "自动替换播放器前的延迟（毫秒）"
     },
@@ -990,7 +996,7 @@
         "message": "切换画中画"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "跳转"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "隐藏控件"

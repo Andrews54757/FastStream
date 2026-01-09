@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "화면 속 화면"
     },
+    "player_cinema_mode_label": {
+        "message": "시네마 모드 전환"
+    },
     "player_fullscreen_label": {
         "message": "전체 화면 전환"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "컨트롤 자동 숨김 지연(밀리초)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "플레이어 하단에 진행 바 항상 표시"
+    },
     "options_general_replace_delay": {
         "message": "플레이어 자동 교체 전 지연(밀리초)"
     },
@@ -990,7 +996,7 @@
         "message": "픽처인픽처(PiP) 전환"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "구간 이동"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "컨트롤 숨기기"

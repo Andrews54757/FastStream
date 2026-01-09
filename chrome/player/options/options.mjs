@@ -31,6 +31,7 @@ const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
 const controlsHideDelay = document.getElementById('controlshidedelay');
+const alwaysShowProgressBar = document.getElementById('alwaysshowprogressbar');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
@@ -106,6 +107,7 @@ async function loadOptions(newOptions) {
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
   controlsHideDelay.value = Math.round(Options.controlsHideDelay);
+  alwaysShowProgressBar.checked = !!Options.alwaysShowProgressBar;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
@@ -433,6 +435,11 @@ controlsHideDelay.addEventListener('change', () => {
   const parsed = parseInt(controlsHideDelay.value, 10);
   Options.controlsHideDelay = Number.isFinite(parsed) ? Math.max(0, parsed) : DefaultOptions.controlsHideDelay;
   controlsHideDelay.value = String(Options.controlsHideDelay);
+  optionChanged();
+});
+
+alwaysShowProgressBar.addEventListener('change', () => {
+  Options.alwaysShowProgressBar = alwaysShowProgressBar.checked;
   optionChanged();
 });
 

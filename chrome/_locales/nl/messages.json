@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Beeld-in-beeld"
     },
+    "player_cinema_mode_label": {
+        "message": "Cinemamodus wisselen"
+    },
     "player_fullscreen_label": {
         "message": "Volledig scherm in-/uitschakelen"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Vertraging voor automatisch verbergen van bediening (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Voortgangsbalk altijd onderaan de speler tonen"
+    },
     "options_general_replace_delay": {
         "message": "Vertraging voordat speler automatisch wordt vervangen (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Beeld-in-beeld in-/uitschakelen"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Zoeken"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Bediening verbergen"

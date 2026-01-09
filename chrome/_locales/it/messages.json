@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Picture-in-picture"
     },
+    "player_cinema_mode_label": {
+        "message": "Attiva/disattiva modalità cinema"
+    },
     "player_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Ritardo prima della scomparsa automatica dei controlli (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Mostra sempre la barra di avanzamento in basso nel lettore"
+    },
     "options_general_replace_delay": {
         "message": "Ritardo prima della sostituzione automatica del player (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Attiva/disattiva il picture-in-picture"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Scorri"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Nascondi i comandi"

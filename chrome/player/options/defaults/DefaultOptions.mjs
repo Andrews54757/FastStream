@@ -11,6 +11,7 @@ export const DefaultOptions = {
   dev: false,
   replaceDelay: 500,
   controlsHideDelay: 2000,
+  alwaysShowProgressBar: false,
   playMP4URLs: false,
   playStreamURLs: false,
   analyzeVideos: false,

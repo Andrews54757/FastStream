@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Image dans l'image"
     },
+    "player_cinema_mode_label": {
+        "message": "Basculer le mode cinéma"
+    },
     "player_fullscreen_label": {
         "message": "Basculer en plein écran"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Délai avant masquage automatique des commandes (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Toujours afficher la barre de progression en bas du lecteur"
+    },
     "options_general_replace_delay": {
         "message": "Délai avant remplacement automatique du lecteur (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Basculer image dans l'image"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Se déplacer"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Masquer les contrôles"

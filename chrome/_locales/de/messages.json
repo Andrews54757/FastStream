@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Bild in Bild"
     },
+    "player_cinema_mode_label": {
+        "message": "Kinomodus umschalten"
+    },
     "player_fullscreen_label": {
         "message": "Vollbildmodus umschalten"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Verzögerung bis zum automatischen Ausblenden der Steuerung (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Fortschrittsleiste immer unten im Player anzeigen"
+    },
     "options_general_replace_delay": {
         "message": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Bild-in-Bild umschalten"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Springen"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Steuerelemente Verstecken"

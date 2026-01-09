@@ -2393,6 +2393,24 @@
         "zh_CN": "画中画",
         "zh_TW": "畫中畫"
     },
+    "player_cinema_mode_label": {
+        "en": "Toggle cinema mode",
+        "de": "Kinomodus umschalten",
+        "es": "Alternar modo cine",
+        "fr": "Basculer le mode cinéma",
+        "id": "Alihkan mode sinema",
+        "it": "Attiva/disattiva modalità cinema",
+        "ja": "シネマモードを切り替え",
+        "ko": "시네마 모드 전환",
+        "ms": "Togol mod pawagam",
+        "nl": "Cinemamodus wisselen",
+        "pl": "Przełącz tryb kinowy",
+        "pt_BR": "Alternar modo cinema",
+        "ru": "Переключить режим кино",
+        "tr": "Sinema modunu değiştir",
+        "zh_CN": "切换影院模式",
+        "zh_TW": "切換劇院模式"
+    },
     "player_fullscreen_label": {
         "en": "Toggle fullscreen",
         "de": "Vollbildmodus umschalten",
@@ -5723,6 +5741,24 @@
         "zh_CN": "控件自动隐藏延迟（毫秒）",
         "zh_TW": "控制項自動隱藏延遲（毫秒）"
     },
+    "options_general_always_show_progress_bar": {
+        "en": "Always show progress bar at bottom of player",
+        "de": "Always show progress bar at bottom of player",
+        "es": "Always show progress bar at bottom of player",
+        "fr": "Always show progress bar at bottom of player",
+        "id": "Always show progress bar at bottom of player",
+        "it": "Always show progress bar at bottom of player",
+        "ja": "Always show progress bar at bottom of player",
+        "ko": "Always show progress bar at bottom of player",
+        "ms": "Always show progress bar at bottom of player",
+        "nl": "Always show progress bar at bottom of player",
+        "pl": "Always show progress bar at bottom of player",
+        "pt_BR": "Always show progress bar at bottom of player",
+        "ru": "Always show progress bar at bottom of player",
+        "tr": "Always show progress bar at bottom of player",
+        "zh_CN": "Always show progress bar at bottom of player",
+        "zh_TW": "Always show progress bar at bottom of player"
+    },
     "options_general_replace_delay": {
         "en": "Delay before auto-replacing player (ms)",
         "de": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)",
@@ -5938,6 +5974,24 @@
         "tr": "Resim içinde resim aç/kapa",
         "zh_CN": "切换画中画",
         "zh_TW": "切換畫中畫"
+    },
+    "options_general_clickaction_seek": {
+        "en": "Seek",
+        "de": "Springen",
+        "es": "Buscar",
+        "fr": "Se déplacer",
+        "id": "Geser",
+        "it": "Scorri",
+        "ja": "シーク",
+        "ko": "구간 이동",
+        "ms": "Cari",
+        "nl": "Zoeken",
+        "pl": "Przewijaj",
+        "pt_BR": "Buscar",
+        "ru": "Перемотка",
+        "tr": "Sar",
+        "zh_CN": "跳转",
+        "zh_TW": "跳轉"
     },
     "options_general_clickaction_hidecontrols": {
         "en": "Hide controls",
@@ -6568,6 +6622,24 @@
         "tr": "İpucu: Regex'i burada test edin",
         "zh_CN": "提示：在此处测试正则",
         "zh_TW": "提示：在此測試正則表達式"
+    },
+    "options_autourl_allwebsites": {
+        "en": "Auto-enable on all websites",
+        "de": "Auf allen Websites automatisch aktivieren",
+        "es": "Activar automáticamente en todos los sitios web",
+        "fr": "Activer automatiquement sur tous les sites",
+        "id": "Aktifkan otomatis di semua situs web",
+        "it": "Attiva automaticamente su tutti i siti web",
+        "ja": "すべてのウェブサイトで自動的に有効化",
+        "ko": "모든 웹사이트에서 자동 활성화",
+        "ms": "Dayakan secara automatik pada semua laman web",
+        "nl": "Automatisch inschakelen op alle websites",
+        "pl": "Włącz automatycznie na wszystkich stronach",
+        "pt_BR": "Habilitar automaticamente em todos os sites",
+        "ru": "Автоматически включать на всех сайтах",
+        "tr": "Tüm web sitelerinde otomatik etkinleştir",
+        "zh_CN": "在所有网站上自动启用",
+        "zh_TW": "在所有網站上自動啟用"
     },
     "options_pattern_header": {
         "en": "Custom Source Patterns",

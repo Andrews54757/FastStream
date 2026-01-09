@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "ピクチャー イン ピクチャー (PiP)"
     },
+    "player_cinema_mode_label": {
+        "message": "シネマモードを切り替え"
+    },
     "player_fullscreen_label": {
         "message": "フルスクリーン"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "コントロール自動非表示までの遅延 (ミリ秒)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "プレーヤー下部に進行バーを常に表示"
+    },
     "options_general_replace_delay": {
         "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
     },
@@ -990,7 +996,7 @@
         "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "シーク"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "コントロールを非表示"

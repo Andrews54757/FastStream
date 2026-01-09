@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Picture in picture"
     },
+    "player_cinema_mode_label": {
+        "message": "Toggle cinema mode"
+    },
     "player_fullscreen_label": {
         "message": "Toggle fullscreen"
     },
@@ -952,6 +955,9 @@
     },
     "options_general_controls_hide_delay": {
         "message": "Controls auto-hide delay (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Always show progress bar at bottom of player"
     },
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"

@@ -365,6 +365,64 @@ body {
     top: 6px;
 }
 
+/* Always-show progress bar: detach it from the fading controls container and pin it to the bottom edge. */
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container {
+    height: 10px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 4;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress {
+    position: absolute;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    height: 3px;
+    background-color: var(--progress-bar-background-color);
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress .fluid_controls_currentprogress {
+    position: absolute;
+    height: 3px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container:hover .fluid_controls_progress {
+    margin-top: 0;
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container:hover .fluid_controls_progress .fluid_controls_currentprogress {
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_buffered,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_buffered {
+    margin-top: 0;
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_progress .fluid_controls_currentprogress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_progress .fluid_controls_currentprogress {
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.fluid_slider .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
+    background-color: var(--progress-bar-knob-color);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.fluid_slider:hover .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
+    opacity: 1;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress {
     position: absolute;
     top: 5px;

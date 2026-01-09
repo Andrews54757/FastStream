@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Gambar dalam gambar"
     },
+    "player_cinema_mode_label": {
+        "message": "Alihkan mode sinema"
+    },
     "player_fullscreen_label": {
         "message": "Beralih layar penuh"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Waktu tunda sembunyi otomatis kontrol (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Selalu tampilkan bilah progres di bagian bawah pemutar"
+    },
     "options_general_replace_delay": {
         "message": "Tunda sebelum mengganti pemutar secara otomatis (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Beralih gambar-dalam-gambar"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Geser"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Sembunyikan kontrol"

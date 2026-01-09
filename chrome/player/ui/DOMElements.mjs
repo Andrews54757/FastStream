@@ -9,6 +9,7 @@ export const DOMElements = {
   progressContainer: document.querySelector('.mainplayer .fluid_controls_progress_container'),
   currentProgress: document.querySelector('.mainplayer .fluid_controls_currentprogress'),
   fullscreen: document.querySelector('.mainplayer .fluid_control_fullscreen'),
+  cinema: document.querySelector('.mainplayer .fluid_control_cinema'),
   windowedFullscreen: document.querySelector('.mainplayer .fluid_control_windowed_fullscreen'),
   subtitles: document.querySelector('.mainplayer .fluid_control_subtitles'),
   videoSource: document.querySelector('.mainplayer .fluid_control_video_source'),

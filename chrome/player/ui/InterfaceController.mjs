@@ -128,6 +128,50 @@ export class InterfaceController {
     this.skipPopupBackwardTimeout = null;
 
     this.setupDOM();
+
+    // Track progress-bar detachment so we can keep it visible even when controls fade out.
+    this._progressBarDetached = false;
+    this._progressBarOriginalParent = null;
+    this._progressBarOriginalNextSibling = null;
+
+    // Apply immediately using defaults (will be re-applied after options load).
+    this.applyAlwaysShowProgressBar();
+  }
+
+  applyAlwaysShowProgressBar() {
+    const enabled = !!this.client?.options?.alwaysShowProgressBar;
+
+    if (!DOMElements?.playerContainer || !DOMElements?.progressContainer) {
+      return;
+    }
+
+    if (enabled) {
+      DOMElements.playerContainer.classList.add('always_show_progress_bar');
+
+      if (!this._progressBarDetached) {
+        this._progressBarOriginalParent = DOMElements.progressContainer.parentElement;
+        this._progressBarOriginalNextSibling = DOMElements.progressContainer.nextSibling;
+
+        DOMElements.playerContainer.appendChild(DOMElements.progressContainer);
+        this._progressBarDetached = true;
+      }
+      return;
+    }
+
+    DOMElements.playerContainer.classList.remove('always_show_progress_bar');
+
+    if (this._progressBarDetached && this._progressBarOriginalParent) {
+      const parent = this._progressBarOriginalParent;
+      const next = this._progressBarOriginalNextSibling;
+
+      if (next && next.parentElement === parent) {
+        parent.insertBefore(DOMElements.progressContainer, next);
+      } else {
+        parent.appendChild(DOMElements.progressContainer);
+      }
+
+      this._progressBarDetached = false;
+    }
   }
 
   ensureSkipPopups() {
@@ -450,6 +494,12 @@ export class InterfaceController {
     });
 
     WebUtils.setupTabIndex(DOMElements.fullscreen);
+
+    DOMElements.cinema.addEventListener('click', (e)=>{
+      this.toggleCinemaMode();
+      e.stopPropagation();
+    });
+    WebUtils.setupTabIndex(DOMElements.cinema);
 
     DOMElements.windowedFullscreen.addEventListener('click', (e)=>{
       this.toggleWindowedFullscreen();
@@ -1205,6 +1255,10 @@ export class InterfaceController {
     }, (response) => {
       this.state.windowedFullscreen = response === 'enter';
     });
+  }
+
+  toggleCinemaMode(force) {
+    return;
   }
 
   async fullscreenToggle(force) {

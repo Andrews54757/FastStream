@@ -54,6 +54,7 @@ export class FastStreamClient extends EventEmitter {
       maxSpeed: -1,
       maxVideoSize: 5000000000, // 5GB max size
       controlsHideDelay: 2000,
+      alwaysShowProgressBar: false,
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 300,
@@ -306,6 +307,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.analyzeVideos = options.analyzeVideos;
 
     this.options.controlsHideDelay = options.controlsHideDelay;
+    this.options.alwaysShowProgressBar = !!options.alwaysShowProgressBar;
 
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
@@ -392,6 +394,10 @@ export class FastStreamClient extends EventEmitter {
 
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
+
+    if (this.interfaceController && typeof this.interfaceController.applyAlwaysShowProgressBar === 'function') {
+      this.interfaceController.applyAlwaysShowProgressBar();
+    }
 
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }

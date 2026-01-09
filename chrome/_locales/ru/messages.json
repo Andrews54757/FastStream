@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Картинка в картинке"
     },
+    "player_cinema_mode_label": {
+        "message": "Переключить режим кино"
+    },
     "player_fullscreen_label": {
         "message": "Во весь экран"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Задержка автоскрытия элементов управления (мс)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Всегда показывать полосу прогресса внизу плеера"
+    },
     "options_general_replace_delay": {
         "message": "Задержка перед автозаменой плеера (мс)"
     },
@@ -990,7 +996,7 @@
         "message": "Картинка в картинке"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Перемотка"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Скрыть элементы управления"

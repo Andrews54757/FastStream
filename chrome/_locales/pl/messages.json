@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Obraz w obrazie"
     },
+    "player_cinema_mode_label": {
+        "message": "Przełącz tryb kinowy"
+    },
     "player_fullscreen_label": {
         "message": "Przełącz tryb pełnoekranowy"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Opóźnienie automatycznego ukrywania kontrolek (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Zawsze pokazuj pasek postępu na dole odtwarzacza"
+    },
     "options_general_replace_delay": {
         "message": "Opóźnienie przed automatyczną zamianą odtwarzacza (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Przełącz obraz w obrazie"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Przewijaj"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Ukryj kontrolki"

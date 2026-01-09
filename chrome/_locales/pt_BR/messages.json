@@ -398,6 +398,9 @@
     "player_pip_label": {
         "message": "Imagem sob imagem (pip)"
     },
+    "player_cinema_mode_label": {
+        "message": "Alternar modo cinema"
+    },
     "player_fullscreen_label": {
         "message": "Alternar tela cheia"
     },
@@ -953,6 +956,9 @@
     "options_general_controls_hide_delay": {
         "message": "Atraso para ocultar os controles automaticamente (ms)"
     },
+    "options_general_always_show_progress_bar": {
+        "message": "Sempre mostrar a barra de progresso na parte inferior do player"
+    },
     "options_general_replace_delay": {
         "message": "Atraso antes da substituição automática do player (ms)"
     },
@@ -990,7 +996,7 @@
         "message": "Alternar imagem em imagem"
     },
     "options_general_clickaction_seek": {
-        "message": "Seek"
+        "message": "Buscar"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Ocultar controles"
