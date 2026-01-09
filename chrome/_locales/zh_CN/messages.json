@@ -948,7 +948,10 @@
         "message": "在打开视频 URL（.mp4）时使用播放器播放 MP4 视频"
     },
     "options_general_seekstep": {
-        "message": "跳转键基础步长（秒）"
+        "message": "跳转幅度（秒）"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控件自动隐藏延迟（毫秒）"
     },
     "options_general_replace_delay": {
         "message": "自动替换播放器前的延迟（毫秒）"

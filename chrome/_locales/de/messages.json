@@ -948,7 +948,10 @@
         "message": "Den Player verwenden um MP4 Videos abzuspielen beim öffnen von video URLs (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Basis Schrittgröße für die Vor-/Zurückspul Taste (sekunden)"
+        "message": "Sprungweite (Sekunden)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Verzögerung bis zum automatischen Ausblenden der Steuerung (ms)"
     },
     "options_general_replace_delay": {
         "message": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)"

@@ -1099,11 +1099,16 @@ export class InterfaceController {
 
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
+
+    const defaultDelay = this.client?.options?.controlsHideDelay;
+    const resolvedDelay = typeof time === 'number' ? time : (typeof defaultDelay === 'number' ? defaultDelay : 2000);
+    const delayMs = Number.isFinite(resolvedDelay) ? Math.max(0, resolvedDelay) : 2000;
+
     this.hideControlBarTimeout = setTimeout(() => {
       if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
-    }, time || 2000);
+    }, delayMs);
   }
 
   hideControlBarOnAction(cooldown) {

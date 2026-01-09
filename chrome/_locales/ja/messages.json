@@ -948,7 +948,10 @@
         "message": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する"
     },
     "options_general_seekstep": {
-        "message": "シークキーバインドのベースステップサイズ (秒)"
+        "message": "シーク量 (秒)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "コントロール自動非表示までの遅延 (ミリ秒)"
     },
     "options_general_replace_delay": {
         "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"

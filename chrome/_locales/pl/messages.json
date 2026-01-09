@@ -948,7 +948,10 @@
         "message": "Użyj odtwarzacza do odtwarzania plików MP4 z adresów URL (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Podstawowy krok przewijania (sekundy)"
+        "message": "Wielkość skoku (sekundy)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Opóźnienie automatycznego ukrywania kontrolek (ms)"
     },
     "options_general_replace_delay": {
         "message": "Opóźnienie przed automatyczną zamianą odtwarzacza (ms)"

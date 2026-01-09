@@ -948,7 +948,10 @@
         "message": "Utiliser le lecteur pour lire les vidéos MP4 lors de l'ouverture d'URL (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Taille du pas pour les touches de saut (secondes)"
+        "message": "Durée du saut (secondes)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Délai avant masquage automatique des commandes (ms)"
     },
     "options_general_replace_delay": {
         "message": "Délai avant remplacement automatique du lecteur (ms)"

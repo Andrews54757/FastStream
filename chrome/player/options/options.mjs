@@ -30,6 +30,7 @@ const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
+const controlsHideDelay = document.getElementById('controlshidedelay');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
@@ -104,6 +105,7 @@ async function loadOptions(newOptions) {
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
+  controlsHideDelay.value = Math.round(Options.controlsHideDelay);
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
@@ -424,6 +426,13 @@ maxSize.addEventListener('change', () => {
 
 seekStepSize.addEventListener('change', () => {
   Options.seekStepSize = parseFloat(seekStepSize.value);
+  optionChanged();
+});
+
+controlsHideDelay.addEventListener('change', () => {
+  const parsed = parseInt(controlsHideDelay.value, 10);
+  Options.controlsHideDelay = Number.isFinite(parsed) ? Math.max(0, parsed) : DefaultOptions.controlsHideDelay;
+  controlsHideDelay.value = String(Options.controlsHideDelay);
   optionChanged();
 });
 

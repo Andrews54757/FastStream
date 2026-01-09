@@ -948,7 +948,10 @@
         "message": "비디오 URL(.mp4) 열 때 MP4 재생에 플레이어 사용"
     },
     "options_general_seekstep": {
-        "message": "건너뛰기 키 기본 단위(초)"
+        "message": "탐색량(초)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "컨트롤 자동 숨김 지연(밀리초)"
     },
     "options_general_replace_delay": {
         "message": "플레이어 자동 교체 전 지연(밀리초)"

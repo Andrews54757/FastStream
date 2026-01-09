@@ -948,7 +948,10 @@
         "message": "Gebruik de speler om MP4-video's af te spelen bij het openen van video-URL's (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Basisstapgrootte voor zoeken (seconden)"
+        "message": "Zoekafstand (seconden)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Vertraging voor automatisch verbergen van bediening (ms)"
     },
     "options_general_replace_delay": {
         "message": "Vertraging voordat speler automatisch wordt vervangen (ms)"

@@ -10,6 +10,7 @@ import {VisChangeActions} from './VisChangeActions.mjs';
 export const DefaultOptions = {
   dev: false,
   replaceDelay: 500,
+  controlsHideDelay: 2000,
   playMP4URLs: false,
   playStreamURLs: false,
   analyzeVideos: false,
@@ -22,7 +23,7 @@ export const DefaultOptions = {
   defaultYoutubeClient: YoutubeClients.WEB,
   defaultQuality: `Auto`,
   colorTheme: ColorThemes.DEFAULT,
-  autoEnableAllWebsites: false,
+  autoEnableAllWebsites: true,
   autoEnableURLs: [],
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
@@ -40,7 +41,7 @@ export const DefaultOptions = {
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 5,
   singleClickAction: ClickActions.PLAY_PAUSE,
-  doubleClickAction: ClickActions.FULLSCREEN,
+  doubleClickAction: ClickActions.SEEK,
   tripleClickAction: ClickActions.HIDE_CONTROLS,
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,

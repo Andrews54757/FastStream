@@ -53,6 +53,7 @@ export class FastStreamClient extends EventEmitter {
       autoPlay: false,
       maxSpeed: -1,
       maxVideoSize: 5000000000, // 5GB max size
+      controlsHideDelay: 2000,
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 300,
@@ -303,6 +304,8 @@ export class FastStreamClient extends EventEmitter {
    */
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
+
+    this.options.controlsHideDelay = options.controlsHideDelay;
 
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;

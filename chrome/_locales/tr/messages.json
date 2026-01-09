@@ -948,7 +948,10 @@
         "message": "Video URL'leri (.mp4) açıldığında MP4 videoları oynatmak için oynatıcıyı kullan"
     },
     "options_general_seekstep": {
-        "message": "İleri/geri tuş adım boyutu (saniye)"
+        "message": "Atlama miktarı (saniye)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesi (ms)"
     },
     "options_general_replace_delay": {
         "message": "Otomatik oynatıcıyı değiştirmeden önce gecikme (ms)"

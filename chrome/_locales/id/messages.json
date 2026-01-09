@@ -948,7 +948,10 @@
         "message": "Gunakan pemutar untuk memutar video MP4 saat membuka URL video (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Ukuran langkah dasar untuk tombol lompat (detik)"
+        "message": "Jumlah lompatan (detik)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Waktu tunda sembunyi otomatis kontrol (ms)"
     },
     "options_general_replace_delay": {
         "message": "Tunda sebelum mengganti pemutar secara otomatis (ms)"

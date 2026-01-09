@@ -948,7 +948,10 @@
         "message": "Use el reproductor para reproducir videos MP4 al abrir URLs de video (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)"
+        "message": "Cantidad de salto (segundos)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Retardo para ocultar automáticamente los controles (ms)"
     },
     "options_general_replace_delay": {
         "message": "Retraso antes de reemplazar auto (ms)"
