@@ -495,11 +495,6 @@ export class InterfaceController {
 
     WebUtils.setupTabIndex(DOMElements.fullscreen);
 
-    DOMElements.cinema.addEventListener('click', (e)=>{
-      this.toggleCinemaMode();
-      e.stopPropagation();
-    });
-    WebUtils.setupTabIndex(DOMElements.cinema);
 
     DOMElements.windowedFullscreen.addEventListener('click', (e)=>{
       this.toggleWindowedFullscreen();
@@ -1255,10 +1250,6 @@ export class InterfaceController {
     }, (response) => {
       this.state.windowedFullscreen = response === 'enter';
     });
-  }
-
-  toggleCinemaMode(force) {
-    return;
   }
 
   async fullscreenToggle(force) {

@@ -55,10 +55,6 @@ export const DefaultToolSettings = {
     'location': 'right',
     'priority': 900,
   },
-  'cinema': {
-    'location': 'right',
-    'priority': 950,
-  },
   'fullscreen': {
     'location': 'right',
     'priority': 1000,

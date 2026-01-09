@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "Picture in picture"
     },
-    "player_cinema_mode_label": {
-        "message": "Toggle cinema mode"
-    },
     "player_fullscreen_label": {
         "message": "Toggle fullscreen"
     },

@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "Imagem sob imagem (pip)"
     },
-    "player_cinema_mode_label": {
-        "message": "Alternar modo cinema"
-    },
     "player_fullscreen_label": {
         "message": "Alternar tela cheia"
     },

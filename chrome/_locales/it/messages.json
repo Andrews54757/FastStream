@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "Picture-in-picture"
     },
-    "player_cinema_mode_label": {
-        "message": "Attiva/disattiva modalità cinema"
-    },
     "player_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero"
     },

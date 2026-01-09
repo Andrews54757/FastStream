@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "화면 속 화면"
     },
-    "player_cinema_mode_label": {
-        "message": "시네마 모드 전환"
-    },
     "player_fullscreen_label": {
         "message": "전체 화면 전환"
     },

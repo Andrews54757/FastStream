@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "画中画"
     },
-    "player_cinema_mode_label": {
-        "message": "切换影院模式"
-    },
     "player_fullscreen_label": {
         "message": "切换全屏"
     },

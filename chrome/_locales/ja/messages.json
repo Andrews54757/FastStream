@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "ピクチャー イン ピクチャー (PiP)"
     },
-    "player_cinema_mode_label": {
-        "message": "シネマモードを切り替え"
-    },
     "player_fullscreen_label": {
         "message": "フルスクリーン"
     },

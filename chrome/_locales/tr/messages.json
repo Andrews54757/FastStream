@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "Resim içinde resim"
     },
-    "player_cinema_mode_label": {
-        "message": "Sinema modunu değiştir"
-    },
     "player_fullscreen_label": {
         "message": "Tam ekranı aç/kapat"
     },

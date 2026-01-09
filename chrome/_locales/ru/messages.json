@@ -398,9 +398,6 @@
     "player_pip_label": {
         "message": "Картинка в картинке"
     },
-    "player_cinema_mode_label": {
-        "message": "Переключить режим кино"
-    },
     "player_fullscreen_label": {
         "message": "Во весь экран"
     },

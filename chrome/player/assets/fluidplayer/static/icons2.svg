@@ -25,7 +25,6 @@
     <use transform="translate(72,0)" href="#windowed-fs" width="24" height="24"/>
     <use transform="translate(96,0)" href="#skip-forward" width="24" height="24"/>
     <use transform="translate(120,0)" href="#skip-backward" width="24" height="24"/>
-    <use transform="translate(144,0)" href="#cinema" width="24" height="24"/>
     <use transform="translate(0,24)" href="#quality-sd" width="24" height="24"/>
     <use transform="translate(24,24)" href="#quality-hd" width="24" height="24"/>
     <use transform="translate(48,24)" href="#quality-fhd" width="24" height="24"/>
@@ -58,9 +57,6 @@
     </symbol>
     <symbol id="skip-backward" viewBox="0 0 24 24" fill="currentColor">
       <path d="M11.99 5V1l-5 5 5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6h-2c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-    </symbol>
-    <symbol id="cinema" viewBox="0 0 32 32" fill="currentColor">
-      <path d="M27 31H5c-1.1 0-2-.9-2-2V16h26v13c0 1.1-.9 2-2 2M23.5 1.1 2.8 8.7c-1 .4-1.6 1.5-1.2 2.6L3 15l24.4-8.9L26 2.3c-.3-1-1.5-1.5-2.5-1.2M3 21h26"/>
     </symbol>
 <!--Many thanks to Nvertd for making these awesome quality icons!-->
     <symbol id="quality-sd" viewBox="0 0 24 24" fill="currentColor">

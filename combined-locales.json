@@ -2393,24 +2393,6 @@
         "zh_CN": "画中画",
         "zh_TW": "畫中畫"
     },
-    "player_cinema_mode_label": {
-        "en": "Toggle cinema mode",
-        "de": "Kinomodus umschalten",
-        "es": "Alternar modo cine",
-        "fr": "Basculer le mode cinéma",
-        "id": "Alihkan mode sinema",
-        "it": "Attiva/disattiva modalità cinema",
-        "ja": "シネマモードを切り替え",
-        "ko": "시네마 모드 전환",
-        "ms": "Togol mod pawagam",
-        "nl": "Cinemamodus wisselen",
-        "pl": "Przełącz tryb kinowy",
-        "pt_BR": "Alternar modo cinema",
-        "ru": "Переключить режим кино",
-        "tr": "Sinema modunu değiştir",
-        "zh_CN": "切换影院模式",
-        "zh_TW": "切換劇院模式"
-    },
     "player_fullscreen_label": {
         "en": "Toggle fullscreen",
         "de": "Vollbildmodus umschalten",

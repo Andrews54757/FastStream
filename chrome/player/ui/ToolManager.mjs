@@ -154,7 +154,6 @@ export class ToolManager {
       screenshot: DOMElements.screenshot,
       download: DOMElements.download,
       playrate: DOMElements.playbackRate,
-      cinema: DOMElements.cinema,
       fullscreen: DOMElements.fullscreen,
       windowedfs: DOMElements.windowedFullscreen,
       subtitles: DOMElements.subtitles,
