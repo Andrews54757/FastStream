@@ -367,13 +367,16 @@ body {
 
 /* Always-show progress bar: detach it from the fading controls container and pin it to the bottom edge. */
 .fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container {
-    height: 10px;
+    /* Keep the visual bar slim, but preserve a generous hit-area for click/drag seeking. */
+    height: 24px;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
     top: auto;
     z-index: 4;
+    cursor: pointer;
+    touch-action: none;
 }
 
 .fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress {
