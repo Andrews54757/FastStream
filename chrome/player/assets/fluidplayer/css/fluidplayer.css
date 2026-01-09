@@ -2981,9 +2981,21 @@ input.crosstalk_calculator_input {
     display: none !important;
 }
 
+.fluid_controls_right:not(.reordering)>.user_hidden,
+.tools_container_left:not(.reordering)>.user_hidden,
+.fluid_controls_extra_tools:not(.reordering)>.user_hidden {
+    display: none !important;
+}
+
 .fluid_controls_right.reordering>.hidden,
 .tools_container_left.reordering>.hidden,
 .fluid_controls_extra_tools.reordering>.hidden {
+    opacity: 0.5;
+}
+
+.fluid_controls_right.reordering>.user_hidden,
+.tools_container_left.reordering>.user_hidden,
+.fluid_controls_extra_tools.reordering>.user_hidden {
     opacity: 0.5;
 }
 

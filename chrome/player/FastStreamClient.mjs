@@ -20,6 +20,7 @@ import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
+import {DefaultOptions} from './options/defaults/DefaultOptions.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
@@ -93,6 +94,7 @@ export class FastStreamClient extends EventEmitter {
       maximumDownloaders: 6,
       maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
       youtubePlayerID: '',
+      toolbarButtons: Utils.mergeOptions(DefaultOptions.toolbarButtons || {}, {}),
     };
     this.state = {
       playing: false,
@@ -325,6 +327,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
 
+    // Toolbar button visibility
+    this.options.toolbarButtons = Utils.mergeOptions(DefaultOptions.toolbarButtons || {}, options.toolbarButtons || {});
+
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
     } else {
@@ -391,6 +396,9 @@ export class FastStreamClient extends EventEmitter {
       this.options.toolSettings = options.toolSettings;
       this.interfaceController.updateToolVisibility();
     }
+
+    // Visibility settings can affect tools regardless of toolSettings changes.
+    this.interfaceController.updateToolVisibility();
 
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();

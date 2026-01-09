@@ -56,6 +56,24 @@ const optionsSearchBar = document.getElementById('searchbar');
 const optionsResetButton = document.getElementById('resetsearch');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
+
+// Toolbar visibility
+const toolbar_previous = document.getElementById('toolbar_previous');
+const toolbar_next = document.getElementById('toolbar_next');
+const toolbar_duration = document.getElementById('toolbar_duration');
+const toolbar_sources = document.getElementById('toolbar_sources');
+const toolbar_audioconfig = document.getElementById('toolbar_audioconfig');
+const toolbar_subtitles = document.getElementById('toolbar_subtitles');
+const toolbar_languages = document.getElementById('toolbar_languages');
+const toolbar_quality = document.getElementById('toolbar_quality');
+const toolbar_playrate = document.getElementById('toolbar_playrate');
+const toolbar_download = document.getElementById('toolbar_download');
+const toolbar_screenshot = document.getElementById('toolbar_screenshot');
+const toolbar_pip = document.getElementById('toolbar_pip');
+const toolbar_windowedfs = document.getElementById('toolbar_windowedfs');
+const toolbar_loop = document.getElementById('toolbar_loop');
+const toolbar_backward = document.getElementById('toolbar_backward');
+const toolbar_forward = document.getElementById('toolbar_forward');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -95,6 +113,9 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
+  // Ensure object exists (should be present via DefaultOptions merge, but keep safe)
+  Options.toolbarButtons = Options.toolbarButtons || {};
+
   downloadAll.checked = !!Options.downloadAll;
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
@@ -114,6 +135,24 @@ async function loadOptions(newOptions) {
   replaceDelay.value = Options.replaceDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
+
+  // Toolbar buttons
+  toolbar_previous.checked = Options.toolbarButtons.previous !== false;
+  toolbar_next.checked = Options.toolbarButtons.next !== false;
+  toolbar_duration.checked = Options.toolbarButtons.duration !== false;
+  toolbar_sources.checked = Options.toolbarButtons.sources !== false;
+  toolbar_audioconfig.checked = Options.toolbarButtons.audioconfig !== false;
+  toolbar_subtitles.checked = Options.toolbarButtons.subtitles !== false;
+  toolbar_languages.checked = Options.toolbarButtons.languages !== false;
+  toolbar_quality.checked = Options.toolbarButtons.quality !== false;
+  toolbar_playrate.checked = Options.toolbarButtons.playrate !== false;
+  toolbar_download.checked = Options.toolbarButtons.download !== false;
+  toolbar_screenshot.checked = Options.toolbarButtons.screenshot !== false;
+  toolbar_pip.checked = Options.toolbarButtons.pip !== false;
+  toolbar_windowedfs.checked = Options.toolbarButtons.windowedfs !== false;
+  toolbar_loop.checked = Options.toolbarButtons.loop !== false;
+  toolbar_backward.checked = Options.toolbarButtons.backward !== false;
+  toolbar_forward.checked = Options.toolbarButtons.forward !== false;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -395,6 +434,32 @@ storeProgress.addEventListener('change', () => {
   Options.storeProgress = storeProgress.checked;
   optionChanged();
 });
+
+function wireToolbarCheckbox(checkbox, key) {
+  if (!checkbox) return;
+  checkbox.addEventListener('change', () => {
+    Options.toolbarButtons = Options.toolbarButtons || {};
+    Options.toolbarButtons[key] = !!checkbox.checked;
+    optionChanged();
+  });
+}
+
+wireToolbarCheckbox(toolbar_previous, 'previous');
+wireToolbarCheckbox(toolbar_next, 'next');
+wireToolbarCheckbox(toolbar_duration, 'duration');
+wireToolbarCheckbox(toolbar_sources, 'sources');
+wireToolbarCheckbox(toolbar_audioconfig, 'audioconfig');
+wireToolbarCheckbox(toolbar_subtitles, 'subtitles');
+wireToolbarCheckbox(toolbar_languages, 'languages');
+wireToolbarCheckbox(toolbar_quality, 'quality');
+wireToolbarCheckbox(toolbar_playrate, 'playrate');
+wireToolbarCheckbox(toolbar_download, 'download');
+wireToolbarCheckbox(toolbar_screenshot, 'screenshot');
+wireToolbarCheckbox(toolbar_pip, 'pip');
+wireToolbarCheckbox(toolbar_windowedfs, 'windowedfs');
+wireToolbarCheckbox(toolbar_loop, 'loop');
+wireToolbarCheckbox(toolbar_backward, 'backward');
+wireToolbarCheckbox(toolbar_forward, 'forward');
 
 autoplayYoutube.addEventListener('change', () => {
   Options.autoplayYoutube = autoplayYoutube.checked;

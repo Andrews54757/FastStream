@@ -134,6 +134,39 @@ body.frame .keybind-input {
   color: var(--input-text-color);
 }
 
+/* Toolbar visibility section */
+.toolbar-option-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toolbar-option-content .toolbar-icon {
+  margin-left: auto;
+}
+
+.toolbar-icon {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  color: currentColor;
+  fill: currentColor;
+}
+
+.toolbar-icon--text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-variant-numeric: tabular-nums;
+  font-size: 12px;
+  border: 1px solid color-mix(in oklab, var(--color-text) 20%, transparent);
+  background: color-mix(in oklab, var(--color-elev) 70%, transparent);
+}
+
 body:not(.frame) {
   min-width: 600px;
   margin: auto;

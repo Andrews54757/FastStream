@@ -408,10 +408,10 @@
         "message": "Pantalla completa de ventana"
     },
     "player_skip_forward_label": {
-        "message": "Saltar adelante 10s"
+        "message": "Saltar adelante "
     },
     "player_skip_backward_label": {
-        "message": "Saltar hacia atrás 10s"
+        "message": "Saltar hacia atrás "
     },
     "player_more_label": {
         "message": "Más utilidades"

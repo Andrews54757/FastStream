@@ -50,4 +50,25 @@ export const DefaultOptions = {
   videoDelay: 0,
   maximumDownloaders: 6,
   youtubePlayerID: '',
+
+  // Per-tool visibility for the player toolbar. Keys match ToolManager tool ids.
+  // NOTE: Core controls (play/pause, volume, fullscreen, settings, more) are always forced visible.
+  toolbarButtons: {
+    previous: true,
+    next: true,
+    duration: true,
+    sources: true,
+    audioconfig: true,
+    subtitles: true,
+    languages: true,
+    quality: true,
+    playrate: true,
+    download: true,
+    screenshot: true,
+    pip: true,
+    windowedfs: true,
+    loop: true,
+    forward: true,
+    backward: true,
+  },
 };

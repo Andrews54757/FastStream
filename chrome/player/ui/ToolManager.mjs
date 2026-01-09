@@ -168,6 +168,24 @@ export class ToolManager {
       backward: DOMElements.skipBackwardButton,
     };
 
+    // Apply user visibility preferences without interfering with contextual visibility (.hidden).
+    // Core controls are always forced visible.
+    const userButtons = this.client?.options?.toolbarButtons || {};
+    const forcedVisible = new Set(['playpause', 'volume', 'fullscreen', 'settings', 'more']);
+    for (const [tool, element] of Object.entries(toolElements)) {
+      if (!element) continue;
+      if (forcedVisible.has(tool)) {
+        element.classList.remove('user_hidden');
+        continue;
+      }
+
+      if (userButtons[tool] === false) {
+        element.classList.add('user_hidden');
+      } else {
+        element.classList.remove('user_hidden');
+      }
+    }
+
     if (this.specialReorderModeEnabled) {
       return;
     }
@@ -215,7 +233,7 @@ export class ToolManager {
 
   checkMoreTool() {
     if (Array.from(DOMElements.extraTools.children).some((el) => {
-      return !el.classList.contains('hidden');
+      return !el.classList.contains('hidden') && !el.classList.contains('user_hidden');
     })) {
       DOMElements.moreButton.classList.remove('hidden');
     } else {

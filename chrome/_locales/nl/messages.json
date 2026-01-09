@@ -408,10 +408,10 @@
         "message": "Venster-volledig scherm in-/uitschakelen"
     },
     "player_skip_forward_label": {
-        "message": "10s vooruit springen"
+        "message": " vooruit springen"
     },
     "player_skip_backward_label": {
-        "message": "10s terugspringen"
+        "message": " terugspringen"
     },
     "player_more_label": {
         "message": "Meer tools"

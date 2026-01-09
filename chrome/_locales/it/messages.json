@@ -408,10 +408,10 @@
         "message": "Attiva/disattiva lo schermo intero nella finestra"
     },
     "player_skip_forward_label": {
-        "message": "Vai avanti di 10s"
+        "message": "Vai avanti di "
     },
     "player_skip_backward_label": {
-        "message": "Vai indietro di 10s"
+        "message": "Vai indietro di "
     },
     "player_more_label": {
         "message": "Altri strumenti"
