@@ -65,8 +65,8 @@ const volumeNameLen = WIN32 ? (path) => {
 // cleanGlobPath(path :string) : [prefixLen int, cleaned string]
 //
 const cleanGlobPath = (
-  WIN32 ? (path, volumeLen) => { // (prefixLen int, cleaned string)
-    let vollen = volumeLen;
+  WIN32 ? (path, volumeNameLen) => { // (prefixLen int, cleaned string)
+    let vollen = volumeNameLen(path);
     if (path == '') {
       return [0, '.'];
     }
@@ -81,15 +81,15 @@ const cleanGlobPath = (
       vollen = path.length - 1;
     }
     return [vollen, path.substr(0, path.length-1)]; // chop off trailing separator
-  } : (path, volumeLen) => {
+  } : (path, volumeNameLen) => {
     if (path == '') {
-      return [volumeLen, '.'];
+      return [volumeNameLen, '.'];
     }
     if (path == DIRSEP) {
       // do nothing to the path
-      return [volumeLen, path];
+      return [volumeNameLen, path];
     }
-    return [volumeLen, path.substr(0, path.length-1)]; // chop off trailing separator
+    return [volumeNameLen, path.substr(0, path.length-1)]; // chop off trailing separator
   }
 );
 

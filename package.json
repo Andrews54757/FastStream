@@ -5,15 +5,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "node localescript.mjs && node build.mjs",
-    "fx:prep": "node build.mjs --prep-firefox-libre",
-    "fx:watch": "node build.mjs --watch-firefox-libre",
-    "fx:run": "web-ext run --source-dir build_firefox_libre --firefox-profile .web-ext-firefox-profile --profile-create-if-missing --keep-profile-changes --browser-console --watch-file build_firefox_libre/.web-ext-reload",
-    "fx:run:nightly": "web-ext run --source-dir build_firefox_libre --firefox nightly --firefox-profile .web-ext-firefox-profile --profile-create-if-missing --keep-profile-changes --browser-console --watch-file build_firefox_libre/.web-ext-reload",
-    "fx:run:nightly:bin": "web-ext run --source-dir build_firefox_libre --firefox \"%FIREFOX_BIN%\" --firefox-profile .web-ext-firefox-profile --profile-create-if-missing --keep-profile-changes --browser-console --watch-file build_firefox_libre/.web-ext-reload",
-    "fx:dev": "concurrently -k --success first \"npm:fx:watch\" \"npm:fx:run\"",
-    "fx:dev:nightly": "concurrently -k --success first \"npm:fx:watch\" \"npm:fx:run:nightly\"",
-    "fx:dev:nightly:bin": "concurrently -k --success first \"npm:fx:watch\" \"npm:fx:run:nightly:bin\"",
-    "fx:lint": "web-ext lint --source-dir build_firefox_libre",
     "gen-locale": "node generate-locales.mjs",
     "combine-locales": "node localescript.mjs --combine",
     "split-locales": "node localescript.mjs --split"
@@ -28,7 +19,6 @@
   },
   "homepage": "https://github.com/Andrews54757/FastStream#readme",
   "devDependencies": {
-    "concurrently": "^9.1.2",
     "eslint": "^8.49.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.28.1",
