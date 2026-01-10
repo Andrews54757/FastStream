@@ -410,4 +410,71 @@ async function runAll() {
   removeBuildDirs();
 }
 
-runAll();
+function prepareFirefoxLibreBuildDir() {
+  spliceAndCopy(chromeSourceDir, firefoxLibreBuildDir, ['EXTENSION', 'FIREFOX', 'NO_PROMO']);
+  insertLicense(firefoxLibreBuildDir);
+
+  const manifestPath = path.join(firefoxLibreBuildDir, 'manifest.json');
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+  manifest.version = packageJson.version;
+  manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
+
+  manifest.browser_specific_settings = {
+    gecko: {
+      id: 'faststream@andrews',
+      strict_min_version: '113.0',
+    },
+  };
+
+  manifest.background = {
+    scripts: ['background/background.mjs'],
+    type: 'module',
+  };
+
+  delete manifest.incognito;
+  delete manifest.minimum_chrome_version;
+  delete manifest.key;
+  delete manifest.sandbox;
+
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+
+  // Touch a file that web-ext can watch to reload once per rebuild.
+  fs.writeFileSync(path.join(firefoxLibreBuildDir, '.web-ext-reload'), String(Date.now()));
+}
+
+async function runPrepareFirefoxLibre() {
+  prepareFirefoxLibreBuildDir();
+  console.log(`Prepared Firefox dev dir: ${firefoxLibreBuildDir}`);
+}
+
+async function runWatchFirefoxLibre() {
+  prepareFirefoxLibreBuildDir();
+  console.log(`Watching ${chromeSourceDir} -> ${firefoxLibreBuildDir}`);
+
+  let timeout = null;
+  const schedule = () => {
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      try {
+        prepareFirefoxLibreBuildDir();
+        console.log('Rebuilt Firefox dev dir');
+      } catch (err) {
+        console.error('Firefox dev rebuild failed:', err);
+      }
+    }, 250);
+  };
+
+  fs.watch(chromeSourceDir, {recursive: true}, () => schedule());
+}
+
+const cliArgs = new Set(process.argv.slice(2));
+if (cliArgs.has('--prep-firefox-libre')) {
+  runPrepareFirefoxLibre();
+} else if (cliArgs.has('--watch-firefox-libre')) {
+  runWatchFirefoxLibre();
+} else {
+  runAll();
+}

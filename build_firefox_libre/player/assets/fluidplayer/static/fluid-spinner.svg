@@ -1,0 +1,16 @@
+<svg width="20" height="20" stroke="white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="12" r="9.5" fill="none" stroke-width="3" stroke-linecap="round" transform-origin="center">
+        <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="2s"
+            repeatCount="indefinite" 
+            begin="0"/>
+        <animate attributeName="stroke-dasharray" dur="1.5s" keyTimes="0; 0.475; 0.95; 1"
+            values="0 150; 42 150; 42 150; 42 150"
+            keySplines="0.42, 0.0, 0.58, 1.0; 0.42, 0.0, 0.58, 1.0; 0.42, 0.0, 0.58, 1.0" calcMode="spline"
+            repeatCount="indefinite"
+            begin="0" />
+        <animate attributeName="stroke-dashoffset" dur="1.5s" keyTimes="0; 0.475; 0.95; 1"
+            values="0; -16; -59; -59" keySplines="0.42, 0.0, 0.58, 1.0; 0.42, 0.0, 0.58, 1.0; 0.42, 0.0, 0.58, 1.0"
+            calcMode="spline" repeatCount="indefinite" 
+            begin="0"/>
+    </circle>
+</svg>

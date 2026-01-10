@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream 비디오 플레이어"
+    },
+    "extension_description": {
+        "message": "버퍼링 없이 스트리밍하세요. 인터넷의 문제 있는 동영상 플레이어를 바로잡습니다."
+    },
+    "extension_toggle_label": {
+        "message": "FastStream 켜기/끄기"
+    },
+    "welcome_page_title": {
+        "message": "FastStream에 오신 것을 환영합니다"
+    },
+    "welcome_page_usage_header": {
+        "message": "사용법"
+    },
+    "welcome_page_usage_content0": {
+        "message": "FastStream을 사용하는 네 가지 방법이 있습니다."
+    },
+    "welcome_page_usage_content1": {
+        "message": "비디오 스트림이 있는 웹사이트에 접속해 아이콘을 클릭하면 FastStream을 켤 수 있습니다. 스트림을 재생하면 클라이언트가 자동으로 FastStream으로 대체됩니다."
+    },
+    "welcome_page_usage_content2": {
+        "message": "새 탭을 열고 확장 기능 아이콘을 눌러 플레이어로 이동할 수 있습니다."
+    },
+    "welcome_page_usage_content3": {
+        "message": "옵션을 활성화하면 mp4/mpd/m3u8 URL로 이동했을 때 플레이어가 재생됩니다."
+    },
+    "welcome_page_usage_content4": {
+        "message": "플레이어를 새 탭으로 열어둔 상태에서 다른 곳을 탐색하면 플레이어가 소스를 수집합니다."
+    },
+    "welcome_page_usage_end": {
+        "message": "FastStream을 설치해 주셔서 감사합니다! 문제나 제안이 있으면 알려주세요."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "기본 키보드 단축키"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "이 단축키는 확장 기능 설정에서 변경할 수 있습니다."
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "화살표 키 - 앞/뒤로 1초 이동"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "키 - 앞/뒤로 10초 이동"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "키 - 탐색 취소"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "화살표 키 - 볼륨 10% 증감"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- 전체 화면"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- 동시 요청 수 증가/감소"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- 강제 재시도 키 - 실패한 다운로드 재시도에 사용"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- 인트로/아웃트로 건너뛰기 (해당 시)"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- 플레이어 숨기기/표시"
+    },
+    "perms_page_title": {
+        "message": "FastStream 권한"
+    },
+    "perms_page_about_header": {
+        "message": "FastStream에 필요한 권한 정보"
+    },
+    "perms_page_about_content0": {
+        "message": "확장 기능이 작동하려면 특정 권한이 필요합니다. 이 권한들은 기본 기능에만 사용됩니다."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream는 사용자로부터 어떠한 데이터도 수집하지 않습니다. 사용자를 추적하지 않으며 어떤 서버로도 데이터를 전송하지 않습니다. 전송할 서버조차 없습니다."
+    },
+    "perms_page_about_content2": {
+        "message": "믿기 어렵나요? FastStream의 소스 코드는 다음에서 확인할 수 있습니다"
+    },
+    "perms_page_about_content3": {
+        "message": "직접 코드를 확인하거나 안내에 따라 직접 커스텀 빌드를 설치할 수 있습니다."
+    },
+    "perms_page_breakdown_header": {
+        "message": "권한 내역"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "다음은 FastStream이 필요로 하는 권한과 그 이유입니다."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "참고: 링크된 예시는 구버전 코드를 가리킬 수 있으나 요지는 동일합니다. 목록은 전체를 포괄하지 않으며 항목은 중요도 순으로 정렬되어 있습니다."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "모든 웹사이트 접근 및 수정"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream는 플레이어를 웹사이트에 직접 삽입하려면 모든 웹사이트에 접근할 수 있어야 합니다. 방문한 웹사이트에 콘텐츠 스크립트를 삽입하여 다음을 수행합니다:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "플레이어로 교체할 가장 큰 비디오 요소를 식별합니다."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "플레이어가 프레임에 삽입될 때 전체화면 권한을 활성화합니다."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "페이지에서 자막 <track> 요소를 추출합니다."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "webRequest API 접근"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream는 비디오 소스에 대한 HTTP 요청을 가로챌 수 있어야 하며, 그 목적은 다음과 같습니다:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "비디오 소스 식별"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "declarativeNetRequest API 접근"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream는 일부 요청의 HTTP 헤더를 수정할 수 있어야 하며, 그 목적은 다음과 같습니다:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "비디오 소스의 헤더 재정의."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "브라우저에 데이터 저장"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream는 설정을 기억하기 위해 브라우저에 데이터를 저장할 수 있어야 합니다."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "일반 확장 옵션."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "tabs API 접근"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream는 각 탭의 플레이어와 콘텐츠 스크립트 사이에 메시지를 보낼 수 있어야 합니다."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "백그라운드 스크립트에서 플레이어로 소스 전송."
+    },
+    "perms_page_granted": {
+        "message": "허용됨"
+    },
+    "perms_page_notgranted": {
+        "message": "허용되지 않음, 클릭하여 허용"
+    },
+    "player_needs_interaction": {
+        "message": "다운로드 가속을 사용하려면 상호작용하세요."
+    },
+    "player_skipintro": {
+        "message": "인트로 건너뛰기"
+    },
+    "player_skipoutro": {
+        "message": "아웃트로 건너뛰기"
+    },
+    "player_nextvideoin": {
+        "message": "$1초 후 다음 영상"
+    },
+    "player_hidecontrols": {
+        "message": "컨트롤 숨기기"
+    },
+    "player_loading": {
+        "message": "로딩 중..."
+    },
+    "player_nosource_header": {
+        "message": "소스가 로드되지 않았습니다!"
+    },
+    "player_nosource_instruction1": {
+        "message": "동영상 파일을 끌어다 놓아 재생하세요."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "클릭"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "다른 탭에서 감지된 소스를 불러옵니다."
+    },
+    "player_play_label": {
+        "message": "동영상 재생"
+    },
+    "player_pause_label": {
+        "message": "동영상 일시정지"
+    },
+    "player_next_video_label": {
+        "message": "다음 영상"
+    },
+    "player_previous_video_label": {
+        "message": "이전 영상"
+    },
+    "player_volume_label": {
+        "message": "볼륨 $1%. 화살표 키로 조절하고 Enter로 음소거 전환."
+    },
+    "player_mute_label": {
+        "message": "음소거"
+    },
+    "player_timestamp_label": {
+        "message": "타임스탬프 포함 URL 복사"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "소스 브라우저"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "소스 브라우저 열기"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "소스 브라우저 닫기"
+    },
+    "player_audioconfig_title": {
+        "message": "오디오 설정"
+    },
+    "player_audioconfig_open_label": {
+        "message": "오디오 설정 창 열기"
+    },
+    "player_audioconfig_close_label": {
+        "message": "오디오 설정 창 닫기"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles 검색"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "OpenSubtitles 검색 창 닫기"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "제목, 파일명 등으로 검색..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "검색"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "시즌 #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "에피소드 #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "전체"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "영화"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "에피소드"
+    },
+    "player_opensubtitles_language": {
+        "message": "언어"
+    },
+    "player_opensubtitles_year": {
+        "message": "연도"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "정렬 기준"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "다운로드 수"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "업로드 날짜"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "평점"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "투표 수"
+    },
+    "player_opensubtitles_sort": {
+        "message": "정렬"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "내림차순"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "오름차순"
+    },
+    "player_opensubtitles_searching": {
+        "message": "검색 중..."
+    },
+    "player_opensubtitles_error": {
+        "message": "오류: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "적절한 헤더를 설정할 수 없습니다! 이 기능을 사용하려면 확장 기능을 설치하세요!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles가 다운되었습니다!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles 다운로드에 실패했습니다! 서버가 다운되었을 가능성이 높습니다!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "검색 결과가 없습니다!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles는 자막 다운로드에 제한을 둡니다! 더 이상 다운로드할 수 없습니다! 할당량은 $1 후에 초기화됩니다"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "자막 파일을 수동으로 다운로드하려면 OpenSubtitles 웹사이트를 열겠습니까?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "자막 메뉴 열기"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "자막 메뉴 닫기"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "뒤로"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "자막 설정"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "자막 테스트"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "테스트 중지"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "파일 업로드"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "URL에서 불러오기"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "URL 입력"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "자막 트랙 다운로드 중..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "자막 트랙이 로드되었습니다!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "자막 트랙을 로드하지 못했습니다!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "OpenSubtitles 검색"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "자막 지우기"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "자막 설정"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "재동기화 도구"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "자막을 드래그하여 재동기화"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "자막 파일 저장"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "자막 트랙 제거"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "자막을 $1s 이동"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "자막을 $1s 이동했습니다"
+    },
+    "player_testsubtitle": {
+        "message": "테스트 자막입니다"
+    },
+    "player_qualitymenu_label": {
+        "message": "화질"
+    },
+    "player_languagemenu_label": {
+        "message": "언어 선택"
+    },
+    "player_languagemenu_video": {
+        "message": "비디오"
+    },
+    "player_languagemenu_audio": {
+        "message": "오디오"
+    },
+    "player_playbackrate_label": {
+        "message": "재생 속도"
+    },
+    "player_settings_title": {
+        "message": "FastStream 설정"
+    },
+    "player_settings_open_label": {
+        "message": "설정 창 열기"
+    },
+    "player_settings_close_label": {
+        "message": "설정 창 닫기"
+    },
+    "player_savevideo_label": {
+        "message": "비디오 저장. ALT를 누르면 부분 비디오 저장. SHIFT를 누르면 버퍼를 덤프."
+    },
+    "player_screenshot_label": {
+        "message": "스크린샷 찍기"
+    },
+    "player_pip_label": {
+        "message": "화면 속 화면"
+    },
+    "player_fullscreen_label": {
+        "message": "전체 화면 전환"
+    },
+    "player_fullscreen_denied": {
+        "message": "전체 화면 권한이 거부되었습니다!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "창 모드 전체 화면 전환"
+    },
+    "player_skip_forward_label": {
+        "message": "앞으로 10초 건너뛰기"
+    },
+    "player_skip_backward_label": {
+        "message": "뒤로 10초 건너뛰기"
+    },
+    "player_more_label": {
+        "message": "도구 더보기"
+    },
+    "player_loop_label": {
+        "message": "반복"
+    },
+    "loop_menu_start": {
+        "message": "시작"
+    },
+    "loop_menu_end": {
+        "message": "끝"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "반복 사용"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "반복 사용 안함"
+    },
+    "loop_menu_gif_start": {
+        "message": "GIF를 4배속으로 녹화 중..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIF 녹화를 마쳤습니다. 저장 중..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "GIF 녹화가 중단되었습니다!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "GIF 저장 중 $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIF 저장 완료!"
+    },
+    "player_download_paused": {
+        "message": "다운로드 일시 중지됨"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 조각 실패! 다시 시도하려면 클릭하세요."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 조각 실패! 다시 시도하려면 클릭하세요."
+    },
+    "player_fragment_allbuffered": {
+        "message": "버퍼링 100%"
+    },
+    "player_welcometext": {
+        "message": "FastStream v$1에 오신 것을 환영합니다!"
+    },
+    "player_nosource_alert": {
+        "message": "소스가 로드되지 않았습니다!"
+    },
+    "player_archive_loading": {
+        "message": "아카이브 로드 중... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "아카이브 로드 완료!"
+    },
+    "player_archive_fail": {
+        "message": "아카이브 로드 실패!"
+    },
+    "player_filename_prompt": {
+        "message": "파일 이름을 입력하세요"
+    },
+    "player_screenshot_saving": {
+        "message": "스크린샷 저장 중..."
+    },
+    "player_screenshot_saved": {
+        "message": "스크린샷 저장 완료!"
+    },
+    "player_screenshot_fail": {
+        "message": "스크린샷 저장 실패!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "이미 저장 중입니다!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "이 비디오는 저장을 지원하지 않습니다!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "비디오 다운로드가 아직 완료되지 않았습니다! 그래도 저장하시겠습니까?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "시크릿 모드에서는 비디오 버퍼링에 RAM을 사용합니다. 컴퓨터에 전체 비디오를 저장할 충분한 메모리가 없을 수 있습니다!\n계속 진행하시겠습니까?"
+    },
+    "player_savevideo_reencode": {
+        "message": "저장하려면 재인코딩이 필요합니다. 시간이 오래 걸릴 수 있습니다. 계속 진행하시겠습니까?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "저장 취소 중..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "저장 취소됨!"
+    },
+    "player_savevideo_start": {
+        "message": "저장 중..."
+    },
+    "player_savevideo_progress": {
+        "message": "$1% 저장 중"
+    },
+    "player_savevideo_fail": {
+        "message": "비디오 저장 실패!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "비디오 저장에 실패했습니다!\n대신 플레이어의 버퍼 저장소를 아카이브하시겠습니까?\n- 아카이브 파일을 플레이어에 끌어다 놓아 불러오세요"
+    },
+    "player_savevideo_complete": {
+        "message": "저장 완료!"
+    },
+    "player_archiver_progress": {
+        "message": "아카이브 중... $1%"
+    },
+    "player_archiver_saved": {
+        "message": "아카이브가 저장되었습니다!"
+    },
+    "player_quality_current": {
+        "message": "(현재)"
+    },
+    "player_quality_unknown": {
+        "message": "(알 수 없음)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "시크릿 모드에서는 미리 다운로드할 공간이 부족하여 $1만 버퍼링합니다"
+    },
+    "player_buffer_storage_warning": {
+        "message": "비디오 크기가 제한을 초과하여 $1만 버퍼링합니다"
+    },
+    "player_error_drm": {
+        "message": "로드 실패! DRM을 지원하지 않습니다!"
+    },
+    "player_error_load": {
+        "message": "비디오 로드 실패!"
+    },
+    "source_copied": {
+        "message": "URL이 클립보드에 복사되었습니다!"
+    },
+    "player_source_copybtn": {
+        "message": "복사"
+    },
+    "player_source_copybtn_label": {
+        "message": "소스 URL, 헤더 및 모드를 클립보드에 복사"
+    },
+    "player_source_copybtn_copied": {
+        "message": "복사됨!"
+    },
+    "player_source_autodetect": {
+        "message": "자동 감지"
+    },
+    "player_source_direct": {
+        "message": "직접"
+    },
+    "player_source_accelmp4": {
+        "message": "가속 MP4"
+    },
+    "player_source_accelhls": {
+        "message": "가속 HLS"
+    },
+    "player_source_acceldash": {
+        "message": "가속 DASH"
+    },
+    "player_source_accelyt": {
+        "message": "가속 YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "가속 Vimeo"
+    },
+    "player_source_mode": {
+        "message": "모드"
+    },
+    "player_source_mode_auto_error": {
+        "message": "플레이어 모드를 선택하세요!"
+    },
+    "player_source_url_placeholder": {
+        "message": "소스 URL"
+    },
+    "player_source_headerbtn": {
+        "message": "헤더 재정의 ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "헤더 재정의 입력 전환"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "헤더 재정의 (확장 프로그램 전용)"
+    },
+    "player_source_playbtn": {
+        "message": "재생"
+    },
+    "player_source_playbtn_playing": {
+        "message": "재생 중"
+    },
+    "player_source_playbtn_loading": {
+        "message": "로딩 중..."
+    },
+    "player_source_deletebtn": {
+        "message": "삭제"
+    },
+    "player_source_headers_label": {
+        "message": "헤더 덮어쓰기 입력"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Header-Name: Header 값\nHeader2-Name: Header2 값"
+    },
+    "player_source_nonelisted": {
+        "message": "소스 없음"
+    },
+    "player_source_onelisted": {
+        "message": "소스 1개"
+    },
+    "player_source_multilisted": {
+        "message": "$1개의 소스"
+    },
+    "player_source_addbtn": {
+        "message": "소스 추가"
+    },
+    "player_source_clearbtn": {
+        "message": "모든 소스 지우기"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(파일에서 $1에 로드됨)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "새 프로필 생성"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "파일에서 프로필 가져오기"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "유효하지 않은 프로필 파일"
+    },
+    "player_audioconfig_profile": {
+        "message": "프로필"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "이름 없는 프로필"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "프로필 불러오기"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "프로필 불러옴!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "프로필 저장"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "저장 중..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "프로필 저장됨!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "프로필 다운로드"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "다운로드 완료!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "삭제"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "삭제 중..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "삭제됨!"
+    },
+    "audiomixer_title": {
+        "message": "오디오 채널 믹서"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 게인은 $2 dB ($3%)입니다. 화살표 키로 조절하세요. M 키를 눌러 모노를 전환하세요"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 게인은 $2 dB ($3%)입니다. 화살표 키로 조절하세요. M 키를 눌러 음소거를 전환하세요"
+    },
+    "audiomixer_solo_label": {
+        "message": "솔로"
+    },
+    "audiomixer_mute_label": {
+        "message": "음소거"
+    },
+    "audiomixer_mono": {
+        "message": "모노"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "채널 다이내믹 편집"
+    },
+    "audiocrosstalk_title": {
+        "message": "오디오 크로스토크 보정"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "크로스토크 보정 사용"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "크로스토크 보정 사용 안 함"
+    },
+    "audiocrosstalk_decay": {
+        "message": "감쇠"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "최대 음색 변화"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "델타 T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "저역 바이패스"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "고역 바이패스"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "스피커 거리"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "머리 거리"
+    },
+    "audiocompressor_title": {
+        "message": "오디오 컴프레서"
+    },
+    "audiocompressor_enabled": {
+        "message": "컴프레서 사용"
+    },
+    "audiocompressor_disabled": {
+        "message": "컴프레서 사용 안 함"
+    },
+    "audiocompressor_threshold": {
+        "message": "임계값"
+    },
+    "audiocompressor_knee": {
+        "message": "니"
+    },
+    "audiocompressor_ratio": {
+        "message": "비율"
+    },
+    "audiocompressor_attack": {
+        "message": "어택"
+    },
+    "audiocompressor_release": {
+        "message": "릴리즈"
+    },
+    "audiocompressor_gain": {
+        "message": "게인"
+    },
+    "audioeq_title": {
+        "message": "오디오 이퀄라이저"
+    },
+    "audioeq_instructions": {
+        "message": "더블 클릭하여 유형 변경"
+    },
+    "audioeq_gain": {
+        "message": "게인: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "스크롤로 Q 변경"
+    },
+    "audioconvolver_title": {
+        "message": "오디오 컨볼루션 필터"
+    },
+    "audioconvolver_channel": {
+        "message": "채널"
+    },
+    "audioconvolver_enable": {
+        "message": "사용"
+    },
+    "audioconvolver_normalize": {
+        "message": "정규화"
+    },
+    "audioconvolver_impulselength": {
+        "message": "임펄스 길이"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "임펄스 응답"
+    },
+    "audioconvolver_selectfile": {
+        "message": "파일 선택"
+    },
+    "audioconvolver_enabled": {
+        "message": "컨볼루션 사용"
+    },
+    "audioconvolver_convolver": {
+        "message": "컨볼루션"
+    },
+    "audioconvolver_disable": {
+        "message": "사용 안 함"
+    },
+    "audioconvolver_disabled": {
+        "message": "컨볼루션 사용 안 함"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "다운믹스 전"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "다운믹스 없음"
+    },
+    "options_title": {
+        "message": "FastStream 옵션"
+    },
+    "options_search_placeholder": {
+        "message": "검색"
+    },
+    "options_reviewbanner_header": {
+        "message": "FastStream이 마음에 드시나요? 리뷰를 남겨주세요!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream은 자원봉사자들이 유지하는 취미 프로젝트입니다. 개선할 부분을 알 수 있게 해주는 여러분의 피드백을 감사히 받습니다. 다음을 알려주세요:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "사용 방법"
+    },
+    "options_reviewbanner_l2": {
+        "message": "발견한 버그"
+    },
+    "options_reviewbanner_l3": {
+        "message": "기능 요청"
+    },
+    "options_reviewbanner_end": {
+        "message": "접근성도 매우 중요하게 생각합니다. 현 버전에 부족한 접근성 지원이 필요하시면 요청해 주세요. 최대한 빨리 개선하겠습니다."
+    },
+    "options_reviewbanner_rate": {
+        "message": "좋아요, FastStream을 리뷰하겠습니다"
+    },
+    "options_reviewbanner_norate": {
+        "message": "리뷰는 하지 않겠습니다 :("
+    },
+    "options_feedback_header": {
+        "message": "피드백이 있으신가요?"
+    },
+    "options_feedback_reason": {
+        "message": "의견을 듣고 싶습니다! 짧은 양식을 작성해 주세요. 저희는 사용자를 추적하지 않으므로 이 양식이 개선을 위한 유일한 방법입니다."
+    },
+    "options_feedback_yes": {
+        "message": "네, 피드백이 있습니다"
+    },
+    "options_feedback_no": {
+        "message": "아니요, 괜찮습니다"
+    },
+    "options_help_feedback": {
+        "message": "피드백 양식"
+    },
+    "options_update_header": {
+        "message": "업데이트가 있습니다!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1을 사용할 수 있습니다 (현재 버전 v$2). 업데이트하시겠습니까?"
+    },
+    "options_update_go": {
+        "message": "GitHub로 이동"
+    },
+    "options_update_no": {
+        "message": "이 업데이트 무시"
+    },
+    "options_reset_search": {
+        "message": "다시 놓기"
+    },
+    "options_video_header": {
+        "message": "비디오 옵션"
+    },
+    "options_video_body": {
+        "message": "비디오에 CSS 필터를 적용합니다. PIP(화면 속 화면) 모드에서는 작동하지 않습니다."
+    },
+    "options_video_zoom": {
+        "message": "비디오 확대"
+    },
+    "options_video_delay": {
+        "message": "비디오 지연"
+    },
+    "options_video_brightness": {
+        "message": "밝기"
+    },
+    "options_video_contrast": {
+        "message": "대비"
+    },
+    "options_video_saturation": {
+        "message": "채도"
+    },
+    "options_video_grayscale": {
+        "message": "그레이스케일"
+    },
+    "options_video_sepia": {
+        "message": "세피아"
+    },
+    "options_video_invert": {
+        "message": "반전"
+    },
+    "options_video_hue": {
+        "message": "색상 회전"
+    },
+    "options_video_daltonizer_type": {
+        "message": "색각 이상 보정"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "강도"
+    },
+    "options_video_daltonizer_none": {
+        "message": "없음"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "프로타노말리(적색 약화)"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "듀테라노말리(녹색 약화)"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "트라이타노말리(청색 약화)"
+    },
+    "options_general_header": {
+        "message": "일반 옵션"
+    },
+    "options_general_predownload": {
+        "message": "가능하면 백그라운드에서 전체 영상을 미리 다운로드합니다"
+    },
+    "options_general_targetspeed": {
+        "message": "사전 다운로드의 목표 속도"
+    },
+    "options_general_maxsize": {
+        "message": "사전 다운로드할 비디오의 최대 크기"
+    },
+    "options_general_previewenabled": {
+        "message": "타임라인에 마우스 오버 시 미리보기 표시"
+    },
+    "options_general_analyze": {
+        "message": "연속 재생 영상의 인트로/아웃트로를 자동으로 분석합니다\n(CPU 성능 문제가 있으면 끄세요)"
+    },
+    "options_general_storeprogress": {
+        "message": "마지막으로 본 위치에서 비디오 재생"
+    },
+    "options_general_autosub": {
+        "message": "자동으로 가장 적합한 자막 트랙을 활성화합니다\n(기본 언어는 자막 설정에서 변경하세요)"
+    },
+    "options_general_stream": {
+        "message": "플레이리스트 URL(.m3u8/.mpd) 열 때 플레이어로 HLS/DASH 스트림 재생"
+    },
+    "options_general_mp4": {
+        "message": "비디오 URL(.mp4) 열 때 MP4 재생에 플레이어 사용"
+    },
+    "options_general_seekstep": {
+        "message": "탐색량(초)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "컨트롤 자동 숨김 지연(밀리초)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "플레이어 하단에 진행 바 항상 표시"
+    },
+    "options_general_replace_delay": {
+        "message": "플레이어 자동 교체 전 지연(밀리초)"
+    },
+    "options_general_autoplayyt": {
+        "message": "가능하면 YouTube 동영상 자동 재생"
+    },
+    "options_general_autoplaynext": {
+        "message": "현재 영상 종료 시 다음 영상 자동 재생"
+    },
+    "options_general_quality": {
+        "message": "기본 영상 품질"
+    },
+    "options_general_clickaction": {
+        "message": "단일 클릭 동작"
+    },
+    "options_general_dblclickaction": {
+        "message": "더블 클릭 동작"
+    },
+    "options_general_tplclickaction": {
+        "message": "트리플 클릭 동작"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "아무 작업도 하지 않음"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "재생/일시정지 전환"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "전체화면 전환"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "창 모드 전체화면 전환"
+    },
+    "options_general_clickaction_pip": {
+        "message": "픽처인픽처(PiP) 전환"
+    },
+    "options_general_clickaction_seek": {
+        "message": "구간 이동"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "컨트롤 숨기기"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "플레이어 숨기기"
+    },
+    "options_general_vischangeaction": {
+        "message": "플레이어 표시 상태 변경 시"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "아무 작업 안 함"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "재생/일시정지 전환"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "미니플레이어 전환"
+    },
+    "options_general_minipos": {
+        "message": "미니플레이어 위치"
+    },
+    "options_general_minipos_topleft": {
+        "message": "왼쪽 상단"
+    },
+    "options_general_minipos_topright": {
+        "message": "오른쪽 상단"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "왼쪽 하단"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "오른쪽 하단"
+    },
+    "options_general_minisize": {
+        "message": "미니플레이어 크기"
+    },
+    "options_general_color_theme": {
+        "message": "플레이어 색상 테마"
+    },
+    "options_general_color_theme_default": {
+        "message": "기본 다크"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "아틱 라이트"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "오션 블루"
+    },
+    "options_general_color_theme_neon": {
+        "message": "네온 나이트"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "고대비"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "노을빛"
+    },
+    "options_general_color_theme_forest": {
+        "message": "숲의 밤"
+    },
+    "options_general_color_theme_slate": {
+        "message": "슬레이트 모노"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "자수정 안개"
+    },
+    "options_general_color_theme_desert": {
+        "message": "사막 모래"
+    },
+    "options_general_color_theme_mint": {
+        "message": "상쾌한 민트"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "화면 속 화면 전환"
+    },
+    "options_general_ytclient": {
+        "message": "사용할 YT 클라이언트입니다. 문제가 있으면 변경해 보세요."
+    },
+    "options_export_header": {
+        "message": "설정 가져오기/내보내기"
+    },
+    "options_import": {
+        "message": "파일에서 설정 가져오기"
+    },
+    "options_export": {
+        "message": "설정을 파일로 내보내기"
+    },
+    "options_keybinds_header": {
+        "message": "단축키"
+    },
+    "options_keybinds_body": {
+        "message": "단축키는 플레이어에 포커스가 있을 때만 활성화됩니다."
+    },
+    "options_keybinds_reset": {
+        "message": "기본값으로 재설정"
+    },
+    "options_autourl_header": {
+        "message": "URL 자동 활성화"
+    },
+    "options_autourl_body": {
+        "message": "이 URL을 방문하면 확장 기능을 자동으로 활성화하고, 떠나면 비활성화합니다. 줄당 하나의 URL을 입력하세요. 해당 URL로 시작하는 페이지도 일치합니다. 정규식은 물결표(~)로 시작하세요. 정규식도 줄당 하나씩 입력합니다. 사이트를 제외하려면 느낌표(!)를 앞에 붙이세요."
+    },
+    "options_autourl_hint": {
+        "message": "힌트: 정규식을 다음에서 테스트하세요"
+    },
+    "options_autourl_allwebsites": {
+        "message": "모든 웹사이트에서 자동 활성화"
+    },
+    "options_pattern_header": {
+        "message": "사용자 지정 소스 패턴"
+    },
+    "options_pattern_body": {
+        "message": "이 패턴들은 웹페이지에서 사용자 지정 비디오 소스를 감지하는 데 사용됩니다. 위에서 아래 순으로 적용되며, 첫 번째 일치 항목이 사용됩니다. 고급 사용자 전용."
+    },
+    "options_help_header": {
+        "message": "도움말"
+    },
+    "options_help_welcome": {
+        "message": "환영 페이지"
+    },
+    "options_help_issues": {
+        "message": "이슈 트래커"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "글꼴"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "글꼴 굵기"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "글자 크기"
+    },
+    "subtitles_settings_color": {
+        "message": "글자 색상"
+    },
+    "subtitles_settings_background": {
+        "message": "배경색"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "테두리 색상"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "테두리 두께"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "언어"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "하단 여백"
+    },
+    "yes": {
+        "message": "예"
+    },
+    "no": {
+        "message": "아니요"
+    },
+    "ok": {
+        "message": "확인"
+    },
+    "cancel": {
+        "message": "취소"
+    },
+    "error_popup": {
+        "message": "오류: $1"
+    },
+    "error_popup_body": {
+        "message": "아래 스택 트레이스와 함께 https://github.com/Andrews54757/FastStream/issues에 개발자에게 이 오류를 신고해 주세요:"
+    },
+    "error_popup_send": {
+        "message": "오류 신고"
+    },
+    "yt_error_login_required": {
+        "message": "죄송합니다! FastStream는 YouTube에 로그인해야 재생할 수 있는 동영상을 지원하지 않습니다."
+    },
+    "player_outofstorage": {
+        "message": "경고: 사용 중인 브라우저가 파일 저장 기능을 완전히 지원하지 않습니다. 이는 브라우저의 저장 공간이 부족하거나 오랜 시간 동안 재시작되지 않았기 때문일 수 있습니다. 일부 기능이 예상대로 작동하지 않을 수 있습니다."
+    }
+}

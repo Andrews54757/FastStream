@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream Video Player"
+    },
+    "extension_description": {
+        "message": "Streaming fluido, senza buffering. Dì addio ai lettori video scadenti."
+    },
+    "extension_toggle_label": {
+        "message": "Attiva/disattiva FastStream"
+    },
+    "welcome_page_title": {
+        "message": "Ti diamo il benvenuto su FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "Modalità d'uso"
+    },
+    "welcome_page_usage_content0": {
+        "message": "Ci sono quattro modi per utilizzare FastStream"
+    },
+    "welcome_page_usage_content1": {
+        "message": "Puoi andare su un sito web che contiene un video e attivare FastStream cliccando sull'icona. Riproduci il video e l'interfaccia verrà sostituita automaticamente con FastStream"
+    },
+    "welcome_page_usage_content2": {
+        "message": "Puoi aprire una nuova scheda e premere l'icona dell'estensione per accedere al lettore video."
+    },
+    "welcome_page_usage_content3": {
+        "message": "Se hai abilitato l'opzione, vai su un url di un file mp4/mpd/m3u8 e il lettore video lo riprodurrà."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Tieni aperto il lettore video in una nuova scheda affinché possa raccogliere le sorgenti video mentre navighi altrove."
+    },
+    "welcome_page_usage_end": {
+        "message": "Grazie per aver installato FastStream! Facci sapere se hai problemi o suggerimenti."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "Comandi Tastiera Predefiniti"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "È possibile modificare queste associazioni di tasti nelle impostazioni dell'estensione"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "tasti freccia - vai avanti/indietro di 1 secondo"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": " - vai avanti/indietro di 10 secondi"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": " - Annulla"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "tasti freccia - aumenta/diminuisci il volume del 10%"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- Schermo intero"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Aggiungi/diminuisci il numero di richieste simultanee"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Tasto per fare un nuovo tentativo - utilizzalo per ritentare i download non riusciti"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Salta l'intro/outro se possibile"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- Nascondi/mostra lettore video"
+    },
+    "perms_page_title": {
+        "message": "Autorizzazioni FastStream"
+    },
+    "perms_page_about_header": {
+        "message": "Informazioni sulle Autorizzazioni Richieste da FastStream"
+    },
+    "perms_page_about_content0": {
+        "message": "Affinché l'estensione funzioni, deve poter disporre di determinate autorizzazioni. Queste autorizzazioni vengono utilizzate solo per funzionalità di base."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream non raccoglie alcun dato da te. Non ti traccia. Non invia alcun dato a nessun server. Non ha nemmeno un server a cui inviare dati."
+    },
+    "perms_page_about_content2": {
+        "message": "Non ti fidi di me? FastStream ha il suo codice sorgente disponibile su"
+    },
+    "perms_page_about_content3": {
+        "message": "Puoi esaminare il codice per conto tuo o installare manualmente la tua build personalizzata seguendo le istruzioni."
+    },
+    "perms_page_breakdown_header": {
+        "message": "Riassunto delle Autorizzazioni"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "Ecco un riassunto delle autorizzazioni richieste da FastStream e perché ne ha bisogno."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "Nota: gli esempi collegati potrebbero fare riferimento a una versione precedente del codice, ma il succo del discorso dovrebbe essere lo stesso. L'elenco non è esaustivo, gli elementi sono ordinati in base all'importanza."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "Poter accedere e modificare tutti i siti web"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream deve poter accedere a tutti i siti web in modo da poter iniettare il lettore video direttamente nel sito. Inietta uno script di contenuti nei siti web che visiti per:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "Identificare l'elemento video visibile più grande da sostituire con il lettore video."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "Abilitare le autorizzazioni per lo schermo intero quando il lettore video viene iniettato in un frame."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "Estrarre gli elementi <track> dei sottotitoli dalla pagina."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "Accedere all'API webRequest"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream deve essere in grado di intercettare le richieste HTTP verso le sorgenti video per:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "Identificare le sorgenti video"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "Accedere all'API declarativeNetRequest"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream deve essere in grado di modificare le intestazioni HTTP delle richieste selezionate per:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "Sostituire le intestazioni per le sorgenti video."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "Memorizzare informazioni nel tuo browser"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream deve essere in grado di memorizzare informazioni nel tuo browser per potersi ricordare le impostazioni."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "Opzioni generali dell'estensione."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "Accedi all'API delle schede"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream deve essere in grado di inviare messaggi tra i lettori video e gli script di contenuto in ogni scheda."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "Invio di sorgenti ai lettori video dallo script in background."
+    },
+    "perms_page_granted": {
+        "message": "Concesso"
+    },
+    "perms_page_notgranted": {
+        "message": "Non concesso, fai clic per concedere"
+    },
+    "player_needs_interaction": {
+        "message": "Interagisci per abilitare l'accelerazione dei download"
+    },
+    "player_skipintro": {
+        "message": "Salta l'Intro"
+    },
+    "player_skipoutro": {
+        "message": "Salta l'Outro"
+    },
+    "player_nextvideoin": {
+        "message": "Prossimo video tra $1s"
+    },
+    "player_hidecontrols": {
+        "message": "Nascondi i Comandi"
+    },
+    "player_loading": {
+        "message": "Caricamento in corso..."
+    },
+    "player_nosource_header": {
+        "message": "Nessuna sorgente caricata!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Trascina e rilascia un file video per riprodurlo."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "Clicca"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "per caricare le sorgenti rilevate da altre schede."
+    },
+    "player_play_label": {
+        "message": "Riproduci il video"
+    },
+    "player_pause_label": {
+        "message": "Metti in pausa il video"
+    },
+    "player_next_video_label": {
+        "message": "Video successivo"
+    },
+    "player_previous_video_label": {
+        "message": "Video precedente"
+    },
+    "player_volume_label": {
+        "message": "Il volume è al $1%. Usa i tasti freccia per regolarlo, Invio per attivare/disattivare l'audio."
+    },
+    "player_mute_label": {
+        "message": "Disattiva l'audio"
+    },
+    "player_timestamp_label": {
+        "message": "Copia l'URL con il timestamp"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "Browser delle Sorgenti"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "Apri il browser delle sorgenti"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "Chiudi il browser delle sorgenti"
+    },
+    "player_audioconfig_title": {
+        "message": "Configurazione Audio"
+    },
+    "player_audioconfig_open_label": {
+        "message": "Apri finestra di configurazione audio"
+    },
+    "player_audioconfig_close_label": {
+        "message": "Chiudi finestra di configurazione audio"
+    },
+    "player_opensubtitles_title": {
+        "message": "Ricerca di OpenSubtitles"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "Chiudi la finestra di ricerca di OpenSubtitles"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Cerca per titolo, nome del file, ecc."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "Cerca"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "Stagione #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "Episodio #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "Tutti"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "Film"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "Episodio"
+    },
+    "player_opensubtitles_language": {
+        "message": "Lingua"
+    },
+    "player_opensubtitles_year": {
+        "message": "Anno"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Ordina per"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "Download"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "Data di Caricamento"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "Valutazione"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "Voti"
+    },
+    "player_opensubtitles_sort": {
+        "message": "Ordina"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Decrescente"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Crescente"
+    },
+    "player_opensubtitles_searching": {
+        "message": "Ricerca in corso..."
+    },
+    "player_opensubtitles_error": {
+        "message": "Errore: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Impossibile impostare le intestazioni corrette! Installa l'estensione per utilizzare questa funzionalità!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles è inattivo!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "Download di OpenSubtitles non riuscito! Probabilmente i loro server sono inattivi!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "Nessun risultato trovato!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles limita i download dei sottotitoli! Non hai più download rimasti! La tua quota si azzera tra $1"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Vuoi aprire il sito web di OpenSubtitles per scaricare manualmente il file dei sottotitoli?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "Apri il menu dei sottotitoli"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Chiudi il menu dei sottotitoli"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "Indietro"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "Impostazioni Sottotitoli"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "Test Sottotitoli"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "Interrompi Test"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "Carica File"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "Da un URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "Inserisci un URL"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "Download della traccia dei sottotitoli..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "Traccia dei sottotitoli caricata!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "Caricamento della traccia dei sottotitoli non riuscito!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "Cerca OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "Cancella Sottotitoli"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "Impostazioni Sottotitoli"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Strumento di Risincronizzazione"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Trascina i sottotitoli per risincronizzare"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "Salva il file dei sottotitoli"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "Rimuovi la traccia dei sottotitoli"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Sposta i sottotitoli di $1s"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "Sposta i sottotitoli di $1s"
+    },
+    "player_testsubtitle": {
+        "message": "Questo è un sottotitolo di prova"
+    },
+    "player_qualitymenu_label": {
+        "message": "Qualità video"
+    },
+    "player_languagemenu_label": {
+        "message": "Selezione lingua"
+    },
+    "player_languagemenu_video": {
+        "message": "Video"
+    },
+    "player_languagemenu_audio": {
+        "message": "Audio"
+    },
+    "player_playbackrate_label": {
+        "message": "Velocità di riproduzione"
+    },
+    "player_settings_title": {
+        "message": "Impostazioni FastStream"
+    },
+    "player_settings_open_label": {
+        "message": "Apri la finestra delle impostazioni"
+    },
+    "player_settings_close_label": {
+        "message": "Chiudi la finestra delle impostazioni"
+    },
+    "player_savevideo_label": {
+        "message": "Salva il video. Tieni premuto ALT per salvare un video parziale. Tieni premuto MAIUSC per scaricare il buffer."
+    },
+    "player_screenshot_label": {
+        "message": "Acquisisci uno screenshot"
+    },
+    "player_pip_label": {
+        "message": "Picture-in-picture"
+    },
+    "player_fullscreen_label": {
+        "message": "Attiva/disattiva lo schermo intero"
+    },
+    "player_fullscreen_denied": {
+        "message": "Autorizzazioni per lo schermo intero negate!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Attiva/disattiva lo schermo intero nella finestra"
+    },
+    "player_skip_forward_label": {
+        "message": "Vai avanti di "
+    },
+    "player_skip_backward_label": {
+        "message": "Vai indietro di "
+    },
+    "player_more_label": {
+        "message": "Altri strumenti"
+    },
+    "player_loop_label": {
+        "message": "Loop"
+    },
+    "loop_menu_start": {
+        "message": "Inizio"
+    },
+    "loop_menu_end": {
+        "message": "Fine"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Loop Abilitato"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Loop Disabilitato"
+    },
+    "loop_menu_gif_start": {
+        "message": "Registrazione di una GIF a velocità 4x in corso..."
+    },
+    "loop_menu_gif_end": {
+        "message": "Registrazione della GIF completata. Salvataggio in corso..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "Registrazione della GIF interrotta!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "Salvataggio della GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "Salvataggio della GIF completato!"
+    },
+    "player_download_paused": {
+        "message": "Download in pausa"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 Frammento non riuscito! Fai clic per riprovare."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 Frammenti non riusciti! Fai clic per riprovare."
+    },
+    "player_fragment_allbuffered": {
+        "message": "Messo in buffer al 100%"
+    },
+    "player_welcometext": {
+        "message": "Ti diamo il benvenuto su FastStream v$1!"
+    },
+    "player_nosource_alert": {
+        "message": "Nessuna sorgente caricata!"
+    },
+    "player_archive_loading": {
+        "message": "Caricamento archivio... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "Archivio caricato!"
+    },
+    "player_archive_fail": {
+        "message": "Caricamento dell'archivio fallito!"
+    },
+    "player_filename_prompt": {
+        "message": "Inserisci un nome per il file"
+    },
+    "player_screenshot_saving": {
+        "message": "Acquisizione di uno screenshot in corso..."
+    },
+    "player_screenshot_saved": {
+        "message": "Screenshot salvato!"
+    },
+    "player_screenshot_fail": {
+        "message": "Acquisizione dello screenshot fallita!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Il salvataggio è già in corso!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Il salvataggio non è supportato per questo video!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "Il video non è ancora stato scaricato! Vuoi davvero salvarlo?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "La modalità di navigazione in incognito utilizzerà la RAM per mettere in buffer i video. Il tuo computer potrebbe non avere memoria sufficiente per salvare l'intero video!\nVuoi davvero procedere?"
+    },
+    "player_savevideo_reencode": {
+        "message": "Il salvataggio richiederà una nuova codifica. Potrebbe richiedere molto tempo. Vuoi procedere?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "Annullamento del salvataggio..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Salvataggio annullato!"
+    },
+    "player_savevideo_start": {
+        "message": "Salvataggio in corso..."
+    },
+    "player_savevideo_progress": {
+        "message": "Salvataggio $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "Salvataggio del video fallito!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Salvataggio del video fallito!\nVuoi archiviare invece la memoria buffer del lettore video?\n- Trascina e rilascia i file di archivio sul lettore video per caricarla"
+    },
+    "player_savevideo_complete": {
+        "message": "Salvataggio completato!"
+    },
+    "player_archiver_progress": {
+        "message": "Archiviazione $1%"
+    },
+    "player_archiver_saved": {
+        "message": "Archivio salvato!"
+    },
+    "player_quality_current": {
+        "message": "(attuale)"
+    },
+    "player_quality_unknown": {
+        "message": "(sconosciuto)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Spazio insufficiente per il pre-download in modalità di navigazione in incognito, verrà eseguito il buffering di $1"
+    },
+    "player_buffer_storage_warning": {
+        "message": "La dimensione del video eccede i limiti, verrà eseguito il buffering di $1"
+    },
+    "player_error_drm": {
+        "message": "Caricamento fallito! DRM non è supportato!"
+    },
+    "player_error_load": {
+        "message": "Caricamento del video fallito!"
+    },
+    "source_copied": {
+        "message": "URL copiato negli appunti!"
+    },
+    "player_source_copybtn": {
+        "message": "Copia"
+    },
+    "player_source_copybtn_label": {
+        "message": "Copia l'URL della sorgente, le intestazioni e la modalità negli appunti"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Copiato!"
+    },
+    "player_source_autodetect": {
+        "message": "Rilevamento Automatico"
+    },
+    "player_source_direct": {
+        "message": "Diretto"
+    },
+    "player_source_accelmp4": {
+        "message": "MP4 Accelerato"
+    },
+    "player_source_accelhls": {
+        "message": "HLS Accelerato"
+    },
+    "player_source_acceldash": {
+        "message": "DASH Accelerato"
+    },
+    "player_source_accelyt": {
+        "message": "YouTube Accelerato"
+    },
+    "player_source_accelvm": {
+        "message": "Vimeo Accelerato"
+    },
+    "player_source_mode": {
+        "message": "Modalità"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Seleziona una modalità di riproduzione!"
+    },
+    "player_source_url_placeholder": {
+        "message": "URL della Sorgente"
+    },
+    "player_source_headerbtn": {
+        "message": "Sovrascrittura delle Intestazioni ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Attiva/disattiva l'input per la sovrascrittura delle intestazioni"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Sovrascrittura delle Intestazioni (solo nell'estensione)"
+    },
+    "player_source_playbtn": {
+        "message": "Riproduci"
+    },
+    "player_source_playbtn_playing": {
+        "message": "Riproduzione in corso"
+    },
+    "player_source_playbtn_loading": {
+        "message": "Caricamento in corso..."
+    },
+    "player_source_deletebtn": {
+        "message": "Elimina"
+    },
+    "player_source_headers_label": {
+        "message": "Input per la sovrascrittura delle intestazioni"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Nome dell'intestazione: valore dell'intestazione\nNome dell'intestazione2: valore dell'intestazione2"
+    },
+    "player_source_nonelisted": {
+        "message": "Nessuna Sorgente Elencata"
+    },
+    "player_source_onelisted": {
+        "message": "1 Sorgente Elencata"
+    },
+    "player_source_multilisted": {
+        "message": "$1 Sorgenti Elencate"
+    },
+    "player_source_addbtn": {
+        "message": "Aggiungi Sorgente"
+    },
+    "player_source_clearbtn": {
+        "message": "Cancella Sorgenti"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(caricato dal file su $1)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "Crea un nuovo profilo"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "Importa profili dal file"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "File profilo non valido"
+    },
+    "player_audioconfig_profile": {
+        "message": "Profilo"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Profilo Senza Nome"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "Carica Profilo"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "Profilo Caricato!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "Salva Profilo"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "Salvataggio in corso..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "Profilo Salvato!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "Scarica il Profilo"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "Scaricato!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "Elimina"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "Eliminazione in corso..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "Eliminato!"
+    },
+    "audiomixer_title": {
+        "message": "Mixer Canali Audio"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per attivare/disattivare il mono"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "Il guadagno di $1 è $2 dB ($3%). Usa le frecce per regolarlo. Premi M per disattivare/disattivare il muto"
+    },
+    "audiomixer_solo_label": {
+        "message": "Singolo"
+    },
+    "audiomixer_mute_label": {
+        "message": "Muto"
+    },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "Modifica le dinamiche del canale"
+    },
+    "audiocrosstalk_title": {
+        "message": "Correzione Crosstalk Audio"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "Correzione Crosstalk Abilitata"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "Correzione Crosstalk Disabilitata"
+    },
+    "audiocrosstalk_decay": {
+        "message": "Decadimento"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "Colorazione Massima"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "Bypass Basso"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "Bypass Alto"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "Distanza dell'Altoparlante"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "Distanza della Testa"
+    },
+    "audiocompressor_title": {
+        "message": "Compressore Audio"
+    },
+    "audiocompressor_enabled": {
+        "message": "Compressore Abilitato"
+    },
+    "audiocompressor_disabled": {
+        "message": "Compressore Disabilitato"
+    },
+    "audiocompressor_threshold": {
+        "message": "Soglia"
+    },
+    "audiocompressor_knee": {
+        "message": "Passaggio"
+    },
+    "audiocompressor_ratio": {
+        "message": "Rapporto"
+    },
+    "audiocompressor_attack": {
+        "message": "Attacco"
+    },
+    "audiocompressor_release": {
+        "message": "Rilascio"
+    },
+    "audiocompressor_gain": {
+        "message": "Guadagno"
+    },
+    "audioeq_title": {
+        "message": "Equalizzatore Audio"
+    },
+    "audioeq_instructions": {
+        "message": "Fai doppio clic per cambiare tipo"
+    },
+    "audioeq_gain": {
+        "message": "Guadagno: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "Scorri per cambiare Q"
+    },
+    "audioconvolver_title": {
+        "message": "Filtro di Convoluzione Audio"
+    },
+    "audioconvolver_channel": {
+        "message": "Canale"
+    },
+    "audioconvolver_enable": {
+        "message": "Abilita"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalizza"
+    },
+    "audioconvolver_impulselength": {
+        "message": "Lunghezza Impulso"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Risposta all'Impulso"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Seleziona File"
+    },
+    "audioconvolver_enabled": {
+        "message": "Convoluzione Abilitata"
+    },
+    "audioconvolver_convolver": {
+        "message": "Convoluzione"
+    },
+    "audioconvolver_disable": {
+        "message": "Disabilita"
+    },
+    "audioconvolver_disabled": {
+        "message": "Convoluzione Disabilitata"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Downmix Prima"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Nessun Downmix"
+    },
+    "options_title": {
+        "message": "Opzioni FastStream"
+    },
+    "options_search_placeholder": {
+        "message": "Cerca"
+    },
+    "options_reviewbanner_header": {
+        "message": "Ti piace FastStream? Lascia una recensione!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream è un progetto amatoriale gestito da volontari. Apprezziamo il tuo feedback perché ci aiuta a capire dove migliorare. Non esitare a dircelo:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "Come lo usi"
+    },
+    "options_reviewbanner_l2": {
+        "message": "Eventuali bug che riscontri"
+    },
+    "options_reviewbanner_l3": {
+        "message": "Richieste di funzionalità"
+    },
+    "options_reviewbanner_end": {
+        "message": "Prendiamo molto seriamente anche l'accessibilità. Se hai bisogno di sistemazioni che mancano nella versione attuale, invia una richiesta e ci lavoreremo il prima possibile."
+    },
+    "options_reviewbanner_rate": {
+        "message": "OK, lasciero una recensione a FastStream"
+    },
+    "options_reviewbanner_norate": {
+        "message": "Non voglio lasciare una recensione :("
+    },
+    "options_feedback_header": {
+        "message": "Hai del feedback?"
+    },
+    "options_feedback_reason": {
+        "message": "Ci piacerebbe sentire la tua opinione! Compila un breve modulo. È l'unico modo in cui possiamo migliorare, dal momento che non ti tracciamo."
+    },
+    "options_feedback_yes": {
+        "message": "Sì, ho del feedback"
+    },
+    "options_feedback_no": {
+        "message": "No, sto a posto"
+    },
+    "options_help_feedback": {
+        "message": "Modulo di Feedback"
+    },
+    "options_update_header": {
+        "message": "È Disponibile un Aggiornamento!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 è ora disponibile (versione attuale v$2). Vuoi aggiornare?"
+    },
+    "options_update_go": {
+        "message": "Portami su Github"
+    },
+    "options_update_no": {
+        "message": "Ignora questo aggiornamento"
+    },
+    "options_reset_search": {
+        "message": "Reset"
+    },
+    "options_video_header": {
+        "message": "Opzioni Video"
+    },
+    "options_video_body": {
+        "message": "Applica filtri CSS al video. Non funziona con picture-in-picture."
+    },
+    "options_video_zoom": {
+        "message": "Zoom Video"
+    },
+    "options_video_delay": {
+        "message": "Ritardo Video"
+    },
+    "options_video_brightness": {
+        "message": "Luminosità"
+    },
+    "options_video_contrast": {
+        "message": "Contrasto"
+    },
+    "options_video_saturation": {
+        "message": "Saturazione"
+    },
+    "options_video_grayscale": {
+        "message": "Scala di grigi"
+    },
+    "options_video_sepia": {
+        "message": "Seppia"
+    },
+    "options_video_invert": {
+        "message": "Inverti"
+    },
+    "options_video_hue": {
+        "message": "Ruotazione della Tonalità"
+    },
+    "options_video_daltonizer_type": {
+        "message": "Correzione per il daltonismo"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Intensità"
+    },
+    "options_video_daltonizer_none": {
+        "message": "Nessuno"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomalia"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomalia"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomalia"
+    },
+    "options_general_header": {
+        "message": "Opzioni Generali"
+    },
+    "options_general_predownload": {
+        "message": "Prescarica l'intero video in background, se possibile"
+    },
+    "options_general_targetspeed": {
+        "message": "Velocità di download obiettivo del predownloader"
+    },
+    "options_general_maxsize": {
+        "message": "Dimensione massima del video prescaricato"
+    },
+    "options_general_previewenabled": {
+        "message": "Mostra anteprima quando passi il mouse sulla timeline"
+    },
+    "options_general_analyze": {
+        "message": "Analizza automaticamente i video sequenziali per le intro/outro\n(disattiva se hai problemi di prestazioni della CPU)"
+    },
+    "options_general_storeprogress": {
+        "message": "Riproduci i video dall'ultima posizione visualizzata"
+    },
+    "options_general_autosub": {
+        "message": "Abilita automaticamente la migliore traccia dei sottotitoli trovata\n(Cambia la lingua predefinita nelle impostazioni dei sottotitoli)"
+    },
+    "options_general_stream": {
+        "message": "Usa il lettore video per riprodurre flussi HLS/DASH quando apri l'URL di una playlist (.m3u8/.mpd)"
+    },
+    "options_general_mp4": {
+        "message": "Usa il lettore video per riprodurre video MP4 quando apri l'URL di un video (.mp4)"
+    },
+    "options_general_seekstep": {
+        "message": "Quantità di salto (secondi)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Ritardo prima della scomparsa automatica dei controlli (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Mostra sempre la barra di avanzamento in basso nel lettore"
+    },
+    "options_general_replace_delay": {
+        "message": "Ritardo prima della sostituzione automatica del player (ms)"
+    },
+    "options_general_autoplayyt": {
+        "message": "Riproduci automaticamente i video di YouTube, se possibile"
+    },
+    "options_general_autoplaynext": {
+        "message": "Riproduci automaticamente il video successivo quando termina il video attuale"
+    },
+    "options_general_quality": {
+        "message": "Qualità video predefinita"
+    },
+    "options_general_clickaction": {
+        "message": "Azione clic singolo"
+    },
+    "options_general_dblclickaction": {
+        "message": "Azione clic doppio"
+    },
+    "options_general_tplclickaction": {
+        "message": "Azione clic triplo"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "Non fare nulla"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Riproduci / Metti in pausa"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Attiva/disattiva lo schermo intero"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Attiva/disattiva lo schermo intero in finestra"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Attiva/disattiva il picture-in-picture"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Scorri"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Nascondi i comandi"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Nascondi il lettore video"
+    },
+    "options_general_vischangeaction": {
+        "message": "Quando cambia la visibilità del lettore video"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "Non fare nulla"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "Riproduci / Metti in pausa"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Attiva/disattiva il miniplayer"
+    },
+    "options_general_minipos": {
+        "message": "Posizione miniplayer"
+    },
+    "options_general_minipos_topleft": {
+        "message": "In Alto a Sinistra"
+    },
+    "options_general_minipos_topright": {
+        "message": "In Alto a Destra"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "In Basso a Sinistra"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "In Basso a Destra"
+    },
+    "options_general_minisize": {
+        "message": "Dimensioni del miniplayer"
+    },
+    "options_general_color_theme": {
+        "message": "Tema colore del lettore video"
+    },
+    "options_general_color_theme_default": {
+        "message": "Predefinito Scuro"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Luce Artica"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Blu Oceano"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Notte Neon"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Alto Contrasto"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Bagliore del Tramonto"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Notte nella Foresta"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Ardesia Monocromatica"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "Foschia di Ametista"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Sabbia del Deserto"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Menta Fresca"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "Attiva/disattiva il picture-in-picture"
+    },
+    "options_general_ytclient": {
+        "message": "Client YT da usare. Prova a cambiare se hai problemi."
+    },
+    "options_export_header": {
+        "message": "Importa/Esporta le Impostazioni"
+    },
+    "options_import": {
+        "message": "Importa le Impostazioni da un File"
+    },
+    "options_export": {
+        "message": "Esporta le Impostazioni su File"
+    },
+    "options_keybinds_header": {
+        "message": "Associazioni di Tasti"
+    },
+    "options_keybinds_body": {
+        "message": "Le associazioni di tasti sono attive solo quando il lettore video è attivo."
+    },
+    "options_keybinds_reset": {
+        "message": "Ripristina Impostazioni Predefinite"
+    },
+    "options_autourl_header": {
+        "message": "Abilita automaticamente gli URL"
+    },
+    "options_autourl_body": {
+        "message": "Abiliterà automaticamente l'estensione quando si visitano questi URL e la disabiliterà quando li si lascia. Un URL per riga, anche le pagine che iniziano con quell'URL corrisponderanno. Per le regex, anteponi una tilde (~). Una regex per riga. Per escludere dei siti, anteponi un punto esclamativo (!)."
+    },
+    "options_autourl_hint": {
+        "message": "Suggerimento: testa le regex su"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Attiva automaticamente su tutti i siti web"
+    },
+    "options_pattern_header": {
+        "message": "Modelli Sorgente Personalizzati"
+    },
+    "options_pattern_body": {
+        "message": "Questi modelli vengono utilizzati per rilevare sorgenti video personalizzate su pagine web. Vengono applicati in ordine e viene utilizzata la prima corrispondenza. Solo per utenti avanzati."
+    },
+    "options_help_header": {
+        "message": "Aiuto"
+    },
+    "options_help_welcome": {
+        "message": "Pagina di Benvenuto"
+    },
+    "options_help_issues": {
+        "message": "Registro problemi"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "Famiglia di Font"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Spessore del Font"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Dimensione del Font"
+    },
+    "subtitles_settings_color": {
+        "message": "Colore del Font"
+    },
+    "subtitles_settings_background": {
+        "message": "Colore di Sfondo"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "Colore del Contorno"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "Larghezza del Contorno"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Lingua"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "Margine Inferiore"
+    },
+    "yes": {
+        "message": "Sì"
+    },
+    "no": {
+        "message": "No"
+    },
+    "ok": {
+        "message": "OK"
+    },
+    "cancel": {
+        "message": "Annulla"
+    },
+    "error_popup": {
+        "message": "Errore: $1"
+    },
+    "error_popup_body": {
+        "message": "Segnala questo errore agli sviluppatori su https://github.com/Andrews54757/FastStream/issues con la seguente traccia dello stack:"
+    },
+    "error_popup_send": {
+        "message": "Segnala un Errore"
+    },
+    "yt_error_login_required": {
+        "message": "Spiacenti! FastStream non supporta i video che richiedono l'accesso a YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Avviso: il tuo browser non supporta completamente le funzionalità di archiviazione dei file. Questo può essere dovuto al fatto che il tuo browser ha esaurito lo spazio di archiviazione o non è stato riavviato da molto tempo. Alcune funzionalità potrebbero non funzionare come previsto."
+    }
+}

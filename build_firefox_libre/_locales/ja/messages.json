@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream Video Player"
+    },
+    "extension_description": {
+        "message": "バッファリングなしでストリーム。インターネット上の悪質なビデオプレーヤーを修正します。"
+    },
+    "extension_toggle_label": {
+        "message": "FastStream に切り替える"
+    },
+    "welcome_page_title": {
+        "message": "FastStream へようこそ"
+    },
+    "welcome_page_usage_header": {
+        "message": "使用方法"
+    },
+    "welcome_page_usage_content0": {
+        "message": "FastStream の使用方法は 4 つあります"
+    },
+    "welcome_page_usage_content1": {
+        "message": "動画のある Web サイトを開いてアイコンをクリックで FastStream を ON にする事ができます。動画を再生するとクライアントは自動的に FastStream に置き換わります。"
+    },
+    "welcome_page_usage_content2": {
+        "message": "新しいタブを開いて拡張機能のアイコンをクリックでプレーヤーを開く事ができます。"
+    },
+    "welcome_page_usage_content3": {
+        "message": "オプションを有効化している場合に、mp4/mpd/m3u8 の URL にアクセスする事でプレーヤーが再生をします。"
+    },
+    "welcome_page_usage_content4": {
+        "message": "新しいタブでプレーヤーを開いておく事で、他の場所を参照してソースを取得します。"
+    },
+    "welcome_page_usage_end": {
+        "message": "FastStream をインストールしていただき感謝します! 問題やご提案がありましたらお知らせください。"
+    },
+    "welcome_page_keybinds_header": {
+        "message": "デフォルトのキーボードコントロール"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "これらのキーバインドは拡張機能の設定で変更できます"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "矢印キー - 前後の 1 秒間隔のシーク"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "キー - 前後の 10 秒間隔のシーク"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "キー - シークを戻す"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "矢印キー - 10% の音量を上下"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- フルスクリーン"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- 同時リクエストの増減"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- 強制再試行キー - これを使用する事で失敗をしたダウンロードを再試行します"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- 該当時にイントロ/アウトロをスキップ"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- プレーヤーを表示/非表示"
+    },
+    "perms_page_title": {
+        "message": "FastStream の権限"
+    },
+    "perms_page_about_header": {
+        "message": "FastStream に必要な権限について"
+    },
+    "perms_page_about_content0": {
+        "message": "拡張機能を動作させるには特定の権限を許可する必要があります。これらの権限は基本的な機能のみで使用されます。"
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream はユーザーからデータの収集、追跡、サーバーにデータの送信は一切しません。データを送信するサーバーもありません。"
+    },
+    "perms_page_about_content2": {
+        "message": "信用ができませんか? FastStream のソースは次の場所で入手ができます。"
+    },
+    "perms_page_about_content3": {
+        "message": "自分でコードを確認する事もできますし、指示に従って自分だけのカスタムビルドを手動でインストールする事もできます。"
+    },
+    "perms_page_breakdown_header": {
+        "message": "権限の内訳"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "FastStream が必要とする権限とその理由を説明します。"
+    },
+    "perms_page_breakdown_content1": {
+        "message": "注: リンクされた例では古いバージョンのコードが参照されている場合がありますが、要点は全体的に同じであるはずです。リストはすべてを網羅している訳ではなく、項目の重要度の順で並べられています。"
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "すべての Web サイトにアクセスをして変更できる事"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream はプレーヤーを Web サイトに直接挿入ができるようにするため、すべての Web サイトにアクセスできるようにする必要があります。次の目的でアクセスをした Web サイトにコンテンツスクリプトを挿入します:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "プレーヤーの置き換え、表示されている最大の動画の要素を特定。"
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "プレーヤーがフレームに挿入されるときに全画面の権限を有効化。"
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "字幕の <track> 要素をページから削除。"
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "webRequest API にアクセス"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream は動画ソースへの HTTP リクエストをインターセプトを可能にする必要があります:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "動画のソースを特定"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "declarativeNetRequest API へのアクセス"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream は選択されたリクエストの HTTP ヘッダーを変更できるようにする必要があります:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "動画ソースのヘッダーを上書き。"
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "ブラウザー上にデータを保存"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream は、ユーザーの設定を記憶できるようにするためブラウザーにデータを保存可能にする必要があります。"
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "拡張機能の一般オプション。"
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "Tabs API にアクセス"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream は、各タブ上のプレーヤーとコンテンツスクリプト間でメッセージを送信可能にする必要があります。"
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "バックグラウンドスクリプトからプレーヤーにソースを送信"
+    },
+    "perms_page_granted": {
+        "message": "許可"
+    },
+    "perms_page_notgranted": {
+        "message": "許可がされていません、クリックで許可をします"
+    },
+    "player_needs_interaction": {
+        "message": "ダウンロードの高速化を有効にするには、動画を再生してください"
+    },
+    "player_skipintro": {
+        "message": "イントロをスキップ"
+    },
+    "player_skipoutro": {
+        "message": "アウトロをスキップ"
+    },
+    "player_nextvideoin": {
+        "message": "次のビデオ $1s 後"
+    },
+    "player_hidecontrols": {
+        "message": "コントロールを隠す"
+    },
+    "player_loading": {
+        "message": "読み込み中..."
+    },
+    "player_nosource_header": {
+        "message": "ソースは読み込まれていません!"
+    },
+    "player_nosource_instruction1": {
+        "message": "動画ファイルをドラッグ&ドロップで再生できます。"
+    },
+    "player_nosource_instruction2p1": {
+        "message": "クリック"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "他のタブから検出されたソースを読み込み。"
+    },
+    "player_play_label": {
+        "message": "ビデオを再生"
+    },
+    "player_pause_label": {
+        "message": "ビデオを一時停止"
+    },
+    "player_next_video_label": {
+        "message": "次のビデオ"
+    },
+    "player_previous_video_label": {
+        "message": "前のビデオ"
+    },
+    "player_volume_label": {
+        "message": "音量は $1% です。矢印キーで調整、ミュートを切り替えるにはエンターキーを使用します。"
+    },
+    "player_mute_label": {
+        "message": "オーディオを消音"
+    },
+    "player_timestamp_label": {
+        "message": "タイムスタンプ"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "ソースの参照"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "ソースの参照を開く"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "ソースの参照を閉じる"
+    },
+    "player_audioconfig_title": {
+        "message": "オーディオの設定"
+    },
+    "player_audioconfig_open_label": {
+        "message": "オーディオ設定ウィンドウを開く"
+    },
+    "player_audioconfig_close_label": {
+        "message": "オーディオ設定ウィンドウを閉じる"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles を検索"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "OpenSubtitles 検索ウィンドウを閉じる"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "タイトル、ファイル名などで検索..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "検索"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "シーズン #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "エピソード #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "すべて"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "映画"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "エピソード"
+    },
+    "player_opensubtitles_language": {
+        "message": "言語"
+    },
+    "player_opensubtitles_year": {
+        "message": "年"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "ソート順"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "ダウンロード"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "アップロード日時"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "評価"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "投票"
+    },
+    "player_opensubtitles_sort": {
+        "message": "ソート"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "下り順"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "上り順"
+    },
+    "player_opensubtitles_searching": {
+        "message": "検索中..."
+    },
+    "player_opensubtitles_error": {
+        "message": "エラー: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "適切なヘッダーを設定できません! この機能を使用するには拡張機能をインストールしてください!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles はダウンしています!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles のダウンロードに失敗しました! サーバーがダウンしているかもしれません!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "結果が見つかりません!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles は字幕のダウンロードを制限します! ダウンロードの残り回数がありません! クォータは、 $1 でリセットされます。"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "OpenSubtitles の Web サイトを開いて字幕ファイルを手動でダウンロードしますか?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "字幕メニューを開く"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "字幕メニューを閉じる"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "戻る"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "字幕の設定"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "字幕をテスト"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "テストを停止"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "ファイルをアップロード"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "URL から"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "URL を入力"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "字幕トラックをダウンロード中..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "字幕トラックを読み込みました!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "字幕トラックの読み込みに失敗しました!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "OpenSubtitles を検索"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "字幕をクリア"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "字幕の設定"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "再同期ツール"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "字幕をドラッグして再同期してください"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "字幕ファイルを保存"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "字幕トラックを削除"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "$1 の字幕をシフト"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "字幕を $1s シフト"
+    },
+    "player_testsubtitle": {
+        "message": "これはテストの字幕です"
+    },
+    "player_qualitymenu_label": {
+        "message": "動画の品質"
+    },
+    "player_languagemenu_label": {
+        "message": "言語の選択"
+    },
+    "player_languagemenu_video": {
+        "message": "ビデオ"
+    },
+    "player_languagemenu_audio": {
+        "message": "オーディオ"
+    },
+    "player_playbackrate_label": {
+        "message": "再生速度"
+    },
+    "player_settings_title": {
+        "message": "FastStream の設定"
+    },
+    "player_settings_open_label": {
+        "message": "設定ウィンドウを開く"
+    },
+    "player_settings_close_label": {
+        "message": "設定ウィンドウを閉じる"
+    },
+    "player_savevideo_label": {
+        "message": "ALT を押しながらで動画の一部を保存します。SHIFT を押しながらでバッファーをダンプします。"
+    },
+    "player_screenshot_label": {
+        "message": "スクリーンショットを撮る"
+    },
+    "player_pip_label": {
+        "message": "ピクチャー イン ピクチャー (PiP)"
+    },
+    "player_fullscreen_label": {
+        "message": "フルスクリーン"
+    },
+    "player_fullscreen_denied": {
+        "message": "フルスクリーンの許可が拒否されました!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "ウィンドウ化されたフルスクリーン"
+    },
+    "player_skip_forward_label": {
+        "message": "10秒進む"
+    },
+    "player_skip_backward_label": {
+        "message": "10秒戻る"
+    },
+    "player_more_label": {
+        "message": "その他のツール"
+    },
+    "player_loop_label": {
+        "message": "ループ"
+    },
+    "loop_menu_start": {
+        "message": "開始"
+    },
+    "loop_menu_end": {
+        "message": "終了"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "ループ有効"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "ループ無効"
+    },
+    "loop_menu_gif_start": {
+        "message": "4倍速でGIFを録画中..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIFの録画が終了しました。現在保存中..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "GIFの録画が中断されました!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "GIFを保存中 $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIFの保存が完了しました!"
+    },
+    "player_download_paused": {
+        "message": "ダウンロードが一時停止されました"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 の分割処理に失敗しました! クリックで再試行します。"
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% バッファー済み"
+    },
+    "player_welcometext": {
+        "message": "FastStream v$1 へようこそ!"
+    },
+    "player_nosource_alert": {
+        "message": "ソースは読み込まれていません!"
+    },
+    "player_archive_loading": {
+        "message": "$1% のアーカイブを読み込み中..."
+    },
+    "player_archive_loaded": {
+        "message": "アーカイブを読み込みました!"
+    },
+    "player_archive_fail": {
+        "message": "アーカイブの読み込みに失敗しました!"
+    },
+    "player_filename_prompt": {
+        "message": "ファイル名を入力"
+    },
+    "player_screenshot_saving": {
+        "message": "スクリーンショットを撮る..."
+    },
+    "player_screenshot_saved": {
+        "message": "スクリーンショットを保存しました!"
+    },
+    "player_screenshot_fail": {
+        "message": "スクリーンショットの撮影に失敗しました!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "すでに保存済みです!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "この動画は保存に対応していません!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "動画のダウンロードが完了していません! 本当に保存をしますか?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "シークレットモードでは、RAM を使用して動画をバッファーします。コンピューターに動画全体を保存するのに必要なメモリがない可能性があります。\n続行してもよろしいですか?"
+    },
+    "player_savevideo_reencode": {
+        "message": "保存には再エンコードが必要です。これには時間がかかる場合があります。続行しますか?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "キャンセル中..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "保存がキャンセルされました!"
+    },
+    "player_savevideo_start": {
+        "message": "保存中..."
+    },
+    "player_savevideo_progress": {
+        "message": "$1% を保存中"
+    },
+    "player_savevideo_fail": {
+        "message": "動画の保存に失敗しました!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "動画の保存に失敗しました!\n代わりにプレーヤーのバッファーストレージをアーカイブしますか?\n- アーカイブファイルをプレーヤーにドラッグ&ドロップで読み込みます"
+    },
+    "player_savevideo_complete": {
+        "message": "保存が完了しました!"
+    },
+    "player_archiver_progress": {
+        "message": "$1% をアーカイブ中"
+    },
+    "player_archiver_saved": {
+        "message": "アーカイブを保存しました!"
+    },
+    "player_quality_current": {
+        "message": "(現在)"
+    },
+    "player_quality_unknown": {
+        "message": "(不明)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "シークレットモードでプリダウンロードに必要な空き容量がないため、$1 がバッファーされます"
+    },
+    "player_buffer_storage_warning": {
+        "message": "ビデオのサイズが制限を超えています、$1 バッファリングします"
+    },
+    "player_error_drm": {
+        "message": "読み込みに失敗しました! DRM には対応していません!"
+    },
+    "player_error_load": {
+        "message": "動画の読み込みに失敗しました!"
+    },
+    "source_copied": {
+        "message": "URL をクリップボードにコピーしました!"
+    },
+    "player_source_copybtn": {
+        "message": "コピー"
+    },
+    "player_source_copybtn_label": {
+        "message": "ソースの URL、ヘッダー、モードをクリップボードにコピー"
+    },
+    "player_source_copybtn_copied": {
+        "message": "コピー済み!"
+    },
+    "player_source_autodetect": {
+        "message": "自動検出"
+    },
+    "player_source_direct": {
+        "message": "ダイレクト"
+    },
+    "player_source_accelmp4": {
+        "message": "高速化された MP4"
+    },
+    "player_source_accelhls": {
+        "message": "高速化された HLS"
+    },
+    "player_source_acceldash": {
+        "message": "高速化された DASH"
+    },
+    "player_source_accelyt": {
+        "message": "高速化された YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "高速化された Vimeo"
+    },
+    "player_source_mode": {
+        "message": "モード"
+    },
+    "player_source_mode_auto_error": {
+        "message": "プレーヤーモードを選択してください!"
+    },
+    "player_source_url_placeholder": {
+        "message": "ソースの URL"
+    },
+    "player_source_headerbtn": {
+        "message": "ヘッダーを上書き ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "ヘッダー上書き入力へ切り替え"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "ヘッダーを上書き (拡張機能のみ)"
+    },
+    "player_source_playbtn": {
+        "message": "再生"
+    },
+    "player_source_playbtn_playing": {
+        "message": "再生中"
+    },
+    "player_source_playbtn_loading": {
+        "message": "読み込み中..."
+    },
+    "player_source_deletebtn": {
+        "message": "削除"
+    },
+    "player_source_headers_label": {
+        "message": "ヘッダーの上書き入力"
+    },
+    "player_source_headers_placeholder": {
+        "message": "ヘッダー名: ヘッダーの値\nヘッダー2の名: ヘッダー2の値"
+    },
+    "player_source_nonelisted": {
+        "message": "ソースの一覧がありません"
+    },
+    "player_source_onelisted": {
+        "message": "1 件のソースの一覧"
+    },
+    "player_source_multilisted": {
+        "message": "$1 件のソースの一覧"
+    },
+    "player_source_addbtn": {
+        "message": "ソースを追加"
+    },
+    "player_source_clearbtn": {
+        "message": "ソースをクリア"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "($1 のファイルから読み込み済み)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "新規プロファイルを作成"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "ファイルからプロファイルをインポート"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "無効なプロファイルファイル"
+    },
+    "player_audioconfig_profile": {
+        "message": "プロファイル"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "無題のプロファイル"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "プロファイルを読み込む"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "プロファイルを読み込みました!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "プロファイルを保存"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "保存中..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "プロファイルを保存しました!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "プロファイルをダウンロード"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "ダウンロードしました!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "削除"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "削除中..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "削除しました!"
+    },
+    "audiomixer_title": {
+        "message": "オーディオチャンネルミキサー"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでモノラルを切り替えます"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 のゲインは $2 dB ($3%) です。矢印キーで調整します。M キーでミュートを切り替えます"
+    },
+    "audiomixer_solo_label": {
+        "message": "ソロ"
+    },
+    "audiomixer_mute_label": {
+        "message": "消音"
+    },
+    "audiomixer_mono": {
+        "message": "モノ"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "チャンネルのダイナミクスを編集"
+    },
+    "audiocrosstalk_title": {
+        "message": "オーディオクロストーク補正"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "クロストーク補正有効"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "クロストーク補正無効"
+    },
+    "audiocrosstalk_decay": {
+        "message": "減衰"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "色付け"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "低周波バイパス"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "高周波バイパス"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "スピーカー間の距離"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "ヘッド間の距離"
+    },
+    "audiocompressor_title": {
+        "message": "オーディオコンプレッサー"
+    },
+    "audiocompressor_enabled": {
+        "message": "コンプレッサー有効"
+    },
+    "audiocompressor_disabled": {
+        "message": "コンプレッサー無効"
+    },
+    "audiocompressor_threshold": {
+        "message": "スレッショルド"
+    },
+    "audiocompressor_knee": {
+        "message": "ニー"
+    },
+    "audiocompressor_ratio": {
+        "message": "レシオ"
+    },
+    "audiocompressor_attack": {
+        "message": "アタック"
+    },
+    "audiocompressor_release": {
+        "message": "リリース"
+    },
+    "audiocompressor_gain": {
+        "message": "ゲイン"
+    },
+    "audioeq_title": {
+        "message": "オーディオイコライザー"
+    },
+    "audioeq_instructions": {
+        "message": "ダブルクリックでタイプを変更"
+    },
+    "audioeq_gain": {
+        "message": "ゲイン: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "スクロールで Q を変更"
+    },
+    "audioconvolver_title": {
+        "message": "オーディオコンボリューションフィルター"
+    },
+    "audioconvolver_channel": {
+        "message": "チャンネル"
+    },
+    "audioconvolver_enable": {
+        "message": "有効化"
+    },
+    "audioconvolver_normalize": {
+        "message": "正規化"
+    },
+    "audioconvolver_impulselength": {
+        "message": "インパルス長"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "インパルス応答"
+    },
+    "audioconvolver_selectfile": {
+        "message": "ファイルを選択"
+    },
+    "audioconvolver_enabled": {
+        "message": "コンボリューション有効"
+    },
+    "audioconvolver_convolver": {
+        "message": "コンボリューション"
+    },
+    "audioconvolver_disable": {
+        "message": "無効化"
+    },
+    "audioconvolver_disabled": {
+        "message": "コンボリューション無効"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "ダウンミックス前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "ダウンミックスなし"
+    },
+    "options_title": {
+        "message": "FastStream のオプション"
+    },
+    "options_search_placeholder": {
+        "message": "検索"
+    },
+    "options_reviewbanner_header": {
+        "message": "FastStream にご満足いただけましたか? 評価をお願いします!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream はボランティアによって維持されている趣味なプロジェクトです。改善すべき事を知るためにフィードバックをいただければ幸いです。お気軽にお申し付けください:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "使用方法"
+    },
+    "options_reviewbanner_l2": {
+        "message": "バグに遭遇した場合"
+    },
+    "options_reviewbanner_l3": {
+        "message": "機能のリクエスト"
+    },
+    "options_reviewbanner_end": {
+        "message": "私たちはアクセシビリティについても非常に重視をしています。現在のバージョンに不足している機能があった場合は、リクエストをしてください。できるだけ早く対応をします。"
+    },
+    "options_reviewbanner_rate": {
+        "message": "OK、FastStream を評価する"
+    },
+    "options_reviewbanner_norate": {
+        "message": "評価しない :("
+    },
+    "options_feedback_header": {
+        "message": "フィードバックをお願いします!"
+    },
+    "options_feedback_reason": {
+        "message": "あなたの意見を聞かせてください! 短いフォームを記入してください。私たちはあなたを追跡していないので、改善する唯一の方法です。"
+    },
+    "options_feedback_yes": {
+        "message": "はい、フィードバックを送信します"
+    },
+    "options_feedback_no": {
+        "message": "いいえ、結構です"
+    },
+    "options_help_feedback": {
+        "message": "フィードバックフォーム"
+    },
+    "options_update_header": {
+        "message": "アップデートが利用可能です!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 が利用可能です (現在のバージョン v$2)。アップデートしますか?"
+    },
+    "options_update_go": {
+        "message": "GitHub に移動"
+    },
+    "options_update_no": {
+        "message": "このアップデートを無視"
+    },
+    "options_reset_search": {
+        "message": "リセット"
+    },
+    "options_video_header": {
+        "message": "動画のオプション"
+    },
+    "options_video_body": {
+        "message": "動画に CSS フィルタを適用します。ピクチャー イン ピクチャー (PiP) では動作しません。"
+    },
+    "options_video_zoom": {
+        "message": "ビデオズーム"
+    },
+    "options_video_delay": {
+        "message": "Video Delay"
+    },
+    "options_video_brightness": {
+        "message": "明るさ"
+    },
+    "options_video_contrast": {
+        "message": "コントラスト"
+    },
+    "options_video_saturation": {
+        "message": "彩度"
+    },
+    "options_video_grayscale": {
+        "message": "グレースケール"
+    },
+    "options_video_sepia": {
+        "message": "セピア"
+    },
+    "options_video_invert": {
+        "message": "反転"
+    },
+    "options_video_hue": {
+        "message": "色相の回転"
+    },
+    "options_video_daltonizer_type": {
+        "message": "色覚異常の矯正"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "強度"
+    },
+    "options_video_daltonizer_none": {
+        "message": "なし"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomaly"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomaly"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomaly"
+    },
+    "options_general_header": {
+        "message": "一般設定"
+    },
+    "options_general_predownload": {
+        "message": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする"
+    },
+    "options_general_targetspeed": {
+        "message": "プリダウンローダーのターゲット速度"
+    },
+    "options_general_maxsize": {
+        "message": "プリダウンローダーの最大サイズ"
+    },
+    "options_general_previewenabled": {
+        "message": "タイムライン上でマウスを移動するとプレビューが表示されます"
+    },
+    "options_general_analyze": {
+        "message": "イントロ/アウトロが付いた動画を自動的に解析する\n(CPU パフォーマンスに問題がある場合は OFF にしてください)"
+    },
+    "options_general_storeprogress": {
+        "message": "最後に視聴した位置から動画を再生する"
+    },
+    "options_general_autosub": {
+        "message": "自動的に最適な字幕トラックを有効化する\n(字幕設定でデフォルトの言語を変更できます)"
+    },
+    "options_general_stream": {
+        "message": "プレイリスト URL (.m3u8/.mpd) を開くときに HLS/DASH ストリームを再生するプレーヤーを使用する"
+    },
+    "options_general_mp4": {
+        "message": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する"
+    },
+    "options_general_seekstep": {
+        "message": "シーク量 (秒)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "コントロール自動非表示までの遅延 (ミリ秒)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "プレーヤー下部に進行バーを常に表示"
+    },
+    "options_general_replace_delay": {
+        "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
+    },
+    "options_general_autoplayyt": {
+        "message": "YouTube 動画の自動再生"
+    },
+    "options_general_autoplaynext": {
+        "message": "次の動画の自動再生"
+    },
+    "options_general_quality": {
+        "message": "動画の品質"
+    },
+    "options_general_clickaction": {
+        "message": "シングルクリック時のアクション"
+    },
+    "options_general_dblclickaction": {
+        "message": "ダブルクリック時のアクション"
+    },
+    "options_general_tplclickaction": {
+        "message": "トリプルクリック時のアクション"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "何もしない"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "再生/一時停止に切り替え"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "フルスクリーンに切り替え"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "ウィンドウド フルスクリーンに切り替え"
+    },
+    "options_general_clickaction_pip": {
+        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
+    },
+    "options_general_clickaction_seek": {
+        "message": "シーク"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "コントロールを非表示"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "プレーヤーを非表示"
+    },
+    "options_general_vischangeaction": {
+        "message": "プレーヤーの可視性が変更されたとき"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "何もしない"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "再生/一時停止に切り替え"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "ミニプレーヤーに切り替え"
+    },
+    "options_general_minipos": {
+        "message": "ミニプレーヤーの位置"
+    },
+    "options_general_minipos_topleft": {
+        "message": "左上"
+    },
+    "options_general_minipos_topright": {
+        "message": "右上"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "左下"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "右下"
+    },
+    "options_general_minisize": {
+        "message": "ミニプレーヤーのサイズ"
+    },
+    "options_general_color_theme": {
+        "message": "プレーヤーのカラーテーマ"
+    },
+    "options_general_color_theme_default": {
+        "message": "デフォルト ダーク"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "北極ライト"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "オーシャンブルー"
+    },
+    "options_general_color_theme_neon": {
+        "message": "ネオンナイト"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "高コントラスト"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "夕焼けの輝き"
+    },
+    "options_general_color_theme_forest": {
+        "message": "森の夜"
+    },
+    "options_general_color_theme_slate": {
+        "message": "スレート単色"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "アメジストの霞"
+    },
+    "options_general_color_theme_desert": {
+        "message": "砂漠の砂"
+    },
+    "options_general_color_theme_mint": {
+        "message": "フレッシュミント"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
+    },
+    "options_general_ytclient": {
+        "message": "使用する YouTube クライアント (YouTube の問題がある場合に変更してください)"
+    },
+    "options_export_header": {
+        "message": "設定のインポート/エクスポート"
+    },
+    "options_import": {
+        "message": "ファイルから設定をインポート"
+    },
+    "options_export": {
+        "message": "設定をファイルにエクスポート"
+    },
+    "options_keybinds_header": {
+        "message": "キーボードショートカット"
+    },
+    "options_keybinds_body": {
+        "message": "キーバインドはプレーヤーをフォーカス時のみ有効です。"
+    },
+    "options_keybinds_reset": {
+        "message": "デフォルトにリセット"
+    },
+    "options_autourl_header": {
+        "message": "URL で自動的に有効化"
+    },
+    "options_autourl_body": {
+        "message": "これらの URL にアクセスすると自動的に拡張機能が有効化され、離れる事で無効化されます。1 行に 1 つの URL があり、その URL で始まるページも一致します。正規表現の場合は、先頭にチルダ (~) を付けます。1 行に 1 つの正規表現となります。"
+    },
+    "options_autourl_hint": {
+        "message": "ヒント: 正規表現のテストができます"
+    },
+    "options_autourl_allwebsites": {
+        "message": "すべてのウェブサイトで自動的に有効化"
+    },
+    "options_pattern_header": {
+        "message": "カスタムソースパターン"
+    },
+    "options_pattern_body": {
+        "message": "これらのパターンは、Web ページ上のカスタム動画ソースを検出するために使用されます。順番に適用され、最初に一致したものが使用されます。上級者向け。"
+    },
+    "options_help_header": {
+        "message": "ヘルプ"
+    },
+    "options_help_welcome": {
+        "message": "ようこそのページ"
+    },
+    "options_help_issues": {
+        "message": "問題を報告"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "フォントファミリー"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "フォントの太さ"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "フォントのサイズ"
+    },
+    "subtitles_settings_color": {
+        "message": "フォントの色"
+    },
+    "subtitles_settings_background": {
+        "message": "背景の色"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "輪郭線の色"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "輪郭線の太さ"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "言語"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "下の余白"
+    },
+    "yes": {
+        "message": "はい"
+    },
+    "no": {
+        "message": "いいえ"
+    },
+    "ok": {
+        "message": "OK"
+    },
+    "cancel": {
+        "message": "キャンセル"
+    },
+    "error_popup": {
+        "message": "エラー: $1"
+    },
+    "error_popup_body": {
+        "message": "このエラーを開発者に報告してください: https://github.com/Andrews54757/FastStream/issues 以下にスタックトレースが表示されます:"
+    },
+    "error_popup_send": {
+        "message": "エラーを報告"
+    },
+    "yt_error_login_required": {
+        "message": "申し訳ありませんが、FastStream は YouTube にログインする必要がある動画をサポートしていません。"
+    },
+    "player_outofstorage": {
+        "message": "警告: お使いのブラウザはファイルストレージ機能を完全にはサポートしていません。これは、ブラウザのストレージ容量が不足しているか、長時間再起動されていないためです。一部の機能が期待通りに動作しない場合があります。"
+    }
+}

@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream Video Player"
+    },
+    "extension_description": {
+        "message": "Ara belleğe alma olmadan yayın yapın. İnternetteki hatalı video oynatıcılarını düzeltin."
+    },
+    "extension_toggle_label": {
+        "message": "FastStream'i Aç/Kapat"
+    },
+    "welcome_page_title": {
+        "message": "FastStream'e hoş geldiniz"
+    },
+    "welcome_page_usage_header": {
+        "message": "Kullanım"
+    },
+    "welcome_page_usage_content0": {
+        "message": "FastStream'i kullanmanın dört yolu var"
+    },
+    "welcome_page_usage_content1": {
+        "message": "Video akışı olan bir web sitesine gidip simgeye tıklayarak FastStream'i açabilirsiniz. Akışı oynatın; oynatıcı otomatik olarak FastStream ile değiştirilecektir."
+    },
+    "welcome_page_usage_content2": {
+        "message": "Yeni bir sekme açıp eklenti simgesine tıklayarak oynatıcıya gidebilirsiniz."
+    },
+    "welcome_page_usage_content3": {
+        "message": "Seçenek etkinse, bir mp4/mpd/m3u8 URL'sine gidin; oynatıcı bunları oynatacaktır."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Oynatıcıyı yeni bir sekmede açık tutun; başka yerlerde gezinirken kaynakları toplayacaktır."
+    },
+    "welcome_page_usage_end": {
+        "message": "FastStream'i yüklediğiniz için teşekkürler! Herhangi bir sorun veya öneriniz olursa lütfen bize bildirin."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "Varsayılan Klavye Kontrolleri"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "Bu tuş atamalarını eklenti ayarlarından değiştirebilirsiniz"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "yön tuşları - 1 saniye ileri/geri sarma"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "tuşlar - 10 saniye ileri/geri sarma"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "tuş - Sarma işlemini geri al"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "yön tuşları - %10 ses açma/kısma"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- Tam ekran"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Eşzamanlı istek sayısını artır/azalt"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Zorla tekrar dene tuşu - başarısız indirmeleri yeniden denemek için kullanın"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Giriş/çıkışları atla (uygunsa)"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- Oynatıcıyı gizle/göster"
+    },
+    "perms_page_title": {
+        "message": "FastStream İzinleri"
+    },
+    "perms_page_about_header": {
+        "message": "FastStream'in Gerektirdiği İzinler Hakkında"
+    },
+    "perms_page_about_content0": {
+        "message": "Eklentinin çalışabilmesi için belirli izinlere sahip olması gerekir. Bu izinler yalnızca temel işlevsellik için kullanılır."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream sizden hiçbir veri toplamaz. Sizi izlemez. Herhangi bir sunucuya veri göndermez. Hatta veri gönderebileceği bir sunucusu bile yoktur."
+    },
+    "perms_page_about_content2": {
+        "message": "Güvenmiyor musunuz? FastStream'in kaynak kodu şurada mevcut:"
+    },
+    "perms_page_about_content3": {
+        "message": "Kodu kendiniz inceleyebilir veya talimatları izleyerek kendi özel derlemenizi manuel olarak kurabilirsiniz."
+    },
+    "perms_page_breakdown_header": {
+        "message": "İzinlerin Açıklaması"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "İşte FastStream'in ihtiyaç duyduğu izinler ve bunların gerekçeleri."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "Not: Bağlantılı örnekler kodun eski bir sürümüne ait olabilir, ancak genel anlam aynı kalmalıdır. Liste kapsamlı değildir; öğeler önem sırasına göre düzenlenmiştir."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "Tüm web sitelerine erişip değiştirebilme"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream'in oynatıcıyı doğrudan siteye ekleyebilmesi için tüm web sitelerine erişebilmesi gerekir. Ziyaret ettiğiniz sitelere şu amaçlarla bir içerik betiği enjekte eder:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "Oynatıcıyla değiştirmek üzere en büyük görünür video öğesini belirlemek."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "Oynatıcı bir çerçeveye enjekte edildiğinde tam ekran izinlerini etkinleştirmek."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "Sayfadan altyazı <track> öğelerini çekmek."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "webRequest API'sine erişim"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream'in video kaynaklarına yönelik HTTP isteklerini yakalayabilmesi gerekir, böylece:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "Video kaynaklarını tespit etmek"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "declarativeNetRequest API'sine erişim"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream'in seçili isteklerin HTTP başlıklarını değiştirebilmesi gerekir, böylece:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "Video kaynaklarına ait başlıkları geçersiz kılmak."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "Tarayıcınızda veri saklama"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream'in ayarlarınızı hatırlayabilmesi için tarayıcınızda veri saklayabilmesi gerekir."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "Genel eklenti seçenekleri."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "tabs API'sine erişim"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream'in her sekmedeki oynatıcılar ile içerik betikleri arasında mesaj gönderebilmesi gerekir."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "Kaynakları arka plan betiğinden oynatıcılara gönderme."
+    },
+    "perms_page_granted": {
+        "message": "Verildi"
+    },
+    "perms_page_notgranted": {
+        "message": "Verilmedi, izin vermek için tıklayın"
+    },
+    "player_needs_interaction": {
+        "message": "İndirme hızlandırmayı etkinleştirmek için etkileşime geçin"
+    },
+    "player_skipintro": {
+        "message": "İntroyu atla"
+    },
+    "player_skipoutro": {
+        "message": "Outroyu atla"
+    },
+    "player_nextvideoin": {
+        "message": "Sonraki video $1s içinde"
+    },
+    "player_hidecontrols": {
+        "message": "Kontrolleri gizle"
+    },
+    "player_loading": {
+        "message": "Yükleniyor..."
+    },
+    "player_nosource_header": {
+        "message": "Kaynak yüklenmedi!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Oynatmak için bir video dosyasını sürükleyip bırakın."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "Tıklayın"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "diğer sekmelerden tespit edilen kaynakları yüklemek için."
+    },
+    "player_play_label": {
+        "message": "Videoyu oynat"
+    },
+    "player_pause_label": {
+        "message": "Videoyu duraklat"
+    },
+    "player_next_video_label": {
+        "message": "Sonraki video"
+    },
+    "player_previous_video_label": {
+        "message": "Önceki video"
+    },
+    "player_volume_label": {
+        "message": "Ses seviyesi $1%. Ayarlamak için ok tuşlarını, sessize almak/açmak için Enter tuşunu kullanın."
+    },
+    "player_mute_label": {
+        "message": "Sesi kapat"
+    },
+    "player_timestamp_label": {
+        "message": "Zaman damgasıyla URL'yi kopyala"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "Kaynaklar Tarayıcısı"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "Kaynaklar tarayıcısını aç"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "Kaynaklar tarayıcısını kapat"
+    },
+    "player_audioconfig_title": {
+        "message": "Ses Yapılandırması"
+    },
+    "player_audioconfig_open_label": {
+        "message": "Ses yapılandırma penceresini aç"
+    },
+    "player_audioconfig_close_label": {
+        "message": "Ses yapılandırma penceresini kapat"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles Arama"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "OpenSubtitles arama penceresini kapat"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Başlığa, dosya adına vb. göre ara..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "Ara"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "Sezon #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "Bölüm #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "Tümü"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "Film"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "Bölüm"
+    },
+    "player_opensubtitles_language": {
+        "message": "Dil"
+    },
+    "player_opensubtitles_year": {
+        "message": "Yıl"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Sırala"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "İndirmeler"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "Yükleme Tarihi"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "Puan"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "Oylar"
+    },
+    "player_opensubtitles_sort": {
+        "message": "Sırala"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Azalan"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Artan"
+    },
+    "player_opensubtitles_searching": {
+        "message": "Aranıyor..."
+    },
+    "player_opensubtitles_error": {
+        "message": "Hata: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Uygun başlıkları ayarlayamıyor! Bu özelliği kullanmak için eklentiyi yükleyin!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles çalışmıyor!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles indirmesi başarısız oldu! Sunucuları muhtemelen hizmet vermiyor!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "Sonuç bulunamadı!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles altyazı indirme sınırı uyguluyor! Artık indirmeniz yok! Kotanız $1 içinde sıfırlanacak"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Altyazı dosyasını manuel indirmek için OpenSubtitles web sitesini açmak ister misiniz?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "Altyazılar menüsünü aç"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Altyazılar menüsünü kapat"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "Geri"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "Altyazı ayarları"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "Altyazıları test et"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "Testi durdur"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "Dosya yükle"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "URL'den"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "URL girin"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "Altyazı parçası indiriliyor..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "Altyazı yüklendi!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "Altyazı yüklenemedi!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "OpenSubtitles'ta ara"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "Altyazıları temizle"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "Altyazı ayarları"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Senkronizasyon aracı"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Altyazıları yeniden senkronize etmek için sürükleyin"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "Altyazı dosyasını kaydet"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "Altyazı parçasını kaldır"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Altyazıları $1s kaydır"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "Altyazılar $1s kaydırıldı"
+    },
+    "player_testsubtitle": {
+        "message": "Bu bir test altyazısı"
+    },
+    "player_qualitymenu_label": {
+        "message": "Video kalitesi"
+    },
+    "player_languagemenu_label": {
+        "message": "Dil seçimi"
+    },
+    "player_languagemenu_video": {
+        "message": "Video"
+    },
+    "player_languagemenu_audio": {
+        "message": "Ses"
+    },
+    "player_playbackrate_label": {
+        "message": "Oynatma hızı"
+    },
+    "player_settings_title": {
+        "message": "FastStream Ayarları"
+    },
+    "player_settings_open_label": {
+        "message": "Ayarlar penceresini aç"
+    },
+    "player_settings_close_label": {
+        "message": "Ayarlar penceresini kapat"
+    },
+    "player_savevideo_label": {
+        "message": "Videoyu kaydet. Kısmi videoyu kaydetmek için ALT tuşunu basılı tut. Arabelleği boşaltmak için SHIFT tuşunu basılı tut."
+    },
+    "player_screenshot_label": {
+        "message": "Ekran görüntüsü al"
+    },
+    "player_pip_label": {
+        "message": "Resim içinde resim"
+    },
+    "player_fullscreen_label": {
+        "message": "Tam ekranı aç/kapat"
+    },
+    "player_fullscreen_denied": {
+        "message": "Tam ekran izni reddedildi!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Pencereli tam ekranı aç/kapat"
+    },
+    "player_skip_forward_label": {
+        "message": "10 sn ileri atla"
+    },
+    "player_skip_backward_label": {
+        "message": "10 sn geri atla"
+    },
+    "player_more_label": {
+        "message": "Diğer araçlar"
+    },
+    "player_loop_label": {
+        "message": "Tekrarla"
+    },
+    "loop_menu_start": {
+        "message": "Başlangıç"
+    },
+    "loop_menu_end": {
+        "message": "Bitiş"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Döngü etkin"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Döngü devre dışı"
+    },
+    "loop_menu_gif_start": {
+        "message": "GIF 4x hızında kaydediliyor..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIF kaydı tamamlandı. Şimdi kaydediliyor..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "GIF kaydı iptal edildi!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "GIF kaydediliyor $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIF kaydedildi!"
+    },
+    "player_download_paused": {
+        "message": "İndirme duraklatıldı"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 parça başarısız oldu! Tekrar denemek için tıklayın."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 parça başarısız oldu! Tekrar denemek için tıklayın."
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% Önbelleğe alındı"
+    },
+    "player_welcometext": {
+        "message": "FastStream v$1'e hoş geldiniz!"
+    },
+    "player_nosource_alert": {
+        "message": "Kaynak yüklenmedi!"
+    },
+    "player_archive_loading": {
+        "message": "Arşiv yükleniyor... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "Arşiv yüklendi!"
+    },
+    "player_archive_fail": {
+        "message": "Arşiv yüklenemedi!"
+    },
+    "player_filename_prompt": {
+        "message": "Dosya için bir isim girin"
+    },
+    "player_screenshot_saving": {
+        "message": "Ekran görüntüsü alınıyor..."
+    },
+    "player_screenshot_saved": {
+        "message": "Ekran görüntüsü kaydedildi!"
+    },
+    "player_screenshot_fail": {
+        "message": "Ekran görüntüsü alınamadı!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Kaydetme zaten devam ediyor!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Bu video için kaydetme desteklenmiyor!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "Video henüz tamamen indirilmedi! Yine de kaydetmek istediğinize emin misiniz?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "Gizli Mod videoları tamponlamak için RAM kullanır. Bilgisayarınızda tüm videoyu kaydetmek için yeterli bellek olmayabilir!\nDevam etmek istediğinize emin misiniz?"
+    },
+    "player_savevideo_reencode": {
+        "message": "Kaydetme yeniden kodlama gerektirecek. Bu uzun sürebilir. Devam etmek istiyor musunuz?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "Kaydetme iptal ediliyor..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Kaydetme iptal edildi!"
+    },
+    "player_savevideo_start": {
+        "message": "Kaydetme başlatılıyor..."
+    },
+    "player_savevideo_progress": {
+        "message": "$1% kaydediliyor"
+    },
+    "player_savevideo_fail": {
+        "message": "Video kaydedilemedi!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Video kaydedilemedi!\nOynatıcının tampon belleğini arşivlemek ister misiniz?\n- Arşiv dosyalarını oynatıcıya sürükleyip bırakarak yükleyin"
+    },
+    "player_savevideo_complete": {
+        "message": "Kaydetme tamamlandı!"
+    },
+    "player_archiver_progress": {
+        "message": "$1% arşivleniyor"
+    },
+    "player_archiver_saved": {
+        "message": "Arşiv kaydedildi!"
+    },
+    "player_quality_current": {
+        "message": "(mevcut)"
+    },
+    "player_quality_unknown": {
+        "message": "(bilinmiyor)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Gizli modda ön indirme için yeterli alan yok, $1 önbelleğe alınacak"
+    },
+    "player_buffer_storage_warning": {
+        "message": "Video boyutu sınırı aşıyor, $1 önbelleğe alınacak"
+    },
+    "player_error_drm": {
+        "message": "Yüklenemedi! DRM desteklenmiyor!"
+    },
+    "player_error_load": {
+        "message": "Video yüklenemedi!"
+    },
+    "source_copied": {
+        "message": "URL panoya kopyalandı!"
+    },
+    "player_source_copybtn": {
+        "message": "Kopyala"
+    },
+    "player_source_copybtn_label": {
+        "message": "Kaynak URL'sini, başlıkları ve modu panoya kopyala"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Kopyalandı!"
+    },
+    "player_source_autodetect": {
+        "message": "Otomatik algılama"
+    },
+    "player_source_direct": {
+        "message": "Doğrudan"
+    },
+    "player_source_accelmp4": {
+        "message": "Hızlandırılmış MP4"
+    },
+    "player_source_accelhls": {
+        "message": "Hızlandırılmış HLS"
+    },
+    "player_source_acceldash": {
+        "message": "Hızlandırılmış DASH"
+    },
+    "player_source_accelyt": {
+        "message": "Hızlandırılmış YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "Hızlandırılmış Vimeo"
+    },
+    "player_source_mode": {
+        "message": "Mod"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Lütfen bir oynatıcı modu seçin!"
+    },
+    "player_source_url_placeholder": {
+        "message": "Kaynak URL"
+    },
+    "player_source_headerbtn": {
+        "message": "Başlıkları Geçersiz Kıl ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Başlık geçersiz kılma girişini aç/kapat"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Başlık Geçersiz Kılma (Sadece Eklenti)"
+    },
+    "player_source_playbtn": {
+        "message": "Oynat"
+    },
+    "player_source_playbtn_playing": {
+        "message": "Çalıyor"
+    },
+    "player_source_playbtn_loading": {
+        "message": "Yükleniyor..."
+    },
+    "player_source_deletebtn": {
+        "message": "Sil"
+    },
+    "player_source_headers_label": {
+        "message": "Üstbilgi geçersiz kılma alanı"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Üstbilgi-Adı: Üstbilgi Değeri\nÜstbilgi2-Adı: Üstbilgi2 Değeri"
+    },
+    "player_source_nonelisted": {
+        "message": "Listelenen kaynak yok"
+    },
+    "player_source_onelisted": {
+        "message": "1 kaynak listelendi"
+    },
+    "player_source_multilisted": {
+        "message": "$1 kaynak listelendi"
+    },
+    "player_source_addbtn": {
+        "message": "Kaynak Ekle"
+    },
+    "player_source_clearbtn": {
+        "message": "Kaynakları Temizle"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(dosyadan $1 tarihinde yüklendi)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "Yeni profil oluştur"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "Dosyadan profilleri içe aktar"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "Geçersiz profil dosyası"
+    },
+    "player_audioconfig_profile": {
+        "message": "Profil"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Adsız profil"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "Profili Yükle"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "Profil yüklendi!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "Profili Kaydet"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "Kaydediliyor..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "Profil kaydedildi!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "Profili İndir"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "İndirildi!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "Sil"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "Siliniyor..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "Silindi!"
+    },
+    "audiomixer_title": {
+        "message": "Ses Kanal Mikseri"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 kazancı $2 dB ($3%). Ayarlamak için ok tuşlarını kullanın. Mono'yu açıp kapatmak için M'ye basın"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 kazancı $2 dB ($3%). Ayarlamak için ok tuşlarını kullanın. Sesi kapatıp açmak için M'ye basın"
+    },
+    "audiomixer_solo_label": {
+        "message": "Solo"
+    },
+    "audiomixer_mute_label": {
+        "message": "Sessize Al"
+    },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "Kanal dinamiklerini düzenle"
+    },
+    "audiocrosstalk_title": {
+        "message": "Kanal Sızıntısı Düzeltmesi"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "Kanal sızıntısı düzeltmesi etkin"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "Kanal sızıntısı düzeltmesi devre dışı"
+    },
+    "audiocrosstalk_decay": {
+        "message": "Sönüm"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "Maks. Tonlama"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "Alçak Frekans Baypas"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "Yüksek Frekans Baypas"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "Hoparlör Mesafesi"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "Kafa Mesafesi"
+    },
+    "audiocompressor_title": {
+        "message": "Ses Kompresörü"
+    },
+    "audiocompressor_enabled": {
+        "message": "Kompresör etkin"
+    },
+    "audiocompressor_disabled": {
+        "message": "Kompresör devre dışı"
+    },
+    "audiocompressor_threshold": {
+        "message": "Eşik"
+    },
+    "audiocompressor_knee": {
+        "message": "Knee"
+    },
+    "audiocompressor_ratio": {
+        "message": "Oran"
+    },
+    "audiocompressor_attack": {
+        "message": "Atak"
+    },
+    "audiocompressor_release": {
+        "message": "Bırakma"
+    },
+    "audiocompressor_gain": {
+        "message": "Kazanç"
+    },
+    "audioeq_title": {
+        "message": "Ses Ekvalayzer"
+    },
+    "audioeq_instructions": {
+        "message": "Türü değiştirmek için çift tıklayın"
+    },
+    "audioeq_gain": {
+        "message": "Kazanç: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "Q'yu değiştirmek için kaydırın"
+    },
+    "audioconvolver_title": {
+        "message": "Ses Konvolüsyon Filtresi"
+    },
+    "audioconvolver_channel": {
+        "message": "Kanal"
+    },
+    "audioconvolver_enable": {
+        "message": "Etkinleştir"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalize Et"
+    },
+    "audioconvolver_impulselength": {
+        "message": "İmpuls Uzunluğu"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "İmpuls Tepkisi"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Dosya Seç"
+    },
+    "audioconvolver_enabled": {
+        "message": "Konvolüsyon etkin"
+    },
+    "audioconvolver_convolver": {
+        "message": "Konvolüsyon"
+    },
+    "audioconvolver_disable": {
+        "message": "Devre Dışı Bırak"
+    },
+    "audioconvolver_disabled": {
+        "message": "Konvolüsyon devre dışı"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Önce Downmix"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Downmix Yok"
+    },
+    "options_title": {
+        "message": "FastStream Seçenekleri"
+    },
+    "options_search_placeholder": {
+        "message": "Ara"
+    },
+    "options_reviewbanner_header": {
+        "message": "FastStream'i beğendiniz mi? Bir inceleme bırakın!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream, gönüllüler tarafından sürdürülen bir hobi projesidir. Nereleri geliştirebileceğimizi bilmemize yardımcı olduğu için geri bildiriminize minnettarız. Lütfen bize şunları bildirin:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "Nasıl kullandığınız"
+    },
+    "options_reviewbanner_l2": {
+        "message": "Karşılaştığınız hatalar"
+    },
+    "options_reviewbanner_l3": {
+        "message": "Özellik talepleri"
+    },
+    "options_reviewbanner_end": {
+        "message": "Erişilebilirliği de çok ciddiye alıyoruz. Mevcut sürümde eksik olan erişim ihtiyaçlarınız varsa lütfen talep gönderin; mümkün olan en kısa sürede üzerinde çalışacağız."
+    },
+    "options_reviewbanner_rate": {
+        "message": "Tamam, FastStream'i inceleyeceğim"
+    },
+    "options_reviewbanner_norate": {
+        "message": "İnceleme yapmak istemiyorum :("
+    },
+    "options_feedback_header": {
+        "message": "Geri bildiriminiz var mı?"
+    },
+    "options_feedback_reason": {
+        "message": "Görüşlerinizi duymak isteriz! Lütfen kısa formu doldurun. Sizi takip etmediğimiz için gelişmemize yardımcı olacak tek yol bu."
+    },
+    "options_feedback_yes": {
+        "message": "Evet, geri bildirimim var"
+    },
+    "options_feedback_no": {
+        "message": "Hayır, teşekkürler"
+    },
+    "options_help_feedback": {
+        "message": "Geri Bildirim Formu"
+    },
+    "options_update_header": {
+        "message": "Bir güncelleme mevcut!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 şimdi mevcut (şu anki sürüm v$2). Güncellemek ister misiniz?"
+    },
+    "options_update_go": {
+        "message": "Beni Github'a götür"
+    },
+    "options_update_no": {
+        "message": "Bu güncellemeyi yok say"
+    },
+    "options_reset_search": {
+        "message": "Sıfırla"
+    },
+    "options_video_header": {
+        "message": "Video Seçenekleri"
+    },
+    "options_video_body": {
+        "message": "Videoya CSS filtreleri uygular. Resim içinde resim ile çalışmaz."
+    },
+    "options_video_zoom": {
+        "message": "Video Yakınlaştırma"
+    },
+    "options_video_delay": {
+        "message": "Video Gecikmesi"
+    },
+    "options_video_brightness": {
+        "message": "Parlaklık"
+    },
+    "options_video_contrast": {
+        "message": "Kontrast"
+    },
+    "options_video_saturation": {
+        "message": "Doygunluk"
+    },
+    "options_video_grayscale": {
+        "message": "Gri tonlama"
+    },
+    "options_video_sepia": {
+        "message": "Sepya"
+    },
+    "options_video_invert": {
+        "message": "Tersine Çevir"
+    },
+    "options_video_hue": {
+        "message": "Renk Tonu Döndürme"
+    },
+    "options_video_daltonizer_type": {
+        "message": "Renk körlüğü düzeltmesi"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Güç"
+    },
+    "options_video_daltonizer_none": {
+        "message": "Yok"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomali"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomali"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomali"
+    },
+    "options_general_header": {
+        "message": "Genel Seçenekler"
+    },
+    "options_general_predownload": {
+        "message": "Mümkünse tüm videoyu arka planda önceden indir"
+    },
+    "options_general_targetspeed": {
+        "message": "Ön indiricinin hedef indirme hızı"
+    },
+    "options_general_maxsize": {
+        "message": "Önceden indirilen videonun maksimum boyutu"
+    },
+    "options_general_previewenabled": {
+        "message": "Zaman çizelgesinde üzerine gelince önizlemeyi göster"
+    },
+    "options_general_analyze": {
+        "message": "Giriş/çıkış bölümlerini tespit etmek için ardışık videoları otomatik olarak analiz et\n(CPU performansı sorunları yaşıyorsanız kapatın)"
+    },
+    "options_general_storeprogress": {
+        "message": "Videoları son izlenen konumdan oynat"
+    },
+    "options_general_autosub": {
+        "message": "Bulunan en iyi altyazı parçasını otomatik olarak etkinleştir\n(Öntanımlı dili altyazı ayarlarından değiştirin)"
+    },
+    "options_general_stream": {
+        "message": "Oynatma listesi URL'leri (.m3u8/.mpd) açıldığında HLS/DASH akışlarını oynatmak için oynatıcıyı kullan"
+    },
+    "options_general_mp4": {
+        "message": "Video URL'leri (.mp4) açıldığında MP4 videoları oynatmak için oynatıcıyı kullan"
+    },
+    "options_general_seekstep": {
+        "message": "Atlama miktarı (saniye)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesi (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Oynatıcı alt kısmında ilerleme çubuğunu her zaman göster"
+    },
+    "options_general_replace_delay": {
+        "message": "Otomatik oynatıcıyı değiştirmeden önce gecikme (ms)"
+    },
+    "options_general_autoplayyt": {
+        "message": "Mümkünse YouTube videolarını otomatik oynat"
+    },
+    "options_general_autoplaynext": {
+        "message": "Mevcut video bittiğinde sonraki videoyu otomatik oynat"
+    },
+    "options_general_quality": {
+        "message": "Varsayılan video kalitesi"
+    },
+    "options_general_clickaction": {
+        "message": "Tek tıklama eylemi"
+    },
+    "options_general_dblclickaction": {
+        "message": "Çift tıklama eylemi"
+    },
+    "options_general_tplclickaction": {
+        "message": "Üçlü tıklama eylemi"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "Hiçbir şey yapma"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Oynat/Duraklat"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Tam ekran aç/kapa"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Pencereli tam ekran aç/kapa"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Resim içinde resim aç/kapa"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Sar"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Denetimleri gizle"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Oynatıcıyı gizle"
+    },
+    "options_general_vischangeaction": {
+        "message": "Oynatıcı görünürlüğü değiştiğinde"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "Hiçbir şey yapma"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "Oynat/Duraklat"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Miniplayer aç/kapa"
+    },
+    "options_general_minipos": {
+        "message": "Miniplayer konumu"
+    },
+    "options_general_minipos_topleft": {
+        "message": "Sol Üst"
+    },
+    "options_general_minipos_topright": {
+        "message": "Sağ Üst"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "Sol Alt"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "Sağ Alt"
+    },
+    "options_general_minisize": {
+        "message": "Miniplayer boyutu"
+    },
+    "options_general_color_theme": {
+        "message": "Oynatıcı renk teması"
+    },
+    "options_general_color_theme_default": {
+        "message": "Varsayılan Koyu"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Arktik Açık"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Okyanus Mavisi"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Neon Gece"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Yüksek Kontrast"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Günbatımı Işıltısı"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Orman Gecesi"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Antrasit Mono"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "Ametist Sis"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Çöl Kumu"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Taze Nane"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "Resim içinde resmi aç/kapat"
+    },
+    "options_general_ytclient": {
+        "message": "Kullanılacak YT istemcisi. Sorun varsa değiştirmeyi deneyin."
+    },
+    "options_export_header": {
+        "message": "Ayarları İçe/Dışa Aktar"
+    },
+    "options_import": {
+        "message": "Dosyadan Ayarları İçe Aktar"
+    },
+    "options_export": {
+        "message": "Ayarları Dosyaya Dışa Aktar"
+    },
+    "options_keybinds_header": {
+        "message": "Klavye Kısayolları"
+    },
+    "options_keybinds_body": {
+        "message": "Kısayol tuşları yalnızca oynatıcı odaklandığında etkindir."
+    },
+    "options_keybinds_reset": {
+        "message": "Varsayılara Sıfırla"
+    },
+    "options_autourl_header": {
+        "message": "Otomatik Etkinleştirilen URL'ler"
+    },
+    "options_autourl_body": {
+        "message": "Bu URL'leri ziyaret ettiğinizde uzantıyı otomatik olarak etkinleştirir ve ayrılınca devre dışı bırakır. Her satıra bir URL yazın; o URL ile başlayan sayfalar da eşleşir. Regex için başına tilde (~) koyun. Her satıra bir regex. Siteleri hariç tutmak için başına ünlem işareti (!) ekleyin."
+    },
+    "options_autourl_hint": {
+        "message": "İpucu: Regex'i burada test edin"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Tüm web sitelerinde otomatik etkinleştir"
+    },
+    "options_pattern_header": {
+        "message": "Özel Kaynak Desenleri"
+    },
+    "options_pattern_body": {
+        "message": "Bu desenler, web sayfalarında özel video kaynaklarını tespit etmek için kullanılır. Sırayla uygulanır ve ilk eşleşme kullanılır. Sadece ileri düzey kullanıcılar içindir."
+    },
+    "options_help_header": {
+        "message": "Yardım"
+    },
+    "options_help_welcome": {
+        "message": "Hoş Geldiniz"
+    },
+    "options_help_issues": {
+        "message": "Hata İzleyici"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "Yazı Tipi"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Yazı Kalınlığı"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Yazı Boyutu"
+    },
+    "subtitles_settings_color": {
+        "message": "Yazı Rengi"
+    },
+    "subtitles_settings_background": {
+        "message": "Arka Plan Rengi"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "Kontur Rengi"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "Kontur Genişliği"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Dil"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "Alt Boşluk"
+    },
+    "yes": {
+        "message": "Evet"
+    },
+    "no": {
+        "message": "Hayır"
+    },
+    "ok": {
+        "message": "Tamam"
+    },
+    "cancel": {
+        "message": "İptal"
+    },
+    "error_popup": {
+        "message": "Hata: $1"
+    },
+    "error_popup_body": {
+        "message": "Lütfen bu hatayı ve aşağıdaki stack trace'i geliştiricilere https://github.com/Andrews54757/FastStream/issues adresinden bildirin:"
+    },
+    "error_popup_send": {
+        "message": "Hata Bildir"
+    },
+    "yt_error_login_required": {
+        "message": "Üzgünüz! FastStream, YouTube girişinizi gerektiren videoları desteklemiyor."
+    },
+    "player_outofstorage": {
+        "message": "Uyarı: Tarayıcınız dosya depolama özelliklerini tam olarak desteklemiyor. Bunun nedeni, tarayıcınızın depolama alanının dolmuş olması veya uzun süredir yeniden başlatılmamış olması olabilir. Bazı özellikler beklendiği gibi çalışmayabilir."
+    }
+}

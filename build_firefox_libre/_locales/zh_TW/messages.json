@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream 影片播放器"
+    },
+    "extension_description": {
+        "message": "無緩衝串流。修復網路上壞掉的影片播放器。"
+    },
+    "extension_toggle_label": {
+        "message": "切換 FastStream"
+    },
+    "welcome_page_title": {
+        "message": "歡迎使用 FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "使用方式"
+    },
+    "welcome_page_usage_content0": {
+        "message": "使用 FastStream 有四種方式"
+    },
+    "welcome_page_usage_content1": {
+        "message": "你可以前往有影片串流的網站，點擊圖示開啟 FastStream。播放串流時，播放器會自動由 FastStream 取代。"
+    },
+    "welcome_page_usage_content2": {
+        "message": "在新分頁按擴充功能圖示即可前往播放器。"
+    },
+    "welcome_page_usage_content3": {
+        "message": "若啟用此選項，前往 mp4/mpd/m3u8 網址時播放器會播放該內容。"
+    },
+    "welcome_page_usage_content4": {
+        "message": "在新分頁保持播放器開啟，瀏覽其他頁面時它會收集來源。"
+    },
+    "welcome_page_usage_end": {
+        "message": "感謝安裝 FastStream！如有任何問題或建議，請告訴我們。"
+    },
+    "welcome_page_keybinds_header": {
+        "message": "預設鍵盤操作"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "可在擴充功能設定中更改這些快捷鍵"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "方向鍵 - 前/後跳 1 秒"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "鍵 - 前/後跳 10 秒"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "鍵 - 復原跳轉"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "方向鍵 - 音量增減 10%"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- 全螢幕"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- 增減併發請求數"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- 強制重試按鍵 - 用來重新嘗試失敗的下載"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- 跳過片頭/片尾（如適用）"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- 顯示/隱藏播放器"
+    },
+    "perms_page_title": {
+        "message": "FastStream 權限"
+    },
+    "perms_page_about_header": {
+        "message": "關於 FastStream 所需的權限"
+    },
+    "perms_page_about_content0": {
+        "message": "為了讓擴充功能運作，需要授予某些權限。這些權限僅用於基本功能。"
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream 不會收集你的任何資料，也不會追蹤你或將資料傳送到任何伺服器；它甚至沒有伺服器可以傳送資料。"
+    },
+    "perms_page_about_content2": {
+        "message": "不信？FastStream 的原始碼已公開於"
+    },
+    "perms_page_about_content3": {
+        "message": "你可以自行檢視程式碼，或依說明手動安裝自訂版本。"
+    },
+    "perms_page_breakdown_header": {
+        "message": "權限明細"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "以下說明 FastStream 所需的權限及其必要性。"
+    },
+    "perms_page_breakdown_content1": {
+        "message": "注意：連結範例可能指向舊版程式碼，但整體重點應相同。此列表非詳盡無遺，項目依重要性排序。"
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "存取並修改所有網站"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream 需要能夠存取所有網站，以便直接將播放器注入網站。它會在你造訪的網站注入內容腳本，以便："
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "找出頁面中可見且最大的影片元素並替換為播放器。"
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "當播放器被注入框架時，啟用全螢幕權限。"
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "從頁面擷取字幕 <track> 元素。"
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "存取 webRequest API"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream 需要攔截指向影片來源的 HTTP 請求以便："
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "識別影片來源"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "存取 declarativeNetRequest API"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream 需要修改特定請求的 HTTP 標頭以便："
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "覆寫影片來源的標頭。"
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "在你的瀏覽器中儲存資料"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream 需要在你的瀏覽器中儲存資料以記住你的設定。"
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "一般擴充功能選項。"
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "存取 tabs API"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream 需要在每個分頁中於播放器與內容腳本間傳遞訊息。"
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "由背景腳本將來源傳送給播放器。"
+    },
+    "perms_page_granted": {
+        "message": "已授權"
+    },
+    "perms_page_notgranted": {
+        "message": "尚未授權，點此授權"
+    },
+    "player_needs_interaction": {
+        "message": "互動以啟用下載加速"
+    },
+    "player_skipintro": {
+        "message": "跳過片頭"
+    },
+    "player_skipoutro": {
+        "message": "跳過片尾"
+    },
+    "player_nextvideoin": {
+        "message": "下一部影片於 $1s 後播放"
+    },
+    "player_hidecontrols": {
+        "message": "隱藏控制項"
+    },
+    "player_loading": {
+        "message": "載入中..."
+    },
+    "player_nosource_header": {
+        "message": "尚未載入任何來源！"
+    },
+    "player_nosource_instruction1": {
+        "message": "拖放影片檔案以播放。"
+    },
+    "player_nosource_instruction2p1": {
+        "message": "點擊"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "以載入從其他分頁偵測到的來源。"
+    },
+    "player_play_label": {
+        "message": "播放影片"
+    },
+    "player_pause_label": {
+        "message": "暫停影片"
+    },
+    "player_next_video_label": {
+        "message": "下一部影片"
+    },
+    "player_previous_video_label": {
+        "message": "上一部影片"
+    },
+    "player_volume_label": {
+        "message": "音量為 $1%。使用方向鍵調整，按 Enter 切換靜音。"
+    },
+    "player_mute_label": {
+        "message": "靜音"
+    },
+    "player_timestamp_label": {
+        "message": "複製含時間戳的 URL"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "來源瀏覽器"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "開啟來源瀏覽器"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "關閉來源瀏覽器"
+    },
+    "player_audioconfig_title": {
+        "message": "音訊設定"
+    },
+    "player_audioconfig_open_label": {
+        "message": "開啟音訊設定視窗"
+    },
+    "player_audioconfig_close_label": {
+        "message": "關閉音訊設定視窗"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles 搜尋"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "關閉 OpenSubtitles 搜尋視窗"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "以標題、檔名等搜尋..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "搜尋"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "季 #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "集 #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "全部"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "電影"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "影集"
+    },
+    "player_opensubtitles_language": {
+        "message": "語言"
+    },
+    "player_opensubtitles_year": {
+        "message": "年份"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "排序依據"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "下載次數"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "上傳日期"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "評分"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "票數"
+    },
+    "player_opensubtitles_sort": {
+        "message": "排序"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "遞減"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "遞增"
+    },
+    "player_opensubtitles_searching": {
+        "message": "搜尋中..."
+    },
+    "player_opensubtitles_error": {
+        "message": "錯誤：$1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "無法設定正確的標頭！請安裝擴充功能以使用此功能！"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles 無法使用！"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles 下載失敗！伺服器可能當掉了！"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "找不到結果！"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles 限制字幕下載！您已無剩餘下載次數！您的配額將於 $1 重置"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "要開啟 OpenSubtitles 網站手動下載字幕檔嗎？"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "開啟字幕選單"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "關閉字幕選單"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "返回"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "字幕設定"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "測試字幕"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "停止測試"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "上傳檔案"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "從 URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "輸入 URL"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "正在下載字幕檔..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "字幕已載入！"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "字幕載入失敗！"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "搜尋 OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "清除字幕"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "字幕設定"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "重新同步工具"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "拖曳字幕以重新同步"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "儲存字幕檔案"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "移除字幕軌"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "字幕偏移 $1s"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "字幕已偏移 $1s"
+    },
+    "player_testsubtitle": {
+        "message": "這是測試字幕"
+    },
+    "player_qualitymenu_label": {
+        "message": "影片品質"
+    },
+    "player_languagemenu_label": {
+        "message": "語言選擇"
+    },
+    "player_languagemenu_video": {
+        "message": "影片"
+    },
+    "player_languagemenu_audio": {
+        "message": "音訊"
+    },
+    "player_playbackrate_label": {
+        "message": "播放速度"
+    },
+    "player_settings_title": {
+        "message": "FastStream 設定"
+    },
+    "player_settings_open_label": {
+        "message": "開啟設定視窗"
+    },
+    "player_settings_close_label": {
+        "message": "關閉設定視窗"
+    },
+    "player_savevideo_label": {
+        "message": "儲存影片。按住 ALT 可儲存部分影片。按住 SHIFT 可匯出緩衝區。"
+    },
+    "player_screenshot_label": {
+        "message": "截圖"
+    },
+    "player_pip_label": {
+        "message": "畫中畫"
+    },
+    "player_fullscreen_label": {
+        "message": "切換全螢幕"
+    },
+    "player_fullscreen_denied": {
+        "message": "全螢幕權限被拒絕！"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "切換視窗化全螢幕"
+    },
+    "player_skip_forward_label": {
+        "message": "快轉 10 秒"
+    },
+    "player_skip_backward_label": {
+        "message": "快退 10 秒"
+    },
+    "player_more_label": {
+        "message": "更多工具"
+    },
+    "player_loop_label": {
+        "message": "重播"
+    },
+    "loop_menu_start": {
+        "message": "起點"
+    },
+    "loop_menu_end": {
+        "message": "終點"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "已啟用重播"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "已停用重播"
+    },
+    "loop_menu_gif_start": {
+        "message": "正在以 4 倍速錄製 GIF..."
+    },
+    "loop_menu_gif_end": {
+        "message": "已完成 GIF 錄製。正在儲存..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "已中止 GIF 錄製！"
+    },
+    "loop_menu_gif_progress": {
+        "message": "正在儲存 GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIF 儲存完成！"
+    },
+    "player_download_paused": {
+        "message": "下載已暫停"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 片段失敗！點擊重試。"
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 個片段失敗！點擊重試。"
+    },
+    "player_fragment_allbuffered": {
+        "message": "已緩衝 100%"
+    },
+    "player_welcometext": {
+        "message": "歡迎使用 FastStream v$1！"
+    },
+    "player_nosource_alert": {
+        "message": "尚未載入來源！"
+    },
+    "player_archive_loading": {
+        "message": "正在載入封存檔... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "已載入封存檔！"
+    },
+    "player_archive_fail": {
+        "message": "載入封存檔失敗！"
+    },
+    "player_filename_prompt": {
+        "message": "輸入檔案名稱"
+    },
+    "player_screenshot_saving": {
+        "message": "正在擷圖..."
+    },
+    "player_screenshot_saved": {
+        "message": "擷圖已儲存！"
+    },
+    "player_screenshot_fail": {
+        "message": "擷圖失敗！"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "已在儲存中！"
+    },
+    "player_savevideo_unsupported": {
+        "message": "此影片不支援儲存！"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "影片尚未下載完成！確定要儲存嗎？"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "無痕模式會使用記憶體緩衝影片。你的電腦可能沒有足夠的記憶體來儲存整段影片！\n確定要繼續嗎？"
+    },
+    "player_savevideo_reencode": {
+        "message": "儲存將需要重新編碼，可能會耗費較長時間。要繼續嗎？"
+    },
+    "player_savevideo_cancelling": {
+        "message": "正在取消儲存..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "已取消儲存！"
+    },
+    "player_savevideo_start": {
+        "message": "正在儲存..."
+    },
+    "player_savevideo_progress": {
+        "message": "儲存中 $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "儲存影片失敗！"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "儲存影片失敗！\n要改為封存播放器的緩衝區儲存嗎？\n- 將封存檔案拖放到播放器以載入"
+    },
+    "player_savevideo_complete": {
+        "message": "儲存完成！"
+    },
+    "player_archiver_progress": {
+        "message": "封存中 $1%"
+    },
+    "player_archiver_saved": {
+        "message": "已存檔！"
+    },
+    "player_quality_current": {
+        "message": "(目前)"
+    },
+    "player_quality_unknown": {
+        "message": "(未知)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "無痕模式下空間不足，將緩衝 $1"
+    },
+    "player_buffer_storage_warning": {
+        "message": "影片大小超過限制，將緩衝 $1"
+    },
+    "player_error_drm": {
+        "message": "載入失敗！不支援 DRM！"
+    },
+    "player_error_load": {
+        "message": "影片載入失敗！"
+    },
+    "source_copied": {
+        "message": "已將網址複製到剪貼簿！"
+    },
+    "player_source_copybtn": {
+        "message": "複製"
+    },
+    "player_source_copybtn_label": {
+        "message": "將來源 URL、標頭與模式複製到剪貼簿"
+    },
+    "player_source_copybtn_copied": {
+        "message": "已複製！"
+    },
+    "player_source_autodetect": {
+        "message": "自動偵測"
+    },
+    "player_source_direct": {
+        "message": "直接"
+    },
+    "player_source_accelmp4": {
+        "message": "加速 MP4"
+    },
+    "player_source_accelhls": {
+        "message": "加速 HLS"
+    },
+    "player_source_acceldash": {
+        "message": "加速 DASH"
+    },
+    "player_source_accelyt": {
+        "message": "加速 YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "加速 Vimeo"
+    },
+    "player_source_mode": {
+        "message": "模式"
+    },
+    "player_source_mode_auto_error": {
+        "message": "請選擇播放器模式！"
+    },
+    "player_source_url_placeholder": {
+        "message": "來源 URL"
+    },
+    "player_source_headerbtn": {
+        "message": "標頭覆寫 ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "切換標頭覆寫輸入"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "標頭覆寫 (僅限擴充功能)"
+    },
+    "player_source_playbtn": {
+        "message": "播放"
+    },
+    "player_source_playbtn_playing": {
+        "message": "播放中"
+    },
+    "player_source_playbtn_loading": {
+        "message": "載入中..."
+    },
+    "player_source_deletebtn": {
+        "message": "刪除"
+    },
+    "player_source_headers_label": {
+        "message": "自訂標頭"
+    },
+    "player_source_headers_placeholder": {
+        "message": "標頭名稱: 標頭值\n標頭2名稱: 標頭2值"
+    },
+    "player_source_nonelisted": {
+        "message": "未列出任何來源"
+    },
+    "player_source_onelisted": {
+        "message": "列出 1 個來源"
+    },
+    "player_source_multilisted": {
+        "message": "已列出 $1 個來源"
+    },
+    "player_source_addbtn": {
+        "message": "新增來源"
+    },
+    "player_source_clearbtn": {
+        "message": "清除來源"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(已從檔案 $1 載入)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "建立新設定檔"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "從檔案匯入設定檔"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "無效的設定檔案"
+    },
+    "player_audioconfig_profile": {
+        "message": "設定檔"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "未命名的設定檔"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "載入設定檔"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "已載入設定檔!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "儲存設定檔"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "儲存中..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "已儲存設定檔!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "下載設定檔"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "已下載!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "刪除"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "刪除中..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "已刪除！"
+    },
+    "audiomixer_title": {
+        "message": "音訊通道混音器"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換單聲道"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 增益為 $2 dB ($3%)。使用方向鍵調整。按 M 切換靜音"
+    },
+    "audiomixer_solo_label": {
+        "message": "獨奏"
+    },
+    "audiomixer_mute_label": {
+        "message": "靜音"
+    },
+    "audiomixer_mono": {
+        "message": "單聲道"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "編輯通道動態"
+    },
+    "audiocrosstalk_title": {
+        "message": "音訊串音校正"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "已啟用串音校正"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "已停用串音校正"
+    },
+    "audiocrosstalk_decay": {
+        "message": "衰減"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "最大著色"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "時間差"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "低頻旁通"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "高頻旁通"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "喇叭距離"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "頭部距離"
+    },
+    "audiocompressor_title": {
+        "message": "音訊壓縮器"
+    },
+    "audiocompressor_enabled": {
+        "message": "已啟用壓縮器"
+    },
+    "audiocompressor_disabled": {
+        "message": "已停用壓縮器"
+    },
+    "audiocompressor_threshold": {
+        "message": "閾值"
+    },
+    "audiocompressor_knee": {
+        "message": "膝形"
+    },
+    "audiocompressor_ratio": {
+        "message": "壓縮比"
+    },
+    "audiocompressor_attack": {
+        "message": "攻擊時間"
+    },
+    "audiocompressor_release": {
+        "message": "釋放"
+    },
+    "audiocompressor_gain": {
+        "message": "增益"
+    },
+    "audioeq_title": {
+        "message": "音訊均衡器"
+    },
+    "audioeq_instructions": {
+        "message": "雙擊更改類型"
+    },
+    "audioeq_gain": {
+        "message": "增益: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "滾動以調整 Q 值"
+    },
+    "audioconvolver_title": {
+        "message": "音訊捲積濾波器"
+    },
+    "audioconvolver_channel": {
+        "message": "通道"
+    },
+    "audioconvolver_enable": {
+        "message": "啟用"
+    },
+    "audioconvolver_normalize": {
+        "message": "正規化"
+    },
+    "audioconvolver_impulselength": {
+        "message": "脈衝長度"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "脈衝響應"
+    },
+    "audioconvolver_selectfile": {
+        "message": "選擇檔案"
+    },
+    "audioconvolver_enabled": {
+        "message": "已啟用捲積"
+    },
+    "audioconvolver_convolver": {
+        "message": "捲積器"
+    },
+    "audioconvolver_disable": {
+        "message": "停用"
+    },
+    "audioconvolver_disabled": {
+        "message": "已停用捲積"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "下混前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "無下混"
+    },
+    "options_title": {
+        "message": "FastStream 選項"
+    },
+    "options_search_placeholder": {
+        "message": "搜尋"
+    },
+    "options_reviewbanner_header": {
+        "message": "喜歡 FastStream 嗎？請留下評價！"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream 是由志工維護的興趣專案。我們非常感謝你的回饋，因為這能幫助我們了解改進方向。請隨時告訴我們："
+    },
+    "options_reviewbanner_l1": {
+        "message": "你如何使用它"
+    },
+    "options_reviewbanner_l2": {
+        "message": "你遇到的任何錯誤"
+    },
+    "options_reviewbanner_l3": {
+        "message": "功能建議"
+    },
+    "options_reviewbanner_end": {
+        "message": "我們也非常重視無障礙。如果目前版本缺少你需要的輔助功能，請提出需求，我們會盡快處理。"
+    },
+    "options_reviewbanner_rate": {
+        "message": "好，我會為 FastStream 留下評論"
+    },
+    "options_reviewbanner_norate": {
+        "message": "我不想評論 :("
+    },
+    "options_feedback_header": {
+        "message": "有回饋嗎？"
+    },
+    "options_feedback_reason": {
+        "message": "我們很想聽到你的意見！請填寫一份簡短表單。由於我們不會追蹤你，這是我們唯一能改進的方式。"
+    },
+    "options_feedback_yes": {
+        "message": "是的，我有回饋"
+    },
+    "options_feedback_no": {
+        "message": "不用，謝謝"
+    },
+    "options_help_feedback": {
+        "message": "回饋表單"
+    },
+    "options_update_header": {
+        "message": "有更新可用！"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 現已可用 (目前版本 v$2)。要更新嗎？"
+    },
+    "options_update_go": {
+        "message": "前往 GitHub"
+    },
+    "options_update_no": {
+        "message": "忽略此更新"
+    },
+    "options_reset_search": {
+        "message": "重置"
+    },
+    "options_video_header": {
+        "message": "影片選項"
+    },
+    "options_video_body": {
+        "message": "對影片套用 CSS 濾鏡。畫中畫模式下無法使用。"
+    },
+    "options_video_zoom": {
+        "message": "影片縮放"
+    },
+    "options_video_delay": {
+        "message": "影片延遲"
+    },
+    "options_video_brightness": {
+        "message": "亮度"
+    },
+    "options_video_contrast": {
+        "message": "對比度"
+    },
+    "options_video_saturation": {
+        "message": "飽和度"
+    },
+    "options_video_grayscale": {
+        "message": "灰階"
+    },
+    "options_video_sepia": {
+        "message": "棕褐色"
+    },
+    "options_video_invert": {
+        "message": "反相"
+    },
+    "options_video_hue": {
+        "message": "色相旋轉"
+    },
+    "options_video_daltonizer_type": {
+        "message": "色盲校正"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "強度"
+    },
+    "options_video_daltonizer_none": {
+        "message": "無"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "紅色異常"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "綠色異常"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "藍色異常"
+    },
+    "options_general_header": {
+        "message": "一般選項"
+    },
+    "options_general_predownload": {
+        "message": "如可能，在背景預先下載整個影片"
+    },
+    "options_general_targetspeed": {
+        "message": "預先下載器目標下載速度"
+    },
+    "options_general_maxsize": {
+        "message": "預先下載影片最大大小"
+    },
+    "options_general_previewenabled": {
+        "message": "在時間軸上懸停時顯示預覽"
+    },
+    "options_general_analyze": {
+        "message": "自動分析連續影片以偵測片頭/片尾\n(若有 CPU 效能問題請關閉)"
+    },
+    "options_general_storeprogress": {
+        "message": "從上次觀看位置播放影片"
+    },
+    "options_general_autosub": {
+        "message": "自動啟用偵測到的最佳字幕軌\n(在字幕設定中變更預設語言)"
+    },
+    "options_general_stream": {
+        "message": "開啟播放清單 URL（.m3u8/.mpd）時使用播放器播放 HLS/DASH 串流"
+    },
+    "options_general_mp4": {
+        "message": "開啟 .mp4 連結時以播放器播放 MP4 影片"
+    },
+    "options_general_seekstep": {
+        "message": "跳轉幅度（秒）"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控制項自動隱藏延遲（毫秒）"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "始終在播放器底部顯示進度條"
+    },
+    "options_general_replace_delay": {
+        "message": "自動替換播放器前的延遲（毫秒）"
+    },
+    "options_general_autoplayyt": {
+        "message": "如可能則自動播放 YouTube 影片"
+    },
+    "options_general_autoplaynext": {
+        "message": "當目前影片結束時自動播放下一支影片"
+    },
+    "options_general_quality": {
+        "message": "預設影片畫質"
+    },
+    "options_general_clickaction": {
+        "message": "單擊動作"
+    },
+    "options_general_dblclickaction": {
+        "message": "雙擊動作"
+    },
+    "options_general_tplclickaction": {
+        "message": "三擊動作"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "不執行任何動作"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "切換播放/暫停"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "切換全螢幕"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "切換視窗化全螢幕"
+    },
+    "options_general_clickaction_pip": {
+        "message": "切換畫中畫"
+    },
+    "options_general_clickaction_seek": {
+        "message": "跳轉"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "隱藏控制列"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "隱藏播放器"
+    },
+    "options_general_vischangeaction": {
+        "message": "當播放器顯示狀態變更時"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "不執行任何動作"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "切換播放/暫停"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "切換迷你播放器"
+    },
+    "options_general_minipos": {
+        "message": "迷你播放器位置"
+    },
+    "options_general_minipos_topleft": {
+        "message": "左上"
+    },
+    "options_general_minipos_topright": {
+        "message": "右上"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "左下"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "右下"
+    },
+    "options_general_minisize": {
+        "message": "迷你播放器大小"
+    },
+    "options_general_color_theme": {
+        "message": "播放器配色主題"
+    },
+    "options_general_color_theme_default": {
+        "message": "預設（深色）"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "極地淺色"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "海洋藍"
+    },
+    "options_general_color_theme_neon": {
+        "message": "霓虹夜"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "高對比"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "夕陽光暈"
+    },
+    "options_general_color_theme_forest": {
+        "message": "森林夜"
+    },
+    "options_general_color_theme_slate": {
+        "message": "石板單色"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "紫晶薄霧"
+    },
+    "options_general_color_theme_desert": {
+        "message": "沙漠沙色"
+    },
+    "options_general_color_theme_mint": {
+        "message": "薄荷清新"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "切換畫中畫"
+    },
+    "options_general_ytclient": {
+        "message": "使用的 YT 用戶端。若遇到問題，請嘗試更換。"
+    },
+    "options_export_header": {
+        "message": "匯入/匯出設定"
+    },
+    "options_import": {
+        "message": "從檔案匯入設定"
+    },
+    "options_export": {
+        "message": "匯出設定為檔案"
+    },
+    "options_keybinds_header": {
+        "message": "快捷鍵"
+    },
+    "options_keybinds_body": {
+        "message": "僅當播放器獲得焦點時，快捷鍵才會生效。"
+    },
+    "options_keybinds_reset": {
+        "message": "回復預設"
+    },
+    "options_autourl_header": {
+        "message": "自動啟用網址"
+    },
+    "options_autourl_body": {
+        "message": "造訪這些網址時會自動啟用擴充功能，離開時會自動停用。每行一個網址，且以該網址開頭的頁面也會被匹配。若為正則表達式，請在前面加上波浪號 (~)，每行一個正則。若要排除網站，請在前面加上驚嘆號 (!)。"
+    },
+    "options_autourl_hint": {
+        "message": "提示：在此測試正則表達式"
+    },
+    "options_autourl_allwebsites": {
+        "message": "在所有網站上自動啟用"
+    },
+    "options_pattern_header": {
+        "message": "自訂來源模式"
+    },
+    "options_pattern_body": {
+        "message": "這些模式用於偵測網頁上的自訂視訊來源。會依順序套用，採第一個符合的結果。僅供進階使用者。"
+    },
+    "options_help_header": {
+        "message": "說明"
+    },
+    "options_help_welcome": {
+        "message": "歡迎頁面"
+    },
+    "options_help_issues": {
+        "message": "問題追蹤"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "字體"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "字重"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "字體大小"
+    },
+    "subtitles_settings_color": {
+        "message": "文字顏色"
+    },
+    "subtitles_settings_background": {
+        "message": "背景顏色"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "描邊顏色"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "描邊寬度"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "語言"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "底部邊距"
+    },
+    "yes": {
+        "message": "是"
+    },
+    "no": {
+        "message": "否"
+    },
+    "ok": {
+        "message": "確定"
+    },
+    "cancel": {
+        "message": "取消"
+    },
+    "error_popup": {
+        "message": "錯誤：$1"
+    },
+    "error_popup_body": {
+        "message": "請將此錯誤與下方的堆疊追蹤一併回報給開發者，網址：https://github.com/Andrews54757/FastStream/issues："
+    },
+    "error_popup_send": {
+        "message": "回報錯誤"
+    },
+    "yt_error_login_required": {
+        "message": "抱歉！FastStream 不支援需要登入 YouTube 才能觀看的影片。"
+    },
+    "player_outofstorage": {
+        "message": "警告：您的瀏覽器不完全支援檔案儲存功能。這可能是因為您的瀏覽器儲存空間已滿或長時間未重新啟動。某些功能可能無法如預期般運作。"
+    }
+}

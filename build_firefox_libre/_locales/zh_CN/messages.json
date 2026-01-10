@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "FastStream 视频播放器"
+    },
+    "extension_description": {
+        "message": "无缓冲播放，修复网络上的问题视频播放器。"
+    },
+    "extension_toggle_label": {
+        "message": "切换 FastStream"
+    },
+    "welcome_page_title": {
+        "message": "欢迎使用 FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "使用方法"
+    },
+    "welcome_page_usage_content0": {
+        "message": "使用 FastStream 的四种方式"
+    },
+    "welcome_page_usage_content1": {
+        "message": "前往有视频流的网站，点击图标开启 FastStream。播放流媒体时客户端会自动被 FastStream 替换。"
+    },
+    "welcome_page_usage_content2": {
+        "message": "在新标签页中点击扩展图标即可打开播放器。"
+    },
+    "welcome_page_usage_content3": {
+        "message": "如果已启用此选项，访问 mp4/mpd/m3u8 链接即可由播放器播放。"
+    },
+    "welcome_page_usage_content4": {
+        "message": "将播放器在新标签页保持打开，它会在你浏览其他页面时收集视频源。"
+    },
+    "welcome_page_usage_end": {
+        "message": "感谢安装 FastStream！如有问题或建议，请告知我们。"
+    },
+    "welcome_page_keybinds_header": {
+        "message": "默认键盘控制"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "可在扩展设置中更改这些快捷键"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "方向键 - 前进/后退 1 秒"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "键 - 前进/后退 10 秒"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "键 - 撤销跳转"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "方向键 - 音量 ±10%"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- 全屏"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- 增减并发请求数"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- 强制重试键 - 用于重试失败的下载"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- 跳过片头/片尾（如适用）"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- 隐藏/显示播放器"
+    },
+    "perms_page_title": {
+        "message": "FastStream 权限"
+    },
+    "perms_page_about_header": {
+        "message": "关于 FastStream 所需的权限"
+    },
+    "perms_page_about_content0": {
+        "message": "为了使扩展正常运行，需要某些权限。这些权限仅用于基本功能。"
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream 不会收集你的任何数据，也不会追踪你，不会向任何服务器发送数据，甚至没有可发送数据的服务器。"
+    },
+    "perms_page_about_content2": {
+        "message": "不信？FastStream 的源码公开托管于"
+    },
+    "perms_page_about_content3": {
+        "message": "你可以查看代码，或按说明手动安装自定义构建。"
+    },
+    "perms_page_breakdown_header": {
+        "message": "权限说明"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "下面是 FastStream 所需权限以及原因说明。"
+    },
+    "perms_page_breakdown_content1": {
+        "message": "注意：链接示例可能指向旧版代码，但大意应相同。该列表并非详尽无遗，项按重要性排序。"
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "访问并修改所有网站"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream 需要访问所有网站，以便将播放器直接注入到网站中。它会向你访问的网站注入内容脚本以便："
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "识别可见的最大视频元素并替换为播放器。"
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "当播放器注入到框架内时启用全屏权限。"
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "从页面抓取字幕 <track> 元素。"
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "访问 webRequest API"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream 需要拦截指向视频源的 HTTP 请求以便："
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "识别视频源"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "访问 declarativeNetRequest API"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream 需要修改部分请求的 HTTP 头以便："
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "覆盖视频源的请求头。"
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "在浏览器中存储数据"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream 需要在浏览器中存储数据以记住你的设置。"
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "常规扩展选项。"
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "访问 tabs API"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream 需要在每个标签页的播放器与内容脚本之间发送消息。"
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "从后台脚本向播放器发送视频源。"
+    },
+    "perms_page_granted": {
+        "message": "已授权"
+    },
+    "perms_page_notgranted": {
+        "message": "未授权，点击以授权"
+    },
+    "player_needs_interaction": {
+        "message": "与播放器交互以启用下载加速"
+    },
+    "player_skipintro": {
+        "message": "跳过片头"
+    },
+    "player_skipoutro": {
+        "message": "跳过片尾"
+    },
+    "player_nextvideoin": {
+        "message": "下一个视频将在 $1s 后播放"
+    },
+    "player_hidecontrols": {
+        "message": "隐藏控件"
+    },
+    "player_loading": {
+        "message": "正在加载..."
+    },
+    "player_nosource_header": {
+        "message": "未加载任何视频源！"
+    },
+    "player_nosource_instruction1": {
+        "message": "拖放视频文件以播放。"
+    },
+    "player_nosource_instruction2p1": {
+        "message": "点击"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "以加载从其他标签页检测到的源。"
+    },
+    "player_play_label": {
+        "message": "播放视频"
+    },
+    "player_pause_label": {
+        "message": "暂停视频"
+    },
+    "player_next_video_label": {
+        "message": "下一个视频"
+    },
+    "player_previous_video_label": {
+        "message": "上一个视频"
+    },
+    "player_volume_label": {
+        "message": "音量为 $1%。使用方向键调整，按回车切换静音。"
+    },
+    "player_mute_label": {
+        "message": "静音"
+    },
+    "player_timestamp_label": {
+        "message": "复制带时间戳的链接"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "资源浏览器"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "打开资源浏览器"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "关闭资源浏览器"
+    },
+    "player_audioconfig_title": {
+        "message": "音频设置"
+    },
+    "player_audioconfig_open_label": {
+        "message": "打开音频设置窗口"
+    },
+    "player_audioconfig_close_label": {
+        "message": "关闭音频设置窗口"
+    },
+    "player_opensubtitles_title": {
+        "message": "OpenSubtitles 搜索"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "关闭 OpenSubtitles 搜索窗口"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "按标题、文件名等搜索..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "搜索"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "季 #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "集 #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "全部"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "电影"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "剧集"
+    },
+    "player_opensubtitles_language": {
+        "message": "语言"
+    },
+    "player_opensubtitles_year": {
+        "message": "年份"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "排序方式"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "下载量"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "上传日期"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "评分"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "投票数"
+    },
+    "player_opensubtitles_sort": {
+        "message": "排序"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "降序"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "升序"
+    },
+    "player_opensubtitles_searching": {
+        "message": "搜索中..."
+    },
+    "player_opensubtitles_error": {
+        "message": "错误：$1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "无法设置正确的头部信息！安装扩展以使用此功能！"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles 服务不可用！"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "OpenSubtitles 下载失败！服务器可能宕机！"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "未找到结果！"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles 限制字幕下载！您的下载次数已用尽！配额将在 $1 重置"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "是否要打开 OpenSubtitles 网站手动下载字幕文件？"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "打开字幕菜单"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "关闭字幕菜单"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "返回"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "字幕设置"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "测试字幕"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "停止测试"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "上传文件"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "从 URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "输入 URL"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "正在下载字幕轨道..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "字幕轨道已加载!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "字幕轨道加载失败!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "搜索 OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "清除字幕"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "字幕设置"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "重新同步工具"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "拖动字幕以重新同步"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "保存字幕文件"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "移除字幕轨道"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "字幕偏移 $1s"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "字幕已偏移 $1s"
+    },
+    "player_testsubtitle": {
+        "message": "这是测试字幕"
+    },
+    "player_qualitymenu_label": {
+        "message": "视频质量"
+    },
+    "player_languagemenu_label": {
+        "message": "语言选择"
+    },
+    "player_languagemenu_video": {
+        "message": "视频"
+    },
+    "player_languagemenu_audio": {
+        "message": "音频"
+    },
+    "player_playbackrate_label": {
+        "message": "播放速度"
+    },
+    "player_settings_title": {
+        "message": "FastStream 设置"
+    },
+    "player_settings_open_label": {
+        "message": "打开设置窗口"
+    },
+    "player_settings_close_label": {
+        "message": "关闭设置窗口"
+    },
+    "player_savevideo_label": {
+        "message": "保存视频。按住 ALT 保存部分视频。按住 SHIFT 转储缓冲区。"
+    },
+    "player_screenshot_label": {
+        "message": "截图"
+    },
+    "player_pip_label": {
+        "message": "画中画"
+    },
+    "player_fullscreen_label": {
+        "message": "切换全屏"
+    },
+    "player_fullscreen_denied": {
+        "message": "全屏权限被拒绝！"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "切换窗口化全屏"
+    },
+    "player_skip_forward_label": {
+        "message": "快进 10 秒"
+    },
+    "player_skip_backward_label": {
+        "message": "快退 10 秒"
+    },
+    "player_more_label": {
+        "message": "更多工具"
+    },
+    "player_loop_label": {
+        "message": "循环"
+    },
+    "loop_menu_start": {
+        "message": "开始"
+    },
+    "loop_menu_end": {
+        "message": "结束"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "已启用循环"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "已禁用循环"
+    },
+    "loop_menu_gif_start": {
+        "message": "正在以 4 倍速录制 GIF..."
+    },
+    "loop_menu_gif_end": {
+        "message": "GIF 录制完成，正在保存..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "已中止 GIF 录制！"
+    },
+    "loop_menu_gif_progress": {
+        "message": "正在保存 GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "GIF 保存完成！"
+    },
+    "player_download_paused": {
+        "message": "下载已暂停"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 分片失败！点击重试。"
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 个分片失败！点击重试。"
+    },
+    "player_fragment_allbuffered": {
+        "message": "已缓冲 100%"
+    },
+    "player_welcometext": {
+        "message": "欢迎使用 FastStream v$1！"
+    },
+    "player_nosource_alert": {
+        "message": "未加载任何来源！"
+    },
+    "player_archive_loading": {
+        "message": "正在加载归档... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "归档加载完成！"
+    },
+    "player_archive_fail": {
+        "message": "归档加载失败！"
+    },
+    "player_filename_prompt": {
+        "message": "请输入文件名"
+    },
+    "player_screenshot_saving": {
+        "message": "正在截屏..."
+    },
+    "player_screenshot_saved": {
+        "message": "截图已保存！"
+    },
+    "player_screenshot_fail": {
+        "message": "截图失败！"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "正在保存中！"
+    },
+    "player_savevideo_unsupported": {
+        "message": "此视频不支持保存！"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "视频尚未下载完成！确定要保存吗？"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "隐身模式会使用内存（RAM）来缓冲视频。您的电脑可能没有足够的内存来保存整个视频！\n确定要继续吗？"
+    },
+    "player_savevideo_reencode": {
+        "message": "保存将需要重新编码，可能会耗时较长。是否继续？"
+    },
+    "player_savevideo_cancelling": {
+        "message": "正在取消保存..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "保存已取消！"
+    },
+    "player_savevideo_start": {
+        "message": "正在保存..."
+    },
+    "player_savevideo_progress": {
+        "message": "保存中 $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "保存视频失败！"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "保存视频失败！\n是否要归档播放器的缓冲区？\n- 将归档文件拖放到播放器上以加载它"
+    },
+    "player_savevideo_complete": {
+        "message": "保存完成！"
+    },
+    "player_archiver_progress": {
+        "message": "归档中 $1%"
+    },
+    "player_archiver_saved": {
+        "message": "已保存归档！"
+    },
+    "player_quality_current": {
+        "message": "(当前)"
+    },
+    "player_quality_unknown": {
+        "message": "(未知)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "隐身模式下没有足够的空间进行预下载，将缓冲 $1"
+    },
+    "player_buffer_storage_warning": {
+        "message": "视频大小超出限制，将缓冲 $1"
+    },
+    "player_error_drm": {
+        "message": "加载失败！不支持 DRM！"
+    },
+    "player_error_load": {
+        "message": "视频加载失败！"
+    },
+    "source_copied": {
+        "message": "已将 URL 复制到剪贴板！"
+    },
+    "player_source_copybtn": {
+        "message": "复制"
+    },
+    "player_source_copybtn_label": {
+        "message": "将源 URL、请求头和模式复制到剪贴板"
+    },
+    "player_source_copybtn_copied": {
+        "message": "已复制！"
+    },
+    "player_source_autodetect": {
+        "message": "自动检测"
+    },
+    "player_source_direct": {
+        "message": "直连"
+    },
+    "player_source_accelmp4": {
+        "message": "加速 MP4"
+    },
+    "player_source_accelhls": {
+        "message": "加速 HLS"
+    },
+    "player_source_acceldash": {
+        "message": "加速 DASH"
+    },
+    "player_source_accelyt": {
+        "message": "加速 YouTube"
+    },
+    "player_source_accelvm": {
+        "message": "加速 Vimeo"
+    },
+    "player_source_mode": {
+        "message": "模式"
+    },
+    "player_source_mode_auto_error": {
+        "message": "请选择播放器模式！"
+    },
+    "player_source_url_placeholder": {
+        "message": "源 URL"
+    },
+    "player_source_headerbtn": {
+        "message": "请求头覆盖 ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "切换请求头覆盖输入框"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "请求头覆盖 (仅限扩展)"
+    },
+    "player_source_playbtn": {
+        "message": "播放"
+    },
+    "player_source_playbtn_playing": {
+        "message": "正在播放"
+    },
+    "player_source_playbtn_loading": {
+        "message": "加载中..."
+    },
+    "player_source_deletebtn": {
+        "message": "删除"
+    },
+    "player_source_headers_label": {
+        "message": "覆盖 Header 输入"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Header-Name: Header Value\nHeader2-Name: Header2 Value"
+    },
+    "player_source_nonelisted": {
+        "message": "未列出任何来源"
+    },
+    "player_source_onelisted": {
+        "message": "已列出 1 个来源"
+    },
+    "player_source_multilisted": {
+        "message": "已列出 $1 个来源"
+    },
+    "player_source_addbtn": {
+        "message": "添加来源"
+    },
+    "player_source_clearbtn": {
+        "message": "清除来源"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(于 $1 从文件加载)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "创建新配置"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "从文件导入配置"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "配置文件无效"
+    },
+    "player_audioconfig_profile": {
+        "message": "配置"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "未命名配置"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "加载配置"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "配置已加载!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "保存配置"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "保存中..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "配置已保存!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "下载配置"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "已下载!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "删除"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "删除中..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "已删除！"
+    },
+    "audiomixer_title": {
+        "message": "音频通道混音器"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换单声道"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 增益为 $2 dB（$3%）。使用方向键调整。按 M 切换静音"
+    },
+    "audiomixer_solo_label": {
+        "message": "独奏"
+    },
+    "audiomixer_mute_label": {
+        "message": "静音"
+    },
+    "audiomixer_mono": {
+        "message": "单声道"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "编辑通道动态"
+    },
+    "audiocrosstalk_title": {
+        "message": "音频串扰校正"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "已启用串扰校正"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "已禁用串扰校正"
+    },
+    "audiocrosstalk_decay": {
+        "message": "衰减"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "最大染色"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "时间差"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "低频旁通"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "高频旁通"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "扬声器距离"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "头部距离"
+    },
+    "audiocompressor_title": {
+        "message": "音频压缩器"
+    },
+    "audiocompressor_enabled": {
+        "message": "已启用压缩器"
+    },
+    "audiocompressor_disabled": {
+        "message": "已禁用压缩器"
+    },
+    "audiocompressor_threshold": {
+        "message": "阈值"
+    },
+    "audiocompressor_knee": {
+        "message": "转折"
+    },
+    "audiocompressor_ratio": {
+        "message": "压缩比"
+    },
+    "audiocompressor_attack": {
+        "message": "起始时间"
+    },
+    "audiocompressor_release": {
+        "message": "释放"
+    },
+    "audiocompressor_gain": {
+        "message": "增益"
+    },
+    "audioeq_title": {
+        "message": "音频均衡器"
+    },
+    "audioeq_instructions": {
+        "message": "双击以更改类型"
+    },
+    "audioeq_gain": {
+        "message": "增益：$1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "滚动以调整 Q 值"
+    },
+    "audioconvolver_title": {
+        "message": "音频卷积滤波器"
+    },
+    "audioconvolver_channel": {
+        "message": "通道"
+    },
+    "audioconvolver_enable": {
+        "message": "启用"
+    },
+    "audioconvolver_normalize": {
+        "message": "归一化"
+    },
+    "audioconvolver_impulselength": {
+        "message": "脉冲长度"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "脉冲响应"
+    },
+    "audioconvolver_selectfile": {
+        "message": "选择文件"
+    },
+    "audioconvolver_enabled": {
+        "message": "已启用卷积"
+    },
+    "audioconvolver_convolver": {
+        "message": "卷积器"
+    },
+    "audioconvolver_disable": {
+        "message": "禁用"
+    },
+    "audioconvolver_disabled": {
+        "message": "已禁用卷积"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "下混前"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "无下混"
+    },
+    "options_title": {
+        "message": "FastStream 选项"
+    },
+    "options_search_placeholder": {
+        "message": "搜索"
+    },
+    "options_reviewbanner_header": {
+        "message": "喜欢 FastStream 吗？留下评价吧！"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream 是由志愿者维护的业余项目。我们非常重视你的反馈，它能帮助我们了解需要改进的地方。请随时告诉我们："
+    },
+    "options_reviewbanner_l1": {
+        "message": "你的使用方式"
+    },
+    "options_reviewbanner_l2": {
+        "message": "遇到的任何问题"
+    },
+    "options_reviewbanner_l3": {
+        "message": "功能建议"
+    },
+    "options_reviewbanner_end": {
+        "message": "我们对无障碍功能也非常重视。如果当前版本缺少您需要的辅助功能，请提出请求，我们会尽快处理。"
+    },
+    "options_reviewbanner_rate": {
+        "message": "好的，我去评价 FastStream"
+    },
+    "options_reviewbanner_norate": {
+        "message": "我不想评价 :("
+    },
+    "options_feedback_header": {
+        "message": "有反馈吗？"
+    },
+    "options_feedback_reason": {
+        "message": "我们很想听取你的意见！请填写一份简短的表单。由于我们不追踪用户，这是我们改进的唯一途径。"
+    },
+    "options_feedback_yes": {
+        "message": "是的，我有反馈"
+    },
+    "options_feedback_no": {
+        "message": "不用，谢谢"
+    },
+    "options_help_feedback": {
+        "message": "反馈表单"
+    },
+    "options_update_header": {
+        "message": "有可用更新！"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 已可用（当前版本 v$2）。要更新吗？"
+    },
+    "options_update_go": {
+        "message": "前往 Github"
+    },
+    "options_update_no": {
+        "message": "忽略此更新"
+    },
+    "options_reset_search": {
+        "message": "重置"
+    },
+    "options_video_header": {
+        "message": "视频选项"
+    },
+    "options_video_body": {
+        "message": "对视频应用 CSS 滤镜。与画中画模式不兼容。"
+    },
+    "options_video_zoom": {
+        "message": "视频缩放"
+    },
+    "options_video_delay": {
+        "message": "视频延迟"
+    },
+    "options_video_brightness": {
+        "message": "亮度"
+    },
+    "options_video_contrast": {
+        "message": "对比度"
+    },
+    "options_video_saturation": {
+        "message": "饱和度"
+    },
+    "options_video_grayscale": {
+        "message": "灰度"
+    },
+    "options_video_sepia": {
+        "message": "棕褐色"
+    },
+    "options_video_invert": {
+        "message": "反色"
+    },
+    "options_video_hue": {
+        "message": "色相旋转"
+    },
+    "options_video_daltonizer_type": {
+        "message": "色盲矫正"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "强度"
+    },
+    "options_video_daltonizer_none": {
+        "message": "无"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "红弱"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "绿弱"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "蓝弱"
+    },
+    "options_general_header": {
+        "message": "常规选项"
+    },
+    "options_general_predownload": {
+        "message": "若可能，后台预下载整段视频"
+    },
+    "options_general_targetspeed": {
+        "message": "预下载器的目标下载速度"
+    },
+    "options_general_maxsize": {
+        "message": "预下载视频的最大大小"
+    },
+    "options_general_previewenabled": {
+        "message": "在时间轴悬停时显示预览"
+    },
+    "options_general_analyze": {
+        "message": "自动分析连续视频以检测片头/片尾\n（如果有 CPU 性能问题请关闭）"
+    },
+    "options_general_storeprogress": {
+        "message": "从上次观看位置播放视频"
+    },
+    "options_general_autosub": {
+        "message": "自动启用匹配到的最佳字幕轨道\n（在字幕设置中更改默认语言）"
+    },
+    "options_general_stream": {
+        "message": "在打开播放列表 URL（.m3u8/.mpd）时使用播放器播放 HLS/DASH 流"
+    },
+    "options_general_mp4": {
+        "message": "在打开视频 URL（.mp4）时使用播放器播放 MP4 视频"
+    },
+    "options_general_seekstep": {
+        "message": "跳转幅度（秒）"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控件自动隐藏延迟（毫秒）"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "始终在播放器底部显示进度条"
+    },
+    "options_general_replace_delay": {
+        "message": "自动替换播放器前的延迟（毫秒）"
+    },
+    "options_general_autoplayyt": {
+        "message": "尽可能自动播放 YouTube 视频"
+    },
+    "options_general_autoplaynext": {
+        "message": "当前视频结束后自动播放下一个视频"
+    },
+    "options_general_quality": {
+        "message": "默认视频清晰度"
+    },
+    "options_general_clickaction": {
+        "message": "单击操作"
+    },
+    "options_general_dblclickaction": {
+        "message": "双击操作"
+    },
+    "options_general_tplclickaction": {
+        "message": "三击操作"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "不执行任何操作"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "切换播放/暂停"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "切换全屏"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "切换窗口化全屏"
+    },
+    "options_general_clickaction_pip": {
+        "message": "切换画中画"
+    },
+    "options_general_clickaction_seek": {
+        "message": "跳转"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "隐藏控件"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "隐藏播放器"
+    },
+    "options_general_vischangeaction": {
+        "message": "播放器可见性变化时"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "不执行任何操作"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "切换播放/暂停"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "切换迷你播放器"
+    },
+    "options_general_minipos": {
+        "message": "迷你播放器位置"
+    },
+    "options_general_minipos_topleft": {
+        "message": "左上角"
+    },
+    "options_general_minipos_topright": {
+        "message": "右上角"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "左下角"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "右下角"
+    },
+    "options_general_minisize": {
+        "message": "迷你播放器大小"
+    },
+    "options_general_color_theme": {
+        "message": "播放器颜色主题"
+    },
+    "options_general_color_theme_default": {
+        "message": "默认（暗）"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "极地（亮）"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "海洋蓝"
+    },
+    "options_general_color_theme_neon": {
+        "message": "霓虹夜"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "高对比"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "落日余晖"
+    },
+    "options_general_color_theme_forest": {
+        "message": "森林夜"
+    },
+    "options_general_color_theme_slate": {
+        "message": "石板单色"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "紫晶薄雾"
+    },
+    "options_general_color_theme_desert": {
+        "message": "沙漠砂色"
+    },
+    "options_general_color_theme_mint": {
+        "message": "薄荷清新"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "切换画中画"
+    },
+    "options_general_ytclient": {
+        "message": "要使用的 YT 客户端。如遇问题可尝试更换。"
+    },
+    "options_export_header": {
+        "message": "导入/导出设置"
+    },
+    "options_import": {
+        "message": "从文件导入设置"
+    },
+    "options_export": {
+        "message": "导出设置到文件"
+    },
+    "options_keybinds_header": {
+        "message": "键盘快捷键"
+    },
+    "options_keybinds_body": {
+        "message": "仅当播放器获得焦点时，快捷键才生效。"
+    },
+    "options_keybinds_reset": {
+        "message": "重置为默认"
+    },
+    "options_autourl_header": {
+        "message": "自动启用 URL"
+    },
+    "options_autourl_body": {
+        "message": "访问这些 URL 时会自动启用扩展，离开时会自动禁用。每行一个 URL，以该 URL 开头的页面也会匹配。使用正则时在前面加波浪号 (~)，每行一个正则。要排除站点，在前面加感叹号 (!)。"
+    },
+    "options_autourl_hint": {
+        "message": "提示：在此处测试正则"
+    },
+    "options_autourl_allwebsites": {
+        "message": "在所有网站上自动启用"
+    },
+    "options_pattern_header": {
+        "message": "自定义源模式"
+    },
+    "options_pattern_body": {
+        "message": "这些模式用于检测网页上的自定义视频来源。按顺序应用，采用第一个匹配项。仅供高级用户使用。"
+    },
+    "options_help_header": {
+        "message": "帮助"
+    },
+    "options_help_welcome": {
+        "message": "欢迎页"
+    },
+    "options_help_issues": {
+        "message": "问题追踪"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "字体"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "字体粗细"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "字体大小"
+    },
+    "subtitles_settings_color": {
+        "message": "字体颜色"
+    },
+    "subtitles_settings_background": {
+        "message": "背景颜色"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "描边颜色"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "描边宽度"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "语言"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "底部边距"
+    },
+    "yes": {
+        "message": "是"
+    },
+    "no": {
+        "message": "否"
+    },
+    "ok": {
+        "message": "确定"
+    },
+    "cancel": {
+        "message": "取消"
+    },
+    "error_popup": {
+        "message": "错误：$1"
+    },
+    "error_popup_body": {
+        "message": "请将此错误及下面的堆栈信息报告给开发者，地址：https://github.com/Andrews54757/FastStream/issues："
+    },
+    "error_popup_send": {
+        "message": "报告错误"
+    },
+    "yt_error_login_required": {
+        "message": "抱歉！FastStream 不支持需要在 YouTube 登录才能观看的视频。"
+    },
+    "player_outofstorage": {
+        "message": "警告：您的浏览器不完全支持文件存储功能。这可能是因为您的浏览器存储空间已满或长时间未重启。某些功能可能无法按预期工作。"
+    }
+}

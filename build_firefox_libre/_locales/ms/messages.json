@@ -1,0 +1,1175 @@
+{
+    "extension_name": {
+        "message": "Pemain Video FastStream"
+    },
+    "extension_description": {
+        "message": "Strim tanpa penimbalan. Betulkan pemain video yang buruk di Internet."
+    },
+    "extension_toggle_label": {
+        "message": "Togol FastStream"
+    },
+    "welcome_page_title": {
+        "message": "Selamat datang ke FastStream"
+    },
+    "welcome_page_usage_header": {
+        "message": "Penggunaan"
+    },
+    "welcome_page_usage_content0": {
+        "message": "Terdapat empat cara untuk menggunakan FastStream"
+    },
+    "welcome_page_usage_content1": {
+        "message": "Anda boleh pergi ke tapak web dengan strim video dan hidupkan strim pantas dengan mengklik pada ikon. Mainkan strim dan pelanggan akan digantikan secara automatik dengan FastStream"
+    },
+    "welcome_page_usage_content2": {
+        "message": "Anda boleh pergi ke tab baharu dan tekan ikon sambungan untuk pergi ke pemain."
+    },
+    "welcome_page_usage_content3": {
+        "message": "Jika anda mempunyai pilihan yang didayakan, pergi ke url mp4/mpd/m3u8 dan pemain akan memainkannya."
+    },
+    "welcome_page_usage_content4": {
+        "message": "Pastikan pemain dibuka dalam tab baharu dan ia akan mengumpul sumber semasa anda menyemak imbas di tempat lain."
+    },
+    "welcome_page_usage_end": {
+        "message": "Terima kasih kerana memasang FastStream! Sila maklumkan kepada kami jika anda mempunyai sebarang isu atau cadangan."
+    },
+    "welcome_page_keybinds_header": {
+        "message": "Kawalan Papan Kekunci Lalai"
+    },
+    "welcome_page_keybinds_content0": {
+        "message": "Anda boleh menukar ikatan kekunci ini dalam tetapan sambungan"
+    },
+    "welcome_page_keybinds_content1": {
+        "message": "kekunci anak panah - 1 saat mencari ke hadapan/belakang"
+    },
+    "welcome_page_keybinds_content2": {
+        "message": "kekunci - 10 saat mencari ke hadapan/belakang"
+    },
+    "welcome_page_keybinds_content3": {
+        "message": "kunci - Buat asal carian"
+    },
+    "welcome_page_keybinds_content4": {
+        "message": "kekunci anak panah - 10% kelantangan atas/bawah"
+    },
+    "welcome_page_keybinds_content5": {
+        "message": "- Skrin penuh"
+    },
+    "welcome_page_keybinds_content6": {
+        "message": "- Tambah/kurangkan permintaan serentak"
+    },
+    "welcome_page_keybinds_content7": {
+        "message": "- Kekunci cuba semula paksa - gunakan ini untuk mencuba semula muat turun yang gagal"
+    },
+    "welcome_page_keybinds_content8": {
+        "message": "- Langkau intro/outro jika berkenaan"
+    },
+    "welcome_page_keybinds_content9": {
+        "message": "- Sembunyikan/tunjukkan pemain"
+    },
+    "perms_page_title": {
+        "message": "Keizinan FastStream"
+    },
+    "perms_page_about_header": {
+        "message": "Mengenai Kebenaran yang Diperlukan oleh FastStream"
+    },
+    "perms_page_about_content0": {
+        "message": "Untuk membolehkan sambungan berfungsi, ia perlu mempunyai kebenaran tertentu. Kebenaran ini hanya digunakan untuk fungsi asas."
+    },
+    "perms_page_about_content1": {
+        "message": "FastStream tidak mengumpul sebarang data daripada anda. Ia tidak menjejaki anda. Ia tidak menghantar sebarang data ke mana-mana pelayan. Ia tidak mempunyai pelayan untuk menghantar data."
+    },
+    "perms_page_about_content2": {
+        "message": "Jangan percaya saya? FastStream mempunyai sumbernya tersedia di"
+    },
+    "perms_page_about_content3": {
+        "message": "Anda boleh melihat sendiri kod tersebut, atau memasang binaan tersuai anda sendiri secara manual dengan mengikut arahan."
+    },
+    "perms_page_breakdown_header": {
+        "message": "Pecahan Keizinan"
+    },
+    "perms_page_breakdown_content0": {
+        "message": "Berikut ialah pecahan kebenaran yang diperlukan oleh FastStream, dan sebab ia memerlukannya."
+    },
+    "perms_page_breakdown_content1": {
+        "message": "Nota: Contoh yang dipautkan mungkin merujuk kepada versi kod yang lebih lama, tetapi intipatinya mestilah sama secara keseluruhan. Senarai ini tidak lengkap, item dipesan mengikut kepentingan."
+    },
+    "perms_page_breakdown_perm1h": {
+        "message": "Dapat mengakses dan mengubah suai semua tapak web"
+    },
+    "perms_page_breakdown_perm1d": {
+        "message": "FastStream perlu boleh mengakses semua tapak web supaya ia boleh menyuntik pemain ke dalam laman web secara langsung. Ia menyuntik skrip kandungan ke dalam tapak web yang anda lawati untuk:"
+    },
+    "perms_page_breakdown_perm1r1": {
+        "message": "Kenal pasti elemen video terbesar yang boleh dilihat untuk digantikan dengan pemain."
+    },
+    "perms_page_breakdown_perm1r2": {
+        "message": "Dayakan kebenaran skrin penuh apabila pemain disuntik ke dalam bingkai."
+    },
+    "perms_page_breakdown_perm1r3": {
+        "message": "Kikis Sarikata <track> elemen daripada halaman."
+    },
+    "perms_page_breakdown_perm2h": {
+        "message": "Akses API webRequest"
+    },
+    "perms_page_breakdown_perm2d": {
+        "message": "FastStream perlu dapat memintas permintaan HTTP kepada sumber video untuk:"
+    },
+    "perms_page_breakdown_perm2r1": {
+        "message": "Kenal pasti sumber video"
+    },
+    "perms_page_breakdown_perm3h": {
+        "message": "Akses API declarativeNetRequest"
+    },
+    "perms_page_breakdown_perm3d": {
+        "message": "FastStream perlu boleh mengubah suai pengepala HTTP permintaan terpilih untuk:"
+    },
+    "perms_page_breakdown_perm3r1": {
+        "message": "Gantikan pengepala untuk sumber video."
+    },
+    "perms_page_breakdown_perm4h": {
+        "message": "Simpan data pada penyemak imbas anda"
+    },
+    "perms_page_breakdown_perm4d": {
+        "message": "FastStream perlu boleh menyimpan data dalam penyemak imbas anda supaya ia boleh mengingati tetapan anda."
+    },
+    "perms_page_breakdown_perm4r1": {
+        "message": "Pilihan sambungan am."
+    },
+    "perms_page_breakdown_perm5h": {
+        "message": "Akses tab API"
+    },
+    "perms_page_breakdown_perm5d": {
+        "message": "FastStream perlu boleh menghantar mesej antara pemain dan skrip kandungan dalam setiap tab."
+    },
+    "perms_page_breakdown_perm5r1": {
+        "message": "Menghantar sumber kepada pemain daripada skrip latar belakang."
+    },
+    "perms_page_granted": {
+        "message": "Dibenarkan"
+    },
+    "perms_page_notgranted": {
+        "message": "Tidak Diberikan, klik untuk memberikan"
+    },
+    "player_needs_interaction": {
+        "message": "Berinteraksi untuk mendayakan pecutan muat turun"
+    },
+    "player_skipintro": {
+        "message": "Langkau Pengenalan"
+    },
+    "player_skipoutro": {
+        "message": "Langkau Lain"
+    },
+    "player_nextvideoin": {
+        "message": "Video seterusnya dalam $1s"
+    },
+    "player_hidecontrols": {
+        "message": "Sembunyikan Kawalan"
+    },
+    "player_loading": {
+        "message": "Memuatkan..."
+    },
+    "player_nosource_header": {
+        "message": "Tiada sumber dimuatkan!"
+    },
+    "player_nosource_instruction1": {
+        "message": "Seret dan lepaskan fail video untuk memainkannya."
+    },
+    "player_nosource_instruction2p1": {
+        "message": "Klik"
+    },
+    "player_nosource_instruction2p2": {
+        "message": "untuk memuatkan sumber yang dikesan daripada tab lain."
+    },
+    "player_play_label": {
+        "message": "Mainkan video"
+    },
+    "player_pause_label": {
+        "message": "Jeda video"
+    },
+    "player_next_video_label": {
+        "message": "Video seterusnya"
+    },
+    "player_previous_video_label": {
+        "message": "Video sebelumnya"
+    },
+    "player_volume_label": {
+        "message": "Kelantangan $1%. Gunakan anak panah untuk menyesuaikan, enter untuk menogol audio."
+    },
+    "player_mute_label": {
+        "message": "Redamkan audio"
+    },
+    "player_timestamp_label": {
+        "message": "Cap masa"
+    },
+    "player_sourcesbrowser_title": {
+        "message": "Sumber Pelayar"
+    },
+    "player_sourcesbrowser_open_label": {
+        "message": "Buka penyemak imbas sumber"
+    },
+    "player_sourcesbrowser_close_label": {
+        "message": "Tutup penyemak imbas sumber"
+    },
+    "player_audioconfig_title": {
+        "message": "Konfigurasi Audio"
+    },
+    "player_audioconfig_open_label": {
+        "message": "Buka tetingkap konfigurasi audio"
+    },
+    "player_audioconfig_close_label": {
+        "message": "Tutup tetingkap konfigurasi audio"
+    },
+    "player_opensubtitles_title": {
+        "message": "Carian OpenSubtitles"
+    },
+    "player_opensubtitles_close_label": {
+        "message": "Tutup tingkap carian OpenSubtitles"
+    },
+    "player_opensubtitles_search_placeholder": {
+        "message": "Cari mengikut tajuk, nama fail, dsb..."
+    },
+    "player_opensubtitles_searchbtn": {
+        "message": "Carian"
+    },
+    "player_opensubtitles_seasonnum": {
+        "message": "Musim #"
+    },
+    "player_opensubtitles_episodenum": {
+        "message": "Episod #"
+    },
+    "player_opensubtitles_type_all": {
+        "message": "Semua"
+    },
+    "player_opensubtitles_type_movie": {
+        "message": "Filem"
+    },
+    "player_opensubtitles_type_episode": {
+        "message": "Episod"
+    },
+    "player_opensubtitles_language": {
+        "message": "Bahasa"
+    },
+    "player_opensubtitles_year": {
+        "message": "Tahun"
+    },
+    "player_opensubtitles_sortby": {
+        "message": "Disusun mengikut"
+    },
+    "player_opensubtitles_sortby_downloads": {
+        "message": "Muat turun"
+    },
+    "player_opensubtitles_sortby_date": {
+        "message": "Tarikh Muat naik"
+    },
+    "player_opensubtitles_sortby_rating": {
+        "message": "Penilaian"
+    },
+    "player_opensubtitles_sortby_votes": {
+        "message": "Undian"
+    },
+    "player_opensubtitles_sort": {
+        "message": "Disusun"
+    },
+    "player_opensubtitles_sort_desc": {
+        "message": "Menurun"
+    },
+    "player_opensubtitles_sort_asc": {
+        "message": "Menaik"
+    },
+    "player_opensubtitles_searching": {
+        "message": "Mencari..."
+    },
+    "player_opensubtitles_error": {
+        "message": "Ralat: $1"
+    },
+    "player_opensubtitles_disabled": {
+        "message": "Tidak dapat menetapkan pengepala yang betul! Pasang sambungan untuk menggunakan ciri ini!"
+    },
+    "player_opensubtitles_error_down": {
+        "message": "OpenSubtitles sudah tidak berfungsi!"
+    },
+    "player_opensubtitles_down_alert": {
+        "message": "Muat turun OpenSubtitles gagal! Pelayan mereka mungkin tidak berfungsi!"
+    },
+    "player_opensubtitles_noresults": {
+        "message": "Tiada keputusan dijumpai!"
+    },
+    "player_opensubtitles_quota": {
+        "message": "OpenSubtitles mengehadkan muat turun sarikata! Anda tiada lagi muat turun yang tinggal! Kuota anda ditetapkan semula $1"
+    },
+    "player_opensubtitles_askopen": {
+        "message": "Adakah anda ingin membuka laman web OpenSubtitles untuk memuat turun fail sarikata secara manual?"
+    },
+    "player_subtitlesmenu_open_label": {
+        "message": "Buka tingkap sarikata"
+    },
+    "player_subtitlesmenu_close_label": {
+        "message": "Tutup tingkap sarikata"
+    },
+    "player_subtitlesmenu_backbtn": {
+        "message": "Kembali"
+    },
+    "player_subtitlesmenu_settings": {
+        "message": "Tetapan sarikata"
+    },
+    "player_subtitlesmenu_testbtn": {
+        "message": "Cuba sarikata"
+    },
+    "player_subtitlesmenu_testbtn_stop": {
+        "message": "Henti Percubaan"
+    },
+    "player_subtitlesmenu_uploadbtn": {
+        "message": "Muatnaik Fail"
+    },
+    "player_subtitlesmenu_urlbtn": {
+        "message": "Dari URL"
+    },
+    "player_subtitlesmenu_urlprompt": {
+        "message": "Masuk URL"
+    },
+    "player_subtitles_addtrack_downloading": {
+        "message": "Memuat turun sarikata..."
+    },
+    "player_subtitles_addtrack_success": {
+        "message": "Trek sarikata dimuatkan!"
+    },
+    "player_subtitles_addtrack_error": {
+        "message": "Gagal memuatkan trek sarikata!"
+    },
+    "player_subtitlesmenu_searchbtn": {
+        "message": "Carian OpenSubtitles"
+    },
+    "player_subtitlesmenu_clearbtn": {
+        "message": "Kosongkan Sarikata"
+    },
+    "player_subtitlesmenu_settingsbtn": {
+        "message": "Tetapan Sarikata"
+    },
+    "player_subtitlesmenu_resynctool_label": {
+        "message": "Alat Segerakkan Semula"
+    },
+    "player_subtitlesmenu_resynctool_instructions": {
+        "message": "Seret sarikata untuk disegerakkan semula"
+    },
+    "player_subtitlesmenu_savetool_label": {
+        "message": "Simpan fail sarikata"
+    },
+    "player_subtitlesmenu_removetool_label": {
+        "message": "Alih keluar trek sarikata"
+    },
+    "player_subtitlesmenu_shifttool_label": {
+        "message": "Alihkan sarikata $1s"
+    },
+    "player_subtitlesmenu_shifttool_message": {
+        "message": "sarikata dialihkan $1s"
+    },
+    "player_testsubtitle": {
+        "message": "Ini adalah sarikata ujian"
+    },
+    "player_qualitymenu_label": {
+        "message": "Kualiti Video "
+    },
+    "player_languagemenu_label": {
+        "message": "Pilihan Bahasa"
+    },
+    "player_languagemenu_video": {
+        "message": "Video"
+    },
+    "player_languagemenu_audio": {
+        "message": "Audio"
+    },
+    "player_playbackrate_label": {
+        "message": "Kadar main balik"
+    },
+    "player_settings_title": {
+        "message": "Tetapan FastStream"
+    },
+    "player_settings_open_label": {
+        "message": "Buka tetingkap tetapan"
+    },
+    "player_settings_close_label": {
+        "message": "Tutup tetingkap tetapan"
+    },
+    "player_savevideo_label": {
+        "message": "Simpan video. tahan ALT untuk menyimpan sebahagian video. tahan SHIFT untuk membuang penimbal."
+    },
+    "player_screenshot_label": {
+        "message": "Ambil tangkapan skrin"
+    },
+    "player_pip_label": {
+        "message": "Gambar dalam gambar"
+    },
+    "player_fullscreen_label": {
+        "message": "Skrin penuh"
+    },
+    "player_fullscreen_denied": {
+        "message": "Kebenaran skrin penuh ditolak!"
+    },
+    "player_windowed_fullscreen_label": {
+        "message": "Skrin Penuh Bertingkap"
+    },
+    "player_skip_forward_label": {
+        "message": "Langkau ke hadapan 10 saat"
+    },
+    "player_skip_backward_label": {
+        "message": "Langkau ke belakang 10 saat"
+    },
+    "player_more_label": {
+        "message": "Lebih banyak alat"
+    },
+    "player_loop_label": {
+        "message": "Gelung"
+    },
+    "loop_menu_start": {
+        "message": "Mula"
+    },
+    "loop_menu_end": {
+        "message": "Tamat"
+    },
+    "loop_menu_toggle_enabled": {
+        "message": "Gelung Didayakan"
+    },
+    "loop_menu_toggle_disabled": {
+        "message": "Gelung Dilumpuhkan"
+    },
+    "loop_menu_gif_start": {
+        "message": "Merakam GIF pada kelajuan 4x..."
+    },
+    "loop_menu_gif_end": {
+        "message": "Selesai merakam GIF. Sekarang menyimpan..."
+    },
+    "loop_menu_gif_abort": {
+        "message": "Rakaman GIF dihentikan!"
+    },
+    "loop_menu_gif_progress": {
+        "message": "Menyimpan GIF $1%"
+    },
+    "loop_menu_gif_finished": {
+        "message": "Selesai menyimpan GIF!"
+    },
+    "player_download_paused": {
+        "message": "Muat turun ditangguhkan"
+    },
+    "player_fragment_failed_singular": {
+        "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
+    },
+    "player_fragment_failed_plural": {
+        "message": "$1 Serpihan Gagal! Klik untuk mencuba semula."
+    },
+    "player_fragment_allbuffered": {
+        "message": "100% Ditimbal"
+    },
+    "player_welcometext": {
+        "message": "Selamat datang ke FastStream v$1!"
+    },
+    "player_nosource_alert": {
+        "message": "Tiada sumber dimuatkan!"
+    },
+    "player_archive_loading": {
+        "message": "Memuatkan arkib... $1%"
+    },
+    "player_archive_loaded": {
+        "message": "Arkib dimuatkan!"
+    },
+    "player_archive_fail": {
+        "message": "Gagal memuatkan arkib!"
+    },
+    "player_filename_prompt": {
+        "message": "Masukkan nama untuk fail"
+    },
+    "player_screenshot_saving": {
+        "message": "Mengambil tangkapan skrin..."
+    },
+    "player_screenshot_saved": {
+        "message": "Tangkapan skrin disimpan!"
+    },
+    "player_screenshot_fail": {
+        "message": "Gagal untuk tangkapan Skrin!"
+    },
+    "player_savevideo_inprogress_alert": {
+        "message": "Sudah membuat simpanan!"
+    },
+    "player_savevideo_unsupported": {
+        "message": "Penyimpanan tidak disokong untuk video ini!"
+    },
+    "player_savevideo_partial_confirm": {
+        "message": "Video belum selesai dimuat turun! Adakah anda pasti mahu menyimpannya?"
+    },
+    "player_savevideo_incognito_confirm": {
+        "message": "Mod Inkognito akan menggunakan RAM untuk menimbal video. Komputer anda mungkin tidak mempunyai memori yang mencukupi untuk menyimpan keseluruhan video!\nAdakah anda pasti mahu meneruskan?"
+    },
+    "player_savevideo_reencode": {
+        "message": "Menyimpan akan memerlukan penyulitan semula. Ini mungkin mengambil masa yang lama. Adakah anda mahu meneruskan?"
+    },
+    "player_savevideo_cancelling": {
+        "message": "Membatalkan simpanan..."
+    },
+    "player_savevideo_cancelled": {
+        "message": "Simpanan dibatalkan!"
+    },
+    "player_savevideo_start": {
+        "message": "Membuat penjimatan..."
+    },
+    "player_savevideo_progress": {
+        "message": "Menyimpan $1%"
+    },
+    "player_savevideo_fail": {
+        "message": "Gagal menyimpan video!"
+    },
+    "player_savevideo_failed_ask_archive": {
+        "message": "Gagal menyimpan video!\nAdakah anda mahu mengarkibkan storan penimbal pemain sebaliknya?\n- Seret dan lepaskan fail arkib pada pemain untuk memuatkannya"
+    },
+    "player_savevideo_complete": {
+        "message": "Selesai disimpan!"
+    },
+    "player_archiver_progress": {
+        "message": "Mengarkib $1%"
+    },
+    "player_archiver_saved": {
+        "message": "Arkib disimpan!"
+    },
+    "player_quality_current": {
+        "message": "(semasa)"
+    },
+    "player_quality_unknown": {
+        "message": "(tidak diketahui)"
+    },
+    "player_buffer_incognito_warning": {
+        "message": "Tidak cukup ruang untuk pramuat turun dalam mod inkognito, akan menimbal $1"
+    },
+    "player_buffer_storage_warning": {
+        "message": "Saiz video melebihi had, akan menimbal $1"
+    },
+    "player_error_drm": {
+        "message": "Gagal memuatkan! DRM tidak disokong!"
+    },
+    "player_error_load": {
+        "message": "Gagal memuatkan video!"
+    },
+    "source_copied": {
+        "message": "URL disalin ke papan keratan!"
+    },
+    "player_source_copybtn": {
+        "message": "Salin"
+    },
+    "player_source_copybtn_label": {
+        "message": "Salin URL sumber, pengepala, dan mod ke papan keratan"
+    },
+    "player_source_copybtn_copied": {
+        "message": "Disalin!"
+    },
+    "player_source_autodetect": {
+        "message": "Auto Mengesan"
+    },
+    "player_source_direct": {
+        "message": "Terus"
+    },
+    "player_source_accelmp4": {
+        "message": "MP4 dipercepatkan"
+    },
+    "player_source_accelhls": {
+        "message": "HLS dipercepatkan"
+    },
+    "player_source_acceldash": {
+        "message": "DASH dipercepatkan"
+    },
+    "player_source_accelyt": {
+        "message": "YouTube dipercepatkan"
+    },
+    "player_source_accelvm": {
+        "message": "Vimeo dipercepatkan"
+    },
+    "player_source_mode": {
+        "message": "Mod"
+    },
+    "player_source_mode_auto_error": {
+        "message": "Sila pilih mod pemain!"
+    },
+    "player_source_url_placeholder": {
+        "message": "Sumber URL"
+    },
+    "player_source_headerbtn": {
+        "message": "Tajuk diganti ($1)"
+    },
+    "player_source_headerbtn_label": {
+        "message": "Togol input ganti pengepala"
+    },
+    "player_source_headerbtn_disabled": {
+        "message": "Tajuk diganti (Sambungan Sahaja)"
+    },
+    "player_source_playbtn": {
+        "message": "Main"
+    },
+    "player_source_playbtn_playing": {
+        "message": "Bermain"
+    },
+    "player_source_playbtn_loading": {
+        "message": "Memuatkan..."
+    },
+    "player_source_deletebtn": {
+        "message": "Hapus"
+    },
+    "player_source_headers_label": {
+        "message": "Input mengatasi pengepala"
+    },
+    "player_source_headers_placeholder": {
+        "message": "Nama Pengepala: Nilai Pengepala\nNama Pengepala2: Nilai Pengepala2"
+    },
+    "player_source_nonelisted": {
+        "message": "Tiada Senarai Sumber"
+    },
+    "player_source_onelisted": {
+        "message": "1 Senarai Sumber"
+    },
+    "player_source_multilisted": {
+        "message": "$1 Senarai Sumber"
+    },
+    "player_source_addbtn": {
+        "message": "Masukkan Sumber"
+    },
+    "player_source_clearbtn": {
+        "message": "Kosongkan Sumber"
+    },
+    "player_audioconfig_duplicate_profile": {
+        "message": "(dimuatkan daripada fail pada $1)"
+    },
+    "player_audioconfig_create_profile": {
+        "message": "Ciptakan profil baru"
+    },
+    "player_audioconfig_import_profile": {
+        "message": "Import profil daripada fail"
+    },
+    "player_audioconfig_import_invalid": {
+        "message": "Fail profil tidak sah"
+    },
+    "player_audioconfig_profile": {
+        "message": "Profil"
+    },
+    "player_audioconfig_profile_unnamed": {
+        "message": "Profil Tanpa Nama"
+    },
+    "player_audioconfig_profile_load": {
+        "message": "Muat Profile"
+    },
+    "player_audioconfig_profile_loaded": {
+        "message": "Profil Dimuatkan!"
+    },
+    "player_audioconfig_profile_save": {
+        "message": "Simpan Profil"
+    },
+    "player_audioconfig_profile_saving": {
+        "message": "Menyimpan..."
+    },
+    "player_audioconfig_profile_saved": {
+        "message": "Profil Disimpan!"
+    },
+    "player_audioconfig_profile_download": {
+        "message": "Muat turun Profil"
+    },
+    "player_audioconfig_profile_downloaded": {
+        "message": "Dimuat turun!"
+    },
+    "player_audioconfig_profile_delete": {
+        "message": "Hapus"
+    },
+    "player_audioconfig_profile_deleting": {
+        "message": "Menghapus..."
+    },
+    "player_audioconfig_profile_deleted": {
+        "message": "Dihapuskan!"
+    },
+    "audiomixer_title": {
+        "message": "Pengadun Saluran Audio"
+    },
+    "audiomixer_volume_master_handle_label": {
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan mono"
+    },
+    "audiomixer_volume_handle_label": {
+        "message": "$1 gain is $2 dB ($3%). Gunakan anak panah untuk menyesuaikan. Tekan M untuk mengalihkan bisu"
+    },
+    "audiomixer_solo_label": {
+        "message": "Solo"
+    },
+    "audiomixer_mute_label": {
+        "message": "Bisu"
+    },
+    "audiomixer_mono": {
+        "message": "Mono"
+    },
+    "audiomixer_dynamics_label": {
+        "message": "Edit dinamik saluran"
+    },
+    "audiocrosstalk_title": {
+        "message": "Audio Crosstalk Correction"
+    },
+    "audiocrosstalk_enabled": {
+        "message": "Crosstalk Correction Enabled"
+    },
+    "audiocrosstalk_disabled": {
+        "message": "Crosstalk Correction Disabled"
+    },
+    "audiocrosstalk_decay": {
+        "message": "Decay"
+    },
+    "audiocrosstalk_colorgain": {
+        "message": "Max Coloration"
+    },
+    "audiocrosstalk_microdelay": {
+        "message": "Delta T"
+    },
+    "audiocrosstalk_lowbypass": {
+        "message": "Low Bypass"
+    },
+    "audiocrosstalk_highbypass": {
+        "message": "High Bypass"
+    },
+    "audiocrosstalk_speakerdistance": {
+        "message": "Speaker Distance"
+    },
+    "audiocrosstalk_headdistance": {
+        "message": "Head Distance"
+    },
+    "audiocompressor_title": {
+        "message": "Audio Compressor"
+    },
+    "audiocompressor_enabled": {
+        "message": "Compressor Enabled"
+    },
+    "audiocompressor_disabled": {
+        "message": "Pemampat dilumpuhkan"
+    },
+    "audiocompressor_threshold": {
+        "message": "Ambang"
+    },
+    "audiocompressor_knee": {
+        "message": "Lutut"
+    },
+    "audiocompressor_ratio": {
+        "message": "Nisbah"
+    },
+    "audiocompressor_attack": {
+        "message": "Serangan"
+    },
+    "audiocompressor_release": {
+        "message": "Pelepasan"
+    },
+    "audiocompressor_gain": {
+        "message": "Keuntungan"
+    },
+    "audioeq_title": {
+        "message": "Penyama Audio"
+    },
+    "audioeq_instructions": {
+        "message": "Klik dua kali untuk menukar jenis"
+    },
+    "audioeq_gain": {
+        "message": "Keuntungan: $1dB"
+    },
+    "audioeq_qscroll_instructions": {
+        "message": "Skrol untuk menukar Q"
+    },
+    "audioconvolver_title": {
+        "message": "Penapis Konvolusi Audio"
+    },
+    "audioconvolver_channel": {
+        "message": "Saluran"
+    },
+    "audioconvolver_enable": {
+        "message": "Dayakan"
+    },
+    "audioconvolver_normalize": {
+        "message": "Normalkan"
+    },
+    "audioconvolver_impulselength": {
+        "message": "Panjang impuls"
+    },
+    "audioconvolver_impulseresponse": {
+        "message": "Respons impuls"
+    },
+    "audioconvolver_selectfile": {
+        "message": "Pilih fail"
+    },
+    "audioconvolver_enabled": {
+        "message": "Konvolusi didayakan"
+    },
+    "audioconvolver_convolver": {
+        "message": "Konvolver"
+    },
+    "audioconvolver_disable": {
+        "message": "Lumpuhkan"
+    },
+    "audioconvolver_disabled": {
+        "message": "Konvolusi dilumpuhkan"
+    },
+    "audioconvolver_downmix_on": {
+        "message": "Downmix terlebih dahulu"
+    },
+    "audioconvolver_downmix_off": {
+        "message": "Tiada downmix"
+    },
+    "options_title": {
+        "message": "Pilihan FastStream"
+    },
+    "options_search_placeholder": {
+        "message": "Cari"
+    },
+    "options_reviewbanner_header": {
+        "message": "Suka FastStream? Tinggalkan ulasan!"
+    },
+    "options_reviewbanner_body": {
+        "message": "FastStream ialah projek hobi yang diselenggara oleh sukarelawan. Kami menghargai maklum balas anda kerana ia membantu kami mengetahui perkara yang perlu diperbaiki. Sila beritahu kami:"
+    },
+    "options_reviewbanner_l1": {
+        "message": "Cara anda menggunakannya"
+    },
+    "options_reviewbanner_l2": {
+        "message": "Sebarang pepijat yang anda temui"
+    },
+    "options_reviewbanner_l3": {
+        "message": "Permintaan ciri"
+    },
+    "options_reviewbanner_end": {
+        "message": "Kami juga mengambil serius tentang kebolehcapaian. Jika anda memerlukan penyesuaian yang tiada dalam versi semasa, sila buat permintaan dan kami akan mengusahakannya secepat mungkin."
+    },
+    "options_reviewbanner_rate": {
+        "message": "OK, saya akan ulas FastStream"
+    },
+    "options_reviewbanner_norate": {
+        "message": "Saya tidak mahu mengulas :("
+    },
+    "options_feedback_header": {
+        "message": "Adakah anda mempunyai maklum balas?"
+    },
+    "options_feedback_reason": {
+        "message": "Kami ingin mendengar daripada anda! Sila isi borang ringkas. Ini satu-satunya cara kami boleh menambah baik kerana kami tidak menjejaki anda."
+    },
+    "options_feedback_yes": {
+        "message": "Ya, saya ada maklum balas"
+    },
+    "options_feedback_no": {
+        "message": "Tidak, saya OK"
+    },
+    "options_help_feedback": {
+        "message": "Borang Maklum Balas"
+    },
+    "options_update_header": {
+        "message": "Kemas kini tersedia!"
+    },
+    "options_update_body": {
+        "message": "FastStream v$1 kini tersedia (versi semasa v$2). Adakah anda mahu mengemas kini?"
+    },
+    "options_update_go": {
+        "message": "Bawa saya ke GitHub"
+    },
+    "options_update_no": {
+        "message": "Abaikan kemas kini ini"
+    },
+    "options_reset_search": {
+        "message": "Tetapkan semula"
+    },
+    "options_video_header": {
+        "message": "Pilihan Video"
+    },
+    "options_video_body": {
+        "message": "Menggunakan penapis CSS pada video. Tidak berfungsi dalam mod gambar-dalam-gambar."
+    },
+    "options_video_zoom": {
+        "message": "Zum video"
+    },
+    "options_video_delay": {
+        "message": "Kelewatan video"
+    },
+    "options_video_brightness": {
+        "message": "Kecerahan"
+    },
+    "options_video_contrast": {
+        "message": "Kontras"
+    },
+    "options_video_saturation": {
+        "message": "Ketepuan"
+    },
+    "options_video_grayscale": {
+        "message": "Skala kelabu"
+    },
+    "options_video_sepia": {
+        "message": "Sepia"
+    },
+    "options_video_invert": {
+        "message": "Songsangkan"
+    },
+    "options_video_hue": {
+        "message": "Putar rona"
+    },
+    "options_video_daltonizer_type": {
+        "message": "Pembetulan buta warna"
+    },
+    "options_video_daltonizer_strength": {
+        "message": "Kekuatan"
+    },
+    "options_video_daltonizer_none": {
+        "message": "Tiada"
+    },
+    "options_video_daltonizer_protanomaly": {
+        "message": "Protanomaly"
+    },
+    "options_video_daltonizer_deuteranomaly": {
+        "message": "Deuteranomaly"
+    },
+    "options_video_daltonizer_tritanomaly": {
+        "message": "Tritanomaly"
+    },
+    "options_general_header": {
+        "message": "Pilihan Umum"
+    },
+    "options_general_predownload": {
+        "message": "Pra-muat turun keseluruhan video di latar belakang jika boleh"
+    },
+    "options_general_targetspeed": {
+        "message": "Kelajuan muat turun sasaran untuk pra-muat turun"
+    },
+    "options_general_maxsize": {
+        "message": "Saiz maksimum video pra-muat turun"
+    },
+    "options_general_previewenabled": {
+        "message": "Tunjukkan pratonton apabila melayang di atas garis masa"
+    },
+    "options_general_analyze": {
+        "message": "Analisis video berurutan secara automatik untuk intro/outro\n(matikan jika anda mengalami masalah prestasi CPU)"
+    },
+    "options_general_storeprogress": {
+        "message": "Play videos from last watched position"
+    },
+    "options_general_autosub": {
+        "message": "Dayakan trek sarikata terbaik yang ditemui secara automatik\n(Tukar bahasa lalai dalam tetapan sarikata)"
+    },
+    "options_general_stream": {
+        "message": "Gunakan pemain untuk memainkan strim HLS/DASH apabila membuka URL senarai main (.m3u8/.mpd)"
+    },
+    "options_general_mp4": {
+        "message": "Gunakan pemain untuk memainkan video MP4 apabila membuka URL video (.mp4)"
+    },
+    "options_general_seekstep": {
+        "message": "Jumlah cari (saat)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Kelewatan sembunyi automatik kawalan (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Sentiasa paparkan bar kemajuan di bahagian bawah pemain"
+    },
+    "options_general_replace_delay": {
+        "message": "Kelewatan sebelum menggantikan pemain secara automatik (ms)"
+    },
+    "options_general_autoplayyt": {
+        "message": "Main automatik video YouTube"
+    },
+    "options_general_autoplaynext": {
+        "message": "Main automatik video seterusnya"
+    },
+    "options_general_quality": {
+        "message": "Kualiti video lalai"
+    },
+    "options_general_clickaction": {
+        "message": "Tindakan klik tunggal"
+    },
+    "options_general_dblclickaction": {
+        "message": "Tindakan klik dua kali"
+    },
+    "options_general_tplclickaction": {
+        "message": "Tindakan klik tiga kali"
+    },
+    "options_general_clickaction_nothing": {
+        "message": "Jangan buat apa-apa"
+    },
+    "options_general_clickaction_playpause": {
+        "message": "Togol main/jeda"
+    },
+    "options_general_clickaction_fullscreen": {
+        "message": "Togol skrin penuh"
+    },
+    "options_general_clickaction_windowedfullscreen": {
+        "message": "Togol skrin penuh berbingkai"
+    },
+    "options_general_clickaction_pip": {
+        "message": "Togol gambar-dalam-gambar"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Cari"
+    },
+    "options_general_clickaction_hidecontrols": {
+        "message": "Sembunyikan kawalan"
+    },
+    "options_general_clickaction_hideplayer": {
+        "message": "Sembunyikan pemain"
+    },
+    "options_general_vischangeaction": {
+        "message": "Apabila keterlihatan pemain berubah"
+    },
+    "options_general_vischangeaction_nothing": {
+        "message": "Jangan buat apa-apa"
+    },
+    "options_general_vischangeaction_playpause": {
+        "message": "Togol main/jeda"
+    },
+    "options_general_vischangeaction_miniplayer": {
+        "message": "Togol pemain mini"
+    },
+    "options_general_minipos": {
+        "message": "Kedudukan pemain mini"
+    },
+    "options_general_minipos_topleft": {
+        "message": "Atas Kiri"
+    },
+    "options_general_minipos_topright": {
+        "message": "Atas Kanan"
+    },
+    "options_general_minipos_bottomleft": {
+        "message": "Bawah Kiri"
+    },
+    "options_general_minipos_bottomright": {
+        "message": "Bawah Kanan"
+    },
+    "options_general_minisize": {
+        "message": "Saiz pemain mini"
+    },
+    "options_general_color_theme": {
+        "message": "Tema warna pemain"
+    },
+    "options_general_color_theme_default": {
+        "message": "Gelap Lalai"
+    },
+    "options_general_color_theme_arctic": {
+        "message": "Cahaya Artik"
+    },
+    "options_general_color_theme_ocean": {
+        "message": "Biru Lautan"
+    },
+    "options_general_color_theme_neon": {
+        "message": "Malam Neon"
+    },
+    "options_general_color_theme_contrast": {
+        "message": "Kontras Tinggi"
+    },
+    "options_general_color_theme_sunset": {
+        "message": "Cahaya Senja"
+    },
+    "options_general_color_theme_forest": {
+        "message": "Malam Hutan"
+    },
+    "options_general_color_theme_slate": {
+        "message": "Slate Monokrom"
+    },
+    "options_general_color_theme_amethyst": {
+        "message": "Kabus Ametis"
+    },
+    "options_general_color_theme_desert": {
+        "message": "Pasir Gurun"
+    },
+    "options_general_color_theme_mint": {
+        "message": "Pudina Segar"
+    },
+    "options_general_vischangeaction_pip": {
+        "message": "Togol gambar-dalam-gambar"
+    },
+    "options_general_ytclient": {
+        "message": "Klien YT untuk digunakan. Cuba tukar jika anda mengalami masalah."
+    },
+    "options_export_header": {
+        "message": "Import/Eksport Tetapan"
+    },
+    "options_import": {
+        "message": "Import tetapan dari fail"
+    },
+    "options_export": {
+        "message": "Eksport tetapan ke fail"
+    },
+    "options_keybinds_header": {
+        "message": "Pintasan Papan Kekunci"
+    },
+    "options_keybinds_body": {
+        "message": "Pintasan hanya aktif apabila pemain difokuskan."
+    },
+    "options_keybinds_reset": {
+        "message": "Tetapkan semula kepada lalai"
+    },
+    "options_autourl_header": {
+        "message": "URL dayakan automatik"
+    },
+    "options_autourl_body": {
+        "message": "Akan mendayakan sambungan secara automatik apabila melawat URL ini dan melumpuhkannya apabila meninggalkan. Satu URL setiap baris; halaman yang bermula dengan URL tersebut juga akan sepadan. Untuk regex, tambah tilde (~) di hadapan. Satu regex setiap baris."
+    },
+    "options_autourl_hint": {
+        "message": "Petua: Uji regex di"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Dayakan secara automatik pada semua laman web"
+    },
+    "options_pattern_header": {
+        "message": "Corak Sumber Tersuai"
+    },
+    "options_pattern_body": {
+        "message": "Corak ini digunakan untuk mengesan sumber video tersuai pada laman web. Ia digunakan mengikut turutan, dan padanan pertama akan digunakan. Untuk pengguna lanjutan sahaja."
+    },
+    "options_help_header": {
+        "message": "Help"
+    },
+    "options_help_welcome": {
+        "message": "Halaman Selamat Datang"
+    },
+    "options_help_issues": {
+        "message": "Penjejak Isu"
+    },
+    "subtitles_settings_fontFamily": {
+        "message": "Font Family"
+    },
+    "subtitles_settings_fontWeight": {
+        "message": "Font Weight"
+    },
+    "subtitles_settings_fontSize": {
+        "message": "Font Size"
+    },
+    "subtitles_settings_color": {
+        "message": "Font Color"
+    },
+    "subtitles_settings_background": {
+        "message": "Background Color"
+    },
+    "subtitles_settings_outlineColor": {
+        "message": "Outline Color"
+    },
+    "subtitles_settings_outlineWidth": {
+        "message": "Outline Width"
+    },
+    "subtitles_settings_defaultLanguage": {
+        "message": "Language"
+    },
+    "subtitles_settings_bottomMargin": {
+        "message": "Bottom Margin"
+    },
+    "yes": {
+        "message": "Ya"
+    },
+    "no": {
+        "message": "Tidak"
+    },
+    "ok": {
+        "message": "OK"
+    },
+    "cancel": {
+        "message": "Batal"
+    },
+    "error_popup": {
+        "message": "Ralat: $1"
+    },
+    "error_popup_body": {
+        "message": "Sila laporkan ralat ini kepada pembangun di https://github.com/Andrews54757/FastStream/issues dengan jejak tumpukan di bawah:"
+    },
+    "error_popup_send": {
+        "message": "Laporkan Ralat"
+    },
+    "yt_error_login_required": {
+        "message": "Maaf! FastStream tidak menyokong video yang memerlukan anda masuk ke YouTube."
+    },
+    "player_outofstorage": {
+        "message": "Amaran: Pelayar anda tidak menyokong sepenuhnya ciri penyimpanan fail. Ini mungkin kerana pelayar anda kehabisan ruang simpanan atau tidak dimulakan semula dalam jangka masa yang lama. Sesetengah ciri mungkin tidak berfungsi seperti yang dijangkakan."
+    }
+}
