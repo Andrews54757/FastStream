@@ -38,6 +38,8 @@ export class InterfaceController {
     this.controlsVisible = true;
     this.mouseActivityCooldown = 0;
 
+    this.playPausePopupTimeout = null;
+
     this.failed = false;
 
     this.toolManager = new ToolManager(this.client, this);
@@ -1352,6 +1354,21 @@ export class InterfaceController {
     if (this.isUserSeeking()) {
       return;
     }
+
+    const popup = DOMElements.playPausePopup;
+    if (popup) {
+      popup.dataset.state = this.state.playing ? 'play' : 'pause';
+      popup.classList.remove('fs_playpause_popup_active');
+      void popup.offsetWidth;
+      popup.classList.add('fs_playpause_popup_active');
+      if (this.playPausePopupTimeout) {
+        clearTimeout(this.playPausePopupTimeout);
+      }
+      this.playPausePopupTimeout = setTimeout(() => {
+        popup.classList.remove('fs_playpause_popup_active');
+      }, 450);
+    }
+
     DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
     void DOMElements.playPauseButtonBigCircle.offsetWidth;
     DOMElements.playPauseButtonBigCircle.classList.add('transform-active');

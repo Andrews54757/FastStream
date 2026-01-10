@@ -11,6 +11,69 @@
     <link rel="stylesheet" href="./assets/fluidplayer/css/fluidplayer.css">
     <link rel="stylesheet" href="./assets/sweetalert/css/sweetalert.css">
     <link rel="stylesheet" href="./assets/coloris/css/coloris.css">
+
+    <style>
+        .fs_playpause_popup {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 96px;
+            height: 96px;
+            transform: translate(-50%, -50%);
+            border-radius: 999px;
+            background: rgba(0, 0, 0, 0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 2;
+            will-change: transform, opacity;
+        }
+
+        .fs_playpause_popup svg {
+            width: 44px;
+            height: 44px;
+            color: #fff;
+            display: none;
+        }
+
+        .fs_playpause_popup[data-state="play"] svg.fs_play {
+            display: block;
+            transform: translateX(2px);
+        }
+
+        .fs_playpause_popup[data-state="pause"] svg.fs_pause {
+            display: block;
+        }
+
+        .fs_playpause_popup.fs_playpause_popup_active {
+            animation: fs_playpause_popup_anim 450ms cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        @keyframes fs_playpause_popup_anim {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.85);
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.12);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .fs_playpause_popup.fs_playpause_popup_active {
+                animation: none;
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -20,6 +83,15 @@
         tabindex="-1">
         <div class="video-container"></div>
         <div class="fluid_subtitles_container"></div>
+
+        <div class="fs_playpause_popup" aria-hidden="true" data-state="play">
+            <svg class="fs_play">
+                <use href="assets/fluidplayer/static/icons.svg#play"></use>
+            </svg>
+            <svg class="fs_pause">
+                <use href="assets/fluidplayer/static/icons.svg#pause"></use>
+            </svg>
+        </div>
         <div class="fluid_controls_container fade_in">
             <div class="skip_button" style="display: none;" tabindex="0" role="button"></div>
             <div class="next_video_button" style="display: none;" tabindex="0" role="button"></div>
