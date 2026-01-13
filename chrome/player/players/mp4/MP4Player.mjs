@@ -194,9 +194,30 @@ export default class MP4Player extends EventEmitter {
     return samples;
   }
 
+  estimateTotalSizeFromMetadats() {
+    if (this.fileLength || !this.metaData) return;
+    const info = this.metaData;
+    // get last sample offset
+    let maxOffset = 0;
+    info.tracks.forEach((track) => {
+      const trak = this.mp4box.moov.traks.find((trak) => {
+        return trak.tkhd.track_id === track.id;
+      });
+      const samples = trak.samples;
+      if (samples.length > 0) {
+        const lastSample = samples[samples.length - 1];
+        if (lastSample.offset + lastSample.size > maxOffset) {
+          maxOffset = lastSample.offset + lastSample.size;
+        }
+      }
+    });
+    this.fileLength = maxOffset;
+    this.initializeFragments();
+  }
+
   onMetadataParsed(info) {
     this.metaData = info;
-
+    this.estimateTotalSizeFromMetadats();
     const max = Math.ceil(this.fileLength / FRAGMENT_SIZE);
     // for (let l = 0; l < info.videoTracks.length; l++) {
     const l = this.getCurrentVideoLevelID();
@@ -401,15 +422,27 @@ export default class MP4Player extends EventEmitter {
             if (!this.fileLength) {
               const rangeHeader = entry.responseHeaders['content-range'];
               if (!rangeHeader) {
-                console.log(entry.responseHeaders);
-                this.running = false;
-                this.emit(DefaultPlayerEvents.ERROR, 'No content range');
-                throw new Error('No content length');
+                console.warn('No content length');
+                this.fileLength = 0;
+
+                // make next fragment
+                if (!this.metaData) {
+                  const nextParsePosition = this.mp4box.nextParsePosition || (frag.rangeEnd + 1);
+                  const fragIndex = Math.floor(nextParsePosition / FRAGMENT_SIZE);
+                  const levelID = this.getCurrentVideoLevelID();
+                  if (!this.client.getFragment(levelID, fragIndex)) {
+                    this.client.makeFragment(levelID, fragIndex, new MP4Fragment(levelID, fragIndex, this.source, fragIndex * FRAGMENT_SIZE, (fragIndex + 1) * FRAGMENT_SIZE));
+                  }
+                } else {
+                  console.log(entry.responseHeaders);
+                  this.running = false;
+                  this.emit(DefaultPlayerEvents.ERROR, 'No content range');
+                  throw new Error('No content range');
+                }
               } else {
                 this.fileLength = parseInt(rangeHeader.split('/')[1]);
+                this.initializeFragments();
               }
-
-              this.initializeFragments();
             }
             // console.log("append", frag)
             this.mp4box.appendBuffer(data);
