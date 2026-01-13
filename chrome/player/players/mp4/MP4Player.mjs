@@ -83,7 +83,11 @@ export default class MP4Player extends EventEmitter {
     if (this.currentAudioTrack !== null) {
       const audioTrack = this.metaData.audioTracks[this.currentAudioTrack];
       if (audioTrack) {
-        const audioCodec = 'audio/mp4; codecs=\"' + audioTrack.codec + '\"';
+        let fixedCodec = audioTrack.codec;
+        if (fixedCodec === 'Opus') {
+          fixedCodec = 'opus';
+        }
+        const audioCodec = 'audio/mp4; codecs=\"' + fixedCodec + '\"';
         this.audioSourceBuffer = new SourceBufferWrapper(this.mediaSource, audioCodec);
       }
     }
@@ -102,7 +106,12 @@ export default class MP4Player extends EventEmitter {
 
   setupHLS() {
     this.removeSourceBuffers();
-    this.makeSourceBuffers();
+    try {
+      this.makeSourceBuffers();
+    } catch (e) {
+      this.emit(DefaultPlayerEvents.ERROR, 'Failed to create SourceBuffers: ' + e.message);
+      return;
+    }
 
     this.mp4box.fragmentedTracks.length = 0;
 
@@ -432,10 +441,12 @@ export default class MP4Player extends EventEmitter {
 
                 if (!this.metaData) {
                   const nextParsePosition = this.mp4box.nextParsePosition || (frag.rangeEnd + 1);
-                  const fragIndex = Math.floor(nextParsePosition / FRAGMENT_SIZE);
+                  const maxIndex = Math.floor(nextParsePosition / FRAGMENT_SIZE);
                   const levelID = this.getCurrentVideoLevelID();
-                  if (!this.client.getFragment(levelID, fragIndex)) {
-                    this.client.makeFragment(levelID, fragIndex, new MP4Fragment(levelID, fragIndex, this.source, fragIndex * FRAGMENT_SIZE, (fragIndex + 1) * FRAGMENT_SIZE));
+                  for (let fragIndex = 1; fragIndex <= maxIndex; fragIndex++) {
+                    if (!this.client.getFragment(levelID, fragIndex)) {
+                      this.client.makeFragment(levelID, fragIndex, new MP4Fragment(levelID, fragIndex, this.source, fragIndex * FRAGMENT_SIZE, (fragIndex + 1) * FRAGMENT_SIZE));
+                    }
                   }
                 } else {
                   console.log(entry.responseHeaders);
