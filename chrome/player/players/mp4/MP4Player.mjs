@@ -374,6 +374,7 @@ export default class MP4Player extends EventEmitter {
       this.running = false;
       throw new Error('No current fragment');
     }
+
     const frags = this.client.getFragments(this.getCurrentVideoLevelID()) || [];
 
     const time = this.video.currentTime;
@@ -419,13 +420,16 @@ export default class MP4Player extends EventEmitter {
               this.loader = null;
             } else return;
 
+            this.mp4box.appendBuffer(data);
+            this.currentFragments.push(frag);
+            frag.addReference(ReferenceTypes.MP4PLAYER, true);
+
             if (!this.fileLength) {
               const rangeHeader = entry.responseHeaders['content-range'];
               if (!rangeHeader) {
                 console.warn('No content length');
                 this.fileLength = 0;
 
-                // make next fragment
                 if (!this.metaData) {
                   const nextParsePosition = this.mp4box.nextParsePosition || (frag.rangeEnd + 1);
                   const fragIndex = Math.floor(nextParsePosition / FRAGMENT_SIZE);
@@ -444,10 +448,6 @@ export default class MP4Player extends EventEmitter {
                 this.initializeFragments();
               }
             }
-            // console.log("append", frag)
-            this.mp4box.appendBuffer(data);
-            this.currentFragments.push(frag);
-            frag.addReference(ReferenceTypes.MP4PLAYER, true);
             this.runLoad();
           },
           onProgress: (stats, context, data, xhr) => {
