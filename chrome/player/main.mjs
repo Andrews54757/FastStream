@@ -293,6 +293,11 @@ async function setup() {
         type: MessageTypes.REQUEST_SOURCES,
       });
     });
+  } else {
+    // if in iframe, require interaction
+    if (window.self !== window.top) {
+      window.fastStream.setNeedsUserInteraction(true);
+    }
   }
 
   const version = window.fastStream.version;
