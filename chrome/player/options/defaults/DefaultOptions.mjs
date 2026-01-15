@@ -10,6 +10,8 @@ import {VisChangeActions} from './VisChangeActions.mjs';
 export const DefaultOptions = {
   dev: false,
   replaceDelay: 500,
+  controlsHideDelay: 2000,
+  alwaysShowProgressBar: false,
   playMP4URLs: false,
   playStreamURLs: false,
   analyzeVideos: false,
@@ -22,6 +24,7 @@ export const DefaultOptions = {
   defaultYoutubeClient: YoutubeClients.WEB,
   defaultQuality: `Auto`,
   colorTheme: ColorThemes.DEFAULT,
+  autoEnableAllWebsites: true,
   autoEnableURLs: [],
   customSourcePatterns: ``,
   keybinds: DefaultKeybinds,
@@ -37,9 +40,9 @@ export const DefaultOptions = {
   videoZoom: 1,
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
-  seekStepSize: 2,
+  seekStepSize: 5,
   singleClickAction: ClickActions.PLAY_PAUSE,
-  doubleClickAction: ClickActions.FULLSCREEN,
+  doubleClickAction: ClickActions.SEEK,
   tripleClickAction: ClickActions.HIDE_CONTROLS,
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,
@@ -47,4 +50,25 @@ export const DefaultOptions = {
   videoDelay: 0,
   maximumDownloaders: 6,
   youtubePlayerID: '',
+
+  // Per-tool visibility for the player toolbar. Keys match ToolManager tool ids.
+  // NOTE: Core controls (play/pause, volume, fullscreen, settings, more) are always forced visible.
+  toolbarButtons: {
+    previous: true,
+    next: true,
+    duration: true,
+    sources: true,
+    audioconfig: true,
+    subtitles: true,
+    languages: true,
+    quality: true,
+    playrate: true,
+    download: true,
+    screenshot: true,
+    pip: true,
+    windowedfs: true,
+    loop: true,
+    forward: true,
+    backward: true,
+  },
 };

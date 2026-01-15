@@ -20,6 +20,7 @@ import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
+import {DefaultOptions} from './options/defaults/DefaultOptions.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
 import {PreviewFrameExtractor} from './modules/analyzer/PreviewFrameExtractor.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
@@ -53,6 +54,8 @@ export class FastStreamClient extends EventEmitter {
       autoPlay: false,
       maxSpeed: -1,
       maxVideoSize: 5000000000, // 5GB max size
+      controlsHideDelay: 2000,
+      alwaysShowProgressBar: false,
       introCutoff: 5 * 60,
       outroCutoff: 5 * 60,
       bufferAhead: 300,
@@ -81,7 +84,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
-      seekStepSize: 0.2,
+      seekStepSize: 5,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -91,6 +94,7 @@ export class FastStreamClient extends EventEmitter {
       maximumDownloaders: 6,
       maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
       youtubePlayerID: '',
+      toolbarButtons: Utils.mergeOptions(DefaultOptions.toolbarButtons || {}, {}),
     };
     this.state = {
       playing: false,
@@ -304,6 +308,9 @@ export class FastStreamClient extends EventEmitter {
   setOptions(options) {
     this.options.analyzeVideos = options.analyzeVideos;
 
+    this.options.controlsHideDelay = options.controlsHideDelay;
+    this.options.alwaysShowProgressBar = !!options.alwaysShowProgressBar;
+
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
@@ -319,6 +326,9 @@ export class FastStreamClient extends EventEmitter {
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
+
+    // Toolbar button visibility
+    this.options.toolbarButtons = Utils.mergeOptions(DefaultOptions.toolbarButtons || {}, options.toolbarButtons || {});
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -368,6 +378,10 @@ export class FastStreamClient extends EventEmitter {
       this.keybindManager.setKeybinds(options.keybinds);
     }
 
+    if (this.interfaceController && typeof this.interfaceController.updateSeekButtons === 'function') {
+      this.interfaceController.updateSeekButtons();
+    }
+
     if (this.options.analyzeVideos) {
       this.videoAnalyzer.enable();
     } else {
@@ -383,8 +397,15 @@ export class FastStreamClient extends EventEmitter {
       this.interfaceController.updateToolVisibility();
     }
 
+    // Visibility settings can affect tools regardless of toolSettings changes.
+    this.interfaceController.updateToolVisibility();
+
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
+
+    if (this.interfaceController && typeof this.interfaceController.applyAlwaysShowProgressBar === 'function') {
+      this.interfaceController.applyAlwaysShowProgressBar();
+    }
 
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }

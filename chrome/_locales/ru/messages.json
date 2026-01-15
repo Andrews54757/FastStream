@@ -948,7 +948,13 @@
         "message": "Использовать плеер для воспроизведения видео в MP4 при открытии ссылки с видео (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Шаг перемотки горячими клавишами (секунды)"
+        "message": "Шаг перемотки (секунды)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Задержка автоскрытия элементов управления (мс)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Всегда показывать полосу прогресса внизу плеера"
     },
     "options_general_replace_delay": {
         "message": "Задержка перед автозаменой плеера (мс)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Картинка в картинке"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Перемотка"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Скрыть элементы управления"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Подсказка: протестируйте регулярное выражение на"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Автоматически включать на всех сайтах"
     },
     "options_pattern_header": {
         "message": "Пользовательские шаблоны источников"

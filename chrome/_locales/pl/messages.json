@@ -948,7 +948,13 @@
         "message": "Użyj odtwarzacza do odtwarzania plików MP4 z adresów URL (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Podstawowy krok przewijania (sekundy)"
+        "message": "Wielkość skoku (sekundy)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Opóźnienie automatycznego ukrywania kontrolek (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Zawsze pokazuj pasek postępu na dole odtwarzacza"
     },
     "options_general_replace_delay": {
         "message": "Opóźnienie przed automatyczną zamianą odtwarzacza (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Przełącz obraz w obrazie"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Przewijaj"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Ukryj kontrolki"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Wskazówka: przetestuj regex na"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Włącz automatycznie na wszystkich stronach"
     },
     "options_pattern_header": {
         "message": "Niestandardowe wzorce źródeł"

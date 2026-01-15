@@ -948,7 +948,13 @@
         "message": "動画の URL (.mp4) を開くときにMP4 の動画を再生するプレーヤーを使用する"
     },
     "options_general_seekstep": {
-        "message": "シークキーバインドのベースステップサイズ (秒)"
+        "message": "シーク量 (秒)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "コントロール自動非表示までの遅延 (ミリ秒)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "プレーヤー下部に進行バーを常に表示"
     },
     "options_general_replace_delay": {
         "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "ピクチャー イン ピクチャー (PiP) に切り替え"
+    },
+    "options_general_clickaction_seek": {
+        "message": "シーク"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "コントロールを非表示"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
+    },
+    "options_autourl_allwebsites": {
+        "message": "すべてのウェブサイトで自動的に有効化"
     },
     "options_pattern_header": {
         "message": "カスタムソースパターン"

@@ -408,10 +408,10 @@
         "message": "Pantalla completa de ventana"
     },
     "player_skip_forward_label": {
-        "message": "Saltar adelante 10s"
+        "message": "Saltar adelante "
     },
     "player_skip_backward_label": {
-        "message": "Saltar hacia atrás 10s"
+        "message": "Saltar hacia atrás "
     },
     "player_more_label": {
         "message": "Más utilidades"
@@ -948,7 +948,13 @@
         "message": "Use el reproductor para reproducir videos MP4 al abrir URLs de video (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Buscar tamaño de paso base de la tecla de acceso rápido (segundos)"
+        "message": "Cantidad de salto (segundos)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Retardo para ocultar automáticamente los controles (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Mostrar siempre la barra de progreso en la parte inferior del reproductor"
     },
     "options_general_replace_delay": {
         "message": "Retraso antes de reemplazar auto (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Alternar imagen en imagen"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Buscar"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Ocultar controles"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Sugerencia: Prueba regex en"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Activar automáticamente en todos los sitios web"
     },
     "options_pattern_header": {
         "message": "Patrones de Fuente Personalizados"

@@ -408,10 +408,10 @@
         "message": "Venster-volledig scherm in-/uitschakelen"
     },
     "player_skip_forward_label": {
-        "message": "10s vooruit springen"
+        "message": " vooruit springen"
     },
     "player_skip_backward_label": {
-        "message": "10s terugspringen"
+        "message": " terugspringen"
     },
     "player_more_label": {
         "message": "Meer tools"
@@ -948,7 +948,13 @@
         "message": "Gebruik de speler om MP4-video's af te spelen bij het openen van video-URL's (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Basisstapgrootte voor zoeken (seconden)"
+        "message": "Zoekafstand (seconden)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Vertraging voor automatisch verbergen van bediening (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Voortgangsbalk altijd onderaan de speler tonen"
     },
     "options_general_replace_delay": {
         "message": "Vertraging voordat speler automatisch wordt vervangen (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Beeld-in-beeld in-/uitschakelen"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Zoeken"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Bediening verbergen"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Tip: test regex op"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Automatisch inschakelen op alle websites"
     },
     "options_pattern_header": {
         "message": "Aangepaste bronpatronen"

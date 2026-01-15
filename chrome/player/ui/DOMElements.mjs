@@ -3,6 +3,7 @@ export const DOMElements = {
   videoContainer: document.querySelector('.mainplayer .video-container'),
   controlsContainer: document.querySelector('.mainplayer .fluid_controls_container'),
   controlsLeft: document.querySelector('.mainplayer .fluid_controls_left'),
+  playPausePopup: document.querySelector('.mainplayer .fs_playpause_popup'),
   playPauseButton: document.querySelector('.mainplayer .fluid_control_playpause'),
   playPauseButtonBig: document.querySelector('.mainplayer .fluid_control_playpause_big'),
   playPauseButtonBigCircle: document.querySelector('.mainplayer .fluid_control_playpause_big_circle'),
@@ -88,4 +89,6 @@ export const DOMElements = {
   loopMenu: document.querySelector('.mainplayer .loop_menu'),
   skipForwardButton: document.querySelector('.mainplayer .fluid_control_skip_forward'),
   skipBackwardButton: document.querySelector('.mainplayer .fluid_control_skip_backward'),
+  skipForwardLabel: document.querySelector('.mainplayer .fluid_control_skip_forward .fluid_seek_amount'),
+  skipBackwardLabel: document.querySelector('.mainplayer .fluid_control_skip_backward .fluid_seek_amount'),
 };

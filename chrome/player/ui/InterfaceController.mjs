@@ -38,6 +38,8 @@ export class InterfaceController {
     this.controlsVisible = true;
     this.mouseActivityCooldown = 0;
 
+    this.playPausePopupTimeout = null;
+
     this.failed = false;
 
     this.toolManager = new ToolManager(this.client, this);
@@ -122,7 +124,145 @@ export class InterfaceController {
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
 
+    this.skipPopupForwardEl = null;
+    this.skipPopupBackwardEl = null;
+    this.skipPopupForwardTimeout = null;
+    this.skipPopupBackwardTimeout = null;
+
     this.setupDOM();
+
+    // Track progress-bar detachment so we can keep it visible even when controls fade out.
+    this._progressBarDetached = false;
+    this._progressBarOriginalParent = null;
+    this._progressBarOriginalNextSibling = null;
+
+    // Apply immediately using defaults (will be re-applied after options load).
+    this.applyAlwaysShowProgressBar();
+  }
+
+  applyAlwaysShowProgressBar() {
+    const enabled = !!this.client?.options?.alwaysShowProgressBar;
+
+    if (!DOMElements?.playerContainer || !DOMElements?.progressContainer) {
+      return;
+    }
+
+    if (enabled) {
+      DOMElements.playerContainer.classList.add('always_show_progress_bar');
+
+      if (!this._progressBarDetached) {
+        this._progressBarOriginalParent = DOMElements.progressContainer.parentElement;
+        this._progressBarOriginalNextSibling = DOMElements.progressContainer.nextSibling;
+
+        DOMElements.playerContainer.appendChild(DOMElements.progressContainer);
+        this._progressBarDetached = true;
+      }
+      return;
+    }
+
+    DOMElements.playerContainer.classList.remove('always_show_progress_bar');
+
+    if (this._progressBarDetached && this._progressBarOriginalParent) {
+      const parent = this._progressBarOriginalParent;
+      const next = this._progressBarOriginalNextSibling;
+
+      if (next && next.parentElement === parent) {
+        parent.insertBefore(DOMElements.progressContainer, next);
+      } else {
+        parent.appendChild(DOMElements.progressContainer);
+      }
+
+      this._progressBarDetached = false;
+    }
+  }
+
+  ensureSkipPopups() {
+    if (!DOMElements?.playerContainer) {
+      return;
+    }
+
+    if (!this.skipPopupForwardEl) {
+      const el = document.createElement('div');
+      el.className = 'fluid_control_skip_forward_popup';
+      const label = document.createElement('div');
+      label.className = 'fluid_seek_amount';
+      label.setAttribute('aria-hidden', 'true');
+      el.appendChild(label);
+      DOMElements.playerContainer.appendChild(el);
+      this.skipPopupForwardEl = el;
+    }
+
+    if (!this.skipPopupBackwardEl) {
+      const el = document.createElement('div');
+      el.className = 'fluid_control_skip_backward_popup';
+      const label = document.createElement('div');
+      label.className = 'fluid_seek_amount';
+      label.setAttribute('aria-hidden', 'true');
+      el.appendChild(label);
+      DOMElements.playerContainer.appendChild(el);
+      this.skipPopupBackwardEl = el;
+    }
+  }
+
+  showSkipPopup(direction) {
+    this.ensureSkipPopups();
+
+    const step = this.client?.options?.seekStepSize;
+    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+      return;
+    }
+
+    const rounded = Math.round(Math.abs(step) * 100) / 100;
+    const amountText = rounded.toString();
+    const sign = direction === 'backward' ? '-' : '+';
+
+    if (direction === 'backward' && this.skipPopupBackwardEl) {
+      const label = this.skipPopupBackwardEl.querySelector('.fluid_seek_amount');
+      if (label) label.textContent = `${sign}${amountText}`;
+
+      this.skipPopupBackwardEl.classList.remove('active');
+      // Force reflow so the animation retriggers on repeated clicks.
+      void this.skipPopupBackwardEl.offsetWidth;
+      this.skipPopupBackwardEl.classList.add('active');
+
+      clearTimeout(this.skipPopupBackwardTimeout);
+      this.skipPopupBackwardTimeout = setTimeout(() => {
+        this.skipPopupBackwardEl?.classList.remove('active');
+      }, 650);
+    }
+
+    if (direction === 'forward' && this.skipPopupForwardEl) {
+      const label = this.skipPopupForwardEl.querySelector('.fluid_seek_amount');
+      if (label) label.textContent = `${sign}${amountText}`;
+
+      this.skipPopupForwardEl.classList.remove('active');
+      // Force reflow so the animation retriggers on repeated clicks.
+      void this.skipPopupForwardEl.offsetWidth;
+      this.skipPopupForwardEl.classList.add('active');
+
+      clearTimeout(this.skipPopupForwardTimeout);
+      this.skipPopupForwardTimeout = setTimeout(() => {
+        this.skipPopupForwardEl?.classList.remove('active');
+      }, 650);
+    }
+  }
+
+  updateSeekButtons() {
+    const step = this.client?.options?.seekStepSize;
+    if (!DOMElements.skipForwardLabel || !DOMElements.skipBackwardLabel) {
+      return;
+    }
+
+    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+      DOMElements.skipForwardLabel.textContent = '';
+      DOMElements.skipBackwardLabel.textContent = '';
+      return;
+    }
+
+    const rounded = Math.round(step * 100) / 100;
+    const label = rounded.toString();
+    DOMElements.skipForwardLabel.textContent = label;
+    DOMElements.skipBackwardLabel.textContent = label;
   }
 
   updateAutoNextIndicator() {
@@ -357,6 +497,7 @@ export class InterfaceController {
 
     WebUtils.setupTabIndex(DOMElements.fullscreen);
 
+
     DOMElements.windowedFullscreen.addEventListener('click', (e)=>{
       this.toggleWindowedFullscreen();
     });
@@ -474,6 +615,24 @@ export class InterfaceController {
           case ClickActions.PLAY_PAUSE:
             this.playPauseToggle();
             break;
+          case ClickActions.SEEK: {
+            const clickSide = Utils.getClickSide(e, DOMElements.videoContainer, 0.4);
+            if (clickSide !== 'left' && clickSide !== 'right') {
+              // Middle 20%: no-op for seek action.
+              break;
+            }
+
+            const step = this.client?.options?.seekStepSize;
+            if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+              break;
+            }
+
+            this.client.setSeekSave(false);
+            this.client.currentTime += clickSide === 'left' ? -step : step;
+            this.client.setSeekSave(true);
+            this.showSkipPopup(clickSide === 'left' ? 'backward' : 'forward');
+            break;
+          }
           case ClickActions.HIDE_CONTROLS:
             this.focusingControls = false;
             this.mouseOverControls = false;
@@ -481,6 +640,9 @@ export class InterfaceController {
             break;
           case ClickActions.HIDE_PLAYER:
             this.toggleHide();
+            break;
+          case ClickActions.NOTHING:
+          default:
             break;
         }
       }, clickCount < 3 ? 300 : 0);
@@ -543,8 +705,9 @@ export class InterfaceController {
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSkipPopup('forward');
       e.stopPropagation();
     });
 
@@ -552,12 +715,15 @@ export class InterfaceController {
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSkipPopup('backward');
       e.stopPropagation();
     });
 
     WebUtils.setupTabIndex(DOMElements.skipBackwardButton);
+
+    this.updateSeekButtons();
 
     DOMElements.moreButton.addEventListener('click', (e) => {
       if (!DOMElements.extraTools.classList.contains('visible')) {
@@ -980,11 +1146,16 @@ export class InterfaceController {
 
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
+
+    const defaultDelay = this.client?.options?.controlsHideDelay;
+    const resolvedDelay = typeof time === 'number' ? time : (typeof defaultDelay === 'number' ? defaultDelay : 2000);
+    const delayMs = Number.isFinite(resolvedDelay) ? Math.max(0, resolvedDelay) : 2000;
+
     this.hideControlBarTimeout = setTimeout(() => {
       if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
-    }, time || 2000);
+    }, delayMs);
   }
 
   hideControlBarOnAction(cooldown) {
@@ -1183,6 +1354,21 @@ export class InterfaceController {
     if (this.isUserSeeking()) {
       return;
     }
+
+    const popup = DOMElements.playPausePopup;
+    if (popup) {
+      popup.dataset.state = this.state.playing ? 'play' : 'pause';
+      popup.classList.remove('fs_playpause_popup_active');
+      void popup.offsetWidth;
+      popup.classList.add('fs_playpause_popup_active');
+      if (this.playPausePopupTimeout) {
+        clearTimeout(this.playPausePopupTimeout);
+      }
+      this.playPausePopupTimeout = setTimeout(() => {
+        popup.classList.remove('fs_playpause_popup_active');
+      }, 450);
+    }
+
     DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
     void DOMElements.playPauseButtonBigCircle.offsetWidth;
     DOMElements.playPauseButtonBigCircle.classList.add('transform-active');

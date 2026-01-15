@@ -408,10 +408,10 @@
         "message": "Toggle windowed fullscreen"
     },
     "player_skip_forward_label": {
-        "message": "Skip forward 10s"
+        "message": "Skip forward "
     },
     "player_skip_backward_label": {
-        "message": "Skip backward 10s"
+        "message": "Skip backward "
     },
     "player_more_label": {
         "message": "More tools"
@@ -948,7 +948,13 @@
         "message": "Use player to play MP4 videos when opening video URLs (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Seek keybind base step size (seconds)"
+        "message": "Seek amount (seconds)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Controls auto-hide delay (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Always show progress bar at bottom of player"
     },
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Toggle picture-in-picture"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Seek"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Hide controls"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Hint: Test regex on"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Auto-enable on all websites"
     },
     "options_pattern_header": {
         "message": "Custom Source Patterns"

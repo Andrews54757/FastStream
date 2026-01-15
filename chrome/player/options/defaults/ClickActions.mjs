@@ -6,4 +6,5 @@ export const ClickActions = {
   PIP: 'pip',
   HIDE_CONTROLS: 'hidecontrols',
   HIDE_PLAYER: 'hideplayer',
+  SEEK: 'seek',
 };

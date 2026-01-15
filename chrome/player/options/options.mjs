@@ -25,10 +25,13 @@ const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
+const autoEnableAllWebsites = document.getElementById('autoenableallwebsites');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
+const controlsHideDelay = document.getElementById('controlshidedelay');
+const alwaysShowProgressBar = document.getElementById('alwaysshowprogressbar');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
@@ -53,6 +56,24 @@ const optionsSearchBar = document.getElementById('searchbar');
 const optionsResetButton = document.getElementById('resetsearch');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
+
+// Toolbar visibility
+const toolbar_previous = document.getElementById('toolbar_previous');
+const toolbar_next = document.getElementById('toolbar_next');
+const toolbar_duration = document.getElementById('toolbar_duration');
+const toolbar_sources = document.getElementById('toolbar_sources');
+const toolbar_audioconfig = document.getElementById('toolbar_audioconfig');
+const toolbar_subtitles = document.getElementById('toolbar_subtitles');
+const toolbar_languages = document.getElementById('toolbar_languages');
+const toolbar_quality = document.getElementById('toolbar_quality');
+const toolbar_playrate = document.getElementById('toolbar_playrate');
+const toolbar_download = document.getElementById('toolbar_download');
+const toolbar_screenshot = document.getElementById('toolbar_screenshot');
+const toolbar_pip = document.getElementById('toolbar_pip');
+const toolbar_windowedfs = document.getElementById('toolbar_windowedfs');
+const toolbar_loop = document.getElementById('toolbar_loop');
+const toolbar_backward = document.getElementById('toolbar_backward');
+const toolbar_forward = document.getElementById('toolbar_forward');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -76,6 +97,7 @@ if (!EnvUtils.isExtension()) {
   autoSub.disabled = true;
   autoplayYoutube.disabled = true;
   autoEnableURLSInput.disabled = true;
+  autoEnableAllWebsites.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
   // ytclient.disabled = true;
@@ -91,6 +113,9 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
+  // Ensure object exists (should be present via DefaultOptions merge, but keep safe)
+  Options.toolbarButtons = Options.toolbarButtons || {};
+
   downloadAll.checked = !!Options.downloadAll;
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
@@ -102,12 +127,32 @@ async function loadOptions(newOptions) {
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
+  controlsHideDelay.value = Math.round(Options.controlsHideDelay);
+  alwaysShowProgressBar.checked = !!Options.alwaysShowProgressBar;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
+
+  // Toolbar buttons
+  toolbar_previous.checked = Options.toolbarButtons.previous !== false;
+  toolbar_next.checked = Options.toolbarButtons.next !== false;
+  toolbar_duration.checked = Options.toolbarButtons.duration !== false;
+  toolbar_sources.checked = Options.toolbarButtons.sources !== false;
+  toolbar_audioconfig.checked = Options.toolbarButtons.audioconfig !== false;
+  toolbar_subtitles.checked = Options.toolbarButtons.subtitles !== false;
+  toolbar_languages.checked = Options.toolbarButtons.languages !== false;
+  toolbar_quality.checked = Options.toolbarButtons.quality !== false;
+  toolbar_playrate.checked = Options.toolbarButtons.playrate !== false;
+  toolbar_download.checked = Options.toolbarButtons.download !== false;
+  toolbar_screenshot.checked = Options.toolbarButtons.screenshot !== false;
+  toolbar_pip.checked = Options.toolbarButtons.pip !== false;
+  toolbar_windowedfs.checked = Options.toolbarButtons.windowedfs !== false;
+  toolbar_loop.checked = Options.toolbarButtons.loop !== false;
+  toolbar_backward.checked = Options.toolbarButtons.backward !== false;
+  toolbar_forward.checked = Options.toolbarButtons.forward !== false;
 
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
   setSelectMenuValue(clickAction, Options.singleClickAction);
@@ -154,6 +199,7 @@ async function loadOptions(newOptions) {
   });
 
   autoEnableURLSInput.value = Options.autoEnableURLs.join('\n');
+  autoEnableAllWebsites.checked = !!Options.autoEnableAllWebsites;
 
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
@@ -389,6 +435,32 @@ storeProgress.addEventListener('change', () => {
   optionChanged();
 });
 
+function wireToolbarCheckbox(checkbox, key) {
+  if (!checkbox) return;
+  checkbox.addEventListener('change', () => {
+    Options.toolbarButtons = Options.toolbarButtons || {};
+    Options.toolbarButtons[key] = !!checkbox.checked;
+    optionChanged();
+  });
+}
+
+wireToolbarCheckbox(toolbar_previous, 'previous');
+wireToolbarCheckbox(toolbar_next, 'next');
+wireToolbarCheckbox(toolbar_duration, 'duration');
+wireToolbarCheckbox(toolbar_sources, 'sources');
+wireToolbarCheckbox(toolbar_audioconfig, 'audioconfig');
+wireToolbarCheckbox(toolbar_subtitles, 'subtitles');
+wireToolbarCheckbox(toolbar_languages, 'languages');
+wireToolbarCheckbox(toolbar_quality, 'quality');
+wireToolbarCheckbox(toolbar_playrate, 'playrate');
+wireToolbarCheckbox(toolbar_download, 'download');
+wireToolbarCheckbox(toolbar_screenshot, 'screenshot');
+wireToolbarCheckbox(toolbar_pip, 'pip');
+wireToolbarCheckbox(toolbar_windowedfs, 'windowedfs');
+wireToolbarCheckbox(toolbar_loop, 'loop');
+wireToolbarCheckbox(toolbar_backward, 'backward');
+wireToolbarCheckbox(toolbar_forward, 'forward');
+
 autoplayYoutube.addEventListener('change', () => {
   Options.autoplayYoutube = autoplayYoutube.checked;
   optionChanged();
@@ -421,6 +493,18 @@ maxSize.addEventListener('change', () => {
 
 seekStepSize.addEventListener('change', () => {
   Options.seekStepSize = parseFloat(seekStepSize.value);
+  optionChanged();
+});
+
+controlsHideDelay.addEventListener('change', () => {
+  const parsed = parseInt(controlsHideDelay.value, 10);
+  Options.controlsHideDelay = Number.isFinite(parsed) ? Math.max(0, parsed) : DefaultOptions.controlsHideDelay;
+  controlsHideDelay.value = String(Options.controlsHideDelay);
+  optionChanged();
+});
+
+alwaysShowProgressBar.addEventListener('change', () => {
+  Options.alwaysShowProgressBar = alwaysShowProgressBar.checked;
   optionChanged();
 });
 
@@ -482,6 +566,11 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('change', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  optionChanged();
+});
+
+autoEnableAllWebsites.addEventListener('change', (e) => {
+  Options.autoEnableAllWebsites = !!autoEnableAllWebsites.checked;
   optionChanged();
 });
 

@@ -948,7 +948,13 @@
         "message": "開啟 .mp4 連結時以播放器播放 MP4 影片"
     },
     "options_general_seekstep": {
-        "message": "跳轉鍵基本步長（秒）"
+        "message": "跳轉幅度（秒）"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控制項自動隱藏延遲（毫秒）"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "始終在播放器底部顯示進度條"
     },
     "options_general_replace_delay": {
         "message": "自動替換播放器前的延遲（毫秒）"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "切換畫中畫"
+    },
+    "options_general_clickaction_seek": {
+        "message": "跳轉"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "隱藏控制列"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "提示：在此測試正則表達式"
+    },
+    "options_autourl_allwebsites": {
+        "message": "在所有網站上自動啟用"
     },
     "options_pattern_header": {
         "message": "自訂來源模式"

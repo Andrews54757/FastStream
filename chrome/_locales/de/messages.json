@@ -408,10 +408,10 @@
         "message": "Fenster-Vollbildmodus umschalten"
     },
     "player_skip_forward_label": {
-        "message": "10s forwärts spulen"
+        "message": " forwärts spulen"
     },
     "player_skip_backward_label": {
-        "message": "10s rückwärts spulen"
+        "message": " rückwärts spulen"
     },
     "player_more_label": {
         "message": "Mehr Werkzeuge"
@@ -948,7 +948,13 @@
         "message": "Den Player verwenden um MP4 Videos abzuspielen beim öffnen von video URLs (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Basis Schrittgröße für die Vor-/Zurückspul Taste (sekunden)"
+        "message": "Sprungweite (Sekunden)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Verzögerung bis zum automatischen Ausblenden der Steuerung (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Fortschrittsleiste immer unten im Player anzeigen"
     },
     "options_general_replace_delay": {
         "message": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Bild-in-Bild umschalten"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Springen"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Steuerelemente Verstecken"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Hinweise: Teste Regex auf"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Auf allen Websites automatisch aktivieren"
     },
     "options_pattern_header": {
         "message": "Benutzerdefinierte Quellen Filter"

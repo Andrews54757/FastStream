@@ -365,6 +365,67 @@ body {
     top: 6px;
 }
 
+/* Always-show progress bar: detach it from the fading controls container and pin it to the bottom edge. */
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container {
+    /* Keep the visual bar slim, but preserve a generous hit-area for click/drag seeking. */
+    height: 24px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 4;
+    cursor: pointer;
+    touch-action: none;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress {
+    position: absolute;
+    bottom: 0;
+    top: auto;
+    width: 100%;
+    height: 3px;
+    background-color: var(--progress-bar-background-color);
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container .fluid_controls_progress .fluid_controls_currentprogress {
+    position: absolute;
+    height: 3px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container:hover .fluid_controls_progress {
+    margin-top: 0;
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container:hover .fluid_controls_progress .fluid_controls_currentprogress {
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_buffered,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_progress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_buffered {
+    margin-top: 0;
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.freeze .fluid_controls_progress .fluid_controls_currentprogress,
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.skip_freeze .fluid_controls_progress .fluid_controls_currentprogress {
+    height: 5px;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.fluid_slider .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
+    background-color: var(--progress-bar-knob-color);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.fluid_video_wrapper.always_show_progress_bar .fluid_controls_progress_container.fluid_slider:hover .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
+    opacity: 1;
+}
+
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress {
     position: absolute;
     top: 5px;
@@ -591,10 +652,121 @@ body {
     display: inline-block;
     position: relative;
     flex: none;
-    height: 24px;
-    width: 24px;
+    --fluid-button-size: 24px;
+    height: var(--fluid-button-size);
+    width: var(--fluid-button-size);
     padding: 2px;
     color: var(--menu-text-color);
+}
+
+.fluid_control_skip_forward .fluid_seek_amount,
+.fluid_control_skip_backward .fluid_seek_amount {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: calc(var(--fluid-button-size) * 0.38);
+    line-height: 1;
+    opacity: 0.95;
+    pointer-events: none;
+    user-select: none;
+}
+
+
+.fluid_control_skip_forward_popup,
+.fluid_control_skip_backward_popup {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999999;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+
+    width: min(220px, 45vw);
+    height: min(110px, 30vh);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fluid_control_skip_forward_popup {
+    right: 0;
+}
+
+.fluid_control_skip_backward_popup {
+    left: 0;
+}
+
+.fluid_control_skip_forward_popup .fluid_seek_amount,
+.fluid_control_skip_backward_popup .fluid_seek_amount {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: calc(var(--font-size-medium) * 1.6);
+    line-height: 1;
+    opacity: 0.98;
+    padding: 12px 18px;
+    border-radius: 10px;
+    color: var(--seek-preview-text-color);
+    background-color: var(--seek-preview-background-color);
+}
+
+.fluid_control_skip_forward_popup.active {
+    animation: faststream-skip-popup-right 650ms ease-out 0ms 1 both;
+}
+
+.fluid_control_skip_backward_popup.active {
+    animation: faststream-skip-popup-left 650ms ease-out 0ms 1 both;
+}
+
+@keyframes faststream-skip-popup-right {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(32px) scale(0.98);
+    }
+    22% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(-14px) scale(1);
+    }
+    72% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(10px) scale(0.995);
+    }
+}
+
+@keyframes faststream-skip-popup-left {
+    0% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-32px) scale(0.98);
+    }
+    22% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(14px) scale(1);
+    }
+    72% {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0px) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-50%) translateX(-10px) scale(0.995);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fluid_control_skip_forward_popup.active,
+    .fluid_control_skip_backward_popup.active {
+        animation: none;
+        opacity: 1;
+    }
 }
 
 .fluid_button svg {
@@ -734,6 +906,7 @@ body {
     user-select: none;
     justify-content: center;
     display: flex;
+    position: relative;
     width: 100%;
     height: 100%;
 }
@@ -2808,9 +2981,21 @@ input.crosstalk_calculator_input {
     display: none !important;
 }
 
+.fluid_controls_right:not(.reordering)>.user_hidden,
+.tools_container_left:not(.reordering)>.user_hidden,
+.fluid_controls_extra_tools:not(.reordering)>.user_hidden {
+    display: none !important;
+}
+
 .fluid_controls_right.reordering>.hidden,
 .tools_container_left.reordering>.hidden,
 .fluid_controls_extra_tools.reordering>.hidden {
+    opacity: 0.5;
+}
+
+.fluid_controls_right.reordering>.user_hidden,
+.tools_container_left.reordering>.user_hidden,
+.fluid_controls_extra_tools.reordering>.user_hidden {
     opacity: 0.5;
 }
 
@@ -2999,8 +3184,7 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_button {
-        width: 18px;
-        height: 18px;
+        --fluid-button-size: 18px;
     }
 
     .fluid_controls_right,

@@ -948,7 +948,13 @@
         "message": "Video URL'leri (.mp4) açıldığında MP4 videoları oynatmak için oynatıcıyı kullan"
     },
     "options_general_seekstep": {
-        "message": "İleri/geri tuş adım boyutu (saniye)"
+        "message": "Atlama miktarı (saniye)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesi (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Oynatıcı alt kısmında ilerleme çubuğunu her zaman göster"
     },
     "options_general_replace_delay": {
         "message": "Otomatik oynatıcıyı değiştirmeden önce gecikme (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Resim içinde resim aç/kapa"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Sar"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Denetimleri gizle"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "İpucu: Regex'i burada test edin"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Tüm web sitelerinde otomatik etkinleştir"
     },
     "options_pattern_header": {
         "message": "Özel Kaynak Desenleri"

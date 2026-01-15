@@ -408,10 +408,10 @@
         "message": "Alternar entre janela e tela cheia"
     },
     "player_skip_forward_label": {
-        "message": "Avançar 10s"
+        "message": "Avançar "
     },
     "player_skip_backward_label": {
-        "message": "Retroceder 10s"
+        "message": "Retroceder "
     },
     "player_more_label": {
         "message": "Mais ferramentas"
@@ -948,7 +948,13 @@
         "message": "Use o player para reproduzir transmissões no formato HLS/DASH ao abrir URLs de de listas de reprodução (.mp4)"
     },
     "options_general_seekstep": {
-        "message": "Seek keybind base do atalho de busca (segundos)"
+        "message": "Quantidade de salto (segundos)"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Atraso para ocultar os controles automaticamente (ms)"
+    },
+    "options_general_always_show_progress_bar": {
+        "message": "Sempre mostrar a barra de progresso na parte inferior do player"
     },
     "options_general_replace_delay": {
         "message": "Atraso antes da substituição automática do player (ms)"
@@ -985,6 +991,9 @@
     },
     "options_general_clickaction_pip": {
         "message": "Alternar imagem em imagem"
+    },
+    "options_general_clickaction_seek": {
+        "message": "Buscar"
     },
     "options_general_clickaction_hidecontrols": {
         "message": "Ocultar controles"
@@ -1090,6 +1099,9 @@
     },
     "options_autourl_hint": {
         "message": "Dica: Teste a expressão regular em"
+    },
+    "options_autourl_allwebsites": {
+        "message": "Habilitar automaticamente em todos os sites"
     },
     "options_pattern_header": {
         "message": "Padrões de origem personalizada"
