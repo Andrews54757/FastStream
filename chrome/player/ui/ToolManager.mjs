@@ -4,6 +4,8 @@ import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
+const FORCED_VISIBLE_TOOLS = new Set(['playpause', 'volume', 'fullscreen', 'settings', 'more']);
+
 export class ToolManager {
   constructor(client, interfaceController) {
     this.interfaceController = interfaceController;
@@ -171,10 +173,9 @@ export class ToolManager {
     // Apply user visibility preferences without interfering with contextual visibility (.hidden).
     // Core controls are always forced visible.
     const userButtons = this.client?.options?.toolbarButtons || {};
-    const forcedVisible = new Set(['playpause', 'volume', 'fullscreen', 'settings', 'more']);
     for (const [tool, element] of Object.entries(toolElements)) {
       if (!element) continue;
-      if (forcedVisible.has(tool)) {
+      if (FORCED_VISIBLE_TOOLS.has(tool)) {
         element.classList.remove('user_hidden');
         continue;
       }

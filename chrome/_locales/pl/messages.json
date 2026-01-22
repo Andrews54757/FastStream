@@ -408,10 +408,10 @@
         "message": "Przełącz tryb pełnoekranowy w oknie"
     },
     "player_skip_forward_label": {
-        "message": "Przewiń do przodu o 10 s"
+        "message": "Przewiń do przodu"
     },
     "player_skip_backward_label": {
-        "message": "Przewiń do tyłu o 10 s"
+        "message": "Przewiń do tyłu"
     },
     "player_more_label": {
         "message": "Więcej narzędzi"

@@ -408,10 +408,10 @@
         "message": "Оконный режим"
     },
     "player_skip_forward_label": {
-        "message": "Вперёд на 10 с"
+        "message": "Перемотать вперёд"
     },
     "player_skip_backward_label": {
-        "message": "Назад на 10 с"
+        "message": "Перемотать назад"
     },
     "player_more_label": {
         "message": "Другие инструменты"

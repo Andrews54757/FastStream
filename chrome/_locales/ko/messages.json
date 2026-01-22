@@ -408,10 +408,10 @@
         "message": "창 모드 전체 화면 전환"
     },
     "player_skip_forward_label": {
-        "message": "앞으로 10초 건너뛰기"
+        "message": "앞으로 건너뛰기"
     },
     "player_skip_backward_label": {
-        "message": "뒤로 10초 건너뛰기"
+        "message": "뒤로 건너뛰기"
     },
     "player_more_label": {
         "message": "도구 더보기"

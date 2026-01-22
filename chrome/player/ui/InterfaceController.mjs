@@ -26,6 +26,10 @@ import {SubtitlesManager} from './subtitles/SubtitlesManager.mjs';
 import {ToolManager} from './ToolManager.mjs';
 import {VolumeControls} from './VolumeControls.mjs';
 
+const CLICK_SEEK_SIDE_RATIO = 0.4;
+const SKIP_POPUP_DURATION_MS = 650;
+const PLAYPAUSE_POPUP_DURATION_MS = 450;
+
 let MiniplayerCooldown = Date.now() + 500;
 export class InterfaceController {
   constructor(client) {
@@ -176,6 +180,14 @@ export class InterfaceController {
     }
   }
 
+  getSeekStep() {
+    const step = Number(this.client?.options?.seekStepSize);
+    if (!Number.isFinite(step) || step === 0) {
+      return null;
+    }
+    return step;
+  }
+
   ensureSkipPopups() {
     if (!DOMElements?.playerContainer) {
       return;
@@ -207,8 +219,8 @@ export class InterfaceController {
   showSkipPopup(direction) {
     this.ensureSkipPopups();
 
-    const step = this.client?.options?.seekStepSize;
-    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+    const step = this.getSeekStep();
+    if (step === null) {
       return;
     }
 
@@ -228,7 +240,7 @@ export class InterfaceController {
       clearTimeout(this.skipPopupBackwardTimeout);
       this.skipPopupBackwardTimeout = setTimeout(() => {
         this.skipPopupBackwardEl?.classList.remove('active');
-      }, 650);
+      }, SKIP_POPUP_DURATION_MS);
     }
 
     if (direction === 'forward' && this.skipPopupForwardEl) {
@@ -243,23 +255,23 @@ export class InterfaceController {
       clearTimeout(this.skipPopupForwardTimeout);
       this.skipPopupForwardTimeout = setTimeout(() => {
         this.skipPopupForwardEl?.classList.remove('active');
-      }, 650);
+      }, SKIP_POPUP_DURATION_MS);
     }
   }
 
   updateSeekButtons() {
-    const step = this.client?.options?.seekStepSize;
+    const step = this.getSeekStep();
     if (!DOMElements.skipForwardLabel || !DOMElements.skipBackwardLabel) {
       return;
     }
 
-    if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+    if (step === null) {
       DOMElements.skipForwardLabel.textContent = '';
       DOMElements.skipBackwardLabel.textContent = '';
       return;
     }
 
-    const rounded = Math.round(step * 100) / 100;
+    const rounded = Math.round(Math.abs(step) * 100) / 100;
     const label = rounded.toString();
     DOMElements.skipForwardLabel.textContent = label;
     DOMElements.skipBackwardLabel.textContent = label;
@@ -588,6 +600,7 @@ export class InterfaceController {
         clickCount = 1;
       }
       clearTimeout(clickTimeout);
+      const clickClientX = typeof e.clientX === 'number' ? e.clientX : null;
       clickTimeout = setTimeout(() => {
         clickTimeout = null;
 
@@ -616,14 +629,18 @@ export class InterfaceController {
             this.playPauseToggle();
             break;
           case ClickActions.SEEK: {
-            const clickSide = Utils.getClickSide(e, DOMElements.videoContainer, 0.4);
+            if (clickClientX === null) {
+              break;
+            }
+
+            const clickSide = Utils.getClickSide({clientX: clickClientX}, DOMElements.videoContainer, CLICK_SEEK_SIDE_RATIO);
             if (clickSide !== 'left' && clickSide !== 'right') {
               // Middle 20%: no-op for seek action.
               break;
             }
 
-            const step = this.client?.options?.seekStepSize;
-            if (typeof step !== 'number' || !Number.isFinite(step) || step === 0) {
+            const step = this.getSeekStep();
+            if (step === null) {
               break;
             }
 
@@ -704,8 +721,12 @@ export class InterfaceController {
     });
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
+      const step = this.getSeekStep();
+      if (step === null) {
+        return;
+      }
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize;
+      this.client.currentTime += step;
       this.client.setSeekSave(true);
       this.showSkipPopup('forward');
       e.stopPropagation();
@@ -714,8 +735,12 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.skipForwardButton);
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
+      const step = this.getSeekStep();
+      if (step === null) {
+        return;
+      }
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize;
+      this.client.currentTime += -step;
       this.client.setSeekSave(true);
       this.showSkipPopup('backward');
       e.stopPropagation();
@@ -1361,22 +1386,17 @@ export class InterfaceController {
       popup.classList.remove('fs_playpause_popup_active');
       void popup.offsetWidth;
       popup.classList.add('fs_playpause_popup_active');
-      if (this.playPausePopupTimeout) {
-        clearTimeout(this.playPausePopupTimeout);
-      }
+      clearTimeout(this.playPausePopupTimeout);
       this.playPausePopupTimeout = setTimeout(() => {
         popup.classList.remove('fs_playpause_popup_active');
-      }, 450);
+      }, PLAYPAUSE_POPUP_DURATION_MS);
     }
 
     DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
     void DOMElements.playPauseButtonBigCircle.offsetWidth;
     DOMElements.playPauseButtonBigCircle.classList.add('transform-active');
-    setTimeout(
-        function() {
-          DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
-        },
-        450,
-    );
+    setTimeout(() => {
+      DOMElements.playPauseButtonBigCircle.classList.remove('transform-active');
+    }, PLAYPAUSE_POPUP_DURATION_MS);
   }
 }

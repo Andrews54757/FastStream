@@ -33,8 +33,9 @@ export class Utils {
     const ratio = Utils.clamp(sideRatio, 0, 0.5);
 
     let clientX = event?.clientX;
-    if (typeof clientX !== 'number' && event?.changedTouches?.length) {
-      clientX = event.changedTouches[0]?.clientX;
+    if (typeof clientX !== 'number') {
+      const touch = event?.touches?.[0] ?? event?.changedTouches?.[0];
+      clientX = touch?.clientX;
     }
     if (typeof clientX !== 'number') {
       return null;

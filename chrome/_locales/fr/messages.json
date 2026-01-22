@@ -408,10 +408,10 @@
         "message": "Basculer en plein écran fenêtré"
     },
     "player_skip_forward_label": {
-        "message": "Avancer de 10 s"
+        "message": "Avancer"
     },
     "player_skip_backward_label": {
-        "message": "Reculer de 10 s"
+        "message": "Reculer"
     },
     "player_more_label": {
         "message": "Plus d'outils"

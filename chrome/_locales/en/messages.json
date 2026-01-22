@@ -408,10 +408,10 @@
         "message": "Toggle windowed fullscreen"
     },
     "player_skip_forward_label": {
-        "message": "Skip forward "
+        "message": "Skip forward"
     },
     "player_skip_backward_label": {
-        "message": "Skip backward "
+        "message": "Skip backward"
     },
     "player_more_label": {
         "message": "More tools"

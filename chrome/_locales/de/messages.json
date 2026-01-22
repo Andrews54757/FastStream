@@ -408,10 +408,10 @@
         "message": "Fenster-Vollbildmodus umschalten"
     },
     "player_skip_forward_label": {
-        "message": " forwärts spulen"
+        "message": "Vorwärts spulen"
     },
     "player_skip_backward_label": {
-        "message": " rückwärts spulen"
+        "message": "Rückwärts spulen"
     },
     "player_more_label": {
         "message": "Mehr Werkzeuge"

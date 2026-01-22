@@ -138,7 +138,7 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
       return false;
     });
 
-    const shouldAutoEnable = Options.autoEnableAllWebsites ? true : (match && !match.negative);
+    const shouldAutoEnable = !!Options.autoEnableAllWebsites || (!!match && !match.negative);
 
 
     if (BackgroundUtils.isUrlPlayerUrl(tab.url)) {

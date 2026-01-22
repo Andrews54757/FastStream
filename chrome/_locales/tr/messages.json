@@ -408,10 +408,10 @@
         "message": "Pencereli tam ekranı aç/kapat"
     },
     "player_skip_forward_label": {
-        "message": "10 sn ileri atla"
+        "message": "İleri atla"
     },
     "player_skip_backward_label": {
-        "message": "10 sn geri atla"
+        "message": "Geri atla"
     },
     "player_more_label": {
         "message": "Diğer araçlar"

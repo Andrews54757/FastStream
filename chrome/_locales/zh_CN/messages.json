@@ -408,10 +408,10 @@
         "message": "切换窗口化全屏"
     },
     "player_skip_forward_label": {
-        "message": "快进 10 秒"
+        "message": "快进"
     },
     "player_skip_backward_label": {
-        "message": "快退 10 秒"
+        "message": "快退"
     },
     "player_more_label": {
         "message": "更多工具"

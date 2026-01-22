@@ -408,10 +408,10 @@
         "message": "Skrin Penuh Bertingkap"
     },
     "player_skip_forward_label": {
-        "message": "Langkau ke hadapan 10 saat"
+        "message": "Langkau ke hadapan"
     },
     "player_skip_backward_label": {
-        "message": "Langkau ke belakang 10 saat"
+        "message": "Langkau ke belakang"
     },
     "player_more_label": {
         "message": "Lebih banyak alat"
