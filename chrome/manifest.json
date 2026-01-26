@@ -84,7 +84,8 @@
     "storage",
     "tabs",
     "webRequest",
-    "declarativeNetRequest"
+    "declarativeNetRequest",
+    "userScripts"
   ],
   "host_permissions": [
     "<all_urls>"

@@ -1293,7 +1293,7 @@ chrome.webRequest.onHeadersReceived.addListener(
         if (details.type === 'media') {
           mode = PlayerModes.ACCELERATED_MP4;
         } else {
-          // Check url query parameters
+        // Check url query parameters
           const urlParams = URLUtils.get_url_params(url).values();
           for (const value of urlParams) {
             if (!URLUtils.is_url(value)) continue;
@@ -1355,5 +1355,38 @@ if (EnvUtils.isChrome()) {
 
 // Link to a form to report bugs
 // chrome.runtime.setUninstallURL('https://docs.google.com/forms/d/e/1FAIpQLSfldLYAi0xAW9tYKMcUsfYYk8KyOQDZlLFjqwwz1LajchpBvA/viewform?usp=sf_link');
+
+
+async function registerUserScript() {
+  const scripts = await chrome.userScripts.getScripts();
+
+  if (scripts.some((a) => a.id === 'fs_yt_script')) {
+    await chrome.userScripts.unregister({
+      ids: ['fs_yt_script'],
+    });
+  }
+
+  await chrome.userScripts.configureWorld({
+    csp: 'script-src \'unsafe-eval\' \'self\'; object-src \'self\';',
+  });
+
+  const script = {
+    id: 'fs_yt_script',
+    js: [{
+      file: 'userscripts/yt_runner.js',
+    }],
+    allFrames: true,
+    matches: ['https://www.youtube.com/robots.txt'],
+    runAt: 'document_start',
+  };
+  await chrome.userScripts.register([script]);
+  if (Logging) console.log('Registered yt_runner userscript');
+}
+// check user scripts
+if (BackgroundUtils.isUserScriptsAvailable()) {
+  registerUserScript().catch(console.error);
+} else {
+  console.error('User scripts are not available in this browser.');
+}
 
 Utils.printWelcome(ExtensionVersion);

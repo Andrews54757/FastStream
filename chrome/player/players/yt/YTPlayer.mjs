@@ -13,6 +13,7 @@ import {URLUtils} from '../../utils/URLUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {VideoSource} from '../../VideoSource.mjs';
 import DashPlayer from '../dash/DashPlayer.mjs';
+import {SandboxedEvaluator} from './SandboxedEvaluator.mjs';
 // Log.setLevel(
 //     Log.Level.WARNING,
 //     Log.Level.ERROR,
@@ -30,6 +31,9 @@ export default class YTPlayer extends DashPlayer {
     }
     this.forcedPlayerID = options?.forcedPlayerID || undefined;
     this.paramCache = new Map();
+    this.sandboxGetter = () => {
+      return new SandboxedEvaluator('https://www.youtube.com/robots.txt');
+    };
   }
 
   async setSource(source) {
@@ -48,42 +52,10 @@ export default class YTPlayer extends DashPlayer {
         this.ytclient = youtube;
 
         if (this.videoInfo.playability_status?.status === 'LOGIN_REQUIRED') {
-          if (false && this.defaultClient === ClientType.WEB && this.videoInfo.playability_status.reason === 'Sign in to confirm your age') {
-            console.warn('Login Required, trying to fetch with WEB_EMBEDDED mode', ClientType);
-            const cache = (await IndexedDBManager.isSupportedAndAvailable() && !EnvUtils.isIncognito()) ? new UniversalCache() : undefined;
-            const embeddedClient = await Innertube.create({
-              cache,
-              fetch: this.youtubeFetch.bind(this),
-              client_type: ClientType.WEB_EMBEDDED,
-              runner_location: 'https://sandbox.faststream.online/',
-            });
-            embeddedClient.session.context.client.visitorData = this.ytclient.session.context.client.visitorData;
-            embeddedClient.session.content_token = this.ytclient.session.content_token;
-            embeddedClient.session.po_token = this.ytclient.session.po_token;
-            embeddedClient.session.player = this.ytclient.session.player;
-
-            const info = await embeddedClient.getInfo(identifier, {
-              client: 'WEB_EMBEDDED',
-              po_token: embeddedClient.session.content_token,
-            });
-
-            if (info.playability_status.status === 'OK' && info.streaming_data) {
-              this.videoInfo.playability_status = info.playability_status;
-              this.videoInfo.streaming_data = info.streaming_data;
-              this.videoInfo.basic_info.start_timestamp = info.basic_info.start_timestamp;
-              this.videoInfo.basic_info.duration = info.basic_info.duration;
-              this.videoInfo.captions = info.captions;
-            } else {
-              console.warn('Login Required after embedded client fetch', info);
-              this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
-              return;
-            }
-          } else {
-            console.warn('Login Required!');
-            this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
-            AlertPolyfill.alert(Localize.getMessage('yt_error_login_required'), 'error');
-            return;
-          }
+          console.warn('Login Required!');
+          this.emit(DefaultPlayerEvents.ERROR, new Error('Login Required! FastStream does not support login yet.'));
+          AlertPolyfill.alert(Localize.getMessage('yt_error_login_required'), 'error');
+          return;
         }
 
         if (this.defaultClient === ClientType.WEB) {
@@ -417,7 +389,7 @@ export default class YTPlayer extends DashPlayer {
       cache,
       fetch: (mode === ClientType.IOS) ? this.youtubeFetchIOS.bind(this) : this.youtubeFetch.bind(this),
       client_type: mode === ClientType.IOS ? undefined : mode,
-      runner_location: 'https://sandbox.faststream.online/',
+      sandboxGetter: this.sandboxGetter,
       player_id: this.forcedPlayerID || undefined,
     });
 
