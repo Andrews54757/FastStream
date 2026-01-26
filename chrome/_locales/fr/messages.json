@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Attention : Votre navigateur ne prend pas entièrement en charge les fonctionnalités de stockage de fichiers. Cela peut être dû au fait que votre navigateur a manqué d'espace de stockage ou n'a pas été redémarré depuis longtemps. Certaines fonctionnalités peuvent ne pas fonctionner comme prévu."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream n'a pas la permission userScript requise pour lire les vidéos YouTube !"
+    },
+    "yterror_popup": {
+        "message": "Erreur d'autorisation YouTube"
+    },
+    "yterror_fix": {
+        "message": "Corriger l'autorisation"
+    },
+    "yterror_permission_granted": {
+        "message": "Autorisation accordée ! Veuillez recharger la page pour lire les vidéos YouTube."
     }
 }

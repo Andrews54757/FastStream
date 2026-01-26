@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "경고: 사용 중인 브라우저가 파일 저장 기능을 완전히 지원하지 않습니다. 이는 브라우저의 저장 공간이 부족하거나 오랜 시간 동안 재시작되지 않았기 때문일 수 있습니다. 일부 기능이 예상대로 작동하지 않을 수 있습니다."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream에는 YouTube 동영상을 재생하는 데 필요한 userScript 권한이 없습니다!"
+    },
+    "yterror_popup": {
+        "message": "YouTube 권한 오류"
+    },
+    "yterror_fix": {
+        "message": "권한 수정"
+    },
+    "yterror_permission_granted": {
+        "message": "권한이 부여되었습니다! YouTube 동영상을 재생하려면 페이지를 새로고침하세요."
     }
 }

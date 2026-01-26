@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Aviso: Seu navegador não suporta totalmente os recursos de armazenamento de arquivos. Isso pode ser porque seu navegador ficou sem espaço de armazenamento ou não foi reiniciado por um longo tempo. Alguns recursos podem não funcionar como esperado."
+    },
+    "yterror_popup_body": {
+        "message": "O FastStream está sem a permissão userScript que é necessária para reproduzir vídeos do YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Erro de permissão do YouTube"
+    },
+    "yterror_fix": {
+        "message": "Corrigir permissão"
+    },
+    "yterror_permission_granted": {
+        "message": "Permissão concedida! Recarregue a página para reproduzir vídeos do YouTube."
     }
 }

@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Avviso: il tuo browser non supporta completamente le funzionalità di archiviazione dei file. Questo può essere dovuto al fatto che il tuo browser ha esaurito lo spazio di archiviazione o non è stato riavviato da molto tempo. Alcune funzionalità potrebbero non funzionare come previsto."
+    },
+    "yterror_popup_body": {
+        "message": "A FastStream manca il permesso userScript necessario per riprodurre i video di YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Errore di autorizzazione di YouTube"
+    },
+    "yterror_fix": {
+        "message": "Correggi autorizzazione"
+    },
+    "yterror_permission_granted": {
+        "message": "Permesso concesso! Ricarica la pagina per riprodurre i video di YouTube."
     }
 }

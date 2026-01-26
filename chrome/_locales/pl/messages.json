@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Ostrzeżenie: Twoja przeglądarka nie obsługuje w pełni funkcji przechowywania plików. Może to być spowodowane brakiem miejsca na dysku lub brakiem ponownego uruchomienia przeglądarki przez długi czas. Niektóre funkcje mogą nie działać zgodnie z oczekiwaniami."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream nie ma uprawnienia userScript, które jest wymagane do odtwarzania filmów z YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Błąd uprawnień YouTube"
+    },
+    "yterror_fix": {
+        "message": "Napraw uprawnienia"
+    },
+    "yterror_permission_granted": {
+        "message": "Uprawnienie przyznane! Proszę przeładować stronę, aby odtwarzać filmy z YouTube."
     }
 }

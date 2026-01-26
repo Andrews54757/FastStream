@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Waarschuwing: Uw browser ondersteunt de bestandsopslagfuncties niet volledig. Dit kan komen doordat uw browser geen opslagruimte meer heeft of al lange tijd niet is herstart. Sommige functies werken mogelijk niet zoals verwacht."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream mist de userScript-machtiging die nodig is om YouTube-video's af te spelen!"
+    },
+    "yterror_popup": {
+        "message": "YouTube-machtigingsfout"
+    },
+    "yterror_fix": {
+        "message": "Machtiging repareren"
+    },
+    "yterror_permission_granted": {
+        "message": "Toestemming verleend! Herlaad de pagina om YouTube-video's af te spelen."
     }
 }

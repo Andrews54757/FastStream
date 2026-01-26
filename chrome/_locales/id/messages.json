@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Peringatan: Browser Anda tidak sepenuhnya mendukung fitur penyimpanan file. Ini mungkin karena browser Anda kehabisan ruang penyimpanan atau belum di-restart dalam waktu yang lama. Beberapa fitur mungkin tidak berfungsi seperti yang diharapkan."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream kekurangan izin userScript yang diperlukan untuk memutar video YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Kesalahan Izin YouTube"
+    },
+    "yterror_fix": {
+        "message": "Perbaiki Izin"
+    },
+    "yterror_permission_granted": {
+        "message": "Izin Diberikan! Silakan muat ulang halaman untuk memutar video YouTube."
     }
 }

@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Amaran: Pelayar anda tidak menyokong sepenuhnya ciri penyimpanan fail. Ini mungkin kerana pelayar anda kehabisan ruang simpanan atau tidak dimulakan semula dalam jangka masa yang lama. Sesetengah ciri mungkin tidak berfungsi seperti yang dijangkakan."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream kekurangan kebenaran userScript yang diperlukan untuk memainkan video YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Ralat Kebenaran YouTube"
+    },
+    "yterror_fix": {
+        "message": "Betulkan Kebenaran"
+    },
+    "yterror_permission_granted": {
+        "message": "Kebenaran Diberikan! Sila muat semula halaman untuk memainkan video YouTube."
     }
 }

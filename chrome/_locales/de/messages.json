@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Warnung: Dein Browser unterstützt die Dateispeicherfunktionen nicht vollständig. Dies kann daran liegen, dass der Speicherplatz deines Browsers erschöpft ist oder er seit langer Zeit nicht neu gestartet wurde. Einige Funktionen funktionieren möglicherweise nicht wie erwartet."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream hat nicht die userScript-Berechtigung, die zum Abspielen von YouTube-Videos erforderlich ist!"
+    },
+    "yterror_popup": {
+        "message": "YouTube-Berechtigungsfehler"
+    },
+    "yterror_fix": {
+        "message": "Berechtigung beheben"
+    },
+    "yterror_permission_granted": {
+        "message": "Berechtigung erteilt! Bitte laden Sie die Seite neu, um YouTube-Videos abzuspielen."
     }
 }

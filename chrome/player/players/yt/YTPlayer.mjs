@@ -44,6 +44,24 @@ export default class YTPlayer extends DashPlayer {
       return;
     }
 
+    if (!EnvUtils.isExtension()) {
+      this.emit(DefaultPlayerEvents.ERROR, new Error('YTPlayer can only be used in the extension'));
+      return;
+    }
+
+    const response = await chrome.runtime.sendMessage({
+      type: MessageTypes.ENSURE_YT_USERSCRIPT,
+    });
+    if (!response.success && response.reason === 'userscripts_not_available') {
+      AlertPolyfill.ytUserscriptError();
+      this.emit(DefaultPlayerEvents.ERROR, new Error('YTPlayer requires the User Scripts permission to be granted.'));
+      return;
+    } else if (!response.success) {
+      AlertPolyfill.ytUserscriptError(response.reason);
+      this.emit(DefaultPlayerEvents.ERROR, new Error('YTPlayer failed to initialize the YouTube userscript.'));
+      return;
+    }
+
     try {
       let manifest;
       try {

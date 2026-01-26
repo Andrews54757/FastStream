@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Warning: Your browser does not fully support file storage features. This may be because your browser ran out of storage space or has not been restarted in a long time. Some features may not work as expected."
+    },
+    "yterror_popup_body": {
+        "message": "FastStream is lacking the userScript permission which is required to play YouTube videos!"
+    },
+    "yterror_popup": {
+        "message": "YouTube Permission Error"
+    },
+    "yterror_fix": {
+        "message": "Fix Permission"
+    },
+    "yterror_permission_granted": {
+        "message": "Permission Granted! Please reload the page to play YouTube videos."
     }
 }

@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "Advertencia: Su navegador no admite completamente las funciones de almacenamiento de archivos. Esto puede deberse a que su navegador se quedó sin espacio de almacenamiento o no se ha reiniciado en mucho tiempo. Algunas funciones pueden no funcionar como se espera."
+    },
+    "yterror_popup_body": {
+        "message": "¡A FastStream le falta el permiso userScript que se requiere para reproducir videos de YouTube!"
+    },
+    "yterror_popup": {
+        "message": "Error de Permiso de YouTube"
+    },
+    "yterror_fix": {
+        "message": "Corregir Permiso"
+    },
+    "yterror_permission_granted": {
+        "message": "¡Permiso concedido! Por favor, recargue la página para reproducir videos de YouTube."
     }
 }

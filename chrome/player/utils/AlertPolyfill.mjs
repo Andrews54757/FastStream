@@ -1,3 +1,4 @@
+// import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {SweetAlert} from '../modules/sweetalert.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
@@ -111,6 +112,57 @@ export class AlertPolyfill {
         const url = `${urlBase}title=${encodeURIComponent('Error report')}&body=${encodeURIComponent(body)}`;
 
         if (EnvUtils.isExtension()) {
+          chrome?.tabs?.create({
+            url,
+          });
+        } else {
+          window.open(url, '_blank');
+        }
+      }
+    });
+  }
+
+  static async ytUserscriptError(error) {
+    const errorHtml = document.createElement('div');
+    const bodyText = document.createElement('p');
+    bodyText.classList.add('error-popup-body');
+    bodyText.textContent = Localize.getMessage('yterror_popup_body');
+    errorHtml.appendChild(bodyText);
+
+    if (error) {
+      const stackText = document.createElement('pre');
+      stackText.classList.add('error-popup-stack');
+      stackText.textContent = error;
+      errorHtml.appendChild(stackText);
+    }
+
+    return await SweetAlert.fire({
+      title: Localize.getMessage('yterror_popup', [error?.message]),
+      html: errorHtml,
+      icon: 'error',
+      showCancelButton: true,
+      confirmButtonText: Localize.getMessage('yterror_fix'),
+      cancelButtonText: Localize.getMessage('cancel'),
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const url = `https://github.com/Andrews54757/FastStream/wiki/Enabling-UserScripts-for-Youtube-Playback`;
+        if (EnvUtils.isExtension()) {
+          // try {
+          //   await chrome.permissions.request({
+          //     permissions: ['userScripts'],
+          //   });
+
+          //   // ask background again
+          //   const result = await chrome.runtime.sendMessage({
+          //     type: MessageTypes.ENSURE_YT_USERSCRIPT,
+          //   });
+          //   if (result.success) {
+          //     AlertPolyfill.toast('success', Localize.getMessage('yterror_permission_granted'));
+          //     return;
+          //   }
+          // } catch (e) {
+
+          // }
           chrome?.tabs?.create({
             url,
           });

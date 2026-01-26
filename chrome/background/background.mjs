@@ -360,6 +360,26 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       sendResponse(response);
     });
     return true;
+  } else if (msg.type === MessageTypes.ENSURE_YT_USERSCRIPT) {
+    if (!BackgroundUtils.isUserScriptsAvailable()) {
+      sendResponse({
+        success: false,
+        reason: 'userscripts_not_available',
+      });
+      return;
+    }
+
+    registerYTUserScript().then(() => {
+      sendResponse({
+        success: true,
+      });
+    }).catch((e) => {
+      sendResponse({
+        success: false,
+        reason: e.message,
+      });
+    });
+    return true;
   } else if (msg.type === MessageTypes.REQUEST_FULLSCREEN) {
     return handleFullscreenRequest(frame, msg, sendResponse);
   } else if (msg.type === MessageTypes.REQUEST_WINDOWED_FULLSCREEN) {
@@ -653,6 +673,30 @@ async function getPageFrame(frame) {
   }
 
   return null;
+}
+
+async function registerYTUserScript() {
+  const scripts = await chrome.userScripts.getScripts();
+
+  if (scripts.some((a) => a.id === 'fs_yt_script')) {
+    return;
+  }
+
+  await chrome.userScripts.configureWorld({
+    csp: 'script-src \'unsafe-eval\'; trusted-types \'none\';',
+  });
+
+  const script = {
+    id: 'fs_yt_script',
+    js: [{
+      file: 'userscripts/yt_runner.js',
+    }],
+    allFrames: true,
+    matches: ['https://www.youtube.com/robots.txt'],
+    runAt: 'document_start',
+  };
+  await chrome.userScripts.register([script]);
+  if (Logging) console.log('Registered yt_runner userscript');
 }
 
 async function checkIsFull(frame) {
@@ -1355,38 +1399,5 @@ if (EnvUtils.isChrome()) {
 
 // Link to a form to report bugs
 // chrome.runtime.setUninstallURL('https://docs.google.com/forms/d/e/1FAIpQLSfldLYAi0xAW9tYKMcUsfYYk8KyOQDZlLFjqwwz1LajchpBvA/viewform?usp=sf_link');
-
-
-async function registerUserScript() {
-  const scripts = await chrome.userScripts.getScripts();
-
-  if (scripts.some((a) => a.id === 'fs_yt_script')) {
-    await chrome.userScripts.unregister({
-      ids: ['fs_yt_script'],
-    });
-  }
-
-  await chrome.userScripts.configureWorld({
-    csp: 'script-src \'unsafe-eval\' \'self\'; object-src \'self\';',
-  });
-
-  const script = {
-    id: 'fs_yt_script',
-    js: [{
-      file: 'userscripts/yt_runner.js',
-    }],
-    allFrames: true,
-    matches: ['https://www.youtube.com/robots.txt'],
-    runAt: 'document_start',
-  };
-  await chrome.userScripts.register([script]);
-  if (Logging) console.log('Registered yt_runner userscript');
-}
-// check user scripts
-if (BackgroundUtils.isUserScriptsAvailable()) {
-  registerUserScript().catch(console.error);
-} else {
-  console.error('User scripts are not available in this browser.');
-}
 
 Utils.printWelcome(ExtensionVersion);

@@ -1159,5 +1159,17 @@
     },
     "player_outofstorage": {
         "message": "警告：您的浏览器不完全支持文件存储功能。这可能是因为您的浏览器存储空间已满或长时间未重启。某些功能可能无法按预期工作。"
+    },
+    "yterror_popup_body": {
+        "message": "FastStream 缺少播放 YouTube 视频所需的 userScript 权限！"
+    },
+    "yterror_popup": {
+        "message": "YouTube 权限错误"
+    },
+    "yterror_fix": {
+        "message": "修复权限"
+    },
+    "yterror_permission_granted": {
+        "message": "权限已授予！请重新加载页面以播放 YouTube 视频。"
     }
 }
