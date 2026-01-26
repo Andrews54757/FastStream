@@ -316,6 +316,15 @@ async function buildFirefoxLibre() {
 
   manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
 
+  // remove the userscripts permission
+  manifest.permissions = manifest.permissions.filter((permission) => permission !== 'userScripts');
+
+  // move it to optional_permissions
+  if (!manifest.optional_permissions) {
+    manifest.optional_permissions = [];
+  }
+  manifest.optional_permissions.push('userScripts');
+
   manifest.browser_specific_settings = {
     gecko: {
       id: 'faststream@andrews',
@@ -363,6 +372,15 @@ async function buildFirefoxDist() {
   };
 
   manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
+
+  // remove the userscripts permission
+  manifest.permissions = manifest.permissions.filter((permission) => permission !== 'userScripts');
+
+  // move it to optional_permissions
+  if (!manifest.optional_permissions) {
+    manifest.optional_permissions = [];
+  }
+  manifest.optional_permissions.push('userScripts');
 
   delete manifest.incognito;
   delete manifest.minimum_chrome_version;
