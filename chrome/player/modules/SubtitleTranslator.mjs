@@ -27,7 +27,10 @@ export class SubtitleTranslator {
     if (!cues || cues.length === 0) throw new Error("No cues found.");
 
     let api = this.apis[this.currentApiIndex];
-    let delimiter = " \n "; 
+    
+    // FIX: Use double newline. This forces Google to treat cues as separate paragraphs.
+    // Single newlines cause Japanese/Chinese lines to merge during translation.
+    let delimiter = "\n\n"; 
 
     for (let i = 0; i < cues.length; i += api.batchSize) {
       api = this.apis[this.currentApiIndex];
@@ -40,6 +43,7 @@ export class SubtitleTranslator {
         
         const segmentCues = [];
         batch.forEach((cue, index) => {
+          // Safety check: ensure we have a translation for this index
           if (translatedTexts[index]) {
             segmentCues.push({
               startTime: cue.startTime,
@@ -60,7 +64,6 @@ export class SubtitleTranslator {
             if (onProgress) onProgress([], "⚠️ Google Ban Detected. Opening Unblocker...");
             
             // CONSTRUCT THE EXACT URL THAT IS BLOCKED
-            // This forces the "Sorry... Unusual Traffic" page to appear
             const testUrl = `https://translate.googleapis.com/translate_a/single?client=gtx&dt=t&sl=auto&tl=${targetLang}&q=Hello%20World`;
             
             // 1. Open the specific API URL
@@ -130,6 +133,7 @@ export class SubtitleTranslator {
         }
     }
 
+    // Split by the double newline to get original segments back
     return fullText.split(delimiter).map(s => s.trim());
   }
 
