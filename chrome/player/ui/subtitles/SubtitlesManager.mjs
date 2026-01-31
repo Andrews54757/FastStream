@@ -7,36 +7,14 @@ import {RequestUtils} from '../../utils/RequestUtils.mjs';
 import {SubtitleUtils} from '../../utils/SubtitleUtils.mjs';
 import {Utils} from '../../utils/Utils.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
+import {OptionsStore} from '../../options/OptionsStore.mjs';
+import {DefaultLanguages} from '../../options/defaults/DefaultLanguages.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {OpenSubtitlesSearch, OpenSubtitlesSearchEvents} from './OpenSubtitlesSearch.mjs';
 import {SubtitlesSettingsManager, SubtitlesSettingsManagerEvents} from './SubtitlesSettingsManager.mjs';
 import {SubtitleSyncer} from './SubtitleSyncer.mjs';
 
 // NOTE: Removed top-level SubtitleTranslator import to prevent player crash if file missing
-
-const LANGUAGES = {
-  "af": "Afrikaans", "sq": "Albanian", "am": "Amharic", "ar": "Arabic", "hy": "Armenian",
-  "az": "Azerbaijani", "eu": "Basque", "be": "Belarusian", "bn": "Bengali", "bs": "Bosnian",
-  "bg": "Bulgarian", "ca": "Catalan", "ceb": "Cebuano", "ny": "Chichewa", "zh-CN": "Chinese (Simplified)",
-  "zh-TW": "Chinese (Traditional)", "co": "Corsican", "hr": "Croatian", "cs": "Czech", "da": "Danish",
-  "nl": "Dutch", "en": "English", "eo": "Esperanto", "et": "Estonian", "tl": "Filipino",
-  "fi": "Finnish", "fr": "French", "fy": "Frisian", "gl": "Galician", "ka": "Georgian",
-  "de": "German", "el": "Greek", "gu": "Gujarati", "ht": "Haitian Creole", "ha": "Hausa",
-  "haw": "Hawaiian", "iw": "Hebrew", "hi": "Hindi", "hmn": "Hmong", "hu": "Hungarian",
-  "is": "Icelandic", "ig": "Igbo", "id": "Indonesian", "ga": "Irish", "it": "Italian",
-  "ja": "Japanese", "jw": "Javanese", "kn": "Kannada", "kk": "Kazakh", "km": "Khmer",
-  "ko": "Korean", "ku": "Kurdish (Kurmanji)", "ky": "Kyrgyz", "lo": "Lao", "la": "Latin",
-  "lv": "Latvian", "lt": "Lithuanian", "lb": "Luxembourgish", "mk": "Macedonian", "mg": "Malagasy",
-  "ms": "Malay", "ml": "Malayalam", "mt": "Maltese", "mi": "Maori", "mr": "Marathi",
-  "mn": "Mongolian", "my": "Myanmar (Burmese)", "ne": "Nepali", "no": "Norwegian", "ps": "Pashto",
-  "fa": "Persian", "pl": "Polish", "pt": "Portuguese", "pa": "Punjabi", "ro": "Romanian",
-  "ru": "Russian", "sm": "Samoan", "gd": "Scots Gaelic", "sr": "Serbian", "st": "Sesotho",
-  "sn": "Shona", "sd": "Sindhi", "si": "Sinhala", "sk": "Slovak", "sl": "Slovenian",
-  "so": "Somali", "es": "Spanish", "su": "Sundanese", "sw": "Swahili", "sv": "Swedish",
-  "tg": "Tajik", "ta": "Tamil", "te": "Telugu", "th": "Thai", "tr": "Turkish",
-  "uk": "Ukrainian", "ur": "Urdu", "uz": "Uzbek", "vi": "Vietnamese", "cy": "Welsh",
-  "xh": "Xhosa", "yi": "Yiddish", "yo": "Yoruba", "zu": "Zulu"
-};
 
 export class SubtitlesManager extends EventEmitter {
   constructor(client) {
@@ -47,6 +25,10 @@ export class SubtitlesManager extends EventEmitter {
     this.isTestSubtitleActive = false;
     this.subtitleTrackListElements = [];
     this.subtitleTrackDisplayElements = [];
+    
+    // Initialize the store so we listen for changes from the Options Page!
+    OptionsStore.init();
+    
     this.settingsManager = new SubtitlesSettingsManager();
     this.settingsManager.on(SubtitlesSettingsManagerEvents.SETTINGS_CHANGED, this.onSettingsChanged.bind(this));
     this.settingsManager.loadSettings();
@@ -159,13 +141,15 @@ export class SubtitlesManager extends EventEmitter {
         try {
             const translateContainer = document.createElement('div');
             translateContainer.className = 'subtitle-menu-option';
-            translateContainer.style.display = 'flex';
+            
+            // STYLE: Basic container setup
             translateContainer.style.justifyContent = 'space-between';
             translateContainer.style.alignItems = 'center';
             translateContainer.style.padding = '8px 8px'; 
             translateContainer.style.cursor = 'default';
             translateContainer.style.borderBottom = '1px solid rgba(255,255,255,0.1)';
 
+            // LABEL
             const translateLabel = document.createElement('span');
             translateLabel.textContent = "Trans:"; 
             translateLabel.style.marginRight = '5px';
@@ -173,11 +157,11 @@ export class SubtitlesManager extends EventEmitter {
             translateLabel.style.color = '#ccc'; 
             translateContainer.appendChild(translateLabel);
 
+            // DROPDOWN
             const langSelect = document.createElement('select');
             langSelect.style.flex = '1';
             langSelect.style.width = '0'; 
             langSelect.style.marginRight = '5px';
-            
             langSelect.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
             langSelect.style.color = 'white';
             langSelect.style.border = '1px solid #555';
@@ -186,20 +170,59 @@ export class SubtitlesManager extends EventEmitter {
             langSelect.style.fontSize = '12px';
             langSelect.style.outline = 'none';
             
-            Object.keys(LANGUAGES).forEach(code => {
+            // Populate Dropdown
+            Object.keys(DefaultLanguages).forEach(code => {
                 const option = document.createElement('option');
                 option.value = code;
-                option.textContent = LANGUAGES[code];
-                if (code === 'my') option.selected = true; 
+                option.textContent = DefaultLanguages[code];
                 option.style.backgroundColor = '#222'; 
                 option.style.color = 'white';
                 langSelect.appendChild(option);
+            });
+
+            // LOGIC: Handle Visibility & Language Selection
+            const updateUIFromOptions = (options) => {
+                // 1. Show/Hide based on setting
+                translateContainer.style.display = options.autoTranslate ? 'flex' : 'none';
+                
+                // 2. Select the saved language (if valid)
+                if (options.defaultTranslateLanguage && DefaultLanguages[options.defaultTranslateLanguage]) {
+                    langSelect.value = options.defaultTranslateLanguage;
+                } else {
+                    langSelect.value = 'en'; // Default fallback
+                }
+            };
+
+            // 1. Initial Render (Might be defaults)
+            updateUIFromOptions(OptionsStore.get());
+
+            // 2. FORCE UPDATE after storage is ready (Fixes "Off by default" bug)
+            OptionsStore.init().then(() => {
+                const loadedOptions = OptionsStore.get();
+                updateUIFromOptions(loadedOptions);
+                
+                // CRITICAL FIX: If enabled in saved settings, make sure we really show it
+                if (loadedOptions.autoTranslate) {
+                   translateContainer.style.display = 'flex';
+                }
+            });
+            
+            // C. Listen for live changes (e.g. from Options Page)
+            OptionsStore.subscribe((options) => {
+                updateUIFromOptions(options);
+            });
+
+            // D. Save changes when user picks a language (Fixes "Not Saved")
+            langSelect.addEventListener('change', (e) => {
+                const newLang = e.target.value;
+                OptionsStore.set({ defaultTranslateLanguage: newLang });
             });
             
             langSelect.addEventListener('click', (e) => e.stopPropagation());
             langSelect.addEventListener('mousedown', (e) => e.stopPropagation());
             translateContainer.appendChild(langSelect);
 
+            // GO BUTTON
             const goBtn = document.createElement('button');
             goBtn.textContent = "Go";
             goBtn.className = "fs-control-button"; 
@@ -223,7 +246,7 @@ export class SubtitlesManager extends EventEmitter {
                 }
                 
                 const targetLang = langSelect.value;
-                const targetName = LANGUAGES[targetLang];
+                const targetName = DefaultLanguages[targetLang];
                 AlertPolyfill.toast('info', `Translation Started: ${targetName}`);
 
                 const sourceCues = this.activeTracks[0].cues;
