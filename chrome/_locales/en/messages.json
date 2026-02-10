@@ -938,6 +938,15 @@
     "options_general_storeprogress": {
         "message": "Play videos from last watched position"
     },
+    "options_general_persistbuffer": {
+        "message": "Persist buffered video chunks to storage"
+    },
+    "options_general_persistbuffer_retention": {
+        "message": "Buffered chunk retention (days, 1-30)"
+    },
+    "options_general_persistbuffer_maxsize": {
+        "message": "Persistent chunk cache size limit (MB, 0 = unlimited)"
+    },
     "options_general_autosub": {
         "message": "Automatically enable best found subtitle track\n(Change default language in subtitle settings)"
     },
