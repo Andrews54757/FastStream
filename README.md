@@ -89,6 +89,7 @@ Many thanks to the contributors of this project.
 - ChromiaCat: Update notify icon (PR #142)
 - frenicohansen: SRT/ASS subtitles to WebVTT (PR #323)
 - Mesoon5642: Options search (PR #459)
+- nonab: Fixed vimeo playback (PR #489)
 
 #### Translators
 - Dael (dael_io): Fixed Spanish translations
