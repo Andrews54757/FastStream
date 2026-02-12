@@ -235,8 +235,19 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     });
     return true;
   } else if (msg.type === MessageTypes.FRAME_ADDED) {
+    // Preserve sources key to this frame's new URL
+    // This is needed because resetSelfAndChildren clears all sources, but we might have
+    // already detected a source for this frame via onHeadersReceived (e.g. Vimeo)
+    const preservedSources = frame.getSources().filter((s) => s.url === msg.url);
+
     const playerCount = frame.resetSelfAndChildren();
     frame.url = msg.url;
+
+    // Restore preserved sources
+    preservedSources.forEach((s) => {
+      frame.getSources().push(s);
+    });
+
     tab.playerCount -= playerCount;
     tab.playerCount = Math.max(0, tab.playerCount);
     checkURLMatch(frame);
@@ -1302,18 +1313,12 @@ chrome.webRequest.onHeadersReceived.addListener(
       if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
         return; // Client or server error. Ignore it
       }
-
-      if (url.startsWith('https://vod-adaptive') && url.includes('playlist.json') && url.includes('vimeo')) {
+      if (url.startsWith('https://player.vimeo.com') && (url.includes('config?') || url.includes('video'))) {
         ext = 'vmpatch';
       } else if (details.initiator &&
       initiatorBlacklist.some((a) => {
         return details.initiator.startsWith(a);
       })) {
-        if (ext === 'json') {
-
-        } else {
-          return;
-        }
       }
 
       const output = CustomSourcePatternsMatcher.match(url);
@@ -1323,13 +1328,6 @@ chrome.webRequest.onHeadersReceived.addListener(
 
       if (BackgroundUtils.isSubtitles(ext)) {
         return handleSubtitles(url, frame, frame.requestHeaders.get(details.requestId));
-      } else if (ext === 'json') {
-      // Vimeo. Check if filename is master.json
-        const filename = URLUtils.get_file_name(url);
-        if (filename === 'master.json' && url.includes('/video/')) {
-          ext = 'mpd';
-          details.url = URLUtils.strip_queryhash(url).replace('master.json', 'master.mpd');
-        }
       }
 
       let mode = URLUtils.getModeFromExtension(ext);
