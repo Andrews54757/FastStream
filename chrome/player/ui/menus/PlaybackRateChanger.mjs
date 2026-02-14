@@ -272,8 +272,6 @@ export class PlaybackRateChanger extends EventEmitter {
       this.disableSilenceSkipper();
     }
     this.silenceSkipperLoopRunning = false;
-    this.regularSpeed = 1;
-    this.silenceSkipSpeed = this.maxPlaybackRate;
   }
   
   isOpen() {
