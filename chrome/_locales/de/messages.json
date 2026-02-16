@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "Berechtigung erteilt! Bitte laden Sie die Seite neu, um YouTube-Videos abzuspielen."
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube-Verlangsamungsbenachrichtigung"
+    },
+    "ytslowdown_popup_body": {
+        "message": "Aufgrund von Änderungen bei YouTube können Sie langsame Ladezeiten für Videos erleben. Dies liegt daran, dass YouTube jetzt eine Verzögerung für Werbung erzwingt, auf die FastStream warten muss, bevor es mit dem Laden des Videos beginnen kann. Leider gibt es keine Lösung für dieses Problem. Vielen Dank für Ihr Verständnis."
+    },
+    "ytslowdown_ok": {
+        "message": "OK"
     }
 }

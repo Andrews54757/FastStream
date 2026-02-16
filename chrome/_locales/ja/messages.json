@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "権限が付与されました！YouTube 動画を再生するには、ページをリロードしてください。"
+    },
+    "ytslowdown_popup": {
+        "message": "YouTubeの速度低下に関する通知"
+    },
+    "ytslowdown_popup_body": {
+        "message": "YouTube の変更により、動画の初期読み込み時間が遅くなる可能性があります。これは、YouTube が広告の遅延を強制するようになったためで、FastStream は動画の読み込みを開始する前に待機する必要があります。残念ながら、この問題には回避策がありません。ご理解いただきありがとうございます。"
+    },
+    "ytslowdown_ok": {
+        "message": "OK"
     }
 }

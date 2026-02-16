@@ -198,6 +198,8 @@ export default class YTPlayer extends DashPlayer {
 
     await super.setSource(this.source);
 
+    AlertPolyfill.ytSlowdownWarning();
+
     if (this.videoInfo.captions?.caption_tracks) {
       // Sort this.videoInfo.captions.caption_tracks so that the default language is first
       let defLang = 'en';

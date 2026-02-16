@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "İzin verildi! YouTube videolarını oynatmak için sayfayı yeniden yükleyin."
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube Yavaşlama Bildirimi"
+    },
+    "ytslowdown_popup_body": {
+        "message": "YouTube'daki değişiklikler nedeniyle, videoların başlangıç yükleme sürelerinde yavaşlama yaşayabilirsiniz. Bunun nedeni, YouTube'un artık reklamlar için bir gecikme zorunlu kılmasıdır ve FastStream'in videoyu yüklemeye başlamadan önce beklemesi gerekir. Ne yazık ki, bu sorun için bir çözüm yoktur. Anlayışınız için teşekkür ederiz."
+    },
+    "ytslowdown_ok": {
+        "message": "Tamam"
     }
 }

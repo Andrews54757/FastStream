@@ -1673,7 +1673,7 @@ var CLIENTS = {
   },
   WEB: {
     NAME: "WEB",
-    VERSION: "2.20250222.10.00",
+    VERSION: "2.20260206.01.00",
     API_KEY: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
     API_VERSION: "v1",
     STATIC_VISITOR_ID: "6zpwvWUNAco",
@@ -1681,12 +1681,12 @@ var CLIENTS = {
   },
   MWEB: {
     NAME: "MWEB",
-    VERSION: "2.20250224.01.00",
+    VERSION: "2.20260205.04.01",
     API_VERSION: "v1"
   },
   WEB_KIDS: {
     NAME: "WEB_KIDS",
-    VERSION: "2.20250221.11.00"
+    VERSION: "2.20260205.00.00"
   },
   YTMUSIC: {
     NAME: "WEB_REMIX",
@@ -1721,7 +1721,7 @@ var CLIENTS = {
   },
   WEB_EMBEDDED: {
     NAME: "WEB_EMBEDDED_PLAYER",
-    VERSION: "1.20250219.01.00",
+    VERSION: "1.20260206.01.00",
     API_KEY: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
     API_VERSION: "v1",
     STATIC_VISITOR_ID: "6zpwvWUNAco"
@@ -1923,7 +1923,8 @@ function getFormatGroupings(formats, is_post_live_dvr) {
     const color_info = format.color_info ? Object.values(format.color_info).join("-") : "";
     const audio_track_id = ((_b = format.audio_track) == null ? void 0 : _b.id) || "";
     const drc = format.is_drc ? "drc" : "";
-    const group_id = `${mime_type}-${just_codec}-${color_info}-${audio_track_id}-${drc}`;
+    const vb = format.is_vb ? "vb" : "";
+    const group_id = `${mime_type}-${just_codec}-${color_info}-${audio_track_id}-${drc}-${vb}`;
     if (!group_info.has(group_id)) {
       group_info.set(group_id, []);
     }
@@ -2089,6 +2090,9 @@ async function getAudioRepresentation(format, hoisted, url_transformer, actions,
   if (format.is_drc) {
     uid_parts.push("drc");
   }
+  if (format.is_vb) {
+    uid_parts.push("vb");
+  }
   const rep = {
     uid: uid_parts.join("-"),
     bitrate: format.bitrate,
@@ -2111,30 +2115,39 @@ function getTrackRoles(format, has_drc_streams) {
     roles.push("dub");
   if (format.is_descriptive)
     roles.push("description");
-  if (format.is_drc)
+  if (format.is_drc || format.is_vb)
     roles.push("enhanced-audio-intelligibility");
   return roles;
 }
 __name(getTrackRoles, "getTrackRoles");
-async function getAudioSet(formats, url_transformer, actions, player, cpn, shared_post_live_dvr_info, drc_labels, is_sabr) {
-  var _a;
+async function getAudioSet(formats, url_transformer, actions, player, cpn, shared_post_live_dvr_info, drc_labels, vb_labels, is_sabr) {
+  var _a, _b;
   const first_format = formats[0];
   const { audio_track } = first_format;
   const hoisted = [];
   const has_drc_streams = !!drc_labels;
+  const has_vb_streams = !!vb_labels;
   let track_name;
   if (audio_track) {
     if (has_drc_streams && first_format.is_drc) {
       track_name = drc_labels.label_drc_multiple(audio_track.display_name);
+    } else if (has_vb_streams && first_format.is_vb) {
+      track_name = vb_labels.label_vb_multiple(audio_track.display_name);
     } else {
       track_name = audio_track.display_name;
     }
-  } else if (has_drc_streams) {
-    track_name = first_format.is_drc ? drc_labels.label_drc : drc_labels.label_original;
+  } else if (has_drc_streams || has_vb_streams) {
+    if (has_drc_streams && first_format.is_drc) {
+      track_name = drc_labels.label_drc;
+    } else if (has_vb_streams && first_format.is_vb) {
+      track_name = vb_labels.label_vb;
+    } else {
+      track_name = (_a = drc_labels || vb_labels) == null ? void 0 : _a.label_original;
+    }
   }
   const set = {
     mime_type: first_format.mime_type.split(";")[0],
-    language: (_a = first_format.language) != null ? _a : void 0,
+    language: (_b = first_format.language) != null ? _b : void 0,
     codecs: hoistCodecsIfPossible(formats, hoisted),
     audio_sample_rate: hoistNumberAttributeIfPossible(formats, "audio_sample_rate", hoisted),
     track_name,
@@ -2376,14 +2389,32 @@ async function getStreamingInfo(streaming_data, is_post_live_dvr = false, url_tr
     audio_groups: []
   });
   let drc_labels;
-  if (audio_groups.flat().some((format) => format.is_drc)) {
+  let vb_labels;
+  let hasDrc = false;
+  let hasVb = false;
+  for (const ag of audio_groups.flat()) {
+    if (hasDrc === false && ag.is_drc) {
+      hasDrc = true;
+    }
+    if (hasVb === false && ag.is_vb) {
+      hasVb = true;
+    }
+  }
+  if (hasDrc) {
     drc_labels = {
       label_original: (options == null ? void 0 : options.label_original) || "Original",
       label_drc: (options == null ? void 0 : options.label_drc) || "Stable Volume",
       label_drc_multiple: (options == null ? void 0 : options.label_drc_multiple) || ((display_name) => `${display_name} (Stable Volume)`)
     };
   }
-  const audio_sets = await Promise.all(audio_groups.map((formats2) => getAudioSet(formats2, url_transformer, actions, player, cpn, shared_post_live_dvr_info, drc_labels, options == null ? void 0 : options.is_sabr)));
+  if (hasVb) {
+    vb_labels = {
+      label_original: (options == null ? void 0 : options.label_original) || "Original",
+      label_vb: (options == null ? void 0 : options.label_vb) || "Voice Boost",
+      label_vb_multiple: (options == null ? void 0 : options.label_vb_multiple) || ((display_name) => `${display_name} (Voice Boost)`)
+    };
+  }
+  const audio_sets = await Promise.all(audio_groups.map((formats2) => getAudioSet(formats2, url_transformer, actions, player, cpn, shared_post_live_dvr_info, drc_labels, vb_labels, options == null ? void 0 : options.is_sabr)));
   const video_sets = await Promise.all(video_groups.map((formats2) => getVideoSet(formats2, url_transformer, player, actions, cpn, shared_post_live_dvr_info, options == null ? void 0 : options.is_sabr)));
   let image_sets = [];
   if (storyboards && actions) {
@@ -3756,23 +3787,25 @@ var VisitorData = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseVisitorData();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.id = reader.string();
           continue;
-        case 5:
+        }
+        case 5: {
           if (tag !== 40) {
             break;
           }
           message.timestamp = reader.int32();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3801,29 +3834,32 @@ var LiveMessageParams = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseLiveMessageParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.params = LiveMessageParams_Params.decode(reader, reader.uint32());
           continue;
-        case 2:
+        }
+        case 2: {
           if (tag !== 16) {
             break;
           }
           message.number0 = reader.int32();
           continue;
-        case 3:
+        }
+        case 3: {
           if (tag !== 24) {
             break;
           }
           message.number1 = reader.int32();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3846,17 +3882,18 @@ var LiveMessageParams_Params = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseLiveMessageParams_Params();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
+        case 5: {
           if (tag !== 42) {
             break;
           }
           message.ids = LiveMessageParams_Params_Ids.decode(reader, reader.uint32());
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3882,23 +3919,25 @@ var LiveMessageParams_Params_Ids = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseLiveMessageParams_Params_Ids();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.channelId = reader.string();
           continue;
-        case 2:
+        }
+        case 2: {
           if (tag !== 18) {
             break;
           }
           message.videoId = reader.string();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -3943,47 +3982,53 @@ var PeformCommentActionParams = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBasePeformCommentActionParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 8) {
             break;
           }
           message.type = reader.int32();
           continue;
-        case 3:
+        }
+        case 3: {
           if (tag !== 26) {
             break;
           }
           message.commentId = reader.string();
           continue;
-        case 5:
+        }
+        case 5: {
           if (tag !== 42) {
             break;
           }
           message.videoId = reader.string();
           continue;
-        case 2:
+        }
+        case 2: {
           if (tag !== 16) {
             break;
           }
           message.unkNum = reader.int32();
           continue;
-        case 23:
+        }
+        case 23: {
           if (tag !== 186) {
             break;
           }
           message.channelId = reader.string();
           continue;
-        case 31:
+        }
+        case 31: {
           if (tag !== 250) {
             break;
           }
           message.translateCommentParams = PeformCommentActionParams_TranslateCommentParams.decode(reader, reader.uint32());
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4012,29 +4057,32 @@ var PeformCommentActionParams_TranslateCommentParams = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBasePeformCommentActionParams_TranslateCommentParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 3:
+        case 3: {
           if (tag !== 26) {
             break;
           }
           message.params = PeformCommentActionParams_TranslateCommentParams_Params.decode(reader, reader.uint32());
           continue;
-        case 2:
+        }
+        case 2: {
           if (tag !== 18) {
             break;
           }
           message.commentId = reader.string();
           continue;
-        case 4:
+        }
+        case 4: {
           if (tag !== 34) {
             break;
           }
           message.targetLanguage = reader.string();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4057,17 +4105,18 @@ var PeformCommentActionParams_TranslateCommentParams_Params = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBasePeformCommentActionParams_TranslateCommentParams_Params();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.comment = PeformCommentActionParams_TranslateCommentParams_Params_Comment.decode(reader, reader.uint32());
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4090,17 +4139,18 @@ var PeformCommentActionParams_TranslateCommentParams_Params_Comment = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBasePeformCommentActionParams_TranslateCommentParams_Params_Comment();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.text = reader.string();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4132,35 +4182,39 @@ var ReelSequence = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseReelSequence();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.shortId = reader.string();
           continue;
-        case 5:
+        }
+        case 5: {
           if (tag !== 42) {
             break;
           }
           message.params = ReelSequence_Params.decode(reader, reader.uint32());
           continue;
-        case 10:
+        }
+        case 10: {
           if (tag !== 80) {
             break;
           }
           message.feature2 = reader.int32();
           continue;
-        case 13:
+        }
+        case 13: {
           if (tag !== 104) {
             break;
           }
           message.feature3 = reader.int32();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4183,17 +4237,18 @@ var ReelSequence_Params = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseReelSequence_Params();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 3:
+        case 3: {
           if (tag !== 24) {
             break;
           }
           message.number = reader.int32();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -4219,23 +4274,25 @@ var NextParams = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseNextParams();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 5:
+        case 5: {
           if (tag !== 42) {
             break;
           }
           message.videoId.push(reader.string());
           continue;
-        case 6:
+        }
+        case 6: {
           if (tag !== 50) {
             break;
           }
           message.playlistTitle = reader.string();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -15546,23 +15603,25 @@ var KeyValuePair = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseKeyValuePair();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.key = reader.string();
           continue;
-        case 2:
+        }
+        case 2: {
           if (tag !== 18) {
             break;
           }
           message.value = reader.string();
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -15585,17 +15644,18 @@ var FormatXTags = {
   },
   decode(input, length) {
     const reader = input instanceof BinaryReader ? input : new BinaryReader(input);
-    let end = length === void 0 ? reader.len : reader.pos + length;
+    const end = length === void 0 ? reader.len : reader.pos + length;
     const message = createBaseFormatXTags();
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
-        case 1:
+        case 1: {
           if (tag !== 10) {
             break;
           }
           message.xtags.push(KeyValuePair.decode(reader, reader.uint32()));
           continue;
+        }
       }
       if ((tag & 7) === 4 || tag === 0) {
         break;
@@ -15639,6 +15699,8 @@ var _Format = class _Format {
     __publicField(this, "loudness_db");
     __publicField(this, "signature_cipher");
     __publicField(this, "is_drc");
+    __publicField(this, "is_vb");
+    __publicField(this, "is_sr");
     __publicField(this, "drm_track_type");
     __publicField(this, "distinct_params");
     __publicField(this, "track_absolute_loudness_lkfs");
@@ -15753,11 +15815,12 @@ var _Format = class _Format {
         kind: data.captionTrack.kind,
         id: data.captionTrack.id
       };
+    const xtags = this.xtags ? FormatXTags.decode(base64ToU8(decodeURIComponent(this.xtags).replace(/-/g, "+").replace(/_/g, "/"))).xtags : [];
     if (this.has_audio || this.has_text) {
-      const xtags = this.xtags ? FormatXTags.decode(base64ToU8(decodeURIComponent(this.xtags).replace(/-/g, "+").replace(/_/g, "/"))).xtags : [];
       this.language = ((_f = xtags.find((tag) => tag.key === "lang")) == null ? void 0 : _f.value) || null;
       if (this.has_audio) {
         this.is_drc = !!data.isDrc || xtags.some((tag) => tag.key === "drc" && tag.value === "1");
+        this.is_vb = !!data.isVb || xtags.some((tag) => tag.key === "vb" && tag.value === "1");
         const audio_content = (_g = xtags.find((tag) => tag.key === "acont")) == null ? void 0 : _g.value;
         this.is_dubbed = audio_content === "dubbed";
         this.is_descriptive = audio_content === "descriptive";
@@ -15768,6 +15831,9 @@ var _Format = class _Format {
       if (this.has_text && !this.language && this.caption_track) {
         this.language = this.caption_track.language_code;
       }
+    }
+    if (this.has_video) {
+      this.is_sr = xtags.some((tag) => tag.key === "sr" && tag.value === "1");
     }
   }
   /**
@@ -32225,9 +32291,6 @@ var _Innertube = class _Innertube {
           splay: false,
           lactMilliseconds: "-1",
           signatureTimestamp: (_e = session.player) == null ? void 0 : _e.signature_timestamp
-        },
-        adPlaybackContext: {
-          pyv: true
         }
       },
       client: options == null ? void 0 : options.client

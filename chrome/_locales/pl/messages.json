@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "Uprawnienie przyznane! Proszę przeładować stronę, aby odtwarzać filmy z YouTube."
+    },
+    "ytslowdown_popup": {
+        "message": "Powiadomienie o spowolnieniu YouTube"
+    },
+    "ytslowdown_popup_body": {
+        "message": "Z powodu zmian w YouTube możesz doświadczyć wolnych czasów ładowania początkowego dla filmów. Dzieje się tak, ponieważ YouTube teraz wymusza opóźnienie dla reklam, na które FastStream musi czekać, zanim będzie mógł zacząć ładować film. Niestety, nie ma rozwiązania tego problemu. Dziękujemy za zrozumienie."
+    },
+    "ytslowdown_ok": {
+        "message": "OK"
     }
 }

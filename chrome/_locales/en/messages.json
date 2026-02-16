@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "Permission Granted! Please reload the page to play YouTube videos."
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube Slowdown Notice"
+    },
+    "ytslowdown_popup_body": {
+        "message": "Due to changes by YouTube, you may experience slow initial load times for videos. This is because YouTube now enforces a delay for advertisements, which FastStream must wait for before it can start loading the video. Unfortunately, there is no workaround for this issue. Thank you for your understanding."
+    },
+    "ytslowdown_ok": {
+        "message": "OK"
     }
 }

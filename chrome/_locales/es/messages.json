@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "¡Permiso concedido! Por favor, recargue la página para reproducir videos de YouTube."
+    },
+    "ytslowdown_popup": {
+        "message": "Aviso de ralentización de YouTube"
+    },
+    "ytslowdown_popup_body": {
+        "message": "Debido a los cambios de YouTube, es posible que experimente tiempos de carga iniciales lentos para los videos. Esto se debe a que YouTube ahora impone un retraso para los anuncios, que FastStream debe esperar antes de poder comenzar a cargar el video. Desafortunadamente, no hay una solución para este problema. Gracias por su comprensión."
+    },
+    "ytslowdown_ok": {
+        "message": "Aceptar"
     }
 }

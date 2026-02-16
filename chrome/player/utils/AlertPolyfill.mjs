@@ -172,4 +172,28 @@ export class AlertPolyfill {
       }
     });
   }
+
+
+  static async ytSlowdownWarning() {
+    // check localstorage for a flag to not show this again
+    if (localStorage.getItem('ytSlowdownWarningDismissed') === 'true') {
+      return;
+    }
+
+    const html = document.createElement('div');
+    const bodyText = document.createElement('p');
+    bodyText.classList.add('error-popup-body');
+    bodyText.textContent = Localize.getMessage('ytslowdown_popup_body');
+    html.appendChild(bodyText);
+    return await SweetAlert.fire({
+      title: Localize.getMessage('ytslowdown_popup'),
+      html,
+      icon: 'warning',
+      confirmButtonText: Localize.getMessage('ytslowdown_ok'),
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        localStorage.setItem('ytSlowdownWarningDismissed', 'true');
+      }
+    });
+  }
 }

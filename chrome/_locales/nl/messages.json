@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "Toestemming verleend! Herlaad de pagina om YouTube-video's af te spelen."
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube vertraging melding"
+    },
+    "ytslowdown_popup_body": {
+        "message": "Door veranderingen van YouTube kunt u langzame initiële laadtijden voor video's ervaren. Dit komt doordat YouTube nu een vertraging afdwingt voor advertenties, waar FastStream op moet wachten voordat het kan beginnen met het laden van de video. Helaas is er geen oplossing voor dit probleem. Bedankt voor uw begrip."
+    },
+    "ytslowdown_ok": {
+        "message": "OK"
     }
 }

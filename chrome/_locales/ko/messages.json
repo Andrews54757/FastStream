@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "권한이 부여되었습니다! YouTube 동영상을 재생하려면 페이지를 새로고침하세요."
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube 속도 저하 알림"
+    },
+    "ytslowdown_popup_body": {
+        "message": "YouTube의 변경으로 인해 동영상의 초기 로드 시간이 느려질 수 있습니다. 이는 YouTube가 광고에 대한 지연을 강제하기 때문이며, FastStream은 동영상 로드를 시작하기 전에 기다려야 합니다. 불행히도 이 문제에 대한 해결 방법은 없습니다. 양해해 주셔서 감사합니다."
+    },
+    "ytslowdown_ok": {
+        "message": "확인"
     }
 }

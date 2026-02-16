@@ -1171,5 +1171,14 @@
     },
     "yterror_permission_granted": {
         "message": "权限已授予！请重新加载页面以播放 YouTube 视频。"
+    },
+    "ytslowdown_popup": {
+        "message": "YouTube 慢速通知"
+    },
+    "ytslowdown_popup_body": {
+        "message": "由于 YouTube 的更改，您可能会遇到视频初始加载时间变慢的情况。这是因为 YouTube 现在强制广告延迟，FastStream 必须等待才能开始加载视频。不幸的是，这个问题没有解决方法。感谢您的理解。"
+    },
+    "ytslowdown_ok": {
+        "message": "确定"
     }
 }
