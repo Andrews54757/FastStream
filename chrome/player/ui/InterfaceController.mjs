@@ -213,6 +213,7 @@ export class InterfaceController {
     DOMElements.playerContainer.classList.add('controls_visible');
     this.updateToolVisibility();
     this.fineTimeControls.reset();
+    this.playbackRateChanger.reset();
   }
 
   failedToLoad(reason) {
