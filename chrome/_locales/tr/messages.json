@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Ön indiricinin hedef indirme hızı"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesi (ms)"
+    },
     "options_general_maxsize": {
         "message": "Önceden indirilen videonun maksimum boyutu"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "İpucu: Regex'i burada test edin"
+    },
+    "options_autourl_applyall": {
+        "message": "Tüm web sitelerinde otomatik etkinleştir"
     },
     "options_pattern_header": {
         "message": "Özel Kaynak Desenleri"

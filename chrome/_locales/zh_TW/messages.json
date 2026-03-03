@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "預先下載器目標下載速度"
     },
+    "options_general_controls_hide_delay": {
+        "message": "控制項自動隱藏延遲（毫秒）"
+    },
     "options_general_maxsize": {
         "message": "預先下載影片最大大小"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "提示：在此測試正則表達式"
+    },
+    "options_autourl_applyall": {
+        "message": "在所有網站上自動啟用"
     },
     "options_pattern_header": {
         "message": "自訂來源模式"

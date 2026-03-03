@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Velocidad de descarga objetivo del predescargador"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Retardo para ocultar automáticamente los controles (ms)"
+    },
     "options_general_maxsize": {
         "message": "Tamaño máximo de video predescargado"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Sugerencia: Prueba regex en"
+    },
+    "options_autourl_applyall": {
+        "message": "Activar automáticamente en todos los sitios web"
     },
     "options_pattern_header": {
         "message": "Patrones de Fuente Personalizados"

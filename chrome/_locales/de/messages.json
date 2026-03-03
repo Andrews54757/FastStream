@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Download geschwindigkeit fürs vor laden"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Verzögerung zum automatischen Ausblenden der Steuerung (ms)"
+    },
     "options_general_maxsize": {
         "message": "Maximal größe für das vor laden von Videos"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Hinweise: Teste Regex auf"
+    },
+    "options_autourl_applyall": {
+        "message": "Auf allen Websites automatisch aktivieren"
     },
     "options_pattern_header": {
         "message": "Benutzerdefinierte Quellen Filter"

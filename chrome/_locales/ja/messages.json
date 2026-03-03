@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "プリダウンローダーのターゲット速度"
     },
+    "options_general_controls_hide_delay": {
+        "message": "操作パネルの自動非表示までの遅延（ms）"
+    },
     "options_general_maxsize": {
         "message": "プリダウンローダーの最大サイズ"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
+    },
+    "options_autourl_applyall": {
+        "message": "すべてのウェブサイトで自動的に有効にする"
     },
     "options_pattern_header": {
         "message": "カスタムソースパターン"

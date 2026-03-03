@@ -64,8 +64,8 @@ export class FastStreamClient extends EventEmitter {
       disableLoadProgress: false,
       previewEnabled: true,
       autoplayNext: false,
-      singleClickAction: ClickActions.HIDE_CONTROLS,
-      doubleClickAction: ClickActions.PLAY_PAUSE,
+      singleClickAction: ClickActions.PLAY_PAUSE,
+      doubleClickAction: ClickActions.HIDE_CONTROLS,
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
       defaultYoutubeClient: YoutubeClients.WEB,
@@ -81,7 +81,8 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
-      seekStepSize: 0.2,
+      seekStepSize: 5,
+      controlsHideDelay: 2000,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -310,6 +311,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.maxSpeed = options.maxSpeed;
     this.options.maxVideoSize = options.maxVideoSize;
     this.options.seekStepSize = options.seekStepSize;
+    this.options.controlsHideDelay = options.controlsHideDelay;
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;

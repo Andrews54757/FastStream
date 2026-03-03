@@ -5561,6 +5561,24 @@
         "zh_CN": "预下载器的目标下载速度",
         "zh_TW": "預先下載器目標下載速度"
     },
+    "options_general_controls_hide_delay": {
+        "en": "Controls auto-hide delay (ms)",
+        "de": "Verzögerung zum automatischen Ausblenden der Steuerung (ms)",
+        "es": "Retardo para ocultar automáticamente los controles (ms)",
+        "fr": "Délai avant masquage automatique des commandes (ms)",
+        "id": "Jeda sembunyikan kontrol otomatis (ms)",
+        "it": "Ritardo di auto-nascondimento dei controlli (ms)",
+        "ja": "操作パネルの自動非表示までの遅延（ms）",
+        "ko": "컨트롤 자동 숨김 지연 (ms)",
+        "ms": "Kelewatan auto-sembunyi kawalan (ms)",
+        "nl": "Vertraging voor automatisch verbergen van bediening (ms)",
+        "pl": "Opóźnienie automatycznego ukrywania kontrolek (ms)",
+        "pt_BR": "Atraso para ocultar automaticamente os controles (ms)",
+        "ru": "Задержка автоскрытия элементов управления (мс)",
+        "tr": "Kontrollerin otomatik gizlenme gecikmesi (ms)",
+        "zh_CN": "控件自动隐藏延迟（毫秒）",
+        "zh_TW": "控制項自動隱藏延遲（毫秒）"
+    },
     "options_general_maxsize": {
         "en": "Maximum size of predownloaded video",
         "de": "Maximal größe für das vor laden von Videos",
@@ -6550,6 +6568,24 @@
         "tr": "İpucu: Regex'i burada test edin",
         "zh_CN": "提示：在此处测试正则",
         "zh_TW": "提示：在此測試正則表達式"
+    },
+    "options_autourl_applyall": {
+        "en": "Auto-enable on all websites",
+        "de": "Auf allen Websites automatisch aktivieren",
+        "es": "Activar automáticamente en todos los sitios web",
+        "fr": "Activer automatiquement sur tous les sites Web",
+        "id": "Aktifkan otomatis di semua situs web",
+        "it": "Abilita automaticamente su tutti i siti web",
+        "ja": "すべてのウェブサイトで自動的に有効にする",
+        "ko": "모든 웹사이트에서 자동 활성화",
+        "ms": "Aktifkan secara automatik di semua laman web",
+        "nl": "Automatisch inschakelen op alle websites",
+        "pl": "Automatycznie włączaj na wszystkich stronach",
+        "pt_BR": "Ativar automaticamente em todos os sites",
+        "ru": "Автоматически включать на всех сайтах",
+        "tr": "Tüm web sitelerinde otomatik etkinleştir",
+        "zh_CN": "在所有网站上自动启用",
+        "zh_TW": "在所有網站上自動啟用"
     },
     "options_pattern_header": {
         "en": "Custom Source Patterns",

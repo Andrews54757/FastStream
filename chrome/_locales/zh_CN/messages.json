@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "预下载器的目标下载速度"
     },
+    "options_general_controls_hide_delay": {
+        "message": "控件自动隐藏延迟（毫秒）"
+    },
     "options_general_maxsize": {
         "message": "预下载视频的最大大小"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "提示：在此处测试正则"
+    },
+    "options_autourl_applyall": {
+        "message": "在所有网站上自动启用"
     },
     "options_pattern_header": {
         "message": "自定义源模式"

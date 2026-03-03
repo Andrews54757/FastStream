@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Vitesse de téléchargement cible du préchargeur"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Délai avant masquage automatique des commandes (ms)"
+    },
     "options_general_maxsize": {
         "message": "Taille maximale de la vidéo préchargée"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Astuce : testez la regex sur"
+    },
+    "options_autourl_applyall": {
+        "message": "Activer automatiquement sur tous les sites Web"
     },
     "options_pattern_header": {
         "message": "Modèles de sources personnalisés"

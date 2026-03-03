@@ -381,10 +381,33 @@ export class InterfaceController {
       this.queueControlsHide(1);
     });
 
+    const getTapRegion = (e) => {
+      try {
+        const rect = DOMElements.videoContainer.getBoundingClientRect();
+        const x = typeof e?.clientX === 'number' ? e.clientX : null;
+        if (x === null || !rect.width) {
+          return 'middle';
+        }
+        const ratio = (x - rect.left) / rect.width;
+        if (ratio < 0.4) {
+          return 'left';
+        }
+        if (ratio > 0.6) {
+          return 'right';
+        }
+        return 'middle';
+      } catch (_) {
+        return 'middle';
+      }
+    };
+
     let holdTimeout = null;
     let lastSpeed = null;
     let wasPlaying = false;
     DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
+      if (getTapRegion(e) !== 'middle') {
+        return;
+      }
       if (e.button === 0) {
         clearTimeout(holdTimeout);
         holdTimeout = setTimeout(() => {
@@ -422,12 +445,17 @@ export class InterfaceController {
 
     let clickCount = 0;
     let clickTimeout = null;
+    const sideDoubleTapMs = 260;
+    let lastSideTapLeft = 0;
+    let lastSideTapRight = 0;
     DOMElements.videoContainer.addEventListener('click', (e) => {
       clearTimeout(holdTimeout);
       if (lastSpeed !== null) {
         stopSpeedUp();
         return;
       }
+
+      const tapRegion = getTapRegion(e);
 
       if (this.closeAllMenus(false)) {
         return;
@@ -438,7 +466,41 @@ export class InterfaceController {
       }
 
       if (this.isBigPlayButtonVisible()) {
-        this.playPauseToggle();
+        if (tapRegion === 'middle') {
+          this.playPauseToggle();
+        }
+        return;
+      }
+
+      if (tapRegion !== 'middle') {
+        // Side regions: ONLY double-tap seek, and do it immediately on 2nd tap.
+        clearTimeout(clickTimeout);
+        clickTimeout = null;
+        clickCount = 0;
+
+        const now = Date.now();
+        const last = tapRegion === 'left' ? lastSideTapLeft : lastSideTapRight;
+        if (now - last <= sideDoubleTapMs) {
+          if (tapRegion === 'left') {
+            lastSideTapLeft = 0;
+          } else {
+            lastSideTapRight = 0;
+          }
+          if (this.client.player) {
+            const seekAmount = this.client.options.seekStepSize;
+            this.client.setSeekSave(false);
+            this.client.currentTime += (tapRegion === 'left' ? -seekAmount : seekAmount);
+            this.client.setSeekSave(true);
+            this.showSeekPopup(tapRegion === 'left' ? -seekAmount : seekAmount);
+            this.hideControlBarOnAction();
+          }
+        } else {
+          if (tapRegion === 'left') {
+            lastSideTapLeft = now;
+          } else {
+            lastSideTapRight = now;
+          }
+        }
         return;
       }
 
@@ -544,8 +606,9 @@ export class InterfaceController {
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSeekPopup(this.client.options.seekStepSize);
       e.stopPropagation();
     });
 
@@ -553,8 +616,9 @@ export class InterfaceController {
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSeekPopup(-this.client.options.seekStepSize);
       e.stopPropagation();
     });
 
@@ -981,11 +1045,22 @@ export class InterfaceController {
 
   queueControlsHide(time) {
     clearTimeout(this.hideControlBarTimeout);
+
+    let timeout = time;
+    if (timeout === undefined || timeout === null) {
+      timeout = this.client?.options?.controlsHideDelay;
+    }
+    timeout = Number(timeout);
+    if (!Number.isFinite(timeout)) {
+      timeout = 2000;
+    }
+    timeout = Math.max(0, timeout);
+
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
-    }, time || 2000);
+    }, timeout);
   }
 
   hideControlBarOnAction(cooldown) {
@@ -1148,6 +1223,7 @@ export class InterfaceController {
     this.updatePlayPauseButton();
     if (!previousValue) {
       this.playPauseAnimation();
+      this.showPlayPausePopup('play');
       this.queueControlsHide();
     }
   }
@@ -1159,6 +1235,7 @@ export class InterfaceController {
     this.showControlBar();
     if (previousValue) {
       this.playPauseAnimation();
+      this.showPlayPausePopup('pause');
     }
   }
 
@@ -1193,5 +1270,66 @@ export class InterfaceController {
         },
         450,
     );
+  }
+
+  showPlayPausePopup(type) {
+    const popup = DOMElements.playPausePopup;
+    if (!popup) return;
+
+    popup.classList.remove('show', 'play', 'pause');
+    void popup.offsetWidth;
+    popup.classList.add('show', type);
+    popup.addEventListener('animationend', () => {
+      popup.classList.remove('show');
+    }, {once: true});
+  }
+
+  showSeekPopup(deltaSeconds) {
+    const delta = Number(deltaSeconds);
+    if (!Number.isFinite(delta) || delta === 0) return;
+
+    const direction = delta < 0 ? 'left' : 'right';
+    const popup = direction === 'left' ? DOMElements.seekPopupLeft : DOMElements.seekPopupRight;
+    const popupText = direction === 'left' ? DOMElements.seekPopupLeftText : DOMElements.seekPopupRightText;
+    const otherPopup = direction === 'left' ? DOMElements.seekPopupRight : DOMElements.seekPopupLeft;
+    if (!popup || !popupText) return;
+
+    const now = Date.now();
+    const sign = delta < 0 ? -1 : 1;
+    const sameDirection = this._seekPopupSign === sign;
+    const withinWindow = typeof this._seekPopupLastAt === 'number' && (now - this._seekPopupLastAt) <= 600;
+    if (sameDirection && withinWindow) {
+      this._seekPopupTotal = (this._seekPopupTotal || 0) + delta;
+    } else {
+      this._seekPopupSign = sign;
+      this._seekPopupTotal = delta;
+      if (otherPopup) {
+        otherPopup.classList.remove('show', 'pulse');
+      }
+    }
+    this._seekPopupLastAt = now;
+
+    popupText.textContent = this.formatSeekAmount(Math.abs(this._seekPopupTotal));
+    popup.classList.add('show');
+
+    popup.classList.remove('pulse');
+    void popup.offsetWidth;
+    popup.classList.add('pulse');
+
+    clearTimeout(this._seekPopupHideTimeout);
+    this._seekPopupHideTimeout = setTimeout(() => {
+      popup.classList.remove('show', 'pulse');
+      this._seekPopupTotal = 0;
+      this._seekPopupSign = 0;
+      this._seekPopupLastAt = 0;
+    }, 450);
+  }
+
+  formatSeekAmount(seconds) {
+    const s = Number(seconds);
+    if (!Number.isFinite(s)) return '0s';
+    const abs = Math.abs(s);
+    const formatted = abs < 1 ? abs.toFixed(2) : abs < 10 ? abs.toFixed(1) : Math.round(abs).toString();
+    return `${formatted}s`;
   }
 }

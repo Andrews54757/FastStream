@@ -20,6 +20,28 @@
         tabindex="-1">
         <div class="video-container"></div>
         <div class="fluid_subtitles_container"></div>
+        <div class="fs_hud" aria-hidden="true">
+            <div class="fs_playpause_popup" aria-hidden="true">
+                <svg class="play">
+                    <use href="assets/fluidplayer/static/icons.svg#play"></use>
+                </svg>
+                <svg class="pause">
+                    <use href="assets/fluidplayer/static/icons.svg#pause"></use>
+                </svg>
+            </div>
+            <div class="fs_seek_popup fs_seek_popup_left" aria-hidden="true">
+                <svg class="fs_seek_icon">
+                    <use href="assets/fluidplayer/static/icons.svg#previous"></use>
+                </svg>
+                <span class="fs_seek_text"></span>
+            </div>
+            <div class="fs_seek_popup fs_seek_popup_right" aria-hidden="true">
+                <svg class="fs_seek_icon">
+                    <use href="assets/fluidplayer/static/icons.svg#next"></use>
+                </svg>
+                <span class="fs_seek_text"></span>
+            </div>
+        </div>
         <div class="fluid_controls_container fade_in">
             <div class="skip_button" style="display: none;" tabindex="0" role="button"></div>
             <div class="next_video_button" style="display: none;" tabindex="0" role="button"></div>

@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Docelowa prędkość pobierania predownloadera"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Opóźnienie automatycznego ukrywania kontrolek (ms)"
+    },
     "options_general_maxsize": {
         "message": "Maksymalny rozmiar wstępnie pobranego wideo"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Wskazówka: przetestuj regex na"
+    },
+    "options_autourl_applyall": {
+        "message": "Automatycznie włączaj na wszystkich stronach"
     },
     "options_pattern_header": {
         "message": "Niestandardowe wzorce źródeł"

@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Целевая скорость предзагрузки"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Задержка автоскрытия элементов управления (мс)"
+    },
     "options_general_maxsize": {
         "message": "Максимальный размер предзагружаемого видео"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Подсказка: протестируйте регулярное выражение на"
+    },
+    "options_autourl_applyall": {
+        "message": "Автоматически включать на всех сайтах"
     },
     "options_pattern_header": {
         "message": "Пользовательские шаблоны источников"

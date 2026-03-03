@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Kecepatan unduh target predownloader"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Jeda sembunyikan kontrol otomatis (ms)"
+    },
     "options_general_maxsize": {
         "message": "Ukuran maksimum video yang dipraunduh"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Petunjuk: Uji regex di"
+    },
+    "options_autourl_applyall": {
+        "message": "Aktifkan otomatis di semua situs web"
     },
     "options_pattern_header": {
         "message": "Pola Sumber Kustom"

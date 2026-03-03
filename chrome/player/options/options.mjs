@@ -25,6 +25,7 @@ const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
+const applyToAllWebsites = document.getElementById('applytoallwebsites');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
@@ -47,6 +48,7 @@ const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
 const replaceDelay = document.getElementById('replacedelay');
+const controlsHideDelay = document.getElementById('controlshidedelay');
 const colorTheme = document.getElementById('colortheme');
 const ytPlayerID = document.getElementById('ytplayerid');
 const optionsSearchBar = document.getElementById('searchbar');
@@ -76,6 +78,7 @@ if (!EnvUtils.isExtension()) {
   autoSub.disabled = true;
   autoplayYoutube.disabled = true;
   autoEnableURLSInput.disabled = true;
+  applyToAllWebsites.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
   // ytclient.disabled = true;
@@ -99,6 +102,7 @@ async function loadOptions(newOptions) {
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   autoplayNext.checked = !!Options.autoplayNext;
+  applyToAllWebsites.checked = !!Options.applyToAllWebsites;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
@@ -106,6 +110,7 @@ async function loadOptions(newOptions) {
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
+  controlsHideDelay.value = Number.isFinite(Options.controlsHideDelay) ? Options.controlsHideDelay : DefaultOptions.controlsHideDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
 
@@ -429,6 +434,13 @@ replaceDelay.addEventListener('change', () => {
   optionChanged();
 });
 
+controlsHideDelay.addEventListener('change', () => {
+  const value = parseInt(controlsHideDelay.value);
+  Options.controlsHideDelay = Number.isFinite(value) ? value : DefaultOptions.controlsHideDelay;
+  controlsHideDelay.value = Options.controlsHideDelay;
+  optionChanged();
+});
+
 miniSize.addEventListener('change', () => {
   Options.miniSize = Math.min(Math.max(parseFloat(miniSize.value) || 0.25, 0.01), 1);
   optionChanged();
@@ -482,6 +494,11 @@ WebUtils.setupTabIndex(document.getElementById('resetdefault'));
 
 autoEnableURLSInput.addEventListener('change', (e) => {
   Options.autoEnableURLs = autoEnableURLSInput.value.split('\n').map((o)=>o.trim()).filter((o)=>o.length);
+  optionChanged();
+});
+
+applyToAllWebsites.addEventListener('change', (e) => {
+  Options.applyToAllWebsites = applyToAllWebsites.checked;
   optionChanged();
 });
 

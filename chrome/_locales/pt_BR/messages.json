@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Velocidade alvo de download do pré-downloader"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Atraso para ocultar automaticamente os controles (ms)"
+    },
     "options_general_maxsize": {
         "message": "Tamanho máximo do vídeo pré-baixado"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Dica: Teste a expressão regular em"
+    },
+    "options_autourl_applyall": {
+        "message": "Ativar automaticamente em todos os sites"
     },
     "options_pattern_header": {
         "message": "Padrões de origem personalizada"

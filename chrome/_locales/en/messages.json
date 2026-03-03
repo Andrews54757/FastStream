@@ -926,6 +926,9 @@
     "options_general_targetspeed": {
         "message": "Target download speed of predownloader"
     },
+    "options_general_controls_hide_delay": {
+        "message": "Controls auto-hide delay (ms)"
+    },
     "options_general_maxsize": {
         "message": "Maximum size of predownloaded video"
     },
@@ -1090,6 +1093,9 @@
     },
     "options_autourl_hint": {
         "message": "Hint: Test regex on"
+    },
+    "options_autourl_applyall": {
+        "message": "Auto-enable on all websites"
     },
     "options_pattern_header": {
         "message": "Custom Source Patterns"
