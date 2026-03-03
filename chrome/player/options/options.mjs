@@ -186,6 +186,7 @@ const TOOLBAR_TOOL_LABEL_KEYS = {
   playrate: 'player_playbackrate_label',
   more: 'player_more_label',
   download: 'player_savevideo_label',
+  screenshot: 'player_screenshot_label',
   fullscreen: 'player_fullscreen_label',
   loop: 'player_loop_label',
   pip: 'player_pip_label',
@@ -193,6 +194,31 @@ const TOOLBAR_TOOL_LABEL_KEYS = {
   rotate: 'player_rotate_label',
   forward: 'player_skip_forward_label',
   backward: 'player_skip_backward_label',
+};
+
+const TOOLBAR_TOOL_ICON_HREFS = {
+  playpause: '../assets/fluidplayer/static/icons.svg#play',
+  previous: '../assets/fluidplayer/static/icons.svg#previous',
+  next: '../assets/fluidplayer/static/icons.svg#next',
+  volume: '../assets/fluidplayer/static/icons.svg#speaker',
+  duration: '../assets/fluidplayer/static/icons.svg#timer',
+  sources: '../assets/fluidplayer/static/icons.svg#link',
+  audioconfig: '../assets/fluidplayer/static/icons.svg#soundwave',
+  subtitles: '../assets/fluidplayer/static/icons.svg#captions',
+  languages: '../assets/fluidplayer/static/icons.svg#language',
+  quality: '../assets/fluidplayer/static/icons2.svg#quality-hd',
+  playrate: '../assets/fluidplayer/static/icons.svg#timer',
+  settings: '../assets/fluidplayer/static/icons.svg#gear',
+  download: '../assets/fluidplayer/static/icons.svg#download',
+  screenshot: '../assets/fluidplayer/static/icons.svg#photo',
+  pip: '../assets/fluidplayer/static/icons.svg#pip',
+  more: '../assets/fluidplayer/static/icons2.svg#more',
+  loop: '../assets/fluidplayer/static/icons2.svg#loop',
+  fullscreen: '../assets/fluidplayer/static/icons.svg#fullscreen',
+  windowedfs: '../assets/fluidplayer/static/icons2.svg#windowed-fs',
+  rotate: '../assets/fluidplayer/static/icons2.svg#rotate',
+  forward: '../assets/fluidplayer/static/icons2.svg#skip-forward',
+  backward: '../assets/fluidplayer/static/icons2.svg#skip-backward',
 };
 
 const REQUIRED_TOOLBAR_TOOLS = new Set(['settings']);
@@ -226,18 +252,39 @@ function renderToolbarButtons(settings) {
 
   toolbarButtonsContainer.replaceChildren();
 
+  const mergedToolSettings = {};
+  for (const tool of Object.keys(DefaultToolSettings)) {
+    mergedToolSettings[tool] = Utils.mergeOptions(DefaultToolSettings[tool], settings?.[tool] || {});
+  }
+
+  const locationOrder = {
+    left: 0,
+    right: 1,
+    extra: 2,
+  };
+
+  // Match the actual toolbar's left-to-right presentation:
+  // left container (ascending priority), then right container (ascending priority),
+  // then extra tools (shown behind "More") (ascending priority).
   const tools = Object.keys(DefaultToolSettings)
       .filter((tool) => !REQUIRED_TOOLBAR_TOOLS.has(tool))
       .sort((a, b) => {
-        const pa = DefaultToolSettings[a]?.priority ?? 0;
-        const pb = DefaultToolSettings[b]?.priority ?? 0;
+        const sa = mergedToolSettings[a] || DefaultToolSettings[a] || {};
+        const sb = mergedToolSettings[b] || DefaultToolSettings[b] || {};
+        const la = locationOrder[sa.location] ?? 99;
+        const lb = locationOrder[sb.location] ?? 99;
+        if (la !== lb) return la - lb;
+
+        const pa = sa.priority ?? 0;
+        const pb = sb.priority ?? 0;
         if (pa !== pb) return pa - pb;
+
         return a.localeCompare(b);
       });
 
   for (const tool of tools) {
     const row = document.createElement('div');
-    row.className = 'option search-target-remove grid1';
+    row.className = 'option toolbar-tool-row search-target-remove grid1';
 
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
@@ -247,6 +294,20 @@ function renderToolbarButtons(settings) {
 
     const visible = settings?.[tool]?.visible !== false;
     checkbox.checked = !!visible;
+
+    const iconHref = TOOLBAR_TOOL_ICON_HREFS[tool];
+    let icon = null;
+    if (iconHref) {
+      icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      icon.classList.add('toolbar-tool-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      icon.setAttribute('focusable', 'false');
+
+      const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      use.setAttribute('href', iconHref);
+      use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', iconHref);
+      icon.appendChild(use);
+    }
 
     const label = document.createElement('div');
     label.className = 'label search-target-text';
@@ -261,6 +322,7 @@ function renderToolbarButtons(settings) {
     });
 
     row.appendChild(checkbox);
+    if (icon) row.appendChild(icon);
     row.appendChild(label);
     toolbarButtonsContainer.appendChild(row);
   }

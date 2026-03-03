@@ -402,10 +402,10 @@ export class InterfaceController {
           return 'middle';
         }
         const ratio = (x - rect.left) / rect.width;
-        if (ratio < 0.4) {
+        if (ratio < 0.35) {
           return 'left';
         }
-        if (ratio > 0.6) {
+        if (ratio > 0.65) {
           return 'right';
         }
         return 'middle';
@@ -505,7 +505,6 @@ export class InterfaceController {
             this.client.currentTime += (tapRegion === 'left' ? -seekAmount : seekAmount);
             this.client.setSeekSave(true);
             this.showSeekPopup(tapRegion === 'left' ? -seekAmount : seekAmount);
-            this.hideControlBarOnAction();
           }
         } else {
           if (tapRegion === 'left') {

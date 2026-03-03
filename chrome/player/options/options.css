@@ -498,6 +498,28 @@ button:focus-visible {
   align-items: center;
 }
 
+.option.grid1.toolbar-tool-row {
+  grid-template-columns: 20px 20px 1fr;
+}
+
+.option.grid1.toolbar-tool-row input {
+  grid-column: 1;
+}
+
+.option.grid1.toolbar-tool-row .toolbar-tool-icon {
+  grid-column: 2;
+  width: 16px;
+  height: 16px;
+  color: var(--color-muted);
+  fill: currentColor;
+  display: block;
+}
+
+.option.grid1.toolbar-tool-row .label {
+  grid-column: 3;
+  margin-left: 0;
+}
+
 .option.grid1 .label {
   grid-column: 2;
 }
