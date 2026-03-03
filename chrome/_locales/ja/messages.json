@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "ウィンドウ化されたフルスクリーン"
     },
+    "player_rotate_label": {
+        "message": "回転"
+    },
     "player_skip_forward_label": {
-        "message": "10秒進む"
+        "message": "前にスキップ"
     },
     "player_skip_backward_label": {
-        "message": "10秒戻る"
+        "message": "後ろにスキップ"
     },
     "player_more_label": {
         "message": "その他のツール"

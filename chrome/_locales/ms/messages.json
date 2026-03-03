@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Skrin Penuh Bertingkap"
     },
+    "player_rotate_label": {
+        "message": "Putar"
+    },
     "player_skip_forward_label": {
-        "message": "Skip forward 10s"
+        "message": "Langkau ke hadapan"
     },
     "player_skip_backward_label": {
-        "message": "Skip backward 10s"
+        "message": "Langkau ke belakang"
     },
     "player_more_label": {
         "message": "Lebih banyak alat"

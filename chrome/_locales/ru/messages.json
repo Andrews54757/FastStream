@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
     },
+    "player_rotate_label": {
+        "message": "Повернуть"
+    },
     "player_skip_forward_label": {
-        "message": "Вперёд на 10 с"
+        "message": "Вперёд"
     },
     "player_skip_backward_label": {
-        "message": "Назад на 10 с"
+        "message": "Назад"
     },
     "player_more_label": {
         "message": "Другие инструменты"

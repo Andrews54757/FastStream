@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Fenster-Vollbildmodus umschalten"
     },
+    "player_rotate_label": {
+        "message": "Drehen"
+    },
     "player_skip_forward_label": {
-        "message": "10s forwärts spulen"
+        "message": "Vorwärts springen"
     },
     "player_skip_backward_label": {
-        "message": "10s rückwärts spulen"
+        "message": "Rückwärts springen"
     },
     "player_more_label": {
         "message": "Mehr Werkzeuge"

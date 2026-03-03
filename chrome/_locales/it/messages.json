@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero nella finestra"
     },
+    "player_rotate_label": {
+        "message": "Ruota"
+    },
     "player_skip_forward_label": {
-        "message": "Vai avanti di 10s"
+        "message": "Avanti"
     },
     "player_skip_backward_label": {
-        "message": "Vai indietro di 10s"
+        "message": "Indietro"
     },
     "player_more_label": {
         "message": "Altri strumenti"

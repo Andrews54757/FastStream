@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Beralih ke layar penuh jendela"
     },
+    "player_rotate_label": {
+        "message": "Putar"
+    },
     "player_skip_forward_label": {
-        "message": "Maju 10 detik"
+        "message": "Maju"
     },
     "player_skip_backward_label": {
-        "message": "Mundur 10 detik"
+        "message": "Mundur"
     },
     "player_more_label": {
         "message": "Alat lainnya"

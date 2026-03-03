@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Toggle windowed fullscreen"
     },
+    "player_rotate_label": {
+        "message": "Rotate"
+    },
     "player_skip_forward_label": {
-        "message": "Skip forward 10s"
+        "message": "Skip forward"
     },
     "player_skip_backward_label": {
-        "message": "Skip backward 10s"
+        "message": "Skip backward"
     },
     "player_more_label": {
         "message": "More tools"

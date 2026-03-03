@@ -425,11 +425,14 @@
     "player_windowed_fullscreen_label": {
         "message": "Venster-volledig scherm in-/uitschakelen"
     },
+    "player_rotate_label": {
+        "message": "Draaien"
+    },
     "player_skip_forward_label": {
-        "message": "10s vooruit springen"
+        "message": "Vooruit springen"
     },
     "player_skip_backward_label": {
-        "message": "10s terugspringen"
+        "message": "Terug springen"
     },
     "player_more_label": {
         "message": "Meer tools"
