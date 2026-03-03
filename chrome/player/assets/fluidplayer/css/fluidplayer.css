@@ -2970,6 +2970,12 @@ input.crosstalk_calculator_input {
     display: none !important;
 }
 
+.fluid_controls_right:not(.reordering)>.fs_user_hidden,
+.tools_container_left:not(.reordering)>.fs_user_hidden,
+.fluid_controls_extra_tools:not(.reordering)>.fs_user_hidden {
+    display: none !important;
+}
+
 .fluid_controls_right.reordering>.hidden,
 .tools_container_left.reordering>.hidden,
 .fluid_controls_extra_tools.reordering>.hidden {

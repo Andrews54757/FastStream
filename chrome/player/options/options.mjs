@@ -7,6 +7,7 @@ import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {OptionsStore} from './OptionsStore.mjs';
 import {resetSearch, searchWithQuery, initsearch} from '../utils/SearchUtils.mjs';
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
@@ -53,6 +54,8 @@ const colorTheme = document.getElementById('colortheme');
 const ytPlayerID = document.getElementById('ytplayerid');
 const optionsSearchBar = document.getElementById('searchbar');
 const optionsResetButton = document.getElementById('resetsearch');
+const toolbarButtonsContainer = document.getElementById('toolbarButtons');
+const toolbarResetButton = document.getElementById('toolbarreset');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
@@ -68,7 +71,10 @@ customSourcePatterns.setAttribute('spellcheck', false);
 customSourcePatterns.placeholder = '# This is a comment. Use the following format.\n[file extension] /[regex]/[flags]';
 
 // Initialize store and then load page controls
-OptionsStore.init().then(() => loadOptions(OptionsStore.get()));
+OptionsStore.init().then(async () => {
+  loadOptions(OptionsStore.get());
+  await refreshToolbarButtonsUI();
+});
 
 
 if (!EnvUtils.isExtension()) {
@@ -164,6 +170,119 @@ async function loadOptions(newOptions) {
     document.getElementById('dev').style.display = '';
   }
   initsearch();
+}
+
+const TOOLBAR_TOOL_LABEL_KEYS = {
+  playpause: 'options_general_clickaction_playpause',
+  previous: 'player_previous_video_label',
+  next: 'player_next_video_label',
+  volume: 'player_volume_label',
+  duration: 'player_timestamp_label',
+  sources: 'player_sourcesbrowser_open_label',
+  audioconfig: 'player_audioconfig_open_label',
+  subtitles: 'player_subtitlesmenu_open_label',
+  languages: 'player_languagemenu_label',
+  quality: 'player_qualitymenu_label',
+  playrate: 'player_playbackrate_label',
+  more: 'player_more_label',
+  download: 'player_savevideo_label',
+  fullscreen: 'player_fullscreen_label',
+  loop: 'player_loop_label',
+  pip: 'player_pip_label',
+  windowedfs: 'player_windowed_fullscreen_label',
+  rotate: 'player_rotate_label',
+  forward: 'player_skip_forward_label',
+  backward: 'player_skip_backward_label',
+};
+
+const REQUIRED_TOOLBAR_TOOLS = new Set(['settings']);
+
+let ToolbarToolSettings = null;
+
+function broadcastOptionsReload() {
+  if (EnvUtils.isExtension()) {
+    chrome.runtime?.sendMessage?.({
+      type: MessageTypes.LOAD_OPTIONS,
+      time: Date.now(),
+    });
+  } else {
+    const postWindow = window.opener || window.parent || window;
+    postWindow.postMessage({type: 'options'}, '/');
+  }
+}
+
+async function loadToolbarToolSettings() {
+  ToolbarToolSettings = await Utils.loadAndParseOptions('toolSettings', DefaultToolSettings);
+  return ToolbarToolSettings;
+}
+
+async function persistToolbarToolSettings(settings) {
+  await Utils.setConfig('toolSettings', JSON.stringify(settings));
+  broadcastOptionsReload();
+}
+
+function renderToolbarButtons(settings) {
+  if (!toolbarButtonsContainer) return;
+
+  toolbarButtonsContainer.replaceChildren();
+
+  const tools = Object.keys(DefaultToolSettings)
+      .filter((tool) => !REQUIRED_TOOLBAR_TOOLS.has(tool))
+      .sort((a, b) => {
+        const pa = DefaultToolSettings[a]?.priority ?? 0;
+        const pb = DefaultToolSettings[b]?.priority ?? 0;
+        if (pa !== pb) return pa - pb;
+        return a.localeCompare(b);
+      });
+
+  for (const tool of tools) {
+    const row = document.createElement('div');
+    row.className = 'option search-target-remove grid1';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.tool = tool;
+    checkbox.id = `tool_visible_${tool}`;
+    checkbox.setAttribute('aria-label', tool);
+
+    const visible = settings?.[tool]?.visible !== false;
+    checkbox.checked = !!visible;
+
+    const label = document.createElement('div');
+    label.className = 'label search-target-text';
+    const labelKey = TOOLBAR_TOOL_LABEL_KEYS[tool];
+    label.textContent = labelKey ? Localize.getMessage(labelKey) : tool;
+
+    checkbox.addEventListener('change', async () => {
+      const current = ToolbarToolSettings || await loadToolbarToolSettings();
+      if (!current[tool]) current[tool] = Utils.mergeOptions(DefaultToolSettings[tool], {});
+      current[tool].visible = checkbox.checked;
+      await persistToolbarToolSettings(current);
+    });
+
+    row.appendChild(checkbox);
+    row.appendChild(label);
+    toolbarButtonsContainer.appendChild(row);
+  }
+}
+
+async function refreshToolbarButtonsUI() {
+  if (!toolbarButtonsContainer) return;
+  const settings = await loadToolbarToolSettings();
+  renderToolbarButtons(settings);
+}
+
+if (toolbarResetButton) {
+  toolbarResetButton.addEventListener('click', async () => {
+    const defaults = Utils.mergeOptions(DefaultToolSettings, {});
+    // Make sure required tools can't be reset into a hidden state.
+    for (const tool of REQUIRED_TOOLBAR_TOOLS) {
+      if (defaults?.[tool]) defaults[tool].visible = true;
+    }
+    ToolbarToolSettings = defaults;
+    await persistToolbarToolSettings(defaults);
+    await refreshToolbarButtonsUI();
+  });
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -558,12 +677,18 @@ if (parent !== window) {
 }
 
 // React to external changes via OptionsStore
-OptionsStore.subscribe(() => loadOptions(OptionsStore.get()));
+OptionsStore.subscribe(async () => {
+  loadOptions(OptionsStore.get());
+  await refreshToolbarButtonsUI();
+});
 
 if (EnvUtils.isExtension()) {
   // Also refresh when becoming visible to catch recent changes
   const o = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) loadOptions(OptionsStore.get());
+    if (entry.isIntersecting) {
+      loadOptions(OptionsStore.get());
+      refreshToolbarButtonsUI();
+    }
   });
   o.observe(document.body);
 

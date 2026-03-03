@@ -12,6 +12,10 @@ export class ToolManager {
     this.specialReorderModeEnabled = false;
   }
 
+  static REQUIRED_TOOLS = new Set(['settings']);
+
+  static USER_HIDDEN_CLASS = 'fs_user_hidden';
+
   setupUI() {
     this.updateToolVisibility();
     DOMElements.playerContainer.addEventListener('click', (e) => {
@@ -185,6 +189,13 @@ export class ToolManager {
 
     for (const [tool, element] of Object.entries(toolElements)) {
       element.dataset.tool = tool;
+
+      // Apply user-level visibility preference (independent of runtime availability `.hidden`).
+      // Tools not present in settings default to visible.
+      const mustBeVisible = ToolManager.REQUIRED_TOOLS.has(tool);
+      const userVisible = mustBeVisible || toolSettings?.[tool]?.visible !== false;
+      element.classList.toggle(ToolManager.USER_HIDDEN_CLASS, !userVisible);
+
       const location = toolSettings[tool].location;
       if (location === 'left') {
         leftToolPairs.push([element, toolSettings[tool]]);
@@ -222,7 +233,7 @@ export class ToolManager {
 
   checkMoreTool() {
     if (Array.from(DOMElements.extraTools.children).some((el) => {
-      return !el.classList.contains('hidden');
+      return !el.classList.contains('hidden') && !el.classList.contains(ToolManager.USER_HIDDEN_CLASS);
     })) {
       DOMElements.moreButton.classList.remove('hidden');
     } else {
