@@ -49,5 +49,4 @@ export const DefaultOptions = {
   videoDelay: 0,
   maximumDownloaders: 6,
   youtubePlayerID: '',
-  mobileAutoRotate: false,
 };

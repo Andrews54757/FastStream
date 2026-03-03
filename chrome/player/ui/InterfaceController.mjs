@@ -124,112 +124,7 @@ export class InterfaceController {
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
 
-    this._mobileOrientationLocked = false;
-    this._mobileOrientationLockValue = null;
-
     this.setupDOM();
-  }
-
-  isMobileAutoRotateEnabled() {
-    return EnvUtils.isMobile() && !!this.client?.options?.mobileAutoRotate;
-  }
-
-  getPreferredOrientationLock() {
-    try {
-      const video = this.client?.currentVideo;
-      const w = video?.videoWidth;
-      const h = video?.videoHeight;
-      if (typeof w === 'number' && typeof h === 'number' && w > 0 && h > 0) {
-        return w >= h ? 'landscape' : 'portrait';
-      }
-    } catch (_) {
-      // ignore
-    }
-    return 'landscape';
-  }
-
-  async updateMobileAutoRotate() {
-    this.updateRotateButtonUI();
-    if (!this.isMobileAutoRotateEnabled()) {
-      this.unlockMobileOrientation();
-      return;
-    }
-
-    // Only attempt to lock while "maximized" (fullscreen or windowed fullscreen).
-    const isMaximized = !!(this.state?.fullscreen || this.state?.windowedFullscreen);
-    if (!isMaximized) {
-      this.unlockMobileOrientation();
-      return;
-    }
-
-    const orientationApi = screen?.orientation;
-    if (!orientationApi || typeof orientationApi.lock !== 'function') {
-      return;
-    }
-
-    // Most browsers require fullscreen for orientation lock.
-    // If not in fullscreen, we still try (e.g., PWA / some Android browsers) but ignore errors.
-    const desired = this.getPreferredOrientationLock();
-    if (this._mobileOrientationLocked && this._mobileOrientationLockValue === desired) {
-      return;
-    }
-
-    try {
-      await orientationApi.lock(desired);
-      this._mobileOrientationLocked = true;
-      this._mobileOrientationLockValue = desired;
-    } catch (_) {
-      // Ignore (permission/gesture/fullscreen restrictions vary per browser)
-    }
-  }
-
-  unlockMobileOrientation() {
-    if (!EnvUtils.isMobile()) {
-      return;
-    }
-
-    const orientationApi = screen?.orientation;
-    if (orientationApi && typeof orientationApi.unlock === 'function') {
-      try {
-        orientationApi.unlock();
-      } catch (_) {
-        // ignore
-      }
-    }
-
-    this._mobileOrientationLocked = false;
-    this._mobileOrientationLockValue = null;
-  }
-
-  updateRotateButtonUI() {
-    if (!DOMElements.rotateButton) {
-      return;
-    }
-    const enabled = !!this.client?.options?.mobileAutoRotate;
-    DOMElements.rotateButton.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-    DOMElements.rotateButton.classList.toggle('active', enabled);
-  }
-
-  async toggleMobileAutoRotatePreference() {
-    const newValue = !this.client?.options?.mobileAutoRotate;
-    this.client.options.mobileAutoRotate = newValue;
-    this.updateRotateButtonUI();
-    this.updateMobileAutoRotate();
-
-    try {
-      const options = await Utils.getOptionsFromStorage();
-      options.mobileAutoRotate = newValue;
-      await Utils.setConfig('options', JSON.stringify(options));
-
-      if (EnvUtils.isExtension()) {
-        chrome.runtime.sendMessage({
-          type: MessageTypes.LOAD_OPTIONS,
-          time: Date.now(),
-        });
-      }
-    } catch (e) {
-      console.error(e);
-    }
   }
 
   updateAutoNextIndicator() {
@@ -471,7 +366,12 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.windowedFullscreen);
 
     DOMElements.rotateButton.addEventListener('click', (e) => {
-      this.toggleMobileAutoRotatePreference();
+      const options = this.client.options;
+      // Toggle only between landscape and portrait.
+      // Landscape: 0° (and treat 180° as landscape too)
+      // Portrait: 90° (and treat 270° as portrait too)
+      options.videoRotate = (options.videoRotate % 2 === 0) ? 1 : 0;
+      this.client.updateCSSFilters();
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(DOMElements.rotateButton);
@@ -1270,7 +1170,6 @@ export class InterfaceController {
       force,
     }, (response) => {
       this.state.windowedFullscreen = response === 'enter';
-      this.updateMobileAutoRotate();
     });
   }
 
@@ -1319,8 +1218,6 @@ export class InterfaceController {
         this.fullscreenToggle(false);
       }
     }
-
-    this.updateMobileAutoRotate();
   }
 
   playPauseToggle() {

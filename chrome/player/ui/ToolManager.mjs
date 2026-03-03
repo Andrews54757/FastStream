@@ -124,7 +124,7 @@ export class ToolManager {
       DOMElements.windowedFullscreen.classList.add('hidden');
     }
 
-    if (EnvUtils.isMobile()) {
+    if (this.client.player) {
       DOMElements.rotateButton.classList.remove('hidden');
     } else {
       DOMElements.rotateButton.classList.add('hidden');

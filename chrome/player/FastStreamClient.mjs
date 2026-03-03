@@ -92,7 +92,6 @@ export class FastStreamClient extends EventEmitter {
       maximumDownloaders: 6,
       maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
       youtubePlayerID: '',
-      mobileAutoRotate: false,
     };
     this.state = {
       playing: false,
@@ -342,7 +341,6 @@ export class FastStreamClient extends EventEmitter {
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
-    this.options.mobileAutoRotate = !!options.mobileAutoRotate;
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -430,8 +428,6 @@ export class FastStreamClient extends EventEmitter {
     this.interfaceController.updateAutoNextIndicator();
 
     this.interfaceController.updateSeekStepCounters?.();
-
-    this.interfaceController.updateMobileAutoRotate?.();
 
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }
