@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- скрыть/показать плеер"
     },
+    "welcome_page_mobile_header": {
+        "message": "Советы для мобильных и сенсорных устройств"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream в первую очередь рассчитан на настольные браузеры, но последние обновления улучшили сенсорное управление."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Дважды коснитесь левой/правой части видео, чтобы перемотать на настроенный шаг."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "В настройках можно изменить задержку автоскрытия элементов управления."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Кнопкой поворота можно включать/выключать автоповорот / блокировку ориентации (поддержка зависит от устройства)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Кнопки перемотки показывают текущий шаг перемотки."
+    },
     "perms_page_title": {
         "message": "Разрешения FastStream"
     },

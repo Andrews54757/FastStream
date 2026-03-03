@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- Ocultar/mostrar o player"
     },
+    "welcome_page_mobile_header": {
+        "message": "Dicas para celular e toque"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "O FastStream é focado em desktop, mas atualizações recentes melhoraram os controles por toque."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Toque duas vezes no lado esquerdo/direito do vídeo para avançar/voltar pelo passo configurado."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Você pode ajustar o atraso de ocultação automática dos controles nas configurações."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Use o botão de rotação para alternar rotação automática / bloqueio de orientação (o suporte pode variar)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Os botões de pular mostram o tamanho do passo de busca atual."
+    },
     "perms_page_title": {
         "message": "Permissões do FastStream"
     },

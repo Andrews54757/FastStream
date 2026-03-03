@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- Sembunyikan/tunjukkan pemain"
     },
+    "welcome_page_mobile_header": {
+        "message": "Petua Mudah Alih & Sentuhan"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream terutama untuk desktop, tetapi kemas kini terbaru menambah baik kawalan sentuhan."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Dwi-ketik bahagian kiri/kanan video untuk maju/mundur mengikut langkah yang ditetapkan."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Anda boleh melaraskan kelewatan sembunyi automatik kawalan dalam tetapan."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Gunakan butang putar untuk menogol putar automatik / kunci orientasi (sokongan peranti mungkin berbeza)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Butang langkau memaparkan saiz langkah carian semasa."
+    },
     "perms_page_title": {
         "message": "Keizinan FastStream"
     },

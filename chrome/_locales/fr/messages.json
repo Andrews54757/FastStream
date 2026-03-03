@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- Masquer/afficher le lecteur"
     },
+    "welcome_page_mobile_header": {
+        "message": "Astuces mobile et tactile"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream est conçu d'abord pour ordinateur, mais les mises à jour récentes améliorent le contrôle tactile."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Double-tapez à gauche/droite de la vidéo pour avancer/reculer selon le pas configuré."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Vous pouvez régler le délai de masquage automatique des contrôles dans les paramètres."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Utilisez le bouton de rotation pour activer/désactiver la rotation automatique / le verrouillage d'orientation (selon l'appareil)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Les boutons de saut affichent la taille du pas de recherche actuel."
+    },
     "perms_page_title": {
         "message": "Autorisations FastStream"
     },

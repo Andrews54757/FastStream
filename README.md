@@ -46,7 +46,14 @@ We've been seeing issues with Youtube not working for some people using FastStre
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
 
-Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox for the desktop is already an exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist like me. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+FastStream is still primarily built and tested for desktop browsers. That said, recent updates include improved touch/mobile ergonomics:
+
+- Double-tap the left/right side of the video to seek by your configured step
+- Configurable controls auto-hide delay
+- A rotate tool to toggle auto-rotate / orientation lock (device support may vary)
+- Skip buttons display the current seek step size
+
+Mobile browser support still depends on whether your browser supports extensions and the required web APIs. If you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
 
 ## Installation For Chrome and Firefox
 

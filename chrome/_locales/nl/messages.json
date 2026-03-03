@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- Speler verbergen/tonen"
     },
+    "welcome_page_mobile_header": {
+        "message": "Mobiel- & aanraaktips"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream is vooral voor desktop, maar recente updates verbeteren de aanraakbediening."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Dubbeltik links/rechts in de video om te springen met je ingestelde stap."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Je kunt de vertraging voor het automatisch verbergen van de bediening aanpassen in de instellingen."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Gebruik de draaiknop om automatisch roteren / oriëntatievergrendeling te wisselen (apparaatondersteuning kan verschillen)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "De overslaanknoppen tonen de huidige zoekstap."
+    },
     "perms_page_title": {
         "message": "FastStream-machtigingen"
     },

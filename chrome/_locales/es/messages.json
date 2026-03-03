@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- Ocultar/mostrar jugador"
     },
+    "welcome_page_mobile_header": {
+        "message": "Consejos para móvil y táctil"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream está pensado principalmente para escritorio, pero las últimas actualizaciones mejoran los controles táctiles."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Toca dos veces el lado izquierdo/derecho del video para avanzar/retroceder según el paso configurado."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Puedes ajustar el retraso de ocultación automática de los controles en la configuración."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Usa el botón de rotación para alternar la rotación automática / bloqueo de orientación (la compatibilidad puede variar)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Los botones de salto muestran el tamaño del paso de búsqueda actual."
+    },
     "perms_page_title": {
         "message": "Permisos de FastStream"
     },

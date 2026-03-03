@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- プレーヤーを表示/非表示"
     },
+    "welcome_page_mobile_header": {
+        "message": "モバイル／タッチのヒント"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream は基本的にデスクトップ向けですが、最近の更新でタッチ操作が改善されました。"
+    },
+    "welcome_page_mobile_content1": {
+        "message": "動画の左／右側をダブルタップすると、設定したステップ分だけ前後にシークします。"
+    },
+    "welcome_page_mobile_content2": {
+        "message": "コントロールの自動非表示までの時間は設定で調整できます。"
+    },
+    "welcome_page_mobile_content3": {
+        "message": "回転ボタンで自動回転／画面の向き固定を切り替えられます（端末によっては非対応の場合があります）。"
+    },
+    "welcome_page_mobile_content4": {
+        "message": "スキップボタンには現在のシークステップが表示されます。"
+    },
     "perms_page_title": {
         "message": "FastStream の権限"
     },

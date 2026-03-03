@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- 플레이어 숨기기/표시"
     },
+    "welcome_page_mobile_header": {
+        "message": "모바일/터치 팁"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream은 데스크톱 중심이지만, 최근 업데이트로 터치 조작이 개선되었습니다."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "영상의 왼쪽/오른쪽을 두 번 탭하면 설정한 단계만큼 앞으로/뒤로 이동합니다."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "설정에서 컨트롤 자동 숨김 지연 시간을 조정할 수 있습니다."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "회전 버튼으로 자동 회전/방향 잠금을 전환할 수 있습니다(기기 지원은 다를 수 있음)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "건너뛰기 버튼에 현재 탐색 단계가 표시됩니다."
+    },
     "perms_page_title": {
         "message": "FastStream 권한"
     },

@@ -65,6 +65,24 @@
     "welcome_page_keybinds_content9": {
         "message": "- 顯示/隱藏播放器"
     },
+    "welcome_page_mobile_header": {
+        "message": "行動裝置與觸控提示"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream 主要以桌面端為主，但近期更新改善了觸控操作。"
+    },
+    "welcome_page_mobile_content1": {
+        "message": "雙擊影片左側/右側，可依設定的步長前進/後退。"
+    },
+    "welcome_page_mobile_content2": {
+        "message": "你可以在設定中調整控制列自動隱藏的延遲時間。"
+    },
+    "welcome_page_mobile_content3": {
+        "message": "使用旋轉按鈕切換自動旋轉／方向鎖定（裝置支援可能不同）。"
+    },
+    "welcome_page_mobile_content4": {
+        "message": "跳轉按鈕會顯示目前的跳轉步長。"
+    },
     "perms_page_title": {
         "message": "FastStream 權限"
     },
