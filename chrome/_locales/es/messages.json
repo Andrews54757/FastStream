@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "Aceptar"
+    },
+    "options_toolbar_header": {
+        "message": "Botones de la barra de herramientas"
+    },
+    "options_toolbar_body": {
+        "message": "Elige qué botones se muestran en la barra de herramientas del reproductor."
+    },
+    "options_toolbar_reset": {
+        "message": "Restablecer botones de la barra de herramientas"
     }
 }

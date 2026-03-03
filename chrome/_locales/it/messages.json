@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Pulsanti della barra degli strumenti"
+    },
+    "options_toolbar_body": {
+        "message": "Scegli quali pulsanti mostrare nella barra degli strumenti del lettore."
+    },
+    "options_toolbar_reset": {
+        "message": "Reimposta i pulsanti della barra degli strumenti"
     }
 }

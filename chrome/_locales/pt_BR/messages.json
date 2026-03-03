@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Botões da barra de ferramentas"
+    },
+    "options_toolbar_body": {
+        "message": "Escolha quais botões serão exibidos na barra de ferramentas do player."
+    },
+    "options_toolbar_reset": {
+        "message": "Redefinir botões da barra de ferramentas"
     }
 }

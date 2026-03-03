@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Toolbar-Schaltflächen"
+    },
+    "options_toolbar_body": {
+        "message": "Wähle aus, welche Schaltflächen in der Player-Toolbar angezeigt werden."
+    },
+    "options_toolbar_reset": {
+        "message": "Toolbar-Schaltflächen zurücksetzen"
     }
 }

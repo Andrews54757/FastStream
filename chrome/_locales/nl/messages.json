@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Werkbalknoppen"
+    },
+    "options_toolbar_body": {
+        "message": "Kies welke knoppen op de werkbalk van de speler worden weergegeven."
+    },
+    "options_toolbar_reset": {
+        "message": "Werkbalknoppen resetten"
     }
 }

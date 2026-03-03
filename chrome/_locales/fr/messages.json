@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Boutons de la barre d'outils"
+    },
+    "options_toolbar_body": {
+        "message": "Choisissez quels boutons sont affichés dans la barre d'outils du lecteur."
+    },
+    "options_toolbar_reset": {
+        "message": "Réinitialiser les boutons de la barre d'outils"
     }
 }

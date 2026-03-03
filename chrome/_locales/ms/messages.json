@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Butang bar alat"
+    },
+    "options_toolbar_body": {
+        "message": "Pilih butang yang dipaparkan pada bar alat pemain."
+    },
+    "options_toolbar_reset": {
+        "message": "Tetapkan semula butang bar alat"
     }
 }

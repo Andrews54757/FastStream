@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "確定"
+    },
+    "options_toolbar_header": {
+        "message": "工具列按鈕"
+    },
+    "options_toolbar_body": {
+        "message": "選擇要在播放器工具列中顯示哪些按鈕。"
+    },
+    "options_toolbar_reset": {
+        "message": "重設工具列按鈕"
     }
 }

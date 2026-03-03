@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "ツールバーボタン"
+    },
+    "options_toolbar_body": {
+        "message": "プレーヤーのツールバーに表示するボタンを選択します。"
+    },
+    "options_toolbar_reset": {
+        "message": "ツールバーボタンをリセット"
     }
 }

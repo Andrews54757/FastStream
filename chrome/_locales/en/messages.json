@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Toolbar buttons"
+    },
+    "options_toolbar_body": {
+        "message": "Choose which buttons are shown on the player toolbar."
+    },
+    "options_toolbar_reset": {
+        "message": "Reset toolbar buttons"
     }
 }

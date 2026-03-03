@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Przyciski paska narzędzi"
+    },
+    "options_toolbar_body": {
+        "message": "Wybierz, które przyciski mają być wyświetlane na pasku narzędzi odtwarzacza."
+    },
+    "options_toolbar_reset": {
+        "message": "Resetuj przyciski paska narzędzi"
     }
 }

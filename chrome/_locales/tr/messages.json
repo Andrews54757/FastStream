@@ -1204,5 +1204,14 @@
     },
     "ytslowdown_ok": {
         "message": "Tamam"
+    },
+    "options_toolbar_header": {
+        "message": "Araç çubuğu düğmeleri"
+    },
+    "options_toolbar_body": {
+        "message": "Oynatıcı araç çubuğunda hangi düğmelerin gösterileceğini seçin."
+    },
+    "options_toolbar_reset": {
+        "message": "Araç çubuğu düğmelerini sıfırla"
     }
 }
