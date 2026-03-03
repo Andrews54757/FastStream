@@ -712,7 +712,7 @@ body {
 .fluid_button_language .fluid_language_list,
 .fluid_video_playback_rates {
     z-index: 888888 !important;
-    opacity: 0.9 !important;
+    opacity: 1 !important;
 }
 
 .fluid_video_playback_rates_item {
@@ -867,7 +867,6 @@ body {
 .fluid_button_video_source .fluid_video_sources_list,
 .fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list {
-    opacity: 99%;
     border-radius: 3px;
     width: max-content;
     padding: 0;
@@ -2044,7 +2043,7 @@ body {
 .rate_menu {
     position: absolute;
     inset: 0px;
-    background: var(--playback-rate-menu-background);
+    background: var(--menu-background-color);
 }
 
 .rate-changer-list {

@@ -537,6 +537,14 @@ textarea {
   min-height: var(--control-height);
 }
 
+/* Ensure dropdown list items keep readable colors (Chromium/Windows may otherwise
+   mix custom text colors with native light dropdown backgrounds). */
+select option,
+select optgroup {
+  background-color: var(--color-bg-muted);
+  color: var(--color-text);
+}
+
 input[type="range"] {
   padding: var(--space-1) 0;
   background: transparent;

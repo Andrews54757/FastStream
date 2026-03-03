@@ -47,7 +47,6 @@ const miniPos = document.getElementById('minipos');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
-const mobileAutoRotate = document.getElementById('mobileautorotate');
 const replaceDelay = document.getElementById('replacedelay');
 const controlsHideDelay = document.getElementById('controlshidedelay');
 const colorTheme = document.getElementById('colortheme');
@@ -100,7 +99,6 @@ async function loadOptions(newOptions) {
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
   previewEnabled.checked = !!Options.previewEnabled;
-  mobileAutoRotate.checked = !!Options.mobileAutoRotate;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   autoplayNext.checked = !!Options.autoplayNext;
@@ -388,11 +386,6 @@ downloadAll.addEventListener('change', () => {
 
 previewEnabled.addEventListener('change', () => {
   Options.previewEnabled = previewEnabled.checked;
-  optionChanged();
-});
-
-mobileAutoRotate.addEventListener('change', () => {
-  Options.mobileAutoRotate = mobileAutoRotate.checked;
   optionChanged();
 });
 

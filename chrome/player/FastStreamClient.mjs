@@ -182,6 +182,26 @@ export class FastStreamClient extends EventEmitter {
 
     try {
       Utils.loadAndParseOptions('toolSettings', DefaultToolSettings).then((settings) => {
+        // Migration: rotate tool used to default to the extra menu.
+        // Move it to the main toolbar, directly left of the quality tool.
+        let didMigrate = false;
+        if (settings?.rotate && settings?.quality) {
+          const rotate = settings.rotate;
+          const quality = settings.quality;
+          if (rotate.location === 'extra' && rotate.priority === 350) {
+            rotate.location = 'right';
+            rotate.priority = Math.max(0, (quality.priority ?? 500) - 50);
+            didMigrate = true;
+          }
+        }
+
+        if (didMigrate) {
+          try {
+            Utils.setConfig('toolSettings', JSON.stringify(settings));
+          } catch (e) {
+            console.warn('Failed to persist toolSettings migration', e);
+          }
+        }
         this.options.toolSettings = settings;
         this.interfaceController.updateToolVisibility();
       });
@@ -383,8 +403,27 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (options.toolSettings) {
-      this.options.toolSettings = options.toolSettings;
+      const toolSettings = options.toolSettings;
+      let didMigrate = false;
+      if (toolSettings?.rotate && toolSettings?.quality) {
+        const rotate = toolSettings.rotate;
+        const quality = toolSettings.quality;
+        if (rotate.location === 'extra' && rotate.priority === 350) {
+          rotate.location = 'right';
+          rotate.priority = Math.max(0, (quality.priority ?? 500) - 50);
+          didMigrate = true;
+        }
+      }
+      this.options.toolSettings = toolSettings;
       this.interfaceController.updateToolVisibility();
+
+      if (didMigrate) {
+        try {
+          Utils.setConfig('toolSettings', JSON.stringify(toolSettings));
+        } catch (e) {
+          console.warn('Failed to persist toolSettings migration', e);
+        }
+      }
     }
 
     this.updateHasDownloadSpace();
