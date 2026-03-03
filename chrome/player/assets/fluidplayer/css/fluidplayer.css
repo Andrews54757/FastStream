@@ -601,6 +601,29 @@ body {
     color: var(--menu-text-color);
 }
 
+/* Seek-step counter inside skip icons (controls bar only) */
+.fluid_control_skip_forward,
+.fluid_control_skip_backward {
+    /* Use font-size as a proxy for icon size so the counter scales in sync */
+    font-size: 24px;
+}
+
+.fluid_control_skip_forward .fs_seek_counter,
+.fluid_control_skip_backward .fs_seek_counter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.3em;
+    transform: translateY(0.3em);
+    line-height: 1;
+    color: currentColor;
+}
+
 .fluid_button svg {
     width: 100%;
     height: 100%;

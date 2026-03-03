@@ -429,6 +429,8 @@ export class FastStreamClient extends EventEmitter {
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
 
+    this.interfaceController.updateSeekStepCounters?.();
+
     this.interfaceController.updateMobileAutoRotate?.();
 
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);

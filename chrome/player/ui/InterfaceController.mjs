@@ -119,6 +119,8 @@ export class InterfaceController {
     });
     this.volumeControls.setupUI();
 
+    this.updateSeekStepCounters();
+
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
 
@@ -1438,6 +1440,19 @@ export class InterfaceController {
       this._seekPopupSign = 0;
       this._seekPopupLastAt = 0;
     }, 450);
+  }
+
+  updateSeekStepCounters() {
+    const step = Number(this.client?.options?.seekStepSize);
+    if (!Number.isFinite(step) || step === 0) {
+      if (DOMElements.skipForwardCounter) DOMElements.skipForwardCounter.textContent = '';
+      if (DOMElements.skipBackwardCounter) DOMElements.skipBackwardCounter.textContent = '';
+      return;
+    }
+
+    const formatted = Math.round(Math.abs(step)).toString();
+    if (DOMElements.skipForwardCounter) DOMElements.skipForwardCounter.textContent = formatted;
+    if (DOMElements.skipBackwardCounter) DOMElements.skipBackwardCounter.textContent = formatted;
   }
 
   formatSeekAmount(seconds) {
