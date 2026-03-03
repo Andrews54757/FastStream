@@ -606,6 +606,8 @@ body {
 .fluid_control_skip_backward {
     /* Use font-size as a proxy for icon size so the counter scales in sync */
     font-size: 24px;
+    /* Prevent inline SVG baseline/line-box from shifting the icon vertically */
+    line-height: 0;
 }
 
 .fluid_control_skip_forward .fs_seek_counter,
@@ -3161,6 +3163,11 @@ input.crosstalk_calculator_input {
     .fluid_button {
         width: 18px;
         height: 18px;
+    }
+
+    .fluid_control_skip_forward,
+    .fluid_control_skip_backward {
+        font-size: 18px;
     }
 
     .fluid_controls_right,
