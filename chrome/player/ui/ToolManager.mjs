@@ -124,6 +124,12 @@ export class ToolManager {
       DOMElements.windowedFullscreen.classList.add('hidden');
     }
 
+    if (EnvUtils.isMobile()) {
+      DOMElements.rotateButton.classList.remove('hidden');
+    } else {
+      DOMElements.rotateButton.classList.add('hidden');
+    }
+
     if (this.client.hasPreviousVideo()) {
       DOMElements.previousVideo.classList.remove('hidden');
     } else {
@@ -156,6 +162,7 @@ export class ToolManager {
       playrate: DOMElements.playbackRate,
       fullscreen: DOMElements.fullscreen,
       windowedfs: DOMElements.windowedFullscreen,
+      rotate: DOMElements.rotateButton,
       subtitles: DOMElements.subtitles,
       audioconfig: DOMElements.audioConfigBtn,
       sources: DOMElements.linkButton,

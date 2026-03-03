@@ -91,6 +91,7 @@ export const DOMElements = {
   extraTools: document.querySelector('.mainplayer .fluid_controls_extra_tools'),
   moreButton: document.querySelector('.mainplayer .fluid_control_more'),
   loopButton: document.querySelector('.mainplayer .fluid_control_loop'),
+  rotateButton: document.querySelector('.mainplayer .fluid_control_rotate'),
   loopMenu: document.querySelector('.mainplayer .loop_menu'),
   skipForwardButton: document.querySelector('.mainplayer .fluid_control_skip_forward'),
   skipBackwardButton: document.querySelector('.mainplayer .fluid_control_skip_backward'),

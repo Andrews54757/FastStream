@@ -71,6 +71,10 @@ export const DefaultToolSettings = {
     'location': 'extra',
     'priority': 300,
   },
+  'rotate': {
+    'location': 'extra',
+    'priority': 350,
+  },
   'backward': {
     'location': 'extra',
     'priority': 400,

@@ -708,9 +708,19 @@
     top: 0px !important;
     left: 0px !important;
     width: 100% !important;
+    width: 100vw !important;
+    width: 100dvw !important;
     height: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
     bottom: 0px !important;
     right: 0px !important;
+    max-width: 100% !important;
+    max-width: 100vw !important;
+    max-width: 100dvw !important;
+    max-height: 100% !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
     pointer-events: auto !important;
     border-radius: 0px !important;`;
     if (!skipHide) {
