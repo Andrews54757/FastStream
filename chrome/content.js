@@ -266,6 +266,7 @@
         const softReplace = request.softReplace || Config.softReplaceByDefault;
         // copy styles
         const iframe = document.createElement('iframe');
+        iframe.dataset.faststreamPlayer = '1';
         iframe.allowFullscreen = true;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.style.display = 'none';
@@ -606,6 +607,13 @@
 
     element.parentNode.insertBefore(placeholder, element);
 
+    // Ensure the miniplayer stays above any site overlays that may use the same max z-index.
+    // DOM order breaks z-index ties within the same stacking context.
+    const topLayerHost = document.body || document.documentElement;
+    if (element.parentNode !== topLayerHost) {
+      topLayerHost.appendChild(element);
+    }
+
     element.setAttribute('style', `
     position: fixed !important;
     display: block !important;
@@ -639,6 +647,11 @@
 
     miniplayerState.active = false;
 
+    // Restore the element back where the placeholder sits (in case we moved it).
+    if (miniplayerState.placeholder && miniplayerState.placeholder.parentNode) {
+      miniplayerState.placeholder.parentNode.insertBefore(element, miniplayerState.placeholder);
+    }
+
     element.setAttribute('style', miniplayerState.oldStyle);
 
     transferId(miniplayerState.placeholder, element);
@@ -668,11 +681,37 @@
 
       windowedFullscreenState.active = true;
       windowedFullscreenState.oldStyle = iframeObj.iframe.getAttribute('style') || '';
+
+      // Leave a placeholder behind and move the iframe to the end of the document so it wins
+      // z-index tie-breakers against aggressive site overlays.
+      if (!windowedFullscreenState.placeholder) {
+        const placeholder = document.createElement('div');
+        placeholder.style.setProperty('display', 'none', 'important');
+        windowedFullscreenState.placeholder = placeholder;
+
+        if (iframeObj.iframe.parentNode) {
+          iframeObj.iframe.parentNode.insertBefore(placeholder, iframeObj.iframe);
+        }
+      }
+
+      const topLayerHost = document.body || document.documentElement;
+      if (iframeObj.iframe.parentNode !== topLayerHost) {
+        topLayerHost.appendChild(iframeObj.iframe);
+      }
+
       windowedFullscreenState.fillScreenWhitelist = fillScreenIframe(iframeObj.iframe);
     } else {
       windowedFullscreenState.active = false;
-      iframeObj.iframe.setAttribute('style', windowedFullscreenState.oldStyle);
       undoFillScreenIframe(windowedFullscreenState.fillScreenWhitelist);
+
+      // Move the iframe back to where it was.
+      if (windowedFullscreenState.placeholder && windowedFullscreenState.placeholder.parentNode) {
+        windowedFullscreenState.placeholder.parentNode.insertBefore(iframeObj.iframe, windowedFullscreenState.placeholder);
+        windowedFullscreenState.placeholder.remove();
+      }
+      windowedFullscreenState.placeholder = null;
+
+      iframeObj.iframe.setAttribute('style', windowedFullscreenState.oldStyle);
       setTimeout(() => {
         updateReplacedPlayers();
       }, 1000);
@@ -874,6 +913,20 @@
       final_size = transferStyles(old, iframe, false);
       parent.removeChild(old);
     }
+
+    // Some sites render overlay UI above the original player; keep the FastStream iframe on top
+    // in the same container without affecting placeholders used elsewhere.
+    if (iframe && iframe.dataset && iframe.dataset.faststreamPlayer === '1') {
+      iframe.style.setProperty('z-index', '2147483647', 'important');
+      try {
+        if (window.getComputedStyle(iframe).position === 'static') {
+          iframe.style.setProperty('position', 'relative', 'important');
+        }
+      } catch (e) {
+        // Ignore; z-index alone may still help.
+      }
+    }
+
     return final_size;
   }
 
