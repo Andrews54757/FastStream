@@ -22,6 +22,8 @@ import {ColorThemes} from './defaults/ColorThemes.mjs';
 let Options = {};
 let keybindsCollapsed = null;
 let keybindsCollapseUIReady = false;
+let toolbarCollapsed = null;
+let toolbarCollapseUIReady = false;
 
 function setupTouchSafeSliders() {
   if (!EnvUtils.isMobile()) return;
@@ -169,6 +171,52 @@ function expandKeybindsForSearchInit() {
   if (!EnvUtils.isMobile()) return;
   ensureKeybindsCollapseUI();
   const {section} = getKeybindsCollapseEls();
+  if (!section) return;
+  section.classList.remove('collapsed');
+}
+
+function getToolbarCollapseEls() {
+  const section = document.querySelector('.options-section[data-search-section="toolbar"]');
+  const toggle = section?.querySelector?.('.toolbar-toggle');
+  const content = document.getElementById('toolbarContent');
+  return {section, toggle, content};
+}
+
+function ensureToolbarCollapseUI() {
+  if (!EnvUtils.isMobile()) return;
+  if (toolbarCollapseUIReady) return;
+
+  const {section, toggle, content} = getToolbarCollapseEls();
+  if (!section || !toggle || !content) return;
+
+  toolbarCollapseUIReady = true;
+  if (toolbarCollapsed === null) toolbarCollapsed = true;
+
+  toggle.addEventListener('click', () => {
+    toolbarCollapsed = !toolbarCollapsed;
+    applyToolbarCollapsedState();
+  });
+
+  // Default to collapsed on mobile as soon as the UI exists.
+  applyToolbarCollapsedState();
+}
+
+function applyToolbarCollapsedState() {
+  if (!EnvUtils.isMobile()) return;
+  ensureToolbarCollapseUI();
+  const {section, toggle} = getToolbarCollapseEls();
+  if (!section || !toggle) return;
+
+  const shouldCollapse = !!toolbarCollapsed && !document.body.classList.contains('search-active');
+  section.classList.toggle('collapsed', shouldCollapse);
+  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
+  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
+}
+
+function expandToolbarForSearchInit() {
+  if (!EnvUtils.isMobile()) return;
+  ensureToolbarCollapseUI();
+  const {section} = getToolbarCollapseEls();
   if (!section) return;
   section.classList.remove('collapsed');
 }
@@ -326,8 +374,10 @@ async function loadOptions(newOptions) {
 
   // Make sure keybind items are visible during search indexing.
   expandKeybindsForSearchInit();
+  expandToolbarForSearchInit();
   initsearch();
   applyKeybindsCollapsedState();
+  applyToolbarCollapsedState();
 }
 
 const TOOLBAR_TOOL_LABEL_KEYS = {

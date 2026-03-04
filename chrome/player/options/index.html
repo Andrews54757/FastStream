@@ -355,11 +355,14 @@
         <section class="options-section" data-search-section="toolbar">
             <div class="section-heading">
                 <h1 data-i18n="options_toolbar_header"></h1>
+                <button type="button" class="toolbar-toggle" aria-controls="toolbarContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
             </div>
-            <p data-i18n="options_toolbar_body"></p>
-            <button class="search-target-remove search-target-text" id="toolbarreset" data-i18n="options_toolbar_reset"></button>
-            <div id="toolbarButtons"></div>
+            <div id="toolbarContent" class="toolbar-content">
+                <p data-i18n="options_toolbar_body"></p>
+                <button class="search-target-remove search-target-text" id="toolbarreset" data-i18n="options_toolbar_reset"></button>
+                <div id="toolbarButtons"></div>
+            </div>
         </section>
 
 
