@@ -4,37 +4,35 @@
 
 # Mobile Experience Improvements [NEW]
 
-- Double‑tap to seek on touch screens
+- **Double‑tap to seek (touch-friendly)**
+  - Double‑tap the *left* side to jump backward and the *right* side to jump forward.
+  - The jump amount uses your configured **Seek step size**.
+  - The *middle* area still follows your single/double/triple‑tap actions (play/pause, fullscreen, etc.).
 
-- Tapping the left/right sides of the video now supports double‑tap to jump backward/forward using your configured seek step size.
-- The middle area still uses your configured single/double/triple‑tap actions (play/pause, fullscreen, etc.).
-- Controls can auto-hide on your schedule
+- **Configurable auto‑hide controls**
+  - New **Controls hide delay** setting lets you choose how quickly the on‑screen controls fade away after you stop interacting.
+  - Helps reduce the controls blocking video content on smaller screens.
 
-- Added a setting to control how quickly the on-screen controls fade away after you stop interacting (Controls hide delay).
-- This helps on mobile where accidental overlays can block the video.
-- Clearer skip buttons on mobile
+- **Skip buttons show the seek step**
+  - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
 
-- The skip forward/back buttons now show a small number overlay indicating the seek step (e.g., “5”) so you always know how far each jump will go.
-- Rotate is simpler and more accessible
+- **Simpler rotate control (better on phones)**
+  - The **Rotate** button is moved to the main toolbar for faster access.
+  - Rotation is simplified to a practical **portrait ↔ landscape** toggle.
 
-- The rotate control is placed directly on the main toolbar (easier to reach on phones).
-- Rotation behavior is simplified to a practical toggle between landscape and portrait modes, rather than cycling through every 90° step.
-- Customize the toolbar for small screens
+- **Customize the toolbar for mobile**
+  - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
+  - Includes a **Reset** button to restore the default toolbar configuration.
+  - Changes persist and are applied across the player.
 
-- New “Toolbar” section in options lets you show/hide specific buttons (with icons) so your toolbar is less cluttered on mobile.
-- Includes a reset button to restore the default toolbar setup.
-- Your visibility choices persist and the player refreshes to apply them.
-- Better mobile options/menu usability
+- **Improved mobile options/menu usability**
+  - Options UI and the in‑player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
 
-- Options UI received layout and accessibility improvements aimed at mobile use (easier tapping, clearer structure).
-- The in-player options panel also applies a mobile mode for better presentation on small screens.
-- Player is less likely to be covered by site overlays
+- **Less likely to be covered by website overlays**
+  - The player/miniplayer is now more aggressively kept above site overlays (stacking/z‑index improvements), reducing cases where parts of the player are blocked or unclickable.
 
-- The extension now more aggressively keeps the FastStream player/miniplayer above website overlays (high z-index + improved stacking behavior).
-- This reduces cases where parts of the video/player become unclickable or visually blocked on mobile-heavy sites.
-- Updated help text for touch users
-
-- Welcome/help content and translations were updated with mobile/touch tips to make features easier to discover.
+- **Updated mobile/touch tips**
+  - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
 ## 
 
 Tired of having videos buffer with slow internet speeds? Frustrated by a website's lack of accessibility features? This extension will replace videos on websites with a video player designed for your convenience. Say goodbye to buffering and hello to a more accessible video experience!
