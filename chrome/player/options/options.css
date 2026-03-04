@@ -716,6 +716,82 @@ body.mobile .video-option .number {
   width: 100%;
 }
 
+/* Mobile: Video section swipe-safe right gap.
+   Keep controls left-aligned and narrower so users can scroll
+   on the right side without touching sliders. */
+body.mobile .options-section[data-search-section="video"] {
+  --fs-video-swipe-gap: clamp(96px, 32vw, 260px);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .number {
+  width: 110px;
+  max-width: calc(100% - var(--fs-video-swipe-gap));
+  align-self: flex-start;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range {
+  width: calc(100% - var(--fs-video-swipe-gap));
+  max-width: 240px;
+  align-self: flex-start;
+}
+
+/* Nicer slider styling (mobile, video section) */
+body.mobile .options-section[data-search-section="video"] .video-option {
+  background: color-mix(in oklab, var(--color-bg-muted) 85%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 28px;
+  padding: 0;
+  background: color-mix(in oklab, var(--color-elev) 65%, var(--color-bg-muted) 35%);
+  border: 1px solid color-mix(in oklab, var(--color-border) 75%, transparent);
+  border-radius: 999px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-border) 65%, var(--color-bg-muted) 35%);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-elev);
+  margin-top: -6px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-border) 65%, var(--color-bg-muted) 35%);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-elev);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-focus-outer {
+  border: 0;
+}
+
 body.mobile .option.grid1 {
   grid-template-columns: 24px 1fr;
   gap: var(--space-3);
