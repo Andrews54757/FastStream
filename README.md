@@ -2,9 +2,7 @@
 
 # FastStream
 
-## What I Have Added
-
-# Mobile Experience Improvements
+# Mobile Experience Improvements [NEW]
 
 - Double‑tap to seek on touch screens
 
