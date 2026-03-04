@@ -20,6 +20,158 @@ import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {ColorThemes} from './defaults/ColorThemes.mjs';
 
 let Options = {};
+let keybindsCollapsed = null;
+let keybindsCollapseUIReady = false;
+
+function setupTouchSafeSliders() {
+  if (!EnvUtils.isMobile()) return;
+
+  const sliders = Array.from(document.querySelectorAll('input[type="range"]'));
+  sliders.forEach((slider) => {
+    if (slider.dataset.fsTouchGuard === '1') return;
+    slider.dataset.fsTouchGuard = '1';
+
+    let startValue = null;
+    let armed = false;
+    let armingTimer = null;
+    let startX = 0;
+    let startY = 0;
+
+    const arm = () => {
+      armed = true;
+      slider.dataset.fsTouchArmed = '1';
+      if (armingTimer) {
+        clearTimeout(armingTimer);
+        armingTimer = null;
+      }
+    };
+
+    const disarm = () => {
+      armed = false;
+      slider.dataset.fsTouchArmed = '0';
+      if (armingTimer) {
+        clearTimeout(armingTimer);
+        armingTimer = null;
+      }
+    };
+
+    const onStart = (x, y) => {
+      startValue = slider.value;
+      startX = x;
+      startY = y;
+      disarm();
+
+      // Allow intentional slider use by holding briefly.
+      armingTimer = setTimeout(() => {
+        arm();
+      }, 250);
+    };
+
+    const onMove = (x, y) => {
+      if (startValue === null) return;
+      const dx = x - startX;
+      const dy = y - startY;
+      const absDx = Math.abs(dx);
+      const absDy = Math.abs(dy);
+
+      // Arm immediately for a clearly horizontal gesture.
+      if (!armed && absDx > 10 && absDx > absDy) {
+        arm();
+      }
+
+      // If it's clearly vertical, keep it disarmed.
+      if (!armed && absDy > 10 && absDy > absDx) {
+        disarm();
+      }
+    };
+
+    const onEnd = () => {
+      startValue = null;
+      disarm();
+    };
+
+    // Capture input events early; if not armed, snap back and block propagation.
+    slider.addEventListener('input', (e) => {
+      if (startValue === null) return;
+      if (armed) return;
+
+      slider.value = startValue;
+      e.stopImmediatePropagation();
+    }, true);
+
+    slider.addEventListener('change', (e) => {
+      if (startValue === null) return;
+      if (armed) return;
+
+      slider.value = startValue;
+      e.stopImmediatePropagation();
+    }, true);
+
+    slider.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'touch') return;
+      onStart(e.clientX, e.clientY);
+    }, {passive: true});
+
+    slider.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'touch') return;
+      onMove(e.clientX, e.clientY);
+    }, {passive: true});
+
+    slider.addEventListener('pointerup', () => {
+      onEnd();
+    }, {passive: true});
+
+    slider.addEventListener('pointercancel', () => {
+      onEnd();
+    }, {passive: true});
+  });
+}
+
+function getKeybindsCollapseEls() {
+  const section = document.querySelector('.options-section[data-search-section="keybinds"]');
+  const toggle = section?.querySelector?.('.keybinds-toggle');
+  const content = document.getElementById('keybindsContent');
+  return {section, toggle, content};
+}
+
+function ensureKeybindsCollapseUI() {
+  if (!EnvUtils.isMobile()) return;
+  if (keybindsCollapseUIReady) return;
+
+  const {section, toggle, content} = getKeybindsCollapseEls();
+  if (!section || !toggle || !content) return;
+
+  keybindsCollapseUIReady = true;
+  if (keybindsCollapsed === null) keybindsCollapsed = true;
+
+  toggle.addEventListener('click', () => {
+    keybindsCollapsed = !keybindsCollapsed;
+    applyKeybindsCollapsedState();
+  });
+
+  // Default to collapsed on mobile as soon as the UI exists.
+  applyKeybindsCollapsedState();
+}
+
+function applyKeybindsCollapsedState() {
+  if (!EnvUtils.isMobile()) return;
+  ensureKeybindsCollapseUI();
+  const {section, toggle} = getKeybindsCollapseEls();
+  if (!section || !toggle) return;
+
+  const shouldCollapse = !!keybindsCollapsed && !document.body.classList.contains('search-active');
+  section.classList.toggle('collapsed', shouldCollapse);
+  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
+  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
+}
+
+function expandKeybindsForSearchInit() {
+  if (!EnvUtils.isMobile()) return;
+  ensureKeybindsCollapseUI();
+  const {section} = getKeybindsCollapseEls();
+  if (!section) return;
+  section.classList.remove('collapsed');
+}
 const analyzeVideos = document.getElementById('analyzevideos');
 const playStreamURLs = document.getElementById('playstreamurls');
 const playMP4URLs = document.getElementById('playmp4urls');
@@ -100,6 +252,8 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
+  ensureKeybindsCollapseUI();
+
   downloadAll.checked = !!Options.downloadAll;
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
@@ -169,7 +323,11 @@ async function loadOptions(newOptions) {
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
   }
+
+  // Make sure keybind items are visible during search indexing.
+  expandKeybindsForSearchInit();
   initsearch();
+  applyKeybindsCollapsedState();
 }
 
 const TOOLBAR_TOOL_LABEL_KEYS = {
@@ -737,6 +895,14 @@ versionDiv.textContent = `FastStream v${EnvUtils.getVersion()}`;
 if (parent !== window) {
   document.body.classList.add('frame');
 }
+
+if (EnvUtils.isMobile()) {
+  document.body.classList.add('mobile');
+} else {
+  document.body.classList.remove('mobile');
+}
+
+setupTouchSafeSliders();
 
 // React to external changes via OptionsStore
 OptionsStore.subscribe(async () => {

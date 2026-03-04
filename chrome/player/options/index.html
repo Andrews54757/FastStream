@@ -4,6 +4,7 @@
 <head>
     <title data-i18n="options_title"></title>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <link rel="stylesheet" href="options.css">
 </head>
 
@@ -366,14 +367,17 @@
         <section class="options-section" data-search-section="keybinds">
             <div class="section-heading">
                 <h1 data-i18n="options_keybinds_header"></h1>
+                <button type="button" class="keybinds-toggle" aria-controls="keybindsContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
             </div>
-            <p data-i18n="options_keybinds_body"></p>
-            <button class="search-target-remove search-target-text" id="resetdefault" data-i18n="options_keybinds_reset"></button>
-            <div>
+            <div id="keybindsContent" class="keybinds-content">
+                <p data-i18n="options_keybinds_body"></p>
+                <button class="search-target-remove search-target-text" id="resetdefault" data-i18n="options_keybinds_reset"></button>
+                <div>
 
+                </div>
+                <div id="keybindslist"></div>
             </div>
-            <div id="keybindslist"></div>
         </section>
 
         <section class="options-section">

@@ -1335,7 +1335,7 @@ export class InterfaceController {
       this._seekPopupTotal = 0;
       this._seekPopupSign = 0;
       this._seekPopupLastAt = 0;
-    }, 450);
+    }, 500);
   }
 
   updateSeekStepCounters() {

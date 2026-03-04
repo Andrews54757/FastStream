@@ -139,6 +139,41 @@ body:not(.frame) {
   margin: auto;
 }
 
+body.mobile:not(.frame) {
+  min-width: 0;
+}
+
+body.mobile {
+  --font-size-1: 16px;
+  --control-height: 40px;
+  --control-pad-y: 8px;
+  --control-pad-x: 12px;
+  padding: var(--space-3) var(--space-3);
+}
+
+body.frame.mobile {
+  padding: 4px 10px;
+}
+
+body.mobile .section-heading {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+body.mobile .section-heading h1 {
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+body.mobile .searchbar-shell {
+  min-height: 44px;
+  padding: 0px 16px;
+}
+
+body.mobile .search-icon {
+  width: 18px;
+  height: 18px;
+}
+
 #version {
   user-select: text;
 }
@@ -631,6 +666,11 @@ input[type="checkbox"] {
   accent-color: var(--color-primary);
 }
 
+body.mobile input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+
 input[type="checkbox"]:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -641,4 +681,83 @@ input[type="checkbox"]:focus-visible {
   grid-template-columns: auto auto 1fr;
   gap: var(--space-2) var(--space-3);
   align-items: center;
+}
+
+body.mobile .options-with-range-table {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+body.mobile .video-option {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  max-width: none;
+}
+
+body.mobile .video-option .label {
+  grid-column: auto;
+}
+
+body.mobile .video-option input {
+  grid-column: auto;
+  margin: 0;
+}
+
+body.mobile .video-option .range {
+  grid-column: auto;
+  width: 100%;
+}
+
+body.mobile .video-option .number {
+  width: 100%;
+}
+
+body.mobile .option.grid1 {
+  grid-template-columns: 24px 1fr;
+  gap: var(--space-3);
+}
+
+body.mobile .option.grid1.toolbar-tool-row {
+  grid-template-columns: 24px 20px 1fr;
+}
+
+body.mobile .option.grid1.toolbar-tool-row .label {
+  justify-self: start;
+  text-align: left;
+}
+
+/* Mobile: collapse keyboard shortcuts by default (toggle-able) */
+.keybinds-toggle {
+  display: none;
+}
+
+body.mobile .options-section[data-search-section="keybinds"] .keybinds-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  min-height: 32px;
+  font-weight: 600;
+}
+
+body.mobile .options-section[data-search-section="keybinds"].collapsed .keybinds-content {
+  display: none;
+}
+
+/* Ensure search can still count/show keybind items */
+body.mobile.search-active .options-section[data-search-section="keybinds"].collapsed .keybinds-content {
+  display: block;
+}
+
+body.mobile .option.grid2 {
+  grid-template-columns: 1fr;
+}
+
+body.mobile .option.grid2 .number,
+body.mobile .option.grid2 .select {
+  grid-column: 1;
 }

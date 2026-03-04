@@ -1,5 +1,6 @@
 import {Localize} from '../modules/Localize.mjs';
 import {InterfaceUtils} from '../utils/InterfaceUtils.mjs';
+import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
@@ -9,6 +10,12 @@ export class OptionsWindow {
   }
 
   setupUI() {
+    if (EnvUtils.isMobile()) {
+      DOMElements.optionsContainer.classList.add('mobile');
+    } else {
+      DOMElements.optionsContainer.classList.remove('mobile');
+    }
+
     DOMElements.optionsContainer.addEventListener('click', (e) => {
       e.stopPropagation();
     });
