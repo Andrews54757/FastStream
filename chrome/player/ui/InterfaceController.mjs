@@ -1070,7 +1070,7 @@ export class InterfaceController {
     timeout = Math.max(0, timeout);
 
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.toolManager.canHideControls()) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
     }, timeout);
