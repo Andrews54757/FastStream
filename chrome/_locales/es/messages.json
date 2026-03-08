@@ -1215,6 +1215,6 @@
         "message": "Elige qué botones se muestran en la barra de herramientas del reproductor."
     },
     "options_toolbar_reset": {
-        "message": "Restablecer botones de la barra de herramientas"
+        "message": "Restablecer a los valores predeterminados"
     }
 }

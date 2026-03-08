@@ -1215,6 +1215,6 @@
         "message": "플레이어 도구 모음에 표시할 버튼을 선택합니다."
     },
     "options_toolbar_reset": {
-        "message": "도구 모음 버튼 재설정"
+        "message": "기본값으로 재설정"
     }
 }

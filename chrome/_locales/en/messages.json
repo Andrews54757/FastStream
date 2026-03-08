@@ -1215,6 +1215,6 @@
         "message": "Choose which buttons are shown on the player toolbar."
     },
     "options_toolbar_reset": {
-        "message": "Reset toolbar buttons"
+        "message": "Reset to Defaults"
     }
 }

@@ -1215,6 +1215,6 @@
         "message": "Oynatıcı araç çubuğunda hangi düğmelerin gösterileceğini seçin."
     },
     "options_toolbar_reset": {
-        "message": "Araç çubuğu düğmelerini sıfırla"
+        "message": "Varsayılanlara Sıfırla"
     }
 }

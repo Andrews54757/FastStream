@@ -7291,20 +7291,20 @@
     },
     "options_toolbar_reset": {
         "en": "Reset to Defaults",
-        "de": "Zu Werkseinstellung zurück setzen",
+        "de": "Auf Standardwerte zurücksetzen",
         "es": "Restablecer a los valores predeterminados",
         "fr": "Réinitialiser aux valeurs par défaut",
         "id": "Kembalikan ke Default",
-        "it": "Ripristina Impostazioni Predefinite",
+        "it": "Ripristina impostazioni predefinite",
         "ja": "デフォルトにリセット",
         "ko": "기본값으로 재설정",
-        "ms": "Reset to Defaults",
+        "ms": "Tetapkan semula kepada lalai",
         "nl": "Herstel standaardinstellingen",
         "pl": "Przywróć domyślne",
         "pt_BR": "Redefinir para os padrões",
-        "ru": "Сбросить по умолчанию",
+        "ru": "Сбросить настройки по умолчанию",
         "tr": "Varsayılara Sıfırla",
-        "zh_CN": "重置为默认",
-        "zh_TW": "回復預設"
+        "zh_CN": "重置为默认值",
+        "zh_TW": "重設為預設值"
     }
 }

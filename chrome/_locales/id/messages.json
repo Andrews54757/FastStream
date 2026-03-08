@@ -1215,6 +1215,6 @@
         "message": "Pilih tombol mana yang ditampilkan di bilah alat pemutar."
     },
     "options_toolbar_reset": {
-        "message": "Atur ulang tombol bilah alat"
+        "message": "Kembalikan ke Default"
     }
 }

@@ -50,8 +50,11 @@
         <section class="options-section" data-search-section="video">
             <div class="section-heading">
                 <h1 data-i18n="options_video_header"></h1>
-                <button type="button" class="video-toggle" aria-controls="videoContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
+                <div class="section-actions">
+                    <button type="button" id="videoreset" data-i18n="options_toolbar_reset"></button>
+                    <button type="button" class="video-toggle" aria-controls="videoContent" aria-expanded="true">Hide</button>
+                </div>
             </div>
             <div id="videoContent" class="video-content">
                 <p data-i18n="options_video_body"></p>
@@ -147,8 +150,11 @@
         <section class="options-section" data-search-section="general">
             <div class="section-heading">
                 <h1 data-i18n="options_general_header"></h1>
-                <button type="button" class="general-toggle" aria-controls="generalContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
+                <div class="section-actions">
+                    <button type="button" id="generalreset" data-i18n="options_toolbar_reset"></button>
+                    <button type="button" class="general-toggle" aria-controls="generalContent" aria-expanded="true">Hide</button>
+                </div>
             </div>
             <div id="generalContent" class="general-content">
                 <div id="top-general-options">
@@ -361,12 +367,14 @@
         <section class="options-section" data-search-section="toolbar">
             <div class="section-heading">
                 <h1 data-i18n="options_toolbar_header"></h1>
-                <button type="button" class="toolbar-toggle" aria-controls="toolbarContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
+                <div class="section-actions">
+                    <button class="search-target-remove search-target-text" id="toolbarreset" data-i18n="options_toolbar_reset"></button>
+                    <button type="button" class="toolbar-toggle" aria-controls="toolbarContent" aria-expanded="true">Hide</button>
+                </div>
             </div>
             <div id="toolbarContent" class="toolbar-content">
                 <p data-i18n="options_toolbar_body"></p>
-                <button class="search-target-remove search-target-text" id="toolbarreset" data-i18n="options_toolbar_reset"></button>
                 <div id="toolbarButtons"></div>
             </div>
         </section>
@@ -376,12 +384,14 @@
         <section class="options-section" data-search-section="keybinds">
             <div class="section-heading">
                 <h1 data-i18n="options_keybinds_header"></h1>
-                <button type="button" class="keybinds-toggle" aria-controls="keybindsContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
+                <div class="section-actions">
+                    <button class="search-target-remove search-target-text" id="resetdefault" data-i18n="options_toolbar_reset"></button>
+                    <button type="button" class="keybinds-toggle" aria-controls="keybindsContent" aria-expanded="true">Hide</button>
+                </div>
             </div>
             <div id="keybindsContent" class="keybinds-content">
                 <p data-i18n="options_keybinds_body"></p>
-                <button class="search-target-remove search-target-text" id="resetdefault" data-i18n="options_keybinds_reset"></button>
                 <div>
 
                 </div>
@@ -392,6 +402,9 @@
         <section class="options-section">
             <div class="section-heading">
                 <h1 data-i18n="options_autourl_header"></h1>
+                <div class="section-actions">
+                    <button type="button" id="autourlreset" data-i18n="options_toolbar_reset"></button>
+                </div>
             </div>
             <p data-i18n="options_autourl_body"></p>
             <p><span data-i18n="options_autourl_hint"></span> <a target="_blank" rel="noopener noreferrer"
@@ -409,6 +422,9 @@
         <section class="options-section">
             <div class="section-heading">
                 <h1 data-i18n="options_pattern_header"></h1>
+                <div class="section-actions">
+                    <button type="button" id="patternreset" data-i18n="options_toolbar_reset"></button>
+                </div>
             </div>
             <p>
                 <span data-i18n="options_pattern_body"></span> <a target="_blank" rel="noopener noreferrer"
@@ -420,6 +436,9 @@
         <section class="options-section">
             <div class="section-heading">
                 <h1 data-i18n="options_export_header"></h1>
+                <div class="section-actions">
+                    <button type="button" id="exportreset" data-i18n="options_toolbar_reset"></button>
+                </div>
             </div>
 
             <button id="import" data-i18n="options_import"></button>
@@ -429,6 +448,9 @@
         <section class="options-section">
             <div class="section-heading">
                 <h1 data-i18n="options_help_header"></h1>
+                <div class="section-actions">
+                    <button type="button" id="helpreset" data-i18n="options_toolbar_reset"></button>
+                </div>
             </div>
 
             <div id="version"></div>

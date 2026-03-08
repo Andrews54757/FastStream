@@ -1215,6 +1215,6 @@
         "message": "Wähle aus, welche Schaltflächen in der Player-Toolbar angezeigt werden."
     },
     "options_toolbar_reset": {
-        "message": "Toolbar-Schaltflächen zurücksetzen"
+        "message": "Auf Standardwerte zurücksetzen"
     }
 }

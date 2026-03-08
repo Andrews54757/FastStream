@@ -1215,6 +1215,6 @@
         "message": "Escolha quais botões serão exibidos na barra de ferramentas do player."
     },
     "options_toolbar_reset": {
-        "message": "Redefinir botões da barra de ferramentas"
+        "message": "Redefinir para os padrões"
     }
 }

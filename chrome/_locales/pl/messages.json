@@ -1215,6 +1215,6 @@
         "message": "Wybierz, które przyciski mają być wyświetlane na pasku narzędzi odtwarzacza."
     },
     "options_toolbar_reset": {
-        "message": "Resetuj przyciski paska narzędzi"
+        "message": "Przywróć domyślne"
     }
 }

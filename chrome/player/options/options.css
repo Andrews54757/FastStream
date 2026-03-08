@@ -169,11 +169,6 @@ body.frame.mobile {
   padding: 4px 10px;
 }
 
-body.mobile .section-heading {
-  flex-direction: column;
-  align-items: flex-start;
-}
-
 body.mobile .section-heading h1 {
   margin: var(--space-4) 0 var(--space-2);
 }
@@ -511,10 +506,45 @@ button:focus-visible {
 }
 
 .section-heading {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title count"
+    "actions actions";
   align-items: baseline;
-  justify-content: space-between;
   gap: var(--space-2);
+}
+
+.section-heading h1 {
+  grid-area: title;
+}
+
+.section-heading .section-count {
+  grid-area: count;
+  justify-self: end;
+}
+
+.section-heading .section-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Mobile: keep the same “buttons under title” layout */
+body.mobile .section-heading {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "actions"
+    "count";
+  align-items: flex-start;
+}
+
+body.mobile .section-heading .section-count {
+  justify-self: start;
 }
 
 .section-heading h1 {

@@ -1215,6 +1215,6 @@
         "message": "Choisissez quels boutons sont affichés dans la barre d'outils du lecteur."
     },
     "options_toolbar_reset": {
-        "message": "Réinitialiser les boutons de la barre d'outils"
+        "message": "Réinitialiser aux valeurs par défaut"
     }
 }

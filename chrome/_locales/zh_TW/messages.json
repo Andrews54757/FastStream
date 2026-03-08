@@ -1215,6 +1215,6 @@
         "message": "選擇要在播放器工具列中顯示哪些按鈕。"
     },
     "options_toolbar_reset": {
-        "message": "重設工具列按鈕"
+        "message": "重設為預設值"
     }
 }

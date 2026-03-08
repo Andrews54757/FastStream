@@ -29,6 +29,21 @@ let videoCollapseUIReady = false;
 let generalCollapsed = null;
 let generalCollapseUIReady = false;
 
+function cloneDefaultValue(value) {
+  if (value && typeof value === 'object') {
+    return JSON.parse(JSON.stringify(value));
+  }
+  return value;
+}
+
+function resetOptionsKeysToDefault(keys) {
+  for (const key of keys) {
+    Options[key] = cloneDefaultValue(DefaultOptions[key]);
+  }
+  loadOptions(Options);
+  optionChanged();
+}
+
 function getKeybindsCollapseEls() {
   const section = document.querySelector('.options-section[data-search-section="keybinds"]');
   const toggle = section?.querySelector?.('.keybinds-toggle');
@@ -228,6 +243,12 @@ const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
+const videoResetButton = document.getElementById('videoreset');
+const generalResetButton = document.getElementById('generalreset');
+const autoURLResetButton = document.getElementById('autourlreset');
+const patternResetButton = document.getElementById('patternreset');
+const exportResetButton = document.getElementById('exportreset');
+const helpResetButton = document.getElementById('helpreset');
 const clickAction = document.getElementById('clickaction');
 const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
@@ -893,6 +914,93 @@ customSourcePatterns.addEventListener('change', (e) => {
   Options.customSourcePatterns = customSourcePatterns.value;
   optionChanged();
 });
+
+if (videoResetButton) {
+  videoResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'videoZoom',
+      'videoDelay',
+      'videoBrightness',
+      'videoContrast',
+      'videoSaturation',
+      'videoGrayscale',
+      'videoSepia',
+      'videoInvert',
+      'videoHueRotate',
+      'videoDaltonizerType',
+      'videoDaltonizerStrength',
+    ]);
+  });
+}
+
+if (generalResetButton) {
+  generalResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'downloadAll',
+      'maxSpeed',
+      'maxVideoSize',
+      'autoplayNext',
+      'autoplayYoutube',
+      'storeProgress',
+      'previewEnabled',
+      'autoEnableBestSubtitles',
+      'analyzeVideos',
+      'playStreamURLs',
+      'playMP4URLs',
+      'defaultQuality',
+      'visChangeAction',
+      'miniPos',
+      'miniSize',
+      'singleClickAction',
+      'doubleClickAction',
+      'tripleClickAction',
+      'seekStepSize',
+      'replaceDelay',
+      'controlsHideDelay',
+      'colorTheme',
+      'maximumDownloaders',
+      'youtubePlayerID',
+    ]);
+  });
+}
+
+if (autoURLResetButton) {
+  autoURLResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault(['autoEnableURLs', 'applyToAllWebsites']);
+  });
+}
+
+if (patternResetButton) {
+  patternResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault(['customSourcePatterns']);
+  });
+}
+
+if (exportResetButton) {
+  exportResetButton.addEventListener('click', async () => {
+    // Reset related non-Options configs too.
+    const toolDefaults = Utils.mergeOptions(DefaultToolSettings, {});
+    for (const tool of REQUIRED_TOOLBAR_TOOLS) {
+      if (toolDefaults?.[tool]) toolDefaults[tool].visible = true;
+    }
+
+    const subtitleDefaults = Utils.mergeOptions(DefaultSubtitlesSettings, {});
+
+    await persistToolbarToolSettings(toolDefaults);
+    await Utils.setConfig('subtitlesSettings', JSON.stringify(subtitleDefaults));
+
+    Options = cloneDefaultValue(DefaultOptions);
+    loadOptions(Options);
+    optionChanged();
+    await refreshToolbarButtonsUI();
+  });
+}
+
+if (helpResetButton) {
+  helpResetButton.addEventListener('click', async () => {
+    exportResetButton?.click?.();
+  });
+}
 
 importButton.addEventListener('click', () => {
   const picker = document.createElement('input');
