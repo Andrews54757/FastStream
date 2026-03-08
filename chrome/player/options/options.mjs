@@ -245,10 +245,6 @@ const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
 const videoResetButton = document.getElementById('videoreset');
 const generalResetButton = document.getElementById('generalreset');
-const autoURLResetButton = document.getElementById('autourlreset');
-const patternResetButton = document.getElementById('patternreset');
-const exportResetButton = document.getElementById('exportreset');
-const helpResetButton = document.getElementById('helpreset');
 const clickAction = document.getElementById('clickaction');
 const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
@@ -961,44 +957,6 @@ if (generalResetButton) {
       'maximumDownloaders',
       'youtubePlayerID',
     ]);
-  });
-}
-
-if (autoURLResetButton) {
-  autoURLResetButton.addEventListener('click', () => {
-    resetOptionsKeysToDefault(['autoEnableURLs', 'applyToAllWebsites']);
-  });
-}
-
-if (patternResetButton) {
-  patternResetButton.addEventListener('click', () => {
-    resetOptionsKeysToDefault(['customSourcePatterns']);
-  });
-}
-
-if (exportResetButton) {
-  exportResetButton.addEventListener('click', async () => {
-    // Reset related non-Options configs too.
-    const toolDefaults = Utils.mergeOptions(DefaultToolSettings, {});
-    for (const tool of REQUIRED_TOOLBAR_TOOLS) {
-      if (toolDefaults?.[tool]) toolDefaults[tool].visible = true;
-    }
-
-    const subtitleDefaults = Utils.mergeOptions(DefaultSubtitlesSettings, {});
-
-    await persistToolbarToolSettings(toolDefaults);
-    await Utils.setConfig('subtitlesSettings', JSON.stringify(subtitleDefaults));
-
-    Options = cloneDefaultValue(DefaultOptions);
-    loadOptions(Options);
-    optionChanged();
-    await refreshToolbarButtonsUI();
-  });
-}
-
-if (helpResetButton) {
-  helpResetButton.addEventListener('click', async () => {
-    exportResetButton?.click?.();
   });
 }
 

@@ -533,6 +533,11 @@ button:focus-visible {
   justify-content: flex-start;
 }
 
+/* Reset buttons are visible by default; hide only when the section is collapsed. */
+.options-section.collapsed .reset-button {
+  display: none;
+}
+
 /* Mobile: keep the same “buttons under title” layout */
 body.mobile .section-heading {
   grid-template-columns: 1fr;
