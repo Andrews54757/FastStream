@@ -25,110 +25,6 @@ let keybindsCollapseUIReady = false;
 let toolbarCollapsed = null;
 let toolbarCollapseUIReady = false;
 
-function setupTouchSafeSliders() {
-  if (!EnvUtils.isMobile()) return;
-
-  const sliders = Array.from(document.querySelectorAll('input[type="range"]'));
-  sliders.forEach((slider) => {
-    if (slider.dataset.fsTouchGuard === '1') return;
-    slider.dataset.fsTouchGuard = '1';
-
-    let startValue = null;
-    let armed = false;
-    let armingTimer = null;
-    let startX = 0;
-    let startY = 0;
-
-    const arm = () => {
-      armed = true;
-      slider.dataset.fsTouchArmed = '1';
-      if (armingTimer) {
-        clearTimeout(armingTimer);
-        armingTimer = null;
-      }
-    };
-
-    const disarm = () => {
-      armed = false;
-      slider.dataset.fsTouchArmed = '0';
-      if (armingTimer) {
-        clearTimeout(armingTimer);
-        armingTimer = null;
-      }
-    };
-
-    const onStart = (x, y) => {
-      startValue = slider.value;
-      startX = x;
-      startY = y;
-      disarm();
-
-      // Allow intentional slider use by holding briefly.
-      armingTimer = setTimeout(() => {
-        arm();
-      }, 250);
-    };
-
-    const onMove = (x, y) => {
-      if (startValue === null) return;
-      const dx = x - startX;
-      const dy = y - startY;
-      const absDx = Math.abs(dx);
-      const absDy = Math.abs(dy);
-
-      // Arm immediately for a clearly horizontal gesture.
-      if (!armed && absDx > 10 && absDx > absDy) {
-        arm();
-      }
-
-      // If it's clearly vertical, keep it disarmed.
-      if (!armed && absDy > 10 && absDy > absDx) {
-        disarm();
-      }
-    };
-
-    const onEnd = () => {
-      startValue = null;
-      disarm();
-    };
-
-    // Capture input events early; if not armed, snap back and block propagation.
-    slider.addEventListener('input', (e) => {
-      if (startValue === null) return;
-      if (armed) return;
-
-      slider.value = startValue;
-      e.stopImmediatePropagation();
-    }, true);
-
-    slider.addEventListener('change', (e) => {
-      if (startValue === null) return;
-      if (armed) return;
-
-      slider.value = startValue;
-      e.stopImmediatePropagation();
-    }, true);
-
-    slider.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'touch') return;
-      onStart(e.clientX, e.clientY);
-    }, {passive: true});
-
-    slider.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'touch') return;
-      onMove(e.clientX, e.clientY);
-    }, {passive: true});
-
-    slider.addEventListener('pointerup', () => {
-      onEnd();
-    }, {passive: true});
-
-    slider.addEventListener('pointercancel', () => {
-      onEnd();
-    }, {passive: true});
-  });
-}
-
 function getKeybindsCollapseEls() {
   const section = document.querySelector('.options-section[data-search-section="keybinds"]');
   const toggle = section?.querySelector?.('.keybinds-toggle');
@@ -951,8 +847,6 @@ if (EnvUtils.isMobile()) {
 } else {
   document.body.classList.remove('mobile');
 }
-
-setupTouchSafeSliders();
 
 // React to external changes via OptionsStore
 OptionsStore.subscribe(async () => {
