@@ -36,8 +36,22 @@ body {
   --control-pad-x: 8px;
 }
 
+/* When not embedded, honor the configured addon theme via colors.css variables.
+   (colors.css keys off body[data-theme]). */
+body:not(.frame)[data-theme] {
+  --color-bg: var(--popwindow-background-color);
+  --color-bg-muted: var(--popwindow-dropdown-item-background-color);
+  --color-text: var(--popwindow-text-color);
+  --color-muted: color-mix(in oklab, var(--color-text) 70%, transparent);
+  --color-border: color-mix(in oklab, var(--color-text) 22%, transparent);
+  --color-elev: var(--input-background-color);
+  --color-primary: var(--link-color);
+  --color-primary-contrast: var(--popwindow-button-text-color);
+  --color-focus: var(--popwindow-textinput-focus-border-color);
+}
+
 @media (prefers-color-scheme: dark) {
-  body:not(.frame) {
+  body:not(.frame):not([data-theme]) {
     --color-bg: #23212a;
     --color-bg-muted: #0f1720;
     --color-text: #e5e7eb;
