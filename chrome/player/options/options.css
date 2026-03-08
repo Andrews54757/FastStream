@@ -825,6 +825,16 @@ body.mobile .option.grid1.toolbar-tool-row .label {
   display: none;
 }
 
+/* Mobile: collapse video options by default (toggle-able) */
+.video-toggle {
+  display: none;
+}
+
+/* Mobile: collapse general options by default (toggle-able) */
+.general-toggle {
+  display: none;
+}
+
 /* Mobile: collapse toolbar buttons by default (toggle-able) */
 .toolbar-toggle {
   display: none;
@@ -848,11 +858,37 @@ body.mobile .options-section[data-search-section="toolbar"] .toolbar-toggle {
   font-weight: 600;
 }
 
+body.mobile .options-section[data-search-section="video"] .video-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  min-height: 32px;
+  font-weight: 600;
+}
+
+body.mobile .options-section[data-search-section="general"] .general-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  min-height: 32px;
+  font-weight: 600;
+}
+
 body.mobile .options-section[data-search-section="keybinds"].collapsed .keybinds-content {
   display: none;
 }
 
 body.mobile .options-section[data-search-section="toolbar"].collapsed .toolbar-content {
+  display: none;
+}
+
+body.mobile .options-section[data-search-section="video"].collapsed .video-content {
+  display: none;
+}
+
+body.mobile .options-section[data-search-section="general"].collapsed .general-content {
   display: none;
 }
 
@@ -863,6 +899,16 @@ body.mobile.search-active .options-section[data-search-section="keybinds"].colla
 
 /* Ensure search can still count/show toolbar items */
 body.mobile.search-active .options-section[data-search-section="toolbar"].collapsed .toolbar-content {
+  display: block;
+}
+
+/* Ensure search can still count/show video items */
+body.mobile.search-active .options-section[data-search-section="video"].collapsed .video-content {
+  display: block;
+}
+
+/* Ensure search can still count/show general items */
+body.mobile.search-active .options-section[data-search-section="general"].collapsed .general-content {
   display: block;
 }
 

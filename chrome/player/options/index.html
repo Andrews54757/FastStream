@@ -50,23 +50,25 @@
         <section class="options-section" data-search-section="video">
             <div class="section-heading">
                 <h1 data-i18n="options_video_header"></h1>
+                <button type="button" class="video-toggle" aria-controls="videoContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
             </div>
-            <p data-i18n="options_video_body"></p>
-            <datalist id="snap-hundred">
-                <option value="100">
-            </datalist>
-            <datalist id="snap-zero">
-                <option value="0">
-            </datalist>
+            <div id="videoContent" class="video-content">
+                <p data-i18n="options_video_body"></p>
+                <datalist id="snap-hundred">
+                    <option value="100">
+                </datalist>
+                <datalist id="snap-zero">
+                    <option value="0">
+                </datalist>
 
-            <div class="options-with-range-table">
-                <div class="video-option search-target-remove" data-option="videoZoom">
-                    <div class="label search-target-text" data-i18n="options_video_zoom"></div>
-                    <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
-                    <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
-                        data-i18n-label="options_video_zoom"></input>
-                </div>
+                <div class="options-with-range-table">
+                    <div class="video-option search-target-remove" data-option="videoZoom">
+                        <div class="label search-target-text" data-i18n="options_video_zoom"></div>
+                        <input class="number" type="text" data-i18n-label="options_video_zoom"></input>
+                        <input class="range" type="range" min="0" max="200" value="1" step="1" list="snap-hundred"
+                            data-i18n-label="options_video_zoom"></input>
+                    </div>
 
                 <div class="video-option search-target-remove" data-option="videoDelay" data-unit="ms" data-multiplier="1" data-nolimits="true">
                     <div class="label search-target-text" data-i18n="options_video_delay"></div>
@@ -132,11 +134,12 @@
                     <div class="select" id="daltonizerType" data-i18n-label="options_video_daltonizer_type"></div>
                 </div>
 
-                <div id="daltonizerStrength" class="video-option search-target-remove" data-option="videoDaltonizerStrength" style="margin-top: 5px">
-                    <div class="label search-target-text" data-i18n="options_video_daltonizer_strength"></div>
-                    <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
-                    <input class="range" type="range" min="0" max="100" value="0" step="1"
-                        data-i18n-label="options_video_daltonizer_strength"></input>
+                    <div id="daltonizerStrength" class="video-option search-target-remove" data-option="videoDaltonizerStrength" style="margin-top: 5px">
+                        <div class="label search-target-text" data-i18n="options_video_daltonizer_strength"></div>
+                        <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
+                        <input class="range" type="range" min="0" max="100" value="0" step="1"
+                            data-i18n-label="options_video_daltonizer_strength"></input>
+                    </div>
                 </div>
             </div>
         </section>
@@ -144,13 +147,15 @@
         <section class="options-section" data-search-section="general">
             <div class="section-heading">
                 <h1 data-i18n="options_general_header"></h1>
+                <button type="button" class="general-toggle" aria-controls="generalContent" aria-expanded="true">Hide</button>
                 <span class="section-count" aria-live="polite"></span>
             </div>
-            <div id="top-general-options">
-                <div class="option search-target-remove grid1">
-                    <input type="checkbox" id="downloadall" data-i18n-label="options_general_predownload">
-                    <div class="label search-target-text" data-i18n="options_general_predownload"></div>
-                </div>
+            <div id="generalContent" class="general-content">
+                <div id="top-general-options">
+                    <div class="option search-target-remove grid1">
+                        <input type="checkbox" id="downloadall" data-i18n-label="options_general_predownload">
+                        <div class="label search-target-text" data-i18n="options_general_predownload"></div>
+                    </div>
 
                 <div class="option search-target-remove grid2" style="margin-left: 25px">
                     <div class="label search-target-text" data-i18n="options_general_targetspeed"></div>
@@ -161,16 +166,16 @@
                     <div class="label search-target-text" data-i18n="options_general_maxsize"></div>
                     <input class="number" type="text" id="maxsize" data-i18n-label="options_general_maxsize"></input>
                 </div>
-            </div>
-
-            <div id="bottom-general-options">
-                <div class="search-target-remove">
-                    <br>
-                    <div class="option grid1">
-                        <input type="checkbox" id="autoplaynext" data-i18n-label="options_general_autoplaynext">
-                        <div class="label search-target-text" data-i18n="options_general_autoplaynext"></div>
-                    </div>
                 </div>
+
+                <div id="bottom-general-options">
+                    <div class="search-target-remove">
+                        <br>
+                        <div class="option grid1">
+                            <input type="checkbox" id="autoplaynext" data-i18n-label="options_general_autoplaynext">
+                            <div class="label search-target-text" data-i18n="options_general_autoplaynext"></div>
+                        </div>
+                    </div>
 
                 <div class="search-target-remove">
                     <br>
@@ -345,6 +350,7 @@
                             <div class="label search-target-text">Max downloaders (browsers limit to 6)</div>
                             <input class="number" type="number" id="maxdownloaders" step="1"></input>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
