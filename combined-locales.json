@@ -5669,6 +5669,24 @@
         "zh_CN": "若可能，后台预下载整段视频",
         "zh_TW": "如可能，在背景預先下載整個影片"
     },
+    "options_general_copytimestampurl": {
+        "en": "Enable clicking the time counter to copy a URL with the current timestamp",
+        "de": "Aktiviere das Kopieren einer URL mit aktuellem Zeitstempel beim Anklicken der Zeitanzeige",
+        "es": "Permitir que al hacer clic en el contador de tiempo se copie una URL con la marca de tiempo actual",
+        "fr": "Permettre de copier une URL avec l'horodatage actuel en cliquant sur le compteur de temps",
+        "id": "Izinkan klik pada penghitung waktu untuk menyalin URL dengan stempel waktu saat ini",
+        "it": "Consenti di copiare un URL con il timestamp corrente facendo clic sul contatore del tempo",
+        "ja": "時間カウンターをクリックすると現在のタイムスタンプ付きURLをコピーできるようにする",
+        "ko": "시간 카운터를 클릭하면 현재 타임스탬프가 포함된 URL을 복사할 수 있도록 함",
+        "ms": "Benarkan klik pada kaunter masa untuk menyalin URL dengan cap masa semasa",
+        "nl": "Sta toe dat klikken op de tijdsteller een URL met de huidige tijdstempel kopieert",
+        "pl": "Włącz kopiowanie adresu URL z bieżącym znacznikiem czasu po kliknięciu licznika czasu",
+        "pt_BR": "Permitir que clicar no contador de tempo copie uma URL com o carimbo de tempo atual",
+        "ru": "Разрешить копирование URL с текущей меткой времени по нажатию на счетчик времени",
+        "tr": "Zaman sayacına tıklayınca geçerli zaman damgasını içeren URL'nin kopyalanmasını etkinleştir",
+        "zh_CN": "启用点击时间计数器时复制带当前时间戳的 URL",
+        "zh_TW": "啟用點擊時間計數器時複製含目前時間戳的 URL"
+    },
     "options_general_targetspeed": {
         "en": "Target download speed of predownloader",
         "de": "Download geschwindigkeit fürs vor laden",

@@ -648,6 +648,11 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.moreButton);
 
     DOMElements.duration.addEventListener('click', (e) => {
+      if (this.client.options.copyTimestampURL === false) {
+        e.stopPropagation();
+        return;
+      }
+
       let copyURL = '';
       if (this.client.source) {
         const source = this.client.source;

@@ -19,15 +19,17 @@
         </div>
     </header>
 
-    <div id="updatebox">
-        <h1 style="margin-top: 0px" data-i18n="options_update_header"></h1>
+    <div id="updatebox" class="banner">
+        <h1 data-i18n="options_update_header"></h1>
         <p id="updatetext"></p>
-        <button id="update" data-i18n="options_update_go"></button>
-        <button id="noupdate" data-i18n="options_update_no"></button>
+        <div class="button-row">
+            <button id="update" data-i18n="options_update_go"></button>
+            <button id="noupdate" data-i18n="options_update_no"></button>
+        </div>
     </div>
 
-    <div id="ratebox">
-        <h1 style="margin-top: 0px" data-i18n="options_reviewbanner_header"></h1>
+    <div id="ratebox" class="banner">
+        <h1 data-i18n="options_reviewbanner_header"></h1>
         <p data-i18n="options_reviewbanner_body"></p>
         <ul>
             <li data-i18n="options_reviewbanner_l1"></li>
@@ -35,15 +37,19 @@
             <li data-i18n="options_reviewbanner_l3"></li>
         </ul>
         <p data-i18n="options_reviewbanner_end"></p>
-        <button id="rate" data-i18n="options_reviewbanner_rate"></button>
-        <button id="norate" data-i18n="options_reviewbanner_norate"></button>
+        <div class="button-row">
+            <button id="rate" data-i18n="options_reviewbanner_rate"></button>
+            <button id="norate" data-i18n="options_reviewbanner_norate"></button>
+        </div>
     </div>
 
-    <div id="feedbackbox">
-        <h1 style="margin-top: 0px" data-i18n="options_feedback_header"></h1>
+    <div id="feedbackbox" class="banner">
+        <h1 data-i18n="options_feedback_header"></h1>
         <p data-i18n="options_feedback_reason"></p>
-        <button id="feedback-yes" data-i18n="options_feedback_yes"></button>
-        <button id="feedback-no" data-i18n="options_feedback_no"></button>
+        <div class="button-row">
+            <button id="feedback-yes" data-i18n="options_feedback_yes"></button>
+            <button id="feedback-no" data-i18n="options_feedback_no"></button>
+        </div>
     </div>
 
     <main class="options-layout">
@@ -132,12 +138,12 @@
                         data-i18n-label="options_video_hue"></input>
                 </div>
 
-                <div class="option search-target-remove grid2" style="margin-top: 5px">
-                    <div class="label search-target-text" data-i18n="options_video_daltonizer_type" style="margin-left: 0px"></div>
+                <div class="option search-target-remove grid2 option-spaced">
+                    <div class="label search-target-text" data-i18n="options_video_daltonizer_type"></div>
                     <div class="select" id="daltonizerType" data-i18n-label="options_video_daltonizer_type"></div>
                 </div>
 
-                    <div id="daltonizerStrength" class="video-option search-target-remove" data-option="videoDaltonizerStrength" style="margin-top: 5px">
+                    <div id="daltonizerStrength" class="video-option search-target-remove option-spaced" data-option="videoDaltonizerStrength">
                         <div class="label search-target-text" data-i18n="options_video_daltonizer_strength"></div>
                         <input class="number" type="text" data-i18n-label="options_video_daltonizer_strength"></input>
                         <input class="range" type="range" min="0" max="100" value="0" step="1"
@@ -163,12 +169,12 @@
                         <div class="label search-target-text" data-i18n="options_general_predownload"></div>
                     </div>
 
-                <div class="option search-target-remove grid2" style="margin-left: 25px">
+                <div class="option search-target-remove grid2 indented">
                     <div class="label search-target-text" data-i18n="options_general_targetspeed"></div>
                     <input class="number" type="text" id="maxspeed" data-i18n-label="options_general_targetspeed"></input>
                 </div>
 
-                <div class="option search-target-remove grid2" style="margin-left: 25px; margin-top: 3px">
+                <div class="option search-target-remove grid2 indented">
                     <div class="label search-target-text" data-i18n="options_general_maxsize"></div>
                     <input class="number" type="text" id="maxsize" data-i18n-label="options_general_maxsize"></input>
                 </div>
@@ -204,6 +210,14 @@
                     <div class="option grid1">
                         <input type="checkbox" id="previewenabled" data-i18n-label="options_general_previewenabled">
                         <div class="label search-target-text" data-i18n="options_general_previewenabled"></div>
+                    </div>
+                </div>
+
+                <div class="search-target-remove">
+                    <br>
+                    <div class="option grid1">
+                        <input type="checkbox" id="copytimestampurl" data-i18n-label="options_general_copytimestampurl">
+                        <div class="label search-target-text" data-i18n="options_general_copytimestampurl"></div>
                     </div>
                 </div>
 
@@ -432,8 +446,10 @@
                 <h1 data-i18n="options_export_header"></h1>
             </div>
 
-            <button id="import" data-i18n="options_import"></button>
-            <button id="export" data-i18n="options_export"></button>
+            <div class="button-row">
+                <button id="import" data-i18n="options_import"></button>
+                <button id="export" data-i18n="options_export"></button>
+            </div>
         </section>
 
         <section class="options-section">
@@ -442,13 +458,14 @@
             </div>
 
             <div id="version"></div>
-            <br>
 
-            <a href="#" id="welcome" target="_blank" data-i18n="options_help_welcome"></a><br><br>
-            <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank"
-                data-i18n="options_help_issues"></a><br><br>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSfA3T8lmhKO_ih028cP0m67vhH-FaGNkeHE0EsQoyBWztpctA/viewform?usp=sf_link"
-                target="_blank" data-i18n="options_help_feedback"></a>
+            <div class="help-links">
+                <a href="#" id="welcome" target="_blank" data-i18n="options_help_welcome"></a>
+                <a href="https://github.com/Andrews54757/FastStream/issues" target="_blank"
+                    data-i18n="options_help_issues"></a>
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSfA3T8lmhKO_ih028cP0m67vhH-FaGNkeHE0EsQoyBWztpctA/viewform?usp=sf_link"
+                    target="_blank" data-i18n="options_help_feedback"></a>
+            </div>
         </section>
     </main>
 

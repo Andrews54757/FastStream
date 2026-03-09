@@ -16,6 +16,7 @@ export const DefaultOptions = {
   analyzeVideos: false,
   downloadAll: true,
   previewEnabled: true,
+  copyTimestampURL: true,
   autoEnableBestSubtitles: false,
   storeProgress: true,
   autoplayYoutube: EnvUtils.isExtension(),

@@ -48,6 +48,8 @@ export class FastStreamClient extends EventEmitter {
   constructor() {
     super();
     this.version = EnvUtils.getVersion();
+    this.handleViewportResize = this.applyPlayerRotationLayout.bind(this);
+    window.addEventListener('resize', this.handleViewportResize);
 
     this.options = {
       autoPlay: false,
@@ -63,6 +65,7 @@ export class FastStreamClient extends EventEmitter {
       storeProgress: false,
       disableLoadProgress: false,
       previewEnabled: true,
+      copyTimestampURL: true,
       autoplayNext: false,
       singleClickAction: ClickActions.PLAY_PAUSE,
       doubleClickAction: ClickActions.HIDE_CONTROLS,
@@ -308,6 +311,7 @@ export class FastStreamClient extends EventEmitter {
    */
   destroy() {
     this.destroyed = true;
+    window.removeEventListener('resize', this.handleViewportResize);
     this.resetPlayer();
     this.downloadManager.destroy();
     this.videoAnalyzer.destroy();
@@ -328,6 +332,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
+    this.options.copyTimestampURL = options.copyTimestampURL;
     this.options.maxSpeed = options.maxSpeed;
     this.options.maxVideoSize = options.maxVideoSize;
     this.options.seekStepSize = options.seekStepSize;
@@ -454,17 +459,51 @@ export class FastStreamClient extends EventEmitter {
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
-    const transformStr = CSSFilterUtils.getTransformString(this.options);
+    const videoTransformStr = CSSFilterUtils.getTransformString({...this.options, videoRotate: 0});
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;
-      this.player.getVideo().style.transform = transformStr;
+      this.player.getVideo().style.transform = videoTransformStr;
     }
 
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.filter = filterStr;
-      this.previewPlayer.getVideo().style.transform = transformStr;
+      this.previewPlayer.getVideo().style.transform = videoTransformStr;
     }
+
+    this.applyPlayerRotationLayout();
+  }
+
+  applyPlayerRotationLayout() {
+    const playerContainer = DOMElements.playerContainer;
+    if (!playerContainer) {
+      return;
+    }
+
+    const normalizedTurns = ((this.options.videoRotate % 4) + 4) % 4;
+    const isQuarterTurn = normalizedTurns % 2 === 1;
+    const rotation = normalizedTurns * 90;
+
+    playerContainer.classList.toggle('fs-player-rotated', isQuarterTurn);
+
+    if (isQuarterTurn) {
+      const parentRect = playerContainer.parentElement?.getBoundingClientRect?.();
+      const width = parentRect?.width || document.documentElement.clientWidth || window.innerWidth;
+      const height = parentRect?.height || document.documentElement.clientHeight || window.innerHeight;
+
+      playerContainer.style.width = `${height}px`;
+      playerContainer.style.height = `${width}px`;
+      playerContainer.style.left = '50%';
+      playerContainer.style.top = '50%';
+      playerContainer.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+      return;
+    }
+
+    playerContainer.style.width = '';
+    playerContainer.style.height = '';
+    playerContainer.style.left = '';
+    playerContainer.style.top = '';
+    playerContainer.style.transform = rotation === 0 ? '' : `rotate(${rotation}deg)`;
   }
 
   /**

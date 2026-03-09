@@ -765,6 +765,13 @@ body {
     display: flex;
     width: 100%;
     height: 100%;
+    transform-origin: center center;
+}
+
+.mainplayer.fs-player-rotated {
+    position: absolute;
+    max-width: none;
+    max-height: none;
 }
 
 .mainplayer.player-hidden {
@@ -3261,8 +3268,7 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_controls_right:not(.reordering)>.fluid_button_soundwave,
-    .fluid_controls_right:not(.reordering)>.fluid_button_link,
-    .fluid_controls_right:not(.reordering)>.fluid_button_settings {
+    .fluid_controls_right:not(.reordering)>.fluid_button_link {
         display: none !important;
     }
 

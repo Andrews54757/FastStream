@@ -257,6 +257,7 @@ const miniPos = document.getElementById('minipos');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
+const copyTimestampURL = document.getElementById('copytimestampurl');
 const replaceDelay = document.getElementById('replacedelay');
 const controlsHideDelay = document.getElementById('controlshidedelay');
 const colorTheme = document.getElementById('colortheme');
@@ -318,6 +319,7 @@ async function loadOptions(newOptions) {
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
   previewEnabled.checked = !!Options.previewEnabled;
+  copyTimestampURL.checked = Options.copyTimestampURL !== false;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   autoplayNext.checked = !!Options.autoplayNext;
@@ -793,6 +795,11 @@ previewEnabled.addEventListener('change', () => {
   optionChanged();
 });
 
+copyTimestampURL.addEventListener('change', () => {
+  Options.copyTimestampURL = copyTimestampURL.checked;
+  optionChanged();
+});
+
 storeProgress.addEventListener('change', () => {
   Options.storeProgress = storeProgress.checked;
   optionChanged();
@@ -939,6 +946,7 @@ if (generalResetButton) {
       'autoplayYoutube',
       'storeProgress',
       'previewEnabled',
+      'copyTimestampURL',
       'autoEnableBestSubtitles',
       'analyzeVideos',
       'playStreamURLs',

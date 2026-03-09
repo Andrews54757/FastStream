@@ -218,6 +218,9 @@
     "player_timestamp_label": {
         "message": "Copy URL with timestamp"
     },
+    "options_general_copytimestampurl": {
+        "message": "Enable clicking the time counter to copy a URL with the current timestamp"
+    },
     "player_sourcesbrowser_title": {
         "message": "Sources Browser"
     },

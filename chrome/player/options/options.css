@@ -329,6 +329,7 @@ button {
   cursor: pointer;
   padding: var(--control-pad-y) var(--control-pad-x);
   min-height: var(--control-height);
+  transition: background-color 120ms ease, border-color 120ms ease, filter 120ms ease;
 }
 
 button:hover {
@@ -501,6 +502,67 @@ button:focus-visible {
   gap: var(--space-4);
 }
 
+/* Constrain width + center on the standalone options page. */
+body:not(.frame) .options-layout {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Card-like sections (standalone page only; embedded frame keeps the flatter layout). */
+body:not(.frame) .options-section {
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-elev) 80%, var(--color-bg-muted) 20%);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+}
+
+body:not(.frame) .options-section .section-heading {
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+}
+
+body:not(.frame) .options-section .section-heading h1 {
+  margin: 0;
+}
+
+body:not(.frame) .options-section .section-actions {
+  justify-content: flex-end;
+}
+
+/* Simple horizontal button grouping */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Banner headings don't need the global large top margin */
+.banner h1 {
+  margin-top: 0;
+}
+
+/* Primary actions inside banners */
+#updatebox #update,
+#ratebox #rate,
+#feedbackbox #feedback-yes {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: transparent;
+}
+
+#updatebox #update:hover,
+#ratebox #rate:hover,
+#feedbackbox #feedback-yes:hover {
+  filter: brightness(0.95);
+}
+
+/* Minor spacing helper to replace inline styles */
+.option-spaced {
+  margin-top: var(--space-2);
+}
+
 .options-section {
   scroll-margin-top: 80px;
 }
@@ -554,6 +616,11 @@ body.mobile .section-heading .section-count {
 
 .section-heading h1 {
   margin: var(--space-6) 0 var(--space-2);
+}
+
+/* When sections are cards, the heading margins are handled by the card header. */
+body:not(.frame) .section-heading h1 {
+  margin: 0;
 }
 
 .section-count {
@@ -730,6 +797,47 @@ input[type="checkbox"]:focus-visible {
   grid-template-columns: auto auto 1fr;
   gap: var(--space-2) var(--space-3);
   align-items: center;
+}
+
+/* Replace <br>-based gaps inside search wrappers with CSS spacing. */
+.options-layout .search-target-remove > br:first-child {
+  display: none;
+}
+
+/* General section: cleaner stacking and alignment */
+.options-section[data-search-section="general"] #top-general-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.options-section[data-search-section="general"] .option.grid2.indented {
+  padding-left: calc(20px + var(--space-2));
+}
+
+body.mobile .options-section[data-search-section="general"] .option.grid2.indented {
+  padding-left: calc(24px + var(--space-3));
+}
+
+.options-section[data-search-section="general"] #bottom-general-options,
+.options-section[data-search-section="general"] #showWhenMiniSelected {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.options-section[data-search-section="general"] #bottom-general-options > .search-target-remove,
+.options-section[data-search-section="general"] #showWhenMiniSelected > .search-target-remove {
+  margin: 0;
+}
+
+/* Help links: consistent spacing without <br> */
+.help-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 body.mobile .options-with-range-table {
