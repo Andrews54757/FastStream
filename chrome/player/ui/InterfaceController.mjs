@@ -1061,7 +1061,7 @@ export class InterfaceController {
     this.queueControlsHide();
   }
 
-  queueControlsHide(time) {
+  queueControlsHide(time, allowWhilePaused = false) {
     clearTimeout(this.hideControlBarTimeout);
 
     let timeout = time;
@@ -1075,7 +1075,7 @@ export class InterfaceController {
     timeout = Math.max(0, timeout);
 
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && (this.state.playing || allowWhilePaused) && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
     }, timeout);
@@ -1242,6 +1242,7 @@ export class InterfaceController {
     if (!previousValue) {
       this.playPauseAnimation();
       this.showPlayPausePopup('play');
+      this.showControlBar();
       this.queueControlsHide();
     }
   }
@@ -1254,6 +1255,7 @@ export class InterfaceController {
     if (previousValue) {
       this.playPauseAnimation();
       this.showPlayPausePopup('pause');
+      this.queueControlsHide(undefined, true);
     }
   }
 
