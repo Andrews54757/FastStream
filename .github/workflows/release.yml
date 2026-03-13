@@ -94,8 +94,16 @@ jobs:
 
           CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features"
 
+          TODAY_LOG_REF="${TARGET_SHA}"
+          TODAY_LOG_LABEL="this release commit"
+          if git ls-remote --exit-code --heads origin "new-features" >/dev/null 2>&1; then
+            git fetch origin "new-features" --depth=1 >/dev/null 2>&1 || true
+            TODAY_LOG_REF="origin/new-features"
+            TODAY_LOG_LABEL="new-features"
+          fi
+
           TODAY_UTC="$(date -u +%Y-%m-%d)"
-          COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
+          COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${TODAY_LOG_REF}" 2>/dev/null || echo 0)"
 
           cat > release_body.md <<EOF
 
@@ -146,9 +154,9 @@ jobs:
             echo "### Today's commit messages"
             echo
             if [[ "${COMMIT_COUNT}" -gt 0 ]]; then
-              git log --no-merges --since="${TODAY_UTC} 00:00:00" --pretty='- %s (%h)' "${RANGE}"
+              git log --no-merges --since="${TODAY_UTC} 00:00:00" --pretty='- %s (%h)' "${TODAY_LOG_REF}"
             else
-              echo "- No commits were found for today in this compare range."
+              echo "- No commits were found for today on ${TODAY_LOG_LABEL}."
             fi
             echo
             if [[ -n "${PREVIOUS_TAG}" ]]; then
