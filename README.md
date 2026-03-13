@@ -11,6 +11,7 @@
 
 ![Tap action zones diagram](docs/images/tap-zones.svg)
 
+## Mobile Screenshots
 
 - **Improved mobile options/menu usability**
   - Options UI and the in‑player options window were adjusted for mobile usability and accessibility.
