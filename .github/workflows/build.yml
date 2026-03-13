@@ -27,4 +27,6 @@ jobs:
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          path: built/*.zip
+          path: |
+            built/chrome-*.zip
+            built/firefox-*.xpi

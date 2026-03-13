@@ -100,7 +100,6 @@ jobs:
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
 
           cat > release_body.md <<EOF
-          ## ${RELEASE_VERSION}
 
           # Mobile Experience Improvements [GENERAL RELEASE NOTES]
 
@@ -174,5 +173,5 @@ jobs:
           target_commitish: ${{ steps.vars.outputs.target_commitish }}
           body_path: release_body.md
           files: |
-            built/*.zip
-            built/*.xpi
+            built/chrome-*.zip
+            built/firefox-*.xpi
