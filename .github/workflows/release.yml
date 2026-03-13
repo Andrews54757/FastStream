@@ -73,11 +73,8 @@ jobs:
           RANGE="${BASE_REF}..origin/${TARGET_REF}"
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
-
           {
             echo "## ${TAG_NAME}"
-            echo
-            echo "Today's commits (${TODAY_UTC} UTC) in ${BASE_REF}...${TARGET_REF}: ${COMMIT_COUNT} commit(s)."
             echo
             echo "### Today's commit messages"
             echo
