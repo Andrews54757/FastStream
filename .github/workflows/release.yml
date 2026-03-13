@@ -108,7 +108,7 @@ jobs:
           cat > release_body.md <<EOF
 
           # Mobile Experience Improvements [GENERAL RELEASE NOTES]
-          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/Mobile-Experience-imrovements/docs/images/tap-zones.svg)
+          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/blob/Mobile-Experience-Improvements/docs/images/tap-zones.svg) 
 
           New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
 
