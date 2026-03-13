@@ -431,6 +431,15 @@ button:focus-visible {
   margin-bottom: var(--space-4);
 }
 
+.theme-under-search {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.theme-under-search .label {
+  margin-left: 0;
+}
+
 .searchbar-shell {
   display: grid;
   grid-template-columns: auto 1fr auto;
