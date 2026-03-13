@@ -1071,7 +1071,7 @@
         "message": "Miniplayer size"
     },
     "options_general_color_theme": {
-        "message": "Player color theme"
+        "message": "UI Theme"
     },
     "options_general_color_theme_default": {
         "message": "Default Dark"
