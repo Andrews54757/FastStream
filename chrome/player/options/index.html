@@ -17,10 +17,6 @@
             <input id="searchbar" class="searchbar" type="search" placeholder="Search">
             <button data-i18n="options_reset_search" id="resetsearch" class="resetsearch"></button>
         </div>
-        <div class="option grid2 theme-under-search">
-            <div class="label" data-i18n="options_general_color_theme"></div>
-            <div class="select" id="colortheme" data-i18n-label="options_general_color_theme"></div>
-        </div>
     </header>
 
     <div id="updatebox" class="banner">
@@ -57,6 +53,20 @@
     </div>
 
     <main class="options-layout">
+        <section class="options-section" data-search-section="theme">
+            <div class="section-heading">
+                <h1 data-i18n="options_general_color_theme"></h1>
+                <span class="section-count" aria-live="polite"></span>
+                <div class="section-actions">
+                    <button type="button" class="reset-button" id="themereset" data-i18n="options_toolbar_reset"></button>
+                    <button type="button" class="theme-toggle" aria-controls="themeContent" aria-expanded="true" data-i18n="options_section_toggle_hide"></button>
+                </div>
+            </div>
+            <div id="themeContent" class="theme-content">
+                <div class="select" id="colortheme" data-i18n-label="options_general_color_theme"></div>
+            </div>
+        </section>
+
         <section class="options-section" data-search-section="video">
             <div class="section-heading">
                 <h1 data-i18n="options_video_header"></h1>

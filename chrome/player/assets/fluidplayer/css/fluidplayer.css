@@ -766,6 +766,13 @@ body {
     width: 100%;
     height: 100%;
     transform-origin: center center;
+    transition: transform 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mainplayer {
+        transition: none;
+    }
 }
 
 .mainplayer.fs-player-rotated {

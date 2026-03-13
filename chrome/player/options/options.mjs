@@ -55,7 +55,6 @@ function createCollapseController(sectionName, toggleClass, contentId) {
   }
 
   function ensureCollapseUI() {
-    if (!EnvUtils.isMobile()) return;
     if (collapseUIReady) return;
 
     const {section, toggle, content} = getCollapseEls();
@@ -69,12 +68,11 @@ function createCollapseController(sectionName, toggleClass, contentId) {
       applyCollapsedState();
     });
 
-    // Default to collapsed on mobile as soon as the UI exists.
+    // Default to collapsed as soon as the UI exists.
     applyCollapsedState();
   }
 
   function applyCollapsedState() {
-    if (!EnvUtils.isMobile()) return;
     ensureCollapseUI();
     const {section, toggle} = getCollapseEls();
     if (!section || !toggle) return;
@@ -86,7 +84,6 @@ function createCollapseController(sectionName, toggleClass, contentId) {
   }
 
   function expandForSearchInit() {
-    if (!EnvUtils.isMobile()) return;
     ensureCollapseUI();
     const {section} = getCollapseEls();
     if (!section) return;
@@ -95,6 +92,12 @@ function createCollapseController(sectionName, toggleClass, contentId) {
 
   return {ensureCollapseUI, applyCollapsedState, expandForSearchInit};
 }
+
+const {
+  ensureCollapseUI: ensureThemeCollapseUI,
+  applyCollapsedState: applyThemeCollapsedState,
+  expandForSearchInit: expandThemeForSearchInit,
+} = createCollapseController('theme', 'theme-toggle', 'themeContent');
 
 const {
   ensureCollapseUI: ensureKeybindsCollapseUI,
@@ -136,6 +139,7 @@ const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
+const themeResetButton = document.getElementById('themereset');
 const videoResetButton = document.getElementById('videoreset');
 const generalResetButton = document.getElementById('generalreset');
 const clickAction = document.getElementById('clickaction');
@@ -161,6 +165,20 @@ const toolbarButtonsContainer = document.getElementById('toolbarButtons');
 const toolbarResetButton = document.getElementById('toolbarreset');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
+
+const ThemePreviewPalettes = {
+  default: {bg: '#070707', panel: '#2b2b2b', accent: '#ff3232', text: '#f4f4f4', muted: '#9aa0a6'},
+  contrast: {bg: '#000000', panel: '#161616', accent: '#ffeb3b', text: '#ffffff', muted: '#d7d7d7'},
+  arctic: {bg: '#eef4fb', panel: '#ffffff', accent: '#0a84ff', text: '#16273a', muted: '#4f6479'},
+  ocean: {bg: '#0b1220', panel: '#15243d', accent: '#2ecbff', text: '#d9ebff', muted: '#8ea7cc'},
+  neon: {bg: '#0d0719', panel: '#1a1031', accent: '#39ff14', text: '#f8f4ff', muted: '#c1a8ff'},
+  sunset: {bg: '#2d1627', panel: '#4a223b', accent: '#ff7a18', text: '#ffe3c2', muted: '#f5a0a0'},
+  forest: {bg: '#102016', panel: '#1d3225', accent: '#63c36b', text: '#deedd8', muted: '#93b19a'},
+  slate: {bg: '#1a1d22', panel: '#2a313a', accent: '#8fa3bf', text: '#e6edf5', muted: '#aeb8c6'},
+  amethyst: {bg: '#1b1028', panel: '#2a1b3f', accent: '#9b5de5', text: '#f0e6ff', muted: '#cbafef'},
+  desert: {bg: '#2c2018', panel: '#433127', accent: '#d9a441', text: '#f3e5c8', muted: '#c7af8a'},
+  mint: {bg: '#0f2b27', panel: '#1e3e39', accent: '#2ed8b6', text: '#dff8f1', muted: '#95cfc2'},
+};
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -203,6 +221,7 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
+  ensureThemeCollapseUI();
   ensureVideoCollapseUI();
   ensureGeneralCollapseUI();
   ensureKeybindsCollapseUI();
@@ -234,7 +253,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
-  setSelectMenuValue(colorTheme, Options.colorTheme);
+  setThemeCardMenuValue(colorTheme, Options.colorTheme);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
   // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
@@ -280,11 +299,13 @@ async function loadOptions(newOptions) {
   }
 
   // Make sure keybind items are visible during search indexing.
+  expandThemeForSearchInit();
   expandVideoForSearchInit();
   expandGeneralForSearchInit();
   expandKeybindsForSearchInit();
   expandToolbarForSearchInit();
   initsearch();
+  applyThemeCollapsedState();
   applyVideoCollapsedState();
   applyGeneralCollapsedState();
   applyKeybindsCollapsedState();
@@ -482,12 +503,137 @@ function createSelectMenu(container, options, selected, localPrefix, callback) {
   container.appendChild(select);
 }
 
+function createThemeCardMenu(container, options, selected, localPrefix, callback) {
+  const initialSelection = selected || options[0];
+  container.replaceChildren();
+
+  const gallery = document.createElement('div');
+  gallery.className = 'theme-style-gallery';
+  gallery.setAttribute('role', 'listbox');
+  gallery.setAttribute('aria-label', Localize.getMessage('options_general_color_theme'));
+
+  const setSelectedTheme = (theme) => {
+    gallery.dataset.value = theme;
+    for (const card of gallery.querySelectorAll('.theme-style-card')) {
+      const isSelected = card.dataset.themeCard === theme;
+      card.classList.toggle('selected', isSelected);
+      card.setAttribute('aria-selected', String(isSelected));
+      card.setAttribute('aria-pressed', String(isSelected));
+    }
+  };
+
+  for (const option of options) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'theme-style-card';
+    card.dataset.themeCard = option;
+    card.setAttribute('role', 'option');
+
+    const label = localPrefix !== null ? Localize.getMessage(localPrefix + '_' + option) : option;
+    card.dataset.label = label;
+
+    const header = document.createElement('div');
+    header.className = 'theme-style-header';
+
+    const cardTitle = document.createElement('div');
+    cardTitle.className = 'theme-style-title';
+    cardTitle.textContent = label;
+
+    const cardBadge = document.createElement('div');
+    cardBadge.className = 'theme-style-badge';
+    cardBadge.textContent = option;
+
+    header.appendChild(cardTitle);
+    header.appendChild(cardBadge);
+
+    const preview = document.createElement('div');
+    preview.className = 'theme-style-preview';
+    const palette = ThemePreviewPalettes[option] || ThemePreviewPalettes.default;
+    preview.style.setProperty('--tp-bg', palette.bg);
+    preview.style.setProperty('--tp-panel', palette.panel);
+    preview.style.setProperty('--tp-accent', palette.accent);
+    preview.style.setProperty('--tp-text', palette.text);
+    preview.style.setProperty('--tp-muted', palette.muted);
+
+    const chrome = document.createElement('div');
+    chrome.className = 'theme-style-preview-topbar';
+
+    const canvas = document.createElement('div');
+    canvas.className = 'theme-style-preview-canvas';
+
+    const cardOverlay = document.createElement('div');
+    cardOverlay.className = 'theme-style-preview-overlay';
+
+    const controls = document.createElement('div');
+    controls.className = 'theme-style-preview-controls';
+    const progress = document.createElement('span');
+    progress.className = 'theme-style-progress';
+    const controlDot1 = document.createElement('span');
+    controlDot1.className = 'theme-style-control-dot';
+    const controlDot2 = document.createElement('span');
+    controlDot2.className = 'theme-style-control-dot';
+    const controlDot3 = document.createElement('span');
+    controlDot3.className = 'theme-style-control-dot';
+
+    controls.appendChild(progress);
+    controls.appendChild(controlDot1);
+    controls.appendChild(controlDot2);
+    controls.appendChild(controlDot3);
+
+    preview.appendChild(chrome);
+    preview.appendChild(canvas);
+    preview.appendChild(cardOverlay);
+    preview.appendChild(controls);
+
+    const swatches = document.createElement('div');
+    swatches.className = 'theme-style-swatches';
+    for (const color of [palette.bg, palette.panel, palette.accent, palette.text, palette.muted]) {
+      const swatch = document.createElement('span');
+      swatch.className = 'theme-style-swatch';
+      swatch.style.backgroundColor = color;
+      swatches.appendChild(swatch);
+    }
+
+    card.appendChild(header);
+    card.appendChild(preview);
+    card.appendChild(swatches);
+
+    card.addEventListener('click', () => {
+      if (gallery.dataset.value !== option) {
+        setSelectedTheme(option);
+        callback({target: {value: option}});
+      }
+    });
+
+    gallery.appendChild(card);
+  }
+
+  container.appendChild(gallery);
+
+  setSelectedTheme(initialSelection);
+}
+
 function setSelectMenuValue(container, value) {
   const select = container.querySelector('select');
   if (!select) {
     return;
   }
   select.value = value;
+}
+
+function setThemeCardMenuValue(container, value) {
+  const gallery = container.querySelector('.theme-style-gallery');
+  if (!gallery) {
+    return;
+  }
+
+  gallery.dataset.value = value;
+  for (const card of gallery.querySelectorAll('.theme-style-card')) {
+    const isSelected = card.dataset.themeCard === value;
+    card.classList.toggle('selected', isSelected);
+    card.setAttribute('aria-selected', String(isSelected));
+    card.setAttribute('aria-pressed', String(isSelected));
+  }
 }
 
 createSelectMenu(daltonizerType, Object.values(DaltonizerTypes), Options.videoDaltonizerType, 'options_video_daltonizer', (e) => {
@@ -525,8 +671,9 @@ createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visCh
   optionChanged();
 });
 
-createSelectMenu(colorTheme, Object.values(ColorThemes), Options.colorTheme, 'options_general_color_theme', (e) => {
+createThemeCardMenu(colorTheme, Object.values(ColorThemes), Options.colorTheme, 'options_general_color_theme', (e) => {
   Options.colorTheme = e.target.value;
+  document.body.dataset.theme = Options.colorTheme;
   optionChanged();
 });
 
@@ -811,6 +958,14 @@ customSourcePatterns.addEventListener('change', (e) => {
   Options.customSourcePatterns = customSourcePatterns.value;
   optionChanged();
 });
+
+if (themeResetButton) {
+  themeResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'colorTheme',
+    ]);
+  });
+}
 
 if (videoResetButton) {
   videoResetButton.addEventListener('click', () => {

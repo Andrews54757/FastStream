@@ -1003,6 +1003,22 @@ export class InterfaceController {
     });
   }
 
+  unlockMobileOrientation() {
+    try {
+      if (screen?.orientation && typeof screen.orientation.unlock === 'function') {
+        screen.orientation.unlock();
+      } else if (typeof screen?.unlockOrientation === 'function') {
+        screen.unlockOrientation();
+      } else if (typeof screen?.mozUnlockOrientation === 'function') {
+        screen.mozUnlockOrientation();
+      } else if (typeof screen?.msUnlockOrientation === 'function') {
+        screen.msUnlockOrientation();
+      }
+    } catch (e) {
+      // Ignore unsupported or disallowed orientation unlock attempts.
+    }
+  }
+
   destroy() {
     this.saveManager.destroy();
     this.unlockMobileOrientation();

@@ -431,13 +431,13 @@ button:focus-visible {
   margin-bottom: var(--space-4);
 }
 
-.theme-under-search {
-  width: 100%;
+.theme-content {
   margin-top: var(--space-2);
 }
 
-.theme-under-search .label {
-  margin-left: 0;
+.options-section[data-search-section="theme"] .section-heading {
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "title count";
 }
 
 .searchbar-shell {
@@ -605,8 +605,8 @@ body:not(.frame) .options-section .section-actions {
   justify-content: flex-start;
 }
 
-/* Reset buttons are visible by default; hide only when the section is collapsed. */
-.options-section.collapsed .reset-button {
+/* Show reset buttons, but hide them on the last four sections. */
+.options-layout > .options-section:nth-last-of-type(-n + 4) .reset-button {
   display: none;
 }
 
@@ -784,6 +784,141 @@ textarea:focus-visible {
 .select>select:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+}
+
+.theme-style-gallery {
+  --theme-card-min-width: clamp(220px, 26vw, 320px);
+  --theme-card-gap: clamp(10px, 1.2vw, 16px);
+  --theme-card-radius: clamp(10px, 0.8vw, 14px);
+  --theme-card-padding: clamp(8px, 0.9vw, 14px);
+  --theme-preview-height: clamp(112px, 12vw, 170px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--theme-card-min-width), 1fr));
+  gap: var(--theme-card-gap);
+  margin-top: var(--space-1);
+  align-items: stretch;
+}
+
+.theme-style-card {
+  display: grid;
+  gap: var(--space-2);
+  text-align: left;
+  border-radius: var(--theme-card-radius);
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+  background: color-mix(in oklab, var(--color-bg-muted) 85%, var(--color-elev) 15%);
+  padding: var(--theme-card-padding);
+  min-height: calc(var(--theme-preview-height) + clamp(64px, 5vw, 94px));
+}
+
+.theme-style-card:hover {
+  border-color: color-mix(in oklab, var(--color-border) 50%, var(--color-primary) 50%);
+  transform: translateY(-1px);
+}
+
+.theme-style-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-primary) 25%, transparent);
+}
+
+.theme-style-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.theme-style-title {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.theme-style-badge {
+  font-size: 11px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: color-mix(in oklab, var(--color-bg-muted) 75%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+  border-radius: 999px;
+  padding: 2px 8px;
+}
+
+.theme-style-preview {
+  height: var(--theme-preview-height);
+  border-radius: calc(var(--theme-card-radius) - 2px);
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, black 25%, transparent);
+  background: var(--tp-bg);
+  display: grid;
+  grid-template-rows: 14px 1fr auto auto;
+  position: relative;
+}
+
+.theme-style-preview-topbar {
+  background: color-mix(in oklab, var(--tp-panel) 80%, black 20%);
+}
+
+.theme-style-preview-canvas {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in oklab, var(--tp-accent) 28%, transparent) 0, transparent 36%),
+    radial-gradient(circle at 78% 18%, color-mix(in oklab, var(--tp-text) 20%, transparent) 0, transparent 40%),
+    linear-gradient(145deg, color-mix(in oklab, var(--tp-bg) 90%, black 10%) 0%, color-mix(in oklab, var(--tp-panel) 70%, black 30%) 100%);
+}
+
+.theme-style-preview-overlay {
+  height: 28px;
+  background: linear-gradient(to top, color-mix(in oklab, var(--tp-panel) 75%, transparent) 0%, transparent 100%);
+}
+
+.theme-style-preview-controls {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 10px);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--tp-panel);
+}
+
+.theme-style-progress {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--tp-accent) 0 42%, color-mix(in oklab, var(--tp-muted) 65%, transparent) 42% 100%);
+}
+
+.theme-style-control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--tp-text);
+  opacity: 0.82;
+}
+
+.theme-style-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(4px, 0.5vw, 8px);
+}
+
+.theme-style-swatch {
+  height: clamp(12px, 1.2vw, 18px);
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, black 24%, transparent);
+}
+
+body.mobile .theme-style-gallery {
+  grid-template-columns: 1fr;
+  --theme-card-min-width: 100%;
+  --theme-preview-height: clamp(120px, 34vw, 190px);
+}
+
+body.mobile .theme-style-card {
+  min-height: calc(var(--theme-preview-height) + 76px);
+}
+
+@media (min-width: 1280px) {
+  .theme-style-gallery {
+    --theme-card-min-width: clamp(250px, 20vw, 340px);
+  }
 }
 
 input[type="checkbox"] {
@@ -973,27 +1108,11 @@ body.mobile .option.grid1.toolbar-tool-row .label {
   text-align: left;
 }
 
-/* Mobile: collapse keyboard shortcuts by default (toggle-able) */
-.keybinds-toggle {
-  display: none;
-}
-
-/* Mobile: collapse video options by default (toggle-able) */
-.video-toggle {
-  display: none;
-}
-
-/* Mobile: collapse general options by default (toggle-able) */
-.general-toggle {
-  display: none;
-}
-
-/* Mobile: collapse toolbar buttons by default (toggle-able) */
+.theme-toggle,
+.keybinds-toggle,
+.video-toggle,
+.general-toggle,
 .toolbar-toggle {
-  display: none;
-}
-
-body.mobile .options-section[data-search-section="keybinds"] .keybinds-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1002,66 +1121,20 @@ body.mobile .options-section[data-search-section="keybinds"] .keybinds-toggle {
   font-weight: 600;
 }
 
-body.mobile .options-section[data-search-section="toolbar"] .toolbar-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 10px;
-  min-height: 32px;
-  font-weight: 600;
-}
-
-body.mobile .options-section[data-search-section="video"] .video-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 10px;
-  min-height: 32px;
-  font-weight: 600;
-}
-
-body.mobile .options-section[data-search-section="general"] .general-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 10px;
-  min-height: 32px;
-  font-weight: 600;
-}
-
-body.mobile .options-section[data-search-section="keybinds"].collapsed .keybinds-content {
+.options-section[data-search-section="theme"].collapsed .theme-content,
+.options-section[data-search-section="keybinds"].collapsed .keybinds-content,
+.options-section[data-search-section="toolbar"].collapsed .toolbar-content,
+.options-section[data-search-section="video"].collapsed .video-content,
+.options-section[data-search-section="general"].collapsed .general-content {
   display: none;
 }
 
-body.mobile .options-section[data-search-section="toolbar"].collapsed .toolbar-content {
-  display: none;
-}
-
-body.mobile .options-section[data-search-section="video"].collapsed .video-content {
-  display: none;
-}
-
-body.mobile .options-section[data-search-section="general"].collapsed .general-content {
-  display: none;
-}
-
-/* Ensure search can still count/show keybind items */
-body.mobile.search-active .options-section[data-search-section="keybinds"].collapsed .keybinds-content {
-  display: block;
-}
-
-/* Ensure search can still count/show toolbar items */
-body.mobile.search-active .options-section[data-search-section="toolbar"].collapsed .toolbar-content {
-  display: block;
-}
-
-/* Ensure search can still count/show video items */
-body.mobile.search-active .options-section[data-search-section="video"].collapsed .video-content {
-  display: block;
-}
-
-/* Ensure search can still count/show general items */
-body.mobile.search-active .options-section[data-search-section="general"].collapsed .general-content {
+/* Ensure search can still count/show items */
+body.search-active .options-section[data-search-section="theme"].collapsed .theme-content,
+body.search-active .options-section[data-search-section="keybinds"].collapsed .keybinds-content,
+body.search-active .options-section[data-search-section="toolbar"].collapsed .toolbar-content,
+body.search-active .options-section[data-search-section="video"].collapsed .video-content,
+body.search-active .options-section[data-search-section="general"].collapsed .general-content {
   display: block;
 }
 
