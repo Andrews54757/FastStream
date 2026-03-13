@@ -9,6 +9,9 @@
   - The jump amount uses your configured **Seek step size**.
   - The *middle* area still follows your single/double/triple‑tap actions (play/pause, fullscreen, etc.).
 
+![Tap action zones diagram](docs/images/tap-zones.svg)
+
+
 - **Configurable auto‑hide controls**
   - New **Controls hide delay** setting lets you choose how quickly the on‑screen controls fade away after you stop interacting.
   - Helps reduce the controls blocking video content on smaller screens.
