@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Oynatıcı araç çubuğunda hangi düğmelerin gösterileceğini seçin."
     },
+    "options_section_toggle_show": {
+        "message": "Göster"
+    },
+    "options_section_toggle_hide": {
+        "message": "Gizle"
+    },
     "options_toolbar_reset": {
         "message": "Varsayılara Sıfırla"
     }

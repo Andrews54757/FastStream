@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "プレーヤーのツールバーに表示するボタンを選択します。"
     },
+    "options_section_toggle_show": {
+        "message": "表示"
+    },
+    "options_section_toggle_hide": {
+        "message": "非表示"
+    },
     "options_toolbar_reset": {
         "message": "デフォルトにリセット"
     }

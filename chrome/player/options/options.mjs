@@ -40,6 +40,13 @@ function createCollapseController(sectionName, toggleClass, contentId) {
   let collapsed = null;
   let collapseUIReady = false;
 
+  function getToggleLabel(shouldCollapse) {
+    const key = shouldCollapse ? 'options_section_toggle_show' : 'options_section_toggle_hide';
+    const fallback = shouldCollapse ? 'Show' : 'Hide';
+    const localized = Localize.getMessage(key);
+    return localized === key ? fallback : localized;
+  }
+
   function getCollapseEls() {
     const section = document.querySelector(`.options-section[data-search-section="${sectionName}"]`);
     const toggle = section?.querySelector?.(`.${toggleClass}`);
@@ -75,7 +82,7 @@ function createCollapseController(sectionName, toggleClass, contentId) {
     const shouldCollapse = !!collapsed && !document.body.classList.contains('search-active');
     section.classList.toggle('collapsed', shouldCollapse);
     toggle.setAttribute('aria-expanded', String(!shouldCollapse));
-    toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
+    toggle.textContent = getToggleLabel(shouldCollapse);
   }
 
   function expandForSearchInit() {

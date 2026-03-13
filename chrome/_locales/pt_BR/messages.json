@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Escolha quais botões serão exibidos na barra de ferramentas do player."
     },
+    "options_section_toggle_show": {
+        "message": "Mostrar"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ocultar"
+    },
     "options_toolbar_reset": {
         "message": "Redefinir para os padrões"
     }

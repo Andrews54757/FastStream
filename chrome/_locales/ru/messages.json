@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Выберите, какие кнопки показывать на панели инструментов плеера."
     },
+    "options_section_toggle_show": {
+        "message": "Показать"
+    },
+    "options_section_toggle_hide": {
+        "message": "Скрыть"
+    },
     "options_toolbar_reset": {
         "message": "Сбросить настройки по умолчанию"
     }

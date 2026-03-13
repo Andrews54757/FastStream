@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Choisissez quels boutons sont affichés dans la barre d'outils du lecteur."
     },
+    "options_section_toggle_show": {
+        "message": "Afficher"
+    },
+    "options_section_toggle_hide": {
+        "message": "Masquer"
+    },
     "options_toolbar_reset": {
         "message": "Réinitialiser aux valeurs par défaut"
     }

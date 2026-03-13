@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Pilih tombol mana yang ditampilkan di bilah alat pemutar."
     },
+    "options_section_toggle_show": {
+        "message": "Tampilkan"
+    },
+    "options_section_toggle_hide": {
+        "message": "Sembunyikan"
+    },
     "options_toolbar_reset": {
         "message": "Kembalikan ke Default"
     }

@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Wähle aus, welche Schaltflächen in der Player-Toolbar angezeigt werden."
     },
+    "options_section_toggle_show": {
+        "message": "Anzeigen"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ausblenden"
+    },
     "options_toolbar_reset": {
         "message": "Auf Standardwerte zurücksetzen"
     }

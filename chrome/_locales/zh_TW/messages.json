@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "選擇要在播放器工具列中顯示哪些按鈕。"
     },
+    "options_section_toggle_show": {
+        "message": "顯示"
+    },
+    "options_section_toggle_hide": {
+        "message": "隱藏"
+    },
     "options_toolbar_reset": {
         "message": "重設為預設值"
     }

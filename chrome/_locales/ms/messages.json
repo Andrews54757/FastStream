@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Pilih butang yang dipaparkan pada bar alat pemain."
     },
+    "options_section_toggle_show": {
+        "message": "Tunjukkan"
+    },
+    "options_section_toggle_hide": {
+        "message": "Sembunyikan"
+    },
     "options_toolbar_reset": {
         "message": "Tetapkan semula kepada lalai"
     }

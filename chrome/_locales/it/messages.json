@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Scegli quali pulsanti mostrare nella barra degli strumenti del lettore."
     },
+    "options_section_toggle_show": {
+        "message": "Mostra"
+    },
+    "options_section_toggle_hide": {
+        "message": "Nascondi"
+    },
     "options_toolbar_reset": {
         "message": "Ripristina impostazioni predefinite"
     }

@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Wybierz, które przyciski mają być wyświetlane na pasku narzędzi odtwarzacza."
     },
+    "options_section_toggle_show": {
+        "message": "Pokaż"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ukryj"
+    },
     "options_toolbar_reset": {
         "message": "Przywróć domyślne"
     }

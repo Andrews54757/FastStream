@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "Kies welke knoppen op de werkbalk van de speler worden weergegeven."
     },
+    "options_section_toggle_show": {
+        "message": "Tonen"
+    },
+    "options_section_toggle_hide": {
+        "message": "Verbergen"
+    },
     "options_toolbar_reset": {
         "message": "Herstel standaardinstellingen"
     }

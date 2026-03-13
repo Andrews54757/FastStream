@@ -1238,6 +1238,12 @@
     "options_toolbar_body": {
         "message": "플레이어 도구 모음에 표시할 버튼을 선택합니다."
     },
+    "options_section_toggle_show": {
+        "message": "표시"
+    },
+    "options_section_toggle_hide": {
+        "message": "숨기기"
+    },
     "options_toolbar_reset": {
         "message": "기본값으로 재설정"
     }
