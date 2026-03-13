@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "これらのキーバインドは拡張機能の設定で変更できます"
     },
+    "welcome_page_fork_header": {
+        "message": "このフォークの新機能"
+    },
+    "welcome_page_fork_content1": {
+        "message": "動画の左側または右側をダブルタップすると、現在のシークステップ分だけ移動します。"
+    },
+    "welcome_page_fork_content2": {
+        "message": "中央のタップ領域では、設定したシングルタップ、ダブルタップ、トリプルタップの動作が使われるため、再生/一時停止、全画面、PiP などをカスタマイズできます。"
+    },
+    "welcome_page_fork_content3": {
+        "message": "スキップボタンに現在のシークステップ値が表示されるようになり、モバイルでの移動量をひと目で確認できます。"
+    },
+    "welcome_page_fork_content4": {
+        "message": "コントロールがすぐ消えすぎたり、長く表示されすぎたりする場合は、コントロールの自動非表示の遅延を変更できます。"
+    },
+    "welcome_page_fork_content5": {
+        "message": "ツールバー設定では、ボタンの表示/非表示を切り替えたり、リセットでデフォルトのレイアウトに戻したりできます。"
+    },
+    "welcome_page_fork_content6": {
+        "message": "回転ボタンは、シンプルな縦向き/横向きの切り替えになりました。端末やブラウザによっては利用できない場合があります。"
+    },
     "welcome_page_keybinds_content1": {
         "message": "矢印キー - 前後の 1 秒間隔のシーク"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする"
+    },
+    "options_general_copytimestampurl": {
+        "message": "時間カウンターをクリックすると現在のタイムスタンプ付きURLをコピーできるようにする"
     },
     "options_general_targetspeed": {
         "message": "プリダウンローダーのターゲット速度"

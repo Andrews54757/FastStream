@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "이 단축키는 확장 기능 설정에서 변경할 수 있습니다."
     },
+    "welcome_page_fork_header": {
+        "message": "이 포크의 새로운 기능"
+    },
+    "welcome_page_fork_content1": {
+        "message": "비디오의 왼쪽이나 오른쪽을 두 번 탭하면 현재 탐색 단계 크기만큼 이동합니다."
+    },
+    "welcome_page_fork_content2": {
+        "message": "가운데 탭 영역은 설정한 한 번 탭, 두 번 탭, 세 번 탭 동작을 사용하므로 재생/일시정지, 전체 화면, PiP 등을 사용자 지정할 수 있습니다."
+    },
+    "welcome_page_fork_content3": {
+        "message": "건너뛰기 버튼에 현재 탐색 단계 숫자가 표시되어 모바일에서 이동 거리를 한눈에 확인할 수 있습니다."
+    },
+    "welcome_page_fork_content4": {
+        "message": "컨트롤이 너무 빨리 사라지거나 화면에 너무 오래 남아 있으면 컨트롤 자동 숨김 지연 시간을 변경할 수 있습니다."
+    },
+    "welcome_page_fork_content5": {
+        "message": "도구 모음 설정에서 버튼을 표시하거나 숨기고 재설정으로 기본 레이아웃을 복원할 수 있습니다."
+    },
+    "welcome_page_fork_content6": {
+        "message": "회전 버튼은 이제 간단한 세로/가로 전환 토글입니다. 기기와 브라우저 지원은 다를 수 있습니다."
+    },
     "welcome_page_keybinds_content1": {
         "message": "화살표 키 - 앞/뒤로 1초 이동"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "가능하면 백그라운드에서 전체 영상을 미리 다운로드합니다"
+    },
+    "options_general_copytimestampurl": {
+        "message": "시간 카운터를 클릭하면 현재 타임스탬프가 포함된 URL을 복사할 수 있도록 함"
     },
     "options_general_targetspeed": {
         "message": "사전 다운로드의 목표 속도"

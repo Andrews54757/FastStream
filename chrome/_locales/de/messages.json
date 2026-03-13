@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Du kannst diese Tastenbelegungen in den Erweiterungseinstellungen ändern"
     },
+    "welcome_page_fork_header": {
+        "message": "Neu in diesem Fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Tippe doppelt auf die linke oder rechte Seite des Videos, um um die aktuell eingestellte Sprungweite zu spulen."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Der mittlere Tippbereich verwendet deine eingestellten Aktionen für einfaches, doppeltes und dreifaches Tippen, sodass du Wiedergabe/Pause, Vollbild, PiP und mehr anpassen kannst."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Die Sprungtasten zeigen jetzt die aktuelle Sprungweite an, sodass du die mobile Sprungdistanz auf einen Blick prüfen kannst."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Du kannst die Verzögerung zum Ausblenden der Steuerelemente ändern, wenn sie zu schnell verschwinden oder zu lange eingeblendet bleiben."
+    },
+    "welcome_page_fork_content5": {
+        "message": "In den Symbolleisten-Einstellungen kannst du Schaltflächen ein- oder ausblenden und das Standardlayout mit Zurücksetzen wiederherstellen."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Die Drehen-Schaltfläche ist jetzt ein einfacher Hochformat-/Querformat-Schalter. Geräte- und Browserunterstützung kann variieren."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Pfeiltasten - 1 sekunde vor-/zurückspulen"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Lade das gesamte Video im Hintergrund vor falls möglich"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Aktiviere das Kopieren einer URL mit aktuellem Zeitstempel beim Anklicken der Zeitanzeige"
     },
     "options_general_targetspeed": {
         "message": "Download geschwindigkeit fürs vor laden"

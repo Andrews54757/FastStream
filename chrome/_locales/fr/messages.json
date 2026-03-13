@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Vous pouvez modifier ces raccourcis dans les paramètres de l'extension."
     },
+    "welcome_page_fork_header": {
+        "message": "Nouveautés de ce fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Double-tapez le côté gauche ou droit de la vidéo pour avancer ou reculer selon votre pas de recherche actuel."
+    },
+    "welcome_page_fork_content2": {
+        "message": "La zone centrale utilise vos actions configurées pour l'appui simple, double et triple, afin de personnaliser lecture/pause, plein écran, PiP, etc."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Les boutons de saut affichent maintenant la valeur actuelle du pas de recherche, ce qui permet de vérifier d'un coup d'œil la distance de saut sur mobile."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Vous pouvez modifier le délai de masquage des contrôles s'ils disparaissent trop vite ou restent affichés trop longtemps."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Les paramètres de la barre d'outils vous permettent d'afficher ou de masquer des boutons et de restaurer la disposition par défaut avec Réinitialiser."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Le bouton de rotation est désormais un simple bascule portrait/paysage. La prise en charge selon l'appareil et le navigateur peut varier."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Touches fléchées - avancer/reculer de 1 seconde"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Précharger la vidéo entière en arrière-plan si possible"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Permettre de copier une URL avec l'horodatage actuel en cliquant sur le compteur de temps"
     },
     "options_general_targetspeed": {
         "message": "Vitesse de téléchargement cible du préchargeur"

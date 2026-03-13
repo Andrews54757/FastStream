@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Anda boleh menukar ikatan kekunci ini dalam tetapan sambungan"
     },
+    "welcome_page_fork_header": {
+        "message": "Baharu dalam fork ini"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Dwi-ketik bahagian kiri atau kanan video untuk maju atau undur mengikut saiz langkah carian semasa anda."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Kawasan ketikan tengah menggunakan tindakan ketik tunggal, dua kali dan tiga kali yang anda tetapkan, jadi anda boleh menyesuaikan main/jeda, skrin penuh, PiP dan banyak lagi."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Butang langkau kini memaparkan nombor langkah carian semasa, supaya anda boleh menyemak jarak langkau pada mudah alih dengan sepintas lalu."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Anda boleh menukar kelewatan sembunyi kawalan jika kawalan hilang terlalu cepat atau kekal pada skrin terlalu lama."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Tetapan Bar Alat membolehkan anda menunjukkan atau menyembunyikan butang dan memulihkan susun atur lalai dengan Reset."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Butang putar kini ialah togol potret/landskap yang ringkas. Sokongan peranti dan pelayar mungkin berbeza."
+    },
     "welcome_page_keybinds_content1": {
         "message": "kekunci anak panah - 1 saat mencari ke hadapan/belakang"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Predownload entire video in the background if possible"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Benarkan klik pada kaunter masa untuk menyalin URL dengan cap masa semasa"
     },
     "options_general_targetspeed": {
         "message": "Target download speed of predownloader"

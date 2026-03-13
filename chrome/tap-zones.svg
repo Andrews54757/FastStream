@@ -34,7 +34,7 @@
 
   <text x="124" y="152" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#bbb">Double-tap</text>
   <text x="124" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#4db8ff">Seek Back</text>
-  <text x="124" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step</text>
+  <text x="124" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step (5s default)</text>
 
   <!-- ══════════════════════════════════════
        MIDDLE ZONE  (zone center x = 300)
@@ -79,7 +79,7 @@
 
   <text x="476" y="152" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#bbb">Double-tap</text>
   <text x="476" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffaa33">Seek Forward</text>
-  <text x="476" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step</text>
+  <text x="476" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step (5s default)</text>
 
   <!-- Zone width percentages (below the player box) -->
   <text x="124" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#555">← 35%</text>

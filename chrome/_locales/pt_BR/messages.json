@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Você pode alterar esses atalhos do teclado nas configurações da extensão"
     },
+    "welcome_page_fork_header": {
+        "message": "Novidades neste fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Toque duas vezes no lado esquerdo ou direito do vídeo para avançar ou voltar usando o tamanho atual do passo de busca."
+    },
+    "welcome_page_fork_content2": {
+        "message": "A área central usa as ações configuradas para toque simples, duplo e triplo, então você pode personalizar reproduzir/pausar, tela cheia, PiP e muito mais."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Os botões de pular agora mostram o número atual do passo de busca, facilitando conferir rapidamente a distância do salto no celular."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Você pode alterar o atraso para ocultar os controles se eles desaparecerem rápido demais ou ficarem na tela por tempo demais."
+    },
+    "welcome_page_fork_content5": {
+        "message": "As configurações da barra de ferramentas permitem mostrar ou ocultar botões e restaurar o layout padrão com Redefinir."
+    },
+    "welcome_page_fork_content6": {
+        "message": "O botão de rotação agora é uma alternância simples entre retrato e paisagem. O suporte pode variar conforme o dispositivo e o navegador."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Setas do teclado - 1 segundo de busca para frente/trás"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Baixe previamente o vídeo inteiro em segundo plano, se possível"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Permitir que clicar no contador de tempo copie uma URL com o carimbo de tempo atual"
     },
     "options_general_targetspeed": {
         "message": "Velocidade alvo de download do pré-downloader"

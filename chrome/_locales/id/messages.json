@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Anda dapat mengubah pintasan tombol ini di pengaturan ekstensi."
     },
+    "welcome_page_fork_header": {
+        "message": "Yang baru di fork ini"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Ketuk dua kali sisi kiri atau kanan video untuk maju atau mundur sesuai ukuran langkah pencarian Anda saat ini."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Area ketuk tengah menggunakan aksi ketuk tunggal, ganda, dan tiga kali yang Anda atur, sehingga Anda dapat menyesuaikan putar/jeda, layar penuh, PiP, dan lainnya."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Tombol lewati sekarang menampilkan angka langkah pencarian saat ini, sehingga Anda dapat melihat jarak lompatan di ponsel dengan cepat."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Anda dapat mengubah jeda sembunyi kontrol jika kontrol hilang terlalu cepat atau tetap tampil terlalu lama."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Pengaturan Bilah Alat memungkinkan Anda menampilkan atau menyembunyikan tombol serta memulihkan tata letak default dengan Reset."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Tombol putar sekarang menjadi sakelar sederhana untuk potret/lanskap. Dukungan perangkat dan browser dapat berbeda-beda."
+    },
     "welcome_page_keybinds_content1": {
         "message": "tombol panah - lompat 1 detik maju/mundur"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Unduh seluruh video di latar belakang jika memungkinkan"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Izinkan klik pada penghitung waktu untuk menyalin URL dengan stempel waktu saat ini"
     },
     "options_general_targetspeed": {
         "message": "Kecepatan unduh target predownloader"

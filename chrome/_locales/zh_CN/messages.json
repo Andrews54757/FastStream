@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "可在扩展设置中更改这些快捷键"
     },
+    "welcome_page_fork_header": {
+        "message": "此 Fork 的新功能"
+    },
+    "welcome_page_fork_content1": {
+        "message": "双击视频左侧或右侧，可按当前的跳转步长前进或后退。"
+    },
+    "welcome_page_fork_content2": {
+        "message": "中间点击区域会使用你配置的单击、双击和三击操作，因此你可以自定义播放/暂停、全屏、画中画等功能。"
+    },
+    "welcome_page_fork_content3": {
+        "message": "跳转按钮现在会显示当前的跳转步长数值，方便你在移动端一眼确认跳转距离。"
+    },
+    "welcome_page_fork_content4": {
+        "message": "如果控制栏消失得太快或停留得太久，你可以调整控制栏隐藏延迟。"
+    },
+    "welcome_page_fork_content5": {
+        "message": "你可以在工具栏设置中显示或隐藏按钮，并通过“重置”恢复默认布局。"
+    },
+    "welcome_page_fork_content6": {
+        "message": "旋转按钮现在是一个简单的竖屏/横屏切换开关。设备和浏览器支持可能有所不同。"
+    },
     "welcome_page_keybinds_content1": {
         "message": "方向键 - 前进/后退 1 秒"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "若可能，后台预下载整段视频"
+    },
+    "options_general_copytimestampurl": {
+        "message": "启用点击时间计数器时复制带当前时间戳的 URL"
     },
     "options_general_targetspeed": {
         "message": "预下载器的目标下载速度"

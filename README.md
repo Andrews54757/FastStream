@@ -11,6 +11,19 @@
 
 ![Tap action zones diagram](docs/images/tap-zones.svg)
 
+New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
+
+- **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
+- **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
+- **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
+- **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
+
+Notes for new users:
+
+- The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
+- The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
+- If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
+
 
 - **Configurable auto‑hide controls**
   - New **Controls hide delay** setting lets you choose how quickly the on‑screen controls fade away after you stop interacting.

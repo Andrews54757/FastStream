@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Możesz zmienić te skróty w ustawieniach rozszerzenia"
     },
+    "welcome_page_fork_header": {
+        "message": "Nowości w tym forku"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Stuknij dwukrotnie lewą lub prawą stronę wideo, aby przewinąć o aktualnie ustawiony krok przewijania."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Środkowy obszar dotyku używa skonfigurowanych akcji pojedynczego, podwójnego i potrójnego stuknięcia, więc możesz dostosować odtwarzanie/pauzę, pełny ekran, PiP i inne funkcje."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Przyciski przewijania pokazują teraz numer aktualnego kroku przewijania, dzięki czemu na urządzeniach mobilnych od razu widać dystans skoku."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Możesz zmienić opóźnienie ukrywania kontrolek, jeśli znikają zbyt szybko albo pozostają na ekranie zbyt długo."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Ustawienia paska narzędzi pozwalają pokazywać lub ukrywać przyciski oraz przywrócić domyślny układ za pomocą Resetuj."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Przycisk obrotu to teraz prosty przełącznik pion/poziom. Obsługa może się różnić w zależności od urządzenia i przeglądarki."
+    },
     "welcome_page_keybinds_content1": {
         "message": "klawisze strzałek - przewijaj o 1 sekundę do przodu/tyłu"
     },
@@ -943,6 +964,9 @@
     },
     "options_general_predownload": {
         "message": "Wstępnie pobierz całe wideo w tle, jeśli to możliwe"
+    },
+    "options_general_copytimestampurl": {
+        "message": "Włącz kopiowanie adresu URL z bieżącym znacznikiem czasu po kliknięciu licznika czasu"
     },
     "options_general_targetspeed": {
         "message": "Docelowa prędkość pobierania predownloadera"
