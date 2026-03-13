@@ -48,6 +48,7 @@ export class FastStreamClient extends EventEmitter {
   constructor() {
     super();
     this.version = EnvUtils.getVersion();
+    this.lockedPlayerDimensions = this.captureViewportDimensions();
     this.handleViewportResize = this.applyPlayerRotationLayout.bind(this);
     window.addEventListener('resize', this.handleViewportResize);
 
@@ -151,7 +152,24 @@ export class FastStreamClient extends EventEmitter {
     this.pastSeeks = [];
     this.pastUnseeks = [];
     this.fragmentsStore = {};
+    this.applyPlayerRotationLayout();
     this.mainloop();
+  }
+
+  captureViewportDimensions() {
+    const viewport = window.visualViewport;
+    const width = Math.round(viewport?.width || document.documentElement.clientWidth || window.innerWidth || window.screen?.width || 0);
+    const height = Math.round(viewport?.height || document.documentElement.clientHeight || window.innerHeight || window.screen?.height || 0);
+    return {width, height};
+  }
+
+  getLockedPlayerDimensions() {
+    if (this.lockedPlayerDimensions?.width > 0 && this.lockedPlayerDimensions?.height > 0) {
+      return this.lockedPlayerDimensions;
+    }
+
+    this.lockedPlayerDimensions = this.captureViewportDimensions();
+    return this.lockedPlayerDimensions;
   }
 
   /**
@@ -480,6 +498,8 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
+    const {width, height} = this.getLockedPlayerDimensions();
+
     const normalizedTurns = ((this.options.videoRotate % 4) + 4) % 4;
     const isQuarterTurn = normalizedTurns % 2 === 1;
     const rotation = normalizedTurns * 90;
@@ -487,10 +507,6 @@ export class FastStreamClient extends EventEmitter {
     playerContainer.classList.toggle('fs-player-rotated', isQuarterTurn);
 
     if (isQuarterTurn) {
-      const parentRect = playerContainer.parentElement?.getBoundingClientRect?.();
-      const width = parentRect?.width || document.documentElement.clientWidth || window.innerWidth;
-      const height = parentRect?.height || document.documentElement.clientHeight || window.innerHeight;
-
       playerContainer.style.width = `${height}px`;
       playerContainer.style.height = `${width}px`;
       playerContainer.style.left = '50%';
@@ -499,8 +515,8 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
-    playerContainer.style.width = '';
-    playerContainer.style.height = '';
+    playerContainer.style.width = `${width}px`;
+    playerContainer.style.height = `${height}px`;
     playerContainer.style.left = '';
     playerContainer.style.top = '';
     playerContainer.style.transform = rotation === 0 ? '' : `rotate(${rotation}deg)`;
