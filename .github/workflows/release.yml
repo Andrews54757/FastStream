@@ -14,7 +14,7 @@ on:
       target_commitish:
         description: "Branch or commit to tag/release"
         required: true
-        default: new-features
+        default: main
         type: string
 
 permissions:
@@ -38,17 +38,23 @@ jobs:
           node-version: lts/*
           cache: npm
 
-      - name: Resolve release tag
+      - name: Resolve release variables
         id: vars
         shell: bash
         run: |
+          set -euo pipefail
+
           if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
-            echo "tag_name=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
-            echo "target_commitish=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+            TAG_NAME="${GITHUB_REF_NAME}"
+            TARGET_SHA="${GITHUB_SHA}"
           else
-            echo "tag_name=${{ inputs.tag_name }}" >> "$GITHUB_OUTPUT"
-            echo "target_commitish=${{ inputs.target_commitish }}" >> "$GITHUB_OUTPUT"
+            TAG_NAME="${{ inputs.tag_name }}"
+            # Resolve user input (branch, tag, or SHA) to a fixed commit SHA.
+            TARGET_SHA="$(git rev-parse "${{ inputs.target_commitish }}^{commit}")"
           fi
+
+          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+          echo "target_commitish=${TARGET_SHA}" >> "$GITHUB_OUTPUT"
 
       - name: Install dependencies
         run: npm ci
@@ -63,17 +69,90 @@ jobs:
           set -euo pipefail
 
           TAG_NAME="${{ steps.vars.outputs.tag_name }}"
-          BASE_REF="1.3.75"
-          TARGET_REF="new-features"
-          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream/compare/1.3.75...new-features"
+          TARGET_SHA="${{ steps.vars.outputs.target_commitish }}"
+          RELEASE_VERSION="${TAG_NAME#v}"
+          RELEASE_VERSION="${RELEASE_VERSION#V}"
 
           git fetch --tags --force
-          git fetch origin "${TARGET_REF}" --force
 
-          RANGE="${BASE_REF}..origin/${TARGET_REF}"
+          TAG_EXISTS="false"
+          if git rev-parse -q --verify "refs/tags/${TAG_NAME}" >/dev/null; then
+            TAG_EXISTS="true"
+          fi
+
+          PREVIOUS_TAG="$(git tag --sort=-version:refname | grep -Fxv "${TAG_NAME}" | head -n 1 || true)"
+
+          if [[ -n "${PREVIOUS_TAG}" ]]; then
+            if [[ "${TAG_EXISTS}" == "true" ]]; then
+              RANGE="${PREVIOUS_TAG}..${TAG_NAME}"
+              CHANGELOG_TO="${TAG_NAME}"
+            else
+              RANGE="${PREVIOUS_TAG}..${TARGET_SHA}"
+              CHANGELOG_TO="${TARGET_SHA}"
+            fi
+            CHANGELOG_URL="https://github.com/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${CHANGELOG_TO}"
+          else
+            RANGE="${TARGET_SHA}"
+            CHANGELOG_URL="https://github.com/${GITHUB_REPOSITORY}/commits/${TARGET_SHA}"
+          fi
+
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
+
+          cat > release_body.md <<EOF
+          ## ${RELEASE_VERSION}
+
+          # Mobile Experience Improvements [GENERAL RELEASE NOTES]
+
+          - **Double-tap to seek (touch-friendly)**
+            - Double-tap the *left* side to jump backward and the *right* side to jump forward.
+            - The jump amount uses your configured **Seek step size**.
+            - The *middle* area still follows your single/double/triple-tap actions (play/pause, fullscreen, etc.).
+
+          ![Touch-screen Guide](docs/images/tap-zones.svg)
+
+          New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
+
+          - **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
+          - **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
+          - **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
+          - **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
+
+          Notes for new users:
+
+          - The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
+          - The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
+          - If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
+
+          - **Configurable auto-hide controls**
+            - New **Controls hide delay** setting lets you choose how quickly the on-screen controls fade away after you stop interacting.
+            - Helps reduce the controls blocking video content on smaller screens.
+
+          - **Skip buttons show the seek step**
+            - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
+
+          - **Simpler rotate control (better on phones)**
+            - The **Rotate** button is moved to the main toolbar for faster access.
+            - Rotation is simplified to a practical **portrait <-> landscape** toggle.
+
+          - **Customize the toolbar for mobile**
+            - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
+            - Includes a **Reset** button to restore the default toolbar configuration.
+            - Changes persist and are applied across the player.
+
+          - **Improved mobile options/menu usability**
+            - Options UI and the in-player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
+
+          - **Less likely to be covered by website overlays**
+            - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.
+
+          - **Updated mobile/touch tips**
+            - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
+
+          EOF
+
           {
+            echo
             echo "### Today's commit messages"
             echo
             if [[ "${COMMIT_COUNT}" -gt 0 ]]; then
@@ -82,8 +161,11 @@ jobs:
               echo "- No commits were found for today in this compare range."
             fi
             echo
+            if [[ -n "${PREVIOUS_TAG}" ]]; then
+              echo "Compared from ${PREVIOUS_TAG} to ${TAG_NAME}."
+            fi
             echo "Full changelog: ${CHANGELOG_URL}"
-          } > release_body.md
+          } >> release_body.md
 
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
