@@ -90,11 +90,11 @@ jobs:
               RANGE="${PREVIOUS_TAG}..${TARGET_SHA}"
               CHANGELOG_TO="${TARGET_SHA}"
             fi
-            CHANGELOG_URL="https://github.com/${GITHUB_REPOSITORY}/compare/${PREVIOUS_TAG}...${CHANGELOG_TO}"
           else
             RANGE="${TARGET_SHA}"
-            CHANGELOG_URL="https://github.com/${GITHUB_REPOSITORY}/commits/${TARGET_SHA}"
           fi
+
+          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features"
 
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
