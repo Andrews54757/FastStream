@@ -42,9 +42,6 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install dependencies
-        run: npm ci
-
       - name: Build extension artifacts with requested version
         env:
           FASTSTREAM_BUILD_VERSION: ${{ github.event.inputs.release_version }}
