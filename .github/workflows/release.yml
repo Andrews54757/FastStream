@@ -13,7 +13,7 @@ on:
         type: string
       target_commitish:
         description: "Branch or commit to tag/release"
-        required: false
+        required: true
         default: new-features
         type: string
 
@@ -63,37 +63,29 @@ jobs:
           set -euo pipefail
 
           TAG_NAME="${{ steps.vars.outputs.tag_name }}"
-          TARGET_COMMITISH="${{ steps.vars.outputs.target_commitish }}"
+          BASE_REF="1.3.75"
+          TARGET_REF="new-features"
+          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream/compare/1.3.75...new-features"
+
           git fetch --tags --force
+          git fetch origin "${TARGET_REF}:${TARGET_REF}" --force
 
-          if git rev-parse "refs/tags/${TAG_NAME}" >/dev/null 2>&1; then
-            CURRENT_REF="${TAG_NAME}"
-          else
-            CURRENT_REF="${TARGET_COMMITISH}"
-          fi
-
-          PREV_TAG="$(git tag --merged "${CURRENT_REF}" --sort=-creatordate | grep -Fxv "${TAG_NAME}" | head -n 1 || true)"
-
-          if [[ -n "${PREV_TAG}" ]]; then
-            RANGE="${PREV_TAG}..${CURRENT_REF}"
-            CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/compare/${PREV_TAG}...${TAG_NAME}"
-            RANGE_TEXT="Changes since ${PREV_TAG}"
-          else
-            RANGE="${CURRENT_REF}"
-            CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/commits/${TARGET_COMMITISH}"
-            RANGE_TEXT="Latest included changes"
-          fi
-
-          COMMIT_COUNT="$(git rev-list --count "${RANGE}" 2>/dev/null || echo 0)"
+          RANGE="${BASE_REF}..${TARGET_REF}"
+          TODAY_UTC="$(date -u +%Y-%m-%d)"
+          COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
 
           {
             echo "## ${TAG_NAME}"
             echo
-            echo "${RANGE_TEXT}: ${COMMIT_COUNT} commit(s)."
+            echo "Today's commits (${TODAY_UTC} UTC) in ${BASE_REF}...${TARGET_REF}: ${COMMIT_COUNT} commit(s)."
             echo
-            echo "### Summary"
+            echo "### Today's commit messages"
             echo
-            git log --no-merges --max-count=12 --pretty='- %s (%h)' "${RANGE}"
+            if [[ "${COMMIT_COUNT}" -gt 0 ]]; then
+              git log --no-merges --since="${TODAY_UTC} 00:00:00" --pretty='- %s (%h)' "${RANGE}"
+            else
+              echo "- No commits were found for today in this compare range."
+            fi
             echo
             echo "Full changelog: ${CHANGELOG_URL}"
           } > release_body.md
