@@ -80,16 +80,75 @@ jobs:
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${TODAY_LOG_REF}" 2>/dev/null || echo 0)"
 
-          awk '
-            /^# Mobile Experience Improvements \[NEW\]/ { in_section=1 }
-            in_section && /^## / { exit }
-            in_section { print }
-          ' README.md > release_body.md
+          IMG_BASE="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/docs/images"
 
-          # GitHub release bodies do not reliably resolve relative image paths.
-          # Convert docs image links to absolute raw URLs at the release commit.
-          sed -i -E "s#\]\((docs/images/[^)]+)\)#](https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/\1)#g" release_body.md
-          sed -i -E "s#src=\"(docs/images/[^\"]+)\"#src=\"https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/\1\"#g" release_body.md
+          cat <<EOF | sed 's/^          //' > release_body.md
+          [![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
+
+          # FastStream
+
+          # Mobile Experience Improvements [NEW]
+
+          - **Double-tap to seek (touch-friendly)**
+            - Double-tap the *left* side to jump backward and the *right* side to jump forward.
+            - The jump amount uses your configured **Seek step size**.
+            - The *middle* area still follows your single/double/triple-tap actions (play/pause, fullscreen, etc.).
+
+          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/Mobile-Experience-Improvements/docs/images/tap-zones.svg)
+
+          <p>
+            <img src="${IMG_BASE}/Screenshot_20260313_031017_Iceraven.jpg" width="140">
+            <img src="${IMG_BASE}/Screenshot_20260313_031029_Iceraven.jpg" width="140">
+            <img src="${IMG_BASE}/Screenshot_20260313_031034_Iceraven.jpg" width="140">
+            <img src="${IMG_BASE}/Screenshot_20260313_031039_Iceraven.jpg" width="140">
+            <img src="${IMG_BASE}/Screenshot_20260313_031046_Iceraven.jpg" width="140">
+            <img src="${IMG_BASE}/Screenshot_20260313_031053_Iceraven.jpg" width="140">
+          </p>
+
+          New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
+
+          - **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
+          - **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
+          - **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
+          - **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
+
+          Notes for new users:
+
+          - The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
+          - The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
+          - If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
+
+          - **Configurable auto-hide controls**
+            - New **Controls hide delay** setting lets you choose how quickly the on-screen controls fade away after you stop interacting.
+            - Helps reduce the controls blocking video content on smaller screens.
+
+          - **Skip buttons show the seek step**
+            - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
+
+          - **Simpler rotate control (better on phones)**
+            - The **Rotate** button is moved to the main toolbar for faster access.
+            - Rotation is simplified to a practical **portrait <-> landscape** toggle.
+
+          - **Customize the toolbar for mobile**
+            - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
+            - Includes a **Reset** button to restore the default toolbar configuration.
+            - Changes persist and are applied across the player.
+
+          - **Improved mobile options/menu usability**
+            - Options UI and the in-player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
+
+          - **Theme picker redesigned with visual cards**
+            - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
+
+          - **More consistent collapsible settings sections**
+            - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
+
+          - **Less likely to be covered by website overlays**
+            - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.
+
+          - **Updated mobile/touch tips**
+            - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
+          EOF
 
           {
             echo
