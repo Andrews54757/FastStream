@@ -11,6 +11,15 @@
 
 ![Tap action zones diagram](docs/images/tap-zones.svg)
 
+<p>
+  <img src="docs/images/Screenshot_20260313_031017_Iceraven.jpg" alt="Mobile UI Preview1" width="140">
+  <img src="docs/images/Screenshot_20260313_031029_Iceraven.jpg" alt="Mobile UI Preview2" width="140">
+  <img src="docs/images/Screenshot_20260313_031034_Iceraven.jpg" alt="Mobile UI Preview3" width="140">
+  <img src="docs/images/Screenshot_20260313_031039_Iceraven.jpg" alt="Mobile UI Preview4" width="140">
+  <img src="docs/images/Screenshot_20260313_031046_Iceraven.jpg" alt="Mobile UI Preview5" width="140">
+  <img src="docs/images/Screenshot_20260313_031053_Iceraven.jpg" alt="Mobile UI Preview6" width="140">
+</p>
+
 New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
 
 - **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
