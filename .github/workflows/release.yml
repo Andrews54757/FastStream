@@ -142,6 +142,13 @@ jobs:
           - **Improved mobile options/menu usability**
             - Options UI and the in-player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
 
+          - **Theme picker redesigned with visual cards**
+            - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
+
+          - **More consistent collapsible settings sections**
+            - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
+            - Show/Hide section toggle labels are localized so they match your selected language.
+
           - **Less likely to be covered by website overlays**
             - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.
 

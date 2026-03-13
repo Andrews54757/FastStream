@@ -44,6 +44,12 @@ Notes for new users:
 - **Improved mobile options/menu usability**
   - Options UI and the in‑player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
 
+- **Theme picker redesigned with visual cards**
+  - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
+
+- **More consistent collapsible settings sections**
+  - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
+
 - **Less likely to be covered by website overlays**
   - The player/miniplayer is now more aggressively kept above site overlays (stacking/z‑index improvements), reducing cases where parts of the player are blocked or unclickable.
 
@@ -99,8 +105,9 @@ FastStream is still primarily built and tested for desktop browsers. That said, 
 
 - Double-tap the left/right side of the video to seek by your configured step
 - Configurable controls auto-hide delay
-- A rotate tool to toggle auto-rotate / orientation lock (device support may vary)
+- A rotate tool to quickly toggle portrait/landscape orientation (device support may vary)
 - Skip buttons display the current seek step size
+- A visual theme card gallery and improved collapsible settings sections in Options
 
 Mobile browser support still depends on whether your browser supports extensions and the required web APIs. If you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
 
