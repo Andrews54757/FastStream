@@ -99,6 +99,12 @@ jobs:
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
 
+          TAP_ZONES_PATH="docs/images/tap-zones.svg"
+          if ! git cat-file -e "${TARGET_SHA}:${TAP_ZONES_PATH}" 2>/dev/null; then
+            TAP_ZONES_PATH="chrome/tap-zones.svg"
+          fi
+          TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/${TAP_ZONES_PATH}"
+
           cat > release_body.md <<EOF
 
           # Mobile Experience Improvements [GENERAL RELEASE NOTES]
@@ -108,7 +114,7 @@ jobs:
             - The jump amount uses your configured **Seek step size**.
             - The *middle* area still follows your single/double/triple-tap actions (play/pause, fullscreen, etc.).
 
-          ![Touch-screen Guide](docs/images/tap-zones.svg)
+          ![Touch-screen Guide](${TAP_ZONES_URL})
 
           New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
 
