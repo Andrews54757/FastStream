@@ -85,8 +85,6 @@ jobs:
           cat <<EOF | sed 's/^          //' > release_body.md
           [![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
 
-          # FastStream
-
           # Mobile Experience Improvements [NEW]
 
           - **Double-tap to seek (touch-friendly)**
