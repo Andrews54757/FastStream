@@ -14,6 +14,12 @@ const firefoxDistBuildDir = path.resolve(__dirname, 'build_firefox_dist');
 const webBuildDir = path.resolve(__dirname, 'built/web');
 const licenseText = fs.readFileSync(path.resolve(__dirname, 'LICENSE.md'), 'utf8');
 const packageJson = JSON.parse(fs.readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'));
+const envBuildVersion = process.env.FASTSTREAM_BUILD_VERSION ? process.env.FASTSTREAM_BUILD_VERSION.trim() : '';
+const effectiveVersion = envBuildVersion || packageJson.version;
+
+if (!/^\d+\.\d+\.\d+$/.test(effectiveVersion)) {
+  throw new Error(`Invalid build version: "${effectiveVersion}". Expected format: x.y.z`);
+}
 
 fs.mkdirSync(builtDir, {recursive: true});
 glob(builtDir + '/*.zip').forEach((file) => {
@@ -212,7 +218,7 @@ function splice(fileText, target, relativePath) {
         console.log(`[Splicer-${target}] Inserting locale`, relativePath);
         continue;
       } else if (command === 'INSERT_VERSION') {
-        newLines.push(`version = '${packageJson.version}.web';`);
+        newLines.push(`version = '${effectiveVersion}.web';`);
         console.log(`[Splicer-${target}] Inserting version`, relativePath);
         continue;
       }
@@ -433,7 +439,7 @@ async function runAll() {
   // update manifest version
   const manifestPath = path.join(chromeSourceDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-  manifest.version = packageJson.version;
+  manifest.version = effectiveVersion;
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
   console.log(`Building version ${manifest.version}`);
 

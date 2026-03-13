@@ -56,10 +56,28 @@ jobs:
           echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
           echo "target_commitish=${TARGET_SHA}" >> "$GITHUB_OUTPUT"
 
+      - name: Resolve build version
+        id: build_version
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG_NAME="${{ steps.vars.outputs.tag_name }}"
+          BUILD_VERSION="${TAG_NAME#[vV]}"
+
+          if [[ ! "${BUILD_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release tag version: ${TAG_NAME}. Expected vX.Y.Z (or VX.Y.Z)." >&2
+            exit 1
+          fi
+
+          echo "build_version=${BUILD_VERSION}" >> "$GITHUB_OUTPUT"
+
       - name: Install dependencies
         run: npm ci
 
       - name: Build extension bundles
+        env:
+          FASTSTREAM_BUILD_VERSION: ${{ steps.build_version.outputs.build_version }}
         run: npm run build
 
       - name: Generate release description
@@ -180,4 +198,4 @@ jobs:
           body_path: release_body.md
           files: |
             built/chrome-*.zip
-            built/*.xpi
+            built/firefox-*.xpi
