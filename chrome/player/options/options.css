@@ -428,6 +428,7 @@ button:focus-visible {
   flex-wrap: wrap;
   background: transparent;
   border-radius: var(--radius-2);
+  margin-bottom: var(--space-4);
 }
 
 .searchbar-shell {
