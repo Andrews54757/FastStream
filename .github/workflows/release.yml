@@ -99,11 +99,40 @@ jobs:
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
 
-          TAP_ZONES_PATH="docs/images/tap-zones.svg"
-          if ! git cat-file -e "${TARGET_SHA}:${TAP_ZONES_PATH}" 2>/dev/null; then
-            TAP_ZONES_PATH="chrome/tap-zones.svg"
+          IMAGE_REF=""
+          if [[ "${GITHUB_EVENT_NAME}" == "workflow_dispatch" ]]; then
+            INPUT_REF="${{ inputs.target_commitish }}"
+            if git ls-remote --exit-code --heads origin "${INPUT_REF}" >/dev/null 2>&1; then
+              IMAGE_REF="${INPUT_REF}"
+            fi
           fi
-          TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/${TAP_ZONES_PATH}"
+          if [[ -z "${IMAGE_REF}" ]] && git ls-remote --exit-code --heads origin "new-features" >/dev/null 2>&1; then
+            IMAGE_REF="new-features"
+          fi
+          if [[ -z "${IMAGE_REF}" ]]; then
+            IMAGE_REF="${{ github.event.repository.default_branch }}"
+          fi
+
+          git fetch origin "${IMAGE_REF}" --depth=1 >/dev/null 2>&1 || true
+
+          TAP_ZONES_PATH="docs/images/tap-zones.svg"
+          TAP_ZONES_URL=""
+          if git cat-file -e "origin/${IMAGE_REF}:${TAP_ZONES_PATH}" 2>/dev/null; then
+            TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${IMAGE_REF}/${TAP_ZONES_PATH}"
+          elif git cat-file -e "origin/${IMAGE_REF}:chrome/tap-zones.svg" 2>/dev/null; then
+            TAP_ZONES_PATH="chrome/tap-zones.svg"
+            TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${IMAGE_REF}/${TAP_ZONES_PATH}"
+          elif git cat-file -e "${TARGET_SHA}:${TAP_ZONES_PATH}" 2>/dev/null; then
+            TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/${TAP_ZONES_PATH}"
+          elif git cat-file -e "${TARGET_SHA}:chrome/tap-zones.svg" 2>/dev/null; then
+            TAP_ZONES_PATH="chrome/tap-zones.svg"
+            TAP_ZONES_URL="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/${TAP_ZONES_PATH}"
+          fi
+
+          TAP_ZONES_MARKDOWN=""
+          if [[ -n "${TAP_ZONES_URL}" ]]; then
+            TAP_ZONES_MARKDOWN="![Touch-screen Guide](${TAP_ZONES_URL})"
+          fi
 
           cat > release_body.md <<EOF
 
@@ -114,7 +143,7 @@ jobs:
             - The jump amount uses your configured **Seek step size**.
             - The *middle* area still follows your single/double/triple-tap actions (play/pause, fullscreen, etc.).
 
-          ![Touch-screen Guide](${TAP_ZONES_URL})
+          ${TAP_ZONES_MARKDOWN}
 
           New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
 
