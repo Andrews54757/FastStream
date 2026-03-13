@@ -1,0 +1,64 @@
+name: Build and publish release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+      - "V*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag (for example: v1.3.75)"
+        required: true
+        type: string
+      target_commitish:
+        description: "Branch or commit to tag/release"
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Resolve release tag
+        id: vars
+        shell: bash
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "tag_name=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+            echo "target_commitish=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
+          else
+            echo "tag_name=${{ inputs.tag_name }}" >> "$GITHUB_OUTPUT"
+            echo "target_commitish=${{ inputs.target_commitish }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension bundles
+        run: npm run build
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag_name }}
+          target_commitish: ${{ steps.vars.outputs.target_commitish }}
+          generate_release_notes: true
+          files: |
+            built/*.zip
+            built/*.xpi
