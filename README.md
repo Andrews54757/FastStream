@@ -1,7 +1,5 @@
 [![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
 
-# FastStream
-
 # Mobile Experience Improvements [NEW]
 
 - **Double‑tap to seek (touch-friendly)**
@@ -14,7 +12,6 @@
 ## Mobile Screenshots
 
 - **Improved mobile options/menu usability**
-  - Options UI and the in‑player options window were adjusted for mobile usability and accessibility.
 
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d3247dc6-9e08-420e-bf2c-ed6ef08b9f8e" width="180"/>
