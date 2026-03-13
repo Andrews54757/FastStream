@@ -14,7 +14,7 @@ on:
       target_commitish:
         description: "Branch or commit to tag/release"
         required: false
-        default: main
+        default: new-features
         type: string
 
 permissions:
@@ -28,6 +28,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.target_commitish || github.ref }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -53,12 +56,54 @@ jobs:
       - name: Build extension bundles
         run: npm run build
 
+      - name: Generate release description
+        id: notes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TAG_NAME="${{ steps.vars.outputs.tag_name }}"
+          TARGET_COMMITISH="${{ steps.vars.outputs.target_commitish }}"
+          git fetch --tags --force
+
+          if git rev-parse "refs/tags/${TAG_NAME}" >/dev/null 2>&1; then
+            CURRENT_REF="${TAG_NAME}"
+          else
+            CURRENT_REF="${TARGET_COMMITISH}"
+          fi
+
+          PREV_TAG="$(git tag --merged "${CURRENT_REF}" --sort=-creatordate | grep -Fxv "${TAG_NAME}" | head -n 1 || true)"
+
+          if [[ -n "${PREV_TAG}" ]]; then
+            RANGE="${PREV_TAG}..${CURRENT_REF}"
+            CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/compare/${PREV_TAG}...${TAG_NAME}"
+            RANGE_TEXT="Changes since ${PREV_TAG}"
+          else
+            RANGE="${CURRENT_REF}"
+            CHANGELOG_URL="${{ github.server_url }}/${{ github.repository }}/commits/${TARGET_COMMITISH}"
+            RANGE_TEXT="Latest included changes"
+          fi
+
+          COMMIT_COUNT="$(git rev-list --count "${RANGE}" 2>/dev/null || echo 0)"
+
+          {
+            echo "## ${TAG_NAME}"
+            echo
+            echo "${RANGE_TEXT}: ${COMMIT_COUNT} commit(s)."
+            echo
+            echo "### Summary"
+            echo
+            git log --no-merges --max-count=12 --pretty='- %s (%h)' "${RANGE}"
+            echo
+            echo "Full changelog: ${CHANGELOG_URL}"
+          } > release_body.md
+
       - name: Publish GitHub release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.vars.outputs.tag_name }}
           target_commitish: ${{ steps.vars.outputs.target_commitish }}
-          generate_release_notes: true
+          body_path: release_body.md
           files: |
             built/*.zip
             built/*.xpi
