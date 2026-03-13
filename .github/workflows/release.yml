@@ -180,4 +180,4 @@ jobs:
           body_path: release_body.md
           files: |
             built/chrome-*.zip
-            built/firefox-*.xpi
+            built/*.xpi
