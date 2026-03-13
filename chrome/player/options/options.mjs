@@ -20,14 +20,6 @@ import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {ColorThemes} from './defaults/ColorThemes.mjs';
 
 let Options = {};
-let keybindsCollapsed = null;
-let keybindsCollapseUIReady = false;
-let toolbarCollapsed = null;
-let toolbarCollapseUIReady = false;
-let videoCollapsed = null;
-let videoCollapseUIReady = false;
-let generalCollapsed = null;
-let generalCollapseUIReady = false;
 
 function cloneDefaultValue(value) {
   if (value && typeof value === 'object') {
@@ -44,189 +36,83 @@ function resetOptionsKeysToDefault(keys) {
   optionChanged();
 }
 
-function getKeybindsCollapseEls() {
-  const section = document.querySelector('.options-section[data-search-section="keybinds"]');
-  const toggle = section?.querySelector?.('.keybinds-toggle');
-  const content = document.getElementById('keybindsContent');
-  return {section, toggle, content};
+function createCollapseController(sectionName, toggleClass, contentId) {
+  let collapsed = null;
+  let collapseUIReady = false;
+
+  function getCollapseEls() {
+    const section = document.querySelector(`.options-section[data-search-section="${sectionName}"]`);
+    const toggle = section?.querySelector?.(`.${toggleClass}`);
+    const content = document.getElementById(contentId);
+    return {section, toggle, content};
+  }
+
+  function ensureCollapseUI() {
+    if (!EnvUtils.isMobile()) return;
+    if (collapseUIReady) return;
+
+    const {section, toggle, content} = getCollapseEls();
+    if (!section || !toggle || !content) return;
+
+    collapseUIReady = true;
+    if (collapsed === null) collapsed = true;
+
+    toggle.addEventListener('click', () => {
+      collapsed = !collapsed;
+      applyCollapsedState();
+    });
+
+    // Default to collapsed on mobile as soon as the UI exists.
+    applyCollapsedState();
+  }
+
+  function applyCollapsedState() {
+    if (!EnvUtils.isMobile()) return;
+    ensureCollapseUI();
+    const {section, toggle} = getCollapseEls();
+    if (!section || !toggle) return;
+
+    const shouldCollapse = !!collapsed && !document.body.classList.contains('search-active');
+    section.classList.toggle('collapsed', shouldCollapse);
+    toggle.setAttribute('aria-expanded', String(!shouldCollapse));
+    toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
+  }
+
+  function expandForSearchInit() {
+    if (!EnvUtils.isMobile()) return;
+    ensureCollapseUI();
+    const {section} = getCollapseEls();
+    if (!section) return;
+    section.classList.remove('collapsed');
+  }
+
+  return {ensureCollapseUI, applyCollapsedState, expandForSearchInit};
 }
 
-function ensureKeybindsCollapseUI() {
-  if (!EnvUtils.isMobile()) return;
-  if (keybindsCollapseUIReady) return;
+const {
+  ensureCollapseUI: ensureKeybindsCollapseUI,
+  applyCollapsedState: applyKeybindsCollapsedState,
+  expandForSearchInit: expandKeybindsForSearchInit,
+} = createCollapseController('keybinds', 'keybinds-toggle', 'keybindsContent');
 
-  const {section, toggle, content} = getKeybindsCollapseEls();
-  if (!section || !toggle || !content) return;
+const {
+  ensureCollapseUI: ensureToolbarCollapseUI,
+  applyCollapsedState: applyToolbarCollapsedState,
+  expandForSearchInit: expandToolbarForSearchInit,
+} = createCollapseController('toolbar', 'toolbar-toggle', 'toolbarContent');
 
-  keybindsCollapseUIReady = true;
-  if (keybindsCollapsed === null) keybindsCollapsed = true;
+const {
+  ensureCollapseUI: ensureVideoCollapseUI,
+  applyCollapsedState: applyVideoCollapsedState,
+  expandForSearchInit: expandVideoForSearchInit,
+} = createCollapseController('video', 'video-toggle', 'videoContent');
 
-  toggle.addEventListener('click', () => {
-    keybindsCollapsed = !keybindsCollapsed;
-    applyKeybindsCollapsedState();
-  });
+const {
+  ensureCollapseUI: ensureGeneralCollapseUI,
+  applyCollapsedState: applyGeneralCollapsedState,
+  expandForSearchInit: expandGeneralForSearchInit,
+} = createCollapseController('general', 'general-toggle', 'generalContent');
 
-  // Default to collapsed on mobile as soon as the UI exists.
-  applyKeybindsCollapsedState();
-}
-
-function applyKeybindsCollapsedState() {
-  if (!EnvUtils.isMobile()) return;
-  ensureKeybindsCollapseUI();
-  const {section, toggle} = getKeybindsCollapseEls();
-  if (!section || !toggle) return;
-
-  const shouldCollapse = !!keybindsCollapsed && !document.body.classList.contains('search-active');
-  section.classList.toggle('collapsed', shouldCollapse);
-  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
-  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
-}
-
-function expandKeybindsForSearchInit() {
-  if (!EnvUtils.isMobile()) return;
-  ensureKeybindsCollapseUI();
-  const {section} = getKeybindsCollapseEls();
-  if (!section) return;
-  section.classList.remove('collapsed');
-}
-
-function getToolbarCollapseEls() {
-  const section = document.querySelector('.options-section[data-search-section="toolbar"]');
-  const toggle = section?.querySelector?.('.toolbar-toggle');
-  const content = document.getElementById('toolbarContent');
-  return {section, toggle, content};
-}
-
-function ensureToolbarCollapseUI() {
-  if (!EnvUtils.isMobile()) return;
-  if (toolbarCollapseUIReady) return;
-
-  const {section, toggle, content} = getToolbarCollapseEls();
-  if (!section || !toggle || !content) return;
-
-  toolbarCollapseUIReady = true;
-  if (toolbarCollapsed === null) toolbarCollapsed = true;
-
-  toggle.addEventListener('click', () => {
-    toolbarCollapsed = !toolbarCollapsed;
-    applyToolbarCollapsedState();
-  });
-
-  // Default to collapsed on mobile as soon as the UI exists.
-  applyToolbarCollapsedState();
-}
-
-function applyToolbarCollapsedState() {
-  if (!EnvUtils.isMobile()) return;
-  ensureToolbarCollapseUI();
-  const {section, toggle} = getToolbarCollapseEls();
-  if (!section || !toggle) return;
-
-  const shouldCollapse = !!toolbarCollapsed && !document.body.classList.contains('search-active');
-  section.classList.toggle('collapsed', shouldCollapse);
-  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
-  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
-}
-
-function expandToolbarForSearchInit() {
-  if (!EnvUtils.isMobile()) return;
-  ensureToolbarCollapseUI();
-  const {section} = getToolbarCollapseEls();
-  if (!section) return;
-  section.classList.remove('collapsed');
-}
-
-function getVideoCollapseEls() {
-  const section = document.querySelector('.options-section[data-search-section="video"]');
-  const toggle = section?.querySelector?.('.video-toggle');
-  const content = document.getElementById('videoContent');
-  return {section, toggle, content};
-}
-
-function ensureVideoCollapseUI() {
-  if (!EnvUtils.isMobile()) return;
-  if (videoCollapseUIReady) return;
-
-  const {section, toggle, content} = getVideoCollapseEls();
-  if (!section || !toggle || !content) return;
-
-  videoCollapseUIReady = true;
-  if (videoCollapsed === null) videoCollapsed = true;
-
-  toggle.addEventListener('click', () => {
-    videoCollapsed = !videoCollapsed;
-    applyVideoCollapsedState();
-  });
-
-  // Default to collapsed on mobile as soon as the UI exists.
-  applyVideoCollapsedState();
-}
-
-function applyVideoCollapsedState() {
-  if (!EnvUtils.isMobile()) return;
-  ensureVideoCollapseUI();
-  const {section, toggle} = getVideoCollapseEls();
-  if (!section || !toggle) return;
-
-  const shouldCollapse = !!videoCollapsed && !document.body.classList.contains('search-active');
-  section.classList.toggle('collapsed', shouldCollapse);
-  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
-  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
-}
-
-function expandVideoForSearchInit() {
-  if (!EnvUtils.isMobile()) return;
-  ensureVideoCollapseUI();
-  const {section} = getVideoCollapseEls();
-  if (!section) return;
-  section.classList.remove('collapsed');
-}
-
-function getGeneralCollapseEls() {
-  const section = document.querySelector('.options-section[data-search-section="general"]');
-  const toggle = section?.querySelector?.('.general-toggle');
-  const content = document.getElementById('generalContent');
-  return {section, toggle, content};
-}
-
-function ensureGeneralCollapseUI() {
-  if (!EnvUtils.isMobile()) return;
-  if (generalCollapseUIReady) return;
-
-  const {section, toggle, content} = getGeneralCollapseEls();
-  if (!section || !toggle || !content) return;
-
-  generalCollapseUIReady = true;
-  if (generalCollapsed === null) generalCollapsed = true;
-
-  toggle.addEventListener('click', () => {
-    generalCollapsed = !generalCollapsed;
-    applyGeneralCollapsedState();
-  });
-
-  // Default to collapsed on mobile as soon as the UI exists.
-  applyGeneralCollapsedState();
-}
-
-function applyGeneralCollapsedState() {
-  if (!EnvUtils.isMobile()) return;
-  ensureGeneralCollapseUI();
-  const {section, toggle} = getGeneralCollapseEls();
-  if (!section || !toggle) return;
-
-  const shouldCollapse = !!generalCollapsed && !document.body.classList.contains('search-active');
-  section.classList.toggle('collapsed', shouldCollapse);
-  toggle.setAttribute('aria-expanded', String(!shouldCollapse));
-  toggle.textContent = shouldCollapse ? 'Show' : 'Hide';
-}
-
-function expandGeneralForSearchInit() {
-  if (!EnvUtils.isMobile()) return;
-  ensureGeneralCollapseUI();
-  const {section} = getGeneralCollapseEls();
-  if (!section) return;
-  section.classList.remove('collapsed');
-}
 const analyzeVideos = document.getElementById('analyzevideos');
 const playStreamURLs = document.getElementById('playstreamurls');
 const playMP4URLs = document.getElementById('playmp4urls');
@@ -313,6 +199,7 @@ async function loadOptions(newOptions) {
   ensureVideoCollapseUI();
   ensureGeneralCollapseUI();
   ensureKeybindsCollapseUI();
+  ensureToolbarCollapseUI();
 
   downloadAll.checked = !!Options.downloadAll;
   analyzeVideos.checked = !!Options.analyzeVideos;
