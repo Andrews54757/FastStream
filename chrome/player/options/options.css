@@ -787,11 +787,11 @@ textarea:focus-visible {
 }
 
 .theme-style-gallery {
-  --theme-card-min-width: clamp(220px, 26vw, 320px);
-  --theme-card-gap: clamp(10px, 1.2vw, 16px);
+  --theme-card-min-width: clamp(170px, 18vw, 240px);
+  --theme-card-gap: clamp(8px, 1vw, 12px);
   --theme-card-radius: clamp(10px, 0.8vw, 14px);
-  --theme-card-padding: clamp(8px, 0.9vw, 14px);
-  --theme-preview-height: clamp(112px, 12vw, 170px);
+  --theme-card-padding: clamp(6px, 0.7vw, 10px);
+  --theme-preview-height: clamp(88px, 9vw, 128px);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(var(--theme-card-min-width), 1fr));
   gap: var(--theme-card-gap);
@@ -801,13 +801,13 @@ textarea:focus-visible {
 
 .theme-style-card {
   display: grid;
-  gap: var(--space-2);
+  gap: var(--space-1);
   text-align: left;
   border-radius: var(--theme-card-radius);
   border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
   background: color-mix(in oklab, var(--color-bg-muted) 85%, var(--color-elev) 15%);
   padding: var(--theme-card-padding);
-  min-height: calc(var(--theme-preview-height) + clamp(64px, 5vw, 94px));
+  min-height: calc(var(--theme-preview-height) + clamp(52px, 4vw, 72px));
 }
 
 .theme-style-card:hover {
@@ -828,19 +828,23 @@ textarea:focus-visible {
 }
 
 .theme-style-title {
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .theme-style-badge {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--color-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
   background: color-mix(in oklab, var(--color-bg-muted) 75%, transparent);
   border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
   border-radius: 999px;
-  padding: 2px 8px;
+  padding: 1px 6px;
 }
 
 .theme-style-preview {
@@ -917,7 +921,7 @@ body.mobile .theme-style-card {
 
 @media (min-width: 1280px) {
   .theme-style-gallery {
-    --theme-card-min-width: clamp(250px, 20vw, 340px);
+    --theme-card-min-width: clamp(180px, 16vw, 250px);
   }
 }
 
