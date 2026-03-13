@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       tag_name:
-        description: "Release tag (for example: v1.3.75)"
+        description: "Release tag (for example: v1.x.xx)"
         required: true
         type: string
       target_commitish:
@@ -197,5 +197,5 @@ jobs:
           target_commitish: ${{ steps.vars.outputs.target_commitish }}
           body_path: release_body.md
           files: |
-            built/firefox-*.xpi
             built/chrome-*.zip
+            built/firefox-*.xpi
