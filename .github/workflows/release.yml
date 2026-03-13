@@ -1,6 +1,6 @@
 name: Build and Publish Release
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       release_version:
@@ -42,6 +42,9 @@ jobs:
           node-version: 20
           cache: npm
 
+      - name: Install dependencies
+        run: npm ci
+
       - name: Build extension artifacts with requested version
         env:
           FASTSTREAM_BUILD_VERSION: ${{ github.event.inputs.release_version }}
@@ -66,8 +69,7 @@ jobs:
               throw error;
             }
 
-      - name: Generate release notes with changelog
-        id: notes
+      - name: Generate release notes in requested format
         shell: bash
         env:
           PREV_TAG: ${{ steps.prev_release.outputs.tag }}
@@ -79,9 +81,6 @@ jobs:
           else
             CHANGELOG_RANGE="HEAD"
           fi
-
-          TODAY_UTC="$(date -u +%Y-%m-%d)"
-          TODAY_RANGE="HEAD"
 
           {
             echo '# Mobile Experience Improvements [GENERAL RELEASE NOTES]'
@@ -133,23 +132,20 @@ jobs:
             echo '  - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.'
             echo
             echo "### Today's commit messages"
-            if [[ -n "$(git log --since="${TODAY_UTC} 00:00:00" --pretty=format:'%h' ${TODAY_RANGE})" ]]; then
-              git log --since="${TODAY_UTC} 00:00:00" --pretty=format:'- %s (%h)' --reverse ${TODAY_RANGE}
-            else
-              echo '- No commits found today.'
-            fi
             echo
-            echo
-            echo '### Changelog since last release'
-            if [[ -n "$(git log --pretty=format:'%h' ${CHANGELOG_RANGE})" ]]; then
-              git log --pretty=format:'- `%h` %s (%an)' --reverse ${CHANGELOG_RANGE} || true
-            else
-              echo '- No changes since the last release.'
-            fi
-            echo
-            echo
-            echo 'Full changelog: https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features'
           } > release_notes.md
+
+          if [[ -n "$(git log --pretty=format:'%h' ${CHANGELOG_RANGE})" ]]; then
+            git log --pretty=format:'- %s (%h)' --reverse ${CHANGELOG_RANGE} >> release_notes.md
+          else
+            echo "- No changes since last release" >> release_notes.md
+          fi
+
+          {
+            echo
+            echo
+            echo "Full changelog: https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features"
+          } >> release_notes.md
 
       - name: Ensure built artifacts include selected version
         shell: bash
