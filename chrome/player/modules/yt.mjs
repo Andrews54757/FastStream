@@ -1694,9 +1694,9 @@ var CLIENTS = {
   },
   ANDROID: {
     NAME: "ANDROID",
-    VERSION: "19.35.36",
-    SDK_VERSION: 33,
-    USER_AGENT: "com.google.android.youtube/19.35.36(Linux; U; Android 13; en_US; SM-S908E Build/TP1A.220624.014) gzip"
+    VERSION: "21.03.36",
+    SDK_VERSION: 36,
+    USER_AGENT: "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
   },
   YTSTUDIO_ANDROID: {
     NAME: "ANDROID_CREATOR",
@@ -4353,8 +4353,11 @@ __export(helpers_exports2, {
   createWrapperFunction: () => createWrapperFunction,
   extractNodeSource: () => extractNodeSource,
   getNodeSourceRange: () => getNodeSourceRange,
+  getUrlHelperClassName: () => getUrlHelperClassName,
   indent: () => indent,
+  isTruthyBooleanNode: () => isTruthyBooleanNode,
   jsBuiltIns: () => jsBuiltIns,
+  looksLikeSignatureHelper: () => looksLikeSignatureHelper,
   memberBaseName: () => memberBaseName,
   memberToString: () => memberToString,
   walkAst: () => walkAst
@@ -4616,10 +4619,22 @@ function createWrapperFunction(analyzer, name, node) {
   if (node.type === "CallExpression" && node.callee.type === "Identifier" && analyzer.declaredVariables.has(node.callee.name)) {
     return generateWrapper(name, node.callee.name, parseFunctionArguments(analyzer, node.arguments));
   } else if (node.type === "VariableDeclarator" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && node.id.type === "Identifier") {
+    if (looksLikeSignatureHelper(node.init)) {
+      return generateSignatureWrapper(name, node.id.name);
+    }
     return generateWrapper(name, node.id.name, parseFunctionArguments(analyzer, node.init.params));
+  } else if (name === "nFunction" && node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" && node.expression.operator === "=" && node.expression.right.type === "FunctionExpression") {
+    const targetName = memberToString(node.expression.left, analyzer.getSource());
+    if (targetName == null ? void 0 : targetName.startsWith("g.")) {
+      return generateNClassWrapper(name, targetName);
+    }
   }
 }
 __name(createWrapperFunction, "createWrapperFunction");
+function isTruthyBooleanNode(node) {
+  return (node == null ? void 0 : node.type) === "Literal" && node.value === true || (node == null ? void 0 : node.type) === "UnaryExpression" && node.operator === "!" && node.argument.type === "Literal" && node.argument.value === 0;
+}
+__name(isTruthyBooleanNode, "isTruthyBooleanNode");
 function generateWrapper(functionName, targetFunction, args) {
   return [
     `${indent}function ${functionName}(input) {`,
@@ -4628,6 +4643,82 @@ function generateWrapper(functionName, targetFunction, args) {
   ].join("\n");
 }
 __name(generateWrapper, "generateWrapper");
+function generateNClassWrapper(functionName, targetClass) {
+  return [
+    `${indent}function ${functionName}(input) {`,
+    `${indent}${indent}let url = input;`,
+    `${indent}${indent}if (typeof input !== 'string' || (!input.startsWith('http://') && !input.startsWith('https://'))) {`,
+    `${indent}${indent}${indent}url = 'https://www.youtube.com/videoplayback?n=' + encodeURIComponent(String(input));`,
+    `${indent}${indent}}`,
+    `${indent}${indent}const helper = new ${targetClass}(url, true);`,
+    `${indent}${indent}return helper.get('n');`,
+    `${indent}}`
+  ].join("\n");
+}
+__name(generateNClassWrapper, "generateNClassWrapper");
+function generateSignatureWrapper(functionName, targetFunction) {
+  return [
+    `${indent}function ${functionName}(input) {`,
+    `${indent}${indent}const helper = ${targetFunction}('https://www.youtube.com/videoplayback', 'signature', String(input));`,
+    `${indent}${indent}return helper.get('signature');`,
+    `${indent}}`
+  ].join("\n");
+}
+__name(generateSignatureWrapper, "generateSignatureWrapper");
+function looksLikeSignatureHelper(node) {
+  var _a, _b;
+  if (node.params.length !== 3 || !node.body) {
+    return false;
+  }
+  const helperName = ((_a = node.params[0]) == null ? void 0 : _a.type) === "Identifier" ? node.params[0].name : null;
+  const signatureParam = ((_b = node.params[1]) == null ? void 0 : _b.type) === "Identifier" ? node.params[1].name : null;
+  if (!helperName || !signatureParam) {
+    return false;
+  }
+  let hasUrlHelperConstructor = false;
+  let hasAlrSet = false;
+  let hasSignatureWrite = false;
+  let returnsHelper = false;
+  walkAst(node.body, (innerNode) => {
+    var _a2, _b2, _c, _d, _e;
+    if (innerNode.type === "NewExpression" && innerNode.callee.type === "MemberExpression" && innerNode.arguments.length >= 2 && ((_a2 = innerNode.arguments[0]) == null ? void 0 : _a2.type) === "Identifier" && innerNode.arguments[0].name === helperName && isTruthyBooleanNode(innerNode.arguments[1])) {
+      const calleeName = memberToString(innerNode.callee, "");
+      hasUrlHelperConstructor || (hasUrlHelperConstructor = typeof calleeName === "string" && calleeName.startsWith("g."));
+    } else if (innerNode.type === "CallExpression" && innerNode.callee.type === "MemberExpression" && innerNode.callee.object.type === "Identifier" && innerNode.callee.object.name === helperName) {
+      if (innerNode.arguments.length >= 2 && ((_b2 = innerNode.arguments[0]) == null ? void 0 : _b2.type) === "Literal" && innerNode.arguments[0].value === "alr" && ((_c = innerNode.arguments[1]) == null ? void 0 : _c.type) === "Literal" && innerNode.arguments[1].value === "yes") {
+        hasAlrSet = true;
+      } else if (innerNode.arguments.length >= 2 && ((_d = innerNode.arguments[0]) == null ? void 0 : _d.type) === "Identifier" && innerNode.arguments[0].name === signatureParam) {
+        hasSignatureWrite = true;
+      }
+    } else if (innerNode.type === "ReturnStatement" && ((_e = innerNode.argument) == null ? void 0 : _e.type) === "Identifier" && innerNode.argument.name === helperName) {
+      returnsHelper = true;
+    }
+  });
+  return hasUrlHelperConstructor && hasAlrSet && hasSignatureWrite && returnsHelper;
+}
+__name(looksLikeSignatureHelper, "looksLikeSignatureHelper");
+function getUrlHelperClassName(node) {
+  var _a;
+  if (!node.body)
+    return null;
+  const helperName = ((_a = node.params[0]) == null ? void 0 : _a.type) === "Identifier" ? node.params[0].name : null;
+  if (!helperName) {
+    return null;
+  }
+  let className = null;
+  walkAst(node.body, (innerNode) => {
+    var _a2;
+    if (innerNode.type === "NewExpression" && innerNode.callee.type === "MemberExpression" && innerNode.arguments.length >= 2 && ((_a2 = innerNode.arguments[0]) == null ? void 0 : _a2.type) === "Identifier" && innerNode.arguments[0].name === helperName && isTruthyBooleanNode(innerNode.arguments[1])) {
+      const calleeName = memberToString(innerNode.callee, "");
+      if (calleeName == null ? void 0 : calleeName.startsWith("g.")) {
+        className = calleeName;
+        return WALK_STOP;
+      }
+    }
+  });
+  return className;
+}
+__name(getUrlHelperClassName, "getUrlHelperClassName");
 function parseFunctionArguments(analyzer, args) {
   const params = [];
   for (const arg of args) {
@@ -4651,41 +4742,32 @@ __export(matchers_exports, {
 });
 function sigMatcher(node) {
   var _a;
-  if (node.type === "VariableDeclarator" && ((_a = node.id) == null ? void 0 : _a.type) === "Identifier") {
-    const idNode = node.id;
-    const initNode = node.init;
-    if (idNode.type === "Identifier" && (initNode == null ? void 0 : initNode.type) === "FunctionExpression" && initNode.params.length === 3) {
-      const functionInitNode = initNode.body;
-      if (!functionInitNode || functionInitNode.type !== "BlockStatement")
-        return false;
-      for (const st of functionInitNode.body) {
-        if ((st == null ? void 0 : st.type) === "ExpressionStatement") {
-          const expression = st.expression;
-          if (expression.type === "LogicalExpression" && expression.operator === "&&" && expression.left.type === "Identifier" && expression.right.type === "SequenceExpression") {
-            const firstExp = expression.right.expressions[0];
-            if (firstExp.type === "AssignmentExpression" && firstExp.operator === "=" && firstExp.left.type === "Identifier" && firstExp.right.type === "CallExpression" && firstExp.right.callee.type === "Identifier") {
-              const rightArguments = firstExp.right.arguments;
-              if (rightArguments.length >= 1) {
-                const callExpression = rightArguments.find((exp) => exp.type === "CallExpression");
-                if ((callExpression == null ? void 0 : callExpression.type) === "CallExpression" && (callExpression == null ? void 0 : callExpression.callee.type) === "Identifier" && callExpression.callee.name === "decodeURIComponent" && callExpression.arguments[0].type === "Identifier") {
-                  return firstExp.right;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+  if (node.type === "VariableDeclarator" && node.id.type === "Identifier" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && // sigFn(64, decodeURIComponent(sig))
+  looksLikeSignatureHelper(node.init)) {
+    return node;
   }
   return false;
 }
 __name(sigMatcher, "sigMatcher");
 function nMatcher(node) {
-  var _a, _b;
-  if (node.type !== "VariableDeclarator")
+  var _a, _b, _c;
+  if (node.type === "VariableDeclarator") {
+    if (node.id.type === "Identifier" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && looksLikeSignatureHelper(node.init)) {
+      const className = getUrlHelperClassName(node.init);
+      if (className) {
+        return {
+          type: "Identifier",
+          name: className,
+          start: node.id.start,
+          end: node.id.end,
+          range: node.id.range
+        };
+      }
+    }
+    if (node.id.type === "Identifier" && ((_b = node.init) == null ? void 0 : _b.type) === "ArrayExpression" && ((_c = node.init.elements[0]) == null ? void 0 : _c.type) === "Identifier") {
+      return node.init.elements[0];
+    }
     return false;
-  if (node.id.type === "Identifier" && ((_a = node.init) == null ? void 0 : _a.type) === "ArrayExpression" && ((_b = node.init.elements[0]) == null ? void 0 : _b.type) === "Identifier") {
-    return node.init.elements[0];
   }
   return false;
 }
@@ -13691,6 +13773,7 @@ var _JsAnalyzer = class _JsAnalyzer {
     __publicField(this, "extractionStates");
     __publicField(this, "dependentsTracker", /* @__PURE__ */ new Map());
     __publicField(this, "declaredVariables", /* @__PURE__ */ new Map());
+    __publicField(this, "prototypeAliasAssignments", /* @__PURE__ */ new Map());
     __publicField(this, "iifeParamName", null);
     this.source = code;
     const extractionConfigs = options.extractions ? Array.isArray(options.extractions) ? options.extractions : [options.extractions] : [];
@@ -13714,6 +13797,8 @@ var _JsAnalyzer = class _JsAnalyzer {
   analyzeAst() {
     var _a;
     let iifeBody;
+    const prototypeAliases = /* @__PURE__ */ new Map();
+    let prototypeAliasCounter = 0;
     for (const statement of this.programAst.body) {
       if (statement.type === "ExpressionStatement" && statement.expression.type === "CallExpression") {
         const callExpr = statement.expression;
@@ -13732,76 +13817,115 @@ var _JsAnalyzer = class _JsAnalyzer {
     }
     if (!iifeBody)
       return;
-    for (const currentNode of iifeBody.body) {
-      switch (currentNode.type) {
-        case "ExpressionStatement": {
-          const assignment = currentNode.expression;
-          if (assignment.type !== "AssignmentExpression")
-            continue;
-          const left = assignment.left;
-          const right = assignment.right;
-          if (left.type === "Identifier") {
-            const existingVariable = this.declaredVariables.get(left.name);
-            if (!existingVariable)
-              continue;
-            existingVariable.node.init = right;
-            if (this.needsDependencyAnalysis(right)) {
-              existingVariable.dependencies = this.findDependencies(assignment.right, left.name);
-            }
-            if (this.onMatch(existingVariable.node, existingVariable))
-              return;
-          } else if (assignment.left.type === "MemberExpression") {
-            const memberName = memberToString(assignment.left, this.source);
-            if (!memberName || this.declaredVariables.has(memberName))
-              continue;
-            const metadata = {
-              name: memberName,
-              node: currentNode,
-              dependents: this.dependentsTracker.get(memberName) || /* @__PURE__ */ new Set(),
-              predeclared: false,
-              dependencies: this.findDependencies(right, memberName)
-            };
-            const baseName = memberBaseName(assignment.left, this.source);
-            if (baseName && baseName !== memberName && !baseName.startsWith("this.")) {
-              metadata.dependencies.add(baseName.replace(".prototype", ""));
-            }
-            if (this.dependentsTracker.has(memberName)) {
-              this.dependentsTracker.delete(memberName);
-            }
-            this.declaredVariables.set(memberName, metadata);
-            if (this.onMatch(currentNode, metadata))
-              return;
-          }
-          break;
-        }
-        case "VariableDeclaration": {
-          for (const declaration of currentNode.declarations) {
-            if (declaration.id.type !== "Identifier")
-              continue;
-            const metadata = {
-              name: declaration.id.name,
-              node: declaration,
-              dependents: this.dependentsTracker.get(declaration.id.name) || /* @__PURE__ */ new Set(),
-              dependencies: /* @__PURE__ */ new Set(),
-              predeclared: false
-            };
-            const init = declaration.init;
-            if (!init && currentNode.kind === "var") {
-              metadata.predeclared = true;
-            } else if (init && this.needsDependencyAnalysis(init)) {
-              metadata.dependencies = this.findDependencies(init, metadata.name);
-            }
-            if (this.dependentsTracker.has(metadata.name)) {
-              this.dependentsTracker.delete(metadata.name);
-            }
-            this.declaredVariables.set(metadata.name, metadata);
-            if (this.onMatch(declaration, metadata))
-              return;
-          }
-          break;
-        }
+    const registerPrototypeAliasAssignment = /* @__PURE__ */ __name((baseName, node, right, syntheticHint) => {
+      const syntheticName = `[[proto:${baseName}:${syntheticHint}:${prototypeAliasCounter++}]]`;
+      const metadata = {
+        name: syntheticName,
+        node,
+        dependents: /* @__PURE__ */ new Set(),
+        predeclared: false,
+        dependencies: this.findDependencies(right, syntheticName)
+      };
+      metadata.dependencies.add(baseName);
+      const existing = this.prototypeAliasAssignments.get(baseName);
+      if (existing) {
+        existing.push(metadata);
+      } else {
+        this.prototypeAliasAssignments.set(baseName, [metadata]);
       }
-    }
+    }, "registerPrototypeAliasAssignment");
+    walkAst(iifeBody, {
+      enter: /* @__PURE__ */ __name((currentNode, parent) => {
+        if (currentNode !== iifeBody && (currentNode.type === "FunctionDeclaration" || currentNode.type === "FunctionExpression" || currentNode.type === "ArrowFunctionExpression")) {
+          return true;
+        }
+        switch (currentNode.type) {
+          case "ExpressionStatement": {
+            const assignment = currentNode.expression;
+            if (assignment.type !== "AssignmentExpression")
+              break;
+            const left = assignment.left;
+            const right = assignment.right;
+            if (left.type === "Identifier") {
+              const existingVariable = this.declaredVariables.get(left.name);
+              if (!existingVariable)
+                break;
+              existingVariable.node.init = right;
+              if (this.needsDependencyAnalysis(right)) {
+                existingVariable.dependencies = this.findDependencies(assignment.right, left.name);
+              }
+              if (this.onMatch(existingVariable.node, existingVariable))
+                return WALK_STOP;
+            } else if (left.type === "MemberExpression") {
+              const memberName = memberToString(left, this.source);
+              if (!memberName)
+                break;
+              const rightMemberName = right.type === "MemberExpression" ? memberToString(right, this.source) : null;
+              if (rightMemberName == null ? void 0 : rightMemberName.endsWith(".prototype")) {
+                const baseName2 = rightMemberName.slice(0, -".prototype".length);
+                prototypeAliases.set(memberName, baseName2);
+                registerPrototypeAliasAssignment(baseName2, currentNode, right, memberName);
+              } else {
+                const aliasObjectName = memberBaseName(left, this.source);
+                if (aliasObjectName && prototypeAliases.has(aliasObjectName)) {
+                  registerPrototypeAliasAssignment(prototypeAliases.get(aliasObjectName), currentNode, right, memberName);
+                }
+              }
+              const metadata = this.declaredVariables.get(memberName) || {
+                name: memberName,
+                node: currentNode,
+                emitNode: currentNode,
+                dependents: this.dependentsTracker.get(memberName) || /* @__PURE__ */ new Set(),
+                predeclared: false,
+                dependencies: /* @__PURE__ */ new Set()
+              };
+              metadata.node = currentNode;
+              metadata.emitNode = currentNode;
+              metadata.predeclared = false;
+              metadata.dependencies = this.findDependencies(right, memberName);
+              const baseName = memberBaseName(left, this.source);
+              if (baseName && baseName !== memberName && !baseName.startsWith("this.")) {
+                metadata.dependencies.add(baseName.replace(".prototype", ""));
+              }
+              if (this.dependentsTracker.has(memberName)) {
+                this.dependentsTracker.delete(memberName);
+              }
+              this.declaredVariables.set(memberName, metadata);
+              if (this.onMatch(currentNode, metadata))
+                return WALK_STOP;
+            }
+            break;
+          }
+          case "VariableDeclaration": {
+            for (const declaration of currentNode.declarations) {
+              if (declaration.id.type !== "Identifier")
+                continue;
+              const metadata = {
+                name: declaration.id.name,
+                node: declaration,
+                emitNode: (parent == null ? void 0 : parent.type) === "ForStatement" && parent.init === currentNode ? parent : declaration,
+                dependents: this.dependentsTracker.get(declaration.id.name) || /* @__PURE__ */ new Set(),
+                dependencies: /* @__PURE__ */ new Set(),
+                predeclared: false
+              };
+              const init = declaration.init;
+              if (!init && currentNode.kind === "var") {
+                metadata.predeclared = true;
+              } else if (init && this.needsDependencyAnalysis(init)) {
+                metadata.dependencies = this.findDependencies(init, metadata.name);
+              }
+              if (this.dependentsTracker.has(metadata.name)) {
+                this.dependentsTracker.delete(metadata.name);
+              }
+              this.declaredVariables.set(metadata.name, metadata);
+              if (this.onMatch(declaration, metadata))
+                return WALK_STOP;
+            }
+            break;
+          }
+        }
+      }, "enter")
+    });
   }
   /**
    * Quick check if node type requires dependency analysis
@@ -14283,11 +14407,14 @@ var _JsExtractor = class _JsExtractor {
    * @param options - Configuration options for the emitter.
    */
   renderNode(node, preDeclared, options = {}) {
-    var _a, _b, _c;
+    var _a, _b, _c, _d;
     const source = this.analyzer.getSource();
     const declaredVariables = this.analyzer.declaredVariables;
+    if (node.type === "ForStatement") {
+      return `${indent}${((_a = extractNodeSource(node, source)) == null ? void 0 : _a.trim()) || ""}`;
+    }
     const sideEffectPolicy = options.disallowSideEffectInitializers;
-    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_a = sideEffectPolicy.mode) != null ? _a : "strict" : "strict";
+    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_b = sideEffectPolicy.mode) != null ? _b : "strict" : "strict";
     const canDisallow = Boolean(sideEffectPolicy);
     const assignmentTarget = node.type === "AssignmentExpression" ? node : node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" ? node.expression : null;
     const init = assignmentTarget && assignmentTarget.operator === "=" ? assignmentTarget.right : node.type === "VariableDeclarator" ? node.init : null;
@@ -14304,13 +14431,13 @@ var _JsExtractor = class _JsExtractor {
             return `${indent}// Skipped ${memberToString(left, source)} assignment.`;
           }
         }
-        initSource = ((_b = extractNodeSource(init, source)) == null ? void 0 : _b.trim().replace(/;\s*$/, "")) || "kk";
+        initSource = ((_c = extractNodeSource(init, source)) == null ? void 0 : _c.trim().replace(/;\s*$/, "")) || "kk";
       }
     }
     if (!forceRemove && init && init.type === "SequenceExpression" && !initSource.startsWith("(")) {
       initSource = `(${initSource})`;
     }
-    const idName = node.type === "VariableDeclarator" && node.id.type === "Identifier" ? node.id.name : assignmentTarget && assignmentTarget.left.type === "Identifier" ? assignmentTarget.left.name : (assignmentTarget == null ? void 0 : assignmentTarget.type) === "AssignmentExpression" ? (_c = memberToString(assignmentTarget.left, source)) == null ? void 0 : _c.trim() : "unknown";
+    const idName = node.type === "VariableDeclarator" && node.id.type === "Identifier" ? node.id.name : assignmentTarget && assignmentTarget.left.type === "Identifier" ? assignmentTarget.left.name : (assignmentTarget == null ? void 0 : assignmentTarget.type) === "AssignmentExpression" ? (_d = memberToString(assignmentTarget.left, source)) == null ? void 0 : _d.trim() : "unknown";
     const assignmentExpression = `${idName} = ${initSource};`;
     if (node.type === "VariableDeclarator" && node.init && !preDeclared) {
       return `${indent}var ${assignmentExpression}`;
@@ -14324,13 +14451,14 @@ var _JsExtractor = class _JsExtractor {
    * @param config - Configuration options for the emitter.
    */
   buildScript(config) {
-    var _a, _b;
+    var _a, _b, _c, _d, _e, _f;
     const { maxDepth = Infinity, forceVarPredeclaration = false, exportRawValues = false, rawValueOnly: skipEmitFor = [] } = config;
     const extractions = this.analyzer.getExtractedMatches();
     const seen = new Set(extractions.map((e) => {
       var _a2;
       return ((_a2 = e.metadata) == null ? void 0 : _a2.name) || "";
     }));
+    const emittedNodes = /* @__PURE__ */ new Set();
     const snippets = [];
     const predeclaredVarSet = /* @__PURE__ */ new Set();
     const exported = /* @__PURE__ */ new Map();
@@ -14341,6 +14469,44 @@ var _JsExtractor = class _JsExtractor {
       predeclaredVarSet.add(name);
     }
     __name(registerPredeclaredVar, "registerPredeclaredVar");
+    const emitMetadataNode = /* @__PURE__ */ __name((metadata, preDeclared) => {
+      const node = metadata.emitNode || metadata.node;
+      if (!node || emittedNodes.has(node))
+        return;
+      emittedNodes.add(node);
+      snippets.push(this.renderNode(node, preDeclared, config));
+    }, "emitMetadataNode");
+    const emitPrototypeAliasAssignments = /* @__PURE__ */ __name((baseName, depth = 0) => {
+      if (!baseName || depth > maxDepth)
+        return;
+      const aliasAssignments = this.analyzer.prototypeAliasAssignments.get(baseName);
+      if (!aliasAssignments)
+        return;
+      for (const aliasMetadata of aliasAssignments) {
+        if (seen.has(aliasMetadata.name))
+          continue;
+        seen.add(aliasMetadata.name);
+        visit(aliasMetadata, depth + 1);
+        emitMetadataNode(aliasMetadata, false);
+      }
+    }, "emitPrototypeAliasAssignments");
+    const includeRelatedMemberAssignments = /* @__PURE__ */ __name((baseName, depth = 0) => {
+      if (!baseName || depth > maxDepth)
+        return;
+      for (const [declaredName, declaredMetadata] of this.analyzer.declaredVariables.entries()) {
+        if (declaredName === baseName || !(declaredName.startsWith(`${baseName}.prototype.`) || declaredName.startsWith(`${baseName}[`)) || seen.has(declaredName)) {
+          continue;
+        }
+        seen.add(declaredName);
+        const shouldPredeclare = forceVarPredeclaration || declaredMetadata.predeclared;
+        if (shouldPredeclare) {
+          registerPredeclaredVar(declaredName);
+        }
+        visit(declaredMetadata, depth + 1);
+        emitMetadataNode(declaredMetadata, shouldPredeclare);
+      }
+      emitPrototypeAliasAssignments(baseName, depth);
+    }, "includeRelatedMemberAssignments");
     const visit = /* @__PURE__ */ __name((metadata, depth = 0) => {
       if (!metadata || depth > maxDepth)
         return;
@@ -14355,10 +14521,9 @@ var _JsExtractor = class _JsExtractor {
         if (shouldPredeclare) {
           registerPredeclaredVar(dependency);
         }
-        if (!dependency.includes(".")) {
-          visit(dependencyMetadata, depth + 1);
-        }
-        snippets.push(this.renderNode(dependencyMetadata.node, shouldPredeclare, config));
+        visit(dependencyMetadata, depth + 1);
+        emitMetadataNode(dependencyMetadata, shouldPredeclare);
+        includeRelatedMemberAssignments(dependencyMetadata.name, depth + 1);
       }
     }, "visit");
     for (const extraction of extractions) {
@@ -14391,7 +14556,8 @@ var _JsExtractor = class _JsExtractor {
           }
         }
         if (!shouldSkip) {
-          snippets.push(this.renderNode(extraction.metadata.node, shouldPredeclare, config));
+          emitMetadataNode(extraction.metadata, shouldPredeclare);
+          includeRelatedMemberAssignments(extraction.metadata.name, 1);
           snippets.push(`${indent}//#endregion --- end [${fname || "Unknown"}] ---
 `);
         }
@@ -14414,7 +14580,26 @@ var _JsExtractor = class _JsExtractor {
         const decl = this.analyzer.declaredVariables.get(node.name);
         if (((_a = decl == null ? void 0 : decl.node) == null ? void 0 : _a.type) === "VariableDeclarator" && ((_b = decl.node.init) == null ? void 0 : _b.type) === "FunctionExpression") {
           currentFunctionNode = decl.node;
+        } else if (((_c = decl == null ? void 0 : decl.emitNode) == null ? void 0 : _c.type) === "ExpressionStatement" && decl.emitNode.expression.type === "AssignmentExpression" && decl.emitNode.expression.right.type === "FunctionExpression") {
+          currentFunctionNode = decl.emitNode;
         }
+      } else if (node.type === "VariableDeclarator" && node.id.type === "Identifier") {
+        if (((_d = node.init) == null ? void 0 : _d.type) === "FunctionExpression") {
+          currentFunctionNode = node;
+        } else {
+          const decl = this.analyzer.declaredVariables.get(node.id.name);
+          if (((_e = decl == null ? void 0 : decl.emitNode) == null ? void 0 : _e.type) === "ExpressionStatement" && decl.emitNode.expression.type === "AssignmentExpression" && decl.emitNode.expression.right.type === "FunctionExpression") {
+            currentFunctionNode = decl.emitNode;
+          }
+        }
+      } else if (node.type === "MemberExpression") {
+        const memberName = memberToString(node, this.analyzer.getSource());
+        const decl = memberName ? this.analyzer.declaredVariables.get(memberName) : void 0;
+        if (((_f = decl == null ? void 0 : decl.node) == null ? void 0 : _f.type) === "ExpressionStatement" && decl.node.expression.type === "AssignmentExpression" && decl.node.expression.right.type === "FunctionExpression") {
+          currentFunctionNode = decl.node;
+        }
+      } else if (node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" && node.expression.right.type === "FunctionExpression") {
+        currentFunctionNode = node;
       } else if (node.type === "CallExpression") {
         currentFunctionNode = node;
       }
@@ -31472,7 +31657,6 @@ var _Player = class _Player {
     const jsAnalyzer = new JsAnalyzer(player_js, { extractions });
     const jsExtractor = new JsExtractor(jsAnalyzer);
     const result = jsExtractor.buildScript({
-      disallowSideEffectInitializers: true,
       exportRawValues: true,
       rawValueOnly: [timestampVarName]
     });
