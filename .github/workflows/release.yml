@@ -97,7 +97,7 @@ jobs:
           TODAY_LOG_REF="${TARGET_SHA}"
           TODAY_LOG_LABEL="this release commit"
           if git ls-remote --exit-code --heads origin "new-features" >/dev/null 2>&1; then
-            git fetch origin "new-features" --depth=1 >/dev/null 2>&1 || true
+            git fetch origin "new-features" >/dev/null 2>&1 || true
             TODAY_LOG_REF="origin/new-features"
             TODAY_LOG_LABEL="new-features"
           fi
