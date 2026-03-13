@@ -11,13 +11,13 @@
 
 ![Tap action zones diagram](docs/images/tap-zones.svg)
 
-<p>
-  <img src="docs/images/Screenshot_20260313_031017_Iceraven.jpg" alt="Mobile UI Preview1" width="140">
-  <img src="docs/images/Screenshot_20260313_031029_Iceraven.jpg" alt="Mobile UI Preview2" width="140">
-  <img src="docs/images/Screenshot_20260313_031034_Iceraven.jpg" alt="Mobile UI Preview3" width="140">
-  <img src="docs/images/Screenshot_20260313_031039_Iceraven.jpg" alt="Mobile UI Preview4" width="140">
-  <img src="docs/images/Screenshot_20260313_031046_Iceraven.jpg" alt="Mobile UI Preview5" width="140">
-  <img src="docs/images/Screenshot_20260313_031053_Iceraven.jpg" alt="Mobile UI Preview6" width="140">
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d3247dc6-9e08-420e-bf2c-ed6ef08b9f8e" width="180"/>
+  <img src="https://github.com/user-attachments/assets/5190dcf5-c680-42fe-963c-2b0ce109c741" width="180"/>
+  <img src="https://github.com/user-attachments/assets/247cd2a8-330a-4fa1-b6aa-e66d4ecc6e05" width="180"/>
+  <img src="https://github.com/user-attachments/assets/023a8f8c-af83-40be-a8bc-bfc469c7521b" width="180"/>
+  <img src="https://github.com/user-attachments/assets/bf66a9f7-89e6-42a6-9085-c1d5d3cf959b" width="180"/>
+  <img src="https://github.com/user-attachments/assets/a45fc439-9757-4362-89fa-c5cb4537a105" width="180"/>
 </p>
 
 New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
