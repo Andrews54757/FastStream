@@ -179,5 +179,5 @@ jobs:
           target_commitish: ${{ steps.vars.outputs.target_commitish }}
           body_path: release_body.md
           files: |
-            built/chrome-*.zip
-            built/firefox-*.xpi
+            built/*.zip
+            built/*.xpi
