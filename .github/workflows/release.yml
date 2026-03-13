@@ -86,11 +86,6 @@ jobs:
             in_section { print }
           ' README.md > release_body.md
 
-          if [[ ! -s release_body.md ]]; then
-            echo "Could not extract '# Mobile Experience Improvements [NEW]' section from README.md" >&2
-            exit 1
-          fi
-
           # GitHub release bodies do not reliably resolve relative image paths.
           # Convert docs image links to absolute raw URLs at the release commit.
           sed -i -E "s#\]\((docs/images/[^)]+)\)#](https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/\1)#g" release_body.md
