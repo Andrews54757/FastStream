@@ -68,9 +68,9 @@ jobs:
           CHANGELOG_URL="https://github.com/WyvrnRes/FastStream/compare/1.3.75...new-features"
 
           git fetch --tags --force
-          git fetch origin "${TARGET_REF}:${TARGET_REF}" --force
+          git fetch origin "${TARGET_REF}" --force
 
-          RANGE="${BASE_REF}..${TARGET_REF}"
+          RANGE="${BASE_REF}..origin/${TARGET_REF}"
           TODAY_UTC="$(date -u +%Y-%m-%d)"
           COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${RANGE}" 2>/dev/null || echo 0)"
 
