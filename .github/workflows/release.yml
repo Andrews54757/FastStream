@@ -1,20 +1,16 @@
-name: Build and publish release
+name: Build and Publish Release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
-      - "V*.*.*"
   workflow_dispatch:
     inputs:
-      tag_name:
-        description: "Release tag (for example: v1.x.xx)"
+      release_version:
+        description: "Release version (x.y.z)"
         required: true
         type: string
-      target_commitish:
-        description: "Branch or commit to tag/release"
-        required: true
-        default: main
+      target_branch:
+        description: "Branch to build from"
+        required: false
+        default: "new-features"
         type: string
 
 permissions:
@@ -22,180 +18,174 @@ permissions:
 
 jobs:
   release:
-    name: Build and publish release assets
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout source
         uses: actions/checkout@v4
         with:
+          ref: ${{ github.event.inputs.target_branch }}
           fetch-depth: 0
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.target_commitish || github.ref }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          cache: npm
-
-      - name: Resolve release variables
-        id: vars
+      - name: Validate release version format
         shell: bash
         run: |
-          set -euo pipefail
-
-          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
-            TAG_NAME="${GITHUB_REF_NAME}"
-            TARGET_SHA="${GITHUB_SHA}"
-          else
-            TAG_NAME="${{ inputs.tag_name }}"
-            # Resolve user input (branch, tag, or SHA) to a fixed commit SHA.
-            TARGET_SHA="$(git rev-parse "${{ inputs.target_commitish }}^{commit}")"
-          fi
-
-          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
-          echo "target_commitish=${TARGET_SHA}" >> "$GITHUB_OUTPUT"
-
-      - name: Resolve build version
-        id: build_version
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          TAG_NAME="${{ steps.vars.outputs.tag_name }}"
-          BUILD_VERSION="${TAG_NAME#[vV]}"
-
-          if [[ ! "${BUILD_VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "Invalid release tag version: ${TAG_NAME}. Expected vX.Y.Z (or VX.Y.Z)." >&2
+          if [[ ! "${{ github.event.inputs.release_version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Invalid release_version: ${{ github.event.inputs.release_version }}"
+            echo "Expected format: x.y.z"
             exit 1
           fi
 
-          echo "build_version=${BUILD_VERSION}" >> "$GITHUB_OUTPUT"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build extension bundles
+      - name: Build extension artifacts with requested version
         env:
-          FASTSTREAM_BUILD_VERSION: ${{ steps.build_version.outputs.build_version }}
+          FASTSTREAM_BUILD_VERSION: ${{ github.event.inputs.release_version }}
         run: npm run build
 
-      - name: Generate release description
+      - name: Determine previous release tag
+        id: prev_release
+        uses: actions/github-script@v7
+        with:
+          script: |
+            try {
+              const latest = await github.rest.repos.getLatestRelease({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              core.setOutput('tag', latest.data.tag_name || '');
+            } catch (error) {
+              if (error.status === 404) {
+                core.setOutput('tag', '');
+                return;
+              }
+              throw error;
+            }
+
+      - name: Generate release notes with changelog
         id: notes
         shell: bash
+        env:
+          PREV_TAG: ${{ steps.prev_release.outputs.tag }}
         run: |
           set -euo pipefail
 
-          TAG_NAME="${{ steps.vars.outputs.tag_name }}"
-          TARGET_SHA="${{ steps.vars.outputs.target_commitish }}"
-
-          git fetch --tags --force
-
-          TAG_EXISTS="false"
-          if git rev-parse -q --verify "refs/tags/${TAG_NAME}" >/dev/null; then
-            TAG_EXISTS="true"
-          fi
-
-          PREVIOUS_TAG="$(git tag --sort=-version:refname | grep -Fxv "${TAG_NAME}" | head -n 1 || true)"
-
-          if [[ -n "${PREVIOUS_TAG}" ]]; then
-            if [[ "${TAG_EXISTS}" == "true" ]]; then
-              RANGE="${PREVIOUS_TAG}..${TAG_NAME}"
-              CHANGELOG_TO="${TAG_NAME}"
-            else
-              RANGE="${PREVIOUS_TAG}..${TARGET_SHA}"
-              CHANGELOG_TO="${TARGET_SHA}"
-            fi
+          if [[ -n "${PREV_TAG}" ]]; then
+            CHANGELOG_RANGE="${PREV_TAG}..HEAD"
           else
-            RANGE="${TARGET_SHA}"
-          fi
-
-          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features"
-
-          TODAY_LOG_REF="${TARGET_SHA}"
-          TODAY_LOG_LABEL="this release commit"
-          if git ls-remote --exit-code --heads origin "new-features" >/dev/null 2>&1; then
-            git fetch origin "new-features" >/dev/null 2>&1 || true
-            TODAY_LOG_REF="origin/new-features"
-            TODAY_LOG_LABEL="new-features"
+            CHANGELOG_RANGE="HEAD"
           fi
 
           TODAY_UTC="$(date -u +%Y-%m-%d)"
-          COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${TODAY_LOG_REF}" 2>/dev/null || echo 0)"
-
-          cat > release_body.md <<EOF
-
-          # Mobile Experience Improvements [GENERAL RELEASE NOTES]
-          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/new-features/docs/images/tap-zones.svg)
-
-          New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
-
-          - **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
-          - **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
-          - **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
-          - **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
-
-          Notes for new users:
-
-          - The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
-          - The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
-          - If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
-
-          - **Configurable auto-hide controls**
-            - New **Controls hide delay** setting lets you choose how quickly the on-screen controls fade away after you stop interacting.
-            - Helps reduce the controls blocking video content on smaller screens.
-
-          - **Skip buttons show the seek step**
-            - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
-
-          - **Simpler rotate control (better on phones)**
-            - The **Rotate** button is moved to the main toolbar for faster access.
-            - Rotation is simplified to a practical **portrait <-> landscape** toggle.
-
-          - **Customize the toolbar for mobile**
-            - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
-            - Includes a **Reset** button to restore the default toolbar configuration.
-            - Changes persist and are applied across the player.
-
-          - **Improved mobile options/menu usability**
-            - Options UI and the in-player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
-
-          - **Theme picker redesigned with visual cards**
-            - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
-
-          - **More consistent collapsible settings sections**
-            - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
-            - Show/Hide section toggle labels are localized so they match your selected language.
-
-          - **Less likely to be covered by website overlays**
-            - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.
-
-          - **Updated mobile/touch tips**
-            - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
-          EOF
+          TODAY_RANGE="HEAD"
 
           {
+            echo '# Mobile Experience Improvements [GENERAL RELEASE NOTES]'
+            echo '![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/new-features/docs/images/tap-zones.svg)'
+            echo
+            echo 'New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:'
+            echo
+            echo '- **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.'
+            echo '- **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.'
+            echo '- **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.'
+            echo '- **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.'
+            echo
+            echo 'Notes for new users:'
+            echo
+            echo '- The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.'
+            echo '- The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.'
+            echo '- If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.'
+            echo
+            echo '- **Configurable auto-hide controls**'
+            echo '  - New **Controls hide delay** setting lets you choose how quickly the on-screen controls fade away after you stop interacting.'
+            echo '  - Helps reduce the controls blocking video content on smaller screens.'
+            echo
+            echo '- **Skip buttons show the seek step**'
+            echo '  - Skip forward/back buttons now display a small number overlay (e.g., ) so you can see the current seek step at a glance.'
+            echo
+            echo '- **Simpler rotate control (better on phones)**'
+            echo '  - The **Rotate** button is moved to the main toolbar for faster access.'
+            echo '  - Rotation is simplified to a practical **portrait <-> landscape** toggle.'
+            echo
+            echo '- **Customize the toolbar for mobile**'
+            echo '  - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.'
+            echo '  - Includes a **Reset** button to restore the default toolbar configuration.'
+            echo '  - Changes persist and are applied across the player.'
+            echo
+            echo '- **Improved mobile options/menu usability**'
+            echo '  - Options UI and the in-player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).'
+            echo
+            echo '- **Theme picker redesigned with visual cards**'
+            echo '  - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.'
+            echo
+            echo '- **More consistent collapsible settings sections**'
+            echo '  - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.'
+            echo '  - Show/Hide section toggle labels are localized so they match your selected language.'
+            echo
+            echo '- **Less likely to be covered by website overlays**'
+            echo '  - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.'
+            echo
+            echo '- **Updated mobile/touch tips**'
+            echo '  - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.'
             echo
             echo "### Today's commit messages"
-            echo
-            if [[ "${COMMIT_COUNT}" -gt 0 ]]; then
-              git log --no-merges --since="${TODAY_UTC} 00:00:00" --pretty='- %s (%h)' "${TODAY_LOG_REF}"
+            if [[ -n "$(git log --since="${TODAY_UTC} 00:00:00" --pretty=format:'%h' ${TODAY_RANGE})" ]]; then
+              git log --since="${TODAY_UTC} 00:00:00" --pretty=format:'- %s (%h)' --reverse ${TODAY_RANGE}
             else
-              echo "- No commits were found for today on ${TODAY_LOG_LABEL}."
+              echo '- No commits found today.'
             fi
             echo
-            if [[ -n "${PREVIOUS_TAG}" ]]; then
-              echo "Compared from ${PREVIOUS_TAG} to ${TAG_NAME}."
+            echo
+            echo '### Changelog since last release'
+            if [[ -n "$(git log --pretty=format:'%h' ${CHANGELOG_RANGE})" ]]; then
+              git log --pretty=format:'- `%h` %s (%an)' --reverse ${CHANGELOG_RANGE} || true
+            else
+              echo '- No changes since the last release.'
             fi
-            echo "Full changelog: ${CHANGELOG_URL}"
-          } >> release_body.md
+            echo
+            echo
+            echo 'Full changelog: https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features'
+          } > release_notes.md
 
-      - name: Publish GitHub release
+      - name: Ensure built artifacts include selected version
+        shell: bash
+        env:
+          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
+        run: |
+          set -euo pipefail
+          found=0
+          for artifact in built/*.zip built/*.xpi; do
+            if [[ -f "$artifact" ]]; then
+              found=1
+              base="$(basename "$artifact")"
+              if [[ "$base" != *"${RELEASE_VERSION}"* ]]; then
+                echo "Artifact does not include release version: $base"
+                exit 1
+              fi
+            fi
+          done
+
+          if [[ "$found" -eq 0 ]]; then
+            echo 'No built release artifacts found in built/*.zip or built/*.xpi'
+            exit 1
+          fi
+
+      - name: Create GitHub release and upload assets
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ steps.vars.outputs.tag_name }}
-          target_commitish: ${{ steps.vars.outputs.target_commitish }}
-          body_path: release_body.md
+          tag_name: v${{ github.event.inputs.release_version }}
+          name: FastStream v${{ github.event.inputs.release_version }}
+          target_commitish: ${{ github.event.inputs.target_branch }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
           files: |
-            built/chrome-*.zip
-            built/firefox-*.xpi
+            built/*.zip
+            built/*.xpi
