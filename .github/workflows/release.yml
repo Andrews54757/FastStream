@@ -92,14 +92,14 @@ jobs:
             RANGE="${TARGET_SHA}"
           fi
 
-          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/new-features"
+          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/Mobile-Experience-imrovements"
 
           TODAY_LOG_REF="${TARGET_SHA}"
           TODAY_LOG_LABEL="this release commit"
-          if git ls-remote --exit-code --heads origin "new-features" >/dev/null 2>&1; then
-            git fetch origin "new-features" --depth=1 >/dev/null 2>&1 || true
-            TODAY_LOG_REF="origin/new-features"
-            TODAY_LOG_LABEL="new-features"
+          if git ls-remote --exit-code --heads origin "Mobile-Experience-imrovements" >/dev/null 2>&1; then
+            git fetch origin "Mobile-Experience-imrovements" --depth=1 >/dev/null 2>&1 || true
+            TODAY_LOG_REF="origin/Mobile-Experience-imrovements"
+            TODAY_LOG_LABEL="Mobile-Experience-imrovements"
           fi
 
           TODAY_UTC="$(date -u +%Y-%m-%d)"
@@ -108,7 +108,7 @@ jobs:
           cat > release_body.md <<EOF
 
           # Mobile Experience Improvements [GENERAL RELEASE NOTES]
-          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/new-features/docs/images/tap-zones.svg)
+          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/Mobile-Experience-imrovements/docs/images/tap-zones.svg)
 
           New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
 
