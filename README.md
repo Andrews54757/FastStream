@@ -11,6 +11,10 @@
 
 ![Tap action zones diagram](docs/images/tap-zones.svg)
 
+
+- **Improved mobile options/menu usability**
+  - Options UI and the in‑player options window were adjusted for mobile usability and accessibility.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/d3247dc6-9e08-420e-bf2c-ed6ef08b9f8e" width="180"/>
   <img src="https://github.com/user-attachments/assets/5190dcf5-c680-42fe-963c-2b0ce109c741" width="180"/>
@@ -49,9 +53,6 @@ Notes for new users:
   - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
   - Includes a **Reset** button to restore the default toolbar configuration.
   - Changes persist and are applied across the player.
-
-- **Improved mobile options/menu usability**
-  - Options UI and the in‑player options window were adjusted for mobile usability and accessibility (easier tapping, clearer layout).
 
 - **Theme picker redesigned with visual cards**
   - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
