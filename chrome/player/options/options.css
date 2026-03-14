@@ -85,47 +85,14 @@ body.frame {
   --color-bg-muted: var(--popwindow-dropdown-item-background-color);
   --color-text: var(--popwindow-text-color);
   --color-muted: color-mix(in oklab, var(--color-text) 70%, transparent);
+  --color-border: color-mix(in oklab, var(--color-text) 22%, transparent);
   --color-elev: var(--input-background-color);
   --color-primary: var(--link-color);
   --color-primary-contrast: var(--popwindow-button-text-color);
   --color-focus: var(--popwindow-textinput-focus-border-color);
-  background: transparent;
+  background: var(--color-bg);
   margin: 0px;
   padding: 4px 20px;
-}
-
-/* Inputs/selects/textarea inside frame should use exact player borders/backgrounds */
-body.frame input,
-body.frame select,
-body.frame textarea {
-  border: var(--input-border);
-  background-color: var(--input-background-color);
-  color: var(--input-text-color);
-}
-
-body.frame input:focus-visible,
-body.frame select:focus-visible,
-body.frame textarea:focus-visible {
-  outline: var(--input-focus-border);
-  outline-offset: 2px;
-}
-
-/* Buttons follow popwindow button styles when embedded */
-body.frame button {
-  background-color: var(--popwindow-button-background-color);
-  color: var(--popwindow-button-text-color);
-  border: var(--popwindow-border);
-}
-
-body.frame button:hover {
-  background-color: var(--popwindow-button-hover-background-color);
-  border: var(--popwindow-border);
-}
-
-/* Primary submit button inside frame */
-body.frame #submitter {
-  background-color: var(--popwindow-button-active-background-color);
-  color: var(--popwindow-button-text-color);
 }
 
 /* Link styling when embedded in player */
@@ -141,11 +108,18 @@ body.frame a:focus-visible {
   outline: none;
 }
 
-/* Keybind input chips match input styling in frame */
-body.frame .keybind-input {
-  border: var(--input-border);
-  background: var(--input-background-color);
-  color: var(--input-text-color);
+/* In-frame options should look like the addon settings page: same card sections/borders. */
+body.frame .options-section {
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-elev) 80%, var(--color-bg-muted) 20%);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+}
+
+body.frame .options-section .section-heading {
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
 }
 
 body:not(.frame) {
@@ -437,7 +411,13 @@ button:focus-visible {
 
 .options-section[data-search-section="theme"] .section-heading {
   grid-template-columns: 1fr auto;
-  grid-template-areas: "title count";
+  grid-template-areas:
+    "title count"
+    "actions actions";
+}
+
+body:not(.frame) .options-section[data-search-section="theme"] .section-actions {
+  justify-content: flex-start;
 }
 
 .searchbar-shell {
@@ -537,7 +517,7 @@ body:not(.frame) .options-section .section-heading h1 {
 }
 
 body:not(.frame) .options-section .section-actions {
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 /* Simple horizontal button grouping */
@@ -910,13 +890,24 @@ textarea:focus-visible {
 }
 
 body.mobile .theme-style-gallery {
-  grid-template-columns: 1fr;
-  --theme-card-min-width: 100%;
-  --theme-preview-height: clamp(120px, 34vw, 190px);
+  /* Mobile: make theme cards compact so multiple are visible. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  --theme-card-min-width: 0px;
+  --theme-card-gap: 8px;
+  --theme-card-padding: 6px;
+  --theme-preview-height: clamp(64px, 20vw, 96px);
 }
 
 body.mobile .theme-style-card {
-  min-height: calc(var(--theme-preview-height) + 76px);
+  min-height: calc(var(--theme-preview-height) + 44px);
+}
+
+@media (max-width: 360px) {
+  body.mobile .theme-style-gallery {
+    grid-template-columns: 1fr;
+    --theme-card-min-width: 100%;
+    --theme-preview-height: clamp(72px, 28vw, 110px);
+  }
 }
 
 @media (min-width: 1280px) {

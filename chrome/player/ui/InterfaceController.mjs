@@ -1197,9 +1197,15 @@ export class InterfaceController {
     if (document.fullscreenEnabled) {
       const newValue = force === undefined ? !document.fullscreenElement : force;
       if (newValue) {
-        await document.documentElement.requestFullscreen();
+        // Fullscreen only the player UI so sizing stays consistent and controls remain reachable.
+        const target = DOMElements.playerContainer || document.documentElement;
+        if (target && target.requestFullscreen) {
+          await target.requestFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
       } else if (document.exitFullscreen && document.fullscreenElement) {
-        document.exitFullscreen();
+        await document.exitFullscreen();
       }
 
       this.updateFullScreenButton();
@@ -1233,10 +1239,7 @@ export class InterfaceController {
       this.state.fullscreen = true;
     } else {
       fullScreenButton.classList.remove('out');
-      if (this.state.fullscreen) {
-        this.state.fullscreen = false;
-        this.fullscreenToggle(false);
-      }
+      this.state.fullscreen = false;
     }
   }
 

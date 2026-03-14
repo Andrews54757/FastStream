@@ -313,26 +313,34 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.pseudo_fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
     position: fixed;
     z-index: 99999;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    position: fixed;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default:-ms-fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    position: fixed;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button {

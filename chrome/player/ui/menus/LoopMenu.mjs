@@ -2,7 +2,6 @@ import {EventEmitter} from '../../modules/eventemitter.mjs';
 import {DOMElements} from '../DOMElements.mjs';
 import {Localize} from '../../modules/Localize.mjs';
 import {WebUtils} from '../../utils/WebUtils.mjs';
-import {Utils} from '../../utils/Utils.mjs';
 import {GIF} from '../../modules/gif/gif.mjs';
 
 export class LoopMenu extends EventEmitter {
@@ -11,24 +10,10 @@ export class LoopMenu extends EventEmitter {
 
     this.client = client;
     this.loopEnabled = false;
-    this.loopStart = null;
+    this.loopStart = 0;
     this.loopEnd = null;
-    this.loopTimeSettings = {
-      start: '00:00:00.000',
-      end: '00:00:00.000',
-    };
-
-    this.loopHandler = this.checkLoopLoop.bind(this);
   }
 
-  currentTimeToTimecode(time) {
-    const hours = Math.floor(time / 3600);
-    const minutes = Math.floor(time / 60) % 60;
-    const seconds = Math.floor(time % 60);
-    const milliseconds = Math.floor(time * 1000) % 1000;
-
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}.${milliseconds.toString().padStart(3, '0')}`;
-  }
   setupUI() {
     DOMElements.loopMenu.addEventListener('keydown', (e) => {
       e.stopPropagation();
@@ -59,59 +44,6 @@ export class LoopMenu extends EventEmitter {
       e.stopPropagation();
     });
     WebUtils.setupTabIndex(DOMElements.loopButton);
-
-    const timeSettings = this.loopTimeSettings;
-
-    for (const [name, value] of Object.entries(timeSettings)) {
-      const option = document.createElement('div');
-      option.classList.add('option');
-
-      const label = document.createElement('div');
-      label.classList.add('label');
-      label.textContent = Localize.getMessage('loop_menu_' + name);
-
-      const input = document.createElement('input');
-      input.name = name;
-      input.type = 'text';
-      input.value = value;
-      input.ariaLabel = label.textContent;
-      input.setAttribute('autocomplete', 'off');
-      input.setAttribute('autocorrect', 'off');
-      input.setAttribute('autocapitalize', 'off');
-      input.setAttribute('spellcheck', 'false');
-
-      let timeout = null;
-      input.addEventListener('keyup', () => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          this.loopTimeSettings[name] = input.value;
-          this.updateLoopAndGif();
-        }, 200);
-      });
-
-      input.addEventListener('input', () => {
-        this.loopTimeSettings[name] = input.value;
-        this.updateLoopAndGif();
-      });
-      option.appendChild(label);
-
-      const nowButton = document.createElement('div');
-      nowButton.role = 'button';
-      nowButton.classList.add('now_button');
-      nowButton.textContent = '→';
-      nowButton.addEventListener('click', () => {
-        input.value = this.currentTimeToTimecode(this.client.currentTime);
-        this.loopTimeSettings[name] = input.value;
-        this.updateLoopAndGif();
-      });
-      WebUtils.setupTabIndex(nowButton);
-      option.appendChild(nowButton);
-
-      option.appendChild(input);
-
-
-      DOMElements.loopMenu.appendChild(option);
-    }
 
     const loopButtonContainer = document.createElement('div');
     loopButtonContainer.style = 'display: flex; justify-content: center';
@@ -148,36 +80,19 @@ export class LoopMenu extends EventEmitter {
     this.updateUI();
   }
 
-  timecodeToSeconds(timecode) {
-    const split = timecode.split(':');
-    const seconds = parseFloat(split.pop());
-    const minutes = parseInt(split.pop() || 0);
-    const hours = parseInt(split.pop() || 0);
-    return hours * 3600 + minutes * 60 + seconds;
-  }
-
   updateLoopAndGif() {
     const player = this.client.player;
     if (this.gifLoopRunning) {
       this.stopGifRecording(true);
     }
     if (this.loopEnabled && player) {
-      this.loopStart = this.timecodeToSeconds(this.loopTimeSettings.start);
-      this.loopEnd = this.timecodeToSeconds(this.loopTimeSettings.end);
-
-      if (this.loopEnd <= 0) {
-        this.loopEnd = this.client.duration;
-      }
-
-      if (this.loopStart >= this.loopEnd || this.loopStart >= this.client.duration) {
-        this.loopEnabled = false;
-      } else {
-        this.loopStart = Utils.clamp(this.loopStart, 0, this.client.duration);
-        this.loopEnd = Utils.clamp(this.loopEnd, 0, this.client.duration);
-      }
+      // Loop the full video (start -> end) when enabled.
+      this.loopStart = 0;
+      const duration = this.client.duration ?? player.getVideo()?.duration;
+      this.loopEnd = Number.isFinite(duration) && duration > 0 ? duration : 0;
     } else {
-      this.loopStart = null;
-      this.loopEnd = null;
+      this.loopStart = 0;
+      this.loopEnd = 0;
     }
 
     this.toggleLoopButton.textContent = Localize.getMessage('loop_menu_toggle_' + (this.loopEnabled ? 'enabled' : 'disabled'));
@@ -187,11 +102,8 @@ export class LoopMenu extends EventEmitter {
       this.toggleLoopButton.classList.remove('enabled');
     }
 
-    if (this.loopEnabled) {
-      player.getVideo().loop = true;
-      this.startLoopLoop();
-    } else {
-      player.getVideo().loop = false;
+    if (player) {
+      player.getVideo().loop = !!this.loopEnabled;
     }
   }
 
@@ -275,11 +187,12 @@ export class LoopMenu extends EventEmitter {
     const player = this.client.player;
     const currentTime = Math.floor(player.currentTime * 100) / 100;
     const loopStart = this.loopStart;
+    const loopEnd = Number.isFinite(this.loopEnd) && this.loopEnd > 0 ? this.loopEnd : this.client.duration;
     let reachedEnd = false;
     if (currentTime >= loopStart) {
       const lastRecorded = this.lastTimeRecorded;
 
-      if (currentTime >= this.loopEnd || (lastRecorded !== null && currentTime < lastRecorded)) {
+      if ((Number.isFinite(loopEnd) && loopEnd > 0 && currentTime >= loopEnd) || (lastRecorded !== null && currentTime < lastRecorded)) {
         reachedEnd = true;
       } else if (lastRecorded === null || currentTime - lastRecorded > 1/30) {
         if (lastRecorded !== null && this.gif) {
@@ -335,41 +248,6 @@ export class LoopMenu extends EventEmitter {
         URL.revokeObjectURL(url);
       });
       gif.render();
-    }
-  }
-
-  startLoopLoop() {
-    if (this.loopLoopRunning) {
-      return;
-    }
-    this.loopLoopRunning = true;
-    this.checkLoopLoop();
-  }
-
-  checkLoopLoop() {
-    const player = this.client.player;
-    if (!player || !this.loopEnabled) {
-      this.loopLoopRunning = false;
-      return;
-    }
-
-    requestAnimationFrame(this.loopHandler);
-
-    const currentTime = this.client.currentTime;
-
-    if (this.gifLoopRunning) {
-      if (currentTime >= this.loopEnd) {
-        this.stopGifRecording();
-      }
-      return;
-    }
-
-    if (currentTime >= this.loopEnd) {
-      this.client.currentTime = this.loopStart;
-    } else if (this.loopStart > 0 && !this.gifLoopRunning) {
-      if (currentTime < this.loopStart) {
-        this.client.currentTime = this.loopStart;
-      }
     }
   }
 }

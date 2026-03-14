@@ -969,6 +969,11 @@ export class FastStreamClient extends EventEmitter {
             this.currentTime = lastTime;
             this.setSeekSave(true);
           }
+        } else {
+          // Ensure we start from the beginning unless resume-from-last-position is enabled.
+          this.setSeekSave(false);
+          this.currentTime = 0;
+          this.setSeekSave(true);
         }
 
         this.disableProgressSave = false;
