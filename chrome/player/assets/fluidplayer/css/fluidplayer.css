@@ -655,7 +655,7 @@ body {
 }
 
 .fluid_control_loop.fs_loop_enabled {
-    color: var(--button-badge-background-color);
+    color: var(--status-success-color);
 }
 
 .fluid_control_loop.fs_loop_enabled svg {
