@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "更多工具"
     },
+    "player_gif_label": {
+        "message": "錄製 GIF"
+    },
     "player_loop_label": {
         "message": "重播"
     },
@@ -1071,7 +1074,7 @@
         "message": "迷你播放器大小"
     },
     "options_general_color_theme": {
-        "message": "播放器配色主題"
+        "message": "介面主題"
     },
     "options_general_color_theme_default": {
         "message": "預設（深色）"

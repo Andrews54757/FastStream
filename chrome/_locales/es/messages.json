@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Más utilidades"
     },
+    "player_gif_label": {
+        "message": "Grabar GIF"
+    },
     "player_loop_label": {
         "message": "Repetir"
     },
@@ -1071,7 +1074,7 @@
         "message": "Tamaño del miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema de color del reproductor"
+        "message": "Tema de la interfaz"
     },
     "options_general_color_theme_default": {
         "message": "Predeterminado Oscuro"

@@ -1147,7 +1147,7 @@ async function openPlayer(frame) {
     }, (response) => {
       BackgroundUtils.checkMessageError('player');
 
-      if (response === 'no_video') {
+      if (response === 'no_video' || response === 'waiting_for_play') {
         frame.playerOpening = false;
       }
 

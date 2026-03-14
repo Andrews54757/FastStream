@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Другие инструменты"
     },
+    "player_gif_label": {
+        "message": "Записать GIF"
+    },
     "player_loop_label": {
         "message": "Зациклить"
     },
@@ -1071,7 +1074,7 @@
         "message": "Размер мини-плеера"
     },
     "options_general_color_theme": {
-        "message": "Цветовая тема плеера"
+        "message": "Тема интерфейса"
     },
     "options_general_color_theme_default": {
         "message": "Темная по умолчанию"

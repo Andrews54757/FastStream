@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Alat lainnya"
     },
+    "player_gif_label": {
+        "message": "Rekam GIF"
+    },
     "player_loop_label": {
         "message": "Ulang"
     },
@@ -1071,7 +1074,7 @@
         "message": "Ukuran mini pemutar"
     },
     "options_general_color_theme": {
-        "message": "Tema warna pemutar"
+        "message": "Tema antarmuka"
     },
     "options_general_color_theme_default": {
         "message": "Gelap Bawaan"

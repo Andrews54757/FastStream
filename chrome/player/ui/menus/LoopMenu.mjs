@@ -15,69 +15,35 @@ export class LoopMenu extends EventEmitter {
   }
 
   setupUI() {
-    DOMElements.loopMenu.addEventListener('keydown', (e) => {
-      e.stopPropagation();
-    });
+    // Legacy popup container is no longer used (loop/GIF are direct toolbar buttons).
+    // Keep it hidden for backwards compatibility with other UI code.
+    if (DOMElements.loopMenu) {
+      DOMElements.loopMenu.style.display = 'none';
+      DOMElements.loopMenu.replaceChildren();
+    }
 
-    DOMElements.loopMenu.addEventListener('keyup', (e) => {
-      e.stopPropagation();
-    });
+    if (DOMElements.loopButton) {
+      DOMElements.loopButton.addEventListener('click', (e) => {
+        this.emit('open', {target: DOMElements.loopButton});
+        this.loopEnabled = !this.loopEnabled;
+        this.updateLoopAndGif();
+        e.stopPropagation();
+      });
+      WebUtils.setupTabIndex(DOMElements.loopButton);
+    }
 
-    DOMElements.loopMenu.addEventListener('mousedown', (e) => {
-      e.stopPropagation();
-    });
+    if (DOMElements.gifButton) {
+      DOMElements.gifButton.addEventListener('click', (e) => {
+        this.emit('open', {target: DOMElements.gifButton});
+        this.loopEnabled = true;
+        this.updateLoopAndGif();
+        this.recordGif();
+        e.stopPropagation();
+      });
+      WebUtils.setupTabIndex(DOMElements.gifButton);
+    }
 
-    DOMElements.loopMenu.addEventListener('mouseup', (e) => {
-      e.stopPropagation();
-    });
-
-    DOMElements.loopMenu.addEventListener('click', (e) => {
-      e.stopPropagation();
-    });
-
-    DOMElements.loopButton.addEventListener('click', (e) => {
-      if (this.isOpen()) {
-        this.closeUI();
-      } else {
-        this.openUI();
-      }
-      e.stopPropagation();
-    });
-    WebUtils.setupTabIndex(DOMElements.loopButton);
-
-    const loopButtonContainer = document.createElement('div');
-    loopButtonContainer.style = 'display: flex; justify-content: center';
-    DOMElements.loopMenu.appendChild(loopButtonContainer);
-
-    const toggleLoopButton = document.createElement('div');
-    this.toggleLoopButton = toggleLoopButton;
-    toggleLoopButton.role = 'button';
-    toggleLoopButton.classList.add('loop_menu_toggle_button');
-    toggleLoopButton.textContent = Localize.getMessage('loop_menu_toggle_' + (this.loopEnabled ? 'enabled' : 'disabled'));
-    toggleLoopButton.addEventListener('click', (e) => {
-      this.loopEnabled = !this.loopEnabled;
-      this.updateLoopAndGif();
-      e.stopPropagation();
-    });
-    WebUtils.setupTabIndex(toggleLoopButton);
-    loopButtonContainer.appendChild(toggleLoopButton);
-
-    const gifButton = document.createElement('div');
-    gifButton.role = 'button';
-    gifButton.classList.add('loop_menu_gif_button');
-    gifButton.addEventListener('click', (e) => {
-      this.loopEnabled = true;
-      this.updateLoopAndGif();
-      this.recordGif();
-      e.stopPropagation();
-    });
-    WebUtils.setupTabIndex(gifButton);
-
-    const svgIcon = WebUtils.createSVGIcon('assets/fluidplayer/static/icons2.svg#gif');
-    gifButton.appendChild(svgIcon);
-    loopButtonContainer.appendChild(gifButton);
-
-    this.updateUI();
+    this.updateLoopAndGif();
   }
 
   updateLoopAndGif() {
@@ -95,11 +61,9 @@ export class LoopMenu extends EventEmitter {
       this.loopEnd = 0;
     }
 
-    this.toggleLoopButton.textContent = Localize.getMessage('loop_menu_toggle_' + (this.loopEnabled ? 'enabled' : 'disabled'));
-    if (this.loopEnabled) {
-      this.toggleLoopButton.classList.add('enabled');
-    } else {
-      this.toggleLoopButton.classList.remove('enabled');
+    if (DOMElements.loopButton) {
+      DOMElements.loopButton.classList.toggle('fs_loop_enabled', !!this.loopEnabled);
+      DOMElements.loopButton.setAttribute('aria-pressed', String(!!this.loopEnabled));
     }
 
     if (player) {
@@ -112,21 +76,16 @@ export class LoopMenu extends EventEmitter {
   }
 
   isOpen() {
-    return DOMElements.loopMenu.style.display !== 'none';
+    return false;
   }
 
   openUI() {
-    this.emit('open', {
-      target: DOMElements.loopButton,
-    });
-
-    DOMElements.loopMenu.style.display = '';
+    // Popup UI removed.
   }
 
   closeUI() {
-    if (DOMElements.loopMenu.style.display === 'none') {
-      return false;
-    }
+    if (!DOMElements.loopMenu) return false;
+    if (DOMElements.loopMenu.style.display === 'none') return false;
     DOMElements.loopMenu.style.display = 'none';
     return true;
   }

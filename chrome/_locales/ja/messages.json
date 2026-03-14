@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "その他のツール"
     },
+    "player_gif_label": {
+        "message": "GIFを録画"
+    },
     "player_loop_label": {
         "message": "ループ"
     },
@@ -1071,7 +1074,7 @@
         "message": "ミニプレーヤーのサイズ"
     },
     "options_general_color_theme": {
-        "message": "プレーヤーのカラーテーマ"
+        "message": "UIテーマ"
     },
     "options_general_color_theme_default": {
         "message": "デフォルト ダーク"

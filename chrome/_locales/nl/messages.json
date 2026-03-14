@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Meer tools"
     },
+    "player_gif_label": {
+        "message": "GIF opnemen"
+    },
     "player_loop_label": {
         "message": "Herhalen"
     },
@@ -1071,7 +1074,7 @@
         "message": "Grootte mini-speler"
     },
     "options_general_color_theme": {
-        "message": "Kleurthema van de speler"
+        "message": "UI-thema"
     },
     "options_general_color_theme_default": {
         "message": "Standaard donker"

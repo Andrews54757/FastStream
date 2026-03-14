@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Lebih banyak alat"
     },
+    "player_gif_label": {
+        "message": "Rakam GIF"
+    },
     "player_loop_label": {
         "message": "Gelung"
     },
@@ -1071,7 +1074,7 @@
         "message": "Miniplayer size"
     },
     "options_general_color_theme": {
-        "message": "Player color theme"
+        "message": "Tema UI"
     },
     "options_general_color_theme_default": {
         "message": "Default Dark"

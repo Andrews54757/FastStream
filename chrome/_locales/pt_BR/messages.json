@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Mais ferramentas"
     },
+    "player_gif_label": {
+        "message": "Gravar GIF"
+    },
     "player_loop_label": {
         "message": "Loop"
     },
@@ -1071,7 +1074,7 @@
         "message": "Tamanho do miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema de cor do tocador"
+        "message": "Tema da interface"
     },
     "options_general_color_theme_default": {
         "message": "Padrão Escuro"

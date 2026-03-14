@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Plus d'outils"
     },
+    "player_gif_label": {
+        "message": "Enregistrer un GIF"
+    },
     "player_loop_label": {
         "message": "Boucle"
     },
@@ -1071,7 +1074,7 @@
         "message": "Taille du mini-lecteur"
     },
     "options_general_color_theme": {
-        "message": "Thème de couleur du lecteur"
+        "message": "Thème de l'interface"
     },
     "options_general_color_theme_default": {
         "message": "Sombre (par défaut)"

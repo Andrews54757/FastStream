@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Diğer araçlar"
     },
+    "player_gif_label": {
+        "message": "GIF kaydet"
+    },
     "player_loop_label": {
         "message": "Tekrarla"
     },
@@ -1071,7 +1074,7 @@
         "message": "Miniplayer boyutu"
     },
     "options_general_color_theme": {
-        "message": "Oynatıcı renk teması"
+        "message": "Arayüz Teması"
     },
     "options_general_color_theme_default": {
         "message": "Varsayılan Koyu"

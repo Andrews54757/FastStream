@@ -74,6 +74,11 @@ export const DefaultToolSettings = {
     'priority': 1000,
     'visible': true,
   },
+  'gif': {
+    'location': 'extra',
+    'priority': 50,
+    'visible': true,
+  },
   'loop': {
     'location': 'extra',
     'priority': 100,

@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "도구 더보기"
     },
+    "player_gif_label": {
+        "message": "GIF 녹화"
+    },
     "player_loop_label": {
         "message": "반복"
     },
@@ -1071,7 +1074,7 @@
         "message": "미니플레이어 크기"
     },
     "options_general_color_theme": {
-        "message": "플레이어 색상 테마"
+        "message": "UI 테마"
     },
     "options_general_color_theme_default": {
         "message": "기본 다크"

@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Więcej narzędzi"
     },
+    "player_gif_label": {
+        "message": "Nagraj GIF"
+    },
     "player_loop_label": {
         "message": "Pętla"
     },
@@ -1071,7 +1074,7 @@
         "message": "Rozmiar miniodtwarzacza"
     },
     "options_general_color_theme": {
-        "message": "Motyw kolorystyczny odtwarzacza"
+        "message": "Motyw interfejsu"
     },
     "options_general_color_theme_default": {
         "message": "Domyślny (ciemny)"

@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Altri strumenti"
     },
+    "player_gif_label": {
+        "message": "Registra GIF"
+    },
     "player_loop_label": {
         "message": "Loop"
     },
@@ -1071,7 +1074,7 @@
         "message": "Dimensioni del miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema colore del lettore video"
+        "message": "Tema dell'interfaccia"
     },
     "options_general_color_theme_default": {
         "message": "Predefinito Scuro"

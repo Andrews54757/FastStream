@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "Mehr Werkzeuge"
     },
+    "player_gif_label": {
+        "message": "GIF aufnehmen"
+    },
     "player_loop_label": {
         "message": "Wiederholen"
     },
@@ -1071,7 +1074,7 @@
         "message": "Miniplayer Größe"
     },
     "options_general_color_theme": {
-        "message": "Farbthema des Players"
+        "message": "UI-Thema"
     },
     "options_general_color_theme_default": {
         "message": "Standard Dunkel"

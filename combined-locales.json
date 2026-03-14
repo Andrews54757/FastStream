@@ -2753,6 +2753,24 @@
         "zh_CN": "更多工具",
         "zh_TW": "更多工具"
     },
+    "player_gif_label": {
+        "en": "Record GIF",
+        "de": "GIF aufnehmen",
+        "es": "Grabar GIF",
+        "fr": "Enregistrer un GIF",
+        "id": "Rekam GIF",
+        "it": "Registra GIF",
+        "ja": "GIFを録画",
+        "ko": "GIF 녹화",
+        "ms": "Rakam GIF",
+        "nl": "GIF opnemen",
+        "pl": "Nagraj GIF",
+        "pt_BR": "Gravar GIF",
+        "ru": "Записать GIF",
+        "tr": "GIF kaydet",
+        "zh_CN": "录制 GIF",
+        "zh_TW": "錄製 GIF"
+    },
     "player_loop_label": {
         "en": "Loop",
         "de": "Wiederholen",

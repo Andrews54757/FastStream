@@ -28,6 +28,9 @@
   let MiniplayerCooldown = 0;
   let Activated = false;
 
+  let PendingPlayerOpenRequest = null;
+  let PendingPlayerOpenCleanup = null;
+
   let resizeDebounce = Date.now();
   const Config = {
     softReplaceByDefault: true,
@@ -234,8 +237,9 @@
   function handlePlayerOpen(request, sender, sendResponse) {
     getVideo().then((video) => {
       if (!video && !request.force) {
-        console.log('no video found');
-        sendResponse('no_video');
+        console.log('no video found - waiting for user to start playback');
+        queuePlayerOpenUntilUserPlay(request);
+        sendResponse('waiting_for_play');
         return;
       }
 
@@ -325,6 +329,84 @@
       }
     });
     return true;
+  }
+
+  function queuePlayerOpenUntilUserPlay(request) {
+    PendingPlayerOpenRequest = Object.assign({}, request);
+
+    if (PendingPlayerOpenCleanup) {
+      return;
+    }
+
+    const triggerOpen = () => {
+      const pending = PendingPlayerOpenRequest;
+      if (!pending) return;
+
+      PendingPlayerOpenRequest = null;
+      const cleanup = PendingPlayerOpenCleanup;
+      if (cleanup) cleanup();
+
+      setTimeout(() => {
+        handlePlayerOpen(pending, null, () => {});
+      }, 0);
+    };
+
+    const onPlayCapture = (e) => {
+      if (e && e.target instanceof HTMLVideoElement) {
+        triggerOpen();
+      }
+    };
+
+    const checkIfAlreadyPlaying = () => {
+      if (!PendingPlayerOpenRequest) return;
+      getVideo().then((video) => {
+        if (!PendingPlayerOpenRequest) return;
+        if (video && video.video && !video.video.paused && !video.video.ended) {
+          triggerOpen();
+        }
+      });
+    };
+
+    const onUserIntent = () => {
+      checkIfAlreadyPlaying();
+    };
+
+    const observer = new MutationObserver(() => {
+      checkIfAlreadyPlaying();
+    });
+
+    try {
+      observer.observe(document.documentElement || document, {childList: true, subtree: true});
+    } catch (e) {
+      // ignore
+    }
+
+    document.addEventListener('play', onPlayCapture, true);
+    document.addEventListener('pointerdown', onUserIntent, true);
+    document.addEventListener('keydown', onUserIntent, true);
+
+    const timeout = setTimeout(() => {
+      PendingPlayerOpenRequest = null;
+      const cleanup = PendingPlayerOpenCleanup;
+      if (cleanup) cleanup();
+    }, 2 * 60 * 1000);
+
+    PendingPlayerOpenCleanup = () => {
+      try {
+        observer.disconnect();
+      } catch (e) {
+        // ignore
+      }
+
+      document.removeEventListener('play', onPlayCapture, true);
+      document.removeEventListener('pointerdown', onUserIntent, true);
+      document.removeEventListener('keydown', onUserIntent, true);
+
+      clearTimeout(timeout);
+      PendingPlayerOpenCleanup = null;
+    };
+
+    checkIfAlreadyPlaying();
   }
 
   function makeSoftIntoHard(pobj) {

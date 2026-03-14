@@ -458,6 +458,9 @@
     "player_more_label": {
         "message": "More tools"
     },
+    "player_gif_label": {
+        "message": "Record GIF"
+    },
     "player_loop_label": {
         "message": "Loop"
     },

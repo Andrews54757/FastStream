@@ -106,11 +106,13 @@ export class ToolManager {
 
     if (this.client.player) {
       DOMElements.screenshot.classList.remove('hidden');
+      DOMElements.gifButton.classList.remove('hidden');
       DOMElements.loopButton.classList.remove('hidden');
       DOMElements.skipForwardButton.classList.remove('hidden');
       DOMElements.skipBackwardButton.classList.remove('hidden');
     } else {
       DOMElements.screenshot.classList.add('hidden');
+      DOMElements.gifButton.classList.add('hidden');
       DOMElements.loopButton.classList.add('hidden');
       DOMElements.skipForwardButton.classList.add('hidden');
       DOMElements.skipBackwardButton.classList.add('hidden');
@@ -173,6 +175,7 @@ export class ToolManager {
       settings: DOMElements.settingsButton,
       quality: DOMElements.videoSource,
       languages: DOMElements.languageButton,
+      gif: DOMElements.gifButton,
       loop: DOMElements.loopButton,
       more: DOMElements.moreButton,
       forward: DOMElements.skipForwardButton,

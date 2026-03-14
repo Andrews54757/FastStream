@@ -488,8 +488,6 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
-    const {width, height} = this.captureViewportDimensions();
-
     const normalizedTurns = ((this.options.videoRotate % 4) + 4) % 4;
     const isQuarterTurn = normalizedTurns % 2 === 1;
     const rotation = normalizedTurns * 90;
@@ -497,14 +495,18 @@ export class FastStreamClient extends EventEmitter {
     playerContainer.classList.toggle('fs-player-rotated', isQuarterTurn);
 
     if (isQuarterTurn) {
-      playerContainer.style.width = `${height}px`;
-      playerContainer.style.height = `${width}px`;
+      // Use CSS viewport units for sizing (see fluidplayer.css) to avoid
+      // intermittent mis-measurements that can leave the player tiny/centered.
+      playerContainer.style.position = 'absolute';
+      playerContainer.style.width = '';
+      playerContainer.style.height = '';
       playerContainer.style.left = '50%';
       playerContainer.style.top = '50%';
       playerContainer.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
       return;
     }
 
+    playerContainer.style.position = '';
     playerContainer.style.width = '';
     playerContainer.style.height = '';
     playerContainer.style.left = '';

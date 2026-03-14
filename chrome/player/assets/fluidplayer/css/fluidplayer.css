@@ -654,6 +654,14 @@ body {
     color: var(--subtitles-toggle-color);
 }
 
+.fluid_control_loop.fs_loop_enabled {
+    color: var(--button-badge-background-color);
+}
+
+.fluid_control_loop.fs_loop_enabled svg {
+    opacity: 1;
+}
+
 .fluid_button svg:hover {
     opacity: 1;
 }
@@ -787,6 +795,13 @@ body {
     position: absolute;
     max-width: none;
     max-height: none;
+
+    width: 100vh;
+    width: 100svh;
+    width: 100dvh;
+
+    height: 100vw;
+    height: 100dvw;
 }
 
 .mainplayer.player-hidden {
