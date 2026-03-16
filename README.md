@@ -52,7 +52,16 @@ Please note that there are no plans to make FastStream mobile compatible any tim
 
 You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
 
-It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/faststream/)
+It is also available for [Firefox with manual installation](#manual-installation-for-firefox) (see below).
+
+### Notice for Firefox extension store users
+Firefox's extension store policies recently changed and now require a more stringent review process, which FastStream has not been able to pass. As a result, the extension is currently unavailable in the Firefox add-ons store.
+
+Mozilla's goal is understandable: they want to ensure extensions are secure and free of malicious code. However, these new requirements have made it much harder for independent developers like me to maintain and update extensions on their platform.
+
+One policy in particular is a major obstacle for FastStream. Mozilla now requires developers to use official release versions of third-party dependencies. That is not practical for this project, because FastStream relies on several heavily customized open-source libraries, including hls.js, dash.js, and youtube.js. These modified versions contain FastStream-specific code and are available on my GitHub, but they are not official upstream releases. Although I work with the original developers to implement the features FastStream needs, Mozilla's policy still requires official release builds. Given how extensively these libraries have been customized, complying with that requirement would mean either removing important features or somehow getting Mozilla to approve the customized versions.
+
+I have tried contacting Mozilla to explain that these modifications are necessary for FastStream to function properly, but I have not received a useful response. For now, the Firefox version of FastStream is only available through manual installation. I will continue trying to get FastStream back onto the Firefox store. In the meantime, please follow the instructions below to install it manually.
 
 ## Manual Installation For Chrome
 The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:
