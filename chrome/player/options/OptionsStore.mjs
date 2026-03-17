@@ -15,11 +15,18 @@ export class OptionsStore {
   /**
    * Initialize the store by loading options and wiring external updates.
    */
-  static async init() {
-    if (this.#initialized) return this.#options;
-    this.#initialized = true;
-    this.#options = await Utils.getOptionsFromStorage();
+ static async init() {
+    // 1. If we have options, return them immediately
+    if (this.#initialized && this.#options) return this.#options;
+
+    // 2. Load the options first
+    const options = await Utils.getOptionsFromStorage();
+    this.#options = options;
     this.#wireExternalUpdates();
+
+    // 3. ONLY NOW mark as initialized
+    this.#initialized = true; 
+    
     return this.#options;
   }
 
