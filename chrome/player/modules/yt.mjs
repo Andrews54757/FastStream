@@ -44,6 +44,7 @@ __export(Utils_exports, {
   generateRandomString: () => generateRandomString,
   generateSidAuth: () => generateSidAuth,
   getCookie: () => getCookie,
+  getNsigProcessorFn: () => getNsigProcessorFn,
   getRandomUserAgent: () => getRandomUserAgent,
   getStringBetweenStrings: () => getStringBetweenStrings,
   hasKeys: () => hasKeys,
@@ -56,7 +57,7 @@ __export(Utils_exports, {
 
 // dist/src/core/PackageInfo.js
 var packageInfo = {
-  version: "16.0.0",
+  version: "17.0.1",
   bugs: {
     url: "https://github.com/LuanRT/YouTube.js/issues"
   },
@@ -756,6 +757,36 @@ function getCookie(cookies, name, matchWholeName = false) {
   return match ? match[2] : void 0;
 }
 __name(getCookie, "getCookie");
+function getNsigProcessorFn(n, sp, s) {
+  return `function process(n = "", sp = "", s = "") {
+  const mockStreamingURL = "https://ytjs.googlevideo.com/videoplayback?expire=1234567890&"+"n="+encodeURIComponent(n);
+  const urlCtorFunction = exportedVars.nsigFunction || (() => { throw new Error('No n/sig decipher function extracted') });
+  const urlCtor = urlCtorFunction(mockStreamingURL, sp, s);
+
+  const proto = Object.getPrototypeOf(urlCtor);
+  const properties = Object.getOwnPropertyNames(proto);
+  const methodBlacklist = ['constructor', 'clone', 'set', 'get'];
+
+  for (const prop of properties) {
+    if (methodBlacklist.includes(prop))
+      continue;
+
+    if (typeof urlCtor[prop] === 'function')
+      urlCtor[prop]();
+  }
+
+  const sigResult = urlCtor.get(sp);
+  const nResult = urlCtor.get('n');
+
+  return {
+    sig: sigResult ? decodeURIComponent(sigResult) : undefined,
+    n: nResult ? decodeURIComponent(nResult) : undefined
+  };
+}
+
+return process("${n || ""}", "${sp || ""}", "${s || ""}");`;
+}
+__name(getNsigProcessorFn, "getNsigProcessorFn");
 
 // dist/src/platform/polyfills/web-crypto.js
 async function sha1Hash(str) {
@@ -1376,6 +1407,7 @@ __export(nodes_exports, {
   OpenPopupAction: () => OpenPopupAction,
   PageHeader: () => PageHeader,
   PageHeaderView: () => PageHeaderView,
+  PageIndicatorView: () => PageIndicatorView,
   PageIntroduction: () => PageIntroduction,
   PanelFooterView: () => PanelFooterView,
   PdgCommentChip: () => PdgCommentChip,
@@ -1385,6 +1417,7 @@ __export(nodes_exports, {
   PivotBarItem: () => PivotBarItem,
   PivotButton: () => PivotButton,
   PlayerAnnotationsExpanded: () => PlayerAnnotationsExpanded,
+  PlayerCaptchaView: () => PlayerCaptchaView,
   PlayerCaptionsTracklist: () => PlayerCaptionsTracklist,
   PlayerControlsOverlay: () => PlayerControlsOverlay,
   PlayerErrorMessage: () => PlayerErrorMessage,
@@ -1535,6 +1568,7 @@ __export(nodes_exports, {
   ThumbnailOverlayResumePlayback: () => ThumbnailOverlayResumePlayback,
   ThumbnailOverlaySidePanel: () => ThumbnailOverlaySidePanel,
   ThumbnailOverlayTimeStatus: () => ThumbnailOverlayTimeStatus,
+  ThumbnailOverlayTitleView: () => ThumbnailOverlayTitleView,
   ThumbnailOverlayToggleButton: () => ThumbnailOverlayToggleButton,
   ThumbnailView: () => ThumbnailView,
   TimedMarkerDecoration: () => TimedMarkerDecoration,
@@ -1587,6 +1621,8 @@ __export(nodes_exports, {
   VideoOwner: () => VideoOwner,
   VideoPrimaryInfo: () => VideoPrimaryInfo,
   VideoSecondaryInfo: () => VideoSecondaryInfo,
+  VideoSummaryContentView: () => VideoSummaryContentView,
+  VideoSummaryParagraphView: () => VideoSummaryParagraphView,
   VideoViewCount: () => VideoViewCount,
   ViewCountFactoid: () => ViewCountFactoid,
   VoiceReplyContainerView: () => VoiceReplyContainerView,
@@ -1698,6 +1734,14 @@ var CLIENTS = {
     SDK_VERSION: 36,
     USER_AGENT: "com.google.android.youtube/21.03.36(Linux; U; Android 16; en_US; SM-S908E Build/TP1A.220624.014) gzip"
   },
+  ANDROID_VR: {
+    NAME: "ANDROID_VR",
+    VERSION: "1.65.10",
+    SDK_VERSION: 32,
+    DEVICE_MAKE: "Oculus",
+    DEVICE_MODEL: "Quest 3",
+    USER_AGENT: "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
+  },
   YTSTUDIO_ANDROID: {
     NAME: "ANDROID_CREATOR",
     VERSION: "22.43.101"
@@ -1708,7 +1752,7 @@ var CLIENTS = {
   },
   TV: {
     NAME: "TVHTML5",
-    VERSION: "7.20250219.14.00",
+    VERSION: "7.20260311.12.00",
     USER_AGENT: "Mozilla/5.0 (ChromiumStylePlatform) Cobalt/Version"
   },
   TV_SIMPLY: {
@@ -1743,6 +1787,7 @@ var CLIENT_NAME_IDS = {
   ANDROID: "3",
   ANDROID_CREATOR: "14",
   ANDROID_MUSIC: "21",
+  ANDROID_VR: "28",
   TVHTML5: "7",
   TVHTML5_SIMPLY: "74",
   TVHTML5_SIMPLY_EMBEDDED_PLAYER: "85",
@@ -1760,7 +1805,7 @@ var INNERTUBE_HEADERS_BASE = {
   "accept-encoding": "gzip, deflate",
   "content-type": "application/json"
 };
-var SUPPORTED_CLIENTS = ["IOS", "WEB", "MWEB", "YTKIDS", "YTMUSIC", "ANDROID", "YTSTUDIO_ANDROID", "YTMUSIC_ANDROID", "TV", "TV_SIMPLY", "TV_EMBEDDED", "WEB_EMBEDDED", "WEB_CREATOR"];
+var SUPPORTED_CLIENTS = ["IOS", "WEB", "MWEB", "YTKIDS", "YTMUSIC", "ANDROID", "ANDROID_VR", "YTSTUDIO_ANDROID", "YTMUSIC_ANDROID", "TV", "TV_SIMPLY", "TV_EMBEDDED", "WEB_EMBEDDED", "WEB_CREATOR"];
 
 // dist/src/utils/EventEmitterLike.js
 var _legacy_listeners;
@@ -2852,6 +2897,18 @@ adjustContext_fn = /* @__PURE__ */ __name(function(ctx, client) {
       ctx.client.clientVersion = CLIENTS.ANDROID.VERSION;
       ctx.client.clientFormFactor = "SMALL_FORM_FACTOR";
       ctx.client.clientName = CLIENTS.ANDROID.NAME;
+      break;
+    case "ANDROID_VR":
+      ctx.client.androidSdkVersion = 32;
+      ctx.client.osName = "Android";
+      ctx.client.osVersion = "12L";
+      ctx.client.platform = "MOBILE";
+      ctx.client.userAgent = CLIENTS.ANDROID_VR.USER_AGENT;
+      ctx.client.deviceMake = CLIENTS.ANDROID_VR.DEVICE_MAKE;
+      ctx.client.deviceModel = CLIENTS.ANDROID_VR.DEVICE_MODEL;
+      ctx.client.clientVersion = CLIENTS.ANDROID_VR.VERSION;
+      ctx.client.clientFormFactor = "SMALL_FORM_FACTOR";
+      ctx.client.clientName = CLIENTS.ANDROID_VR.NAME;
       break;
     case "YTMUSIC_ANDROID":
       ctx.client.clientVersion = CLIENTS.YTMUSIC_ANDROID.VERSION;
@@ -4353,11 +4410,8 @@ __export(helpers_exports2, {
   createWrapperFunction: () => createWrapperFunction,
   extractNodeSource: () => extractNodeSource,
   getNodeSourceRange: () => getNodeSourceRange,
-  getUrlHelperClassName: () => getUrlHelperClassName,
   indent: () => indent,
-  isTruthyBooleanNode: () => isTruthyBooleanNode,
   jsBuiltIns: () => jsBuiltIns,
-  looksLikeSignatureHelper: () => looksLikeSignatureHelper,
   memberBaseName: () => memberBaseName,
   memberToString: () => memberToString,
   walkAst: () => walkAst
@@ -4619,106 +4673,23 @@ function createWrapperFunction(analyzer, name, node) {
   if (node.type === "CallExpression" && node.callee.type === "Identifier" && analyzer.declaredVariables.has(node.callee.name)) {
     return generateWrapper(name, node.callee.name, parseFunctionArguments(analyzer, node.arguments));
   } else if (node.type === "VariableDeclarator" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && node.id.type === "Identifier") {
-    if (looksLikeSignatureHelper(node.init)) {
-      return generateSignatureWrapper(name, node.id.name);
-    }
     return generateWrapper(name, node.id.name, parseFunctionArguments(analyzer, node.init.params));
-  } else if (name === "nFunction" && node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" && node.expression.operator === "=" && node.expression.right.type === "FunctionExpression") {
-    const targetName = memberToString(node.expression.left, analyzer.getSource());
-    if (targetName == null ? void 0 : targetName.startsWith("g.")) {
-      return generateNClassWrapper(name, targetName);
-    }
+  } else if (node.type === "NewExpression" && node.callee.type === "MemberExpression" && node.callee.object.type === "Identifier") {
+    const targetFunction = memberToString(node.callee, analyzer.getSource());
+    if (!targetFunction)
+      return void 0;
+    return generateWrapper(name, targetFunction, parseFunctionArguments(analyzer, node.arguments), true);
   }
 }
 __name(createWrapperFunction, "createWrapperFunction");
-function isTruthyBooleanNode(node) {
-  return (node == null ? void 0 : node.type) === "Literal" && node.value === true || (node == null ? void 0 : node.type) === "UnaryExpression" && node.operator === "!" && node.argument.type === "Literal" && node.argument.value === 0;
-}
-__name(isTruthyBooleanNode, "isTruthyBooleanNode");
-function generateWrapper(functionName, targetFunction, args) {
+function generateWrapper(functionName, targetFunction, args, useNew = false) {
   return [
-    `${indent}function ${functionName}(input) {`,
-    `${indent}${indent}return ${targetFunction}(${args});`,
+    `${indent}function ${functionName}(${args.join(", ")}) {`,
+    `${indent}${indent}return ${useNew ? "new " : ""}${targetFunction}(${args.join(", ")});`,
     `${indent}}`
   ].join("\n");
 }
 __name(generateWrapper, "generateWrapper");
-function generateNClassWrapper(functionName, targetClass) {
-  return [
-    `${indent}function ${functionName}(input) {`,
-    `${indent}${indent}let url = input;`,
-    `${indent}${indent}if (typeof input !== 'string' || (!input.startsWith('http://') && !input.startsWith('https://'))) {`,
-    `${indent}${indent}${indent}url = 'https://www.youtube.com/videoplayback?n=' + encodeURIComponent(String(input));`,
-    `${indent}${indent}}`,
-    `${indent}${indent}const helper = new ${targetClass}(url, true);`,
-    `${indent}${indent}return helper.get('n');`,
-    `${indent}}`
-  ].join("\n");
-}
-__name(generateNClassWrapper, "generateNClassWrapper");
-function generateSignatureWrapper(functionName, targetFunction) {
-  return [
-    `${indent}function ${functionName}(input) {`,
-    `${indent}${indent}const helper = ${targetFunction}('https://www.youtube.com/videoplayback', 'signature', String(input));`,
-    `${indent}${indent}return helper.get('signature');`,
-    `${indent}}`
-  ].join("\n");
-}
-__name(generateSignatureWrapper, "generateSignatureWrapper");
-function looksLikeSignatureHelper(node) {
-  var _a, _b;
-  if (node.params.length !== 3 || !node.body) {
-    return false;
-  }
-  const helperName = ((_a = node.params[0]) == null ? void 0 : _a.type) === "Identifier" ? node.params[0].name : null;
-  const signatureParam = ((_b = node.params[1]) == null ? void 0 : _b.type) === "Identifier" ? node.params[1].name : null;
-  if (!helperName || !signatureParam) {
-    return false;
-  }
-  let hasUrlHelperConstructor = false;
-  let hasAlrSet = false;
-  let hasSignatureWrite = false;
-  let returnsHelper = false;
-  walkAst(node.body, (innerNode) => {
-    var _a2, _b2, _c, _d, _e;
-    if (innerNode.type === "NewExpression" && innerNode.callee.type === "MemberExpression" && innerNode.arguments.length >= 2 && ((_a2 = innerNode.arguments[0]) == null ? void 0 : _a2.type) === "Identifier" && innerNode.arguments[0].name === helperName && isTruthyBooleanNode(innerNode.arguments[1])) {
-      const calleeName = memberToString(innerNode.callee, "");
-      hasUrlHelperConstructor || (hasUrlHelperConstructor = typeof calleeName === "string" && calleeName.startsWith("g."));
-    } else if (innerNode.type === "CallExpression" && innerNode.callee.type === "MemberExpression" && innerNode.callee.object.type === "Identifier" && innerNode.callee.object.name === helperName) {
-      if (innerNode.arguments.length >= 2 && ((_b2 = innerNode.arguments[0]) == null ? void 0 : _b2.type) === "Literal" && innerNode.arguments[0].value === "alr" && ((_c = innerNode.arguments[1]) == null ? void 0 : _c.type) === "Literal" && innerNode.arguments[1].value === "yes") {
-        hasAlrSet = true;
-      } else if (innerNode.arguments.length >= 2 && ((_d = innerNode.arguments[0]) == null ? void 0 : _d.type) === "Identifier" && innerNode.arguments[0].name === signatureParam) {
-        hasSignatureWrite = true;
-      }
-    } else if (innerNode.type === "ReturnStatement" && ((_e = innerNode.argument) == null ? void 0 : _e.type) === "Identifier" && innerNode.argument.name === helperName) {
-      returnsHelper = true;
-    }
-  });
-  return hasUrlHelperConstructor && hasAlrSet && hasSignatureWrite && returnsHelper;
-}
-__name(looksLikeSignatureHelper, "looksLikeSignatureHelper");
-function getUrlHelperClassName(node) {
-  var _a;
-  if (!node.body)
-    return null;
-  const helperName = ((_a = node.params[0]) == null ? void 0 : _a.type) === "Identifier" ? node.params[0].name : null;
-  if (!helperName) {
-    return null;
-  }
-  let className = null;
-  walkAst(node.body, (innerNode) => {
-    var _a2;
-    if (innerNode.type === "NewExpression" && innerNode.callee.type === "MemberExpression" && innerNode.arguments.length >= 2 && ((_a2 = innerNode.arguments[0]) == null ? void 0 : _a2.type) === "Identifier" && innerNode.arguments[0].name === helperName && isTruthyBooleanNode(innerNode.arguments[1])) {
-      const calleeName = memberToString(innerNode.callee, "");
-      if (calleeName == null ? void 0 : calleeName.startsWith("g.")) {
-        className = calleeName;
-        return WALK_STOP;
-      }
-    }
-  });
-  return className;
-}
-__name(getUrlHelperClassName, "getUrlHelperClassName");
 function parseFunctionArguments(analyzer, args) {
   const params = [];
   for (const arg of args) {
@@ -4726,52 +4697,65 @@ function parseFunctionArguments(analyzer, args) {
       params.push(arg.name);
     } else if (arg.type === "Literal" && (typeof arg.value === "string" || typeof arg.value === "number")) {
       params.push(JSON.stringify(arg.value));
+    } else if (arg.type === "UnaryExpression") {
+      const argSource = extractNodeSource(arg, analyzer.getSource());
+      if (argSource) {
+        params.push(argSource.trim());
+      }
+    } else if (arg.type === "AssignmentPattern" && arg.left.type === "Identifier") {
+      params.push(arg.left.name);
+    } else if (arg.type === "Identifier") {
+      params.push(arg.name);
     } else if (!params.includes("input"))
       params.push("input");
   }
-  return params.join(", ");
+  return params;
 }
 __name(parseFunctionArguments, "parseFunctionArguments");
 
 // dist/src/utils/javascript/matchers.js
 var matchers_exports = {};
 __export(matchers_exports, {
-  nMatcher: () => nMatcher,
-  sigMatcher: () => sigMatcher,
+  nsigMatcher: () => nsigMatcher,
   timestampMatcher: () => timestampMatcher
 });
-function sigMatcher(node) {
-  var _a;
-  if (node.type === "VariableDeclarator" && node.id.type === "Identifier" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && // sigFn(64, decodeURIComponent(sig))
-  looksLikeSignatureHelper(node.init)) {
-    return node;
-  }
-  return false;
-}
-__name(sigMatcher, "sigMatcher");
-function nMatcher(node) {
-  var _a, _b, _c;
-  if (node.type === "VariableDeclarator") {
-    if (node.id.type === "Identifier" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && looksLikeSignatureHelper(node.init)) {
-      const className = getUrlHelperClassName(node.init);
-      if (className) {
-        return {
-          type: "Identifier",
-          name: className,
-          start: node.id.start,
-          end: node.id.end,
-          range: node.id.range
-        };
+function nsigMatcher(node) {
+  if (node.type !== "VariableDeclarator")
+    return false;
+  const init = node.init;
+  if (!init || init.type !== "FunctionExpression")
+    return false;
+  if (init.params.length < 3)
+    return false;
+  const [url, sigName, sigValue] = init.params;
+  if (url.type !== "Identifier" || sigName.type !== "AssignmentPattern" || sigValue.type !== "AssignmentPattern")
+    return false;
+  const body = init.body;
+  const blockStatementBody = (body == null ? void 0 : body.body) || [];
+  let hasUrlCtor = false;
+  let hasSetAlr = false;
+  for (const statement of blockStatementBody) {
+    if (statement.type !== "ExpressionStatement")
+      continue;
+    const expr = statement.expression;
+    if (expr.type === "AssignmentExpression" && expr.operator === "=" && expr.left.type === "Identifier" && expr.left.name === url.name) {
+      const right = expr.right;
+      if (right.type === "NewExpression" && right.callee.type === "MemberExpression") {
+        hasUrlCtor = true;
       }
     }
-    if (node.id.type === "Identifier" && ((_b = node.init) == null ? void 0 : _b.type) === "ArrayExpression" && ((_c = node.init.elements[0]) == null ? void 0 : _c.type) === "Identifier") {
-      return node.init.elements[0];
+    if (expr.type === "CallExpression" && expr.callee.type === "MemberExpression") {
+      const args = expr.arguments;
+      if (args.length === 2 && args[0].type === "Literal" && args[0].value === "alr" && args[1].type === "Literal" && args[1].value === "yes") {
+        hasSetAlr = true;
+      }
     }
-    return false;
   }
-  return false;
+  if (!hasUrlCtor || !hasSetAlr)
+    return false;
+  return node;
 }
-__name(nMatcher, "nMatcher");
+__name(nsigMatcher, "nsigMatcher");
 function timestampMatcher(node) {
   var _a;
   if (node.type !== "VariableDeclarator" || ((_a = node.init) == null ? void 0 : _a.type) !== "FunctionExpression") {
@@ -13772,9 +13756,9 @@ var _JsAnalyzer = class _JsAnalyzer {
     __publicField(this, "hasExtractions");
     __publicField(this, "extractionStates");
     __publicField(this, "dependentsTracker", /* @__PURE__ */ new Map());
-    __publicField(this, "declaredVariables", /* @__PURE__ */ new Map());
-    __publicField(this, "prototypeAliasAssignments", /* @__PURE__ */ new Map());
+    __publicField(this, "pendingPrototypeAliasBinding", null);
     __publicField(this, "iifeParamName", null);
+    __publicField(this, "declaredVariables", /* @__PURE__ */ new Map());
     this.source = code;
     const extractionConfigs = options.extractions ? Array.isArray(options.extractions) ? options.extractions : [options.extractions] : [];
     this.extractionStates = extractionConfigs.map((config) => ({
@@ -13795,10 +13779,8 @@ var _JsAnalyzer = class _JsAnalyzer {
    * Walks the AST to collect declarations and resolve initial targets.
    */
   analyzeAst() {
-    var _a;
+    var _a, _b, _c;
     let iifeBody;
-    const prototypeAliases = /* @__PURE__ */ new Map();
-    let prototypeAliasCounter = 0;
     for (const statement of this.programAst.body) {
       if (statement.type === "ExpressionStatement" && statement.expression.type === "CallExpression") {
         const callExpr = statement.expression;
@@ -13817,115 +13799,114 @@ var _JsAnalyzer = class _JsAnalyzer {
     }
     if (!iifeBody)
       return;
-    const registerPrototypeAliasAssignment = /* @__PURE__ */ __name((baseName, node, right, syntheticHint) => {
-      const syntheticName = `[[proto:${baseName}:${syntheticHint}:${prototypeAliasCounter++}]]`;
-      const metadata = {
-        name: syntheticName,
-        node,
-        dependents: /* @__PURE__ */ new Set(),
-        predeclared: false,
-        dependencies: this.findDependencies(right, syntheticName)
-      };
-      metadata.dependencies.add(baseName);
-      const existing = this.prototypeAliasAssignments.get(baseName);
-      if (existing) {
-        existing.push(metadata);
-      } else {
-        this.prototypeAliasAssignments.set(baseName, [metadata]);
-      }
-    }, "registerPrototypeAliasAssignment");
-    walkAst(iifeBody, {
-      enter: /* @__PURE__ */ __name((currentNode, parent) => {
-        if (currentNode !== iifeBody && (currentNode.type === "FunctionDeclaration" || currentNode.type === "FunctionExpression" || currentNode.type === "ArrowFunctionExpression")) {
-          return true;
-        }
-        switch (currentNode.type) {
-          case "ExpressionStatement": {
-            const assignment = currentNode.expression;
-            if (assignment.type !== "AssignmentExpression")
-              break;
-            const left = assignment.left;
-            const right = assignment.right;
-            if (left.type === "Identifier") {
-              const existingVariable = this.declaredVariables.get(left.name);
-              if (!existingVariable)
-                break;
-              existingVariable.node.init = right;
-              if (this.needsDependencyAnalysis(right)) {
-                existingVariable.dependencies = this.findDependencies(assignment.right, left.name);
+    for (const currentNode of iifeBody.body) {
+      switch (currentNode.type) {
+        case "ExpressionStatement": {
+          const assignment = currentNode.expression;
+          if (assignment.type !== "AssignmentExpression")
+            continue;
+          const left = assignment.left;
+          const right = assignment.right;
+          if (right.type === "MemberExpression" && !right.computed && right.property.type === "Identifier" && right.property.name === "prototype") {
+            const prototypeSourceExpr = memberToString(right, this.source);
+            const aliasTargetExpr = left.type === "Identifier" ? left.name : memberToString(left, this.source);
+            if (prototypeSourceExpr) {
+              const prototypeOwnerMeta = this.declaredVariables.get(prototypeSourceExpr.replace(".prototype", ""));
+              if (aliasTargetExpr && prototypeOwnerMeta) {
+                const aliasedPrototypeMembers = /* @__PURE__ */ new Set();
+                const aliasExpr = `${aliasTargetExpr}.`;
+                this.pendingPrototypeAliasBinding = [aliasExpr, prototypeOwnerMeta];
+                prototypeOwnerMeta.prototypeAliases.set(aliasExpr, aliasedPrototypeMembers);
               }
-              if (this.onMatch(existingVariable.node, existingVariable))
-                return WALK_STOP;
-            } else if (left.type === "MemberExpression") {
-              const memberName = memberToString(left, this.source);
-              if (!memberName)
-                break;
-              const rightMemberName = right.type === "MemberExpression" ? memberToString(right, this.source) : null;
-              if (rightMemberName == null ? void 0 : rightMemberName.endsWith(".prototype")) {
-                const baseName2 = rightMemberName.slice(0, -".prototype".length);
-                prototypeAliases.set(memberName, baseName2);
-                registerPrototypeAliasAssignment(baseName2, currentNode, right, memberName);
-              } else {
-                const aliasObjectName = memberBaseName(left, this.source);
-                if (aliasObjectName && prototypeAliases.has(aliasObjectName)) {
-                  registerPrototypeAliasAssignment(prototypeAliases.get(aliasObjectName), currentNode, right, memberName);
+            }
+          }
+          if (left.type === "Identifier") {
+            const existingVariable = this.declaredVariables.get(left.name);
+            if (!existingVariable)
+              continue;
+            existingVariable.node.init = right;
+            if (this.needsDependencyAnalysis(right)) {
+              existingVariable.dependencies = this.findDependencies(assignment.right, left.name);
+            }
+            if (this.onMatch(existingVariable.node, existingVariable))
+              return;
+          } else if (assignment.left.type === "MemberExpression") {
+            const memberName = memberToString(assignment.left, this.source);
+            const activeAliasExpr = (_b = this.pendingPrototypeAliasBinding) == null ? void 0 : _b[0];
+            if (activeAliasExpr && ((memberName == null ? void 0 : memberName.includes(activeAliasExpr)) || memberName === activeAliasExpr.slice(0, -1))) {
+              const aliasOwnerMeta = this.declaredVariables.get(((_c = this.pendingPrototypeAliasBinding) == null ? void 0 : _c[1].name) || "");
+              if (aliasOwnerMeta) {
+                const existingAliasedMembers = aliasOwnerMeta.prototypeAliases.get(activeAliasExpr);
+                const aliasedMemberMeta = {
+                  name: memberName,
+                  node: currentNode,
+                  dependents: this.dependentsTracker.get(memberName) || /* @__PURE__ */ new Set(),
+                  predeclared: false,
+                  prototypeAliases: /* @__PURE__ */ new Map(),
+                  dependencies: this.findDependencies(right, memberName)
+                };
+                if (existingAliasedMembers) {
+                  existingAliasedMembers.add(aliasedMemberMeta);
+                } else {
+                  aliasOwnerMeta.prototypeAliases.set(activeAliasExpr, /* @__PURE__ */ new Set([aliasedMemberMeta]));
                 }
               }
-              const metadata = this.declaredVariables.get(memberName) || {
-                name: memberName,
-                node: currentNode,
-                emitNode: currentNode,
-                dependents: this.dependentsTracker.get(memberName) || /* @__PURE__ */ new Set(),
-                predeclared: false,
-                dependencies: /* @__PURE__ */ new Set()
-              };
-              metadata.node = currentNode;
-              metadata.emitNode = currentNode;
-              metadata.predeclared = false;
-              metadata.dependencies = this.findDependencies(right, memberName);
-              const baseName = memberBaseName(left, this.source);
-              if (baseName && baseName !== memberName && !baseName.startsWith("this.")) {
-                metadata.dependencies.add(baseName.replace(".prototype", ""));
-              }
-              if (this.dependentsTracker.has(memberName)) {
-                this.dependentsTracker.delete(memberName);
-              }
-              this.declaredVariables.set(memberName, metadata);
-              if (this.onMatch(currentNode, metadata))
-                return WALK_STOP;
+            } else {
+              this.pendingPrototypeAliasBinding = null;
             }
-            break;
-          }
-          case "VariableDeclaration": {
-            for (const declaration of currentNode.declarations) {
-              if (declaration.id.type !== "Identifier")
-                continue;
-              const metadata = {
-                name: declaration.id.name,
-                node: declaration,
-                emitNode: (parent == null ? void 0 : parent.type) === "ForStatement" && parent.init === currentNode ? parent : declaration,
-                dependents: this.dependentsTracker.get(declaration.id.name) || /* @__PURE__ */ new Set(),
-                dependencies: /* @__PURE__ */ new Set(),
-                predeclared: false
-              };
-              const init = declaration.init;
-              if (!init && currentNode.kind === "var") {
-                metadata.predeclared = true;
-              } else if (init && this.needsDependencyAnalysis(init)) {
-                metadata.dependencies = this.findDependencies(init, metadata.name);
-              }
-              if (this.dependentsTracker.has(metadata.name)) {
-                this.dependentsTracker.delete(metadata.name);
-              }
-              this.declaredVariables.set(metadata.name, metadata);
-              if (this.onMatch(declaration, metadata))
-                return WALK_STOP;
+            if (!memberName || this.declaredVariables.has(memberName))
+              continue;
+            const metadata = {
+              name: memberName,
+              node: currentNode,
+              dependents: this.dependentsTracker.get(memberName) || /* @__PURE__ */ new Set(),
+              predeclared: false,
+              prototypeAliases: /* @__PURE__ */ new Map(),
+              dependencies: this.findDependencies(right, memberName)
+            };
+            const baseName = memberBaseName(assignment.left, this.source);
+            if (baseName && baseName !== memberName && !baseName.startsWith("this.")) {
+              metadata.dependencies.add(baseName.replace(".prototype", ""));
             }
-            break;
+            if (this.dependentsTracker.has(memberName)) {
+              this.dependentsTracker.delete(memberName);
+            }
+            this.declaredVariables.set(memberName, metadata);
+            if (this.onMatch(currentNode, metadata))
+              return;
           }
+          break;
         }
-      }, "enter")
-    });
+        case "VariableDeclaration": {
+          this.pendingPrototypeAliasBinding = null;
+          for (const declaration of currentNode.declarations) {
+            if (declaration.id.type !== "Identifier")
+              continue;
+            const metadata = {
+              name: declaration.id.name,
+              node: declaration,
+              dependents: this.dependentsTracker.get(declaration.id.name) || /* @__PURE__ */ new Set(),
+              prototypeAliases: /* @__PURE__ */ new Map(),
+              dependencies: /* @__PURE__ */ new Set(),
+              predeclared: false
+            };
+            const init = declaration.init;
+            if (!init && currentNode.kind === "var") {
+              metadata.predeclared = true;
+            } else if (init && this.needsDependencyAnalysis(init)) {
+              metadata.dependencies = this.findDependencies(init, metadata.name);
+            }
+            if (this.dependentsTracker.has(metadata.name)) {
+              this.dependentsTracker.delete(metadata.name);
+            }
+            this.declaredVariables.set(metadata.name, metadata);
+            if (this.onMatch(declaration, metadata))
+              return;
+          }
+          break;
+        }
+      }
+    }
   }
   /**
    * Quick check if node type requires dependency analysis
@@ -13945,6 +13926,7 @@ var _JsAnalyzer = class _JsAnalyzer {
       case "ConditionalExpression":
       case "ObjectExpression":
       case "SequenceExpression":
+      case "ClassExpression":
       case "Identifier":
         return true;
       default:
@@ -13968,22 +13950,21 @@ var _JsAnalyzer = class _JsAnalyzer {
         if (!result)
           continue;
         state.node = node;
+        matched = true;
+        if (metadata) {
+          state.metadata = metadata;
+          state.dependents = metadata.dependents;
+          state.dependencies = metadata.dependencies;
+          if (typeof result !== "boolean")
+            state.matchContext = result;
+        }
+        this.refreshExtractionState(state);
       } else if (state.node !== node) {
         this.refreshExtractionState(state);
         if (this.shouldStopTraversal()) {
           return true;
         }
-        continue;
       }
-      matched = true;
-      if (metadata) {
-        state.metadata = metadata;
-        state.dependents = metadata.dependents;
-        state.dependencies = metadata.dependencies;
-        if (typeof result !== "boolean")
-          state.matchContext = result;
-      }
-      this.refreshExtractionState(state);
     }
     if (!matched)
       return false;
@@ -14117,8 +14098,11 @@ var _JsAnalyzer = class _JsAnalyzer {
     }, "collectParams");
     walkAst(rootNode, {
       enter: /* @__PURE__ */ __name((n, parent) => {
-        var _a2, _b, _c;
+        var _a2, _b, _c, _d;
         switch (n.type) {
+          // Note for anybody debugging this in the future:
+          // *DO NOT* add MethodDefinition here.
+          // MethodDefinition.value is a FunctionExpression, so it is already handled...
           case "FunctionDeclaration":
           case "FunctionExpression":
           case "ArrowFunctionExpression": {
@@ -14147,20 +14131,20 @@ var _JsAnalyzer = class _JsAnalyzer {
             break;
           }
           case "VariableDeclaration": {
-            const scope = currentScope();
+            const targetScope = n.kind === "var" ? (_b = scopeStack.findLast((s) => s.type === "function")) != null ? _b : currentScope() : currentScope();
             for (const d of n.declarations) {
-              collectBindingIdentifiers(d.id, scope.names);
+              collectBindingIdentifiers(d.id, targetScope.names);
             }
             break;
           }
           case "ClassDeclaration": {
-            if ((_b = n.id) == null ? void 0 : _b.name) {
+            if ((_c = n.id) == null ? void 0 : _c.name) {
               currentScope().names.add(n.id.name);
             }
             break;
           }
           case "LabeledStatement": {
-            if (((_c = n.label) == null ? void 0 : _c.type) === "Identifier")
+            if (((_d = n.label) == null ? void 0 : _d.type) === "Identifier")
               currentScope().names.add(n.label.name);
             break;
           }
@@ -14168,6 +14152,8 @@ var _JsAnalyzer = class _JsAnalyzer {
             if (n.name === rootIdentifierName)
               return;
             if ((parent == null ? void 0 : parent.type) === "Property" && parent.key === n && !parent.computed)
+              return;
+            if ((parent == null ? void 0 : parent.type) === "MethodDefinition" && parent.key === n && !parent.computed)
               return;
             if ((parent == null ? void 0 : parent.type) === "MemberExpression" && parent.property === n && !parent.computed) {
               if (parent.object.type === "ThisExpression")
@@ -14195,6 +14181,9 @@ var _JsAnalyzer = class _JsAnalyzer {
               }
               return;
             }
+            if ((parent == null ? void 0 : parent.type) === "MetaProperty") {
+              return;
+            }
             if (isInScope(n.name) || jsBuiltIns.has(n.name))
               return;
             dependencies.add(n.name);
@@ -14211,6 +14200,12 @@ var _JsAnalyzer = class _JsAnalyzer {
             }
             break;
           }
+          case "ForStatement":
+          case "ForInStatement":
+          case "ForOfStatement": {
+            scopeStack.push({ names: /* @__PURE__ */ new Set(), type: "block" });
+            break;
+          }
         }
       }, "enter"),
       leave: /* @__PURE__ */ __name((n) => {
@@ -14220,6 +14215,9 @@ var _JsAnalyzer = class _JsAnalyzer {
           case "ArrowFunctionExpression":
           case "BlockStatement":
           case "CatchClause":
+          case "ForStatement":
+          case "ForInStatement":
+          case "ForOfStatement":
             if (scopeStack.length > 1)
               scopeStack.pop();
             break;
@@ -14274,6 +14272,8 @@ var _JsExtractor = class _JsExtractor {
     if (!node)
       return true;
     switch (node.type) {
+      case "ClassExpression":
+        return true;
       case "Literal": {
         const literal = node;
         return typeof literal.value === "string" || typeof literal.value === "number" || typeof literal.value === "boolean" || literal.value === null || Boolean(literal.regex);
@@ -14346,6 +14346,9 @@ var _JsExtractor = class _JsExtractor {
           }
           return this.isSafeInitializer(node.object, mode);
         }
+        if (!node.computed && node.property.type === "Identifier" && node.property.name === "prototype") {
+          return true;
+        }
         return false;
       }
       case "LogicalExpression":
@@ -14407,14 +14410,11 @@ var _JsExtractor = class _JsExtractor {
    * @param options - Configuration options for the emitter.
    */
   renderNode(node, preDeclared, options = {}) {
-    var _a, _b, _c, _d;
+    var _a, _b, _c;
     const source = this.analyzer.getSource();
     const declaredVariables = this.analyzer.declaredVariables;
-    if (node.type === "ForStatement") {
-      return `${indent}${((_a = extractNodeSource(node, source)) == null ? void 0 : _a.trim()) || ""}`;
-    }
     const sideEffectPolicy = options.disallowSideEffectInitializers;
-    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_b = sideEffectPolicy.mode) != null ? _b : "strict" : "strict";
+    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_a = sideEffectPolicy.mode) != null ? _a : "strict" : "strict";
     const canDisallow = Boolean(sideEffectPolicy);
     const assignmentTarget = node.type === "AssignmentExpression" ? node : node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" ? node.expression : null;
     const init = assignmentTarget && assignmentTarget.operator === "=" ? assignmentTarget.right : node.type === "VariableDeclarator" ? node.init : null;
@@ -14426,18 +14426,19 @@ var _JsExtractor = class _JsExtractor {
         initSource = initializerFallback;
       } else {
         const left = assignmentTarget == null ? void 0 : assignmentTarget.left;
-        if ((left == null ? void 0 : left.type) === "MemberExpression" && init) {
-          if (canDisallow && left.object.type === "Identifier" && init.type !== "FunctionExpression" && init.type !== "ArrowFunctionExpression" && init.type !== "LogicalExpression") {
+        const isPrototypeAlias = (init == null ? void 0 : init.type) === "MemberExpression" && !init.computed && init.property.type === "Identifier" && init.property.name === "prototype";
+        if (!isPrototypeAlias && (left == null ? void 0 : left.type) === "MemberExpression" && init) {
+          if (canDisallow && left.object.type === "Identifier" && init.type !== "FunctionExpression" && init.type !== "ArrowFunctionExpression" && init.type !== "LogicalExpression" && init.type !== "ClassExpression") {
             return `${indent}// Skipped ${memberToString(left, source)} assignment.`;
           }
         }
-        initSource = ((_c = extractNodeSource(init, source)) == null ? void 0 : _c.trim().replace(/;\s*$/, "")) || "kk";
+        initSource = ((_b = extractNodeSource(init, source)) == null ? void 0 : _b.trim().replace(/;\s*$/, "")) || "undefined // [JsExtractor] Failed to extract initializer source.";
       }
     }
     if (!forceRemove && init && init.type === "SequenceExpression" && !initSource.startsWith("(")) {
       initSource = `(${initSource})`;
     }
-    const idName = node.type === "VariableDeclarator" && node.id.type === "Identifier" ? node.id.name : assignmentTarget && assignmentTarget.left.type === "Identifier" ? assignmentTarget.left.name : (assignmentTarget == null ? void 0 : assignmentTarget.type) === "AssignmentExpression" ? (_d = memberToString(assignmentTarget.left, source)) == null ? void 0 : _d.trim() : "unknown";
+    const idName = node.type === "VariableDeclarator" && node.id.type === "Identifier" ? node.id.name : assignmentTarget && assignmentTarget.left.type === "Identifier" ? assignmentTarget.left.name : (assignmentTarget == null ? void 0 : assignmentTarget.type) === "AssignmentExpression" ? (_c = memberToString(assignmentTarget.left, source)) == null ? void 0 : _c.trim() : "unknown";
     const assignmentExpression = `${idName} = ${initSource};`;
     if (node.type === "VariableDeclarator" && node.init && !preDeclared) {
       return `${indent}var ${assignmentExpression}`;
@@ -14451,14 +14452,13 @@ var _JsExtractor = class _JsExtractor {
    * @param config - Configuration options for the emitter.
    */
   buildScript(config) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a, _b;
     const { maxDepth = Infinity, forceVarPredeclaration = false, exportRawValues = false, rawValueOnly: skipEmitFor = [] } = config;
     const extractions = this.analyzer.getExtractedMatches();
     const seen = new Set(extractions.map((e) => {
       var _a2;
       return ((_a2 = e.metadata) == null ? void 0 : _a2.name) || "";
     }));
-    const emittedNodes = /* @__PURE__ */ new Set();
     const snippets = [];
     const predeclaredVarSet = /* @__PURE__ */ new Set();
     const exported = /* @__PURE__ */ new Map();
@@ -14469,48 +14469,15 @@ var _JsExtractor = class _JsExtractor {
       predeclaredVarSet.add(name);
     }
     __name(registerPredeclaredVar, "registerPredeclaredVar");
-    const emitMetadataNode = /* @__PURE__ */ __name((metadata, preDeclared) => {
-      const node = metadata.emitNode || metadata.node;
-      if (!node || emittedNodes.has(node))
-        return;
-      emittedNodes.add(node);
-      snippets.push(this.renderNode(node, preDeclared, config));
-    }, "emitMetadataNode");
-    const emitPrototypeAliasAssignments = /* @__PURE__ */ __name((baseName, depth = 0) => {
-      if (!baseName || depth > maxDepth)
-        return;
-      const aliasAssignments = this.analyzer.prototypeAliasAssignments.get(baseName);
-      if (!aliasAssignments)
-        return;
-      for (const aliasMetadata of aliasAssignments) {
-        if (seen.has(aliasMetadata.name))
-          continue;
-        seen.add(aliasMetadata.name);
-        visit(aliasMetadata, depth + 1);
-        emitMetadataNode(aliasMetadata, false);
-      }
-    }, "emitPrototypeAliasAssignments");
-    const includeRelatedMemberAssignments = /* @__PURE__ */ __name((baseName, depth = 0) => {
-      if (!baseName || depth > maxDepth)
-        return;
-      for (const [declaredName, declaredMetadata] of this.analyzer.declaredVariables.entries()) {
-        if (declaredName === baseName || !(declaredName.startsWith(`${baseName}.prototype.`) || declaredName.startsWith(`${baseName}[`)) || seen.has(declaredName)) {
-          continue;
-        }
-        seen.add(declaredName);
-        const shouldPredeclare = forceVarPredeclaration || declaredMetadata.predeclared;
-        if (shouldPredeclare) {
-          registerPredeclaredVar(declaredName);
-        }
-        visit(declaredMetadata, depth + 1);
-        emitMetadataNode(declaredMetadata, shouldPredeclare);
-      }
-      emitPrototypeAliasAssignments(baseName, depth);
-    }, "includeRelatedMemberAssignments");
-    const visit = /* @__PURE__ */ __name((metadata, depth = 0) => {
+    const visit = /* @__PURE__ */ __name((metadata, depth = 0, whitelistedDep) => {
       if (!metadata || depth > maxDepth)
         return;
       for (const dependency of metadata.dependencies) {
+        if (whitelistedDep && whitelistedDep !== dependency) {
+          if (!seen.has(whitelistedDep))
+            continue;
+          whitelistedDep = void 0;
+        }
         if (seen.has(dependency))
           continue;
         seen.add(dependency);
@@ -14521,9 +14488,16 @@ var _JsExtractor = class _JsExtractor {
         if (shouldPredeclare) {
           registerPredeclaredVar(dependency);
         }
-        visit(dependencyMetadata, depth + 1);
-        emitMetadataNode(dependencyMetadata, shouldPredeclare);
-        includeRelatedMemberAssignments(dependencyMetadata.name, depth + 1);
+        visit(dependencyMetadata, depth + 1, whitelistedDep);
+        snippets.push(this.renderNode(dependencyMetadata.node, shouldPredeclare, config));
+        if (dependencyMetadata.prototypeAliases.size > 0) {
+          for (const [, aliasMembers] of dependencyMetadata.prototypeAliases) {
+            for (const member of aliasMembers) {
+              visit(member, depth);
+              snippets.push(this.renderNode(member.node, shouldPredeclare, config));
+            }
+          }
+        }
       }
     }, "visit");
     for (const extraction of extractions) {
@@ -14533,11 +14507,21 @@ var _JsExtractor = class _JsExtractor {
         if (!shouldSkip)
           snippets.push(`${indent}//#region --- start [${fname || "Unknown"}] ---`);
         const shouldPredeclare = (forceVarPredeclaration || extraction.metadata.predeclared) && !shouldSkip;
+        const onlyProcessMatchContext = extraction.config.onlyProcessMatchContext;
         if (shouldPredeclare) {
           registerPredeclaredVar(extraction.metadata.name);
         }
         if (extraction.config.collectDependencies && !shouldSkip) {
-          visit(extraction.metadata);
+          let whitelistedDep;
+          const matchContextNode = extraction.matchContext;
+          if ((matchContextNode == null ? void 0 : matchContextNode.type) === "NewExpression" && onlyProcessMatchContext) {
+            if (matchContextNode.callee.type === "Identifier") {
+              whitelistedDep = matchContextNode.callee.name;
+            } else if (matchContextNode.callee.type === "MemberExpression") {
+              whitelistedDep = memberToString(matchContextNode.callee, this.analyzer.getSource()) || void 0;
+            }
+          }
+          visit(extraction.metadata, void 0, whitelistedDep);
         }
         if (extraction.matchContext && fname) {
           exported.set(fname, extraction.matchContext);
@@ -14556,18 +14540,25 @@ var _JsExtractor = class _JsExtractor {
           }
         }
         if (!shouldSkip) {
-          emitMetadataNode(extraction.metadata, shouldPredeclare);
-          includeRelatedMemberAssignments(extraction.metadata.name, 1);
+          if (!onlyProcessMatchContext) {
+            snippets.push(this.renderNode(extraction.metadata.node, shouldPredeclare, config));
+          }
           snippets.push(`${indent}//#endregion --- end [${fname || "Unknown"}] ---
 `);
         }
       }
     }
     const output = [];
-    output.push("const window = Object.assign({}, globalThis);");
-    output.push("const document = {};");
-    output.push("const self = window;\n");
+    output.push("const __jsExtractorGlobal = typeof globalThis !== 'undefined' ? globalThis :");
+    output.push(`${indent}typeof self !== 'undefined' ? self :`);
+    output.push(`${indent}typeof window !== 'undefined' ? window :`);
+    output.push(`${indent}typeof global !== 'undefined' ? global : {};
+`);
     output.push(`const exportedVars = (function(${this.analyzer.iifeParamName}) {`);
+    output.push(`${indent}const window = typeof __jsExtractorGlobal.window !== 'undefined' ? __jsExtractorGlobal.window : Object.create(null);`);
+    output.push(`${indent}const document = typeof __jsExtractorGlobal.document !== 'undefined' ? __jsExtractorGlobal.document : {};`);
+    output.push(`${indent}const self = typeof __jsExtractorGlobal.self !== 'undefined' ? __jsExtractorGlobal.self : window;
+`);
     if (predeclaredVarSet.size > 0) {
       output.push(`${indent}var ${Array.from(predeclaredVarSet).join(", ")};
 `);
@@ -14580,27 +14571,8 @@ var _JsExtractor = class _JsExtractor {
         const decl = this.analyzer.declaredVariables.get(node.name);
         if (((_a = decl == null ? void 0 : decl.node) == null ? void 0 : _a.type) === "VariableDeclarator" && ((_b = decl.node.init) == null ? void 0 : _b.type) === "FunctionExpression") {
           currentFunctionNode = decl.node;
-        } else if (((_c = decl == null ? void 0 : decl.emitNode) == null ? void 0 : _c.type) === "ExpressionStatement" && decl.emitNode.expression.type === "AssignmentExpression" && decl.emitNode.expression.right.type === "FunctionExpression") {
-          currentFunctionNode = decl.emitNode;
         }
-      } else if (node.type === "VariableDeclarator" && node.id.type === "Identifier") {
-        if (((_d = node.init) == null ? void 0 : _d.type) === "FunctionExpression") {
-          currentFunctionNode = node;
-        } else {
-          const decl = this.analyzer.declaredVariables.get(node.id.name);
-          if (((_e = decl == null ? void 0 : decl.emitNode) == null ? void 0 : _e.type) === "ExpressionStatement" && decl.emitNode.expression.type === "AssignmentExpression" && decl.emitNode.expression.right.type === "FunctionExpression") {
-            currentFunctionNode = decl.emitNode;
-          }
-        }
-      } else if (node.type === "MemberExpression") {
-        const memberName = memberToString(node, this.analyzer.getSource());
-        const decl = memberName ? this.analyzer.declaredVariables.get(memberName) : void 0;
-        if (((_f = decl == null ? void 0 : decl.node) == null ? void 0 : _f.type) === "ExpressionStatement" && decl.node.expression.type === "AssignmentExpression" && decl.node.expression.right.type === "FunctionExpression") {
-          currentFunctionNode = decl.node;
-        }
-      } else if (node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" && node.expression.right.type === "FunctionExpression") {
-        currentFunctionNode = node;
-      } else if (node.type === "CallExpression") {
+      } else if (node.type === "CallExpression" || node.type === "NewExpression" || node.type === "VariableDeclarator") {
         currentFunctionNode = node;
       }
       if (currentFunctionNode) {
@@ -16802,13 +16774,99 @@ __name(_MenuServiceItemDownload, "MenuServiceItemDownload");
 __publicField(_MenuServiceItemDownload, "type", "MenuServiceItemDownload");
 var MenuServiceItemDownload = _MenuServiceItemDownload;
 
+// dist/src/parser/classes/SubscribeButtonView.js
+var _SubscribeButtonView_instances, parseButtonContent_fn;
+var _SubscribeButtonView = class _SubscribeButtonView extends YTNode {
+  constructor(data) {
+    var _a, _b, _c, _d, _e, _f;
+    super();
+    __privateAdd(this, _SubscribeButtonView_instances);
+    __publicField(this, "subscribe_button_content");
+    __publicField(this, "unsubscribe_button_content");
+    __publicField(this, "disable_notification_bell");
+    __publicField(this, "button_style");
+    __publicField(this, "is_signed_out");
+    __publicField(this, "background_style");
+    __publicField(this, "disable_subscribe_button");
+    __publicField(this, "on_show_subscription_options");
+    __publicField(this, "channel_id");
+    __publicField(this, "enable_subscribe_button_post_click_animation");
+    __publicField(this, "bell_accessibility_data");
+    this.subscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.subscribeButtonContent);
+    this.unsubscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.unsubscribeButtonContent);
+    this.disable_notification_bell = data.disableNotificationBell;
+    if ("buttonStyle" in data) {
+      this.button_style = {
+        unsubscribed_state_style: (_a = data.buttonStyle) == null ? void 0 : _a.unsubscribedStateStyle,
+        subscribed_state_style: (_b = data.buttonStyle) == null ? void 0 : _b.subscribedStateStyle
+      };
+    }
+    this.is_signed_out = data.isSignedOut;
+    this.background_style = data.backgroundStyle;
+    this.disable_subscribe_button = data.disableSubscribeButton;
+    if ("onShowSubscriptionOptions" in data) {
+      this.on_show_subscription_options = new NavigationEndpoint(data.onShowSubscriptionOptions);
+    }
+    this.channel_id = data.channelId;
+    this.enable_subscribe_button_post_click_animation = data.enableSubscribeButtonPostClickAnimation;
+    if ("bellAccessibilityData" in data) {
+      this.bell_accessibility_data = {
+        off_label: (_c = data.bellAccessibilityData) == null ? void 0 : _c.offLabel,
+        all_label: (_d = data.bellAccessibilityData) == null ? void 0 : _d.allLabel,
+        occasional_label: (_e = data.bellAccessibilityData) == null ? void 0 : _e.occasionalLabel,
+        disabled_label: (_f = data.bellAccessibilityData) == null ? void 0 : _f.disabledLabel
+      };
+    }
+  }
+};
+_SubscribeButtonView_instances = new WeakSet();
+parseButtonContent_fn = /* @__PURE__ */ __name(function(data) {
+  return {
+    button_text: data.buttonText,
+    accessibility_text: data.accessibilityText,
+    image_name: data.imageName,
+    subscribe_state_subscribed: data.subscribeState.subscribed,
+    endpoint: new NavigationEndpoint(data.onTapCommand)
+  };
+}, "#parseButtonContent");
+__name(_SubscribeButtonView, "SubscribeButtonView");
+__publicField(_SubscribeButtonView, "type", "SubscribeButtonView");
+var SubscribeButtonView = _SubscribeButtonView;
+
+// dist/src/parser/classes/ListItemView.js
+var _ListItemView = class _ListItemView extends YTNode {
+  constructor(data) {
+    var _a;
+    super();
+    __publicField(this, "title");
+    __publicField(this, "subtitle");
+    __publicField(this, "leading_accessory");
+    __publicField(this, "renderer_context");
+    __publicField(this, "trailing_buttons");
+    if ("title" in data) {
+      this.title = Text2.fromAttributed(data.title);
+    }
+    if ("subtitle" in data) {
+      this.subtitle = Text2.fromAttributed(data.subtitle);
+    }
+    this.leading_accessory = parser_exports.parseItem(data.leadingAccessory, AvatarView);
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+    this.trailing_buttons = parser_exports.parseArray((_a = data.trailingButtons) == null ? void 0 : _a.buttons, SubscribeButtonView);
+  }
+};
+__name(_ListItemView, "ListItemView");
+__publicField(_ListItemView, "type", "ListItemView");
+var ListItemView = _ListItemView;
+
 // dist/src/parser/classes/menus/MenuFlexibleItem.js
 var _MenuFlexibleItem = class _MenuFlexibleItem extends YTNode {
   constructor(data) {
     super();
     __publicField(this, "menu_item");
     __publicField(this, "top_level_button");
-    this.menu_item = parser_exports.parseItem(data.menuItem, [MenuServiceItem, MenuServiceItemDownload]);
+    this.menu_item = parser_exports.parseItem(data.menuItem, [ListItemView, MenuServiceItem, MenuServiceItemDownload]);
     this.top_level_button = parser_exports.parseItem(data.topLevelButton, [DownloadButton, ButtonView, Button]);
   }
 };
@@ -16845,7 +16903,7 @@ var _FlexibleActionsView = class _FlexibleActionsView extends YTNode {
     __publicField(this, "actions_rows");
     __publicField(this, "style");
     this.actions_rows = data.actionsRows.map((row) => ({
-      actions: parser_exports.parseArray(row.actions, [ButtonView, ToggleButtonView])
+      actions: parser_exports.parseArray(row.actions, [ButtonView, ToggleButtonView, SubscribeButtonView])
     }));
     this.style = data.style;
   }
@@ -17412,6 +17470,38 @@ __name(_HorizontalList, "HorizontalList");
 __publicField(_HorizontalList, "type", "HorizontalList");
 var HorizontalList = _HorizontalList;
 
+// dist/src/parser/classes/VideoSummaryParagraphView.js
+var _VideoSummaryParagraphView = class _VideoSummaryParagraphView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "text");
+    this.text = Text2.fromAttributed(data.text);
+  }
+};
+__name(_VideoSummaryParagraphView, "VideoSummaryParagraphView");
+__publicField(_VideoSummaryParagraphView, "type", "VideoSummaryParagraphView");
+var VideoSummaryParagraphView = _VideoSummaryParagraphView;
+
+// dist/src/parser/classes/VideoSummaryContentView.js
+var _VideoSummaryContentView = class _VideoSummaryContentView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "dislike_button_view");
+    __publicField(this, "like_button_view");
+    __publicField(this, "paragraphs");
+    if ("dislikeButtonViewModel" in data) {
+      this.dislike_button_view = parser_exports.parseItem(data.dislikeButtonViewModel, DislikeButtonView);
+    }
+    if ("likeButtonViewModel" in data) {
+      this.like_button_view = parser_exports.parseItem(data.likeButtonViewModel, LikeButtonView);
+    }
+    this.paragraphs = parser_exports.parseArray(data.paragraphs, VideoSummaryParagraphView);
+  }
+};
+__name(_VideoSummaryContentView, "VideoSummaryContentView");
+__publicField(_VideoSummaryContentView, "type", "VideoSummaryContentView");
+var VideoSummaryContentView = _VideoSummaryContentView;
+
 // dist/src/parser/classes/ExpandableMetadata.js
 var _ExpandableMetadata = class _ExpandableMetadata extends YTNode {
   constructor(data) {
@@ -17428,7 +17518,7 @@ var _ExpandableMetadata = class _ExpandableMetadata extends YTNode {
         expanded_title: new Text2(data.header.expandedTitle)
       };
     }
-    this.expanded_content = parser_exports.parseItem(data.expandedContent, [HorizontalCardList, HorizontalList]);
+    this.expanded_content = parser_exports.parseItem(data.expandedContent, [VideoSummaryContentView, HorizontalCardList, HorizontalList]);
     this.expand_button = parser_exports.parseItem(data.expandButton, Button);
     this.collapse_button = parser_exports.parseItem(data.collapseButton, Button);
   }
@@ -18061,6 +18151,26 @@ __name(_ReelShelf, "ReelShelf");
 __publicField(_ReelShelf, "type", "ReelShelf");
 var ReelShelf = _ReelShelf;
 
+// dist/src/parser/classes/MerchandiseShelf.js
+var _MerchandiseShelf = class _MerchandiseShelf extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "title");
+    __publicField(this, "menu");
+    __publicField(this, "items");
+    this.title = data.title;
+    this.menu = parser_exports.parseItem(data.actionButton);
+    this.items = parser_exports.parseArray(data.items);
+  }
+  // XXX: Alias for consistency.
+  get contents() {
+    return this.items;
+  }
+};
+__name(_MerchandiseShelf, "MerchandiseShelf");
+__publicField(_MerchandiseShelf, "type", "MerchandiseShelf");
+var MerchandiseShelf = _MerchandiseShelf;
+
 // dist/src/parser/classes/StructuredDescriptionContent.js
 var _StructuredDescriptionContent = class _StructuredDescriptionContent extends YTNode {
   constructor(data) {
@@ -18077,7 +18187,9 @@ var _StructuredDescriptionContent = class _StructuredDescriptionContent extends 
       HorizontalCardList,
       ReelShelf,
       VideoAttributesSectionView,
-      HowThisWasMadeSectionView
+      HowThisWasMadeSectionView,
+      ExpandableMetadata,
+      MerchandiseShelf
     ]);
   }
 };
@@ -18611,14 +18723,15 @@ var ChannelOwnerEmptyState = _ChannelOwnerEmptyState;
 // dist/src/parser/classes/ChannelSubMenu.js
 var _ChannelSubMenu = class _ChannelSubMenu extends YTNode {
   constructor(data) {
+    var _a, _b, _c;
     super();
     __publicField(this, "content_type_sub_menu_items");
     __publicField(this, "sort_setting");
-    this.content_type_sub_menu_items = data.contentTypeSubMenuItems.map((item) => ({
+    this.content_type_sub_menu_items = ((_c = (_b = (_a = data.sortSetting) == null ? void 0 : _a.sortFilterSubMenuRenderer) == null ? void 0 : _b.subMenuItems) == null ? void 0 : _c.map((item) => ({
       endpoint: new NavigationEndpoint(item.navigationEndpoint || item.endpoint),
       selected: item.selected,
       title: item.title
-    }));
+    }))) || [];
     this.sort_setting = parser_exports.parseItem(data.sortSetting);
   }
 };
@@ -18985,14 +19098,15 @@ var ThumbnailView = _ThumbnailView;
 // dist/src/parser/classes/CollectionThumbnailView.js
 var _CollectionThumbnailView = class _CollectionThumbnailView extends YTNode {
   constructor(data) {
+    var _a, _b;
     super();
     __publicField(this, "primary_thumbnail");
     __publicField(this, "stack_color");
     this.primary_thumbnail = parser_exports.parseItem(data.primaryThumbnail, ThumbnailView);
-    if (data.stackColor) {
+    if ("stackColor" in data) {
       this.stack_color = {
-        light_theme: data.stackColor.lightTheme,
-        dark_theme: data.stackColor.darkTheme
+        light_theme: (_a = data.stackColor) == null ? void 0 : _a.lightTheme,
+        dark_theme: (_b = data.stackColor) == null ? void 0 : _b.darkTheme
       };
     }
   }
@@ -19936,20 +20050,21 @@ var ConfirmDialog = _ConfirmDialog;
 // dist/src/parser/classes/ContentMetadataView.js
 var _ContentMetadataView = class _ContentMetadataView extends YTNode {
   constructor(data) {
+    var _a;
     super();
     __publicField(this, "metadata_rows");
     __publicField(this, "delimiter");
-    this.metadata_rows = data.metadataRows.map((row) => {
-      var _a;
+    this.metadata_rows = ((_a = data.metadataRows) == null ? void 0 : _a.map((row) => {
+      var _a2;
       return {
-        metadata_parts: (_a = row.metadataParts) == null ? void 0 : _a.map((part) => ({
+        metadata_parts: (_a2 = row.metadataParts) == null ? void 0 : _a2.map((part) => ({
           text: part.text ? Text2.fromAttributed(part.text) : null,
           avatar_stack: parser_exports.parseItem(part.avatarStack, AvatarStackView),
           enable_truncation: data.enableTruncation
         })),
         badges: parser_exports.parseArray(row.badges, BadgeView)
       };
-    });
+    })) || [];
     this.delimiter = data.delimiter;
   }
 };
@@ -20253,11 +20368,11 @@ var _DescriptionPreviewView = class _DescriptionPreviewView extends YTNode {
     __publicField(this, "always_show_truncation_text");
     __publicField(this, "more_endpoint");
     __publicField(this, "renderer_context");
-    if (Reflect.has(data, "description"))
+    if ("description" in data)
       this.description = Text2.fromAttributed(data.description);
-    if (Reflect.has(data, "maxLines"))
+    if ("maxLines" in data)
       this.max_lines = parseInt(data.maxLines);
-    if (Reflect.has(data, "truncationText"))
+    if ("truncationText" in data)
       this.truncation_text = Text2.fromAttributed(data.truncationText);
     this.always_show_truncation_text = !!data.alwaysShowTruncationText;
     if ((_c = (_b = (_a = data.rendererContext.commandContext) == null ? void 0 : _a.onTap) == null ? void 0 : _b.innertubeCommand) == null ? void 0 : _c.showEngagementPanelEndpoint) {
@@ -20323,80 +20438,6 @@ var _FormFooterView = class _FormFooterView extends YTNode {
 __name(_FormFooterView, "FormFooterView");
 __publicField(_FormFooterView, "type", "FormFooterView");
 var FormFooterView = _FormFooterView;
-
-// dist/src/parser/classes/SubscribeButtonView.js
-var _SubscribeButtonView_instances, parseButtonContent_fn;
-var _SubscribeButtonView = class _SubscribeButtonView extends YTNode {
-  constructor(data) {
-    super();
-    __privateAdd(this, _SubscribeButtonView_instances);
-    __publicField(this, "subscribe_button_content");
-    __publicField(this, "unsubscribe_button_content");
-    __publicField(this, "disable_notification_bell");
-    __publicField(this, "button_style");
-    __publicField(this, "is_signed_out");
-    __publicField(this, "background_style");
-    __publicField(this, "disable_subscribe_button");
-    __publicField(this, "on_show_subscription_options");
-    __publicField(this, "channel_id");
-    __publicField(this, "enable_subscribe_button_post_click_animation");
-    __publicField(this, "bell_accessiblity_data");
-    this.subscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.subscribeButtonContent);
-    this.unsubscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.unsubscribeButtonContent);
-    this.disable_notification_bell = data.disableNotificationBell;
-    this.button_style = {
-      unsubscribed_state_style: data.buttonStyle.unsubscribedStateStyle,
-      subscribed_state_style: data.buttonStyle.subscribedStateStyle
-    };
-    this.is_signed_out = data.isSignedOut;
-    this.background_style = data.backgroundStyle;
-    this.disable_subscribe_button = data.disableSubscribeButton;
-    this.on_show_subscription_options = new NavigationEndpoint(data.onShowSubscriptionOptions);
-    this.channel_id = data.channelId;
-    this.enable_subscribe_button_post_click_animation = data.enableSubscribeButtonPostClickAnimation;
-    this.bell_accessiblity_data = {
-      off_label: data.bellAccessibilityData.offLabel,
-      all_label: data.bellAccessibilityData.allLabel,
-      occasional_label: data.bellAccessibilityData.occasionalLabel,
-      disabled_label: data.bellAccessibilityData.disabledLabel
-    };
-  }
-};
-_SubscribeButtonView_instances = new WeakSet();
-parseButtonContent_fn = /* @__PURE__ */ __name(function(data) {
-  return {
-    button_text: data.buttonText,
-    accessibility_text: data.accessibilityText,
-    image_name: data.imageName,
-    subscribe_state_subscribed: data.subscribeState.subscribed,
-    endpoint: new NavigationEndpoint(data.onTapCommand)
-  };
-}, "#parseButtonContent");
-__name(_SubscribeButtonView, "SubscribeButtonView");
-__publicField(_SubscribeButtonView, "type", "SubscribeButtonView");
-var SubscribeButtonView = _SubscribeButtonView;
-
-// dist/src/parser/classes/ListItemView.js
-var _ListItemView = class _ListItemView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "title");
-    __publicField(this, "subtitle");
-    __publicField(this, "leading_accessory");
-    __publicField(this, "renderer_context");
-    __publicField(this, "trailing_buttons");
-    this.title = Text2.fromAttributed(data.title);
-    this.subtitle = Text2.fromAttributed(data.subtitle);
-    this.leading_accessory = parser_exports.parseItem(data.leadingAccessory, AvatarView);
-    this.renderer_context = new RendererContext(data.rendererContext);
-    if ("trailingButtons" in data) {
-      this.trailing_buttons = parser_exports.parseArray(data.trailingButtons.buttons, SubscribeButtonView);
-    }
-  }
-};
-__name(_ListItemView, "ListItemView");
-__publicField(_ListItemView, "type", "ListItemView");
-var ListItemView = _ListItemView;
 
 // dist/src/parser/classes/ListView.js
 var _ListView = class _ListView extends YTNode {
@@ -23364,21 +23405,86 @@ __name(_UpdateToggleButtonTextAction, "UpdateToggleButtonTextAction");
 __publicField(_UpdateToggleButtonTextAction, "type", "UpdateToggleButtonTextAction");
 var UpdateToggleButtonTextAction = _UpdateToggleButtonTextAction;
 
+// dist/src/parser/classes/VideoViewCount.js
+var _VideoViewCount = class _VideoViewCount extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "original_view_count");
+    __publicField(this, "unlabeled_view_count_value");
+    __publicField(this, "short_view_count");
+    __publicField(this, "extra_short_view_count");
+    __publicField(this, "view_count");
+    __publicField(this, "is_live");
+    if ("originalViewCount" in data) {
+      this.original_view_count = parseInt(data.originalViewCount);
+    }
+    if ("unlabeledViewCountValue" in data) {
+      this.unlabeled_view_count_value = new Text2(data.unlabeledViewCountValue);
+    }
+    if ("shortViewCount" in data) {
+      this.short_view_count = new Text2(data.shortViewCount);
+    }
+    if ("extraShortViewCount" in data) {
+      this.extra_short_view_count = new Text2(data.extraShortViewCount);
+    }
+    if ("viewCount" in data) {
+      this.view_count = new Text2(data.viewCount);
+    }
+    this.is_live = !!data.isLive;
+  }
+};
+__name(_VideoViewCount, "VideoViewCount");
+__publicField(_VideoViewCount, "type", "VideoViewCount");
+var VideoViewCount = _VideoViewCount;
+
 // dist/src/parser/classes/livechat/UpdateViewershipAction.js
 var _UpdateViewershipAction = class _UpdateViewershipAction extends YTNode {
   constructor(data) {
     super();
-    __publicField(this, "view_count");
-    __publicField(this, "extra_short_view_count");
-    __publicField(this, "original_view_count");
-    __publicField(this, "unlabeled_view_count_value");
-    __publicField(this, "is_live");
-    const view_count_renderer = data.viewCount.videoViewCountRenderer;
-    this.view_count = new Text2(view_count_renderer.viewCount);
-    this.extra_short_view_count = new Text2(view_count_renderer.extraShortViewCount);
-    this.original_view_count = parseInt(view_count_renderer.originalViewCount);
-    this.unlabeled_view_count_value = new Text2(view_count_renderer.unlabeledViewCountValue);
-    this.is_live = view_count_renderer.isLive;
+    __publicField(this, "view_count_node");
+    this.view_count_node = parser_exports.parseItem(data.viewCount, VideoViewCount);
+  }
+  /**
+   * @deprecated Use `view_count_node.view_count` instead.
+   */
+  get view_count() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.view_count;
+  }
+  /**
+   * @deprecated Use `view_count_node.extra_short_view_count` instead.
+   */
+  get extra_short_view_count() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.extra_short_view_count;
+  }
+  /**
+   * @deprecated Use `view_count_node.short_view_count` instead.
+   */
+  get short_view_count() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.short_view_count;
+  }
+  /**
+   * @deprecated Use `view_count_node.original_view_count` instead.
+   */
+  get original_view_count() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.original_view_count;
+  }
+  /**
+   * @deprecated Use `view_count_node.unlabeled_view_count_value` instead.
+   */
+  get unlabeled_view_count_value() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.unlabeled_view_count_value;
+  }
+  /**
+   * @deprecated Use `view_count_node.is_live` instead.
+   */
+  get is_live() {
+    var _a;
+    return (_a = this.view_count_node) == null ? void 0 : _a.is_live;
   }
 };
 __name(_UpdateViewershipAction, "UpdateViewershipAction");
@@ -23742,26 +23848,6 @@ var _MerchandiseItem = class _MerchandiseItem extends YTNode {
 __name(_MerchandiseItem, "MerchandiseItem");
 __publicField(_MerchandiseItem, "type", "MerchandiseItem");
 var MerchandiseItem = _MerchandiseItem;
-
-// dist/src/parser/classes/MerchandiseShelf.js
-var _MerchandiseShelf = class _MerchandiseShelf extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "title");
-    __publicField(this, "menu");
-    __publicField(this, "items");
-    this.title = data.title;
-    this.menu = parser_exports.parseItem(data.actionButton);
-    this.items = parser_exports.parseArray(data.items);
-  }
-  // XXX: Alias for consistency.
-  get contents() {
-    return this.items;
-  }
-};
-__name(_MerchandiseShelf, "MerchandiseShelf");
-__publicField(_MerchandiseShelf, "type", "MerchandiseShelf");
-var MerchandiseShelf = _MerchandiseShelf;
 
 // dist/src/parser/classes/MetadataRow.js
 var _MetadataRow = class _MetadataRow extends YTNode {
@@ -25242,6 +25328,21 @@ __name(_PageHeader, "PageHeader");
 __publicField(_PageHeader, "type", "PageHeader");
 var PageHeader = _PageHeader;
 
+// dist/src/parser/classes/PageIndicatorView.js
+var _PageIndicatorView = class _PageIndicatorView extends YTNode {
+  constructor(data) {
+    var _a, _b;
+    super();
+    __publicField(this, "indicator_count");
+    __publicField(this, "selected_index");
+    this.indicator_count = (_a = data.indicatorCount) != null ? _a : 0;
+    this.selected_index = (_b = data.selectedIndex) != null ? _b : 0;
+  }
+};
+__name(_PageIndicatorView, "PageIndicatorView");
+__publicField(_PageIndicatorView, "type", "PageIndicatorView");
+var PageIndicatorView = _PageIndicatorView;
+
 // dist/src/parser/classes/PageIntroduction.js
 var _PageIntroduction = class _PageIntroduction extends YTNode {
   constructor(data) {
@@ -25308,6 +25409,36 @@ var _PlayerAnnotationsExpanded = class _PlayerAnnotationsExpanded extends YTNode
 __name(_PlayerAnnotationsExpanded, "PlayerAnnotationsExpanded");
 __publicField(_PlayerAnnotationsExpanded, "type", "PlayerAnnotationsExpanded");
 var PlayerAnnotationsExpanded = _PlayerAnnotationsExpanded;
+
+// dist/src/parser/classes/PlayerCaptchaView.js
+var _PlayerCaptchaView = class _PlayerCaptchaView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "captcha_loading_message");
+    __publicField(this, "challenge_reason");
+    __publicField(this, "captcha_successful_message");
+    __publicField(this, "captcha_cookie_set_failure_message");
+    __publicField(this, "captcha_failed_message");
+    if ("captchaLoadingMessage" in data) {
+      this.captcha_loading_message = Text2.fromAttributed(data.captchaLoadingMessage);
+    }
+    if ("challengeReason" in data) {
+      this.challenge_reason = Text2.fromAttributed(data.challengeReason);
+    }
+    if ("captchaSuccessfulMessage" in data) {
+      this.captcha_successful_message = Text2.fromAttributed(data.captchaSuccessfulMessage);
+    }
+    if ("captchaCookieSetFailureMessage" in data) {
+      this.captcha_cookie_set_failure_message = Text2.fromAttributed(data.captchaCookieSetFailureMessage);
+    }
+    if ("captchaFailedMessage" in data) {
+      this.captcha_failed_message = Text2.fromAttributed(data.captchaFailedMessage);
+    }
+  }
+};
+__name(_PlayerCaptchaView, "PlayerCaptchaView");
+__publicField(_PlayerCaptchaView, "type", "PlayerCaptchaView");
+var PlayerCaptchaView = _PlayerCaptchaView;
 
 // dist/src/parser/classes/PlayerCaptionsTracklist.js
 var _PlayerCaptionsTracklist = class _PlayerCaptionsTracklist extends YTNode {
@@ -27085,6 +27216,21 @@ __name(_ThumbnailOverlaySidePanel, "ThumbnailOverlaySidePanel");
 __publicField(_ThumbnailOverlaySidePanel, "type", "ThumbnailOverlaySidePanel");
 var ThumbnailOverlaySidePanel = _ThumbnailOverlaySidePanel;
 
+// dist/src/parser/classes/ThumbnailOverlayTitleView.js
+var _ThumbnailOverlayTitleView = class _ThumbnailOverlayTitleView extends YTNode {
+  constructor(data) {
+    var _a, _b, _c, _d;
+    super();
+    __publicField(this, "title");
+    __publicField(this, "subtitle");
+    this.title = (_b = (_a = data.title) == null ? void 0 : _a.content) != null ? _b : "";
+    this.subtitle = (_d = (_c = data.subtitle) == null ? void 0 : _c.content) != null ? _d : "";
+  }
+};
+__name(_ThumbnailOverlayTitleView, "ThumbnailOverlayTitleView");
+__publicField(_ThumbnailOverlayTitleView, "type", "ThumbnailOverlayTitleView");
+var ThumbnailOverlayTitleView = _ThumbnailOverlayTitleView;
+
 // dist/src/parser/classes/ThumbnailOverlayToggleButton.js
 var _ThumbnailOverlayToggleButton = class _ThumbnailOverlayToggleButton extends YTNode {
   constructor(data) {
@@ -27430,24 +27576,6 @@ var _VideoOwner = class _VideoOwner extends YTNode {
 __name(_VideoOwner, "VideoOwner");
 __publicField(_VideoOwner, "type", "VideoOwner");
 var VideoOwner = _VideoOwner;
-
-// dist/src/parser/classes/VideoViewCount.js
-var _VideoViewCount = class _VideoViewCount extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "original_view_count");
-    __publicField(this, "short_view_count");
-    __publicField(this, "extra_short_view_count");
-    __publicField(this, "view_count");
-    this.original_view_count = data.originalViewCount;
-    this.short_view_count = new Text2(data.shortViewCount);
-    this.extra_short_view_count = new Text2(data.extraShortViewCount);
-    this.view_count = new Text2(data.viewCount);
-  }
-};
-__name(_VideoViewCount, "VideoViewCount");
-__publicField(_VideoViewCount, "type", "VideoViewCount");
-var VideoViewCount = _VideoViewCount;
 
 // dist/src/parser/classes/VideoPrimaryInfo.js
 var _VideoPrimaryInfo = class _VideoPrimaryInfo extends YTNode {
@@ -28714,7 +28842,8 @@ var IGNORED_LIST = /* @__PURE__ */ new Set([
   "StatementBanner",
   "GuideSigninPromo",
   "AdsEngagementPanelContent",
-  "MiniGameCardView"
+  "MiniGameCardView",
+  "GenAiFeedbackFormView"
 ]);
 var RUNTIME_NODES = new Map(Object.entries(nodes_exports));
 var DYNAMIC_NODES = /* @__PURE__ */ new Map();
@@ -30230,16 +30359,27 @@ var _History = class _History extends Feed {
    * Removes a video from watch history.
    */
   async removeVideo(video_id, pages_to_load = 1) {
+    var _a, _b, _c;
     let pagesToLoad = pages_to_load;
-    let currentHistory = this;
     while (pagesToLoad > 0) {
       let feedbackToken;
-      for (const section of currentHistory.sections) {
+      for (const section of this.sections) {
         for (const content of section.contents) {
-          const video = content;
-          if (video.video_id === video_id && video.menu) {
-            feedbackToken = video.menu.top_level_buttons[0].as(Button).endpoint.payload.feedbackToken;
-            break;
+          if (content.is(Video)) {
+            if (content.video_id === video_id && content.menu) {
+              feedbackToken = content.menu.top_level_buttons[0].as(Button).endpoint.payload.feedbackToken;
+              break;
+            }
+          } else if (content.is(LockupView)) {
+            if (content.content_id === video_id) {
+              const listItems = (_c = (_b = (_a = content.metadata) == null ? void 0 : _a.menu_button) == null ? void 0 : _b.on_tap) == null ? void 0 : _c.payload.panelLoadingStrategy.inlineContent.sheetViewModel.content.listViewModel.listItems;
+              const listItem = listItems.find((video) => {
+                var _a2;
+                return ((_a2 = video.listItemViewModel) == null ? void 0 : _a2.title.content) === "Remove from watch history";
+              });
+              feedbackToken = listItem.listItemViewModel.rendererContext.commandContext.onTap.innertubeCommand.feedbackEndpoint.feedbackToken;
+              break;
+            }
           }
         }
         if (feedbackToken) {
@@ -30257,7 +30397,7 @@ var _History = class _History extends Feed {
       }
       if (--pagesToLoad > 0) {
         try {
-          currentHistory = await currentHistory.getContinuation();
+          Object.assign(this, await this.getContinuation());
         } catch {
           throw new Error("Unable to find video in watch history");
         }
@@ -31635,7 +31775,7 @@ var _Player = class _Player {
         return cached_player;
       }
     }
-    const player_url = new URL(`/s/player/${player_id}/player_ias.vflset/en_US/base.js`, Constants_exports.URLS.YT_BASE);
+    const player_url = new URL(`/s/player/${player_id}/player_es6.vflset/en_US/base.js`, Constants_exports.URLS.YT_BASE);
     Log_exports.info(TAG3, `Could not find any cached player. Will download a new player from ${player_url}.`);
     const player_res = await fetch(player_url, {
       headers: {
@@ -31646,28 +31786,24 @@ var _Player = class _Player {
       throw new PlayerError(`Failed to get player data: ${player_res.status}`);
     }
     const player_js = await player_res.text();
-    const sigFunctionName = "sigFunction";
-    const nFunctionName = "nFunction";
+    const nsigFunctionName = "nsigFunction";
     const timestampVarName = "signatureTimestampVar";
     const extractions = [
-      { friendlyName: sigFunctionName, match: sigMatcher },
-      { friendlyName: nFunctionName, match: nMatcher },
+      { friendlyName: nsigFunctionName, match: nsigMatcher },
       { friendlyName: timestampVarName, match: timestampMatcher, collectDependencies: false }
     ];
     const jsAnalyzer = new JsAnalyzer(player_js, { extractions });
     const jsExtractor = new JsExtractor(jsAnalyzer);
     const result = jsExtractor.buildScript({
+      disallowSideEffectInitializers: true,
       exportRawValues: true,
       rawValueOnly: [timestampVarName]
     });
     if (result.exportedRawValues && !(timestampVarName in result.exportedRawValues)) {
       Log_exports.warn(TAG3, "Failed to extract signature timestamp.");
     }
-    if (!result.exported.includes(sigFunctionName)) {
-      Log_exports.warn(TAG3, "Failed to extract signature decipher function.");
-    }
-    if (!result.exported.includes(nFunctionName)) {
-      Log_exports.warn(TAG3, "Failed to extract n decipher function.");
+    if (!result.exported.includes(nsigFunctionName)) {
+      Log_exports.warn(TAG3, "Failed to extract n/sig decipher function.");
     }
     const signatureTimestamp = (_a = result.exportedRawValues) == null ? void 0 : _a[timestampVarName];
     const player = await _Player.fromSource(player_id, {
@@ -31692,6 +31828,7 @@ var _Player = class _Player {
       const eval_args = {};
       if (signature_cipher || cipher) {
         eval_args.sig = s;
+        eval_args.sp = sp;
       }
       if (n) {
         if (this_response_nsig_cache == null ? void 0 : this_response_nsig_cache.has(n)) {
@@ -31702,7 +31839,10 @@ var _Player = class _Player {
         }
       }
       if (Object.keys(eval_args).length > 0) {
-        const result2 = await this.evaluator(this.data, eval_args);
+        const data = { ...this.data };
+        data.output = `${data.output}
+${getNsigProcessorFn(eval_args.n, eval_args.sp, eval_args.sig)}`;
+        const result2 = await this.evaluator(data, eval_args);
         if (typeof result2 !== "object" || result2 === null) {
           throw new PlayerError("Got invalid result from player script evaluation.");
         }
@@ -32044,6 +32184,7 @@ var ClientType = {
   MUSIC: "WEB_REMIX",
   IOS: "iOS",
   ANDROID: "ANDROID",
+  ANDROID_VR: "ANDROID_VR",
   ANDROID_MUSIC: "ANDROID_MUSIC",
   ANDROID_CREATOR: "ANDROID_CREATOR",
   TV: "TVHTML5",
