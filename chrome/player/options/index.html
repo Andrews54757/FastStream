@@ -190,6 +190,32 @@
                 <div class="search-target-remove">
                     <br>
                     <div class="option grid1">
+                        <input type="checkbox" id="persistbufferedvideos" data-i18n-label="options_general_persistbuffer">
+                        <div class="label search-target-text" data-i18n="options_general_persistbuffer"></div>
+                    </div>
+                </div>
+
+                <div class="search-target-remove">
+                    <br>
+                    <div class="option grid2">
+                        <div class="label search-target-text" data-i18n="options_general_persistbuffer_retention"></div>
+                        <input class="number" type="number" id="persistbufferretentiondays" min="1" max="30" step="1"
+                            data-i18n-label="options_general_persistbuffer_retention"></input>
+                    </div>
+                </div>
+
+                <div class="search-target-remove">
+                    <br>
+                    <div class="option grid2">
+                        <div class="label search-target-text" data-i18n="options_general_persistbuffer_maxsize"></div>
+                        <input class="number" type="number" id="persistbuffermaxsizemb" min="0" step="128"
+                            data-i18n-label="options_general_persistbuffer_maxsize"></input>
+                    </div>
+                </div>
+
+                <div class="search-target-remove">
+                    <br>
+                    <div class="option grid1">
                         <input type="checkbox" id="previewenabled" data-i18n-label="options_general_previewenabled">
                         <div class="label search-target-text" data-i18n="options_general_previewenabled"></div>
                     </div>

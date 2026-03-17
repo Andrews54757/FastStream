@@ -46,5 +46,8 @@ export const DefaultOptions = {
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,
   videoDelay: 0,
   maximumDownloaders: 6,
+  persistBufferedVideos: true,
+  persistBufferRetentionDays: 7,
+  persistBufferMaxSizeMB: 1024,
   youtubePlayerID: '',
 };
