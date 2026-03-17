@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "これらのキーバインドは拡張機能の設定で変更できます"
     },
+    "welcome_page_fork_header": {
+        "message": "このフォークの新機能"
+    },
+    "welcome_page_fork_content1": {
+        "message": "動画の左側または右側をダブルタップすると、現在のシークステップ分だけ移動します。"
+    },
+    "welcome_page_fork_content2": {
+        "message": "中央のタップ領域では、設定したシングルタップ、ダブルタップ、トリプルタップの動作が使われるため、再生/一時停止、全画面、PiP などをカスタマイズできます。"
+    },
+    "welcome_page_fork_content3": {
+        "message": "スキップボタンに現在のシークステップ値が表示されるようになり、モバイルでの移動量をひと目で確認できます。"
+    },
+    "welcome_page_fork_content4": {
+        "message": "コントロールがすぐ消えすぎたり、長く表示されすぎたりする場合は、コントロールの自動非表示の遅延を変更できます。"
+    },
+    "welcome_page_fork_content5": {
+        "message": "ツールバー設定では、ボタンの表示/非表示を切り替えたり、リセットでデフォルトのレイアウトに戻したりできます。"
+    },
+    "welcome_page_fork_content6": {
+        "message": "回転ボタンは、シンプルな縦向き/横向きの切り替えになりました。端末やブラウザによっては利用できない場合があります。"
+    },
     "welcome_page_keybinds_content1": {
         "message": "矢印キー - 前後の 1 秒間隔のシーク"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- プレーヤーを表示/非表示"
+    },
+    "welcome_page_mobile_header": {
+        "message": "モバイル／タッチのヒント"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream は基本的にデスクトップ向けですが、最近の更新でタッチ操作が改善されました。"
+    },
+    "welcome_page_mobile_content1": {
+        "message": "動画の左／右側をダブルタップすると、設定したステップ分だけ前後にシークします。"
+    },
+    "welcome_page_mobile_content2": {
+        "message": "コントロールの自動非表示までの時間は設定で調整できます。"
+    },
+    "welcome_page_mobile_content3": {
+        "message": "回転ボタンで自動回転／画面の向き固定を切り替えられます（端末によっては非対応の場合があります）。"
+    },
+    "welcome_page_mobile_content4": {
+        "message": "スキップボタンには現在のシークステップが表示されます。"
     },
     "perms_page_title": {
         "message": "FastStream の権限"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "ウィンドウ化されたフルスクリーン"
     },
+    "player_rotate_label": {
+        "message": "回転"
+    },
     "player_skip_forward_label": {
-        "message": "10秒進む"
+        "message": "前にスキップ"
     },
     "player_skip_backward_label": {
-        "message": "10秒戻る"
+        "message": "後ろにスキップ"
     },
     "player_more_label": {
         "message": "その他のツール"
+    },
+    "player_gif_label": {
+        "message": "GIFを録画"
     },
     "player_loop_label": {
         "message": "ループ"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "可能な場合は動画全体をバックグラウンドで事前にダウンロードする"
     },
+    "options_general_copytimestampurl": {
+        "message": "時間カウンターをクリックすると現在のタイムスタンプ付きURLをコピーできるようにする"
+    },
     "options_general_targetspeed": {
         "message": "プリダウンローダーのターゲット速度"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "操作パネルの自動非表示までの遅延（ms）"
     },
     "options_general_maxsize": {
         "message": "プリダウンローダーの最大サイズ"
@@ -1023,7 +1074,7 @@
         "message": "ミニプレーヤーのサイズ"
     },
     "options_general_color_theme": {
-        "message": "プレーヤーのカラーテーマ"
+        "message": "UIテーマ"
     },
     "options_general_color_theme_default": {
         "message": "デフォルト ダーク"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "ヒント: 正規表現のテストができます"
+    },
+    "options_autourl_applyall": {
+        "message": "すべてのウェブサイトで自動的に有効にする"
     },
     "options_pattern_header": {
         "message": "カスタムソースパターン"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "ツールバーボタン"
+    },
+    "options_toolbar_body": {
+        "message": "プレーヤーのツールバーに表示するボタンを選択します。"
+    },
+    "options_section_toggle_show": {
+        "message": "表示"
+    },
+    "options_section_toggle_hide": {
+        "message": "非表示"
+    },
+    "options_toolbar_reset": {
+        "message": "デフォルトにリセット"
     }
 }

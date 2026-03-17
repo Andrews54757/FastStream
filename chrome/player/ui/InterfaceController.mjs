@@ -119,6 +119,8 @@ export class InterfaceController {
     });
     this.volumeControls.setupUI();
 
+    this.updateSeekStepCounters();
+
     this.statusManager = new StatusManager();
     this.optionsWindow = new OptionsWindow();
 
@@ -363,6 +365,17 @@ export class InterfaceController {
     });
     WebUtils.setupTabIndex(DOMElements.windowedFullscreen);
 
+    DOMElements.rotateButton.addEventListener('click', (e) => {
+      const options = this.client.options;
+      // Toggle only between landscape and portrait.
+      // Landscape: 0° (and treat 180° as landscape too)
+      // Portrait: 90° (and treat 270° as portrait too)
+      options.videoRotate = (options.videoRotate % 2 === 0) ? 1 : 0;
+      this.client.updateCSSFilters();
+      e.stopPropagation();
+    });
+    WebUtils.setupTabIndex(DOMElements.rotateButton);
+
     document.addEventListener('fullscreenchange', this.updateFullScreenButton.bind(this));
 
     DOMElements.playerContainer.addEventListener('mousemove', this.onPlayerMouseMove.bind(this));
@@ -381,10 +394,33 @@ export class InterfaceController {
       this.queueControlsHide(1);
     });
 
+    const getTapRegion = (e) => {
+      try {
+        const rect = DOMElements.videoContainer.getBoundingClientRect();
+        const x = typeof e?.clientX === 'number' ? e.clientX : null;
+        if (x === null || !rect.width) {
+          return 'middle';
+        }
+        const ratio = (x - rect.left) / rect.width;
+        if (ratio < 0.35) {
+          return 'left';
+        }
+        if (ratio > 0.65) {
+          return 'right';
+        }
+        return 'middle';
+      } catch (_) {
+        return 'middle';
+      }
+    };
+
     let holdTimeout = null;
     let lastSpeed = null;
     let wasPlaying = false;
     DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
+      if (getTapRegion(e) !== 'middle') {
+        return;
+      }
       if (e.button === 0) {
         clearTimeout(holdTimeout);
         holdTimeout = setTimeout(() => {
@@ -422,12 +458,17 @@ export class InterfaceController {
 
     let clickCount = 0;
     let clickTimeout = null;
+    const sideDoubleTapMs = 260;
+    let lastSideTapLeft = 0;
+    let lastSideTapRight = 0;
     DOMElements.videoContainer.addEventListener('click', (e) => {
       clearTimeout(holdTimeout);
       if (lastSpeed !== null) {
         stopSpeedUp();
         return;
       }
+
+      const tapRegion = getTapRegion(e);
 
       if (this.closeAllMenus(false)) {
         return;
@@ -438,7 +479,40 @@ export class InterfaceController {
       }
 
       if (this.isBigPlayButtonVisible()) {
-        this.playPauseToggle();
+        if (tapRegion === 'middle') {
+          this.playPauseToggle();
+        }
+        return;
+      }
+
+      if (tapRegion !== 'middle') {
+        // Side regions: ONLY double-tap seek, and do it immediately on 2nd tap.
+        clearTimeout(clickTimeout);
+        clickTimeout = null;
+        clickCount = 0;
+
+        const now = Date.now();
+        const last = tapRegion === 'left' ? lastSideTapLeft : lastSideTapRight;
+        if (now - last <= sideDoubleTapMs) {
+          if (tapRegion === 'left') {
+            lastSideTapLeft = 0;
+          } else {
+            lastSideTapRight = 0;
+          }
+          if (this.client.player) {
+            const seekAmount = this.client.options.seekStepSize;
+            this.client.setSeekSave(false);
+            this.client.currentTime += (tapRegion === 'left' ? -seekAmount : seekAmount);
+            this.client.setSeekSave(true);
+            this.showSeekPopup(tapRegion === 'left' ? -seekAmount : seekAmount);
+          }
+        } else {
+          if (tapRegion === 'left') {
+            lastSideTapLeft = now;
+          } else {
+            lastSideTapRight = now;
+          }
+        }
         return;
       }
 
@@ -544,8 +618,9 @@ export class InterfaceController {
 
     DOMElements.skipForwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSeekPopup(this.client.options.seekStepSize);
       e.stopPropagation();
     });
 
@@ -553,8 +628,9 @@ export class InterfaceController {
 
     DOMElements.skipBackwardButton.addEventListener('click', (e) => {
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.showSeekPopup(-this.client.options.seekStepSize);
       e.stopPropagation();
     });
 
@@ -572,6 +648,11 @@ export class InterfaceController {
     WebUtils.setupTabIndex(DOMElements.moreButton);
 
     DOMElements.duration.addEventListener('click', (e) => {
+      if (this.client.options.copyTimestampURL === false) {
+        e.stopPropagation();
+        return;
+      }
+
       let copyURL = '';
       if (this.client.source) {
         const source = this.client.source;
@@ -922,8 +1003,25 @@ export class InterfaceController {
     });
   }
 
+  unlockMobileOrientation() {
+    try {
+      if (screen?.orientation && typeof screen.orientation.unlock === 'function') {
+        screen.orientation.unlock();
+      } else if (typeof screen?.unlockOrientation === 'function') {
+        screen.unlockOrientation();
+      } else if (typeof screen?.mozUnlockOrientation === 'function') {
+        screen.mozUnlockOrientation();
+      } else if (typeof screen?.msUnlockOrientation === 'function') {
+        screen.msUnlockOrientation();
+      }
+    } catch (e) {
+      // Ignore unsupported or disallowed orientation unlock attempts.
+    }
+  }
+
   destroy() {
     this.saveManager.destroy();
+    this.unlockMobileOrientation();
   }
 
   progressLoop() {
@@ -979,13 +1077,24 @@ export class InterfaceController {
     this.queueControlsHide();
   }
 
-  queueControlsHide(time) {
+  queueControlsHide(time, allowWhilePaused = false) {
     clearTimeout(this.hideControlBarTimeout);
+
+    let timeout = time;
+    if (timeout === undefined || timeout === null) {
+      timeout = this.client?.options?.controlsHideDelay;
+    }
+    timeout = Number(timeout);
+    if (!Number.isFinite(timeout)) {
+      timeout = 2000;
+    }
+    timeout = Math.max(0, timeout);
+
     this.hideControlBarTimeout = setTimeout(() => {
-      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && this.state.playing && this.toolManager.canHideControls()) {
+      if (!this.focusingControls && !this.mouseOverControls && !this.isBigPlayButtonVisible() && (this.state.playing || allowWhilePaused) && this.toolManager.canHideControls()) {
         this.hideControlBar();
       }
-    }, time || 2000);
+    }, timeout);
   }
 
   hideControlBarOnAction(cooldown) {
@@ -1088,9 +1197,15 @@ export class InterfaceController {
     if (document.fullscreenEnabled) {
       const newValue = force === undefined ? !document.fullscreenElement : force;
       if (newValue) {
-        await document.documentElement.requestFullscreen();
+        // Fullscreen only the player UI so sizing stays consistent and controls remain reachable.
+        const target = DOMElements.playerContainer || document.documentElement;
+        if (target && target.requestFullscreen) {
+          await target.requestFullscreen();
+        } else {
+          await document.documentElement.requestFullscreen();
+        }
       } else if (document.exitFullscreen && document.fullscreenElement) {
-        document.exitFullscreen();
+        await document.exitFullscreen();
       }
 
       this.updateFullScreenButton();
@@ -1124,10 +1239,7 @@ export class InterfaceController {
       this.state.fullscreen = true;
     } else {
       fullScreenButton.classList.remove('out');
-      if (this.state.fullscreen) {
-        this.state.fullscreen = false;
-        this.fullscreenToggle(false);
-      }
+      this.state.fullscreen = false;
     }
   }
 
@@ -1148,6 +1260,8 @@ export class InterfaceController {
     this.updatePlayPauseButton();
     if (!previousValue) {
       this.playPauseAnimation();
+      this.showPlayPausePopup('play');
+      this.showControlBar();
       this.queueControlsHide();
     }
   }
@@ -1159,6 +1273,8 @@ export class InterfaceController {
     this.showControlBar();
     if (previousValue) {
       this.playPauseAnimation();
+      this.showPlayPausePopup('pause');
+      this.queueControlsHide(undefined, true);
     }
   }
 
@@ -1193,5 +1309,79 @@ export class InterfaceController {
         },
         450,
     );
+  }
+
+  showPlayPausePopup(type) {
+    const popup = DOMElements.playPausePopup;
+    if (!popup) return;
+
+    popup.classList.remove('show', 'play', 'pause');
+    void popup.offsetWidth;
+    popup.classList.add('show', type);
+    popup.addEventListener('animationend', () => {
+      popup.classList.remove('show');
+    }, {once: true});
+  }
+
+  showSeekPopup(deltaSeconds) {
+    const delta = Number(deltaSeconds);
+    if (!Number.isFinite(delta) || delta === 0) return;
+
+    const direction = delta < 0 ? 'left' : 'right';
+    const popup = direction === 'left' ? DOMElements.seekPopupLeft : DOMElements.seekPopupRight;
+    const popupText = direction === 'left' ? DOMElements.seekPopupLeftText : DOMElements.seekPopupRightText;
+    const otherPopup = direction === 'left' ? DOMElements.seekPopupRight : DOMElements.seekPopupLeft;
+    if (!popup || !popupText) return;
+
+    const now = Date.now();
+    const sign = delta < 0 ? -1 : 1;
+    const sameDirection = this._seekPopupSign === sign;
+    const withinWindow = typeof this._seekPopupLastAt === 'number' && (now - this._seekPopupLastAt) <= 600;
+    if (sameDirection && withinWindow) {
+      this._seekPopupTotal = (this._seekPopupTotal || 0) + delta;
+    } else {
+      this._seekPopupSign = sign;
+      this._seekPopupTotal = delta;
+      if (otherPopup) {
+        otherPopup.classList.remove('show', 'pulse');
+      }
+    }
+    this._seekPopupLastAt = now;
+
+    popupText.textContent = this.formatSeekAmount(Math.abs(this._seekPopupTotal));
+    popup.classList.add('show');
+
+    popup.classList.remove('pulse');
+    void popup.offsetWidth;
+    popup.classList.add('pulse');
+
+    clearTimeout(this._seekPopupHideTimeout);
+    this._seekPopupHideTimeout = setTimeout(() => {
+      popup.classList.remove('show', 'pulse');
+      this._seekPopupTotal = 0;
+      this._seekPopupSign = 0;
+      this._seekPopupLastAt = 0;
+    }, 500);
+  }
+
+  updateSeekStepCounters() {
+    const step = Number(this.client?.options?.seekStepSize);
+    if (!Number.isFinite(step) || step === 0) {
+      if (DOMElements.skipForwardCounter) DOMElements.skipForwardCounter.textContent = '';
+      if (DOMElements.skipBackwardCounter) DOMElements.skipBackwardCounter.textContent = '';
+      return;
+    }
+
+    const formatted = Math.round(Math.abs(step)).toString();
+    if (DOMElements.skipForwardCounter) DOMElements.skipForwardCounter.textContent = formatted;
+    if (DOMElements.skipBackwardCounter) DOMElements.skipBackwardCounter.textContent = formatted;
+  }
+
+  formatSeekAmount(seconds) {
+    const s = Number(seconds);
+    if (!Number.isFinite(s)) return '0s';
+    const abs = Math.abs(s);
+    const formatted = abs < 1 ? abs.toFixed(2) : abs < 10 ? abs.toFixed(1) : Math.round(abs).toString();
+    return `${formatted}s`;
   }
 }

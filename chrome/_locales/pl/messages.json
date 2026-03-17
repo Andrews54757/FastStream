@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Możesz zmienić te skróty w ustawieniach rozszerzenia"
     },
+    "welcome_page_fork_header": {
+        "message": "Nowości w tym forku"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Stuknij dwukrotnie lewą lub prawą stronę wideo, aby przewinąć o aktualnie ustawiony krok przewijania."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Środkowy obszar dotyku używa skonfigurowanych akcji pojedynczego, podwójnego i potrójnego stuknięcia, więc możesz dostosować odtwarzanie/pauzę, pełny ekran, PiP i inne funkcje."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Przyciski przewijania pokazują teraz numer aktualnego kroku przewijania, dzięki czemu na urządzeniach mobilnych od razu widać dystans skoku."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Możesz zmienić opóźnienie ukrywania kontrolek, jeśli znikają zbyt szybko albo pozostają na ekranie zbyt długo."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Ustawienia paska narzędzi pozwalają pokazywać lub ukrywać przyciski oraz przywrócić domyślny układ za pomocą Resetuj."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Przycisk obrotu to teraz prosty przełącznik pion/poziom. Obsługa może się różnić w zależności od urządzenia i przeglądarki."
+    },
     "welcome_page_keybinds_content1": {
         "message": "klawisze strzałek - przewijaj o 1 sekundę do przodu/tyłu"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Ukryj/pokaż odtwarzacz"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Wskazówki mobilne i dotykowe"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream jest przede wszystkim dla desktopu, ale ostatnie aktualizacje poprawiają obsługę dotyku."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Stuknij dwukrotnie lewą/prawą stronę wideo, aby przewinąć o skonfigurowany krok."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "W ustawieniach możesz zmienić opóźnienie automatycznego ukrywania kontrolek."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Użyj przycisku obrotu, aby przełączyć auto-obrót / blokadę orientacji (obsługa może się różnić)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Przyciski przewijania pokazują aktualny krok przewijania."
     },
     "perms_page_title": {
         "message": "Uprawnienia FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Przełącz tryb pełnoekranowy w oknie"
     },
+    "player_rotate_label": {
+        "message": "Obróć"
+    },
     "player_skip_forward_label": {
-        "message": "Przewiń do przodu o 10 s"
+        "message": "Przewiń do przodu"
     },
     "player_skip_backward_label": {
-        "message": "Przewiń do tyłu o 10 s"
+        "message": "Przewiń do tyłu"
     },
     "player_more_label": {
         "message": "Więcej narzędzi"
+    },
+    "player_gif_label": {
+        "message": "Nagraj GIF"
     },
     "player_loop_label": {
         "message": "Pętla"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Wstępnie pobierz całe wideo w tle, jeśli to możliwe"
     },
+    "options_general_copytimestampurl": {
+        "message": "Włącz kopiowanie adresu URL z bieżącym znacznikiem czasu po kliknięciu licznika czasu"
+    },
     "options_general_targetspeed": {
         "message": "Docelowa prędkość pobierania predownloadera"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Opóźnienie automatycznego ukrywania kontrolek (ms)"
     },
     "options_general_maxsize": {
         "message": "Maksymalny rozmiar wstępnie pobranego wideo"
@@ -1023,7 +1074,7 @@
         "message": "Rozmiar miniodtwarzacza"
     },
     "options_general_color_theme": {
-        "message": "Motyw kolorystyczny odtwarzacza"
+        "message": "Motyw interfejsu"
     },
     "options_general_color_theme_default": {
         "message": "Domyślny (ciemny)"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Wskazówka: przetestuj regex na"
+    },
+    "options_autourl_applyall": {
+        "message": "Automatycznie włączaj na wszystkich stronach"
     },
     "options_pattern_header": {
         "message": "Niestandardowe wzorce źródeł"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Przyciski paska narzędzi"
+    },
+    "options_toolbar_body": {
+        "message": "Wybierz, które przyciski mają być wyświetlane na pasku narzędzi odtwarzacza."
+    },
+    "options_section_toggle_show": {
+        "message": "Pokaż"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ukryj"
+    },
+    "options_toolbar_reset": {
+        "message": "Przywróć domyślne"
     }
 }

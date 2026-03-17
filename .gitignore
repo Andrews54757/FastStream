@@ -1,5 +1,6 @@
 .DS_Store
 web-ext-artifacts
 node_modules
-built
+built/built
+built/web
 output/

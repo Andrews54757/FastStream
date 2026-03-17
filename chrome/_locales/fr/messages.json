@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Vous pouvez modifier ces raccourcis dans les paramètres de l'extension."
     },
+    "welcome_page_fork_header": {
+        "message": "Nouveautés de ce fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Double-tapez le côté gauche ou droit de la vidéo pour avancer ou reculer selon votre pas de recherche actuel."
+    },
+    "welcome_page_fork_content2": {
+        "message": "La zone centrale utilise vos actions configurées pour l'appui simple, double et triple, afin de personnaliser lecture/pause, plein écran, PiP, etc."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Les boutons de saut affichent maintenant la valeur actuelle du pas de recherche, ce qui permet de vérifier d'un coup d'œil la distance de saut sur mobile."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Vous pouvez modifier le délai de masquage des contrôles s'ils disparaissent trop vite ou restent affichés trop longtemps."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Les paramètres de la barre d'outils vous permettent d'afficher ou de masquer des boutons et de restaurer la disposition par défaut avec Réinitialiser."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Le bouton de rotation est désormais un simple bascule portrait/paysage. La prise en charge selon l'appareil et le navigateur peut varier."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Touches fléchées - avancer/reculer de 1 seconde"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Masquer/afficher le lecteur"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Astuces mobile et tactile"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream est conçu d'abord pour ordinateur, mais les mises à jour récentes améliorent le contrôle tactile."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Double-tapez à gauche/droite de la vidéo pour avancer/reculer selon le pas configuré."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Vous pouvez régler le délai de masquage automatique des contrôles dans les paramètres."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Utilisez le bouton de rotation pour activer/désactiver la rotation automatique / le verrouillage d'orientation (selon l'appareil)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Les boutons de saut affichent la taille du pas de recherche actuel."
     },
     "perms_page_title": {
         "message": "Autorisations FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Basculer en plein écran fenêtré"
     },
+    "player_rotate_label": {
+        "message": "Faire pivoter"
+    },
     "player_skip_forward_label": {
-        "message": "Avancer de 10 s"
+        "message": "Avancer"
     },
     "player_skip_backward_label": {
-        "message": "Reculer de 10 s"
+        "message": "Reculer"
     },
     "player_more_label": {
         "message": "Plus d'outils"
+    },
+    "player_gif_label": {
+        "message": "Enregistrer un GIF"
     },
     "player_loop_label": {
         "message": "Boucle"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Précharger la vidéo entière en arrière-plan si possible"
     },
+    "options_general_copytimestampurl": {
+        "message": "Permettre de copier une URL avec l'horodatage actuel en cliquant sur le compteur de temps"
+    },
     "options_general_targetspeed": {
         "message": "Vitesse de téléchargement cible du préchargeur"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Délai avant masquage automatique des commandes (ms)"
     },
     "options_general_maxsize": {
         "message": "Taille maximale de la vidéo préchargée"
@@ -1023,7 +1074,7 @@
         "message": "Taille du mini-lecteur"
     },
     "options_general_color_theme": {
-        "message": "Thème de couleur du lecteur"
+        "message": "Thème de l'interface"
     },
     "options_general_color_theme_default": {
         "message": "Sombre (par défaut)"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Astuce : testez la regex sur"
+    },
+    "options_autourl_applyall": {
+        "message": "Activer automatiquement sur tous les sites Web"
     },
     "options_pattern_header": {
         "message": "Modèles de sources personnalisés"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Boutons de la barre d'outils"
+    },
+    "options_toolbar_body": {
+        "message": "Choisissez quels boutons sont affichés dans la barre d'outils du lecteur."
+    },
+    "options_section_toggle_show": {
+        "message": "Afficher"
+    },
+    "options_section_toggle_hide": {
+        "message": "Masquer"
+    },
+    "options_toolbar_reset": {
+        "message": "Réinitialiser aux valeurs par défaut"
     }
 }

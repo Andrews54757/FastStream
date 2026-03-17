@@ -7,6 +7,7 @@ import {DefaultOptions} from './defaults/DefaultOptions.mjs';
 import {Localize} from '../modules/Localize.mjs';
 import {OptionsStore} from './OptionsStore.mjs';
 import {resetSearch, searchWithQuery, initsearch} from '../utils/SearchUtils.mjs';
+import {MessageTypes} from '../enums/MessageTypes.mjs';
 
 import {UpdateChecker} from '../utils/UpdateChecker.mjs'; // SPLICER:NO_UPDATE_CHECKER:REMOVE_LINE
 import {ClickActions} from './defaults/ClickActions.mjs';
@@ -19,12 +20,116 @@ import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {ColorThemes} from './defaults/ColorThemes.mjs';
 
 let Options = {};
+
+function cloneDefaultValue(value) {
+  if (value && typeof value === 'object') {
+    return JSON.parse(JSON.stringify(value));
+  }
+  return value;
+}
+
+function resetOptionsKeysToDefault(keys) {
+  for (const key of keys) {
+    Options[key] = cloneDefaultValue(DefaultOptions[key]);
+  }
+  loadOptions(Options);
+  optionChanged();
+}
+
+function createCollapseController(sectionName, toggleClass, contentId) {
+  let collapsed = null;
+  let collapseUIReady = false;
+
+  function getToggleLabel(shouldCollapse) {
+    const key = shouldCollapse ? 'options_section_toggle_show' : 'options_section_toggle_hide';
+    const fallback = shouldCollapse ? 'Show' : 'Hide';
+    const localized = Localize.getMessage(key);
+    return localized === key ? fallback : localized;
+  }
+
+  function getCollapseEls() {
+    const section = document.querySelector(`.options-section[data-search-section="${sectionName}"]`);
+    const toggle = section?.querySelector?.(`.${toggleClass}`);
+    const content = document.getElementById(contentId);
+    return {section, toggle, content};
+  }
+
+  function ensureCollapseUI() {
+    if (collapseUIReady) return;
+
+    const {section, toggle, content} = getCollapseEls();
+    if (!section || !toggle || !content) return;
+
+    collapseUIReady = true;
+    if (collapsed === null) collapsed = true;
+
+    toggle.addEventListener('click', () => {
+      collapsed = !collapsed;
+      applyCollapsedState();
+    });
+
+    // Default to collapsed as soon as the UI exists.
+    applyCollapsedState();
+  }
+
+  function applyCollapsedState() {
+    ensureCollapseUI();
+    const {section, toggle} = getCollapseEls();
+    if (!section || !toggle) return;
+
+    const shouldCollapse = !!collapsed && !document.body.classList.contains('search-active');
+    section.classList.toggle('collapsed', shouldCollapse);
+    toggle.setAttribute('aria-expanded', String(!shouldCollapse));
+    toggle.textContent = getToggleLabel(shouldCollapse);
+  }
+
+  function expandForSearchInit() {
+    ensureCollapseUI();
+    const {section} = getCollapseEls();
+    if (!section) return;
+    section.classList.remove('collapsed');
+  }
+
+  return {ensureCollapseUI, applyCollapsedState, expandForSearchInit};
+}
+
+const {
+  ensureCollapseUI: ensureThemeCollapseUI,
+  applyCollapsedState: applyThemeCollapsedState,
+  expandForSearchInit: expandThemeForSearchInit,
+} = createCollapseController('theme', 'theme-toggle', 'themeContent');
+
+const {
+  ensureCollapseUI: ensureKeybindsCollapseUI,
+  applyCollapsedState: applyKeybindsCollapsedState,
+  expandForSearchInit: expandKeybindsForSearchInit,
+} = createCollapseController('keybinds', 'keybinds-toggle', 'keybindsContent');
+
+const {
+  ensureCollapseUI: ensureToolbarCollapseUI,
+  applyCollapsedState: applyToolbarCollapsedState,
+  expandForSearchInit: expandToolbarForSearchInit,
+} = createCollapseController('toolbar', 'toolbar-toggle', 'toolbarContent');
+
+const {
+  ensureCollapseUI: ensureVideoCollapseUI,
+  applyCollapsedState: applyVideoCollapsedState,
+  expandForSearchInit: expandVideoForSearchInit,
+} = createCollapseController('video', 'video-toggle', 'videoContent');
+
+const {
+  ensureCollapseUI: ensureGeneralCollapseUI,
+  applyCollapsedState: applyGeneralCollapsedState,
+  expandForSearchInit: expandGeneralForSearchInit,
+} = createCollapseController('general', 'general-toggle', 'generalContent');
+
 const analyzeVideos = document.getElementById('analyzevideos');
 const playStreamURLs = document.getElementById('playstreamurls');
 const playMP4URLs = document.getElementById('playmp4urls');
 const downloadAll = document.getElementById('downloadall');
 const keybindsList = document.getElementById('keybindslist');
 const autoEnableURLSInput = document.getElementById('autoEnableURLs');
+const applyToAllWebsites = document.getElementById('applytoallwebsites');
 const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
@@ -34,6 +139,9 @@ const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
+const themeResetButton = document.getElementById('themereset');
+const videoResetButton = document.getElementById('videoreset');
+const generalResetButton = document.getElementById('generalreset');
 const clickAction = document.getElementById('clickaction');
 const dblclickAction = document.getElementById('dblclickaction');
 const tplclickAction = document.getElementById('tplclickaction');
@@ -46,13 +154,31 @@ const miniPos = document.getElementById('minipos');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
 const previewEnabled = document.getElementById('previewenabled');
+const copyTimestampURL = document.getElementById('copytimestampurl');
 const replaceDelay = document.getElementById('replacedelay');
+const controlsHideDelay = document.getElementById('controlshidedelay');
 const colorTheme = document.getElementById('colortheme');
 const ytPlayerID = document.getElementById('ytplayerid');
 const optionsSearchBar = document.getElementById('searchbar');
 const optionsResetButton = document.getElementById('resetsearch');
+const toolbarButtonsContainer = document.getElementById('toolbarButtons');
+const toolbarResetButton = document.getElementById('toolbarreset');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
+
+const ThemePreviewPalettes = {
+  default: {bg: '#070707', panel: '#2b2b2b', accent: '#ff3232', text: '#f4f4f4', muted: '#9aa0a6'},
+  contrast: {bg: '#000000', panel: '#161616', accent: '#ffeb3b', text: '#ffffff', muted: '#d7d7d7'},
+  arctic: {bg: '#eef4fb', panel: '#ffffff', accent: '#0a84ff', text: '#16273a', muted: '#4f6479'},
+  ocean: {bg: '#0b1220', panel: '#15243d', accent: '#2ecbff', text: '#d9ebff', muted: '#8ea7cc'},
+  neon: {bg: '#0d0719', panel: '#1a1031', accent: '#39ff14', text: '#f8f4ff', muted: '#c1a8ff'},
+  sunset: {bg: '#2d1627', panel: '#4a223b', accent: '#ff7a18', text: '#ffe3c2', muted: '#f5a0a0'},
+  forest: {bg: '#102016', panel: '#1d3225', accent: '#63c36b', text: '#deedd8', muted: '#93b19a'},
+  slate: {bg: '#1a1d22', panel: '#2a313a', accent: '#8fa3bf', text: '#e6edf5', muted: '#aeb8c6'},
+  amethyst: {bg: '#1b1028', panel: '#2a1b3f', accent: '#9b5de5', text: '#f0e6ff', muted: '#cbafef'},
+  desert: {bg: '#2c2018', panel: '#433127', accent: '#d9a441', text: '#f3e5c8', muted: '#c7af8a'},
+  mint: {bg: '#0f2b27', panel: '#1e3e39', accent: '#2ed8b6', text: '#dff8f1', muted: '#95cfc2'},
+};
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -66,7 +192,10 @@ customSourcePatterns.setAttribute('spellcheck', false);
 customSourcePatterns.placeholder = '# This is a comment. Use the following format.\n[file extension] /[regex]/[flags]';
 
 // Initialize store and then load page controls
-OptionsStore.init().then(() => loadOptions(OptionsStore.get()));
+OptionsStore.init().then(async () => {
+  loadOptions(OptionsStore.get());
+  await refreshToolbarButtonsUI();
+});
 
 
 if (!EnvUtils.isExtension()) {
@@ -76,6 +205,7 @@ if (!EnvUtils.isExtension()) {
   autoSub.disabled = true;
   autoplayYoutube.disabled = true;
   autoEnableURLSInput.disabled = true;
+  applyToAllWebsites.disabled = true;
   customSourcePatterns.disabled = true;
   miniSize.disabled = true;
   // ytclient.disabled = true;
@@ -91,14 +221,22 @@ async function loadOptions(newOptions) {
   newOptions = newOptions || OptionsStore.get();
   Options = newOptions;
 
+  ensureThemeCollapseUI();
+  ensureVideoCollapseUI();
+  ensureGeneralCollapseUI();
+  ensureKeybindsCollapseUI();
+  ensureToolbarCollapseUI();
+
   downloadAll.checked = !!Options.downloadAll;
   analyzeVideos.checked = !!Options.analyzeVideos;
   playStreamURLs.checked = !!Options.playStreamURLs;
   playMP4URLs.checked = !!Options.playMP4URLs;
   previewEnabled.checked = !!Options.previewEnabled;
+  copyTimestampURL.checked = Options.copyTimestampURL !== false;
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   autoplayNext.checked = !!Options.autoplayNext;
+  applyToAllWebsites.checked = !!Options.applyToAllWebsites;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
@@ -106,6 +244,7 @@ async function loadOptions(newOptions) {
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
   replaceDelay.value = Options.replaceDelay;
+  controlsHideDelay.value = Number.isFinite(Options.controlsHideDelay) ? Options.controlsHideDelay : DefaultOptions.controlsHideDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
 
@@ -114,7 +253,7 @@ async function loadOptions(newOptions) {
   setSelectMenuValue(dblclickAction, Options.doubleClickAction);
   setSelectMenuValue(tplclickAction, Options.tripleClickAction);
   setSelectMenuValue(visChangeAction, Options.visChangeAction);
-  setSelectMenuValue(colorTheme, Options.colorTheme);
+  setThemeCardMenuValue(colorTheme, Options.colorTheme);
   setSelectMenuValue(miniPos, Options.miniPos);
   setSelectMenuValue(qualityMenu, Options.defaultQuality);
   // setSelectMenuValue(ytclient, Options.defaultYoutubeClient);
@@ -158,7 +297,196 @@ async function loadOptions(newOptions) {
   if (Options.dev) {
     document.getElementById('dev').style.display = '';
   }
+
+  // Make sure keybind items are visible during search indexing.
+  expandThemeForSearchInit();
+  expandVideoForSearchInit();
+  expandGeneralForSearchInit();
+  expandKeybindsForSearchInit();
+  expandToolbarForSearchInit();
   initsearch();
+  applyThemeCollapsedState();
+  applyVideoCollapsedState();
+  applyGeneralCollapsedState();
+  applyKeybindsCollapsedState();
+  applyToolbarCollapsedState();
+}
+
+const TOOLBAR_TOOL_LABEL_KEYS = {
+  playpause: 'options_general_clickaction_playpause',
+  previous: 'player_previous_video_label',
+  next: 'player_next_video_label',
+  volume: 'player_volume_label',
+  duration: 'player_timestamp_label',
+  sources: 'player_sourcesbrowser_open_label',
+  audioconfig: 'player_audioconfig_open_label',
+  subtitles: 'player_subtitlesmenu_open_label',
+  languages: 'player_languagemenu_label',
+  quality: 'player_qualitymenu_label',
+  playrate: 'player_playbackrate_label',
+  more: 'player_more_label',
+  download: 'player_savevideo_label',
+  screenshot: 'player_screenshot_label',
+  fullscreen: 'player_fullscreen_label',
+  gif: 'player_gif_label',
+  loop: 'player_loop_label',
+  pip: 'player_pip_label',
+  windowedfs: 'player_windowed_fullscreen_label',
+  rotate: 'player_rotate_label',
+  forward: 'player_skip_forward_label',
+  backward: 'player_skip_backward_label',
+};
+
+const TOOLBAR_TOOL_ICON_HREFS = {
+  playpause: '../assets/fluidplayer/static/icons.svg#play',
+  previous: '../assets/fluidplayer/static/icons.svg#previous',
+  next: '../assets/fluidplayer/static/icons.svg#next',
+  volume: '../assets/fluidplayer/static/icons.svg#speaker',
+  duration: '../assets/fluidplayer/static/icons.svg#timer',
+  sources: '../assets/fluidplayer/static/icons.svg#link',
+  audioconfig: '../assets/fluidplayer/static/icons.svg#soundwave',
+  subtitles: '../assets/fluidplayer/static/icons.svg#captions',
+  languages: '../assets/fluidplayer/static/icons.svg#language',
+  quality: '../assets/fluidplayer/static/icons2.svg#quality-hd',
+  playrate: '../assets/fluidplayer/static/icons.svg#timer',
+  settings: '../assets/fluidplayer/static/icons.svg#gear',
+  download: '../assets/fluidplayer/static/icons.svg#download',
+  screenshot: '../assets/fluidplayer/static/icons.svg#photo',
+  pip: '../assets/fluidplayer/static/icons.svg#pip',
+  more: '../assets/fluidplayer/static/icons2.svg#more',
+  gif: '../assets/fluidplayer/static/icons2.svg#gif',
+  loop: '../assets/fluidplayer/static/icons2.svg#loop',
+  fullscreen: '../assets/fluidplayer/static/icons.svg#fullscreen',
+  windowedfs: '../assets/fluidplayer/static/icons2.svg#windowed-fs',
+  rotate: '../assets/fluidplayer/static/icons2.svg#rotate',
+  forward: '../assets/fluidplayer/static/icons2.svg#skip-forward',
+  backward: '../assets/fluidplayer/static/icons2.svg#skip-backward',
+};
+
+const REQUIRED_TOOLBAR_TOOLS = new Set(['settings']);
+
+let ToolbarToolSettings = null;
+
+function broadcastOptionsReload() {
+  if (EnvUtils.isExtension()) {
+    chrome.runtime?.sendMessage?.({
+      type: MessageTypes.LOAD_OPTIONS,
+      time: Date.now(),
+    });
+  } else {
+    const postWindow = window.opener || window.parent || window;
+    postWindow.postMessage({type: 'options'}, '/');
+  }
+}
+
+async function loadToolbarToolSettings() {
+  ToolbarToolSettings = await Utils.loadAndParseOptions('toolSettings', DefaultToolSettings);
+  return ToolbarToolSettings;
+}
+
+async function persistToolbarToolSettings(settings) {
+  await Utils.setConfig('toolSettings', JSON.stringify(settings));
+  broadcastOptionsReload();
+}
+
+function renderToolbarButtons(settings) {
+  if (!toolbarButtonsContainer) return;
+
+  toolbarButtonsContainer.replaceChildren();
+
+  const mergedToolSettings = {};
+  for (const tool of Object.keys(DefaultToolSettings)) {
+    mergedToolSettings[tool] = Utils.mergeOptions(DefaultToolSettings[tool], settings?.[tool] || {});
+  }
+
+  const locationOrder = {
+    left: 0,
+    right: 1,
+    extra: 2,
+  };
+
+  // Match the actual toolbar's left-to-right presentation:
+  // left container (ascending priority), then right container (ascending priority),
+  // then extra tools (shown behind "More") (ascending priority).
+  const tools = Object.keys(DefaultToolSettings)
+      .filter((tool) => !REQUIRED_TOOLBAR_TOOLS.has(tool))
+      .sort((a, b) => {
+        const sa = mergedToolSettings[a] || DefaultToolSettings[a] || {};
+        const sb = mergedToolSettings[b] || DefaultToolSettings[b] || {};
+        const la = locationOrder[sa.location] ?? 99;
+        const lb = locationOrder[sb.location] ?? 99;
+        if (la !== lb) return la - lb;
+
+        const pa = sa.priority ?? 0;
+        const pb = sb.priority ?? 0;
+        if (pa !== pb) return pa - pb;
+
+        return a.localeCompare(b);
+      });
+
+  for (const tool of tools) {
+    const row = document.createElement('div');
+    row.className = 'option toolbar-tool-row search-target-remove grid1';
+
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.tool = tool;
+    checkbox.id = `tool_visible_${tool}`;
+    checkbox.setAttribute('aria-label', tool);
+
+    const visible = settings?.[tool]?.visible !== false;
+    checkbox.checked = !!visible;
+
+    const iconHref = TOOLBAR_TOOL_ICON_HREFS[tool];
+    let icon = null;
+    if (iconHref) {
+      icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      icon.classList.add('toolbar-tool-icon');
+      icon.setAttribute('aria-hidden', 'true');
+      icon.setAttribute('focusable', 'false');
+
+      const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      use.setAttribute('href', iconHref);
+      use.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', iconHref);
+      icon.appendChild(use);
+    }
+
+    const label = document.createElement('div');
+    label.className = 'label search-target-text';
+    const labelKey = TOOLBAR_TOOL_LABEL_KEYS[tool];
+    label.textContent = labelKey ? Localize.getMessage(labelKey) : tool;
+
+    checkbox.addEventListener('change', async () => {
+      const current = ToolbarToolSettings || await loadToolbarToolSettings();
+      if (!current[tool]) current[tool] = Utils.mergeOptions(DefaultToolSettings[tool], {});
+      current[tool].visible = checkbox.checked;
+      await persistToolbarToolSettings(current);
+    });
+
+    row.appendChild(checkbox);
+    if (icon) row.appendChild(icon);
+    row.appendChild(label);
+    toolbarButtonsContainer.appendChild(row);
+  }
+}
+
+async function refreshToolbarButtonsUI() {
+  if (!toolbarButtonsContainer) return;
+  const settings = await loadToolbarToolSettings();
+  renderToolbarButtons(settings);
+}
+
+if (toolbarResetButton) {
+  toolbarResetButton.addEventListener('click', async () => {
+    const defaults = Utils.mergeOptions(DefaultToolSettings, {});
+    // Make sure required tools can't be reset into a hidden state.
+    for (const tool of REQUIRED_TOOLBAR_TOOLS) {
+      if (defaults?.[tool]) defaults[tool].visible = true;
+    }
+    ToolbarToolSettings = defaults;
+    await persistToolbarToolSettings(defaults);
+    await refreshToolbarButtonsUI();
+  });
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -177,12 +505,137 @@ function createSelectMenu(container, options, selected, localPrefix, callback) {
   container.appendChild(select);
 }
 
+function createThemeCardMenu(container, options, selected, localPrefix, callback) {
+  const initialSelection = selected || options[0];
+  container.replaceChildren();
+
+  const gallery = document.createElement('div');
+  gallery.className = 'theme-style-gallery';
+  gallery.setAttribute('role', 'listbox');
+  gallery.setAttribute('aria-label', Localize.getMessage('options_general_color_theme'));
+
+  const setSelectedTheme = (theme) => {
+    gallery.dataset.value = theme;
+    for (const card of gallery.querySelectorAll('.theme-style-card')) {
+      const isSelected = card.dataset.themeCard === theme;
+      card.classList.toggle('selected', isSelected);
+      card.setAttribute('aria-selected', String(isSelected));
+      card.setAttribute('aria-pressed', String(isSelected));
+    }
+  };
+
+  for (const option of options) {
+    const card = document.createElement('button');
+    card.type = 'button';
+    card.className = 'theme-style-card';
+    card.dataset.themeCard = option;
+    card.setAttribute('role', 'option');
+
+    const label = localPrefix !== null ? Localize.getMessage(localPrefix + '_' + option) : option;
+    card.dataset.label = label;
+
+    const header = document.createElement('div');
+    header.className = 'theme-style-header';
+
+    const cardTitle = document.createElement('div');
+    cardTitle.className = 'theme-style-title';
+    cardTitle.textContent = label;
+
+    const cardBadge = document.createElement('div');
+    cardBadge.className = 'theme-style-badge';
+    cardBadge.textContent = option;
+
+    header.appendChild(cardTitle);
+    header.appendChild(cardBadge);
+
+    const preview = document.createElement('div');
+    preview.className = 'theme-style-preview';
+    const palette = ThemePreviewPalettes[option] || ThemePreviewPalettes.default;
+    preview.style.setProperty('--tp-bg', palette.bg);
+    preview.style.setProperty('--tp-panel', palette.panel);
+    preview.style.setProperty('--tp-accent', palette.accent);
+    preview.style.setProperty('--tp-text', palette.text);
+    preview.style.setProperty('--tp-muted', palette.muted);
+
+    const chrome = document.createElement('div');
+    chrome.className = 'theme-style-preview-topbar';
+
+    const canvas = document.createElement('div');
+    canvas.className = 'theme-style-preview-canvas';
+
+    const cardOverlay = document.createElement('div');
+    cardOverlay.className = 'theme-style-preview-overlay';
+
+    const controls = document.createElement('div');
+    controls.className = 'theme-style-preview-controls';
+    const progress = document.createElement('span');
+    progress.className = 'theme-style-progress';
+    const controlDot1 = document.createElement('span');
+    controlDot1.className = 'theme-style-control-dot';
+    const controlDot2 = document.createElement('span');
+    controlDot2.className = 'theme-style-control-dot';
+    const controlDot3 = document.createElement('span');
+    controlDot3.className = 'theme-style-control-dot';
+
+    controls.appendChild(progress);
+    controls.appendChild(controlDot1);
+    controls.appendChild(controlDot2);
+    controls.appendChild(controlDot3);
+
+    preview.appendChild(chrome);
+    preview.appendChild(canvas);
+    preview.appendChild(cardOverlay);
+    preview.appendChild(controls);
+
+    const swatches = document.createElement('div');
+    swatches.className = 'theme-style-swatches';
+    for (const color of [palette.bg, palette.panel, palette.accent, palette.text, palette.muted]) {
+      const swatch = document.createElement('span');
+      swatch.className = 'theme-style-swatch';
+      swatch.style.backgroundColor = color;
+      swatches.appendChild(swatch);
+    }
+
+    card.appendChild(header);
+    card.appendChild(preview);
+    card.appendChild(swatches);
+
+    card.addEventListener('click', () => {
+      if (gallery.dataset.value !== option) {
+        setSelectedTheme(option);
+        callback({target: {value: option}});
+      }
+    });
+
+    gallery.appendChild(card);
+  }
+
+  container.appendChild(gallery);
+
+  setSelectedTheme(initialSelection);
+}
+
 function setSelectMenuValue(container, value) {
   const select = container.querySelector('select');
   if (!select) {
     return;
   }
   select.value = value;
+}
+
+function setThemeCardMenuValue(container, value) {
+  const gallery = container.querySelector('.theme-style-gallery');
+  if (!gallery) {
+    return;
+  }
+
+  gallery.dataset.value = value;
+  for (const card of gallery.querySelectorAll('.theme-style-card')) {
+    const isSelected = card.dataset.themeCard === value;
+    card.classList.toggle('selected', isSelected);
+    card.setAttribute('aria-selected', String(isSelected));
+    card.setAttribute('aria-pressed', String(isSelected));
+  }
 }
 
 createSelectMenu(daltonizerType, Object.values(DaltonizerTypes), Options.videoDaltonizerType, 'options_video_daltonizer', (e) => {
@@ -220,8 +673,9 @@ createSelectMenu(visChangeAction, Object.values(VisChangeActions), Options.visCh
   optionChanged();
 });
 
-createSelectMenu(colorTheme, Object.values(ColorThemes), Options.colorTheme, 'options_general_color_theme', (e) => {
+createThemeCardMenu(colorTheme, Object.values(ColorThemes), Options.colorTheme, 'options_general_color_theme', (e) => {
   Options.colorTheme = e.target.value;
+  document.body.dataset.theme = Options.colorTheme;
   optionChanged();
 });
 
@@ -384,6 +838,11 @@ previewEnabled.addEventListener('change', () => {
   optionChanged();
 });
 
+copyTimestampURL.addEventListener('change', () => {
+  Options.copyTimestampURL = copyTimestampURL.checked;
+  optionChanged();
+});
+
 storeProgress.addEventListener('change', () => {
   Options.storeProgress = storeProgress.checked;
   optionChanged();
@@ -426,6 +885,13 @@ seekStepSize.addEventListener('change', () => {
 
 replaceDelay.addEventListener('change', () => {
   Options.replaceDelay = parseInt(replaceDelay.value);
+  optionChanged();
+});
+
+controlsHideDelay.addEventListener('change', () => {
+  const value = parseInt(controlsHideDelay.value);
+  Options.controlsHideDelay = Number.isFinite(value) ? value : DefaultOptions.controlsHideDelay;
+  controlsHideDelay.value = Options.controlsHideDelay;
   optionChanged();
 });
 
@@ -485,10 +951,73 @@ autoEnableURLSInput.addEventListener('change', (e) => {
   optionChanged();
 });
 
+applyToAllWebsites.addEventListener('change', (e) => {
+  Options.applyToAllWebsites = applyToAllWebsites.checked;
+  optionChanged();
+});
+
 customSourcePatterns.addEventListener('change', (e) => {
   Options.customSourcePatterns = customSourcePatterns.value;
   optionChanged();
 });
+
+if (themeResetButton) {
+  themeResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'colorTheme',
+    ]);
+  });
+}
+
+if (videoResetButton) {
+  videoResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'videoZoom',
+      'videoDelay',
+      'videoBrightness',
+      'videoContrast',
+      'videoSaturation',
+      'videoGrayscale',
+      'videoSepia',
+      'videoInvert',
+      'videoHueRotate',
+      'videoDaltonizerType',
+      'videoDaltonizerStrength',
+    ]);
+  });
+}
+
+if (generalResetButton) {
+  generalResetButton.addEventListener('click', () => {
+    resetOptionsKeysToDefault([
+      'downloadAll',
+      'maxSpeed',
+      'maxVideoSize',
+      'autoplayNext',
+      'autoplayYoutube',
+      'storeProgress',
+      'previewEnabled',
+      'copyTimestampURL',
+      'autoEnableBestSubtitles',
+      'analyzeVideos',
+      'playStreamURLs',
+      'playMP4URLs',
+      'defaultQuality',
+      'visChangeAction',
+      'miniPos',
+      'miniSize',
+      'singleClickAction',
+      'doubleClickAction',
+      'tripleClickAction',
+      'seekStepSize',
+      'replaceDelay',
+      'controlsHideDelay',
+      'colorTheme',
+      'maximumDownloaders',
+      'youtubePlayerID',
+    ]);
+  });
+}
 
 importButton.addEventListener('click', () => {
   const picker = document.createElement('input');
@@ -540,13 +1069,25 @@ if (parent !== window) {
   document.body.classList.add('frame');
 }
 
+if (EnvUtils.isMobile()) {
+  document.body.classList.add('mobile');
+} else {
+  document.body.classList.remove('mobile');
+}
+
 // React to external changes via OptionsStore
-OptionsStore.subscribe(() => loadOptions(OptionsStore.get()));
+OptionsStore.subscribe(async () => {
+  loadOptions(OptionsStore.get());
+  await refreshToolbarButtonsUI();
+});
 
 if (EnvUtils.isExtension()) {
   // Also refresh when becoming visible to catch recent changes
   const o = new IntersectionObserver(([entry]) => {
-    if (entry.isIntersecting) loadOptions(OptionsStore.get());
+    if (entry.isIntersecting) {
+      loadOptions(OptionsStore.get());
+      refreshToolbarButtonsUI();
+    }
   });
   o.observe(document.body);
 

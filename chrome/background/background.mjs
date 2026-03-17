@@ -138,7 +138,13 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
       return false;
     });
 
-    const shouldAutoEnable = match && !match.negative;
+    // If applyToAllWebsites is enabled, auto-enable on normal web pages.
+    // Any explicit match in the list (including negative `!` rules) overrides.
+    const isNormalWebUrl = url.protocol === 'http:' || url.protocol === 'https:';
+    let shouldAutoEnable = (!!Options.applyToAllWebsites) && isNormalWebUrl;
+    if (match) {
+      shouldAutoEnable = !match.negative;
+    }
 
 
     if (BackgroundUtils.isUrlPlayerUrl(tab.url)) {
@@ -1141,7 +1147,7 @@ async function openPlayer(frame) {
     }, (response) => {
       BackgroundUtils.checkMessageError('player');
 
-      if (response === 'no_video') {
+      if (response === 'no_video' || response === 'waiting_for_play') {
         frame.playerOpening = false;
       }
 

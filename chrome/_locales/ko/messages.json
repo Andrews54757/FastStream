@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "이 단축키는 확장 기능 설정에서 변경할 수 있습니다."
     },
+    "welcome_page_fork_header": {
+        "message": "이 포크의 새로운 기능"
+    },
+    "welcome_page_fork_content1": {
+        "message": "비디오의 왼쪽이나 오른쪽을 두 번 탭하면 현재 탐색 단계 크기만큼 이동합니다."
+    },
+    "welcome_page_fork_content2": {
+        "message": "가운데 탭 영역은 설정한 한 번 탭, 두 번 탭, 세 번 탭 동작을 사용하므로 재생/일시정지, 전체 화면, PiP 등을 사용자 지정할 수 있습니다."
+    },
+    "welcome_page_fork_content3": {
+        "message": "건너뛰기 버튼에 현재 탐색 단계 숫자가 표시되어 모바일에서 이동 거리를 한눈에 확인할 수 있습니다."
+    },
+    "welcome_page_fork_content4": {
+        "message": "컨트롤이 너무 빨리 사라지거나 화면에 너무 오래 남아 있으면 컨트롤 자동 숨김 지연 시간을 변경할 수 있습니다."
+    },
+    "welcome_page_fork_content5": {
+        "message": "도구 모음 설정에서 버튼을 표시하거나 숨기고 재설정으로 기본 레이아웃을 복원할 수 있습니다."
+    },
+    "welcome_page_fork_content6": {
+        "message": "회전 버튼은 이제 간단한 세로/가로 전환 토글입니다. 기기와 브라우저 지원은 다를 수 있습니다."
+    },
     "welcome_page_keybinds_content1": {
         "message": "화살표 키 - 앞/뒤로 1초 이동"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- 플레이어 숨기기/표시"
+    },
+    "welcome_page_mobile_header": {
+        "message": "모바일/터치 팁"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream은 데스크톱 중심이지만, 최근 업데이트로 터치 조작이 개선되었습니다."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "영상의 왼쪽/오른쪽을 두 번 탭하면 설정한 단계만큼 앞으로/뒤로 이동합니다."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "설정에서 컨트롤 자동 숨김 지연 시간을 조정할 수 있습니다."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "회전 버튼으로 자동 회전/방향 잠금을 전환할 수 있습니다(기기 지원은 다를 수 있음)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "건너뛰기 버튼에 현재 탐색 단계가 표시됩니다."
     },
     "perms_page_title": {
         "message": "FastStream 권한"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "창 모드 전체 화면 전환"
     },
+    "player_rotate_label": {
+        "message": "회전"
+    },
     "player_skip_forward_label": {
-        "message": "앞으로 10초 건너뛰기"
+        "message": "앞으로 건너뛰기"
     },
     "player_skip_backward_label": {
-        "message": "뒤로 10초 건너뛰기"
+        "message": "뒤로 건너뛰기"
     },
     "player_more_label": {
         "message": "도구 더보기"
+    },
+    "player_gif_label": {
+        "message": "GIF 녹화"
     },
     "player_loop_label": {
         "message": "반복"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "가능하면 백그라운드에서 전체 영상을 미리 다운로드합니다"
     },
+    "options_general_copytimestampurl": {
+        "message": "시간 카운터를 클릭하면 현재 타임스탬프가 포함된 URL을 복사할 수 있도록 함"
+    },
     "options_general_targetspeed": {
         "message": "사전 다운로드의 목표 속도"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "컨트롤 자동 숨김 지연 (ms)"
     },
     "options_general_maxsize": {
         "message": "사전 다운로드할 비디오의 최대 크기"
@@ -1023,7 +1074,7 @@
         "message": "미니플레이어 크기"
     },
     "options_general_color_theme": {
-        "message": "플레이어 색상 테마"
+        "message": "UI 테마"
     },
     "options_general_color_theme_default": {
         "message": "기본 다크"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "힌트: 정규식을 다음에서 테스트하세요"
+    },
+    "options_autourl_applyall": {
+        "message": "모든 웹사이트에서 자동 활성화"
     },
     "options_pattern_header": {
         "message": "사용자 지정 소스 패턴"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "확인"
+    },
+    "options_toolbar_header": {
+        "message": "도구 모음 버튼"
+    },
+    "options_toolbar_body": {
+        "message": "플레이어 도구 모음에 표시할 버튼을 선택합니다."
+    },
+    "options_section_toggle_show": {
+        "message": "표시"
+    },
+    "options_section_toggle_hide": {
+        "message": "숨기기"
+    },
+    "options_toolbar_reset": {
+        "message": "기본값으로 재설정"
     }
 }

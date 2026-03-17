@@ -74,12 +74,14 @@ export class KeybindManager extends EventEmitter {
       this.client.setSeekSave(false);
       this.client.currentTime += this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(this.client.options.seekStepSize);
     });
 
     this.on('SeekBackward', (e) => {
       this.client.setSeekSave(false);
       this.client.currentTime += -this.client.options.seekStepSize;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(-this.client.options.seekStepSize);
     });
 
     const frameStep = 1 / 30;
@@ -87,12 +89,14 @@ export class KeybindManager extends EventEmitter {
       this.client.setSeekSave(false);
       this.client.currentTime += frameStep;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(frameStep);
     });
 
     this.on('SeekBackwardFrame', (e) => {
       this.client.setSeekSave(false);
       this.client.currentTime += -frameStep;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(-frameStep);
     });
 
     this.on('PlayPause', (e) => {
@@ -109,15 +113,19 @@ export class KeybindManager extends EventEmitter {
     });
 
     this.on('SeekForwardLarge', (e) => {
+      const largeSeekStep = this.client.options.seekStepSize * 5;
       this.client.setSeekSave(false);
-      this.client.currentTime += this.client.options.seekStepSize * 5;
+      this.client.currentTime += largeSeekStep;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(largeSeekStep);
     });
 
     this.on('SeekBackwardLarge', (e) => {
+      const largeSeekStep = this.client.options.seekStepSize * 5;
       this.client.setSeekSave(false);
-      this.client.currentTime += -this.client.options.seekStepSize * 5;
+      this.client.currentTime += -largeSeekStep;
       this.client.setSeekSave(true);
+      this.client.interfaceController.showSeekPopup(-largeSeekStep);
     });
 
     this.on('IncreasePlaybackRate', (e) => {

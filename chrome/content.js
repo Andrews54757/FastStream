@@ -28,6 +28,9 @@
   let MiniplayerCooldown = 0;
   let Activated = false;
 
+  let PendingPlayerOpenRequest = null;
+  let PendingPlayerOpenCleanup = null;
+
   let resizeDebounce = Date.now();
   const Config = {
     softReplaceByDefault: true,
@@ -234,8 +237,9 @@
   function handlePlayerOpen(request, sender, sendResponse) {
     getVideo().then((video) => {
       if (!video && !request.force) {
-        console.log('no video found');
-        sendResponse('no_video');
+        console.log('no video found - waiting for user to start playback');
+        queuePlayerOpenUntilUserPlay(request);
+        sendResponse('waiting_for_play');
         return;
       }
 
@@ -266,6 +270,7 @@
         const softReplace = request.softReplace || Config.softReplaceByDefault;
         // copy styles
         const iframe = document.createElement('iframe');
+        iframe.dataset.faststreamPlayer = '1';
         iframe.allowFullscreen = true;
         iframe.allow = 'autoplay; fullscreen; picture-in-picture';
         iframe.style.display = 'none';
@@ -324,6 +329,84 @@
       }
     });
     return true;
+  }
+
+  function queuePlayerOpenUntilUserPlay(request) {
+    PendingPlayerOpenRequest = Object.assign({}, request);
+
+    if (PendingPlayerOpenCleanup) {
+      return;
+    }
+
+    const triggerOpen = () => {
+      const pending = PendingPlayerOpenRequest;
+      if (!pending) return;
+
+      PendingPlayerOpenRequest = null;
+      const cleanup = PendingPlayerOpenCleanup;
+      if (cleanup) cleanup();
+
+      setTimeout(() => {
+        handlePlayerOpen(pending, null, () => {});
+      }, 0);
+    };
+
+    const onPlayCapture = (e) => {
+      if (e && e.target instanceof HTMLVideoElement) {
+        triggerOpen();
+      }
+    };
+
+    const checkIfAlreadyPlaying = () => {
+      if (!PendingPlayerOpenRequest) return;
+      getVideo().then((video) => {
+        if (!PendingPlayerOpenRequest) return;
+        if (video && video.video && !video.video.paused && !video.video.ended) {
+          triggerOpen();
+        }
+      });
+    };
+
+    const onUserIntent = () => {
+      checkIfAlreadyPlaying();
+    };
+
+    const observer = new MutationObserver(() => {
+      checkIfAlreadyPlaying();
+    });
+
+    try {
+      observer.observe(document.documentElement || document, {childList: true, subtree: true});
+    } catch (e) {
+      // ignore
+    }
+
+    document.addEventListener('play', onPlayCapture, true);
+    document.addEventListener('pointerdown', onUserIntent, true);
+    document.addEventListener('keydown', onUserIntent, true);
+
+    const timeout = setTimeout(() => {
+      PendingPlayerOpenRequest = null;
+      const cleanup = PendingPlayerOpenCleanup;
+      if (cleanup) cleanup();
+    }, 2 * 60 * 1000);
+
+    PendingPlayerOpenCleanup = () => {
+      try {
+        observer.disconnect();
+      } catch (e) {
+        // ignore
+      }
+
+      document.removeEventListener('play', onPlayCapture, true);
+      document.removeEventListener('pointerdown', onUserIntent, true);
+      document.removeEventListener('keydown', onUserIntent, true);
+
+      clearTimeout(timeout);
+      PendingPlayerOpenCleanup = null;
+    };
+
+    checkIfAlreadyPlaying();
   }
 
   function makeSoftIntoHard(pobj) {
@@ -606,6 +689,13 @@
 
     element.parentNode.insertBefore(placeholder, element);
 
+    // Ensure the miniplayer stays above any site overlays that may use the same max z-index.
+    // DOM order breaks z-index ties within the same stacking context.
+    const topLayerHost = document.body || document.documentElement;
+    if (element.parentNode !== topLayerHost) {
+      topLayerHost.appendChild(element);
+    }
+
     element.setAttribute('style', `
     position: fixed !important;
     display: block !important;
@@ -639,6 +729,11 @@
 
     miniplayerState.active = false;
 
+    // Restore the element back where the placeholder sits (in case we moved it).
+    if (miniplayerState.placeholder && miniplayerState.placeholder.parentNode) {
+      miniplayerState.placeholder.parentNode.insertBefore(element, miniplayerState.placeholder);
+    }
+
     element.setAttribute('style', miniplayerState.oldStyle);
 
     transferId(miniplayerState.placeholder, element);
@@ -668,11 +763,37 @@
 
       windowedFullscreenState.active = true;
       windowedFullscreenState.oldStyle = iframeObj.iframe.getAttribute('style') || '';
+
+      // Leave a placeholder behind and move the iframe to the end of the document so it wins
+      // z-index tie-breakers against aggressive site overlays.
+      if (!windowedFullscreenState.placeholder) {
+        const placeholder = document.createElement('div');
+        placeholder.style.setProperty('display', 'none', 'important');
+        windowedFullscreenState.placeholder = placeholder;
+
+        if (iframeObj.iframe.parentNode) {
+          iframeObj.iframe.parentNode.insertBefore(placeholder, iframeObj.iframe);
+        }
+      }
+
+      const topLayerHost = document.body || document.documentElement;
+      if (iframeObj.iframe.parentNode !== topLayerHost) {
+        topLayerHost.appendChild(iframeObj.iframe);
+      }
+
       windowedFullscreenState.fillScreenWhitelist = fillScreenIframe(iframeObj.iframe);
     } else {
       windowedFullscreenState.active = false;
-      iframeObj.iframe.setAttribute('style', windowedFullscreenState.oldStyle);
       undoFillScreenIframe(windowedFullscreenState.fillScreenWhitelist);
+
+      // Move the iframe back to where it was.
+      if (windowedFullscreenState.placeholder && windowedFullscreenState.placeholder.parentNode) {
+        windowedFullscreenState.placeholder.parentNode.insertBefore(iframeObj.iframe, windowedFullscreenState.placeholder);
+        windowedFullscreenState.placeholder.remove();
+      }
+      windowedFullscreenState.placeholder = null;
+
+      iframeObj.iframe.setAttribute('style', windowedFullscreenState.oldStyle);
       setTimeout(() => {
         updateReplacedPlayers();
       }, 1000);
@@ -708,9 +829,19 @@
     top: 0px !important;
     left: 0px !important;
     width: 100% !important;
+    width: 100vw !important;
+    width: 100dvw !important;
     height: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
     bottom: 0px !important;
     right: 0px !important;
+    max-width: 100% !important;
+    max-width: 100vw !important;
+    max-width: 100dvw !important;
+    max-height: 100% !important;
+    max-height: 100vh !important;
+    max-height: 100dvh !important;
     pointer-events: auto !important;
     border-radius: 0px !important;`;
     if (!skipHide) {
@@ -864,6 +995,20 @@
       final_size = transferStyles(old, iframe, false);
       parent.removeChild(old);
     }
+
+    // Some sites render overlay UI above the original player; keep the FastStream iframe on top
+    // in the same container without affecting placeholders used elsewhere.
+    if (iframe && iframe.dataset && iframe.dataset.faststreamPlayer === '1') {
+      iframe.style.setProperty('z-index', '2147483647', 'important');
+      try {
+        if (window.getComputedStyle(iframe).position === 'static') {
+          iframe.style.setProperty('position', 'relative', 'important');
+        }
+      } catch (e) {
+        // Ignore; z-index alone may still help.
+      }
+    }
+
     return final_size;
   }
 

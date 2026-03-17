@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Anda dapat mengubah pintasan tombol ini di pengaturan ekstensi."
     },
+    "welcome_page_fork_header": {
+        "message": "Yang baru di fork ini"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Ketuk dua kali sisi kiri atau kanan video untuk maju atau mundur sesuai ukuran langkah pencarian Anda saat ini."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Area ketuk tengah menggunakan aksi ketuk tunggal, ganda, dan tiga kali yang Anda atur, sehingga Anda dapat menyesuaikan putar/jeda, layar penuh, PiP, dan lainnya."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Tombol lewati sekarang menampilkan angka langkah pencarian saat ini, sehingga Anda dapat melihat jarak lompatan di ponsel dengan cepat."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Anda dapat mengubah jeda sembunyi kontrol jika kontrol hilang terlalu cepat atau tetap tampil terlalu lama."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Pengaturan Bilah Alat memungkinkan Anda menampilkan atau menyembunyikan tombol serta memulihkan tata letak default dengan Reset."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Tombol putar sekarang menjadi sakelar sederhana untuk potret/lanskap. Dukungan perangkat dan browser dapat berbeda-beda."
+    },
     "welcome_page_keybinds_content1": {
         "message": "tombol panah - lompat 1 detik maju/mundur"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Sembunyikan/tampilkan pemutar"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Tips Mobile & Sentuh"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream terutama untuk desktop, tetapi pembaruan terbaru meningkatkan kontrol sentuh."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Ketuk dua kali sisi kiri/kanan video untuk maju/mundur sesuai langkah yang Anda atur."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Anda dapat mengatur jeda sembunyi otomatis kontrol di pengaturan."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Gunakan tombol putar untuk mengaktifkan/nonaktifkan putar otomatis / kunci orientasi (dukungan perangkat dapat berbeda)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Tombol lewati menampilkan ukuran langkah pencarian saat ini."
     },
     "perms_page_title": {
         "message": "Izin FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Beralih ke layar penuh jendela"
     },
+    "player_rotate_label": {
+        "message": "Putar"
+    },
     "player_skip_forward_label": {
-        "message": "Maju 10 detik"
+        "message": "Maju"
     },
     "player_skip_backward_label": {
-        "message": "Mundur 10 detik"
+        "message": "Mundur"
     },
     "player_more_label": {
         "message": "Alat lainnya"
+    },
+    "player_gif_label": {
+        "message": "Rekam GIF"
     },
     "player_loop_label": {
         "message": "Ulang"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Unduh seluruh video di latar belakang jika memungkinkan"
     },
+    "options_general_copytimestampurl": {
+        "message": "Izinkan klik pada penghitung waktu untuk menyalin URL dengan stempel waktu saat ini"
+    },
     "options_general_targetspeed": {
         "message": "Kecepatan unduh target predownloader"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Jeda sembunyikan kontrol otomatis (ms)"
     },
     "options_general_maxsize": {
         "message": "Ukuran maksimum video yang dipraunduh"
@@ -1023,7 +1074,7 @@
         "message": "Ukuran mini pemutar"
     },
     "options_general_color_theme": {
-        "message": "Tema warna pemutar"
+        "message": "Tema antarmuka"
     },
     "options_general_color_theme_default": {
         "message": "Gelap Bawaan"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Petunjuk: Uji regex di"
+    },
+    "options_autourl_applyall": {
+        "message": "Aktifkan otomatis di semua situs web"
     },
     "options_pattern_header": {
         "message": "Pola Sumber Kustom"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Tombol bilah alat"
+    },
+    "options_toolbar_body": {
+        "message": "Pilih tombol mana yang ditampilkan di bilah alat pemutar."
+    },
+    "options_section_toggle_show": {
+        "message": "Tampilkan"
+    },
+    "options_section_toggle_hide": {
+        "message": "Sembunyikan"
+    },
+    "options_toolbar_reset": {
+        "message": "Kembalikan ke Default"
     }
 }

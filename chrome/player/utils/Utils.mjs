@@ -1,6 +1,7 @@
 import {MessageTypes} from '../enums/MessageTypes.mjs';
 import {DefaultOptions} from '../options/defaults/DefaultOptions.mjs';
 import {DefaultSubtitlesSettings} from '../options/defaults/DefaultSubtitlesSettings.mjs';
+import {DefaultToolSettings} from '../options/defaults/ToolSettings.mjs';
 import {EnvUtils} from './EnvUtils.mjs';
 
 /**
@@ -11,8 +12,11 @@ export class Utils {
    * Loads player options from storage.
    * @return {Object} The loaded options object.
    */
-  static getOptionsFromStorage() {
-    return Utils.loadAndParseOptions('options', DefaultOptions);
+  static async getOptionsFromStorage() {
+    const options = await Utils.loadAndParseOptions('options', DefaultOptions);
+    // Tool settings are stored separately but need to ride along with options reloads.
+    options.toolSettings = await Utils.loadAndParseOptions('toolSettings', DefaultToolSettings);
+    return options;
   }
 
   /**

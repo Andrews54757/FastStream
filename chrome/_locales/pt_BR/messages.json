@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Você pode alterar esses atalhos do teclado nas configurações da extensão"
     },
+    "welcome_page_fork_header": {
+        "message": "Novidades neste fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Toque duas vezes no lado esquerdo ou direito do vídeo para avançar ou voltar usando o tamanho atual do passo de busca."
+    },
+    "welcome_page_fork_content2": {
+        "message": "A área central usa as ações configuradas para toque simples, duplo e triplo, então você pode personalizar reproduzir/pausar, tela cheia, PiP e muito mais."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Os botões de pular agora mostram o número atual do passo de busca, facilitando conferir rapidamente a distância do salto no celular."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Você pode alterar o atraso para ocultar os controles se eles desaparecerem rápido demais ou ficarem na tela por tempo demais."
+    },
+    "welcome_page_fork_content5": {
+        "message": "As configurações da barra de ferramentas permitem mostrar ou ocultar botões e restaurar o layout padrão com Redefinir."
+    },
+    "welcome_page_fork_content6": {
+        "message": "O botão de rotação agora é uma alternância simples entre retrato e paisagem. O suporte pode variar conforme o dispositivo e o navegador."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Setas do teclado - 1 segundo de busca para frente/trás"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Ocultar/mostrar o player"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Dicas para celular e toque"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "O FastStream é focado em desktop, mas atualizações recentes melhoraram os controles por toque."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Toque duas vezes no lado esquerdo/direito do vídeo para avançar/voltar pelo passo configurado."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Você pode ajustar o atraso de ocultação automática dos controles nas configurações."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Use o botão de rotação para alternar rotação automática / bloqueio de orientação (o suporte pode variar)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Os botões de pular mostram o tamanho do passo de busca atual."
     },
     "perms_page_title": {
         "message": "Permissões do FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Alternar entre janela e tela cheia"
     },
+    "player_rotate_label": {
+        "message": "Girar"
+    },
     "player_skip_forward_label": {
-        "message": "Avançar 10s"
+        "message": "Avançar"
     },
     "player_skip_backward_label": {
-        "message": "Retroceder 10s"
+        "message": "Retroceder"
     },
     "player_more_label": {
         "message": "Mais ferramentas"
+    },
+    "player_gif_label": {
+        "message": "Gravar GIF"
     },
     "player_loop_label": {
         "message": "Loop"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Baixe previamente o vídeo inteiro em segundo plano, se possível"
     },
+    "options_general_copytimestampurl": {
+        "message": "Permitir que clicar no contador de tempo copie uma URL com o carimbo de tempo atual"
+    },
     "options_general_targetspeed": {
         "message": "Velocidade alvo de download do pré-downloader"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Atraso para ocultar automaticamente os controles (ms)"
     },
     "options_general_maxsize": {
         "message": "Tamanho máximo do vídeo pré-baixado"
@@ -1023,7 +1074,7 @@
         "message": "Tamanho do miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema de cor do tocador"
+        "message": "Tema da interface"
     },
     "options_general_color_theme_default": {
         "message": "Padrão Escuro"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Dica: Teste a expressão regular em"
+    },
+    "options_autourl_applyall": {
+        "message": "Ativar automaticamente em todos os sites"
     },
     "options_pattern_header": {
         "message": "Padrões de origem personalizada"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Botões da barra de ferramentas"
+    },
+    "options_toolbar_body": {
+        "message": "Escolha quais botões serão exibidos na barra de ferramentas do player."
+    },
+    "options_section_toggle_show": {
+        "message": "Mostrar"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ocultar"
+    },
+    "options_toolbar_reset": {
+        "message": "Redefinir para os padrões"
     }
 }

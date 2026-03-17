@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Bu tuş atamalarını eklenti ayarlarından değiştirebilirsiniz"
     },
+    "welcome_page_fork_header": {
+        "message": "Bu fork'taki yenilikler"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Videonun sol veya sağ tarafına çift dokunarak geçerli sarma adımı kadar ileri ya da geri sarabilirsiniz."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Orta dokunma alanı, yapılandırdığınız tek, çift ve üçlü dokunma eylemlerini kullanır; böylece oynat/duraklat, tam ekran, PiP ve daha fazlasını özelleştirebilirsiniz."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Atlama düğmeleri artık geçerli sarma adımı numarasını gösterir; böylece mobilde atlama mesafesini bir bakışta görebilirsiniz."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Denetimler çok hızlı kayboluyorsa veya ekranda çok uzun kalıyorsa Denetimleri gizleme gecikmesini değiştirebilirsiniz."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Araç çubuğu ayarları, düğmeleri gösterip gizlemenizi ve Sıfırla ile varsayılan düzeni geri yüklemenizi sağlar."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Döndür düğmesi artık basit bir dikey/yatay geçiş anahtarıdır. Cihaz ve tarayıcı desteği değişebilir."
+    },
     "welcome_page_keybinds_content1": {
         "message": "yön tuşları - 1 saniye ileri/geri sarma"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Oynatıcıyı gizle/göster"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Mobil ve Dokunmatik İpuçları"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream öncelikle masaüstü içindir, ancak son güncellemeler dokunmatik kontrolleri iyileştirir."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Ayarladığınız adım kadar ileri/geri sarmak için videonun sol/sağ tarafına çift dokunun."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesini ayarlardan düzenleyebilirsiniz."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Otomatik döndürme / yön kilidi için döndürme düğmesini kullanın (cihaz desteği değişebilir)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Atlama düğmeleri mevcut sarma adımını gösterir."
     },
     "perms_page_title": {
         "message": "FastStream İzinleri"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Pencereli tam ekranı aç/kapat"
     },
+    "player_rotate_label": {
+        "message": "Döndür"
+    },
     "player_skip_forward_label": {
-        "message": "10 sn ileri atla"
+        "message": "İleri atla"
     },
     "player_skip_backward_label": {
-        "message": "10 sn geri atla"
+        "message": "Geri atla"
     },
     "player_more_label": {
         "message": "Diğer araçlar"
+    },
+    "player_gif_label": {
+        "message": "GIF kaydet"
     },
     "player_loop_label": {
         "message": "Tekrarla"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Mümkünse tüm videoyu arka planda önceden indir"
     },
+    "options_general_copytimestampurl": {
+        "message": "Zaman sayacına tıklayınca geçerli zaman damgasını içeren URL'nin kopyalanmasını etkinleştir"
+    },
     "options_general_targetspeed": {
         "message": "Ön indiricinin hedef indirme hızı"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Kontrollerin otomatik gizlenme gecikmesi (ms)"
     },
     "options_general_maxsize": {
         "message": "Önceden indirilen videonun maksimum boyutu"
@@ -1023,7 +1074,7 @@
         "message": "Miniplayer boyutu"
     },
     "options_general_color_theme": {
-        "message": "Oynatıcı renk teması"
+        "message": "Arayüz Teması"
     },
     "options_general_color_theme_default": {
         "message": "Varsayılan Koyu"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "İpucu: Regex'i burada test edin"
+    },
+    "options_autourl_applyall": {
+        "message": "Tüm web sitelerinde otomatik etkinleştir"
     },
     "options_pattern_header": {
         "message": "Özel Kaynak Desenleri"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "Tamam"
+    },
+    "options_toolbar_header": {
+        "message": "Araç çubuğu düğmeleri"
+    },
+    "options_toolbar_body": {
+        "message": "Oynatıcı araç çubuğunda hangi düğmelerin gösterileceğini seçin."
+    },
+    "options_section_toggle_show": {
+        "message": "Göster"
+    },
+    "options_section_toggle_hide": {
+        "message": "Gizle"
+    },
+    "options_toolbar_reset": {
+        "message": "Varsayılara Sıfırla"
     }
 }

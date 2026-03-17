@@ -36,8 +36,22 @@ body {
   --control-pad-x: 8px;
 }
 
+/* When not embedded, honor the configured addon theme via colors.css variables.
+   (colors.css keys off body[data-theme]). */
+body:not(.frame)[data-theme] {
+  --color-bg: var(--popwindow-background-color);
+  --color-bg-muted: var(--popwindow-dropdown-item-background-color);
+  --color-text: var(--popwindow-text-color);
+  --color-muted: color-mix(in oklab, var(--color-text) 70%, transparent);
+  --color-border: color-mix(in oklab, var(--color-text) 22%, transparent);
+  --color-elev: var(--input-background-color);
+  --color-primary: var(--link-color);
+  --color-primary-contrast: var(--popwindow-button-text-color);
+  --color-focus: var(--popwindow-textinput-focus-border-color);
+}
+
 @media (prefers-color-scheme: dark) {
-  body:not(.frame) {
+  body:not(.frame):not([data-theme]) {
     --color-bg: #23212a;
     --color-bg-muted: #0f1720;
     --color-text: #e5e7eb;
@@ -71,47 +85,14 @@ body.frame {
   --color-bg-muted: var(--popwindow-dropdown-item-background-color);
   --color-text: var(--popwindow-text-color);
   --color-muted: color-mix(in oklab, var(--color-text) 70%, transparent);
+  --color-border: color-mix(in oklab, var(--color-text) 22%, transparent);
   --color-elev: var(--input-background-color);
   --color-primary: var(--link-color);
   --color-primary-contrast: var(--popwindow-button-text-color);
   --color-focus: var(--popwindow-textinput-focus-border-color);
-  background: transparent;
+  background: var(--color-bg);
   margin: 0px;
   padding: 4px 20px;
-}
-
-/* Inputs/selects/textarea inside frame should use exact player borders/backgrounds */
-body.frame input,
-body.frame select,
-body.frame textarea {
-  border: var(--input-border);
-  background-color: var(--input-background-color);
-  color: var(--input-text-color);
-}
-
-body.frame input:focus-visible,
-body.frame select:focus-visible,
-body.frame textarea:focus-visible {
-  outline: var(--input-focus-border);
-  outline-offset: 2px;
-}
-
-/* Buttons follow popwindow button styles when embedded */
-body.frame button {
-  background-color: var(--popwindow-button-background-color);
-  color: var(--popwindow-button-text-color);
-  border: var(--popwindow-border);
-}
-
-body.frame button:hover {
-  background-color: var(--popwindow-button-hover-background-color);
-  border: var(--popwindow-border);
-}
-
-/* Primary submit button inside frame */
-body.frame #submitter {
-  background-color: var(--popwindow-button-active-background-color);
-  color: var(--popwindow-button-text-color);
 }
 
 /* Link styling when embedded in player */
@@ -127,16 +108,53 @@ body.frame a:focus-visible {
   outline: none;
 }
 
-/* Keybind input chips match input styling in frame */
-body.frame .keybind-input {
-  border: var(--input-border);
-  background: var(--input-background-color);
-  color: var(--input-text-color);
+/* In-frame options should look like the addon settings page: same card sections/borders. */
+body.frame .options-section {
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-elev) 80%, var(--color-bg-muted) 20%);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+}
+
+body.frame .options-section .section-heading {
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
 }
 
 body:not(.frame) {
   min-width: 600px;
   margin: auto;
+}
+
+body.mobile:not(.frame) {
+  min-width: 0;
+}
+
+body.mobile {
+  --font-size-1: 16px;
+  --control-height: 40px;
+  --control-pad-y: 8px;
+  --control-pad-x: 12px;
+  padding: var(--space-3) var(--space-3);
+}
+
+body.frame.mobile {
+  padding: 4px 10px;
+}
+
+body.mobile .section-heading h1 {
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+body.mobile .searchbar-shell {
+  min-height: 44px;
+  padding: 0px 16px;
+}
+
+body.mobile .search-icon {
+  width: 18px;
+  height: 18px;
 }
 
 #version {
@@ -285,6 +303,7 @@ button {
   cursor: pointer;
   padding: var(--control-pad-y) var(--control-pad-x);
   min-height: var(--control-height);
+  transition: background-color 120ms ease, border-color 120ms ease, filter 120ms ease;
 }
 
 button:hover {
@@ -383,6 +402,22 @@ button:focus-visible {
   flex-wrap: wrap;
   background: transparent;
   border-radius: var(--radius-2);
+  margin-bottom: var(--space-4);
+}
+
+.theme-content {
+  margin-top: var(--space-2);
+}
+
+.options-section[data-search-section="theme"] .section-heading {
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title count"
+    "actions actions";
+}
+
+body:not(.frame) .options-section[data-search-section="theme"] .section-actions {
+  justify-content: flex-start;
 }
 
 .searchbar-shell {
@@ -457,19 +492,125 @@ button:focus-visible {
   gap: var(--space-4);
 }
 
+/* Constrain width + center on the standalone options page. */
+body:not(.frame) .options-layout {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Card-like sections (standalone page only; embedded frame keeps the flatter layout). */
+body:not(.frame) .options-section {
+  border: 1px solid var(--color-border);
+  background: color-mix(in oklab, var(--color-elev) 80%, var(--color-bg-muted) 20%);
+  border-radius: var(--radius-2);
+  padding: var(--space-4);
+}
+
+body:not(.frame) .options-section .section-heading {
+  margin: 0 0 var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+}
+
+body:not(.frame) .options-section .section-heading h1 {
+  margin: 0;
+}
+
+body:not(.frame) .options-section .section-actions {
+  justify-content: flex-start;
+}
+
+/* Simple horizontal button grouping */
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+/* Banner headings don't need the global large top margin */
+.banner h1 {
+  margin-top: 0;
+}
+
+/* Primary actions inside banners */
+#updatebox #update,
+#ratebox #rate,
+#feedbackbox #feedback-yes {
+  background-color: var(--color-primary);
+  color: var(--color-primary-contrast);
+  border-color: transparent;
+}
+
+#updatebox #update:hover,
+#ratebox #rate:hover,
+#feedbackbox #feedback-yes:hover {
+  filter: brightness(0.95);
+}
+
+/* Minor spacing helper to replace inline styles */
+.option-spaced {
+  margin-top: var(--space-2);
+}
+
 .options-section {
   scroll-margin-top: 80px;
 }
 
 .section-heading {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "title count"
+    "actions actions";
   align-items: baseline;
-  justify-content: space-between;
   gap: var(--space-2);
 }
 
 .section-heading h1 {
+  grid-area: title;
+}
+
+.section-heading .section-count {
+  grid-area: count;
+  justify-self: end;
+}
+
+.section-heading .section-actions {
+  grid-area: actions;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* Show reset buttons, but hide them on the last four sections. */
+.options-layout > .options-section:nth-last-of-type(-n + 4) .reset-button {
+  display: none;
+}
+
+/* Mobile: keep the same “buttons under title” layout */
+body.mobile .section-heading {
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "title"
+    "actions"
+    "count";
+  align-items: flex-start;
+}
+
+body.mobile .section-heading .section-count {
+  justify-self: start;
+}
+
+.section-heading h1 {
   margin: var(--space-6) 0 var(--space-2);
+}
+
+/* When sections are cards, the heading margins are handled by the card header. */
+body:not(.frame) .section-heading h1 {
+  margin: 0;
 }
 
 .section-count {
@@ -496,6 +637,28 @@ button:focus-visible {
   gap: var(--space-2);
   grid-template-columns: 20px 1fr;
   align-items: center;
+}
+
+.option.grid1.toolbar-tool-row {
+  grid-template-columns: 20px 20px 1fr;
+}
+
+.option.grid1.toolbar-tool-row input {
+  grid-column: 1;
+}
+
+.option.grid1.toolbar-tool-row .toolbar-tool-icon {
+  grid-column: 2;
+  width: 16px;
+  height: 16px;
+  color: var(--color-muted);
+  fill: currentColor;
+  display: block;
+}
+
+.option.grid1.toolbar-tool-row .label {
+  grid-column: 3;
+  margin-left: 0;
 }
 
 .option.grid1 .label {
@@ -535,6 +698,14 @@ textarea {
   color: var(--color-text);
   font-size: var(--font-size-1);
   min-height: var(--control-height);
+}
+
+/* Ensure dropdown list items keep readable colors (Chromium/Windows may otherwise
+   mix custom text colors with native light dropdown backgrounds). */
+select option,
+select optgroup {
+  background-color: var(--color-bg-muted);
+  color: var(--color-text);
 }
 
 input[type="range"] {
@@ -595,10 +766,165 @@ textarea:focus-visible {
   outline-offset: 2px;
 }
 
+.theme-style-gallery {
+  --theme-card-min-width: clamp(170px, 18vw, 240px);
+  --theme-card-gap: clamp(8px, 1vw, 12px);
+  --theme-card-radius: clamp(10px, 0.8vw, 14px);
+  --theme-card-padding: clamp(6px, 0.7vw, 10px);
+  --theme-preview-height: clamp(88px, 9vw, 128px);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(var(--theme-card-min-width), 1fr));
+  gap: var(--theme-card-gap);
+  margin-top: var(--space-1);
+  align-items: stretch;
+}
+
+.theme-style-card {
+  display: grid;
+  gap: var(--space-1);
+  text-align: left;
+  border-radius: var(--theme-card-radius);
+  border: 1px solid color-mix(in oklab, var(--color-border) 80%, transparent);
+  background: color-mix(in oklab, var(--color-bg-muted) 85%, var(--color-elev) 15%);
+  padding: var(--theme-card-padding);
+  min-height: calc(var(--theme-preview-height) + clamp(52px, 4vw, 72px));
+}
+
+.theme-style-card:hover {
+  border-color: color-mix(in oklab, var(--color-border) 50%, var(--color-primary) 50%);
+  transform: translateY(-1px);
+}
+
+.theme-style-card.selected {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-primary) 25%, transparent);
+}
+
+.theme-style-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.theme-style-title {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.theme-style-badge {
+  font-size: 10px;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  background: color-mix(in oklab, var(--color-bg-muted) 75%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-border) 70%, transparent);
+  border-radius: 999px;
+  padding: 1px 6px;
+}
+
+.theme-style-preview {
+  height: var(--theme-preview-height);
+  border-radius: calc(var(--theme-card-radius) - 2px);
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, black 25%, transparent);
+  background: var(--tp-bg);
+  display: grid;
+  grid-template-rows: 14px 1fr auto auto;
+  position: relative;
+}
+
+.theme-style-preview-topbar {
+  background: color-mix(in oklab, var(--tp-panel) 80%, black 20%);
+}
+
+.theme-style-preview-canvas {
+  background:
+    radial-gradient(circle at 18% 22%, color-mix(in oklab, var(--tp-accent) 28%, transparent) 0, transparent 36%),
+    radial-gradient(circle at 78% 18%, color-mix(in oklab, var(--tp-text) 20%, transparent) 0, transparent 40%),
+    linear-gradient(145deg, color-mix(in oklab, var(--tp-bg) 90%, black 10%) 0%, color-mix(in oklab, var(--tp-panel) 70%, black 30%) 100%);
+}
+
+.theme-style-preview-overlay {
+  height: 28px;
+  background: linear-gradient(to top, color-mix(in oklab, var(--tp-panel) 75%, transparent) 0%, transparent 100%);
+}
+
+.theme-style-preview-controls {
+  display: grid;
+  grid-template-columns: 1fr repeat(3, 10px);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  background: var(--tp-panel);
+}
+
+.theme-style-progress {
+  height: 5px;
+  border-radius: 999px;
+  background: linear-gradient(to right, var(--tp-accent) 0 42%, color-mix(in oklab, var(--tp-muted) 65%, transparent) 42% 100%);
+}
+
+.theme-style-control-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--tp-text);
+  opacity: 0.82;
+}
+
+.theme-style-swatches {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: clamp(4px, 0.5vw, 8px);
+}
+
+.theme-style-swatch {
+  height: clamp(12px, 1.2vw, 18px);
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, black 24%, transparent);
+}
+
+body.mobile .theme-style-gallery {
+  /* Mobile: make theme cards compact so multiple are visible. */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  --theme-card-min-width: 0px;
+  --theme-card-gap: 8px;
+  --theme-card-padding: 6px;
+  --theme-preview-height: clamp(64px, 20vw, 96px);
+}
+
+body.mobile .theme-style-card {
+  min-height: calc(var(--theme-preview-height) + 44px);
+}
+
+@media (max-width: 360px) {
+  body.mobile .theme-style-gallery {
+    grid-template-columns: 1fr;
+    --theme-card-min-width: 100%;
+    --theme-preview-height: clamp(72px, 28vw, 110px);
+  }
+}
+
+@media (min-width: 1280px) {
+  .theme-style-gallery {
+    --theme-card-min-width: clamp(180px, 16vw, 250px);
+  }
+}
+
 input[type="checkbox"] {
   width: 16px;
   height: 16px;
   accent-color: var(--color-primary);
+}
+
+body.mobile input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
 }
 
 input[type="checkbox"]:focus-visible {
@@ -611,4 +937,207 @@ input[type="checkbox"]:focus-visible {
   grid-template-columns: auto auto 1fr;
   gap: var(--space-2) var(--space-3);
   align-items: center;
+}
+
+/* Replace <br>-based gaps inside search wrappers with CSS spacing. */
+.options-layout .search-target-remove > br:first-child {
+  display: none;
+}
+
+/* General section: cleaner stacking and alignment */
+.options-section[data-search-section="general"] #top-general-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.options-section[data-search-section="general"] .option.grid2.indented {
+  padding-left: calc(20px + var(--space-2));
+}
+
+body.mobile .options-section[data-search-section="general"] .option.grid2.indented {
+  padding-left: calc(24px + var(--space-3));
+}
+
+.options-section[data-search-section="general"] #bottom-general-options,
+.options-section[data-search-section="general"] #showWhenMiniSelected {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.options-section[data-search-section="general"] #bottom-general-options > .search-target-remove,
+.options-section[data-search-section="general"] #showWhenMiniSelected > .search-target-remove {
+  margin: 0;
+}
+
+/* Help links: consistent spacing without <br> */
+.help-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+body.mobile .options-with-range-table {
+  grid-template-columns: 1fr;
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+body.mobile .video-option {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding: var(--space-2) 0;
+  max-width: none;
+}
+
+body.mobile .video-option .label {
+  grid-column: auto;
+}
+
+body.mobile .video-option input {
+  grid-column: auto;
+  margin: 0;
+}
+
+body.mobile .video-option .range {
+  grid-column: auto;
+  width: 100%;
+}
+
+body.mobile .video-option .number {
+  width: 100%;
+}
+
+/* Mobile: Video section swipe-safe right gap.
+   Keep controls left-aligned and narrower so users can scroll
+   on the right side without touching sliders. */
+body.mobile .options-section[data-search-section="video"] {
+  --fs-video-swipe-gap: clamp(96px, 32vw, 260px);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .number {
+  width: 110px;
+  max-width: calc(100% - var(--fs-video-swipe-gap));
+  align-self: flex-start;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range {
+  width: calc(100% - var(--fs-video-swipe-gap));
+  max-width: 240px;
+  align-self: flex-start;
+}
+
+/* Nicer slider styling (mobile, video section) */
+body.mobile .options-section[data-search-section="video"] .video-option {
+  background: color-mix(in oklab, var(--color-bg-muted) 85%, transparent);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-1);
+  padding: var(--space-2);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 28px;
+  padding: 0;
+  background: color-mix(in oklab, var(--color-elev) 65%, var(--color-bg-muted) 35%);
+  border: 1px solid color-mix(in oklab, var(--color-border) 75%, transparent);
+  border-radius: 999px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-border) 65%, var(--color-bg-muted) 35%);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-elev);
+  margin-top: -6px;
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-range-track {
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--color-border) 65%, var(--color-bg-muted) 35%);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-elev);
+}
+
+body.mobile .options-section[data-search-section="video"] .video-option .range::-moz-focus-outer {
+  border: 0;
+}
+
+body.mobile .option.grid1 {
+  grid-template-columns: 24px 1fr;
+  gap: var(--space-3);
+}
+
+body.mobile .option.grid1.toolbar-tool-row {
+  grid-template-columns: 24px 20px 1fr;
+}
+
+body.mobile .option.grid1.toolbar-tool-row .label {
+  justify-self: start;
+  text-align: left;
+}
+
+.theme-toggle,
+.keybinds-toggle,
+.video-toggle,
+.general-toggle,
+.toolbar-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  min-height: 32px;
+  font-weight: 600;
+}
+
+.options-section[data-search-section="theme"].collapsed .theme-content,
+.options-section[data-search-section="keybinds"].collapsed .keybinds-content,
+.options-section[data-search-section="toolbar"].collapsed .toolbar-content,
+.options-section[data-search-section="video"].collapsed .video-content,
+.options-section[data-search-section="general"].collapsed .general-content {
+  display: none;
+}
+
+/* Ensure search can still count/show items */
+body.search-active .options-section[data-search-section="theme"].collapsed .theme-content,
+body.search-active .options-section[data-search-section="keybinds"].collapsed .keybinds-content,
+body.search-active .options-section[data-search-section="toolbar"].collapsed .toolbar-content,
+body.search-active .options-section[data-search-section="video"].collapsed .video-content,
+body.search-active .options-section[data-search-section="general"].collapsed .general-content {
+  display: block;
+}
+
+body.mobile .option.grid2 {
+  grid-template-columns: 1fr;
+}
+
+body.mobile .option.grid2 .number,
+body.mobile .option.grid2 .select {
+  grid-column: 1;
 }

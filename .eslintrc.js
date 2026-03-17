@@ -26,5 +26,6 @@ module.exports = {
     'valid-jsdoc': 'off',
     'max-len': 0,
     'camelcase': 'off',
+    'linebreak-style': 'off',
   },
 };

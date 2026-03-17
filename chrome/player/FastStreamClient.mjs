@@ -48,6 +48,8 @@ export class FastStreamClient extends EventEmitter {
   constructor() {
     super();
     this.version = EnvUtils.getVersion();
+    this.handleViewportResize = this.applyPlayerRotationLayout.bind(this);
+    window.addEventListener('resize', this.handleViewportResize);
 
     this.options = {
       autoPlay: false,
@@ -63,9 +65,10 @@ export class FastStreamClient extends EventEmitter {
       storeProgress: false,
       disableLoadProgress: false,
       previewEnabled: true,
+      copyTimestampURL: true,
       autoplayNext: false,
-      singleClickAction: ClickActions.HIDE_CONTROLS,
-      doubleClickAction: ClickActions.PLAY_PAUSE,
+      singleClickAction: ClickActions.PLAY_PAUSE,
+      doubleClickAction: ClickActions.HIDE_CONTROLS,
       tripleClickAction: ClickActions.FULLSCREEN,
       visChangeAction: VisChangeActions.NOTHING,
       defaultYoutubeClient: YoutubeClients.WEB,
@@ -81,7 +84,8 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
-      seekStepSize: 0.2,
+      seekStepSize: 5,
+      controlsHideDelay: 2000,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -147,7 +151,15 @@ export class FastStreamClient extends EventEmitter {
     this.pastSeeks = [];
     this.pastUnseeks = [];
     this.fragmentsStore = {};
+    this.applyPlayerRotationLayout();
     this.mainloop();
+  }
+
+  captureViewportDimensions() {
+    const viewport = window.visualViewport;
+    const width = Math.round(viewport?.width || document.documentElement.clientWidth || window.innerWidth || window.screen?.width || 0);
+    const height = Math.round(viewport?.height || document.documentElement.clientHeight || window.innerHeight || window.screen?.height || 0);
+    return {width, height};
   }
 
   /**
@@ -180,6 +192,26 @@ export class FastStreamClient extends EventEmitter {
 
     try {
       Utils.loadAndParseOptions('toolSettings', DefaultToolSettings).then((settings) => {
+        // Migration: rotate tool used to default to the extra menu.
+        // Move it to the main toolbar, directly left of the quality tool.
+        let didMigrate = false;
+        if (settings?.rotate && settings?.quality) {
+          const rotate = settings.rotate;
+          const quality = settings.quality;
+          if (rotate.location === 'extra' && rotate.priority === 350) {
+            rotate.location = 'right';
+            rotate.priority = Math.max(0, (quality.priority ?? 500) - 50);
+            didMigrate = true;
+          }
+        }
+
+        if (didMigrate) {
+          try {
+            Utils.setConfig('toolSettings', JSON.stringify(settings));
+          } catch (e) {
+            console.warn('Failed to persist toolSettings migration', e);
+          }
+        }
         this.options.toolSettings = settings;
         this.interfaceController.updateToolVisibility();
       });
@@ -287,6 +319,7 @@ export class FastStreamClient extends EventEmitter {
    */
   destroy() {
     this.destroyed = true;
+    window.removeEventListener('resize', this.handleViewportResize);
     this.resetPlayer();
     this.downloadManager.destroy();
     this.videoAnalyzer.destroy();
@@ -307,9 +340,11 @@ export class FastStreamClient extends EventEmitter {
     this.options.storeProgress = options.storeProgress;
     this.options.downloadAll = options.downloadAll;
     this.options.autoEnableBestSubtitles = options.autoEnableBestSubtitles;
+    this.options.copyTimestampURL = options.copyTimestampURL;
     this.options.maxSpeed = options.maxSpeed;
     this.options.maxVideoSize = options.maxVideoSize;
     this.options.seekStepSize = options.seekStepSize;
+    this.options.controlsHideDelay = options.controlsHideDelay;
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;
@@ -379,12 +414,33 @@ export class FastStreamClient extends EventEmitter {
     }
 
     if (options.toolSettings) {
-      this.options.toolSettings = options.toolSettings;
+      const toolSettings = options.toolSettings;
+      let didMigrate = false;
+      if (toolSettings?.rotate && toolSettings?.quality) {
+        const rotate = toolSettings.rotate;
+        const quality = toolSettings.quality;
+        if (rotate.location === 'extra' && rotate.priority === 350) {
+          rotate.location = 'right';
+          rotate.priority = Math.max(0, (quality.priority ?? 500) - 50);
+          didMigrate = true;
+        }
+      }
+      this.options.toolSettings = toolSettings;
       this.interfaceController.updateToolVisibility();
+
+      if (didMigrate) {
+        try {
+          Utils.setConfig('toolSettings', JSON.stringify(toolSettings));
+        } catch (e) {
+          console.warn('Failed to persist toolSettings migration', e);
+        }
+      }
     }
 
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
+
+    this.interfaceController.updateSeekStepCounters?.();
 
     this.syncedAudioPlayer?.setVideoDelay(this.options.videoDelay);
   }
@@ -411,17 +467,51 @@ export class FastStreamClient extends EventEmitter {
     }
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
-    const transformStr = CSSFilterUtils.getTransformString(this.options);
+    const videoTransformStr = CSSFilterUtils.getTransformString({...this.options, videoRotate: 0});
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;
-      this.player.getVideo().style.transform = transformStr;
+      this.player.getVideo().style.transform = videoTransformStr;
     }
 
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.filter = filterStr;
-      this.previewPlayer.getVideo().style.transform = transformStr;
+      this.previewPlayer.getVideo().style.transform = videoTransformStr;
     }
+
+    this.applyPlayerRotationLayout();
+  }
+
+  applyPlayerRotationLayout() {
+    const playerContainer = DOMElements.playerContainer;
+    if (!playerContainer) {
+      return;
+    }
+
+    const normalizedTurns = ((this.options.videoRotate % 4) + 4) % 4;
+    const isQuarterTurn = normalizedTurns % 2 === 1;
+    const rotation = normalizedTurns * 90;
+
+    playerContainer.classList.toggle('fs-player-rotated', isQuarterTurn);
+
+    if (isQuarterTurn) {
+      // Use CSS viewport units for sizing (see fluidplayer.css) to avoid
+      // intermittent mis-measurements that can leave the player tiny/centered.
+      playerContainer.style.position = 'absolute';
+      playerContainer.style.width = '';
+      playerContainer.style.height = '';
+      playerContainer.style.left = '50%';
+      playerContainer.style.top = '50%';
+      playerContainer.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+      return;
+    }
+
+    playerContainer.style.position = '';
+    playerContainer.style.width = '';
+    playerContainer.style.height = '';
+    playerContainer.style.left = '';
+    playerContainer.style.top = '';
+    playerContainer.style.transform = rotation === 0 ? '' : `rotate(${rotation}deg)`;
   }
 
   /**
@@ -881,6 +971,11 @@ export class FastStreamClient extends EventEmitter {
             this.currentTime = lastTime;
             this.setSeekSave(true);
           }
+        } else {
+          // Ensure we start from the beginning unless resume-from-last-position is enabled.
+          this.setSeekSave(false);
+          this.currentTime = 0;
+          this.setSeekSave(true);
         }
 
         this.disableProgressSave = false;

@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Puedes cambiar estas combinaciones de teclas en la configuración de la extensión"
     },
+    "welcome_page_fork_header": {
+        "message": "Novedades de este fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Toca dos veces el lado izquierdo o derecho del video para avanzar o retroceder según tu paso de búsqueda actual."
+    },
+    "welcome_page_fork_content2": {
+        "message": "La zona central usa las acciones de toque simple, doble y triple que configures, para que puedas personalizar reproducir/pausar, pantalla completa, PiP y más."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Los botones de salto ahora muestran el número del paso de búsqueda actual, para que puedas comprobar de un vistazo la distancia de salto en móvil."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Puedes cambiar el retraso de ocultación de los controles si desaparecen demasiado rápido o permanecen en pantalla demasiado tiempo."
+    },
+    "welcome_page_fork_content5": {
+        "message": "En la configuración de la barra de herramientas puedes mostrar u ocultar botones y restaurar el diseño predeterminado con Restablecer."
+    },
+    "welcome_page_fork_content6": {
+        "message": "El botón de rotación ahora es un simple conmutador entre vertical y horizontal. La compatibilidad puede variar según el dispositivo y el navegador."
+    },
     "welcome_page_keybinds_content1": {
         "message": "teclas de flecha - avance/retroceso de 1 segundo"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Ocultar/mostrar jugador"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Consejos para móvil y táctil"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream está pensado principalmente para escritorio, pero las últimas actualizaciones mejoran los controles táctiles."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Toca dos veces el lado izquierdo/derecho del video para avanzar/retroceder según el paso configurado."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Puedes ajustar el retraso de ocultación automática de los controles en la configuración."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Usa el botón de rotación para alternar la rotación automática / bloqueo de orientación (la compatibilidad puede variar)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Los botones de salto muestran el tamaño del paso de búsqueda actual."
     },
     "perms_page_title": {
         "message": "Permisos de FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Pantalla completa de ventana"
     },
+    "player_rotate_label": {
+        "message": "Girar"
+    },
     "player_skip_forward_label": {
-        "message": "Saltar adelante 10s"
+        "message": "Saltar adelante"
     },
     "player_skip_backward_label": {
-        "message": "Saltar hacia atrás 10s"
+        "message": "Saltar atrás"
     },
     "player_more_label": {
         "message": "Más utilidades"
+    },
+    "player_gif_label": {
+        "message": "Grabar GIF"
     },
     "player_loop_label": {
         "message": "Repetir"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Si es posible, predescargue el video completo en segundo plano"
     },
+    "options_general_copytimestampurl": {
+        "message": "Permitir que al hacer clic en el contador de tiempo se copie una URL con la marca de tiempo actual"
+    },
     "options_general_targetspeed": {
         "message": "Velocidad de descarga objetivo del predescargador"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Retardo para ocultar automáticamente los controles (ms)"
     },
     "options_general_maxsize": {
         "message": "Tamaño máximo de video predescargado"
@@ -1023,7 +1074,7 @@
         "message": "Tamaño del miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema de color del reproductor"
+        "message": "Tema de la interfaz"
     },
     "options_general_color_theme_default": {
         "message": "Predeterminado Oscuro"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Sugerencia: Prueba regex en"
+    },
+    "options_autourl_applyall": {
+        "message": "Activar automáticamente en todos los sitios web"
     },
     "options_pattern_header": {
         "message": "Patrones de Fuente Personalizados"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "Aceptar"
+    },
+    "options_toolbar_header": {
+        "message": "Botones de la barra de herramientas"
+    },
+    "options_toolbar_body": {
+        "message": "Elige qué botones se muestran en la barra de herramientas del reproductor."
+    },
+    "options_section_toggle_show": {
+        "message": "Mostrar"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ocultar"
+    },
+    "options_toolbar_reset": {
+        "message": "Restablecer a los valores predeterminados"
     }
 }

@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Du kannst diese Tastenbelegungen in den Erweiterungseinstellungen ändern"
     },
+    "welcome_page_fork_header": {
+        "message": "Neu in diesem Fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Tippe doppelt auf die linke oder rechte Seite des Videos, um um die aktuell eingestellte Sprungweite zu spulen."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Der mittlere Tippbereich verwendet deine eingestellten Aktionen für einfaches, doppeltes und dreifaches Tippen, sodass du Wiedergabe/Pause, Vollbild, PiP und mehr anpassen kannst."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Die Sprungtasten zeigen jetzt die aktuelle Sprungweite an, sodass du die mobile Sprungdistanz auf einen Blick prüfen kannst."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Du kannst die Verzögerung zum Ausblenden der Steuerelemente ändern, wenn sie zu schnell verschwinden oder zu lange eingeblendet bleiben."
+    },
+    "welcome_page_fork_content5": {
+        "message": "In den Symbolleisten-Einstellungen kannst du Schaltflächen ein- oder ausblenden und das Standardlayout mit Zurücksetzen wiederherstellen."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Die Drehen-Schaltfläche ist jetzt ein einfacher Hochformat-/Querformat-Schalter. Geräte- und Browserunterstützung kann variieren."
+    },
     "welcome_page_keybinds_content1": {
         "message": "Pfeiltasten - 1 sekunde vor-/zurückspulen"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Verstecke/Zeige player"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Mobile- & Touch-Tipps"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream ist primär für Desktop gedacht, aber aktuelle Updates verbessern die Touch-Bedienung."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Doppeltippe links/rechts im Video, um um den eingestellten Schritt vor/zurück zu springen."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Die Auto-Ausblendverzögerung der Steuerelemente kannst du in den Einstellungen anpassen."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Nutze die Drehen-Schaltfläche, um Auto-Rotation / Orientierungssperre umzuschalten (Geräteunterstützung kann variieren)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Die Überspringen-Tasten zeigen die aktuelle Schrittgröße an."
     },
     "perms_page_title": {
         "message": "FastStream Berechtigungen"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Fenster-Vollbildmodus umschalten"
     },
+    "player_rotate_label": {
+        "message": "Drehen"
+    },
     "player_skip_forward_label": {
-        "message": "10s forwärts spulen"
+        "message": "Vorwärts springen"
     },
     "player_skip_backward_label": {
-        "message": "10s rückwärts spulen"
+        "message": "Rückwärts springen"
     },
     "player_more_label": {
         "message": "Mehr Werkzeuge"
+    },
+    "player_gif_label": {
+        "message": "GIF aufnehmen"
     },
     "player_loop_label": {
         "message": "Wiederholen"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Lade das gesamte Video im Hintergrund vor falls möglich"
     },
+    "options_general_copytimestampurl": {
+        "message": "Aktiviere das Kopieren einer URL mit aktuellem Zeitstempel beim Anklicken der Zeitanzeige"
+    },
     "options_general_targetspeed": {
         "message": "Download geschwindigkeit fürs vor laden"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Verzögerung zum automatischen Ausblenden der Steuerung (ms)"
     },
     "options_general_maxsize": {
         "message": "Maximal größe für das vor laden von Videos"
@@ -1023,7 +1074,7 @@
         "message": "Miniplayer Größe"
     },
     "options_general_color_theme": {
-        "message": "Farbthema des Players"
+        "message": "UI-Thema"
     },
     "options_general_color_theme_default": {
         "message": "Standard Dunkel"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Hinweise: Teste Regex auf"
+    },
+    "options_autourl_applyall": {
+        "message": "Auf allen Websites automatisch aktivieren"
     },
     "options_pattern_header": {
         "message": "Benutzerdefinierte Quellen Filter"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Toolbar-Schaltflächen"
+    },
+    "options_toolbar_body": {
+        "message": "Wähle aus, welche Schaltflächen in der Player-Toolbar angezeigt werden."
+    },
+    "options_section_toggle_show": {
+        "message": "Anzeigen"
+    },
+    "options_section_toggle_hide": {
+        "message": "Ausblenden"
+    },
+    "options_toolbar_reset": {
+        "message": "Auf Standardwerte zurücksetzen"
     }
 }

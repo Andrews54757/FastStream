@@ -1,0 +1,173 @@
+name: Build and publish release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+      - "V*.*.*"
+  workflow_dispatch:
+    inputs:
+      tag_name:
+        description: "Release tag (for example: v1.x.x)"
+        required: true
+        type: string
+      target_commitish:
+        description: "Branch or commit to tag/release"
+        required: true
+        default: main
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish release assets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.target_commitish || github.ref }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+
+      - name: Resolve release variables
+        id: vars
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            TAG_NAME="${GITHUB_REF_NAME}"
+            TARGET_SHA="${GITHUB_SHA}"
+          else
+            TAG_NAME="${{ inputs.tag_name }}"
+            TARGET_SHA="$(git rev-parse "${{ inputs.target_commitish }}^{commit}")"
+          fi
+
+          echo "tag_name=${TAG_NAME}" >> "$GITHUB_OUTPUT"
+          echo "target_commitish=${TARGET_SHA}" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension bundles
+        run: npm run build
+
+      - name: Generate release description
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          TARGET_SHA="${{ steps.vars.outputs.target_commitish }}"
+          CHANGELOG_URL="https://github.com/WyvrnRes/FastStream-for-Mobile/commits/Mobile-Experience-Improvements"
+
+          TODAY_LOG_REF="${TARGET_SHA}"
+          TODAY_LOG_LABEL="this release commit"
+          if git ls-remote --exit-code --heads origin "Mobile-Experience-Improvements" >/dev/null 2>&1; then
+            git fetch origin "Mobile-Experience-Improvements" --depth=1 >/dev/null 2>&1 || true
+            TODAY_LOG_REF="origin/Mobile-Experience-Improvements"
+            TODAY_LOG_LABEL="Mobile-Experience-Improvements"
+          fi
+
+          TODAY_UTC="$(date -u +%Y-%m-%d)"
+          COMMIT_COUNT="$(git rev-list --count --no-merges --since="${TODAY_UTC} 00:00:00" "${TODAY_LOG_REF}" 2>/dev/null || echo 0)"
+
+          IMG_BASE="https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${TARGET_SHA}/docs/images"
+
+          cat <<EOF | sed 's/^          //' > release_body.md
+          [![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
+
+          # Mobile Experience Improvements [NEW]
+
+          - **Double-tap to seek (touch-friendly)**
+            - Double-tap the *left* side to jump backward and the *right* side to jump forward.
+            - The jump amount uses your configured **Seek step size**.
+            - The *middle* area still follows your single/double/triple-tap actions (play/pause, fullscreen, etc.).
+
+          ![Tap-Controls Guide](https://github.com/WyvrnRes/FastStream-for-Mobile/raw/Mobile-Experience-Improvements/docs/images/tap-zones.svg)
+
+            ## Mobile Screenshots
+
+            - **Improved mobile options/menu usability**
+
+            <p align="center">
+                <img src="https://github.com/user-attachments/assets/d3247dc6-9e08-420e-bf2c-ed6ef08b9f8e" width="180"/>
+                <img src="https://github.com/user-attachments/assets/5190dcf5-c680-42fe-963c-2b0ce109c741" width="180"/>
+                <img src="https://github.com/user-attachments/assets/247cd2a8-330a-4fa1-b6aa-e66d4ecc6e05" width="180"/>
+                <img src="https://github.com/user-attachments/assets/023a8f8c-af83-40be-a8bc-bfc469c7521b" width="180"/>
+                <img src="https://github.com/user-attachments/assets/bf66a9f7-89e6-42a6-9085-c1d5d3cf959b" width="180"/>
+                <img src="https://github.com/user-attachments/assets/a45fc439-9757-4362-89fa-c5cb4537a105" width="180"/>
+            </p>
+
+          New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
+
+          - **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
+          - **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
+          - **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
+          - **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
+
+          Notes for new users:
+
+          - The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
+          - The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
+          - If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
+
+          - **Configurable auto-hide controls**
+            - New **Controls hide delay** setting lets you choose how quickly the on-screen controls fade away after you stop interacting.
+            - Helps reduce the controls blocking video content on smaller screens.
+
+          - **Skip buttons show the seek step**
+            - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
+
+          - **Simpler rotate control (better on phones)**
+            - The **Rotate** button is moved to the main toolbar for faster access.
+            - Rotation is simplified to a practical **portrait <-> landscape** toggle.
+
+          - **Customize the toolbar for mobile**
+            - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
+            - Includes a **Reset** button to restore the default toolbar configuration.
+            - Changes persist and are applied across the player.
+
+          - **Theme picker redesigned with visual cards**
+            - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
+
+          - **More consistent collapsible settings sections**
+            - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
+
+          - **Less likely to be covered by website overlays**
+            - The player/miniplayer is now more aggressively kept above site overlays (stacking/z-index improvements), reducing cases where parts of the player are blocked or unclickable.
+
+          - **Updated mobile/touch tips**
+            - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
+          EOF
+
+          {
+            echo
+            echo "### Today's commit messages"
+            echo
+            if [[ "${COMMIT_COUNT}" -gt 0 ]]; then
+              git log --no-merges --since="${TODAY_UTC} 00:00:00" --pretty='- %s (%h)' "${TODAY_LOG_REF}"
+            else
+              echo "- No commits were found for today on ${TODAY_LOG_LABEL}."
+            fi
+            echo
+            echo "Full changelog: ${CHANGELOG_URL}"
+          } >> release_body.md
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.vars.outputs.tag_name }}
+          target_commitish: ${{ steps.vars.outputs.target_commitish }}
+          body_path: release_body.md
+          files: |
+            built/*.zip
+            built/*.xpi

@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 346" width="600">
+  <!-- Background -->
+  <rect width="600" height="346" fill="#111"/>
+
+  <!-- Title -->
+  <text x="300" y="22" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#999">Tap / Click Action Zones</text>
+
+  <!-- Zone background fills (draw before border so border sits on top) -->
+  <!-- Left 35%: x=30, w=189 -->
+  <rect x="30"  y="36" width="189" height="242" fill="#0d2a4d"/>
+  <!-- Middle 30%: x=219, w=162 -->
+  <rect x="219" y="36" width="162" height="242" fill="#0a2810"/>
+  <!-- Right 35%: x=381, w=189 -->
+  <rect x="381" y="36" width="189" height="242" fill="#2d1800"/>
+
+  <!-- Player border (on top so rounded corners clip fill color) -->
+  <rect x="30" y="36" width="540" height="242" rx="5" fill="none" stroke="#555" stroke-width="1.5"/>
+
+  <!-- Zone divider lines -->
+  <line x1="219" y1="36" x2="219" y2="278" stroke="#555" stroke-width="1" stroke-dasharray="5,4"/>
+  <line x1="381" y1="36" x2="381" y2="278" stroke="#555" stroke-width="1" stroke-dasharray="5,4"/>
+
+  <!-- ══════════════════════════════════════
+       LEFT ZONE  (zone center x ≈ 124.5)
+       Skip-back icon: left-bar + two left-pointing triangles
+       Icon total width 36, center=18 → translate x = 107  (107+18=125)
+       Icon height 32 → translate y = 100  (center y = 116)
+  ════════════════════════════════════════ -->
+  <g transform="translate(107,100)">
+    <rect x="0" y="0" width="4" height="32" rx="2" fill="#4db8ff"/>
+    <polygon points="20,0 8,16 20,32"  fill="#4db8ff"/>
+    <polygon points="36,0 24,16 36,32" fill="#4db8ff"/>
+  </g>
+
+  <text x="124" y="152" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#bbb">Double-tap</text>
+  <text x="124" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#4db8ff">Seek Back</text>
+  <text x="124" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step (5s default)</text>
+
+  <!-- ══════════════════════════════════════
+       MIDDLE ZONE  (zone center x = 300)
+       Play/Pause icon: right-pointing triangle + two vertical bars
+       Icon total width 43 (tri=22, gap=5, bar1=6, gap=3, bar2=6), center≈21.5 → translate x=279
+       Icon height 26 → translate y = 66  (center y = 79)
+  ════════════════════════════════════════ -->
+  <g transform="translate(279,66)">
+    <polygon points="0,0 0,26 22,13" fill="#5dba6a"/>
+    <rect x="27" y="0" width="6" height="26" rx="2" fill="#5dba6a"/>
+    <rect x="37" y="0" width="6" height="26" rx="2" fill="#5dba6a"/>
+  </g>
+
+  <!-- Single tap -->
+  <text x="300" y="110" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#888">Single tap</text>
+  <text x="300" y="125" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#5dba6a">Play / Pause ★</text>
+
+  <line x1="244" y1="137" x2="356" y2="137" stroke="#2e2e2e" stroke-width="1"/>
+
+  <!-- Double / Triple tap -->
+  <text x="300" y="151" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#888">Double / Triple tap</text>
+  <text x="300" y="166" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#5dba6a">Configurable action</text>
+  <text x="300" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">fullscreen · PiP · hide controls…</text>
+
+  <line x1="244" y1="193" x2="356" y2="193" stroke="#2e2e2e" stroke-width="1"/>
+
+  <!-- Hold -->
+  <text x="300" y="208" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#888">Hold (0.8 s)</text>
+  <text x="300" y="223" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="bold" fill="#5dba6a">2× Speed</text>
+
+  <!-- ══════════════════════════════════════
+       RIGHT ZONE  (zone center x ≈ 475.5)
+       Skip-forward icon: two right-pointing triangles + right-bar
+       Icon total width 36, center=18 → translate x=458  (458+18=476)
+       Icon height 32 → translate y=100  (center y=116)
+  ════════════════════════════════════════ -->
+  <g transform="translate(458,100)">
+    <polygon points="0,0 12,16 0,32"  fill="#ffaa33"/>
+    <polygon points="16,0 28,16 16,32" fill="#ffaa33"/>
+    <rect x="32" y="0" width="4" height="32" rx="2" fill="#ffaa33"/>
+  </g>
+
+  <text x="476" y="152" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#bbb">Double-tap</text>
+  <text x="476" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="bold" fill="#ffaa33">Seek Forward</text>
+  <text x="476" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#666">by configured step (5s default)</text>
+
+  <!-- Zone width percentages (below the player box) -->
+  <text x="124" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#555">← 35%</text>
+  <text x="300" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#555">30%</text>
+  <text x="476" y="296" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" fill="#555">35% →</text>
+
+  <!-- Footer note -->
+  <text x="300" y="322" text-anchor="middle" font-family="Arial,sans-serif" font-size="10" fill="#4a4a4a">★ Default single-tap is Play/Pause — all middle-zone tap actions are configurable in Settings</text>
+</svg>

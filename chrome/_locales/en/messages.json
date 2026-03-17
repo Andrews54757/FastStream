@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "You can change these keybinds in extension settings"
     },
+    "welcome_page_fork_header": {
+        "message": "New in this fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Double-tap the left or right side of the video to seek by your current seek step size."
+    },
+    "welcome_page_fork_content2": {
+        "message": "The middle tap area uses your configured single, double, and triple tap actions, so you can customize play/pause, fullscreen, PiP, and more."
+    },
+    "welcome_page_fork_content3": {
+        "message": "The skip buttons now show the current seek step number, which makes it easier to confirm your mobile seek distance at a glance."
+    },
+    "welcome_page_fork_content4": {
+        "message": "You can change Controls hide delay if the controls disappear too quickly or stay on screen too long."
+    },
+    "welcome_page_fork_content5": {
+        "message": "The Toolbar settings let you show or hide buttons and restore the default layout with Reset."
+    },
+    "welcome_page_fork_content6": {
+        "message": "The Rotate button is now a simple portrait/landscape toggle. Device and browser support can vary."
+    },
     "welcome_page_keybinds_content1": {
         "message": "arrow keys - 1 second seek forward/back"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Hide/show player"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Mobile & Touch Tips"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream is desktop-first, but recent updates improve touch controls."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Double-tap the left/right side of the video to seek by your configured step."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "You can adjust the controls auto-hide delay in settings."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Use the rotate button to toggle auto-rotate / orientation lock (device support may vary)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Skip buttons show the current seek step size."
     },
     "perms_page_title": {
         "message": "FastStream Permissions"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Toggle windowed fullscreen"
     },
+    "player_rotate_label": {
+        "message": "Rotate"
+    },
     "player_skip_forward_label": {
-        "message": "Skip forward 10s"
+        "message": "Skip forward"
     },
     "player_skip_backward_label": {
-        "message": "Skip backward 10s"
+        "message": "Skip backward"
     },
     "player_more_label": {
         "message": "More tools"
+    },
+    "player_gif_label": {
+        "message": "Record GIF"
     },
     "player_loop_label": {
         "message": "Loop"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Predownload entire video in the background if possible"
     },
+    "options_general_copytimestampurl": {
+        "message": "Enable clicking the time counter to copy a URL with the current timestamp"
+    },
     "options_general_targetspeed": {
         "message": "Target download speed of predownloader"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Controls auto-hide delay (ms)"
     },
     "options_general_maxsize": {
         "message": "Maximum size of predownloaded video"
@@ -1023,7 +1074,7 @@
         "message": "Miniplayer size"
     },
     "options_general_color_theme": {
-        "message": "Player color theme"
+        "message": "UI Theme"
     },
     "options_general_color_theme_default": {
         "message": "Default Dark"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Hint: Test regex on"
+    },
+    "options_autourl_applyall": {
+        "message": "Auto-enable on all websites"
     },
     "options_pattern_header": {
         "message": "Custom Source Patterns"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Toolbar buttons"
+    },
+    "options_toolbar_body": {
+        "message": "Choose which buttons are shown on the player toolbar."
+    },
+    "options_section_toggle_show": {
+        "message": "Show"
+    },
+    "options_section_toggle_hide": {
+        "message": "Hide"
+    },
+    "options_toolbar_reset": {
+        "message": "Reset to Defaults"
     }
 }

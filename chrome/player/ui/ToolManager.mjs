@@ -12,6 +12,10 @@ export class ToolManager {
     this.specialReorderModeEnabled = false;
   }
 
+  static REQUIRED_TOOLS = new Set(['settings']);
+
+  static USER_HIDDEN_CLASS = 'fs_user_hidden';
+
   setupUI() {
     this.updateToolVisibility();
     DOMElements.playerContainer.addEventListener('click', (e) => {
@@ -102,11 +106,13 @@ export class ToolManager {
 
     if (this.client.player) {
       DOMElements.screenshot.classList.remove('hidden');
+      DOMElements.gifButton.classList.remove('hidden');
       DOMElements.loopButton.classList.remove('hidden');
       DOMElements.skipForwardButton.classList.remove('hidden');
       DOMElements.skipBackwardButton.classList.remove('hidden');
     } else {
       DOMElements.screenshot.classList.add('hidden');
+      DOMElements.gifButton.classList.add('hidden');
       DOMElements.loopButton.classList.add('hidden');
       DOMElements.skipForwardButton.classList.add('hidden');
       DOMElements.skipBackwardButton.classList.add('hidden');
@@ -122,6 +128,12 @@ export class ToolManager {
       DOMElements.windowedFullscreen.classList.remove('hidden');
     } else {
       DOMElements.windowedFullscreen.classList.add('hidden');
+    }
+
+    if (this.client.player) {
+      DOMElements.rotateButton.classList.remove('hidden');
+    } else {
+      DOMElements.rotateButton.classList.add('hidden');
     }
 
     if (this.client.hasPreviousVideo()) {
@@ -156,12 +168,14 @@ export class ToolManager {
       playrate: DOMElements.playbackRate,
       fullscreen: DOMElements.fullscreen,
       windowedfs: DOMElements.windowedFullscreen,
+      rotate: DOMElements.rotateButton,
       subtitles: DOMElements.subtitles,
       audioconfig: DOMElements.audioConfigBtn,
       sources: DOMElements.linkButton,
       settings: DOMElements.settingsButton,
       quality: DOMElements.videoSource,
       languages: DOMElements.languageButton,
+      gif: DOMElements.gifButton,
       loop: DOMElements.loopButton,
       more: DOMElements.moreButton,
       forward: DOMElements.skipForwardButton,
@@ -178,6 +192,13 @@ export class ToolManager {
 
     for (const [tool, element] of Object.entries(toolElements)) {
       element.dataset.tool = tool;
+
+      // Apply user-level visibility preference (independent of runtime availability `.hidden`).
+      // Tools not present in settings default to visible.
+      const mustBeVisible = ToolManager.REQUIRED_TOOLS.has(tool);
+      const userVisible = mustBeVisible || toolSettings?.[tool]?.visible !== false;
+      element.classList.toggle(ToolManager.USER_HIDDEN_CLASS, !userVisible);
+
       const location = toolSettings[tool].location;
       if (location === 'left') {
         leftToolPairs.push([element, toolSettings[tool]]);
@@ -215,7 +236,7 @@ export class ToolManager {
 
   checkMoreTool() {
     if (Array.from(DOMElements.extraTools.children).some((el) => {
-      return !el.classList.contains('hidden');
+      return !el.classList.contains('hidden') && !el.classList.contains(ToolManager.USER_HIDDEN_CLASS);
     })) {
       DOMElements.moreButton.classList.remove('hidden');
     } else {

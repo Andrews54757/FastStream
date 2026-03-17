@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "Сочетания клавиш можно изменить в настройках расширения"
     },
+    "welcome_page_fork_header": {
+        "message": "Что нового в этом форке"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Дважды коснитесь левой или правой части видео, чтобы перемотать на текущий шаг перемотки."
+    },
+    "welcome_page_fork_content2": {
+        "message": "Центральная зона касания использует настроенные действия для одинарного, двойного и тройного касания, поэтому вы можете назначить воспроизведение/паузу, полноэкранный режим, PiP и другое."
+    },
+    "welcome_page_fork_content3": {
+        "message": "Кнопки перемотки теперь показывают текущее значение шага перемотки, поэтому на мобильном устройстве сразу видно длину прыжка."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Вы можете изменить задержку скрытия элементов управления, если они исчезают слишком быстро или остаются на экране слишком долго."
+    },
+    "welcome_page_fork_content5": {
+        "message": "В настройках панели инструментов можно показывать или скрывать кнопки и восстанавливать стандартную раскладку через «Сброс»."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Кнопка поворота теперь представляет собой простой переключатель между портретной и альбомной ориентацией. Поддержка зависит от устройства и браузера."
+    },
     "welcome_page_keybinds_content1": {
         "message": "клавиша со стрелкой - перемотка на 1 секунду вперёд/назад"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- скрыть/показать плеер"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Советы для мобильных и сенсорных устройств"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream в первую очередь рассчитан на настольные браузеры, но последние обновления улучшили сенсорное управление."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Дважды коснитесь левой/правой части видео, чтобы перемотать на настроенный шаг."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "В настройках можно изменить задержку автоскрытия элементов управления."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Кнопкой поворота можно включать/выключать автоповорот / блокировку ориентации (поддержка зависит от устройства)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "Кнопки перемотки показывают текущий шаг перемотки."
     },
     "perms_page_title": {
         "message": "Разрешения FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Оконный режим"
     },
+    "player_rotate_label": {
+        "message": "Повернуть"
+    },
     "player_skip_forward_label": {
-        "message": "Вперёд на 10 с"
+        "message": "Вперёд"
     },
     "player_skip_backward_label": {
-        "message": "Назад на 10 с"
+        "message": "Назад"
     },
     "player_more_label": {
         "message": "Другие инструменты"
+    },
+    "player_gif_label": {
+        "message": "Записать GIF"
     },
     "player_loop_label": {
         "message": "Зациклить"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "По возможности, предзагружать видео в фоновом режиме."
     },
+    "options_general_copytimestampurl": {
+        "message": "Разрешить копирование URL с текущей меткой времени по нажатию на счетчик времени"
+    },
     "options_general_targetspeed": {
         "message": "Целевая скорость предзагрузки"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Задержка автоскрытия элементов управления (мс)"
     },
     "options_general_maxsize": {
         "message": "Максимальный размер предзагружаемого видео"
@@ -1023,7 +1074,7 @@
         "message": "Размер мини-плеера"
     },
     "options_general_color_theme": {
-        "message": "Цветовая тема плеера"
+        "message": "Тема интерфейса"
     },
     "options_general_color_theme_default": {
         "message": "Темная по умолчанию"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Подсказка: протестируйте регулярное выражение на"
+    },
+    "options_autourl_applyall": {
+        "message": "Автоматически включать на всех сайтах"
     },
     "options_pattern_header": {
         "message": "Пользовательские шаблоны источников"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "ОК"
+    },
+    "options_toolbar_header": {
+        "message": "Кнопки панели инструментов"
+    },
+    "options_toolbar_body": {
+        "message": "Выберите, какие кнопки показывать на панели инструментов плеера."
+    },
+    "options_section_toggle_show": {
+        "message": "Показать"
+    },
+    "options_section_toggle_hide": {
+        "message": "Скрыть"
+    },
+    "options_toolbar_reset": {
+        "message": "Сбросить настройки по умолчанию"
     }
 }

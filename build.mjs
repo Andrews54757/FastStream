@@ -19,6 +19,9 @@ fs.mkdirSync(builtDir, {recursive: true});
 glob(builtDir + '/*.zip').forEach((file) => {
   fs.unlinkSync(file);
 });
+glob(builtDir + '/*.xpi').forEach((file) => {
+  fs.unlinkSync(file);
+});
 
 removeBuildDirs();
 deleteDirectoryRecursively(webBuildDir);
@@ -282,6 +285,14 @@ async function runWebExtBuild(sourceDir, artifactsDir) {
   });
 }
 
+function withExtension(fileName, newExt) {
+  const ext = path.extname(fileName);
+  if (ext.toLowerCase() === newExt.toLowerCase()) {
+    return fileName;
+  }
+  return path.basename(fileName, ext) + newExt;
+}
+
 function insertLicense(buildDir) {
   const newLicensePath = path.join(buildDir, 'LICENSE.md');
   fs.writeFileSync(newLicensePath, licenseText);
@@ -346,7 +357,8 @@ async function buildFirefoxLibre() {
 
   const builtPath = await runWebExtBuild(firefoxLibreBuildDir, path.join(firefoxLibreBuildDir, 'libre'));
   const name = path.basename(builtPath);
-  const finalPath = path.join(builtDir, 'firefox-libre-' + name);
+  const finalName = withExtension(name, '.xpi');
+  const finalPath = path.join(builtDir, 'firefox-libre-' + finalName);
   fs.renameSync(builtPath, finalPath);
   return finalPath;
 }
@@ -390,7 +402,8 @@ async function buildFirefoxDist() {
 
   const builtPath = await runWebExtBuild(firefoxDistBuildDir, path.join(firefoxDistBuildDir, 'dist'));
   const name = path.basename(builtPath);
-  const finalPath = path.join(builtDir, 'firefox-dist-' + name);
+  const finalName = withExtension(name, '.xpi');
+  const finalPath = path.join(builtDir, 'firefox-dist-' + finalName);
   fs.renameSync(builtPath, finalPath);
   return finalPath;
 }

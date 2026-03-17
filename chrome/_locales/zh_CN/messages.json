@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "可在扩展设置中更改这些快捷键"
     },
+    "welcome_page_fork_header": {
+        "message": "此 Fork 的新功能"
+    },
+    "welcome_page_fork_content1": {
+        "message": "双击视频左侧或右侧，可按当前的跳转步长前进或后退。"
+    },
+    "welcome_page_fork_content2": {
+        "message": "中间点击区域会使用你配置的单击、双击和三击操作，因此你可以自定义播放/暂停、全屏、画中画等功能。"
+    },
+    "welcome_page_fork_content3": {
+        "message": "跳转按钮现在会显示当前的跳转步长数值，方便你在移动端一眼确认跳转距离。"
+    },
+    "welcome_page_fork_content4": {
+        "message": "如果控制栏消失得太快或停留得太久，你可以调整控制栏隐藏延迟。"
+    },
+    "welcome_page_fork_content5": {
+        "message": "你可以在工具栏设置中显示或隐藏按钮，并通过“重置”恢复默认布局。"
+    },
+    "welcome_page_fork_content6": {
+        "message": "旋转按钮现在是一个简单的竖屏/横屏切换开关。设备和浏览器支持可能有所不同。"
+    },
     "welcome_page_keybinds_content1": {
         "message": "方向键 - 前进/后退 1 秒"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- 隐藏/显示播放器"
+    },
+    "welcome_page_mobile_header": {
+        "message": "移动端与触控提示"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream 主要面向桌面端，但近期更新改进了触控操作。"
+    },
+    "welcome_page_mobile_content1": {
+        "message": "双击视频左侧/右侧，可按已配置的步长前进/后退。"
+    },
+    "welcome_page_mobile_content2": {
+        "message": "你可以在设置中调整控制栏自动隐藏的延迟时间。"
+    },
+    "welcome_page_mobile_content3": {
+        "message": "使用旋转按钮切换自动旋转/方向锁定（设备支持可能不同）。"
+    },
+    "welcome_page_mobile_content4": {
+        "message": "跳转按钮会显示当前的跳转步长。"
     },
     "perms_page_title": {
         "message": "FastStream 权限"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "切换窗口化全屏"
     },
+    "player_rotate_label": {
+        "message": "旋转"
+    },
     "player_skip_forward_label": {
-        "message": "快进 10 秒"
+        "message": "快进"
     },
     "player_skip_backward_label": {
-        "message": "快退 10 秒"
+        "message": "快退"
     },
     "player_more_label": {
         "message": "更多工具"
+    },
+    "player_gif_label": {
+        "message": "录制 GIF"
     },
     "player_loop_label": {
         "message": "循环"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "若可能，后台预下载整段视频"
     },
+    "options_general_copytimestampurl": {
+        "message": "启用点击时间计数器时复制带当前时间戳的 URL"
+    },
     "options_general_targetspeed": {
         "message": "预下载器的目标下载速度"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控件自动隐藏延迟（毫秒）"
     },
     "options_general_maxsize": {
         "message": "预下载视频的最大大小"
@@ -1023,7 +1074,7 @@
         "message": "迷你播放器大小"
     },
     "options_general_color_theme": {
-        "message": "播放器颜色主题"
+        "message": "界面主题"
     },
     "options_general_color_theme_default": {
         "message": "默认（暗）"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "提示：在此处测试正则"
+    },
+    "options_autourl_applyall": {
+        "message": "在所有网站上自动启用"
     },
     "options_pattern_header": {
         "message": "自定义源模式"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "确定"
+    },
+    "options_toolbar_header": {
+        "message": "工具栏按钮"
+    },
+    "options_toolbar_body": {
+        "message": "选择在播放器工具栏中显示哪些按钮。"
+    },
+    "options_section_toggle_show": {
+        "message": "显示"
+    },
+    "options_section_toggle_hide": {
+        "message": "隐藏"
+    },
+    "options_toolbar_reset": {
+        "message": "重置为默认值"
     }
 }

@@ -1,6 +1,69 @@
 [![logotext1](https://github.com/user-attachments/assets/cefd20ba-606a-482c-a522-36b3419e93c7)](https://faststream.online)
 
-# FastStream
+# Mobile Experience Improvements [NEW]
+
+- **Double‑tap to seek (touch-friendly)**
+  - Double‑tap the *left* side to jump backward and the *right* side to jump forward.
+  - The jump amount uses your configured **Seek step size**.
+  - The *middle* area still follows your single/double/triple‑tap actions (play/pause, fullscreen, etc.).
+
+![Tap action zones diagram](docs/images/tap-zones.svg)
+
+## Mobile Screenshots
+
+- **Improved mobile options/menu usability**
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/d3247dc6-9e08-420e-bf2c-ed6ef08b9f8e" width="180"/>
+  <img src="https://github.com/user-attachments/assets/5190dcf5-c680-42fe-963c-2b0ce109c741" width="180"/>
+  <img src="https://github.com/user-attachments/assets/247cd2a8-330a-4fa1-b6aa-e66d4ecc6e05" width="180"/>
+  <img src="https://github.com/user-attachments/assets/023a8f8c-af83-40be-a8bc-bfc469c7521b" width="180"/>
+  <img src="https://github.com/user-attachments/assets/bf66a9f7-89e6-42a6-9085-c1d5d3cf959b" width="180"/>
+  <img src="https://github.com/user-attachments/assets/a45fc439-9757-4362-89fa-c5cb4537a105" width="180"/>
+</p>
+
+New to this fork? The quickest way to make the mobile controls feel right is to open Options and set these first:
+
+- **Seek step size**: controls how far left/right double-tap seeks, and also updates the number shown on the skip buttons.
+- **Single / double / triple tap actions**: the **middle zone** uses your configured tap actions, so you can make it play/pause, fullscreen, PiP, and more.
+- **Controls hide delay**: useful on phones if you want the controls to stay visible longer or get out of the way faster.
+- **Toolbar buttons**: lets you show/hide buttons, including the simplified **Rotate** tool, if you want a cleaner mobile layout.
+
+Notes for new users:
+
+- The touch improvements are mainly designed for mobile, but browser support for extensions and orientation APIs still varies by device.
+- The **Rotate** button is now a practical portrait/landscape toggle rather than a full free-rotation control.
+- If you customize too much, the settings categories each have their own **Reset** button to restore the default selection.
+
+
+- **Configurable auto‑hide controls**
+  - New **Controls hide delay** setting lets you choose how quickly the on‑screen controls fade away after you stop interacting.
+  - Helps reduce the controls blocking video content on smaller screens.
+
+- **Skip buttons show the seek step**
+  - Skip forward/back buttons now display a small number overlay (e.g., `5`) so you can see the current seek step at a glance.
+
+- **Simpler rotate control (better on phones)**
+  - The **Rotate** button is moved to the main toolbar for faster access.
+  - Rotation is simplified to a practical **portrait ↔ landscape** toggle.
+
+- **Customize the toolbar for mobile**
+  - New **Toolbar** section in Options lets you **show/hide** specific toolbar buttons (with icons) to reduce clutter.
+  - Includes a **Reset** button to restore the default toolbar configuration.
+  - Changes persist and are applied across the player.
+
+- **Theme picker redesigned with visual cards**
+  - Color themes are now shown in a card gallery with previews, making it faster to compare styles on small screens.
+
+- **More consistent collapsible settings sections**
+  - Section collapse behavior (Theme, Video, General, Toolbar, Keybinds) is now handled consistently, including better behavior when using search.
+
+- **Less likely to be covered by website overlays**
+  - The player/miniplayer is now more aggressively kept above site overlays (stacking/z‑index improvements), reducing cases where parts of the player are blocked or unclickable.
+
+- **Updated mobile/touch tips**
+  - Welcome/help text and translations were updated with mobile and touch guidance to make these features easier to discover.
+## 
 
 Tired of having videos buffer with slow internet speeds? Frustrated by a website's lack of accessibility features? This extension will replace videos on websites with a video player designed for your convenience. Say goodbye to buffering and hello to a more accessible video experience!
 
@@ -46,7 +109,15 @@ We've been seeing issues with Youtube not working for some people using FastStre
 ## Browser compatibility
 Tested using Chrome and Firefox. Other chromium based browsers (such as Edge) will also likely work.
 
-Please note that there are no plans to make FastStream mobile compatible any time soon. Developing FastStream for Chrome and Firefox for the desktop is already an exhausting endeavor. Supporting mobile on top of all that is too much work for a mere college-student programming hobbyist like me. That said, if you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
+FastStream is still primarily built and tested for desktop browsers. That said, recent updates include improved touch/mobile ergonomics:
+
+- Double-tap the left/right side of the video to seek by your configured step
+- Configurable controls auto-hide delay
+- A rotate tool to quickly toggle portrait/landscape orientation (device support may vary)
+- Skip buttons display the current seek step size
+- A visual theme card gallery and improved collapsible settings sections in Options
+
+Mobile browser support still depends on whether your browser supports extensions and the required web APIs. If you find a way to make it work on more browsers or devices, please feel free to share and make a pull request!
 
 ## Installation For Chrome and Firefox
 
@@ -75,7 +146,7 @@ The Chrome extension store policies do not allow extensions that can download vi
 ## Manual Installation For Firefox
 The extension is, by default, configured to work on Chrome. You can either use a prebuilt version from the [Releases page](https://github.com/Andrews54757/FastStream/releases) or build the extension yourself using the build instructions below.
 
-You can then install the extension on Firefox Developer Edition by going to `about:config` and setting `xpinstall.signatures.required` to `false`. You must then also disable extension auto-updates or the extension will be removed when you close the browser. To do this, go to `about:addons`, click on the gear icon, and uncheck `Update Add-ons Automatically`. You can then click "Install Add-on From File" and select the `firefox-libre-*.zip` file to install the extension.
+You can then install the extension on Firefox Developer Edition by going to `about:config` and setting `xpinstall.signatures.required` to `false`. You must then also disable extension auto-updates or the extension will be removed when you close the browser. To do this, go to `about:addons`, click on the gear icon, and uncheck `Update Add-ons Automatically`. You can then click "Install Add-on From File" and select the `firefox-libre-*.xpi` file to install the extension.
 
 **THERE IS NO BUILT-IN AUTOMATIC UPDATE SYSTEM. See above.**
 

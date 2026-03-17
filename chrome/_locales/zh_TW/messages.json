@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "可在擴充功能設定中更改這些快捷鍵"
     },
+    "welcome_page_fork_header": {
+        "message": "此 Fork 的新功能"
+    },
+    "welcome_page_fork_content1": {
+        "message": "雙擊影片左側或右側，可依目前的跳轉步長前進或後退。"
+    },
+    "welcome_page_fork_content2": {
+        "message": "中間點擊區域會使用你設定的單擊、雙擊與三擊動作，因此你可以自訂播放/暫停、全螢幕、子母畫面等功能。"
+    },
+    "welcome_page_fork_content3": {
+        "message": "跳轉按鈕現在會顯示目前的跳轉步長數值，方便你在行動裝置上一眼確認跳轉距離。"
+    },
+    "welcome_page_fork_content4": {
+        "message": "如果控制列消失得太快或停留太久，你可以調整控制列隱藏延遲。"
+    },
+    "welcome_page_fork_content5": {
+        "message": "你可以在工具列設定中顯示或隱藏按鈕，並透過「重設」恢復預設版面配置。"
+    },
+    "welcome_page_fork_content6": {
+        "message": "旋轉按鈕現在是簡單的直向／橫向切換開關。裝置與瀏覽器支援可能有所不同。"
+    },
     "welcome_page_keybinds_content1": {
         "message": "方向鍵 - 前/後跳 1 秒"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- 顯示/隱藏播放器"
+    },
+    "welcome_page_mobile_header": {
+        "message": "行動裝置與觸控提示"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream 主要以桌面端為主，但近期更新改善了觸控操作。"
+    },
+    "welcome_page_mobile_content1": {
+        "message": "雙擊影片左側/右側，可依設定的步長前進/後退。"
+    },
+    "welcome_page_mobile_content2": {
+        "message": "你可以在設定中調整控制列自動隱藏的延遲時間。"
+    },
+    "welcome_page_mobile_content3": {
+        "message": "使用旋轉按鈕切換自動旋轉／方向鎖定（裝置支援可能不同）。"
+    },
+    "welcome_page_mobile_content4": {
+        "message": "跳轉按鈕會顯示目前的跳轉步長。"
     },
     "perms_page_title": {
         "message": "FastStream 權限"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "切換視窗化全螢幕"
     },
+    "player_rotate_label": {
+        "message": "旋轉"
+    },
     "player_skip_forward_label": {
-        "message": "快轉 10 秒"
+        "message": "快轉"
     },
     "player_skip_backward_label": {
-        "message": "快退 10 秒"
+        "message": "快退"
     },
     "player_more_label": {
         "message": "更多工具"
+    },
+    "player_gif_label": {
+        "message": "錄製 GIF"
     },
     "player_loop_label": {
         "message": "重播"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "如可能，在背景預先下載整個影片"
     },
+    "options_general_copytimestampurl": {
+        "message": "啟用點擊時間計數器時複製含目前時間戳的 URL"
+    },
     "options_general_targetspeed": {
         "message": "預先下載器目標下載速度"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "控制項自動隱藏延遲（毫秒）"
     },
     "options_general_maxsize": {
         "message": "預先下載影片最大大小"
@@ -1023,7 +1074,7 @@
         "message": "迷你播放器大小"
     },
     "options_general_color_theme": {
-        "message": "播放器配色主題"
+        "message": "介面主題"
     },
     "options_general_color_theme_default": {
         "message": "預設（深色）"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "提示：在此測試正則表達式"
+    },
+    "options_autourl_applyall": {
+        "message": "在所有網站上自動啟用"
     },
     "options_pattern_header": {
         "message": "自訂來源模式"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "確定"
+    },
+    "options_toolbar_header": {
+        "message": "工具列按鈕"
+    },
+    "options_toolbar_body": {
+        "message": "選擇要在播放器工具列中顯示哪些按鈕。"
+    },
+    "options_section_toggle_show": {
+        "message": "顯示"
+    },
+    "options_section_toggle_hide": {
+        "message": "隱藏"
+    },
+    "options_toolbar_reset": {
+        "message": "重設為預設值"
     }
 }

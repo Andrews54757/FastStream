@@ -1,6 +1,10 @@
 body {
     position: absolute;
     inset: 0px;
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
     margin: 0px;
     overflow: hidden;
     background-color: black;
@@ -309,26 +313,34 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default.pseudo_fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
     position: fixed;
     z-index: 99999;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default:-webkit-full-screen {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    position: fixed;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default:-ms-fullscreen {
-    width: 100% !important;
-    height: 100% !important;
-    position: absolute;
+    inset: 0;
+    width: 100vw !important;
+    width: 100dvw !important;
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    position: fixed;
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_button {
@@ -597,6 +609,31 @@ body {
     color: var(--menu-text-color);
 }
 
+/* Seek-step counter inside skip icons (controls bar only) */
+.fluid_control_skip_forward,
+.fluid_control_skip_backward {
+    /* Use font-size as a proxy for icon size so the counter scales in sync */
+    font-size: 24px;
+    /* Prevent inline SVG baseline/line-box from shifting the icon vertically */
+    line-height: 0;
+}
+
+.fluid_control_skip_forward .fs_seek_counter,
+.fluid_control_skip_backward .fs_seek_counter {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    white-space: nowrap;
+    font-weight: 700;
+    font-size: 0.3em;
+    transform: translateY(0.3em);
+    line-height: 1;
+    color: currentColor;
+}
+
 .fluid_button svg {
     width: 100%;
     height: 100%;
@@ -615,6 +652,14 @@ body {
 
 .fluid_button_subtitles {
     color: var(--subtitles-toggle-color);
+}
+
+.fluid_control_loop.fs_loop_enabled {
+    color: var(--status-success-color);
+}
+
+.fluid_control_loop.fs_loop_enabled svg {
+    opacity: 1;
 }
 
 .fluid_button svg:hover {
@@ -708,7 +753,7 @@ body {
 .fluid_button_language .fluid_language_list,
 .fluid_video_playback_rates {
     z-index: 888888 !important;
-    opacity: 0.9 !important;
+    opacity: 1 !important;
 }
 
 .fluid_video_playback_rates_item {
@@ -736,6 +781,27 @@ body {
     display: flex;
     width: 100%;
     height: 100%;
+    transform-origin: center center;
+    transition: transform 220ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mainplayer {
+        transition: none;
+    }
+}
+
+.mainplayer.fs-player-rotated {
+    position: absolute;
+    max-width: none;
+    max-height: none;
+
+    width: 100vh;
+    width: 100svh;
+    width: 100dvh;
+
+    height: 100vw;
+    height: 100dvw;
 }
 
 .mainplayer.player-hidden {
@@ -863,7 +929,6 @@ body {
 .fluid_button_video_source .fluid_video_sources_list,
 .fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list {
-    opacity: 99%;
     border-radius: 3px;
     width: max-content;
     padding: 0;
@@ -1082,6 +1147,140 @@ body {
     position: absolute;
     inset: 0px;
     z-index: 2;
+}
+
+.fs_hud {
+    position: absolute;
+    inset: 0px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+.fs_playpause_popup {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    border-radius: 999px;
+    color: var(--popbutton-text-color);
+    background-color: var(--popbutton-background-color);
+    border: var(--popbutton-border);
+}
+
+.fs_playpause_popup svg {
+    width: 44px;
+    height: 44px;
+}
+
+.fs_playpause_popup.play .pause,
+.fs_playpause_popup.pause .play {
+    display: none;
+}
+
+.fs_playpause_popup.show {
+    animation: fs_hud_pop 450ms ease-out;
+}
+
+.fs_seek_popup {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 180ms ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 999px;
+    color: var(--popbutton-text-color);
+    background-color: var(--popbutton-background-color);
+    border: var(--popbutton-border);
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.fs_seek_popup_left {
+    left: 16px;
+    --fs-seek-enter-x: -10px;
+}
+
+.fs_seek_popup_right {
+    right: 16px;
+    --fs-seek-enter-x: 10px;
+}
+
+.fs_seek_popup .fs_seek_icon {
+    width: 22px;
+    height: 22px;
+}
+
+.fs_seek_popup.show {
+    opacity: 1;
+    animation: fs_seek_enter 220ms cubic-bezier(0.2, 0.9, 0.2, 1.2);
+}
+
+.fs_seek_popup.pulse {
+    animation: fs_seek_pulse 160ms ease-out;
+}
+
+@keyframes fs_seek_enter {
+    0% {
+        transform: translateY(-50%) translateX(var(--fs-seek-enter-x, 0px)) scale(0.88);
+    }
+    70% {
+        transform: translateY(-50%) translateX(0px) scale(1.08);
+    }
+    100% {
+        transform: translateY(-50%) translateX(0px) scale(1);
+    }
+}
+
+@keyframes fs_seek_pulse {
+    0% {
+        transform: translateY(-50%) scale(1);
+    }
+    50% {
+        transform: translateY(-50%) scale(1.08);
+    }
+    100% {
+        transform: translateY(-50%) scale(1);
+    }
+}
+
+
+@keyframes fs_hud_pop {
+    0% {
+        opacity: 0;
+        transform: translate(var(--fs-hud-x, -50%), var(--fs-hud-y, -50%)) scale(0.92);
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--fs-hud-x, -50%), var(--fs-hud-y, -50%)) scale(1);
+    }
+}
+
+.fs_playpause_popup {
+    --fs-hud-x: -50%;
+    --fs-hud-y: -50%;
+}
+
+.fs_seek_popup_left {
+    --fs-hud-x: 0;
+    --fs-hud-y: -50%;
+}
+
+.fs_seek_popup_right {
+    --fs-hud-x: 0;
+    --fs-hud-y: -50%;
 }
 
 .marker_container>div {
@@ -1906,7 +2105,7 @@ body {
 .rate_menu {
     position: absolute;
     inset: 0px;
-    background: var(--playback-rate-menu-background);
+    background: var(--menu-background-color);
 }
 
 .rate-changer-list {
@@ -2052,7 +2251,9 @@ div:not(.reordering)>.volume_block:focus .tooltip .tooltiptext {
 
 .options_frame {
     width: 100%;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
+    height: auto;
     border: none;
 }
 
@@ -2063,6 +2264,35 @@ div:not(.reordering)>.volume_block:focus .tooltip .tooltiptext {
     margin: auto;
     left: auto;
     right: auto;
+}
+
+.options_container.mobile {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border-radius: 0;
+}
+
+.expanded.controls_visible .options_container.mobile {
+    bottom: 0;
+}
+
+.options_container.mobile .window_header {
+    padding: 10px 10px;
+}
+
+.options_container.mobile .window_header .title {
+    font-size: 15px;
+}
+
+.options_container.mobile .window_header .close_button {
+    width: 18px;
+    height: 18px;
+    right: 10px;
 }
 
 .profile_manager {
@@ -2808,6 +3038,12 @@ input.crosstalk_calculator_input {
     display: none !important;
 }
 
+.fluid_controls_right:not(.reordering)>.fs_user_hidden,
+.tools_container_left:not(.reordering)>.fs_user_hidden,
+.fluid_controls_extra_tools:not(.reordering)>.fs_user_hidden {
+    display: none !important;
+}
+
 .fluid_controls_right.reordering>.hidden,
 .tools_container_left.reordering>.hidden,
 .fluid_controls_extra_tools.reordering>.hidden {
@@ -3003,6 +3239,11 @@ input.crosstalk_calculator_input {
         height: 18px;
     }
 
+    .fluid_control_skip_forward,
+    .fluid_control_skip_backward {
+        font-size: 18px;
+    }
+
     .fluid_controls_right,
     .fluid_controls_left,
     .tools_container_left {
@@ -3057,8 +3298,7 @@ input.crosstalk_calculator_input {
     }
 
     .fluid_controls_right:not(.reordering)>.fluid_button_soundwave,
-    .fluid_controls_right:not(.reordering)>.fluid_button_link,
-    .fluid_controls_right:not(.reordering)>.fluid_button_settings {
+    .fluid_controls_right:not(.reordering)>.fluid_button_link {
         display: none !important;
     }
 

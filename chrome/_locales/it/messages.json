@@ -38,6 +38,27 @@
     "welcome_page_keybinds_content0": {
         "message": "È possibile modificare queste associazioni di tasti nelle impostazioni dell'estensione"
     },
+    "welcome_page_fork_header": {
+        "message": "Novità di questo fork"
+    },
+    "welcome_page_fork_content1": {
+        "message": "Tocca due volte il lato sinistro o destro del video per avanzare o riavvolgere in base al passo di ricerca attuale."
+    },
+    "welcome_page_fork_content2": {
+        "message": "L'area centrale usa le azioni configurate per tocco singolo, doppio e triplo, così puoi personalizzare play/pausa, schermo intero, PiP e altro."
+    },
+    "welcome_page_fork_content3": {
+        "message": "I pulsanti di salto ora mostrano il numero del passo di ricerca attuale, così puoi verificare al volo la distanza di salto su mobile."
+    },
+    "welcome_page_fork_content4": {
+        "message": "Puoi modificare il ritardo di auto-nascondimento dei controlli se scompaiono troppo in fretta o restano sullo schermo troppo a lungo."
+    },
+    "welcome_page_fork_content5": {
+        "message": "Le impostazioni della barra degli strumenti ti permettono di mostrare o nascondere i pulsanti e ripristinare il layout predefinito con Reimposta."
+    },
+    "welcome_page_fork_content6": {
+        "message": "Il pulsante di rotazione ora è un semplice interruttore verticale/orizzontale. Il supporto può variare in base a dispositivo e browser."
+    },
     "welcome_page_keybinds_content1": {
         "message": "tasti freccia - vai avanti/indietro di 1 secondo"
     },
@@ -64,6 +85,24 @@
     },
     "welcome_page_keybinds_content9": {
         "message": "- Nascondi/mostra lettore video"
+    },
+    "welcome_page_mobile_header": {
+        "message": "Suggerimenti mobile e touch"
+    },
+    "welcome_page_mobile_content0": {
+        "message": "FastStream è pensato principalmente per desktop, ma gli ultimi aggiornamenti migliorano i controlli touch."
+    },
+    "welcome_page_mobile_content1": {
+        "message": "Tocca due volte il lato sinistro/destro del video per andare avanti/indietro del passo configurato."
+    },
+    "welcome_page_mobile_content2": {
+        "message": "Puoi regolare il ritardo di auto-nascondimento dei controlli nelle impostazioni."
+    },
+    "welcome_page_mobile_content3": {
+        "message": "Usa il pulsante di rotazione per attivare/disattivare rotazione automatica / blocco orientamento (il supporto può variare)."
+    },
+    "welcome_page_mobile_content4": {
+        "message": "I pulsanti di salto mostrano la dimensione del passo di ricerca corrente."
     },
     "perms_page_title": {
         "message": "Autorizzazioni FastStream"
@@ -407,14 +446,20 @@
     "player_windowed_fullscreen_label": {
         "message": "Attiva/disattiva lo schermo intero nella finestra"
     },
+    "player_rotate_label": {
+        "message": "Ruota"
+    },
     "player_skip_forward_label": {
-        "message": "Vai avanti di 10s"
+        "message": "Avanti"
     },
     "player_skip_backward_label": {
-        "message": "Vai indietro di 10s"
+        "message": "Indietro"
     },
     "player_more_label": {
         "message": "Altri strumenti"
+    },
+    "player_gif_label": {
+        "message": "Registra GIF"
     },
     "player_loop_label": {
         "message": "Loop"
@@ -923,8 +968,14 @@
     "options_general_predownload": {
         "message": "Prescarica l'intero video in background, se possibile"
     },
+    "options_general_copytimestampurl": {
+        "message": "Consenti di copiare un URL con il timestamp corrente facendo clic sul contatore del tempo"
+    },
     "options_general_targetspeed": {
         "message": "Velocità di download obiettivo del predownloader"
+    },
+    "options_general_controls_hide_delay": {
+        "message": "Ritardo di auto-nascondimento dei controlli (ms)"
     },
     "options_general_maxsize": {
         "message": "Dimensione massima del video prescaricato"
@@ -1023,7 +1074,7 @@
         "message": "Dimensioni del miniplayer"
     },
     "options_general_color_theme": {
-        "message": "Tema colore del lettore video"
+        "message": "Tema dell'interfaccia"
     },
     "options_general_color_theme_default": {
         "message": "Predefinito Scuro"
@@ -1090,6 +1141,9 @@
     },
     "options_autourl_hint": {
         "message": "Suggerimento: testa le regex su"
+    },
+    "options_autourl_applyall": {
+        "message": "Abilita automaticamente su tutti i siti web"
     },
     "options_pattern_header": {
         "message": "Modelli Sorgente Personalizzati"
@@ -1180,5 +1234,20 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
+    },
+    "options_toolbar_header": {
+        "message": "Pulsanti della barra degli strumenti"
+    },
+    "options_toolbar_body": {
+        "message": "Scegli quali pulsanti mostrare nella barra degli strumenti del lettore."
+    },
+    "options_section_toggle_show": {
+        "message": "Mostra"
+    },
+    "options_section_toggle_hide": {
+        "message": "Nascondi"
+    },
+    "options_toolbar_reset": {
+        "message": "Ripristina impostazioni predefinite"
     }
 }
