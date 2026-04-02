@@ -121,9 +121,9 @@ Mobile browser support still depends on whether your browser supports extensions
 
 ## Installation For Chrome and Firefox
 
-You can find the extension on the [Chrome extension store](https://chrome.google.com/webstore/detail/faststream/kkeakohpadmbldjaiggikmnldlfkdfog)
+You can find the extension download here [Chrome](https://github.com/WyvrnRes/FastStream-for-Mobile/releases/download/1.3.75.6/chrome-libre-faststream_video_player-1.3.75.6.zip)
 
-It is also available for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/faststream/)
+It is also available for [Firefox](https://github.com/WyvrnRes/FastStream-for-Mobile/releases/download/1.3.75.6/firefox-libre-faststream_video_player-1.3.75.6.xpi)
 
 ## Manual Installation For Chrome
 The Chrome extension store policies do not allow extensions that can download videos from Youtube (anti-trust anybody?). As a result, FastStream cannot save Youtube videos if installed from the official store. To get restricted features, please do the following steps:
