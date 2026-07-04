@@ -17,6 +17,7 @@ import {DaltonizerTypes} from './defaults/DaltonizerTypes.mjs';
 import {DefaultToolSettings} from './defaults/ToolSettings.mjs';
 import {DefaultQualities} from './defaults/DefaultQualities.mjs';
 import {ColorThemes} from './defaults/ColorThemes.mjs';
+import {DefaultLanguages} from './defaults/DefaultLanguages.mjs';
 
 let Options = {};
 const analyzeVideos = document.getElementById('analyzevideos');
@@ -53,6 +54,8 @@ const optionsSearchBar = document.getElementById('searchbar');
 const optionsResetButton = document.getElementById('resetsearch');
 // const ytclient = document.getElementById('ytclient');
 const maxdownloaders = document.getElementById('maxdownloaders');
+const autoTranslate = document.getElementById('autotranslate');
+const defaultTranslateLang = document.getElementById('defaulttranslatelang');
 autoEnableURLSInput.setAttribute('autocapitalize', 'off');
 autoEnableURLSInput.setAttribute('autocomplete', 'off');
 autoEnableURLSInput.setAttribute('autocorrect', 'off');
@@ -159,6 +162,14 @@ async function loadOptions(newOptions) {
     document.getElementById('dev').style.display = '';
   }
   initsearch();
+  
+  autoTranslate.checked = !!Options.autoTranslate;
+// Re-run builder to ensure correct selection is shown
+buildLanguageMenu();
+
+// Disable if feature is off
+const langSelect = defaultTranslateLang.querySelector('select');
+if (langSelect) langSelect.disabled = !Options.autoTranslate;
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -239,6 +250,34 @@ createSelectMenu(qualityMenu, Object.values(DefaultQualities), Options.defaultQu
 //   Options.defaultYoutubeClient = e.target.value;
 //   optionChanged();
 // });
+
+// Custom builder for Language Dropdown
+function buildLanguageMenu() {
+  defaultTranslateLang.replaceChildren(); // Clear existing
+  const select = document.createElement('select');
+  
+  // Sort languages alphabetically by Name, not Code
+  const sortedLangs = Object.entries(DefaultLanguages).sort((a, b) => a[1].localeCompare(b[1]));
+
+  for (const [code, name] of sortedLangs) {
+    const option = document.createElement('option');
+    option.value = code;
+    option.textContent = name;
+    if (code === Options.defaultTranslateLanguage) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  }
+
+  select.addEventListener('change', (e) => {
+    Options.defaultTranslateLanguage = e.target.value;
+    optionChanged();
+  });
+  
+  defaultTranslateLang.appendChild(select);
+}
+// Run it immediately
+buildLanguageMenu();
 
 document.querySelectorAll('.option').forEach((option) => {
   option.addEventListener('click', (e) => {
@@ -675,3 +714,11 @@ if (EnvUtils.isExtension()) {
   // SPLICER:NO_UPDATE_CHECKER:REMOVE_END
 }
 
+autoTranslate.addEventListener('change', () => {
+  Options.autoTranslate = autoTranslate.checked;
+  
+  const select = defaultTranslateLang.querySelector('select');
+  if (select) select.disabled = !Options.autoTranslate;
+  
+  optionChanged();
+});
