@@ -314,7 +314,11 @@ async function buildFirefoxLibre() {
   const manifestPath = path.join(firefoxLibreBuildDir, 'manifest.json');
   const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 
-  manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
+  // 'contextualIdentities' is not requested: Firefox scopes that permission
+  // to the browser.contextualIdentities namespace, which nothing here calls.
+  // The container support in background.mjs only reads a tab's
+  // cookieStoreId and passes it to tabs.create(), which 'cookies' covers.
+  manifest.permissions.push('downloads', 'cookies');
 
   // remove the userscripts permission
   manifest.permissions = manifest.permissions.filter((permission) => permission !== 'userScripts');
@@ -371,7 +375,8 @@ async function buildFirefoxDist() {
     type: 'module',
   };
 
-  manifest.permissions.push('downloads', 'cookies', 'contextualIdentities');
+  // see the matching comment in buildFirefoxLibre()
+  manifest.permissions.push('downloads', 'cookies');
 
   // remove the userscripts permission
   manifest.permissions = manifest.permissions.filter((permission) => permission !== 'userScripts');
