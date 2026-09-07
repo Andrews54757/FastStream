@@ -1,0 +1,13 @@
+diff --git a/dist/sweetalert2.js b/dist/sweetalert2.js
+index 5712739e068011b894ab872729a991d9a681792a..0b185ba8ded7931a50c09610fe65b061b6492ebf 100644
+--- a/dist/sweetalert2.js
++++ b/dist/sweetalert2.js	
+@@ -4103,7 +4103,7 @@
+       if (!paramName || !value) {
+         return;
+       }
+-      result[paramName] = new Function(`return ${value}`)();
++      throw new Error("swal-function-param requires eval, which this build has no unsafe-eval CSP for");
+     });
+     return result;
+   };
