@@ -1,0 +1,861 @@
+diff --git a/dist/mp4box.all.js b/dist/mp4box.all.js
+index e83563ccdf2b41fba9f58e4403c7ae88072356f5..f0ab3cd842d9cbbef01bccd9a5e2599aa33f8fc4 100644
+--- a/dist/mp4box.all.js
++++ b/dist/mp4box.all.js	
+@@ -5499,28 +5499,32 @@ BoxParser.av01SampleEntry.prototype.getCodec = function() {
+  * Copyright (c) Telecom ParisTech/TSI/MM/GPAC Cyril Concolato
+  * License: BSD-3-Clause (see LICENSE file)
+  */
+-BoxParser.Box.prototype.writeHeader = function(stream, msg) {
+-	this.size += 8;
+-	if (this.size > MAX_SIZE) {
+-		this.size += 8;
+-	}
+-	if (this.type === "uuid") {
+-		this.size += 16;
+-	}
+-	Log.debug("BoxWriter", "Writing box "+this.type+" of size: "+this.size+" at position "+stream.getPosition()+(msg || ""));
+-	if (this.size > MAX_SIZE) {
+-		stream.writeUint32(1);
+-	} else {
+-		this.sizePosition = stream.getPosition();
+-		stream.writeUint32(this.size);
+-	}
+-	stream.writeString(this.type, null, 4);
+-	if (this.type === "uuid") {
+-		stream.writeUint8Array(this.uuid);
+-	}
+-	if (this.size > MAX_SIZE) {
+-		stream.writeUint64(this.size);
+-	} 
++BoxParser.Box.prototype.writeHeader = function (stream, msg) {
++    this.size += 8;
++    if (this.size > MAX_SIZE) {
++        this.size += 8;
++    }
++    if (this.type === "uuid") {
++        this.size += 16;
++    }
++    Log.debug("BoxWriter", "Writing box " + this.type + " of size: " + this.size + " at position " + stream.getPosition() + (msg || ""));
++    if (this.size > MAX_SIZE) {
++        stream.writeUint32(1);
++    } else {
++        this.sizePosition = stream.getPosition();
++        stream.writeUint32(this.size);
++    }
++    stream.writeString(this.type, null, 4);
++    if (this.type === "uuid") {
++        const uuidBytes = new Uint8Array(16);
++        for (let i = 0; i < 16; i++) {
++            uuidBytes[i] = parseInt(this.uuid.substring(i * 2, i * 2 + 2), 16);
++        }
++        stream.writeUint8Array(uuidBytes);
++    }
++    if (this.size > MAX_SIZE) {
++        stream.writeUint64(this.size);
++    }
+ }
+ 
+ BoxParser.FullBox.prototype.writeHeader = function(stream) {
+@@ -7754,170 +7758,171 @@ ISOFile.prototype.buildSampleLists = function() {
+ 	}
+ }
+ 
+-ISOFile.prototype.buildTrakSampleLists = function(trak) {	
+-	var j, k;
+-	var stco, stsc, stsz, stts, ctts, stss, stsd, subs, sbgps, sgpds, stdp;
+-	var chunk_run_index, chunk_index, last_chunk_in_run, offset_in_chunk, last_sample_in_chunk;
+-	var last_sample_in_stts_run, stts_run_index, last_sample_in_ctts_run, ctts_run_index, last_stss_index, last_subs_index, subs_entry_index, last_subs_sample_index;
+-
+-	trak.samples = [];
+-	trak.samples_duration = 0;
+-	trak.samples_size = 0;
+-	stco = trak.mdia.minf.stbl.stco || trak.mdia.minf.stbl.co64;
+-	stsc = trak.mdia.minf.stbl.stsc;
+-	stsz = trak.mdia.minf.stbl.stsz || trak.mdia.minf.stbl.stz2;
+-	stts = trak.mdia.minf.stbl.stts;
+-	ctts = trak.mdia.minf.stbl.ctts;
+-	stss = trak.mdia.minf.stbl.stss;
+-	stsd = trak.mdia.minf.stbl.stsd;
+-	subs = trak.mdia.minf.stbl.subs;
+-	stdp = trak.mdia.minf.stbl.stdp;
+-	sbgps = trak.mdia.minf.stbl.sbgps;
+-	sgpds = trak.mdia.minf.stbl.sgpds;
+-	
+-	last_sample_in_stts_run = -1;
+-	stts_run_index = -1;
+-	last_sample_in_ctts_run = -1;
+-	ctts_run_index = -1;
+-	last_stss_index = 0;
+-	subs_entry_index = 0;
+-	last_subs_sample_index = 0;		
+-
+-	ISOFile.initSampleGroups(trak, null, sbgps, sgpds);
+-
+-	if (typeof stsz === "undefined") {
+-		return;
+-	}
++ISOFile.prototype.buildTrakSampleLists = function (trak) {
++    var j, k;
++    var stco, stsc, stsz, stts, ctts, stss, stsd, subs, sbgps, sgpds, stdp;
++    var chunk_run_index, chunk_index, last_chunk_in_run, offset_in_chunk, last_sample_in_chunk;
++    var last_sample_in_stts_run, stts_run_index, last_sample_in_ctts_run, ctts_run_index, last_stss_index, last_subs_index, subs_entry_index, last_subs_sample_index;
++
++    trak.samples = [];
++    trak.samples_stored = [];
++    trak.samples_duration = 0;
++    trak.samples_size = 0;
++    stco = trak.mdia.minf.stbl.stco || trak.mdia.minf.stbl.co64;
++    stsc = trak.mdia.minf.stbl.stsc;
++    stsz = trak.mdia.minf.stbl.stsz || trak.mdia.minf.stbl.stz2;
++    stts = trak.mdia.minf.stbl.stts;
++    ctts = trak.mdia.minf.stbl.ctts;
++    stss = trak.mdia.minf.stbl.stss;
++    stsd = trak.mdia.minf.stbl.stsd;
++    subs = trak.mdia.minf.stbl.subs;
++    stdp = trak.mdia.minf.stbl.stdp;
++    sbgps = trak.mdia.minf.stbl.sbgps;
++    sgpds = trak.mdia.minf.stbl.sgpds;
++
++    last_sample_in_stts_run = -1;
++    stts_run_index = -1;
++    last_sample_in_ctts_run = -1;
++    ctts_run_index = -1;
++    last_stss_index = 0;
++    subs_entry_index = 0;
++    last_subs_sample_index = 0;
++
++    ISOFile.initSampleGroups(trak, null, sbgps, sgpds);
++
++    if (typeof stsz === "undefined") {
++        return;
++    }
+ 
+-	/* we build the samples one by one and compute their properties */
+-	for (j = 0; j < stsz.sample_sizes.length; j++) {
+-		var sample = {};
+-		sample.number = j;
+-		sample.track_id = trak.tkhd.track_id;
+-		sample.timescale = trak.mdia.mdhd.timescale;
+-		sample.alreadyRead = 0;
+-		trak.samples[j] = sample;
+-		/* size can be known directly */
+-		sample.size = stsz.sample_sizes[j];
+-		trak.samples_size += sample.size;
+-		/* computing chunk-based properties (offset, sample description index)*/
+-		if (j === 0) {				
+-			chunk_index = 1; /* the first sample is in the first chunk (chunk indexes are 1-based) */
+-			chunk_run_index = 0; /* the first chunk is the first entry in the first_chunk table */
+-			sample.chunk_index = chunk_index;
+-			sample.chunk_run_index = chunk_run_index;
+-			last_sample_in_chunk = stsc.samples_per_chunk[chunk_run_index];
+-			offset_in_chunk = 0;
+-
+-			/* Is there another entry in the first_chunk table ? */
+-			if (chunk_run_index + 1 < stsc.first_chunk.length) {
+-				/* The last chunk in the run is the chunk before the next first chunk */
+-				last_chunk_in_run = stsc.first_chunk[chunk_run_index+1]-1; 	
+-			} else {
+-				/* There is only one entry in the table, it is valid for all future chunks*/
+-				last_chunk_in_run = Infinity;
+-			}
+-		} else {
+-			if (j < last_sample_in_chunk) {
+-				/* the sample is still in the current chunk */
+-				sample.chunk_index = chunk_index;
+-				sample.chunk_run_index = chunk_run_index;
+-			} else {
+-				/* the sample is in the next chunk */
+-				chunk_index++;
+-				sample.chunk_index = chunk_index;
+-				/* reset the accumulated offset in the chunk */
+-				offset_in_chunk = 0;
+-				if (chunk_index <= last_chunk_in_run) {
+-					/* stay in the same entry of the first_chunk table */
+-					/* chunk_run_index unmodified */
+-				} else {
+-					chunk_run_index++;
+-					/* Is there another entry in the first_chunk table ? */
+-					if (chunk_run_index + 1 < stsc.first_chunk.length) {
+-						/* The last chunk in the run is the chunk before the next first chunk */
+-						last_chunk_in_run = stsc.first_chunk[chunk_run_index+1]-1; 	
+-					} else {
+-						/* There is only one entry in the table, it is valid for all future chunks*/
+-						last_chunk_in_run = Infinity;
+-					}
+-					
+-				}
+-				sample.chunk_run_index = chunk_run_index;
+-				last_sample_in_chunk += stsc.samples_per_chunk[chunk_run_index];
+-			}
+-		}
++    /* we build the samples one by one and compute their properties */
++    for (j = 0; j < stsz.sample_sizes.length; j++) {
++        var sample = {};
++        sample.number = j;
++        sample.track_id = trak.tkhd.track_id;
++        sample.timescale = trak.mdia.mdhd.timescale;
++        sample.alreadyRead = 0;
++        trak.samples[j] = sample;
++        /* size can be known directly */
++        sample.size = stsz.sample_sizes[j];
++        trak.samples_size += sample.size;
++        /* computing chunk-based properties (offset, sample description index)*/
++        if (j === 0) {
++            chunk_index = 1; /* the first sample is in the first chunk (chunk indexes are 1-based) */
++            chunk_run_index = 0; /* the first chunk is the first entry in the first_chunk table */
++            sample.chunk_index = chunk_index;
++            sample.chunk_run_index = chunk_run_index;
++            last_sample_in_chunk = stsc.samples_per_chunk[chunk_run_index];
++            offset_in_chunk = 0;
++
++            /* Is there another entry in the first_chunk table ? */
++            if (chunk_run_index + 1 < stsc.first_chunk.length) {
++                /* The last chunk in the run is the chunk before the next first chunk */
++                last_chunk_in_run = stsc.first_chunk[chunk_run_index + 1] - 1;
++            } else {
++                /* There is only one entry in the table, it is valid for all future chunks*/
++                last_chunk_in_run = Infinity;
++            }
++        } else {
++            if (j < last_sample_in_chunk) {
++                /* the sample is still in the current chunk */
++                sample.chunk_index = chunk_index;
++                sample.chunk_run_index = chunk_run_index;
++            } else {
++                /* the sample is in the next chunk */
++                chunk_index++;
++                sample.chunk_index = chunk_index;
++                /* reset the accumulated offset in the chunk */
++                offset_in_chunk = 0;
++                if (chunk_index <= last_chunk_in_run) {
++                    /* stay in the same entry of the first_chunk table */
++                    /* chunk_run_index unmodified */
++                } else {
++                    chunk_run_index++;
++                    /* Is there another entry in the first_chunk table ? */
++                    if (chunk_run_index + 1 < stsc.first_chunk.length) {
++                        /* The last chunk in the run is the chunk before the next first chunk */
++                        last_chunk_in_run = stsc.first_chunk[chunk_run_index + 1] - 1;
++                    } else {
++                        /* There is only one entry in the table, it is valid for all future chunks*/
++                        last_chunk_in_run = Infinity;
++                    }
++
++                }
++                sample.chunk_run_index = chunk_run_index;
++                last_sample_in_chunk += stsc.samples_per_chunk[chunk_run_index];
++            }
++        }
+ 
+-		sample.description_index = stsc.sample_description_index[sample.chunk_run_index]-1;
+-		sample.description = stsd.entries[sample.description_index];
+-		sample.offset = stco.chunk_offsets[sample.chunk_index-1] + offset_in_chunk; /* chunk indexes are 1-based */
+-		offset_in_chunk += sample.size;
++        sample.description_index = stsc.sample_description_index[sample.chunk_run_index] - 1;
++        sample.description = stsd.entries[sample.description_index];
++        sample.offset = stco.chunk_offsets[sample.chunk_index - 1] + offset_in_chunk; /* chunk indexes are 1-based */
++        offset_in_chunk += sample.size;
+ 
+-		/* setting dts, cts, duration and rap flags */
+-		if (j > last_sample_in_stts_run) {
+-			stts_run_index++;
+-			if (last_sample_in_stts_run < 0) {
+-				last_sample_in_stts_run = 0;
+-			}
+-			last_sample_in_stts_run += stts.sample_counts[stts_run_index];				
+-		}
+-		if (j > 0) {
+-			trak.samples[j-1].duration = stts.sample_deltas[stts_run_index];
+-			trak.samples_duration += trak.samples[j-1].duration;
+-			sample.dts = trak.samples[j-1].dts + trak.samples[j-1].duration;
+-		} else {
+-			sample.dts = 0;
+-		}
+-		if (ctts) {
+-			if (j >= last_sample_in_ctts_run) {
+-				ctts_run_index++;
+-				if (last_sample_in_ctts_run < 0) {
+-					last_sample_in_ctts_run = 0;
+-				}
+-				last_sample_in_ctts_run += ctts.sample_counts[ctts_run_index];				
+-			}
+-			sample.cts = trak.samples[j].dts + ctts.sample_offsets[ctts_run_index];
+-		} else {
+-			sample.cts = sample.dts;
+-		}
+-		if (stss) {
+-			if (j == stss.sample_numbers[last_stss_index] - 1) { // sample numbers are 1-based
+-				sample.is_sync = true;
+-				last_stss_index++;
+-			} else {
+-				sample.is_sync = false;				
+-				sample.degradation_priority = 0;
+-			}
+-			if (subs) {
+-				if (subs.entries[subs_entry_index].sample_delta + last_subs_sample_index == j+1) {
+-					sample.subsamples = subs.entries[subs_entry_index].subsamples;
+-					last_subs_sample_index += subs.entries[subs_entry_index].sample_delta;
+-					subs_entry_index++;
+-				}
+-			}
+-		} else {
+-			sample.is_sync = true;
+-		}
+-		ISOFile.process_sdtp(trak.mdia.minf.stbl.sdtp, sample, sample.number);
+-		if (stdp) {
+-			sample.degradation_priority = stdp.priority[j];
+-		} else {
+-			sample.degradation_priority = 0;
+-		}
+-		if (subs) {
+-			if (subs.entries[subs_entry_index].sample_delta + last_subs_sample_index == j) {
+-				sample.subsamples = subs.entries[subs_entry_index].subsamples;
+-				last_subs_sample_index += subs.entries[subs_entry_index].sample_delta;
+-			}
+-		}
+-		if (sbgps.length > 0 || sgpds.length > 0) {
+-			ISOFile.setSampleGroupProperties(trak, sample, j, trak.sample_groups_info);
+-		}
+-	}
+-	if (j>0) {
+-		trak.samples[j-1].duration = Math.max(trak.mdia.mdhd.duration - trak.samples[j-1].dts, 0);
+-		trak.samples_duration += trak.samples[j-1].duration;
+-	}
++        /* setting dts, cts, duration and rap flags */
++        if (j > last_sample_in_stts_run) {
++            stts_run_index++;
++            if (last_sample_in_stts_run < 0) {
++                last_sample_in_stts_run = 0;
++            }
++            last_sample_in_stts_run += stts.sample_counts[stts_run_index];
++        }
++        if (j > 0) {
++            trak.samples[j - 1].duration = stts.sample_deltas[stts_run_index];
++            trak.samples_duration += trak.samples[j - 1].duration;
++            sample.dts = trak.samples[j - 1].dts + trak.samples[j - 1].duration;
++        } else {
++            sample.dts = 0;
++        }
++        if (ctts) {
++            if (j >= last_sample_in_ctts_run) {
++                ctts_run_index++;
++                if (last_sample_in_ctts_run < 0) {
++                    last_sample_in_ctts_run = 0;
++                }
++                last_sample_in_ctts_run += ctts.sample_counts[ctts_run_index];
++            }
++            sample.cts = trak.samples[j].dts + ctts.sample_offsets[ctts_run_index];
++        } else {
++            sample.cts = sample.dts;
++        }
++        if (stss) {
++            if (j == stss.sample_numbers[last_stss_index] - 1) { // sample numbers are 1-based
++                sample.is_sync = true;
++                last_stss_index++;
++            } else {
++                sample.is_sync = false;
++                sample.degradation_priority = 0;
++            }
++            if (subs) {
++                if (subs.entries[subs_entry_index].sample_delta + last_subs_sample_index == j + 1) {
++                    sample.subsamples = subs.entries[subs_entry_index].subsamples;
++                    last_subs_sample_index += subs.entries[subs_entry_index].sample_delta;
++                    subs_entry_index++;
++                }
++            }
++        } else {
++            sample.is_sync = true;
++        }
++        ISOFile.process_sdtp(trak.mdia.minf.stbl.sdtp, sample, sample.number);
++        if (stdp) {
++            sample.degradation_priority = stdp.priority[j];
++        } else {
++            sample.degradation_priority = 0;
++        }
++        if (subs) {
++            if (subs.entries[subs_entry_index].sample_delta + last_subs_sample_index == j) {
++                sample.subsamples = subs.entries[subs_entry_index].subsamples;
++                last_subs_sample_index += subs.entries[subs_entry_index].sample_delta;
++            }
++        }
++        if (sbgps.length > 0 || sgpds.length > 0) {
++            ISOFile.setSampleGroupProperties(trak, sample, j, trak.sample_groups_info);
++        }
++    }
++    if (j > 0) {
++        trak.samples[j - 1].duration = Math.max(trak.mdia.mdhd.duration - trak.samples[j - 1].dts, 0);
++        trak.samples_duration += trak.samples[j - 1].duration;
++    }
+ }
+ 
+ /* Update sample list when new 'moof' boxes are received */
+@@ -8069,69 +8074,204 @@ ISOFile.prototype.updateSampleLists = function() {
+    returns null if not found
+    returns the same sample if already requested
+  */
+-ISOFile.prototype.getSample = function(trak, sampleNum) {	
+-	var buffer;
+-	var sample = trak.samples[sampleNum];
+-	
+-	if (!this.moov) {
+-		return null;
+-	}
++ISOFile.prototype.getSample = function (trak, sampleNum) {
++    var buffer;
++    var sample = trak.samples[sampleNum];
+ 
+-	if (!sample.data) {
+-		/* Not yet fetched */
+-		sample.data = new Uint8Array(sample.size);
+-		sample.alreadyRead = 0;
+-		this.samplesDataSize += sample.size;
+-		Log.debug("ISOFile", "Allocating sample #"+sampleNum+" on track #"+trak.tkhd.track_id+" of size "+sample.size+" (total: "+this.samplesDataSize+")");
+-	} else if (sample.alreadyRead == sample.size) {
+-		/* Already fetched entirely */
+-		return sample;
+-	}
++    if (!this.moov) {
++        return null;
++    }
+ 
+-	/* The sample has only been partially fetched, we need to check in all buffers */
+-	while(true) {
+-		var index =	this.stream.findPosition(true, sample.offset + sample.alreadyRead, false);
+-		if (index > -1) {
+-			buffer = this.stream.buffers[index];
+-			var lengthAfterStart = buffer.byteLength - (sample.offset + sample.alreadyRead - buffer.fileStart);
+-			if (sample.size - sample.alreadyRead <= lengthAfterStart) {
+-				/* the (rest of the) sample is entirely contained in this buffer */
++    if (!sample.data) {
++        /* Not yet fetched */
++        sample.data = new Uint8Array(sample.size);
++        sample.alreadyRead = 0;
++        trak.samples_stored.push(sample);
++        this.samplesDataSize += sample.size;
++        Log.debug("ISOFile", "Allocating sample #" + sampleNum + " on track #" + trak.tkhd.track_id + " of size " + sample.size + " (total: " + this.samplesDataSize + ")");
++    } else if (sample.alreadyRead == sample.size) {
++        /* Already fetched entirely */
++        return sample;
++    }
+ 
+-				Log.debug("ISOFile","Getting sample #"+sampleNum+" data (alreadyRead: "+sample.alreadyRead+" offset: "+
+-					(sample.offset+sample.alreadyRead - buffer.fileStart)+" read size: "+(sample.size - sample.alreadyRead)+" full size: "+sample.size+")");
++    /* The sample has only been partially fetched, we need to check in all buffers */
++    while (true) {
++        var index = this.stream.findPosition(true, sample.offset + sample.alreadyRead, false);
++        if (index > -1) {
++            buffer = this.stream.buffers[index];
++            var lengthAfterStart = buffer.byteLength - (sample.offset + sample.alreadyRead - buffer.fileStart);
++            if (sample.size - sample.alreadyRead <= lengthAfterStart) {
++                /* the (rest of the) sample is entirely contained in this buffer */
+ 
+-				DataStream.memcpy(sample.data.buffer, sample.alreadyRead,
+-				                  buffer, sample.offset+sample.alreadyRead - buffer.fileStart, sample.size - sample.alreadyRead);
++                Log.debug("ISOFile", "Getting sample #" + sampleNum + " data (alreadyRead: " + sample.alreadyRead + " offset: " +
++                    (sample.offset + sample.alreadyRead - buffer.fileStart) + " read size: " + (sample.size - sample.alreadyRead) + " full size: " + sample.size + ")");
+ 
+-				/* update the number of bytes used in this buffer and check if it needs to be removed */
+-				buffer.usedBytes += sample.size - sample.alreadyRead;
+-				this.stream.logBufferLevel();
++                DataStream.memcpy(sample.data.buffer, sample.alreadyRead,
++                    buffer, sample.offset + sample.alreadyRead - buffer.fileStart, sample.size - sample.alreadyRead);
+ 
+-				sample.alreadyRead = sample.size;
++                /* update the number of bytes used in this buffer and check if it needs to be removed */
++                buffer.usedBytes += sample.size - sample.alreadyRead;
++                this.stream.logBufferLevel();
+ 
+-				return sample;
+-			} else {
+-				/* the sample does not end in this buffer */
++                sample.alreadyRead = sample.size;
+ 
+-				if (lengthAfterStart === 0) return null;
++                return sample;
++            } else {
++                /* the sample does not end in this buffer */
+ 
+-				Log.debug("ISOFile","Getting sample #"+sampleNum+" partial data (alreadyRead: "+sample.alreadyRead+" offset: "+
+-					(sample.offset+sample.alreadyRead - buffer.fileStart)+" read size: "+lengthAfterStart+" full size: "+sample.size+")");
++                if (lengthAfterStart === 0) return null;
+ 
+-				DataStream.memcpy(sample.data.buffer, sample.alreadyRead,
+-				                  buffer, sample.offset+sample.alreadyRead - buffer.fileStart, lengthAfterStart);
+-				sample.alreadyRead += lengthAfterStart;
++                Log.debug("ISOFile", "Getting sample #" + sampleNum + " partial data (alreadyRead: " + sample.alreadyRead + " offset: " +
++                    (sample.offset + sample.alreadyRead - buffer.fileStart) + " read size: " + lengthAfterStart + " full size: " + sample.size + ")");
+ 
+-				/* update the number of bytes used in this buffer and check if it needs to be removed */
+-				buffer.usedBytes += lengthAfterStart;
+-				this.stream.logBufferLevel();
++                DataStream.memcpy(sample.data.buffer, sample.alreadyRead,
++                    buffer, sample.offset + sample.alreadyRead - buffer.fileStart, lengthAfterStart);
++                sample.alreadyRead += lengthAfterStart;
+ 
+-				/* keep looking in the next buffer */
+-			}
+-		} else {
+-			return null;
+-		}
+-	}
++                /* update the number of bytes used in this buffer and check if it needs to be removed */
++                buffer.usedBytes += lengthAfterStart;
++                this.stream.logBufferLevel();
++
++                /* keep looking in the next buffer */
++            }
++        } else {
++            return null;
++        }
++    }
++}
++
++ISOFile.prototype.getSampleList = function (moof, trexList) {
++    var i, j, k;
++    var default_sample_description_index, default_sample_duration, default_sample_size, default_sample_flags;
++    var last_run_position;
++    var moof, traf, trak, trex;
++    var sample;
++    var sample_flags;
++
++    let results = [];
++    if (moof.type == "moof") {
++        for (i = 0; i < moof.trafs.length; i++) {
++            traf = moof.trafs[i];
++            trak = {
++                track_id: traf.tfhd.track_id,
++                samples: [],
++                samples_size: 0,
++                samples_duration: 0
++            };
++            results.push(trak);
++            trex = trexList.find((t)=>{
++                return t.track_id == traf.tfhd.track_id
++            });
++            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_DESC) {
++                default_sample_description_index = traf.tfhd.default_sample_description_index;
++            } else {
++                default_sample_description_index = (trex ? trex.default_sample_description_index : 1);
++            }
++            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_DUR) {
++                default_sample_duration = traf.tfhd.default_sample_duration;
++            } else {
++                default_sample_duration = (trex ? trex.default_sample_duration : 0);
++            }
++            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_SIZE) {
++                default_sample_size = traf.tfhd.default_sample_size;
++            } else {
++                default_sample_size = (trex ? trex.default_sample_size : 0);
++            }
++            if (traf.tfhd.flags & BoxParser.TFHD_FLAG_SAMPLE_FLAGS) {
++                default_sample_flags = traf.tfhd.default_sample_flags;
++            } else {
++                default_sample_flags = (trex ? trex.default_sample_flags : 0);
++            }
++            traf.sample_number = 0;
++            for (j = 0; j < traf.truns.length; j++) {
++                var trun = traf.truns[j];
++                for (k = 0; k < trun.sample_count; k++) {
++                    sample = {};
++                    sample.moof_number = this.lastMoofIndex;
++                    sample.number_in_traf = traf.sample_number;
++                    traf.sample_number++;
++                    sample.number = trak.samples.length;
++                    traf.first_sample_index = trak.samples.length;
++                    trak.samples.push(sample);
++                    sample.description_index = default_sample_description_index - 1;
++                    sample.size = default_sample_size;
++                    if (trun.flags & BoxParser.TRUN_FLAGS_SIZE) {
++                        sample.size = trun.sample_size[k];
++                    }
++                    trak.samples_size += sample.size;
++                    sample.duration = default_sample_duration;
++                    if (trun.flags & BoxParser.TRUN_FLAGS_DURATION) {
++                        sample.duration = trun.sample_duration[k];
++                    }
++                    trak.samples_duration += sample.duration;
++                    if (trak.first_traf_merged || k > 0) {
++                        sample.dts = trak.samples[trak.samples.length - 2].dts + trak.samples[trak.samples.length - 2].duration;
++                    } else {
++                        if (traf.tfdt) {
++                            sample.dts = traf.tfdt.baseMediaDecodeTime;
++                        } else {
++                            sample.dts = 0;
++                        }
++                        trak.first_traf_merged = true;
++                    }
++                    sample.cts = sample.dts;
++                    if (trun.flags & BoxParser.TRUN_FLAGS_CTS_OFFSET) {
++                        sample.cts = sample.dts + trun.sample_composition_time_offset[k];
++                    }
++                    sample_flags = default_sample_flags;
++                    if (trun.flags & BoxParser.TRUN_FLAGS_FLAGS) {
++                        sample_flags = trun.sample_flags[k];
++                    } else if (k === 0 && (trun.flags & BoxParser.TRUN_FLAGS_FIRST_FLAG)) {
++                        sample_flags = trun.first_sample_flags;
++                    }
++                    sample.is_sync = ((sample_flags >> 16 & 0x1) ? false : true);
++                    sample.is_leading = (sample_flags >> 26 & 0x3);
++                    sample.depends_on = (sample_flags >> 24 & 0x3);
++                    sample.is_depended_on = (sample_flags >> 22 & 0x3);
++                    sample.has_redundancy = (sample_flags >> 20 & 0x3);
++                    sample.degradation_priority = (sample_flags & 0xFFFF);
++                    //ISOFile.process_sdtp(traf.sdtp, sample, sample.number_in_traf);
++                    var bdop = (traf.tfhd.flags & BoxParser.TFHD_FLAG_BASE_DATA_OFFSET) ? true : false;
++                    var dbim = (traf.tfhd.flags & BoxParser.TFHD_FLAG_DEFAULT_BASE_IS_MOOF) ? true : false;
++                    var dop = (trun.flags & BoxParser.TRUN_FLAGS_DATA_OFFSET) ? true : false;
++                    var bdo = 0;
++                    if (!bdop) {
++                        if (!dbim) {
++                            if (j === 0) { // the first track in the movie fragment
++                                bdo = moof.start; // the position of the first byte of the enclosing Movie Fragment Box
++                            } else {
++                                bdo = last_run_position; // end of the data defined by the preceding *track* (irrespective of the track id) fragment in the moof
++                            }
++                        } else {
++                            bdo = moof.start;
++                        }
++                    } else {
++                        bdo = traf.tfhd.base_data_offset;
++                    }
++                    if (j === 0 && k === 0) {
++                        if (dop) {
++                            sample.offset = bdo + trun.data_offset; // If the data-offset is present, it is relative to the base-data-offset established in the track fragment header
++                        } else {
++                            sample.offset = bdo; // the data for this run starts the base-data-offset defined by the track fragment header
++                        }
++                    } else {
++                        sample.offset = last_run_position; // this run starts immediately after the data of the previous run
++                    }
++                    last_run_position = sample.offset + sample.size;
++                }
++            }
++            if (traf.subs) {
++                trak.has_fragment_subsamples = true;
++                var sample_index = traf.first_sample_index;
++                for (j = 0; j < traf.subs.entries.length; j++) {
++                    sample_index += traf.subs.entries[j].sample_delta;
++                    sample = trak.samples[sample_index - 1];
++                    sample.subsamples = traf.subs.entries[j].subsamples;
++                }
++            }
++        }
++    }
++    return results;
+ }
+ 
+ /* Release the memory used to store the data of the sample */
+@@ -8191,110 +8331,108 @@ ISOFile.prototype.getTrackById = function(id) {
+ /* size of the buffers allocated for samples */
+ ISOFile.prototype.itemsDataSize = 0;
+ 
+-ISOFile.prototype.flattenItemInfo = function() {	
+-	var items = this.items;
+-	var entity_groups = this.entity_groups;
+-	var i, j;
+-	var item;
+-	var meta = this.meta;
+-	if (meta === null || meta === undefined) return;
+-	if (meta.hdlr === undefined) return;
+-	if (meta.iinf === undefined) return;
+-	for (i = 0; i < meta.iinf.item_infos.length; i++) {
+-		item = {};
+-		item.id = meta.iinf.item_infos[i].item_ID;
+-		items[item.id] = item;
+-		item.ref_to = [];
+-		item.name = meta.iinf.item_infos[i].item_name;
+-		if (meta.iinf.item_infos[i].protection_index > 0) {
+-			item.protection = meta.ipro.protections[meta.iinf.item_infos[i].protection_index-1];
+-		}
+-		if (meta.iinf.item_infos[i].item_type) {
+-			item.type = meta.iinf.item_infos[i].item_type;
+-		} else {
+-			item.type = "mime";
+-		}
+-		item.content_type = meta.iinf.item_infos[i].content_type;
+-		item.content_encoding = meta.iinf.item_infos[i].content_encoding;
+-	}
+-	if (meta.grpl) {
+-		for (i = 0; i < meta.grpl.boxes.length; i++) {
+-			entity_group = {};
+-			entity_group.id = meta.grpl.boxes[i].group_id;
+-			entity_group.entity_ids = meta.grpl.boxes[i].entity_ids;
+-			entity_group.type = meta.grpl.boxes[i].type;
+-			entity_groups[entity_group.id] = entity_group;
+-		}
+-	}
+-	if (meta.iloc) {
+-		for(i = 0; i < meta.iloc.items.length; i++) {
+-			var offset;
+-			var itemloc = meta.iloc.items[i];
+-			item = items[itemloc.item_ID];
+-			if (itemloc.data_reference_index !== 0) {
+-				Log.warn("Item storage with reference to other files: not supported");
+-				item.source = meta.dinf.boxes[itemloc.data_reference_index-1];
+-			}
+-			switch(itemloc.construction_method) {
+-				case 0: // offset into the file referenced by the data reference index
+-				break;
+-				case 1: // offset into the idat box of this meta box
+-				break;
+-				case 2: // offset into another item
+-				Log.warn("Item storage with construction_method : not supported");
+-				break;
+-			}
+-			item.extents = [];
+-			item.size = 0;
+-			for (j = 0; j < itemloc.extents.length; j++) {
+-				item.extents[j] = {};
+-				item.extents[j].offset = itemloc.extents[j].extent_offset + itemloc.base_offset;
+-				if (itemloc.construction_method == 1) {
+-					item.extents[j].offset += meta.idat.start + meta.idat.hdr_size;
+-				}
+-				item.extents[j].length = itemloc.extents[j].extent_length;
+-				item.extents[j].alreadyRead = 0;
+-				item.size += item.extents[j].length;
+-			}
+-		}
+-	}
+-	if (meta.pitm) {
+-		items[meta.pitm.item_id].primary = true;
+-	}
+-	if (meta.iref) {
+-		for (i=0; i <meta.iref.references.length; i++) {
+-			var ref = meta.iref.references[i];
+-			for (j=0; j<ref.references.length; j++) {
+-				items[ref.from_item_ID].ref_to.push({type: ref.type, id: ref.references[j]});
+-			}
+-		}
+-	}
+-	if (meta.iprp) {
+-		for (var k = 0; k < meta.iprp.ipmas.length; k++) {
+-			var ipma = meta.iprp.ipmas[k];
+-			for (i = 0; i < ipma.associations.length; i++) {
+-				var association = ipma.associations[i];
+-				item = items[association.id];
+-				if (!item) {
+-					item = entity_groups[association.id];
+-				}
+-				if (item) {
+-					if (item.properties === undefined) {
+-						item.properties = {};
+-						item.properties.boxes = [];
+-					}
+-					for (j = 0; j < association.props.length; j++) {
+-						var propEntry = association.props[j];
+-						if (propEntry.property_index > 0 && propEntry.property_index-1 < meta.iprp.ipco.boxes.length) {
+-							var propbox = meta.iprp.ipco.boxes[propEntry.property_index-1];
+-							item.properties[propbox.type] = propbox;
+-							item.properties.boxes.push(propbox);
+-						}
+-					}
+-				}
+-			}
+-		}
+-	}
++ISOFile.prototype.flattenItemInfo = function () {
++    var items = this.items;
++    var entity_groups = this.entity_groups;
++    var i, j;
++    var item;
++    var meta = this.meta;
++    if (meta === null || meta === undefined) return;
++    if (meta.hdlr === undefined) return;
++    if (meta.iinf === undefined) return;
++    for (i = 0; i < meta.iinf.item_infos.length; i++) {
++        item = {};
++        item.id = meta.iinf.item_infos[i].item_ID;
++        items[item.id] = item;
++        item.ref_to = [];
++        item.name = meta.iinf.item_infos[i].item_name;
++        if (meta.iinf.item_infos[i].protection_index > 0) {
++            item.protection = meta.ipro.protections[meta.iinf.item_infos[i].protection_index - 1];
++        }
++        if (meta.iinf.item_infos[i].item_type) {
++            item.type = meta.iinf.item_infos[i].item_type;
++        } else {
++            item.type = "mime";
++        }
++        item.content_type = meta.iinf.item_infos[i].content_type;
++        item.content_encoding = meta.iinf.item_infos[i].content_encoding;
++    }
++    if (meta.grpl) {
++        for (i = 0; i < meta.grpl.boxes.length; i++) {
++            entity_group = {};
++            entity_group.id = meta.grpl.boxes[i].group_id;
++            entity_group.entity_ids = meta.grpl.boxes[i].entity_ids;
++            entity_group.type = meta.grpl.boxes[i].type;
++            entity_groups[entity_group.id] = entity_group;
++        }
++    }
++    if (meta.iloc) {
++        for (i = 0; i < meta.iloc.items.length; i++) {
++            var offset;
++            var itemloc = meta.iloc.items[i];
++            item = items[itemloc.item_ID];
++            if (itemloc.data_reference_index !== 0) {
++                Log.warn("Item storage with reference to other files: not supported");
++                item.source = meta.dinf.boxes[itemloc.data_reference_index - 1];
++            }
++            switch (itemloc.construction_method) {
++                case 0: // offset into the file referenced by the data reference index
++                    break;
++                case 1: // offset into the idat box of this meta box
++                    Log.warn("Item storage with construction_method : not supported");
++                    break;
++                case 2: // offset into another item
++                    Log.warn("Item storage with construction_method : not supported");
++                    break;
++            }
++            item.extents = [];
++            item.size = 0;
++            for (j = 0; j < itemloc.extents.length; j++) {
++                item.extents[j] = {};
++                item.extents[j].offset = itemloc.extents[j].extent_offset + itemloc.base_offset;
++                item.extents[j].length = itemloc.extents[j].extent_length;
++                item.extents[j].alreadyRead = 0;
++                item.size += item.extents[j].length;
++            }
++        }
++    }
++    if (meta.pitm) {
++        items[meta.pitm.item_id].primary = true;
++    }
++    if (meta.iref) {
++        for (i = 0; i < meta.iref.references.length; i++) {
++            var ref = meta.iref.references[i];
++            for (j = 0; j < ref.references.length; j++) {
++                items[ref.from_item_ID].ref_to.push({ type: ref.type, id: ref.references[j] });
++            }
++        }
++    }
++    if (meta.iprp) {
++        for (var k = 0; k < meta.iprp.ipmas.length; k++) {
++            var ipma = meta.iprp.ipmas[k];
++            for (i = 0; i < ipma.associations.length; i++) {
++                var association = ipma.associations[i];
++                item = items[association.id];
++                if (!item) {
++                    item = entity_groups[association.id];
++                }
++                if (item) {
++                    if (item.properties === undefined) {
++                        item.properties = {};
++                        item.properties.boxes = [];
++                    }
++                    for (j = 0; j < association.props.length; j++) {
++                        var propEntry = association.props[j];
++                        if (propEntry.property_index > 0 && propEntry.property_index - 1 < meta.iprp.ipco.boxes.length) {
++                            var propbox = meta.iprp.ipco.boxes[propEntry.property_index - 1];
++                            item.properties[propbox.type] = propbox;
++                            item.properties.boxes.push(propbox);
++                        }
++                    }
++                }
++            }
++        }
++    }
+ }
+ 
+ ISOFile.prototype.getItem = function(item_id) {	

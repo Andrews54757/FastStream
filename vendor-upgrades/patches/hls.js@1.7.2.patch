@@ -1,0 +1,62 @@
+diff --git a/dist/hls.js b/dist/hls.js
+index 0a2a6b39b29fd9116ada21929336ac34886b7d2a..b33748027b5478dc1b2031f62183718d7f71573a 100644
+--- a/dist/hls.js
++++ b/dist/hls.js	
+@@ -17941,6 +17941,7 @@
+         hasAudio: false,
+         hasVideo: true,
+         nb: outputSamples.length,
++        outputSamples: outputSamples,
+         dropped: track.dropped
+       };
+       // For troubleshooting duplicates of https://github.com/video-dev/hls.js/issues/6374
+@@ -18177,7 +18178,8 @@
+         type: type,
+         hasAudio: true,
+         hasVideo: false,
+-        nb: nbSamples
++        nb: nbSamples,
++        outputSamples: outputSamples
+       };
+       this.isAudioContiguous = true;
+       return audioData;
+diff --git a/dist/hls.mjs b/dist/hls.mjs
+index 95bfc42a2e02465e08dd36e9826e5f00e6f7ead7..20eb1ff3b605b17e7b1c7ffa84c58bc0e7e57d0e 100644
+--- a/dist/hls.mjs
++++ b/dist/hls.mjs	
+@@ -11180,6 +11180,10 @@ class BaseStreamController extends TaskLoop {
+         // Buffer must be ahead of first part + duration of parts after last segment
+         // and playback must be at or past segment adjacent to part list
+         const firstPart = details.partList[0];
++        // Loading of VTT subtitle parts is not implemented in subtitle-stream-controller (#7460)
++        if (firstPart.fragment.type === PlaylistLevelType.SUBTITLE) {
++          return false;
++        }
+         const safePartStart = firstPart.end + (((_details$fragmentHint = details.fragmentHint) == null ? void 0 : _details$fragmentHint.duration) || 0);
+         if (bufferEnd >= safePartStart) {
+           const playhead = this.playhead;
+@@ -17369,6 +17373,7 @@ class MP4Remuxer extends Logger {
+       hasAudio: false,
+       hasVideo: true,
+       nb: outputSamples.length,
++      outputSamples,
+       dropped: track.dropped
+     };
+     // For troubleshooting duplicates of https://github.com/video-dev/hls.js/issues/6374
+@@ -17603,7 +17608,8 @@ class MP4Remuxer extends Logger {
+       type,
+       hasAudio: true,
+       hasVideo: false,
+-      nb: nbSamples
++      nb: nbSamples,
++      outputSamples
+     };
+     this.isAudioContiguous = true;
+     return audioData;
+@@ -41133,5 +41139,5 @@ class Hls {
+ }
+ Hls.defaultConfig = void 0;
+ 
+-export { AbrController, AttrList, AudioStreamController, AudioTrackController, BaseLoader, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, Cues, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, FPSController, FetchLoader, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, LoaderContextType, M3U8Parser, MetadataSchema, NetworkErrorAction, Part, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TimelineController, XhrLoader, Hls as default, fetchSupported, getMediaSource, isMSESupported, isSupported, requestMediaKeySystemAccess };
++export { AACDemuxer, AbrController, AttrList, AudioStreamController, AudioTrackController, BaseLoader, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, Cues, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, FPSController, FetchLoader, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, LoaderContextType, M3U8Parser, MP3Demuxer, MP4Demuxer, MP4Remuxer, MetadataSchema, NetworkErrorAction, Part, PassThroughRemuxer, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TSDemuxer, TimelineController, XhrLoader, Hls as default, fetchSupported, getMediaSource, isMSESupported, isSupported, requestMediaKeySystemAccess };
+ //# sourceMappingURL=hls.mjs.map

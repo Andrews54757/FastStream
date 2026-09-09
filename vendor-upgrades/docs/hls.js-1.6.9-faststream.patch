@@ -1,0 +1,625 @@
+--- /dev/fd/63	2026-09-02 21:03:55.000000000 +0200
++++ /dev/fd/62	2026-09-02 21:03:55.000000000 +0200
+@@ -1,3 +1,7 @@
++/* eslint-disable */
++// hls.js
++// https://github.com/video-dev/hls.js
++
+ // https://caniuse.com/mdn-javascript_builtins_number_isfinite
+ const isFiniteNumber = Number.isFinite || function (value) {
+   return typeof value === 'number' && isFinite(value);
+@@ -523,7 +527,7 @@
+     // Some browsers don't allow to use bind on console object anyway
+     // fallback to default if needed
+     try {
+-      newLogger.log(`Debug logs enabled for "${context}" in hls.js version ${"1.6.9"}`);
++      newLogger.log(`Debug logs enabled for "${context}" in hls.js version ${undefined}`);
+     } catch (e) {
+       /* log fn threw an exception. All logger methods are no-ops. */
+       return createLogger();
+@@ -3301,8 +3305,8 @@
+ }
+ 
+ class AbrController extends Logger {
+-  constructor(_hls) {
+-    super('abr', _hls.logger);
++  constructor(hls) {
++    super('abr', hls.logger);
+     this.hls = void 0;
+     this.lastLevelLoadSec = 0;
+     this.lastLoadedFragLevel = -1;
+@@ -3323,160 +3327,212 @@
+         quickly enough to prevent underbuffering
+       */
+     this._abandonRulesCheck = levelLoaded => {
+-      var _ref;
+-      const {
+-        fragCurrent: frag,
+-        partCurrent: part,
+-        hls
+-      } = this;
+-      const {
+-        autoLevelEnabled,
+-        media
+-      } = hls;
+-      if (!frag || !media) {
+-        return;
+-      }
+-      const now = performance.now();
+-      const stats = part ? part.stats : frag.stats;
+-      const duration = part ? part.duration : frag.duration;
+-      const timeLoading = now - stats.loading.start;
+-      const minAutoLevel = hls.minAutoLevel;
+-      const loadingFragForLevel = frag.level;
+-      const currentAutoLevel = this._nextAutoLevel;
+-      // If frag loading is aborted, complete, or from lowest level, stop timer and return
+-      if (stats.aborted || stats.loaded && stats.loaded === stats.total || loadingFragForLevel <= minAutoLevel) {
+-        this.clearTimer();
+-        // reset forced auto level value so that next level will be selected
+-        this._nextAutoLevel = -1;
+-        return;
+-      }
+-
+-      // This check only runs if we're in ABR mode
+-      if (!autoLevelEnabled) {
+-        return;
+-      }
+-
+-      // Must be loading/loaded a new level or be in a playing state
+-      const fragBlockingSwitch = currentAutoLevel > -1 && currentAutoLevel !== loadingFragForLevel;
+-      const levelChange = !!levelLoaded || fragBlockingSwitch;
+-      if (!levelChange && (media.paused || !media.playbackRate || !media.readyState)) {
+-        return;
+-      }
+-      const bufferInfo = hls.mainForwardBufferInfo;
+-      if (!levelChange && bufferInfo === null) {
+-        return;
+-      }
+-      const ttfbEstimate = this.bwEstimator.getEstimateTTFB();
+-      const playbackRate = Math.abs(media.playbackRate);
+-      // To maintain stable adaptive playback, only begin monitoring frag loading after half or more of its playback duration has passed
+-      if (timeLoading <= Math.max(ttfbEstimate, 1000 * (duration / (playbackRate * 2)))) {
+-        return;
+-      }
+-
++      // const { fragCurrent: frag, partCurrent: part, hls } = this;
++      // const { autoLevelEnabled, media } = hls;
++      // if (!frag || !media) {
++      //   return;
++      // }
++      // const now = performance.now();
++      // const stats: LoaderStats = part ? part.stats : frag.stats;
++      // const duration = part ? part.duration : frag.duration;
++      // const timeLoading = now - stats.loading.start;
++      // const minAutoLevel = hls.minAutoLevel;
++      // const loadingFragForLevel = frag.level;
++      // const currentAutoLevel = this._nextAutoLevel;
++      // // If frag loading is aborted, complete, or from lowest level, stop timer and return
++      // if (
++      //   stats.aborted ||
++      //   (stats.loaded && stats.loaded === stats.total) ||
++      //   loadingFragForLevel <= minAutoLevel
++      // ) {
++      //   this.clearTimer();
++      //   // reset forced auto level value so that next level will be selected
++      //   this._nextAutoLevel = -1;
++      //   return;
++      // }
++      // // This check only runs if we're in ABR mode
++      // if (!autoLevelEnabled) {
++      //   return;
++      // }
++      // // Must be loading/loaded a new level or be in a playing state
++      // const fragBlockingSwitch =
++      //   currentAutoLevel > -1 && currentAutoLevel !== loadingFragForLevel;
++      // const levelChange = !!levelLoaded || fragBlockingSwitch;
++      // if (
++      //   !levelChange &&
++      //   (media.paused || !media.playbackRate || !media.readyState)
++      // ) {
++      //   return;
++      // }
++      // const bufferInfo = hls.mainForwardBufferInfo;
++      // if (!levelChange && bufferInfo === null) {
++      //   return;
++      // }
++      // const ttfbEstimate = this.bwEstimator.getEstimateTTFB();
++      // const playbackRate = Math.abs(media.playbackRate);
++      // // To maintain stable adaptive playback, only begin monitoring frag loading after half or more of its playback duration has passed
++      // if (
++      //   timeLoading <=
++      //   Math.max(ttfbEstimate, 1000 * (duration / (playbackRate * 2)))
++      // ) {
++      //   return;
++      // }
+       // bufferStarvationDelay is an estimate of the amount time (in seconds) it will take to exhaust the buffer
+-      const bufferStarvationDelay = bufferInfo ? bufferInfo.len / playbackRate : 0;
+-      const ttfb = stats.loading.first ? stats.loading.first - stats.loading.start : -1;
+-      const loadedFirstByte = stats.loaded && ttfb > -1;
+-      const bwEstimate = this.getBwEstimate();
+-      const levels = hls.levels;
+-      const level = levels[loadingFragForLevel];
+-      const expectedLen = Math.max(stats.loaded, Math.round(duration * (frag.bitrate || level.averageBitrate) / 8));
+-      let timeStreaming = loadedFirstByte ? timeLoading - ttfb : timeLoading;
+-      if (timeStreaming < 1 && loadedFirstByte) {
+-        timeStreaming = Math.min(timeLoading, stats.loaded * 8 / bwEstimate);
+-      }
+-      const loadRate = loadedFirstByte ? stats.loaded * 1000 / timeStreaming : 0;
+-      // fragLoadDelay is an estimate of the time (in seconds) it will take to buffer the remainder of the fragment
+-      const ttfbSeconds = ttfbEstimate / 1000;
+-      const fragLoadedDelay = loadRate ? (expectedLen - stats.loaded) / loadRate : expectedLen * 8 / bwEstimate + ttfbSeconds;
+-      // Only downswitch if the time to finish loading the current fragment is greater than the amount of buffer left
+-      if (fragLoadedDelay <= bufferStarvationDelay) {
+-        return;
+-      }
+-      const bwe = loadRate ? loadRate * 8 : bwEstimate;
+-      const live = ((_ref = (levelLoaded == null ? void 0 : levelLoaded.details) || this.hls.latestLevelDetails) == null ? void 0 : _ref.live) === true;
+-      const abrBandWidthUpFactor = this.hls.config.abrBandWidthUpFactor;
+-      let fragLevelNextLoadedDelay = Number.POSITIVE_INFINITY;
+-      let nextLoadLevel;
+-      // Iterate through lower level and try to find the largest one that avoids rebuffering
+-      for (nextLoadLevel = loadingFragForLevel - 1; nextLoadLevel > minAutoLevel; nextLoadLevel--) {
+-        // compute time to load next fragment at lower level
+-        // 8 = bits per byte (bps/Bps)
+-        const levelNextBitrate = levels[nextLoadLevel].maxBitrate;
+-        const requiresLevelLoad = !levels[nextLoadLevel].details || live;
+-        fragLevelNextLoadedDelay = this.getTimeToLoadFrag(ttfbSeconds, bwe, duration * levelNextBitrate, requiresLevelLoad);
+-        if (fragLevelNextLoadedDelay < Math.min(bufferStarvationDelay, duration + ttfbSeconds)) {
+-          break;
+-        }
+-      }
+-      // Only emergency switch down if it takes less time to load a new fragment at lowest level instead of continuing
+-      // to load the current one
+-      if (fragLevelNextLoadedDelay >= fragLoadedDelay) {
+-        return;
+-      }
+-
+-      // if estimated load time of new segment is completely unreasonable, ignore and do not emergency switch down
+-      if (fragLevelNextLoadedDelay > duration * 10) {
+-        return;
+-      }
+-      if (loadedFirstByte) {
+-        // If there has been loading progress, sample bandwidth using loading time offset by minimum TTFB time
+-        this.bwEstimator.sample(timeLoading - Math.min(ttfbEstimate, ttfb), stats.loaded);
+-      } else {
+-        // If there has been no loading progress, sample TTFB
+-        this.bwEstimator.sampleTTFB(timeLoading);
+-      }
+-      const nextLoadLevelBitrate = levels[nextLoadLevel].maxBitrate;
+-      if (this.getBwEstimate() * abrBandWidthUpFactor > nextLoadLevelBitrate) {
+-        this.resetEstimator(nextLoadLevelBitrate);
+-      }
+-      const bestSwitchLevel = this.findBestLevel(nextLoadLevelBitrate, minAutoLevel, nextLoadLevel, 0, bufferStarvationDelay, 1, 1);
+-      if (bestSwitchLevel > -1) {
+-        nextLoadLevel = bestSwitchLevel;
+-      }
+-      this.warn(`Fragment ${frag.sn}${part ? ' part ' + part.index : ''} of level ${loadingFragForLevel} is loading too slowly;
+-      Fragment duration: ${frag.duration.toFixed(3)}
+-      Time to underbuffer: ${bufferStarvationDelay.toFixed(3)} s
+-      Estimated load time for current fragment: ${fragLoadedDelay.toFixed(3)} s
+-      Estimated load time for down switch fragment: ${fragLevelNextLoadedDelay.toFixed(3)} s
+-      TTFB estimate: ${ttfb | 0} ms
+-      Current BW estimate: ${isFiniteNumber(bwEstimate) ? bwEstimate | 0 : 'Unknown'} bps
+-      New BW estimate: ${this.getBwEstimate() | 0} bps
+-      Switching to level ${nextLoadLevel} @ ${nextLoadLevelBitrate | 0} bps`);
+-      hls.nextLoadLevel = hls.nextAutoLevel = nextLoadLevel;
+-      this.clearTimer();
+-      const abortAndSwitch = () => {
+-        // Are nextLoadLevel details available or is stream-controller still in "WAITING_LEVEL" state?
+-        this.clearTimer();
+-        if (this.fragCurrent === frag && this.hls.loadLevel === nextLoadLevel && nextLoadLevel > 0) {
+-          const bufferStarvationDelay = this.getStarvationDelay();
+-          this.warn(`Aborting inflight request ${nextLoadLevel > 0 ? 'and switching down' : ''}
+-      Fragment duration: ${frag.duration.toFixed(3)} s
+-      Time to underbuffer: ${bufferStarvationDelay.toFixed(3)} s`);
+-          frag.abortRequests();
+-          this.fragCurrent = this.partCurrent = null;
+-          if (nextLoadLevel > minAutoLevel) {
+-            let lowestSwitchLevel = this.findBestLevel(this.hls.levels[minAutoLevel].bitrate, minAutoLevel, nextLoadLevel, 0, bufferStarvationDelay, 1, 1);
+-            if (lowestSwitchLevel === -1) {
+-              lowestSwitchLevel = minAutoLevel;
+-            }
+-            this.hls.nextLoadLevel = this.hls.nextAutoLevel = lowestSwitchLevel;
+-            this.resetEstimator(this.hls.levels[lowestSwitchLevel].bitrate);
+-          }
+-        }
+-      };
+-      if (fragBlockingSwitch || fragLoadedDelay > fragLevelNextLoadedDelay * 2) {
+-        abortAndSwitch();
+-      } else {
+-        this.timer = self.setInterval(abortAndSwitch, fragLevelNextLoadedDelay * 1000);
+-      }
+-      hls.trigger(Events.FRAG_LOAD_EMERGENCY_ABORTED, {
+-        frag,
+-        part,
+-        stats
+-      });
++      // const bufferStarvationDelay = bufferInfo
++      //   ? bufferInfo.len / playbackRate
++      //   : 0;
++      // const ttfb = stats.loading.first
++      //   ? stats.loading.first - stats.loading.start
++      //   : -1;
++      // const loadedFirstByte = stats.loaded && ttfb > -1;
++      // const bwEstimate: number = this.getBwEstimate();
++      // const levels = hls.levels;
++      // const level = levels[loadingFragForLevel];
++      // const expectedLen = Math.max(
++      //   stats.loaded,
++      //   Math.round((duration * (frag.bitrate || level.averageBitrate)) / 8),
++      // );
++      // let timeStreaming = loadedFirstByte ? timeLoading - ttfb : timeLoading;
++      // if (timeStreaming < 1 && loadedFirstByte) {
++      //   timeStreaming = Math.min(timeLoading, (stats.loaded * 8) / bwEstimate);
++      // }
++      // const loadRate = loadedFirstByte
++      //   ? (stats.loaded * 1000) / timeStreaming
++      //   : 0;
++      // // fragLoadDelay is an estimate of the time (in seconds) it will take to buffer the remainder of the fragment
++      // const ttfbSeconds = ttfbEstimate / 1000;
++      // const fragLoadedDelay = loadRate
++      //   ? (expectedLen - stats.loaded) / loadRate
++      //   : (expectedLen * 8) / bwEstimate + ttfbSeconds;
++      // // Only downswitch if the time to finish loading the current fragment is greater than the amount of buffer left
++      // if (fragLoadedDelay <= bufferStarvationDelay) {
++      //   return;
++      // }
++      // const bwe = loadRate ? loadRate * 8 : bwEstimate;
++      // const live =
++      //   (levelLoaded?.details || this.hls.latestLevelDetails)?.live === true;
++      // const abrBandWidthUpFactor = this.hls.config.abrBandWidthUpFactor;
++      // let fragLevelNextLoadedDelay: number = Number.POSITIVE_INFINITY;
++      // let nextLoadLevel: number;
++      // // Iterate through lower level and try to find the largest one that avoids rebuffering
++      // for (
++      //   nextLoadLevel = loadingFragForLevel - 1;
++      //   nextLoadLevel > minAutoLevel;
++      //   nextLoadLevel--
++      // ) {
++      //   // compute time to load next fragment at lower level
++      //   // 8 = bits per byte (bps/Bps)
++      //   const levelNextBitrate = levels[nextLoadLevel].maxBitrate;
++      //   const requiresLevelLoad = !levels[nextLoadLevel].details || live;
++      //   fragLevelNextLoadedDelay = this.getTimeToLoadFrag(
++      //     ttfbSeconds,
++      //     bwe,
++      //     duration * levelNextBitrate,
++      //     requiresLevelLoad,
++      //   );
++      //   if (
++      //     fragLevelNextLoadedDelay <
++      //     Math.min(bufferStarvationDelay, duration + ttfbSeconds)
++      //   ) {
++      //     break;
++      //   }
++      // }
++      // // Only emergency switch down if it takes less time to load a new fragment at lowest level instead of continuing
++      // // to load the current one
++      // if (fragLevelNextLoadedDelay >= fragLoadedDelay) {
++      //   return;
++      // }
++      // // if estimated load time of new segment is completely unreasonable, ignore and do not emergency switch down
++      // if (fragLevelNextLoadedDelay > duration * 10) {
++      //   return;
++      // }
++      // if (loadedFirstByte) {
++      //   // If there has been loading progress, sample bandwidth using loading time offset by minimum TTFB time
++      //   this.bwEstimator.sample(
++      //     timeLoading - Math.min(ttfbEstimate, ttfb),
++      //     stats.loaded,
++      //   );
++      // } else {
++      //   // If there has been no loading progress, sample TTFB
++      //   this.bwEstimator.sampleTTFB(timeLoading);
++      // }
++      // const nextLoadLevelBitrate = levels[nextLoadLevel].maxBitrate;
++      // if (this.getBwEstimate() * abrBandWidthUpFactor > nextLoadLevelBitrate) {
++      //   this.resetEstimator(nextLoadLevelBitrate);
++      // }
++      // const bestSwitchLevel = this.findBestLevel(
++      //   nextLoadLevelBitrate,
++      //   minAutoLevel,
++      //   nextLoadLevel,
++      //   0,
++      //   bufferStarvationDelay,
++      //   1,
++      //   1,
++      // );
++      // if (bestSwitchLevel > -1) {
++      //   nextLoadLevel = bestSwitchLevel;
++      // }
++      // this.warn(`Fragment ${frag.sn}${
++      //   part ? ' part ' + part.index : ''
++      // } of level ${loadingFragForLevel} is loading too slowly;
++      //   Fragment duration: ${frag.duration.toFixed(3)}
++      //   Time to underbuffer: ${bufferStarvationDelay.toFixed(3)} s
++      //   Estimated load time for current fragment: ${fragLoadedDelay.toFixed(3)} s
++      //   Estimated load time for down switch fragment: ${fragLevelNextLoadedDelay.toFixed(
++      //     3,
++      //   )} s
++      //   TTFB estimate: ${ttfb | 0} ms
++      //   Current BW estimate: ${
++      //     Number.isFinite(bwEstimate) ? bwEstimate | 0 : 'Unknown'
++      //   } bps
++      //   New BW estimate: ${this.getBwEstimate() | 0} bps
++      //   Switching to level ${nextLoadLevel} @ ${nextLoadLevelBitrate | 0} bps`);
++      // hls.nextLoadLevel = hls.nextAutoLevel = nextLoadLevel;
++      // this.clearTimer();
++      // const abortAndSwitch = () => {
++      //   // Are nextLoadLevel details available or is stream-controller still in "WAITING_LEVEL" state?
++      //   this.clearTimer();
++      //   if (
++      //     this.fragCurrent === frag &&
++      //     this.hls.loadLevel === nextLoadLevel &&
++      //     nextLoadLevel > 0
++      //   ) {
++      //     const bufferStarvationDelay = this.getStarvationDelay();
++      //     this
++      //       .warn(`Aborting inflight request ${nextLoadLevel > 0 ? 'and switching down' : ''}
++      //   Fragment duration: ${frag.duration.toFixed(3)} s
++      //   Time to underbuffer: ${bufferStarvationDelay.toFixed(3)} s`);
++      //     frag.abortRequests();
++      //     this.fragCurrent = this.partCurrent = null;
++      //     if (nextLoadLevel > minAutoLevel) {
++      //       let lowestSwitchLevel = this.findBestLevel(
++      //         this.hls.levels[minAutoLevel].bitrate,
++      //         minAutoLevel,
++      //         nextLoadLevel,
++      //         0,
++      //         bufferStarvationDelay,
++      //         1,
++      //         1,
++      //       );
++      //       if (lowestSwitchLevel === -1) {
++      //         lowestSwitchLevel = minAutoLevel;
++      //       }
++      //       this.hls.nextLoadLevel = this.hls.nextAutoLevel = lowestSwitchLevel;
++      //       this.resetEstimator(this.hls.levels[lowestSwitchLevel].bitrate);
++      //     }
++      //   }
++      // };
++      // if (fragBlockingSwitch || fragLoadedDelay > fragLevelNextLoadedDelay * 2) {
++      //   abortAndSwitch();
++      // } else {
++      //   this.timer = self.setInterval(
++      //     abortAndSwitch,
++      //     fragLevelNextLoadedDelay * 1000,
++      //   );
++      // }
++      // hls.trigger(Events.FRAG_LOAD_EMERGENCY_ABORTED, { frag, part, stats });
+     };
+-    this.hls = _hls;
++    this.hls = hls;
+     this.bwEstimator = this.initEstimator();
+     this.registerListeners();
+   }
+@@ -7588,9 +7644,16 @@
+ }
+ function mapDateRanges(programDateTimes, details) {
+   // Make sure DateRanges are mapped to a ProgramDateTime tag that applies a date to a segment that overlaps with its start date
+-  const programDateTimeCount = programDateTimes.length;
++  let programDateTimeCount = programDateTimes.length;
+   if (!programDateTimeCount) {
+-    return;
++    if (details.hasProgramDateTime) {
++      const lastFragment = details.fragments[details.fragments.length - 1];
++      programDateTimes.push(lastFragment);
++      programDateTimeCount++;
++    } else {
++      // no segments with EXT-X-PROGRAM-DATE-TIME references in playlist history
++      return;
++    }
+   }
+   const lastProgramDateTime = programDateTimes[programDateTimeCount - 1];
+   const playlistEnd = details.live ? Infinity : details.totalduration;
+@@ -7982,20 +8045,21 @@
+   }
+   const mergeIds = Object.keys(dateRanges);
+   const mergeCount = mergeIds.length;
+-  if (mergeCount) {
+-    Object.keys(deltaDateRanges).forEach(id => {
+-      const mergedDateRange = dateRanges[id];
+-      const dateRange = new DateRange(deltaDateRanges[id].attr, mergedDateRange);
+-      if (dateRange.isValid) {
+-        dateRanges[id] = dateRange;
+-        if (!mergedDateRange) {
+-          dateRange.tagOrder += mergeCount;
+-        }
+-      } else {
+-        logger.warn(`Ignoring invalid Playlist Delta Update DATERANGE tag: "${stringify(deltaDateRanges[id].attr)}"`);
+-      }
+-    });
++  if (!mergeCount) {
++    return deltaDateRanges;
+   }
++  Object.keys(deltaDateRanges).forEach(id => {
++    const mergedDateRange = dateRanges[id];
++    const dateRange = new DateRange(deltaDateRanges[id].attr, mergedDateRange);
++    if (dateRange.isValid) {
++      dateRanges[id] = dateRange;
++      if (!mergedDateRange) {
++        dateRange.tagOrder += mergeCount;
++      }
++    } else {
++      logger.warn(`Ignoring invalid Playlist Delta Update DATERANGE tag: "${stringify(deltaDateRanges[id].attr)}"`);
++    }
++  });
+   return dateRanges;
+ }
+ function mapPartIntersection(oldParts, newParts, intersectionFn) {
+@@ -8028,7 +8092,9 @@
+     }
+     if (oldFrag && newFrag) {
+       intersectionFn(oldFrag, newFrag, i, newFrags);
+-      if (oldFrag.url && oldFrag.url !== newFrag.url) {
++      const uriBefore = oldFrag.relurl;
++      const uriAfter = newFrag.relurl;
++      if (uriBefore && notEqualAfterStrippingQueries(uriBefore, uriAfter)) {
+         newDetails.playlistParsingError = getSequenceError(`media sequence mismatch ${newFrag.sn}:`, oldDetails, newDetails, oldFrag, newFrag);
+         return;
+       } else if (oldFrag.cc !== newFrag.cc) {
+@@ -8144,6 +8210,15 @@
+     });
+   });
+ }
++function notEqualAfterStrippingQueries(uriBefore, uriAfter) {
++  if (uriBefore !== uriAfter && uriAfter) {
++    return stripQuery(uriBefore) !== stripQuery(uriAfter);
++  }
++  return false;
++}
++function stripQuery(uri) {
++  return uri.replace(/\?[^?]*$/, '');
++}
+ 
+ function findFirstFragWithCC(fragments, cc) {
+   for (let i = 0, len = fragments.length; i < len; i++) {
+@@ -8899,7 +8974,7 @@
+     if (this.loadingParts && isMediaFragment(frag)) {
+       const partList = details.partList;
+       if (partList && progressCallback) {
+-        if (targetBufferTime > frag.end && details.fragmentHint) {
++        if (targetBufferTime > details.fragmentEnd && details.fragmentHint) {
+           frag = details.fragmentHint;
+         }
+         const partIndex = this.getNextPart(partList, frag, targetBufferTime);
+@@ -9061,6 +9136,10 @@
+         // Buffer must be ahead of first part + duration of parts after last segment
+         // and playback must be at or past segment adjacent to part list
+         const firstPart = details.partList[0];
++        // Loading of VTT subtitle parts is not implemented in subtitle-stream-controller (#7460)
++        if (firstPart.fragment.type === PlaylistLevelType.SUBTITLE) {
++          return false;
++        }
+         const safePartStart = firstPart.end + (((_details$fragmentHint = details.fragmentHint) == null ? void 0 : _details$fragmentHint.duration) || 0);
+         if (bufferEnd >= safePartStart) {
+           var _this$media;
+@@ -9581,6 +9660,7 @@
+     }
+   }
+   onFragmentOrKeyLoadError(filterType, data) {
++    var _data$response;
+     if (data.chunkMeta && !data.frag) {
+       const context = this.getCurrentContext(data.chunkMeta);
+       if (context) {
+@@ -9612,7 +9692,8 @@
+     const couldRetry = !!errorAction && !!retryConfig;
+     const retry = couldRetry && action === NetworkErrorAction.RetryRequest;
+     const noAlternate = couldRetry && !errorAction.resolved && flags === ErrorActionFlags.MoveAllAlternatesMatchingHost;
+-    if (!retry && noAlternate && isMediaFragment(frag) && !frag.endList) {
++    const httpStatus = ((_data$response = data.response) == null ? void 0 : _data$response.code) || 0;
++    if (!retry && noAlternate && isMediaFragment(frag) && !frag.endList && httpStatus !== 0) {
+       this.resetFragmentErrors(filterType);
+       this.treatAsGap(frag);
+       errorAction.resolved = true;
+@@ -10228,7 +10309,7 @@
+ var eventemitter3Exports = requireEventemitter3();
+ var EventEmitter = /*@__PURE__*/getDefaultExportFromCjs(eventemitter3Exports);
+ 
+-const version = "1.6.9";
++const version = undefined;
+ 
+ // ensure the worker ends up in the bundle
+ // If the worker should not be included this gets aliased to empty.js
+@@ -10416,7 +10497,7 @@
+   return undefined;
+ }
+ 
+-function getAudioConfig(observer, data, offset, manifestCodec) {
++function getAudioConfig(observer, data, offset, manifestCodec, userAgent) {
+   const adtsSamplingRates = [96000, 88200, 64000, 48000, 44100, 32000, 24000, 22050, 16000, 12000, 11025, 8000, 7350];
+   const byte2 = data[offset + 2];
+   const adtsSamplingIndex = byte2 >> 2 & 0xf;
+@@ -10528,7 +10609,7 @@
+   }
+   return false;
+ }
+-function initTrackConfig(track, observer, data, offset, audioCodec) {
++function initTrackConfig(track, observer, data, offset, audioCodec, userAgent) {
+   if (!track.samplerate) {
+     const config = getAudioConfig(observer, data, offset, audioCodec);
+     if (!config) {
+@@ -11337,7 +11418,7 @@
+     return canParse$1(data, offset);
+   }
+   appendFrame(track, data, offset) {
+-    initTrackConfig(track, this.observer, data, offset, track.manifestCodec);
++    initTrackConfig(track, this.observer, data, offset, track.manifestCodec, this.config.userAgent);
+     const frame = appendFrame$2(track, data, offset, this.basePTS, this.frameIndex);
+     if (frame && frame.missing === 0) {
+       return frame;
+@@ -11862,19 +11943,24 @@
+       state = 0;
+       i = 1;
+     }
+-    while (i < len) {
+-      value = array[i++];
++    l1: while (i < len) {
+       // optimization. state 0 and 1 are the predominant case. let's handle them outside of the switch/case
+-      if (!state) {
+-        state = value ? 0 : 1;
++      if (state === 0) {
++        while (array[i++] !== 0) {
++          if (i === len) {
++            break l1;
++          }
++          // noop
++        }
++        state = 1;
+         continue;
+-      }
+-      if (state === 1) {
+-        state = value ? 0 : 2;
++      } else if (state === 1) {
++        state = array[i++] === 0 ? 2 : 0;
+         continue;
+       }
++      value = array[i++];
+       // here we have state either equal to 2 or 3
+-      if (!value) {
++      if (value === 0) {
+         state = 3;
+       } else if (value === 1) {
+         overflow = i - state - 1;
+@@ -13494,7 +13580,7 @@
+         return;
+       }
+     }
+-    initTrackConfig(track, this.observer, data, offset, this.audioCodec);
++    initTrackConfig(track, this.observer, data, offset, this.audioCodec, this.config.userAgent);
+     let pts;
+     if (pes.pts !== undefined) {
+       pts = pes.pts;
+@@ -15168,6 +15254,7 @@
+       hasAudio: false,
+       hasVideo: true,
+       nb: outputSamples.length,
++      outputSamples,
+       dropped: track.dropped
+     };
+     track.samples = [];
+@@ -15390,7 +15477,8 @@
+       type,
+       hasAudio: true,
+       hasVideo: false,
+-      nb: nbSamples
++      nb: nbSamples,
++      outputSamples
+     };
+     this.isAudioContiguous = true;
+     return audioData;
+@@ -30690,6 +30778,7 @@
+  * shallow the properties are cloned, and we don't end up manipulating the default
+  */
+ const hlsDefaultConfig = _objectSpread2(_objectSpread2({
++  userAgent: undefined,
+   autoStartLoad: true,
+   // used by stream-controller
+   startPosition: -1,
+@@ -36073,5 +36162,4 @@
+ }
+ Hls.defaultConfig = void 0;
+ 
+-export { AbrController, AttrList, AudioStreamController, AudioTrackController, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, Cues, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, FPSController, FetchLoader, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, M3U8Parser, MetadataSchema, NetworkErrorAction, Part, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TimelineController, XhrLoader, Hls as default, fetchSupported, getMediaSource, isMSESupported, isSupported, requestMediaKeySystemAccess };
+-//# sourceMappingURL=hls.mjs.map
++export { AACDemuxer, AbrController, AttrList, AudioStreamController, AudioTrackController, AvcVideoParser, BasePlaylistController, BaseSegment, BaseStreamController, BufferController, CMCDController, CapLevelController, ChunkMetadata, ContentSteeringController, Cues, DateRange, EMEController, ErrorActionFlags, ErrorController, ErrorDetails, ErrorTypes, Events, ExpGolomb, FPSController, FetchLoader, Fragment, Hls, HlsSkip, HlsUrlParameters, KeySystemFormats, KeySystems, Level, LevelDetails, LevelKey, LoadStats, M3U8Parser, MP3Demuxer, MP4Demuxer, MP4Remuxer, MetadataSchema, NetworkErrorAction, Part, PassThroughRemuxer, PlaylistLevelType, SubtitleStreamController, SubtitleTrackController, TSDemuxer, TimelineController, XhrLoader, Hls as default, fetchSupported, getMediaSource, isMSESupported, isSupported, requestMediaKeySystemAccess };
