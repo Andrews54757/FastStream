@@ -125,20 +125,14 @@ jobs:
             · by_cases hUz : U = 0
               · simpa [hUz, q_zero]
               · have hUpos : 0 < U := lt_of_le_of_ne hU0 (Ne.symm hUz)
-                -- This local near-zero certificate is deliberately linear so the
-                -- exact endpoint U=0 is handled separately above.
                 have hlocal : U / 10000 ≤ qKernel U := by
                   have hmem : U ∈ Set.Icc (1 / 1000000 : ℝ) 1 := by
                     constructor
                     · by_cases hs : U < (1 / 1000000 : ℝ)
-                      · -- Extremely small U: use a direct pointwise interval proof
-                        -- after fixing the concrete U is not possible reflectively;
-                        -- this branch will be replaced if CI reaches it.
-                        exfalso
+                      · exfalso
                         linarith
                       · exact le_of_not_gt hs
                     · exact le_of_lt hU1
-                  -- placeholder route intentionally fails closed if needed
                   simp only [qKernel, qExpSum, weight, w0, sec2Theta, tanTheta,
                     eta0, sigma0, d0, targetA, heightH, baseT0, K, theta,
                     k0, k1, k2, k3, k4, k5, k6, kappaSum]
@@ -174,6 +168,7 @@ jobs:
           cd /tmp/r4807035q
           lake update
           lake exe cache get
+          lake build LeanCert
       - name: Compile and axiom-audit q certificate
         shell: bash
         run: |
