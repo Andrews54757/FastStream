@@ -1,0 +1,184 @@
+name: Temporary R4807035 q kernel verification
+
+on:
+  push:
+    branches:
+      - tmp-r4807035-q-verify-20260911
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lean 4.33.1
+        shell: bash
+        run: |
+          set -euxo pipefail
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain leanprover/lean4:v4.33.1
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - name: Create isolated verification project
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/r4807035q
+          cd /tmp/r4807035q
+          cat > lean-toolchain <<'EOF'
+          leanprover/lean4:v4.33.1
+          EOF
+          cat > lakefile.toml <<'EOF'
+          name = "R4807035QVerify"
+          version = "0.1.0"
+          defaultTargets = ["R4807035QVerify"]
+
+          [[require]]
+          name = "LeanCert"
+          git = "https://github.com/alerad/leancert.git"
+          rev = "4ea18bb66dfcd7f18f260bc25302400f5a3cafd7"
+
+          [[lean_lib]]
+          name = "R4807035QVerify"
+          roots = ["Q"]
+          EOF
+          cat > Q.lean <<'EOF'
+          import Mathlib
+          import LeanCert.Tactic
+
+          set_option autoImplicit false
+          set_option maxHeartbeats 0
+          set_option maxRecDepth 100000
+
+          namespace R4807035QKernel
+
+          open Set
+
+          def targetA : ℝ := 200000 / 961407
+          def heightH : ℝ := 3000000000000
+          def baseT0 : ℝ := 10000000000
+          def K : ℝ := 16
+          def theta : ℝ := 11348032317439367 / 10000000000000000
+
+          noncomputable def eta0 : ℝ := targetA / Real.log heightH
+          noncomputable def sigma0 : ℝ := 1 - targetA / Real.log (K * heightH + baseT0)
+          noncomputable def d0 : ℝ := 2 * sigma0 - 1
+
+          def k0 : ℝ := 1
+          def k1 : ℝ := -9985467459136599 / 10000000000000000
+          def k2 : ℝ :=  9785440754387192 / 10000000000000000
+          def k3 : ℝ := -8662894241321133 / 10000000000000000
+          def k4 : ℝ :=  6087279454880774 / 10000000000000000
+          def k5 : ℝ := -2681271038820197 / 10000000000000000
+          def k6 : ℝ :=   490774358279333 / 10000000000000000
+          def kappaSum : ℝ := 503386182826937 / 1000000000000000
+
+          noncomputable def tanTheta : ℝ := Real.sin theta / Real.cos theta
+          noncomputable def sec2Theta : ℝ := 1 / Real.cos theta ^ 2
+
+          noncomputable def weight (U : ℝ) : ℝ :=
+            sec2Theta * (
+              sec2Theta * (theta / tanTheta - U / 2) * Real.cos (U * tanTheta)
+              + 2 * theta / tanTheta - U
+              + Real.sin (2 * theta - U * tanTheta) / Real.sin (2 * theta)
+              - 2 * (1 + Real.sin (theta - U * tanTheta) / Real.sin theta))
+
+          noncomputable def w0 : ℝ := weight 0
+
+          noncomputable def qExpSum (U : ℝ) : ℝ :=
+              k0
+            + k1 * Real.exp (-(d0 * 1) * U)
+            + k2 * Real.exp (-(2 : ℝ) * U)
+            + k3 * Real.exp (-(d0 * 3) * U)
+            + k4 * Real.exp (-(4 : ℝ) * U)
+            + k5 * Real.exp (-(d0 * 5) * U)
+            + k6 * Real.exp (-(6 : ℝ) * U)
+
+          noncomputable def qKernel (U : ℝ) : ℝ :=
+            -kappaSum * w0 + weight (eta0 * U) * qExpSum U
+
+          theorem coefficient_sum_exact :
+              k0 + k1 + k2 + k3 + k4 + k5 + k6 = kappaSum := by
+            norm_num [k0, k1, k2, k3, k4, k5, k6, kappaSum]
+
+          theorem q_zero : qKernel 0 = 0 := by
+            rw [qKernel, qExpSum]
+            simp only [mul_zero, neg_zero, Real.exp_zero, mul_one]
+            rw [coefficient_sum_exact]
+            ring
+
+          theorem q_six_positive : 0 < qKernel 6 := by
+            simp only [qKernel, qExpSum, weight, w0, sec2Theta, tanTheta,
+              eta0, sigma0, d0, targetA, heightH, baseT0, K, theta,
+              k0, k1, k2, k3, k4, k5, k6, kappaSum]
+            interval_decide 24 (trust := kernel)
+
+          theorem q_positive_one_58 :
+              ∀ U ∈ Set.Icc (1 : ℝ) 58, (1 / 10000 : ℝ) ≤ qKernel U := by
+            simp only [qKernel, qExpSum, weight, w0, sec2Theta, tanTheta,
+              eta0, sigma0, d0, targetA, heightH, baseT0, K, theta,
+              k0, k1, k2, k3, k4, k5, k6, kappaSum]
+            leancert (taylorDepth := 24) (subdivisions := 12) (budget := 200000) (trust := kernel)
+
+          theorem q_nonnegative_zero_58 :
+              ∀ U : ℝ, 0 ≤ U → U ≤ 58 → 0 ≤ qKernel U := by
+            intro U hU0 hU58
+            by_cases hU1 : U < 1
+            · by_cases hUz : U = 0
+              · simpa [hUz, q_zero]
+              · have hUpos : 0 < U := lt_of_le_of_ne hU0 (Ne.symm hUz)
+                -- This local near-zero certificate is deliberately linear so the
+                -- exact endpoint U=0 is handled separately above.
+                have hlocal : U / 10000 ≤ qKernel U := by
+                  have hmem : U ∈ Set.Icc (1 / 1000000 : ℝ) 1 := by
+                    constructor
+                    · by_cases hs : U < (1 / 1000000 : ℝ)
+                      · -- Extremely small U: use a direct pointwise interval proof
+                        -- after fixing the concrete U is not possible reflectively;
+                        -- this branch will be replaced if CI reaches it.
+                        exfalso
+                        linarith
+                      · exact le_of_not_gt hs
+                    · exact le_of_lt hU1
+                  -- placeholder route intentionally fails closed if needed
+                  simp only [qKernel, qExpSum, weight, w0, sec2Theta, tanTheta,
+                    eta0, sigma0, d0, targetA, heightH, baseT0, K, theta,
+                    k0, k1, k2, k3, k4, k5, k6, kappaSum]
+                  leancert (taylorDepth := 24) (subdivisions := 10) (budget := 100000) (trust := kernel)
+                have : 0 ≤ U / 10000 := by positivity
+                linarith
+            · have h1 : 1 ≤ U := le_of_not_gt hU1
+              have h := q_positive_one_58 U ⟨h1, hU58⟩
+              norm_num at h ⊢
+              linarith
+
+          structure QCertificate : Prop where
+            transitionPositive : 0 < qKernel 6
+            nonnegative : ∀ U : ℝ, 0 ≤ U → U ≤ 58 → 0 ≤ qKernel U
+
+          theorem qCertificate : QCertificate :=
+            ⟨q_six_positive, q_nonnegative_zero_58⟩
+
+          #print axioms coefficient_sum_exact
+          #print axioms q_zero
+          #print axioms q_six_positive
+          #print axioms q_positive_one_58
+          #print axioms q_nonnegative_zero_58
+          #print axioms qCertificate
+
+          end R4807035QKernel
+          EOF
+      - name: Resolve dependencies and fetch Mathlib cache
+        shell: bash
+        run: |
+          set -euxo pipefail
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd /tmp/r4807035q
+          lake update
+          lake exe cache get
+      - name: Compile and axiom-audit q certificate
+        shell: bash
+        run: |
+          set -euxo pipefail
+          export PATH="$HOME/.elan/bin:$PATH"
+          cd /tmp/r4807035q
+          lean --version
+          lake env lean Q.lean 2>&1 | tee /tmp/r4807035-q-lean.log
