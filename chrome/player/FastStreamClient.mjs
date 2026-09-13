@@ -18,6 +18,7 @@ import {MiniplayerPositions} from './options/defaults/MiniplayerPositions.mjs';
 import {SecureMemory} from './modules/SecureMemory.mjs';
 import {CSSFilterUtils} from './utils/CSSFilterUtils.mjs';
 import {DaltonizerTypes} from './options/defaults/DaltonizerTypes.mjs';
+import {AspectRatios} from './options/defaults/AspectRatios.mjs';
 import {Utils} from './utils/Utils.mjs';
 import {DefaultToolSettings} from './options/defaults/ToolSettings.mjs';
 import {AudioAnalyzer} from './modules/analyzer/AudioAnalyzer.mjs';
@@ -81,6 +82,7 @@ export class FastStreamClient extends EventEmitter {
       videoDaltonizerType: DaltonizerTypes.NONE,
       videoDaltonizerStrength: 1,
       videoZoom: 1,
+      videoAspectRatio: AspectRatios.AUTO,
       seekStepSize: 0.2,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
@@ -340,6 +342,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.videoDaltonizerType = options.videoDaltonizerType;
     this.options.videoDaltonizerStrength = options.videoDaltonizerStrength;
     this.options.videoZoom = options.videoZoom;
+    this.options.videoAspectRatio = options.videoAspectRatio || AspectRatios.AUTO;
     this.options.previewEnabled = options.previewEnabled;
     this.options.videoDelay = options.videoDelay;
     document.body.dataset.theme = options.colorTheme;
@@ -412,15 +415,20 @@ export class FastStreamClient extends EventEmitter {
 
     const filterStr = CSSFilterUtils.getFilterString(this.options);
     const transformStr = CSSFilterUtils.getTransformString(this.options);
+    const aspectStyle = CSSFilterUtils.getAspectRatioStyles(this.options);
 
     if (this.player) {
       this.player.getVideo().style.filter = filterStr;
       this.player.getVideo().style.transform = transformStr;
+      this.player.getVideo().style.objectFit = aspectStyle.objectFit;
+      this.player.getVideo().style.aspectRatio = aspectStyle.aspectRatio;
     }
 
     if (this.previewPlayer) {
       this.previewPlayer.getVideo().style.filter = filterStr;
       this.previewPlayer.getVideo().style.transform = transformStr;
+      this.previewPlayer.getVideo().style.objectFit = aspectStyle.objectFit;
+      this.previewPlayer.getVideo().style.aspectRatio = aspectStyle.aspectRatio;
     }
   }
 

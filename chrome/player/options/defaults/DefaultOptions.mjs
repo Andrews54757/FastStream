@@ -1,5 +1,6 @@
 import {YoutubeClients} from '../../enums/YoutubeClients.mjs';
 import {EnvUtils} from '../../utils/EnvUtils.mjs';
+import {AspectRatios} from './AspectRatios.mjs';
 import {ClickActions} from './ClickActions.mjs';
 import {ColorThemes} from './ColorThemes.mjs';
 import {DaltonizerTypes} from './DaltonizerTypes.mjs';
@@ -35,6 +36,7 @@ export const DefaultOptions = {
   videoDaltonizerType: DaltonizerTypes.NONE,
   videoDaltonizerStrength: 1,
   videoZoom: 1,
+  videoAspectRatio: AspectRatios.AUTO,
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
