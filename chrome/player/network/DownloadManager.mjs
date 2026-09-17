@@ -23,6 +23,13 @@ export class DownloadManager {
     this.failed = 0;
 
     this.blobStore = new FSBlob();
+    this.storageConfig = {
+      persistBufferedVideos: false,
+      persistBufferRetentionDays: 7,
+      persistBufferMaxSizeMB: 0,
+    };
+    this.storageConfigPromise = Promise.resolve();
+    this.setOptions(this.client?.options || {});
   }
 
   getCompletedEntries() {
@@ -49,9 +56,37 @@ export class DownloadManager {
     const identifier = this.getIdentifier(entry);
     await this.blobStore.saveBlobAsync(entry.data, identifier);
 
-    entry.data = () => {
-      return this.blobStore.getBlob(identifier);
+    entry.data = async () => {
+      const blobEntry = await this.blobStore.getStoredBlobEntry(identifier);
+      return blobEntry?.data || null;
     };
+  }
+
+  setOptions(options = {}) {
+    const persistBufferedVideos = !!options.persistBufferedVideos;
+    const persistBufferRetentionDays = Math.min(Math.max(parseInt(options.persistBufferRetentionDays ?? 7, 10), 1), 30);
+    const persistBufferMaxSizeMB = Math.max(parseInt(options.persistBufferMaxSizeMB ?? 0, 10), 0);
+
+    const changed =
+      this.storageConfig.persistBufferedVideos !== persistBufferedVideos ||
+      this.storageConfig.persistBufferRetentionDays !== persistBufferRetentionDays ||
+      this.storageConfig.persistBufferMaxSizeMB !== persistBufferMaxSizeMB;
+
+    if (!changed) return;
+
+    this.storageConfig = {
+      persistBufferedVideos,
+      persistBufferRetentionDays,
+      persistBufferMaxSizeMB,
+    };
+
+    this.storageConfigPromise = this.blobStore.configure({
+      enabled: this.storageConfig.persistBufferedVideos,
+      retentionDays: this.storageConfig.persistBufferRetentionDays,
+      maxBytes: this.storageConfig.persistBufferMaxSizeMB * 1024 * 1024,
+    }).catch((e) => {
+      console.warn('Failed to configure blob storage backend', e);
+    });
   }
 
   setEntry(entry) {
@@ -156,20 +191,101 @@ export class DownloadManager {
     }
 
     if (storedEntry.status === DownloadStatus.WAITING) {
-      storedEntry.priority = priority;
-
-      // append to end of priority queue
-      let ind = this.queue.length;
-      while (ind > 0 && this.queue[ind - 1].priority < priority) {
-        ind--;
-      }
-      this.queue.splice(ind, 0, storedEntry);
-
-      storedEntry.status = DownloadStatus.ENQUEUED;
-      this.queueNext();
+      this.resolveEntryFromStorageOrQueue(storedEntry, priority).catch((e) => {
+        console.warn('Failed to resolve storage entry', e);
+        if (storedEntry.status === DownloadStatus.WAITING) {
+          this.enqueueEntry(storedEntry, storedEntry.pendingPriority || priority);
+        }
+      });
     }
 
     return watcher;
+  }
+
+  enqueueEntry(entry, priority) {
+    if (entry.status !== DownloadStatus.WAITING) return;
+
+    entry.priority = priority;
+
+    // append to end of priority queue
+    let ind = this.queue.length;
+    while (ind > 0 && this.queue[ind - 1].priority < priority) {
+      ind--;
+    }
+    this.queue.splice(ind, 0, entry);
+
+    entry.status = DownloadStatus.ENQUEUED;
+    this.queueNext();
+  }
+
+  async resolveEntryFromStorageOrQueue(entry, priority) {
+    if (entry.status !== DownloadStatus.WAITING) return;
+
+    if (!entry.pendingPriority || entry.pendingPriority < priority) {
+      entry.pendingPriority = priority;
+    }
+
+    if (entry.cacheLookupPromise) return;
+
+    entry.cacheLookupPromise = (async () => {
+      await this.storageConfigPromise;
+      const identifier = this.getIdentifier(entry);
+      const record = await this.blobStore.getStoredBlobEntry(identifier);
+      if (!record) return false;
+      if (entry.status !== DownloadStatus.WAITING) return true;
+
+      const now = self.performance?.now ? self.performance.now() : Date.now();
+      entry.status = DownloadStatus.DOWNLOAD_COMPLETE;
+      entry.dataSize = record.size || 0;
+      entry.data = async () => {
+        const blobEntry = await this.blobStore.getStoredBlobEntry(identifier);
+        return blobEntry?.data || null;
+      };
+      entry.responseHeaders = {};
+      entry.responseURL = entry.url;
+      entry.stats = {
+        aborted: false,
+        timedout: false,
+        loaded: entry.dataSize,
+        total: entry.dataSize,
+        retry: 0,
+        chunkCount: 0,
+        bwEstimate: 0,
+        loading: {
+          start: now,
+          first: now,
+          end: now,
+        },
+        parsing: {
+          start: now,
+          end: now,
+        },
+        buffering: {
+          start: now,
+          first: now,
+          end: now,
+        },
+      };
+
+      entry.watchers.forEach((watcher) => {
+        watcher.callbacks.onSuccess(entry);
+      });
+      entry.cleanup();
+      return true;
+    })();
+
+    let restored = false;
+    try {
+      restored = await entry.cacheLookupPromise;
+    } catch (e) {
+      console.warn('Persistent storage lookup failed', e);
+    } finally {
+      entry.cacheLookupPromise = null;
+    }
+
+    if (!restored && entry.status === DownloadStatus.WAITING) {
+      this.enqueueEntry(entry, entry.pendingPriority || priority);
+    }
   }
 
   getSpeed() {
@@ -339,23 +455,26 @@ export class DownloadManager {
     this.failed = 0;
 
     if (!this.dontClearStorage) {
-      await this.clearStorage();
+      await this.clearStorage(this.storageConfig.persistBufferedVideos);
     }
 
     this.downloaders?.push(new StandardDownloader(this));
   }
 
   async setup() {
-
+    this.setOptions(this.client?.options || {});
+    await this.storageConfigPromise;
   }
 
   resetOverride(value) {
     this.dontClearStorage = value;
   }
 
-  async clearStorage() {
+  async clearStorage(preservePersistent = false) {
     this.storage.clear();
-    await this.blobStore.clear();
+    await this.blobStore.clear({
+      clearPersistent: !preservePersistent,
+    });
   }
 
   abortAll() {

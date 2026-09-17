@@ -89,6 +89,9 @@ export class FastStreamClient extends EventEmitter {
       videoRotate: 0,
       disableVisualFilters: false,
       maximumDownloaders: 6,
+      persistBufferedVideos: true,
+      persistBufferRetentionDays: 7,
+      persistBufferMaxSizeMB: 1024,
       maxPlaybackRate: EnvUtils.isChrome() ? 16 : 8,
       youtubePlayerID: '',
     };
@@ -319,6 +322,9 @@ export class FastStreamClient extends EventEmitter {
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
+    this.options.persistBufferedVideos = !!options.persistBufferedVideos;
+    this.options.persistBufferRetentionDays = Math.min(Math.max(parseInt(options.persistBufferRetentionDays ?? 7, 10), 1), 30);
+    this.options.persistBufferMaxSizeMB = Math.max(parseInt(options.persistBufferMaxSizeMB ?? 0, 10), 0);
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -382,6 +388,8 @@ export class FastStreamClient extends EventEmitter {
       this.options.toolSettings = options.toolSettings;
       this.interfaceController.updateToolVisibility();
     }
+
+    this.downloadManager.setOptions(this.options);
 
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
