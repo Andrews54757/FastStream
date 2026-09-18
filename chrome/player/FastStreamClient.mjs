@@ -143,6 +143,7 @@ export class FastStreamClient extends EventEmitter {
     this.player = null;
     this.syncedAudioPlayer = null;
     this.previewPlayer = null;
+    this.subtitleTimelineOffset = 0;
     this.saveSeek = true;
     this.pastSeeks = [];
     this.pastUnseeks = [];
@@ -446,7 +447,35 @@ export class FastStreamClient extends EventEmitter {
    * @return {Promise<void>}
    */
   loadSubtitleTrack(subtitleTrack, autoset = false) {
+    if (this.subtitleTimelineOffset) {
+      subtitleTrack.shift(this.subtitleTimelineOffset);
+    }
     return this.interfaceController.subtitlesManager.loadTrackAndActivateBest(subtitleTrack, autoset);
+  }
+
+  /**
+   * Declares how far the presentation timeline runs ahead of the timeline that subtitle
+   * cues are timed against.
+   *
+   * A player that stitches several independently-encoded streams together cannot always
+   * start exactly at source time zero, and subtitles supplied alongside the source are
+   * timed against the source. Tracks already loaded are shifted by the difference, and
+   * tracks loaded later are shifted as they arrive.
+   *
+   * @param {number} offset - Seconds the presentation leads the subtitle timeline by.
+   */
+  setSubtitleTimelineOffset(offset) {
+    offset = offset || 0;
+    const delta = offset - this.subtitleTimelineOffset;
+    if (!delta) {
+      return;
+    }
+
+    this.subtitleTimelineOffset = offset;
+    this.interfaceController.subtitlesManager.tracks.forEach((track) => {
+      track.shift(delta);
+    });
+    this.interfaceController.subtitlesManager.renderSubtitles();
   }
 
   /**
@@ -793,6 +822,7 @@ export class FastStreamClient extends EventEmitter {
       console.log('setSource', source);
       await this.resetPlayer();
       this.source = source;
+      this.subtitleTimelineOffset = 0;
 
       if (source.defaultLevelInfo?.level !== undefined) {
         this.getLevelManager().setCurrentVideoLevelID(source.defaultLevelInfo.level);

@@ -62,6 +62,7 @@ export class SourcesBrowser {
     if (EnvUtils.isExtension()) {
       modes[PlayerModes.ACCELERATED_YT] = Localize.getMessage('player_source_accelyt');
       modes[PlayerModes.ACCELERATED_VM] = Localize.getMessage('player_source_accelvm');
+      modes[PlayerModes.ACCELERATED_PANOPTO] = Localize.getMessage('player_source_accelpanopto');
     }
 
     const sourceMode = createDropdown(source.mode, Localize.getMessage('player_source_mode'), modes, (val) => {

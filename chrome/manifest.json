@@ -56,6 +56,18 @@
     },
     {
       "matches": [
+        "https://*.panopto.com/Panopto/Pages/Viewer.aspx*",
+        "https://*.panopto.eu/Panopto/Pages/Viewer.aspx*",
+        "https://*.panopto.com.au/Panopto/Pages/Viewer.aspx*"
+      ],
+      "all_frames": true,
+      "run_at": "document_end",
+      "js": [
+        "custom/panopto_content.js"
+      ]
+    },
+    {
+      "matches": [
         "https://www.youtube.com/*",
         "https://youtube.com/*",
         "https://m.youtube.com/*",

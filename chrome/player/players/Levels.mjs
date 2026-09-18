@@ -9,8 +9,12 @@ export class VideoLevel {
     videoCodec,
     audioCodec,
     track,
+    label,
   }) {
     this.id = id;
+    // Distinguishes levels that are different sources rather than different qualities,
+    // such as a lecture's screen capture and camera. Grouped on in the quality menu.
+    this.label = label || '';
     this.width = width || 0;
     this.height = height || 0;
     this.bitrate = bitrate || 0;

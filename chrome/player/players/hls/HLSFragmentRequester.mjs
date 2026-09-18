@@ -65,20 +65,27 @@ export class HLSFragmentRequester {
         ...this.player.source.headers,
       },
       postProcessor: async (entry, response) => {
-        if (!frag.fs_oldcryptdata) {
-          return response;
+        if (frag.fs_oldcryptdata) {
+          const key = await keyPromise;
+          const decryptdata = frag.fs_oldcryptdata;
+
+          if (!decryptdata.iv || !key) {
+            console.error('missing decryptdata', decryptdata, key);
+            this.player.emit(DefaultPlayerEvents.NEED_KEY);
+            return response;
+          }
+
+          response.data = await this.decrypter.decryptAES(response.data, decryptdata.iv.buffer, key);
         }
 
-        const key = await keyPromise;
-        const decryptdata = frag.fs_oldcryptdata;
-
-        if (!decryptdata.iv || !key) {
-          console.error('missing decryptdata', decryptdata, key);
-          this.player.emit(DefaultPlayerEvents.NEED_KEY);
-          return response;
+        // Lets a player rewrite segment data before it is stored and demuxed.
+        if (this.player.processFragmentData) {
+          try {
+            response.data = this.player.processFragmentData(frag, response.data);
+          } catch (e) {
+            console.error('Error in processFragmentData:', e);
+          }
         }
-
-        response.data = await this.decrypter.decryptAES(response.data, decryptdata.iv.buffer, key);
 
         return response;
       },

@@ -10,6 +10,7 @@ export class PlayerLoader {
     this.registerPlayer(PlayerModes.ACCELERATED_DASH, './dash/DashPlayer.mjs');
     this.registerPlayer(PlayerModes.ACCELERATED_YT, './yt/YTPlayer.mjs');
     this.registerPlayer(PlayerModes.ACCELERATED_VM, './vm/VMPlayer.mjs');
+    this.registerPlayer(PlayerModes.ACCELERATED_PANOPTO, './panopto/PanoptoPlayer.mjs');
   }
 
   async createPlayer(mode, client, options) {

@@ -7,4 +7,5 @@ export const PlayerModes = {
   ACCELERATED_YT: 'accelerated_yt',
   IFRAME: 'iframe',
   ACCELERATED_VM: 'accelerated_vm',
+  ACCELERATED_PANOPTO: 'accelerated_panopto',
 };

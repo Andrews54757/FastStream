@@ -11,6 +11,7 @@ ModesMap.set('mpd', PlayerModes.ACCELERATED_DASH);
 ModesMap.set('youtube', PlayerModes.ACCELERATED_YT);
 
 ModesMap.set('vmpatch', PlayerModes.ACCELERATED_VM);
+ModesMap.set('panopto', PlayerModes.ACCELERATED_PANOPTO);
 
 /**
  * Utility functions for working with URLs and extracting identifiers.

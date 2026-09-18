@@ -97,8 +97,14 @@ async function recieveSources(request, sendResponse) {
       return curr;
     }
 
+    // A Panopto source describes the whole session, so prefer it over the individual
+    // streams it is stitched from, which the page requests on its own.
+    if (curr.mode === PlayerModes.ACCELERATED_PANOPTO) {
+      return curr;
+    }
+
     // If result isn't using streaming technologies, try to find one that does
-    const streamingModes = [PlayerModes.ACCELERATED_HLS, PlayerModes.ACCELERATED_DASH, PlayerModes.ACCELERATED_YT];
+    const streamingModes = [PlayerModes.ACCELERATED_HLS, PlayerModes.ACCELERATED_DASH, PlayerModes.ACCELERATED_YT, PlayerModes.ACCELERATED_PANOPTO];
     if (!streamingModes.includes(result.mode) && streamingModes.includes(curr.mode)) {
       return curr;
     }

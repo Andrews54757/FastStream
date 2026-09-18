@@ -310,6 +310,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   } else if (msg.type === MessageTypes.DETECTED_SOURCE) {
     const mode = URLUtils.getModeFromExtension(msg.ext);
     const headers = msg.headers || {};
+
+    // A site integration that already has the subtitle text can pass it along directly,
+    // rather than leaving a URL for the player to fetch.
+    if (Array.isArray(msg.subtitles)) {
+      const subtitles = frame.getSubtitles();
+      msg.subtitles.forEach((sub) => {
+        if (!sub || !sub.data) return;
+        if (subtitles.some((existing) => existing.label === sub.label && existing.data === sub.data)) return;
+
+        subtitles.push({
+          data: sub.data,
+          label: sub.label,
+          language: sub.language,
+          time: Date.now(),
+        });
+      });
+    }
+
     onSourceRecieved({
       url: msg.url,
       requestId: -1,
