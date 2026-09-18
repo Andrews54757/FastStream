@@ -25,6 +25,26 @@
   }
 
   /**
+   * Tells the background whether this frame's source is coming from here.
+   *
+   * The viewer fetches each of the session's streams itself, and any one of them is a
+   * playable HLS manifest in its own right, so without this the extension would
+   * occasionally open a single camera — usually the audio-only one — instead of the
+   * assembled session. While the claim stands those manifests are held back, and
+   * dropping it hands them over, so a session this script cannot assemble still plays.
+   *
+   * @param {boolean} claimed - Whether this script is handling the frame.
+   */
+  function claimFrame(claimed) {
+    chrome.runtime.sendMessage({type: 'CLAIM_FRAME', claimed});
+  }
+
+  // Claimed before anything else, including before waiting on the extension being
+  // switched on: the viewer starts loading its streams whether or not FastStream is on,
+  // and the sources it turns up would outlive that wait.
+  claimFrame(true);
+
+  /**
    * Resolves once FastStream is switched on for this tab.
    *
    * Nothing here touches the network before that: reading a session's delivery info is
@@ -256,7 +276,11 @@
     return subtitles;
   }
 
-  (async () => {
+  /**
+   * Reads the session's delivery info and hands FastStream a source for it.
+   * @return {Promise<boolean>} Whether a source was delivered.
+   */
+  async function run() {
     await waitUntilEnabled();
 
     let info;
@@ -273,18 +297,18 @@
       });
     } catch (e) {
       console.warn('FastStream: could not read Panopto delivery info', e);
-      return;
+      return false;
     }
 
     const delivery = info?.Delivery;
     if (!delivery || !Array.isArray(delivery.Streams) || delivery.Streams.length === 0) {
       console.warn('FastStream: Panopto session has no streams');
-      return;
+      return false;
     }
 
     if (delivery.IsBroadcast || delivery.IsActiveBroadcast) {
       console.log('FastStream: skipping Panopto live broadcast');
-      return;
+      return false;
     }
 
     const usedNames = new Set();
@@ -308,7 +332,7 @@
 
     if (streams.length === 0) {
       console.warn('FastStream: no HLS streams in Panopto session');
-      return;
+      return false;
     }
 
     const descriptor = {
@@ -333,5 +357,22 @@
       headers: {},
       subtitles,
     });
+
+    return true;
+  }
+
+  (async () => {
+    let delivered = false;
+    try {
+      delivered = await run();
+    } catch (e) {
+      console.warn('FastStream: Panopto integration failed', e);
+    }
+
+    if (!delivered) {
+      // Nothing came of it, so the streams the viewer loads on its own are better than
+      // no player at all.
+      claimFrame(false);
+    }
   })();
 })();

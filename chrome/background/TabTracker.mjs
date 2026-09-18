@@ -15,6 +15,10 @@ export class FrameHolder {
     this.isPlayer = false;
     this.trackedSubtitles = [];
     this.trackedSources = [];
+    // Set while a site integration is putting together the source for this frame, along
+    // with the sources that were detected in the ordinary way in the meantime.
+    this.claimed = false;
+    this.heldSources = [];
     this.requestHeaders = new Map();
     this.url = '';
   }
@@ -55,6 +59,10 @@ export class FrameHolder {
 
   getSources() {
     return this.trackedSources;
+  }
+
+  getHeldSources() {
+    return this.heldSources;
   }
 
 
