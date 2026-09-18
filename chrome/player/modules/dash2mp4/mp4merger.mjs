@@ -39,7 +39,29 @@ export class MP4Merger extends EventEmitter {
     return true;
   }
 
-  async pushFragment(track, fragData) {
+  /**
+   * Picks the track a set of samples belongs to.
+   *
+   * Track IDs only mean anything within the initialization segment that declared them,
+   * so two separately-delivered tracks may well share one. They are therefore only
+   * trusted to tell tracks apart when a single fragment carries more than one.
+   *
+   * @param {number} trackId - The track ID the fragment names.
+   * @param {number} trackCount - How many tracks the fragment carries.
+   * @param {Object} defaultTrack - The track the fragment was queued against.
+   * @return {Object|null} The track to append to, or null if it is not one of ours.
+   */
+  trackForSamples(trackId, trackCount, defaultTrack) {
+    if (trackCount < 2) {
+      return defaultTrack;
+    }
+
+    return [this.videoTrack, this.audioTrack].find((track) => {
+      return track && track.sourceTrackId === trackId;
+    }) || null;
+  }
+
+  async pushFragment(defaultTrack, fragData) {
     const entry = await fragData.getEntry();
     const blob = await entry.getData();
     const data = await BlobManager.getDataFromBlob(blob, 'arraybuffer');
@@ -58,48 +80,124 @@ export class MP4Merger extends EventEmitter {
     if (mp4boxfile.moofs.length !== 1) throw new Error('Unsupported moofs count!');
 
     const moof = mp4boxfile.moofs[0];
+    const mdat = mdats[0];
+    // A muxed fragment describes one track per traf and indexes each of them
+    // separately, both keyed by the track ID.
+    const sidxs = mp4boxfile.boxes.filter((box) => box.type === 'sidx');
+    const sampleLists = mp4boxfile.getSampleList(moof, defaultTrack.trexs);
 
-    if (moof.trafs.length !== 1) throw new Error('Unsupported trafs count!');
-
-    const traf = moof.trafs[0];
-    const headerLen = 8;
-    const samplesList = mp4boxfile.getSampleList(moof, track.trexs)[0];
-    const baseDecodeTime = traf.tfdt?.baseMediaDecodeTime || 0;
-    const earliestPresentationTime = mp4boxfile.sidx ? mp4boxfile.sidx.earliest_presentation_time : baseDecodeTime;
-    const outputSamples = samplesList.samples.map((sample) => {
-      return createMp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
-    });
-
-    if (track.chunks.length > 0) {
-      const lastChunk = track.chunks[track.chunks.length - 1];
-      if (lastChunk.baseDecodeTime + lastChunk.samplesDuration < baseDecodeTime) {
-        console.log('Extending', lastChunk);
-        lastChunk.samples[lastChunk.samples.length - 1].duration += baseDecodeTime - (lastChunk.baseDecodeTime + lastChunk.samplesDuration);
-      } else if (lastChunk.baseDecodeTime + lastChunk.samplesDuration > baseDecodeTime) {
-        console.log('Too long');
+    sampleLists.forEach((samplesList) => {
+      const track = this.trackForSamples(samplesList.track_id, sampleLists.length, defaultTrack);
+      if (!track || samplesList.samples.length === 0) {
+        return;
       }
-    }
 
-    if (samplesList.samples_duration === 0) {
-      console.log(track);
-      throw new Error('Sample duration is zero!');
-    }
+      const traf = moof.trafs.find((candidate) => candidate.tfhd.track_id === samplesList.track_id);
+      const baseDecodeTime = traf?.tfdt?.baseMediaDecodeTime || 0;
+      const sidx = sidxs.length > 1 ? sidxs.find((box) => box.reference_ID === samplesList.track_id) : sidxs[0];
+      const earliestPresentationTime = sidx ? sidx.earliest_presentation_time : baseDecodeTime;
+      const outputSamples = samplesList.samples.map((sample) => {
+        return createMp4Sample(sample.is_sync, sample.duration, sample.size, sample.cts - sample.dts);
+      });
 
-    track.chunks.push({
-      id: track.nextChunkId++,
-      samples: outputSamples,
-      samplesDuration: samplesList.samples_duration,
-      offset: this.datasOffset + headerLen,
-      originalOffset: this.datasOffset + headerLen,
-      startPTS: earliestPresentationTime,
-      endPTS: earliestPresentationTime + samplesList.samples_duration,
-      baseDecodeTime: baseDecodeTime,
+      if (track.chunks.length > 0) {
+        const lastChunk = track.chunks[track.chunks.length - 1];
+        if (lastChunk.baseDecodeTime + lastChunk.samplesDuration < baseDecodeTime) {
+          console.log('Extending', lastChunk);
+          lastChunk.samples[lastChunk.samples.length - 1].duration += baseDecodeTime - (lastChunk.baseDecodeTime + lastChunk.samplesDuration);
+        } else if (lastChunk.baseDecodeTime + lastChunk.samplesDuration > baseDecodeTime) {
+          console.log('Too long');
+        }
+      }
+
+      if (samplesList.samples_duration === 0) {
+        console.log(track);
+        throw new Error('Sample duration is zero!');
+      }
+
+      // The mdat is copied whole, so each track's samples keep their distance into it.
+      // In a muxed fragment one track's samples follow the other's rather than starting
+      // right after the box header, which is why this is measured and not assumed.
+      const offset = this.datasOffset + (samplesList.samples[0].offset - mdat.start);
+
+      track.chunks.push({
+        id: track.nextChunkId++,
+        samples: outputSamples,
+        samplesDuration: samplesList.samples_duration,
+        offset,
+        originalOffset: offset,
+        startPTS: earliestPresentationTime,
+        endPTS: earliestPresentationTime + samplesList.samples_duration,
+        baseDecodeTime: baseDecodeTime,
+      });
     });
 
-    mdats.forEach((mdat) => {
-      this.datas.push(this.blobManager.saveBlob(blob.slice(mdat.start, mdat.start + mdat.size)));
-      this.datasOffset += mdat.size;
-    });
+    this.datas.push(this.blobManager.saveBlob(blob.slice(mdat.start, mdat.start + mdat.size)));
+    this.datasOffset += mdat.size;
+  }
+
+  /**
+   * Builds the video track an initialization segment describes.
+   * @param {Object} file - The parsed initialization segment.
+   * @param {number} duration - The track's duration, in seconds.
+   * @return {Object|null} The track, or null if the segment has no usable video.
+   */
+  makeVideoTrack(file, duration) {
+    const found = findTrack(file, VideoCodecs);
+    if (!found) {
+      return null;
+    }
+
+    const {trak, entry} = found;
+    return {
+      type: 'video',
+      id: 1,
+      sourceTrackId: trak.tkhd.track_id,
+      timescale: trak.mdia.mdhd.timescale,
+      duration: duration,
+      width: trak.tkhd.width >> 16,
+      height: trak.tkhd.height >> 16,
+      pixelRatio: [1, 1],
+      sps: [],
+      pps: [],
+      samples: [],
+      chunks: [],
+      use64Offsets: false,
+      nextChunkId: 1,
+      elst: [],
+      trexs: file.moov?.mvex?.trexs || [],
+      codecBuffer: writeSampleEntry(entry),
+    };
+  }
+
+  /**
+   * Builds the audio track an initialization segment describes.
+   * @param {Object} file - The parsed initialization segment.
+   * @param {number} duration - The track's duration, in seconds.
+   * @return {Object|null} The track, or null if the segment has no usable audio.
+   */
+  makeAudioTrack(file, duration) {
+    const found = findTrack(file, AudioCodecs);
+    if (!found) {
+      return null;
+    }
+
+    const {trak, entry} = found;
+    return {
+      type: 'audio',
+      id: 2,
+      sourceTrackId: trak.tkhd.track_id,
+      timescale: trak.mdia.mdhd.timescale,
+      duration: duration,
+      segmentCodec: null,
+      samples: [],
+      chunks: [],
+      use64Offsets: false,
+      nextChunkId: 1,
+      elst: [],
+      trexs: file.moov?.mvex?.trexs || [],
+      codecBuffer: writeSampleEntry(entry),
+    };
   }
 
   setup(videoDuration, videoInitSegment, audioDuration, audioInitSegment) {
@@ -108,93 +206,26 @@ export class MP4Merger extends EventEmitter {
     }
 
     if (videoDuration) {
-      const file = MP4Box.createFile(false);
-      videoInitSegment.fileStart = 0;
-      file.appendBuffer(videoInitSegment);
-      file.flush();
-      if (file.moov) {
-        const trak = file.moov.traks[0];
-        const timescale = trak.mdia.mdhd.timescale;
-        this.videoTrack = {
-          type: 'video',
-          id: 1,
-          timescale: timescale,
-          duration: videoDuration,
-          width: trak.tkhd.width >> 16,
-          height: trak.tkhd.height >> 16,
-          pixelRatio: [1, 1],
-          sps: [],
-          pps: [],
-          // segmentCodec: null,
-          // codec: null,
-          // config: null,
-          // channelCount: null,
-          // sampleRate: null,
-          samples: [],
-          chunks: [],
-          use64Offsets: false,
-          nextChunkId: 1,
-          elst: [],
-          trexs: file.moov?.mvex?.trexs || [],
-        };
+      const file = parseInitSegment(videoInitSegment, 'Video');
+      this.videoTrack = this.makeVideoTrack(file, videoDuration);
 
-        const toCopy = trak.mdia.minf.stbl.stsd.entries.find((e) => {
-          return VideoCodecs.includes(e.type);
-        });
+      if (!this.videoTrack) {
+        throw new Error('Video codec not supported!');
+      }
 
-        if (!toCopy) {
-          throw new Error('Video codec not supported!');
-        }
-
-        const stream = new DataStream();
-        stream.endianness = DataStream.BIG_ENDIAN;
-        toCopy.write(stream);
-        this.videoTrack.codecBuffer = stream.buffer;
-      } else {
-        throw new Error('Video is not an mp4!');
+      // With no separate audio rendition the video may be muxed, in which case the one
+      // initialization segment describes both tracks and every fragment carries both.
+      if (!audioDuration) {
+        this.audioTrack = this.makeAudioTrack(file, videoDuration);
       }
     }
 
     if (audioDuration) {
-      const file = MP4Box.createFile(false);
-      audioInitSegment.fileStart = 0;
-      file.appendBuffer(audioInitSegment);
-      file.flush();
-      if (file.moov) {
-        const trak = file.moov.traks[0];
-        const timescale = trak.mdia.mdhd.timescale;
-        const toCopy = trak.mdia.minf.stbl.stsd.entries.find((e) => {
-          return AudioCodecs.includes(e.type);
-        });
+      const file = parseInitSegment(audioInitSegment, 'Audio');
+      this.audioTrack = this.makeAudioTrack(file, audioDuration);
 
-        this.audioTrack = {
-          type: 'audio',
-          id: 2,
-          timescale: timescale,
-          duration: audioDuration,
-          segmentCodec: null,
-          // codec: mp4a.getCodec(),
-          // esds: mp4a.esds.data,
-          // channelCount: mp4a.channel_count,
-          // sampleRate: mp4a.samplerate,
-          samples: [],
-          chunks: [],
-          use64Offsets: false,
-          nextChunkId: 1,
-          elst: [],
-          trexs: file.moov?.mvex?.trexs || [],
-        };
-
-        if (!toCopy) {
-          throw new Error('Audio codec not supported!');
-        }
-
-        const stream = new DataStream();
-        stream.endianness = DataStream.BIG_ENDIAN;
-        toCopy.write(stream);
-        this.audioTrack.codecBuffer = stream.buffer;
-      } else {
-        throw new Error('Audio is not an mp4!');
+      if (!this.audioTrack) {
+        throw new Error('Audio codec not supported!');
       }
     }
 
@@ -235,7 +266,9 @@ export class MP4Merger extends EventEmitter {
 
       const start = track.chunks[0].startPTS / track.timescale;
       const end = track.chunks[track.chunks.length - 1].endPTS / track.timescale;
-      const delay = start - minStart;
+      // Rounded before it is tested, so that tracks which start together but count in
+      // different timescales are not given an edit that lasts no time at all.
+      const delay = Math.round((start - minStart) * movieTimescale);
 
       // Samples are written starting at media time zero, so a track that begins later
       // than the others is held back by an empty edit. Expressing the delay as a
@@ -243,12 +276,16 @@ export class MP4Merger extends EventEmitter {
       if (delay > 0) {
         track.elst.push({
           media_time: -1,
-          segment_duration: Math.round(delay * movieTimescale),
+          segment_duration: delay,
         });
       }
 
+      // Samples are written from decode time zero, so a track that composes out of
+      // decode order presents its first frame a little after that. Starting the edit
+      // any earlier points it at a frame that is not there and the first one is lost.
+      // Media times are counted in the track's own timescale.
       track.elst.push({
-        media_time: 0,
+        media_time: firstPresentedTime(track.chunks[0]),
         segment_duration: Math.round((end - start) * movieTimescale),
       });
 
@@ -334,6 +371,81 @@ export class MP4Merger extends EventEmitter {
       this.blobManager = null;
     }, 120000);
   }
+}
+
+/**
+ * Parses an initialization segment.
+ * @param {ArrayBuffer} buffer - The segment.
+ * @param {string} what - 'Video' or 'Audio', for the error a caller may recover from.
+ * @return {Object} The parsed file.
+ */
+/**
+ * The earliest time a chunk presents anything, counted from its own first decode time.
+ * @param {Object} chunk - A chunk of samples.
+ * @return {number} The composition time of its first presented sample.
+ */
+function firstPresentedTime(chunk) {
+  let decodeTime = 0;
+  let earliest = 0;
+
+  chunk.samples.forEach((sample, index) => {
+    const presentedAt = decodeTime + sample.cts;
+    if (index === 0 || presentedAt < earliest) {
+      earliest = presentedAt;
+    }
+    decodeTime += sample.duration;
+  });
+
+  return Math.max(0, earliest);
+}
+
+function parseInitSegment(buffer, what) {
+  const file = MP4Box.createFile(false);
+  buffer.fileStart = 0;
+  file.appendBuffer(buffer);
+  file.flush();
+
+  if (!file.moov) {
+    throw new Error(`${what} is not an mp4!`);
+  }
+
+  return file;
+}
+
+/**
+ * Finds the track whose sample description names one of the given codecs.
+ *
+ * Which track an initialization segment lists first is up to whatever muxed it, so a
+ * segment describing both audio and video has to be searched rather than indexed.
+ *
+ * @param {Object} file - A parsed initialization segment.
+ * @param {string[]} codecs - Sample entry types to accept.
+ * @return {{trak: Object, entry: Object}|null} The track and its sample entry.
+ */
+function findTrack(file, codecs) {
+  for (const trak of file.moov.traks) {
+    const entry = trak.mdia?.minf?.stbl?.stsd?.entries?.find((candidate) => {
+      return codecs.includes(candidate.type);
+    });
+
+    if (entry) {
+      return {trak, entry};
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Serializes a sample description entry, so the output carries the same codec setup.
+ * @param {Object} entry - The sample description entry.
+ * @return {ArrayBuffer} The written box.
+ */
+function writeSampleEntry(entry) {
+  const stream = new DataStream();
+  stream.endianness = DataStream.BIG_ENDIAN;
+  entry.write(stream);
+  return stream.buffer;
 }
 
 function createMp4Sample(isKeyframe, duration, size, cts) {

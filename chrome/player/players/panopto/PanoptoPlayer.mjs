@@ -31,7 +31,7 @@ export default class PanoptoPlayer extends HLSPlayer {
     this.streamsByVariant = new Map();
     /** Variant directory -> parsed playlist, then the trimmed body once served. */
     this.playlistCache = new Map();
-    /** Variant directory -> media timescale, learned from that variant's init segment. */
+    /** Variant directory -> track ID -> media timescale, from that variant's init segment. */
     this.timescales = new Map();
   }
 
@@ -122,21 +122,21 @@ export default class PanoptoPlayer extends HLSPlayer {
       variants,
       offset: stream.offset || 0,
       reference: referencePlaylist,
-      // Decode times are rebased in the track's own timescale, so it has to be known
-      // before the first segment arrives rather than discovered as they stream in.
-      timescale: await this.fetchTimescale(reference, referencePlaylist),
+      // Decode times are rebased in each track's own timescale, so those have to be
+      // known before the first segment arrives rather than discovered as they stream in.
+      timescales: await this.fetchTimescales(reference, referencePlaylist),
     };
   }
 
   /**
-   * Reads a stream's media timescale from the initialization segment its playlist names.
+   * Reads a stream's media timescales from the initialization segment its playlist names.
    * @param {Object} variant - The variant whose playlist was parsed.
    * @param {PanoptoMediaPlaylist} playlist - That playlist.
-   * @return {Promise<number|null>} The timescale, or null if it could not be read.
+   * @return {Promise<Map<number, number>>} Track ID to timescale; empty if unreadable.
    */
-  async fetchTimescale(variant, playlist) {
+  async fetchTimescales(variant, playlist) {
     if (!playlist.map) {
-      return null;
+      return new Map();
     }
 
     try {
@@ -152,10 +152,10 @@ export default class PanoptoPlayer extends HLSPlayer {
         throw new Error(`HTTP ${xhr.status}`);
       }
 
-      return MP4Boxes.getTimescale(xhr.response);
+      return MP4Boxes.getTimescales(xhr.response);
     } catch (e) {
-      console.warn('Panopto: could not read the timescale from', variant.url, e);
-      return null;
+      console.warn('Panopto: could not read the timescales from', variant.url, e);
+      return new Map();
     }
   }
 
@@ -213,25 +213,25 @@ export default class PanoptoPlayer extends HLSPlayer {
       return data;
     }
 
-    // Initialization segments carry no decode times, but they do carry the timescale,
-    // which is more authoritative per variant than the stream-level one read at setup.
+    // Initialization segments carry no decode times, but they do carry the timescales,
+    // which are more authoritative per variant than the stream-level ones read at setup.
     if (frag.sn === 'initSegment') {
-      const timescale = MP4Boxes.getTimescale(data);
-      if (timescale) {
-        this.timescales.set(key, timescale);
+      const timescales = MP4Boxes.getTimescales(data);
+      if (timescales.size > 0) {
+        this.timescales.set(key, timescales);
       }
       return data;
     }
 
-    const timescale = this.timescales.get(key) || stream.timescale;
-    if (!timescale) {
+    const timescales = this.timescales.get(key) || stream.timescales;
+    if (!timescales || timescales.size === 0) {
       // Leaving a segment unshifted silently would desync it by however far apart the
       // encodes are, which for a trimmed capture is hours.
       console.error('Panopto: no timescale for', stream.name, '- cannot rebase', frag.url);
       return data;
     }
 
-    if (!MP4Boxes.shiftDecodeTime(data, stream.delta, timescale) && stream.delta) {
+    if (!MP4Boxes.shiftDecodeTime(data, stream.delta, timescales) && stream.delta) {
       console.error('Panopto: found no decode time to rebase in', frag.url);
     }
 

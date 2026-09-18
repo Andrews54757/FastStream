@@ -263,21 +263,39 @@ export class MP4Boxes {
   }
 
   /**
-   * Reads the media timescale from an fMP4 initialization segment.
+   * Reads every track's media timescale from an fMP4 initialization segment.
+   *
+   * A Panopto stream is usually a single track, but a primary stream that captured the
+   * camera as well as the microphone is muxed, and its two tracks keep timescales of
+   * their own.
+   *
    * @param {ArrayBuffer} buffer - The init segment.
-   * @return {number|null} The timescale, or null if not found.
+   * @return {Map<number, number>} Track ID to timescale, in track order.
    */
-  static getTimescale(buffer) {
+  static getTimescales(buffer) {
     const view = new DataView(buffer);
-    let timescale = null;
+    const timescales = new Map();
 
-    this.walkPath(view, 0, buffer.byteLength, ['moov', 'trak', 'mdia', 'mdhd'], (start) => {
-      if (timescale !== null) return;
-      const version = view.getUint8(start);
-      timescale = version === 1 ? view.getUint32(start + 20) : view.getUint32(start + 12);
+    this.walkPath(view, 0, buffer.byteLength, ['moov', 'trak'], (trakStart, trakEnd) => {
+      let trackId = null;
+      let timescale = null;
+
+      this.walkPath(view, trakStart, trakEnd, ['tkhd'], (start) => {
+        const version = view.getUint8(start);
+        trackId = version === 1 ? view.getUint32(start + 20) : view.getUint32(start + 12);
+      });
+
+      this.walkPath(view, trakStart, trakEnd, ['mdia', 'mdhd'], (start) => {
+        const version = view.getUint8(start);
+        timescale = version === 1 ? view.getUint32(start + 20) : view.getUint32(start + 12);
+      });
+
+      if (trackId !== null && timescale) {
+        timescales.set(trackId, timescale);
+      }
     });
 
-    return timescale;
+    return timescales;
   }
 
   /**
@@ -295,13 +313,16 @@ export class MP4Boxes {
    *
    * @param {ArrayBuffer} buffer - The media segment.
    * @param {number} deltaSeconds - Signed shift, in seconds.
-   * @param {number} timescale - The track's media timescale.
+   * @param {Map<number, number>} timescales - Track ID to media timescale.
    * @return {boolean} True if at least one start time was rewritten.
    */
-  static shiftDecodeTime(buffer, deltaSeconds, timescale) {
-    if (!deltaSeconds || !timescale) return false;
+  static shiftDecodeTime(buffer, deltaSeconds, timescales) {
+    if (!deltaSeconds || !timescales || timescales.size === 0) return false;
 
     const view = new DataView(buffer);
+    // A single-track segment need not name a track we recognize, so with only one
+    // timescale on offer every box is rebased in that one.
+    const only = timescales.size === 1 ? timescales.values().next().value : null;
     let patched = false;
 
     const shift = (start, version, offset, scale) => {
@@ -318,11 +339,26 @@ export class MP4Boxes {
 
     this.walkPath(view, 0, buffer.byteLength, ['sidx'], (start) => {
       // reference_ID occupies the four bytes before the segment index's own timescale.
-      shift(start, view.getUint8(start), 12, view.getUint32(start + 8) || timescale);
+      const scale = view.getUint32(start + 8) || only;
+      if (scale) {
+        shift(start, view.getUint8(start), 12, scale);
+      }
     });
 
-    this.walkPath(view, 0, buffer.byteLength, ['moof', 'traf', 'tfdt'], (start) => {
-      shift(start, view.getUint8(start), 4, timescale);
+    this.walkPath(view, 0, buffer.byteLength, ['moof', 'traf'], (trafStart, trafEnd) => {
+      // A track fragment names the track it belongs to, which is what tells a muxed
+      // segment's audio from its video: the two are shifted by the same number of
+      // seconds, but counted in different timescales.
+      let scale = only;
+      this.walkPath(view, trafStart, trafEnd, ['tfhd'], (start) => {
+        scale = timescales.get(view.getUint32(start + 4)) || scale;
+      });
+
+      if (!scale) return;
+
+      this.walkPath(view, trafStart, trafEnd, ['tfdt'], (start) => {
+        shift(start, view.getUint8(start), 4, scale);
+      });
     });
 
     return patched;
