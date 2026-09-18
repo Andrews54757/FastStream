@@ -32,6 +32,7 @@ export class PanoptoMediaPlaylist {
   constructor() {
     this.headerLines = [];
     this.mapLine = null;
+    this.map = null;
     this.mediaSequence = 0;
     this.segments = [];
     this.totalDuration = 0;
@@ -66,6 +67,7 @@ export class PanoptoMediaPlaylist {
         playlist.mediaSequence = parseInt(line.substring(22), 10) || 0;
       } else if (line.startsWith('#EXT-X-MAP:')) {
         playlist.mapLine = line;
+        playlist.map = parseMapTag(line);
       } else if (line.startsWith('#EXT-X-DISCONTINUITY') || line.startsWith('#EXT-X-KEY:') || line.startsWith('#EXT-X-PROGRAM-DATE-TIME:')) {
         pendingTags.push(line);
       } else if (line.startsWith('#EXTM3U') || line.startsWith('#EXT-X-ENDLIST')) {
@@ -172,6 +174,26 @@ export class PanoptoMediaPlaylist {
 }
 
 /**
+ * Parses a `#EXT-X-MAP` tag into the resource it names.
+ * @param {string} line - The whole tag line.
+ * @return {{uri: string, byteRange: {length: number, offset: number}|null}|null} The map.
+ */
+function parseMapTag(line) {
+  const uri = /URI="([^"]*)"/.exec(line);
+  if (!uri) {
+    return null;
+  }
+
+  const range = /BYTERANGE="([^"]*)"/.exec(line);
+  const byteRange = range ? parseByteRange(range[1]) : null;
+  if (byteRange && byteRange.offset === null) {
+    byteRange.offset = 0;
+  }
+
+  return {uri: uri[1], byteRange};
+}
+
+/**
  * Parses a `#EXT-X-BYTERANGE` value.
  * @param {string} value - The tag value, `length[@offset]`.
  * @return {{length: number, offset: number|null}} The parsed range.
@@ -259,32 +281,48 @@ export class MP4Boxes {
   }
 
   /**
-   * Shifts every `tfdt` decode time in a media segment by `delta` timescale units.
+   * Shifts a media segment's start time by `deltaSeconds`.
    *
    * This is what puts independently-encoded Panopto streams onto one timeline. The
    * buffer is modified in place; `trun` sample offsets are relative to the decode time
    * and so need no adjustment.
    *
+   * Both places a segment records its start are rewritten. The `tfdt` is what players
+   * decode from, but a `sidx` — which Panopto emits on every segment — carries its own
+   * copy in its own timescale, and tools that remux from these segments may read that
+   * one instead. Leaving the two disagreeing produces a file that plays back correctly
+   * but converts wrongly.
+   *
    * @param {ArrayBuffer} buffer - The media segment.
-   * @param {number} delta - Signed shift, in the track's timescale units.
-   * @return {boolean} True if at least one decode time was rewritten.
+   * @param {number} deltaSeconds - Signed shift, in seconds.
+   * @param {number} timescale - The track's media timescale.
+   * @return {boolean} True if at least one start time was rewritten.
    */
-  static shiftDecodeTime(buffer, delta) {
-    if (!delta) return false;
+  static shiftDecodeTime(buffer, deltaSeconds, timescale) {
+    if (!deltaSeconds || !timescale) return false;
 
     const view = new DataView(buffer);
     let patched = false;
 
-    this.walkPath(view, 0, buffer.byteLength, ['moof', 'traf', 'tfdt'], (start) => {
-      const version = view.getUint8(start);
+    const shift = (start, version, offset, scale) => {
+      const delta = Math.round(deltaSeconds * scale);
       if (version === 1) {
-        const current = Number(view.getBigUint64(start + 4));
-        view.setBigUint64(start + 4, BigInt(Math.max(0, Math.round(current + delta))));
+        const current = Number(view.getBigUint64(start + offset));
+        view.setBigUint64(start + offset, BigInt(Math.max(0, current + delta)));
       } else {
-        const current = view.getUint32(start + 4);
-        view.setUint32(start + 4, Math.max(0, Math.round(current + delta)));
+        const current = view.getUint32(start + offset);
+        view.setUint32(start + offset, Math.max(0, current + delta));
       }
       patched = true;
+    };
+
+    this.walkPath(view, 0, buffer.byteLength, ['sidx'], (start) => {
+      // reference_ID occupies the four bytes before the segment index's own timescale.
+      shift(start, view.getUint8(start), 12, view.getUint32(start + 8) || timescale);
+    });
+
+    this.walkPath(view, 0, buffer.byteLength, ['moof', 'traf', 'tfdt'], (start) => {
+      shift(start, view.getUint8(start), 4, timescale);
     });
 
     return patched;

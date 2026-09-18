@@ -216,25 +216,40 @@ export class MP4Merger extends EventEmitter {
     }
 
     const len = tracks[0].chunks.length;
-    let minPts = tracks[0].chunks[0].startPTS;
+
+    // Tracks need not start together, and each keeps its own timescale, so the shared
+    // starting point has to be found in seconds rather than in raw timestamps.
+    let minStart = Infinity;
 
     for (let i = 0; i < tracks.length; i++) {
       if (tracks[i].chunks.length !== len) {
         console.log('WARNING: chunk length is not equal', tracks[i].chunks.length, len);
       }
 
-      if (tracks[i].chunks[0].startPTS < minPts) {
-        minPts = tracks[i].chunks[0].startPTS;
-      }
+      minStart = Math.min(minStart, tracks[i].chunks[0].startPTS / tracks[i].timescale);
     }
 
     const movieTimescale = tracks[0].timescale;
     tracks.forEach((track) => {
       track.movieTimescale = movieTimescale;
 
+      const start = track.chunks[0].startPTS / track.timescale;
+      const end = track.chunks[track.chunks.length - 1].endPTS / track.timescale;
+      const delay = start - minStart;
+
+      // Samples are written starting at media time zero, so a track that begins later
+      // than the others is held back by an empty edit. Expressing the delay as a
+      // media_time instead would skip into the media rather than postpone it.
+      if (delay > 0) {
+        track.elst.push({
+          media_time: -1,
+          segment_duration: Math.round(delay * movieTimescale),
+        });
+      }
+
       track.elst.push({
-        media_time: (track.chunks[0].startPTS - minPts) / track.timescale * movieTimescale,
-        segment_duration: (track.chunks[track.chunks.length - 1].endPTS - track.chunks[0].startPTS) / track.timescale * movieTimescale,
+        media_time: 0,
+        segment_duration: Math.round((end - start) * movieTimescale),
       });
 
       track.samples = [];

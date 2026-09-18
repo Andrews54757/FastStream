@@ -122,7 +122,41 @@ export default class PanoptoPlayer extends HLSPlayer {
       variants,
       offset: stream.offset || 0,
       reference: referencePlaylist,
+      // Decode times are rebased in the track's own timescale, so it has to be known
+      // before the first segment arrives rather than discovered as they stream in.
+      timescale: await this.fetchTimescale(reference, referencePlaylist),
     };
+  }
+
+  /**
+   * Reads a stream's media timescale from the initialization segment its playlist names.
+   * @param {Object} variant - The variant whose playlist was parsed.
+   * @param {PanoptoMediaPlaylist} playlist - That playlist.
+   * @return {Promise<number|null>} The timescale, or null if it could not be read.
+   */
+  async fetchTimescale(variant, playlist) {
+    if (!playlist.map) {
+      return null;
+    }
+
+    try {
+      const url = new URL(playlist.map.uri, variant.url).href;
+      const range = playlist.map.byteRange;
+      const xhr = await RequestUtils.request({
+        url,
+        responseType: 'arraybuffer',
+        range: range ? {start: range.offset, end: range.offset + range.length - 1} : undefined,
+      });
+
+      if ((xhr.status !== 200 && xhr.status !== 206) || !xhr.response) {
+        throw new Error(`HTTP ${xhr.status}`);
+      }
+
+      return MP4Boxes.getTimescale(xhr.response);
+    } catch (e) {
+      console.warn('Panopto: could not read the timescale from', variant.url, e);
+      return null;
+    }
   }
 
   /**
@@ -179,23 +213,28 @@ export default class PanoptoPlayer extends HLSPlayer {
       return data;
     }
 
+    // Initialization segments carry no decode times, but they do carry the timescale,
+    // which is more authoritative per variant than the stream-level one read at setup.
     if (frag.sn === 'initSegment') {
       const timescale = MP4Boxes.getTimescale(data);
       if (timescale) {
         this.timescales.set(key, timescale);
-      } else {
-        console.warn('Panopto: could not read timescale for', stream.name);
       }
       return data;
     }
 
-    const timescale = this.timescales.get(key);
+    const timescale = this.timescales.get(key) || stream.timescale;
     if (!timescale) {
-      console.warn('Panopto: no timescale yet for', stream.name, '- leaving segment unshifted');
+      // Leaving a segment unshifted silently would desync it by however far apart the
+      // encodes are, which for a trimmed capture is hours.
+      console.error('Panopto: no timescale for', stream.name, '- cannot rebase', frag.url);
       return data;
     }
 
-    MP4Boxes.shiftDecodeTime(data, stream.delta * timescale);
+    if (!MP4Boxes.shiftDecodeTime(data, stream.delta, timescale) && stream.delta) {
+      console.error('Panopto: found no decode time to rebase in', frag.url);
+    }
+
     return data;
   }
 
