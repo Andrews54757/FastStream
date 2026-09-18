@@ -13,7 +13,7 @@
   // Panopto arranges its own viewer, and the element holding the video being played is
   // not the largest one on the page, so the replacer is pointed straight at it instead
   // of being left to pick by size.
-  const PLAYER_CONTAINER_QUERY = '.rightPlayersContainer';
+  const PLAYER_CONTAINER_QUERY = '#rightPlayersContainer';
 
   // The viewer builds its layout after page load, so the container will usually not be
   // there yet when the player is asked to open.
