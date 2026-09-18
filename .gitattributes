@@ -1,0 +1,15 @@
+# Store and check out all text files with LF endings.
+#
+# Without this, core.autocrlf=true (the Windows default) hands the working
+# tree CRLF, and eslint-config-google's linebreak-style rule then reports an
+# error on every single line - 2352 of them across this repo. The repository
+# content is already LF throughout, so this changes checkout behaviour only
+# and produces no content diff.
+* text=auto eol=lf
+
+# Binary assets: never convert.
+*.png    binary
+*.wasm   binary
+*.ort    binary
+*.zip    binary
+*.xpi    binary
