@@ -24,6 +24,35 @@
     return;
   }
 
+  /**
+   * Resolves once FastStream is switched on for this tab.
+   *
+   * Nothing here touches the network before that: reading a session's delivery info is
+   * work the user has not asked for until they turn the extension on.
+   *
+   * @return {Promise<void>} Resolves when the tab is enabled.
+   */
+  function waitUntilEnabled() {
+    return new Promise((resolve) => {
+      const onMessage = (request) => {
+        if (request.type === 'MESSAGE_FROM_CONTENT' && request.destination === 'custom' &&
+            request.data?.type === 'tab-enabled') {
+          chrome.runtime.onMessage.removeListener(onMessage);
+          resolve();
+        }
+      };
+      chrome.runtime.onMessage.addListener(onMessage);
+
+      // The tab may already have been on before this page loaded.
+      chrome.runtime.sendMessage({type: 'IS_TAB_ENABLED'}, (response) => {
+        if (response?.enabled) {
+          chrome.runtime.onMessage.removeListener(onMessage);
+          resolve();
+        }
+      });
+    });
+  }
+
   // The main content script is the one that performs the replacement, and it only
   // accepts configuration once it has registered the frame. Started right away so it is
   // settled well before the delivery lookup below produces a source to open.
@@ -126,14 +155,13 @@
    * @return {string} `HH:MM:SS.mmm`.
    */
   function formatTimestamp(seconds) {
-    const clamped = Math.max(0, seconds);
-    const hours = Math.floor(clamped / 3600);
-    const minutes = Math.floor((clamped % 3600) / 60);
-    const secs = Math.floor(clamped % 60);
-    const millis = Math.round((clamped - Math.floor(clamped)) * 1000);
+    // Rounded to whole milliseconds up front, so that a fraction just short of a second
+    // cannot round up to "1000" and be read back as an extra second.
+    const total = Math.max(0, Math.round(seconds * 1000));
 
     const pad = (value, width) => String(value).padStart(width, '0');
-    return `${pad(hours, 2)}:${pad(minutes, 2)}:${pad(secs, 2)}.${pad(millis, 3)}`;
+    return `${pad(Math.floor(total / 3600000), 2)}:${pad(Math.floor(total / 60000) % 60, 2)}:` +
+      `${pad(Math.floor(total / 1000) % 60, 2)}.${pad(total % 1000, 3)}`;
   }
 
   /**
@@ -153,13 +181,19 @@
         return;
       }
 
-      let end;
-      if (typeof caption.Duration === 'number' && caption.Duration > 0) {
-        end = start + caption.Duration;
-      } else {
-        const next = captions[index + 1];
-        const nextStart = next ? (next.Time ?? next.RelativeTime ?? next.StartTime) : null;
-        end = typeof nextStart === 'number' ? nextStart : duration;
+      const next = captions[index + 1];
+      const nextStart = next ? (next.Time ?? next.RelativeTime ?? next.StartTime) : null;
+
+      // Panopto sends Duration as 0 on every entry and puts the real length in
+      // CaptionDuration. Without it each caption would linger until the next one starts.
+      const length = [caption.Duration, caption.CaptionDuration]
+          .find((value) => typeof value === 'number' && value > 0);
+
+      let end = length !== undefined ? start + length :
+        (typeof nextStart === 'number' ? nextStart : duration);
+
+      if (typeof nextStart === 'number' && end > nextStart) {
+        end = nextStart;
       }
 
       if (!(end > start)) {
@@ -223,6 +257,8 @@
   }
 
   (async () => {
+    await waitUntilEnabled();
+
     let info;
     try {
       info = await postDeliveryInfo({

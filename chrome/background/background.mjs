@@ -68,6 +68,7 @@ async function onClicked(tabobj) {
       BackgroundUtils.updateTabIcon(tab);
 
       if (tab.isOn) {
+        notifyTabEnabled(tab);
         openPlayersWithSources(tab);
       } else {
         let hasPlayer = false;
@@ -147,6 +148,7 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
     } else if (shouldAutoEnable && !tab.regexMatched) {
       tab.regexMatched = true;
       tab.isOn = true;
+      notifyTabEnabled(tab);
       openPlayersWithSources(tab);
     } else if (!shouldAutoEnable && tab.regexMatched) {
       tab.isOn = false;
@@ -181,6 +183,13 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
 
   const tab = Tabs.getTabOrCreate(sender.tab.id);
   const frame = tab.getFrameOrCreate(sender.frameId);
+
+  if (msg.type === MessageTypes.IS_TAB_ENABLED) {
+    // Lets a site integration hold off on doing any work, such as calling a site's API,
+    // until the user has actually switched FastStream on for this tab.
+    sendResponse({enabled: !!tab.isOn});
+    return;
+  }
 
   if (msg.type === MessageTypes.PLAYER_LOADED) {
     if (Logging) console.log('Found FastStream window', frame);
@@ -1165,6 +1174,23 @@ async function openPlayer(frame) {
 
       resolve(response);
     });
+  });
+}
+
+/**
+ * Tells a tab's content scripts that FastStream has been switched on for it, so that any
+ * that deferred their work until then can get started.
+ * @param {Object} tab - The tab that was enabled.
+ */
+function notifyTabEnabled(tab) {
+  chrome.tabs.sendMessage(tab.tabId, {
+    type: MessageTypes.MESSAGE_FROM_CONTENT,
+    destination: 'custom',
+    data: {
+      type: 'tab-enabled',
+    },
+  }, () => {
+    BackgroundUtils.checkMessageError('tab_enabled', true);
   });
 }
 
