@@ -10,10 +10,42 @@
   const DELIVERY_INFO_PATH = '/Panopto/Pages/Viewer/DeliveryInfo.aspx';
   const SOURCE_URL_PREFIX = 'data:application/x-panopto+json,';
 
+  // Panopto arranges its own viewer, and the element holding the video being played is
+  // not the largest one on the page, so the replacer is pointed straight at it instead
+  // of being left to pick by size.
+  const PLAYER_CONTAINER_QUERY = '.rightPlayersContainer';
+
+  // The viewer builds its layout after page load, so the container will usually not be
+  // there yet when the player is asked to open.
+  const PLAYER_CONTAINER_TIMEOUT = 3000;
+
   const deliveryId = new URLSearchParams(location.search).get('id');
   if (!deliveryId || !/^[0-9a-f-]{36}$/i.test(deliveryId)) {
     return;
   }
+
+  // The main content script is the one that performs the replacement, and it only
+  // accepts configuration once it has registered the frame. Started right away so it is
+  // settled well before the delivery lookup below produces a source to open.
+  const replacerConfigured = (async () => {
+    await new Promise((resolve) => {
+      chrome.runtime.sendMessage({type: 'WAIT_UNTIL_MAIN_LOADED'}, () => resolve());
+    });
+
+    await new Promise((resolve) => {
+      chrome.runtime.sendMessage({
+        type: 'SEND_TO_CONTENT',
+        destination: 'main',
+        data: {
+          type: 'config',
+          config: {
+            customVideoQuery: PLAYER_CONTAINER_QUERY,
+            customVideoQueryTimeout: PLAYER_CONTAINER_TIMEOUT,
+          },
+        },
+      }, () => resolve());
+    });
+  })();
 
   /**
    * Posts a form-encoded request to the delivery info endpoint.
@@ -252,12 +284,18 @@
       streams,
     };
 
+    const subtitles = await getSubtitles(delivery);
+
+    // Announcing the source is what eventually triggers the replacement, so the
+    // replacer has to know which element to target before this goes out.
+    await replacerConfigured;
+
     chrome.runtime.sendMessage({
       type: 'DETECTED_SOURCE',
       url: SOURCE_URL_PREFIX + encodeURIComponent(JSON.stringify(descriptor)),
       ext: 'panopto',
       headers: {},
-      subtitles: await getSubtitles(delivery),
+      subtitles,
     });
   })();
 })();

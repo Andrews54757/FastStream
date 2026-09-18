@@ -33,6 +33,10 @@
     softReplaceByDefault: true,
     hasCustomPlaylist: false,
     customVideoQuery: null,
+    // How long to wait for customVideoQuery to match before giving up, in milliseconds.
+    // Sites that build their player asynchronously need this; zero keeps the lookup
+    // immediate for those that do not.
+    customVideoQueryTimeout: 0,
     hasCustomLinkHandler: false,
     customIframeId: null,
   };
@@ -232,7 +236,7 @@
   }
 
   function handlePlayerOpen(request, sender, sendResponse) {
-    getVideo().then((video) => {
+    getVideo(true).then((video) => {
       if (!video && !request.force) {
         console.log('no video found');
         sendResponse('no_video');
@@ -1024,6 +1028,48 @@
     return results;
   }
 
+  /**
+   * Resolves with the first element matching the query, waiting for it to appear if it
+   * is not there yet.
+   *
+   * Sites that build their player after page load may not have the element a site
+   * integration named in the DOM by the time the player is asked to open.
+   *
+   * @param {string} query - The selector to match.
+   * @param {number} timeout - How long to wait before giving up, in milliseconds.
+   * @return {Promise<Element|null>} The element, or null if it never appeared.
+   */
+  function waitForElement(query, timeout) {
+    const existing = querySelectorAllIncludingShadows(query)[0];
+    if (existing || !document.body) {
+      return Promise.resolve(existing || null);
+    }
+
+    return new Promise((resolve) => {
+      let timer = null;
+
+      const observer = new MutationObserver(() => {
+        const found = querySelectorAllIncludingShadows(query)[0];
+        if (!found) {
+          return;
+        }
+        observer.disconnect();
+        clearTimeout(timer);
+        resolve(found);
+      });
+
+      timer = setTimeout(() => {
+        observer.disconnect();
+        resolve(querySelectorAllIncludingShadows(query)[0] || null);
+      }, timeout);
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    });
+  }
+
   function getParentElement(element) {
     return element.parentElement || element.assignedSlot || element.parentNode?.host;
   }
@@ -1109,9 +1155,22 @@
     return elements;
   }
 
-  async function getVideo() {
+  /**
+   * Finds the element the player should replace.
+   *
+   * @param {boolean} [waitForCustomQuery] - Whether to wait for a site integration's
+   *     chosen element to appear. Only worth doing when about to replace it; callers
+   *     that just want a size should not block on it.
+   * @return {Promise<Object|null>} The element to replace and its size.
+   */
+  async function getVideo(waitForCustomQuery = false) {
     if (Config.customVideoQuery) {
-      const player = querySelectorAllIncludingShadows(Config.customVideoQuery)[0];
+      // A site integration has named the element it wants replaced, so take it as given
+      // rather than guessing at whichever video looks largest.
+      const player = waitForCustomQuery && Config.customVideoQueryTimeout > 0 ?
+        await waitForElement(Config.customVideoQuery, Config.customVideoQueryTimeout) :
+        querySelectorAllIncludingShadows(Config.customVideoQuery)[0];
+
       if (player) {
         return {
           size: player.clientWidth * player.clientHeight,
