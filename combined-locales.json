@@ -5399,6 +5399,24 @@
         "zh_CN": "色相旋转",
         "zh_TW": "色相旋轉"
     },
+    "options_video_aspect_ratio": {
+        "en": "Aspect Ratio",
+        "de": "Aspect Ratio",
+        "es": "Aspect Ratio",
+        "fr": "Aspect Ratio",
+        "id": "Aspect Ratio",
+        "it": "Aspect Ratio",
+        "ja": "Aspect Ratio",
+        "ko": "Aspect Ratio",
+        "ms": "Aspect Ratio",
+        "nl": "Aspect Ratio",
+        "pl": "Aspect Ratio",
+        "pt_BR": "Aspect Ratio",
+        "ru": "Aspect Ratio",
+        "tr": "Aspect Ratio",
+        "zh_CN": "Aspect Ratio",
+        "zh_TW": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "en": "Color blindness correction",
         "de": "Korrekturen von Farbenblindheit",

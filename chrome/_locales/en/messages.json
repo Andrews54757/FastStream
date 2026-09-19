@@ -902,6 +902,9 @@
     "options_video_hue": {
         "message": "Hue Rotate"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Color blindness correction"
     },
