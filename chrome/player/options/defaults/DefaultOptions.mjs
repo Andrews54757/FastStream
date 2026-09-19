@@ -47,4 +47,6 @@ export const DefaultOptions = {
   videoDelay: 0,
   maximumDownloaders: 6,
   youtubePlayerID: '',
+  autoTranslate: false,            // Default to off for Store compliance
+  defaultTranslateLanguage: 'en',  // Default language code
 };
