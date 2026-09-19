@@ -32,6 +32,8 @@
   const Config = {
     softReplaceByDefault: true,
     hasCustomPlaylist: false,
+    // A selector for the element to replace, or several in order of preference for a
+    // site whose player has more than one layout.
     customVideoQuery: null,
     // How long to wait for customVideoQuery to match before giving up, in milliseconds.
     // Sites that build their player asynchronously need this; zero keeps the lookup
@@ -1029,18 +1031,44 @@
   }
 
   /**
+   * Finds the element a site integration named, preferring the selectors it listed
+   * first.
+   *
+   * A site may lay its player out in more than one way, and which element to replace
+   * depends on which layout the page ended up with. Passing the alternatives as one
+   * selector list would not express that: `querySelectorAll` answers in document order,
+   * so the page's layout rather than the integration's preference would decide. They
+   * are therefore tried one at a time, in the order given.
+   *
+   * @param {string|string[]} query - A selector, or several in order of preference.
+   * @return {Element|null} The first match, or null if none matched.
+   */
+  function queryPreferred(query) {
+    const queries = Array.isArray(query) ? query : [query];
+
+    for (const one of queries) {
+      const found = querySelectorAllIncludingShadows(one)[0];
+      if (found) {
+        return found;
+      }
+    }
+
+    return null;
+  }
+
+  /**
    * Resolves with the first element matching the query, waiting for it to appear if it
    * is not there yet.
    *
    * Sites that build their player after page load may not have the element a site
    * integration named in the DOM by the time the player is asked to open.
    *
-   * @param {string} query - The selector to match.
+   * @param {string|string[]} query - A selector, or several in order of preference.
    * @param {number} timeout - How long to wait before giving up, in milliseconds.
    * @return {Promise<Element|null>} The element, or null if it never appeared.
    */
   function waitForElement(query, timeout) {
-    const existing = querySelectorAllIncludingShadows(query)[0];
+    const existing = queryPreferred(query);
     if (existing || !document.body) {
       return Promise.resolve(existing || null);
     }
@@ -1049,7 +1077,7 @@
       let timer = null;
 
       const observer = new MutationObserver(() => {
-        const found = querySelectorAllIncludingShadows(query)[0];
+        const found = queryPreferred(query);
         if (!found) {
           return;
         }
@@ -1060,7 +1088,7 @@
 
       timer = setTimeout(() => {
         observer.disconnect();
-        resolve(querySelectorAllIncludingShadows(query)[0] || null);
+        resolve(queryPreferred(query));
       }, timeout);
 
       observer.observe(document.body, {
@@ -1169,7 +1197,7 @@
       // rather than guessing at whichever video looks largest.
       const player = waitForCustomQuery && Config.customVideoQueryTimeout > 0 ?
         await waitForElement(Config.customVideoQuery, Config.customVideoQueryTimeout) :
-        querySelectorAllIncludingShadows(Config.customVideoQuery)[0];
+        queryPreferred(Config.customVideoQuery);
 
       if (player) {
         return {

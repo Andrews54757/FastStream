@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>FastStream embed API example</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+        :root {
+            color-scheme: dark;
+            --panel: #1b1b1f;
+            --line: #33333a;
+            --text: #e6e6ea;
+            --muted: #9a9aa6;
+            --accent: #4a9eff;
+        }
+
+        body {
+            margin: 0;
+            padding: 24px;
+            background: #121216;
+            color: var(--text);
+            font: 14px/1.5 system-ui, sans-serif;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin: 0 0 4px;
+        }
+
+        h2 {
+            font-size: 14px;
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        p.intro {
+            margin: 0 0 20px;
+            color: var(--muted);
+            max-width: 70ch;
+        }
+
+        .layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .player {
+            flex: 1 1 560px;
+            min-width: 320px;
+        }
+
+        iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            background: #000;
+        }
+
+        .side {
+            flex: 1 1 320px;
+            min-width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .row:last-child {
+            margin-bottom: 0;
+        }
+
+        button {
+            background: #2a2a31;
+            color: var(--text);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+        }
+
+        input,
+        select {
+            background: #111114;
+            color: var(--text);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            padding: 6px 8px;
+            font: inherit;
+        }
+
+        input[type=text] {
+            flex: 1 1 200px;
+            min-width: 0;
+        }
+
+        table.state {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table.state td {
+            padding: 2px 0;
+            vertical-align: top;
+        }
+
+        table.state td:first-child {
+            color: var(--muted);
+            width: 40%;
+        }
+
+        #log {
+            margin: 0;
+            height: 180px;
+            overflow: auto;
+            font: 12px/1.45 ui-monospace, monospace;
+            white-space: pre-wrap;
+            color: var(--muted);
+        }
+
+        #log .err {
+            color: #ff8080;
+        }
+
+        code {
+            font: 12px/1.45 ui-monospace, monospace;
+            color: var(--accent);
+        }
+
+        details.reference {
+            margin-top: 20px;
+        }
+
+        details.reference summary {
+            cursor: pointer;
+            color: var(--muted);
+        }
+
+        details.reference table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+
+        details.reference th,
+        details.reference td {
+            text-align: left;
+            padding: 6px 12px 6px 0;
+            border-bottom: 1px solid var(--line);
+            vertical-align: top;
+        }
+
+        details.reference th {
+            color: var(--muted);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>FastStream embed API</h1>
+    <p class="intro">
+        The web build of FastStream can be embedded in an iframe and driven by the page that embeds it. The page and
+        the player are on different origins, so everything goes over <code>postMessage</code>. This page is a working
+        example of the whole protocol: it waits for the player to announce itself, subscribes to its events, and sends
+        it commands.
+    </p>
+
+    <div class="layout">
+        <div class="player">
+            <iframe id="player" allow="fullscreen; picture-in-picture; autoplay" allowfullscreen></iframe>
+        </div>
+
+        <div class="side">
+            <div class="panel">
+                <h2>Source</h2>
+                <div class="row">
+                    <input type="text" id="url"
+                        value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
+                    <button id="load">Load</button>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>Playback</h2>
+                <div class="row">
+                    <button id="play">Play</button>
+                    <button id="pause">Pause</button>
+                    <button id="back">-10s</button>
+                    <button id="forward">+10s</button>
+                    <button id="fullscreen">Fullscreen</button>
+                </div>
+                <div class="row">
+                    <label for="volume">Volume</label>
+                    <input type="range" id="volume" min="0" max="1" step="0.01" value="1" />
+                    <label for="rate">Rate</label>
+                    <select id="rate">
+                        <option>0.5</option>
+                        <option>1</option>
+                        <option>1.5</option>
+                        <option>2</option>
+                    </select>
+                </div>
+                <div class="row">
+                    <label for="level">Quality</label>
+                    <select id="level">
+                        <option value="">Loading…</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="panel">
+                <h2>State</h2>
+                <table class="state">
+                    <tbody id="state">
+                        <tr>
+                            <td colspan="2">Waiting for the player…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="panel">
+                <h2>Messages</h2>
+                <pre id="log"></pre>
+            </div>
+        </div>
+    </div>
+
+    <details class="reference">
+        <summary>Protocol reference</summary>
+
+        <p>
+            Commands are <code>{type: 'faststream:command', id, command, args}</code>, posted to the iframe's window.
+            Every command is answered with <code>{type: 'faststream:response', id, ok, result}</code>, or
+            <code>{type: 'faststream:response', id, ok: false, error: {message}}</code> when it failed. The
+            <code>id</code> is whatever you labelled the command with, handed back so you can match the two up.
+        </p>
+        <p>
+            Events are <code>{type: 'faststream:event', event, state, detail}</code>, where <code>state</code> is the
+            same snapshot <code>getState</code> returns. They are only sent to windows that asked for them with
+            <code>subscribe</code>. The exception is <code>ready</code>, which the player sends to whoever embedded it
+            as soon as it has loaded — wait for it before sending anything, because an iframe's load event fires
+            before the player's scripts have run.
+        </p>
+
+        <table>
+            <tr>
+                <th>Command</th>
+                <th>Arguments</th>
+                <th>Answers</th>
+            </tr>
+            <tr>
+                <td><code>ping</code></td>
+                <td></td>
+                <td>The player's version, and the commands and events this build knows</td>
+            </tr>
+            <tr>
+                <td><code>getState</code></td>
+                <td></td>
+                <td>Time, duration, buffered ranges, volume, rate, frame size, and the rest</td>
+            </tr>
+            <tr>
+                <td><code>getLevels</code></td>
+                <td></td>
+                <td>The qualities and audio tracks the source offers, and which are playing</td>
+            </tr>
+            <tr>
+                <td><code>getSubtitles</code></td>
+                <td></td>
+                <td>The subtitle tracks that are loaded, and which are showing</td>
+            </tr>
+            <tr>
+                <td><code>load</code></td>
+                <td><code>{url, mode, headers, subtitles, autoPlay, time}</code></td>
+                <td>Plays a video, replacing whatever was playing</td>
+            </tr>
+            <tr>
+                <td><code>addSource</code></td>
+                <td><code>{url, mode, headers, setSource}</code></td>
+                <td>Offers a video in the player's source list</td>
+            </tr>
+            <tr>
+                <td><code>play</code>, <code>pause</code>, <code>togglePlay</code></td>
+                <td></td>
+                <td>A play the browser blocks comes back as an error</td>
+            </tr>
+            <tr>
+                <td><code>seek</code></td>
+                <td><code>{time}</code> or <code>{delta}</code></td>
+                <td>Moves the playhead, in seconds</td>
+            </tr>
+            <tr>
+                <td><code>setVolume</code>, <code>setMuted</code></td>
+                <td><code>{volume}</code> 0–3, <code>{muted}</code></td>
+                <td>Above 1 amplifies, where the browser can</td>
+            </tr>
+            <tr>
+                <td><code>setPlaybackRate</code></td>
+                <td><code>{rate}</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><code>setVideoLevel</code>, <code>setAudioLevel</code></td>
+                <td><code>{id}</code> from <code>getLevels</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><code>setLanguage</code></td>
+                <td><code>{type: 'video'|'audio', language}</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><code>addSubtitles</code></td>
+                <td><code>{label, language, data|url, activate}</code></td>
+                <td>WebVTT, SRT or TTML, as text or as a url the player fetches</td>
+            </tr>
+            <tr>
+                <td><code>setSubtitleTrack</code>, <code>clearSubtitles</code></td>
+                <td><code>{index, active}</code></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td><code>setFullscreen</code>, <code>setPictureInPicture</code></td>
+                <td><code>{fullscreen}</code>, <code>{pictureInPicture}</code></td>
+                <td>Needs the iframe's <code>allow</code> attribute, and a user gesture</td>
+            </tr>
+            <tr>
+                <td><code>subscribe</code>, <code>unsubscribe</code></td>
+                <td><code>{events}</code>, or nothing for all of them</td>
+                <td>Events are sent to the window that subscribed, at its own origin</td>
+            </tr>
+        </table>
+    </details>
+
+    <script>
+        // Point this at wherever the web build is served from. On a real site that is
+        // https://faststream.online/player/; here it is the player in this repository, so the example
+        // runs against whatever you have checked out.
+        const PLAYER_URL = '../chrome/player/index.html';
+
+        const player = document.getElementById('player');
+        const playerOrigin = new URL(PLAYER_URL, location.href).origin;
+        const pending = new Map();
+        let nextId = 1;
+
+        // Sends a command and resolves with its result, or rejects with the reason the player gave.
+        function call(command, args) {
+            const id = nextId++;
+            return new Promise((resolve, reject) => {
+                pending.set(id, {resolve, reject});
+                player.contentWindow.postMessage({type: 'faststream:command', id, command, args}, playerOrigin);
+            });
+        }
+
+        window.addEventListener('message', (e) => {
+            if (e.source !== player.contentWindow) return;
+            const data = e.data;
+
+            if (data?.type === 'faststream:response') {
+                const waiting = pending.get(data.id);
+                pending.delete(data.id);
+                if (!waiting) return;
+                if (data.ok) {
+                    waiting.resolve(data.result);
+                } else {
+                    log(`error: ${data.error.message}`, true);
+                    waiting.reject(new Error(data.error.message));
+                }
+            } else if (data?.type === 'faststream:event') {
+                onEvent(data);
+            }
+        });
+
+        function onEvent(message) {
+            showState(message.state);
+
+            // timeupdate arrives several times a second, which would drown out everything else.
+            if (message.event !== 'timeupdate') {
+                log(`event: ${message.event}`);
+            }
+
+            if (message.event === 'ready') {
+                call('subscribe').then(() => log('subscribed to events'));
+            } else if (message.event === 'manifestparsed' || message.event === 'sourcechange') {
+                refreshLevels();
+            }
+        }
+
+        function log(text, isError) {
+            const line = document.createElement('div');
+            line.textContent = `${new Date().toLocaleTimeString()}  ${text}`;
+            if (isError) line.className = 'err';
+            const box = document.getElementById('log');
+            box.appendChild(line);
+            box.scrollTop = box.scrollHeight;
+        }
+
+        function showState(state) {
+            const rows = {
+                'Source': state.source ? `${state.source.mode}` : 'none',
+                'Playing': state.paused ? 'no' : 'yes',
+                'Time': `${state.currentTime.toFixed(1)}s / ${state.duration.toFixed(1)}s`,
+                'Buffered': state.buffered.map(([s, e]) => `${s.toFixed(0)}–${e.toFixed(0)}`).join(', ') || 'nothing',
+                'Volume': `${Math.round(state.volume * 100)}%${state.muted ? ' (muted)' : ''}`,
+                'Rate': `${state.playbackRate}x`,
+                'Size': state.videoWidth ? `${state.videoWidth}×${state.videoHeight}` : 'unknown',
+                'Buffering': state.buffering ? 'yes' : 'no',
+            };
+
+            document.getElementById('state').innerHTML = Object.entries(rows).map(([name, value]) => {
+                const cell = document.createElement('td');
+                cell.textContent = value;
+                return `<tr><td>${name}</td>${cell.outerHTML}</tr>`;
+            }).join('');
+        }
+
+        async function refreshLevels() {
+            const levels = await call('getLevels');
+            const select = document.getElementById('level');
+            select.innerHTML = '';
+            levels.video.forEach((level) => {
+                const option = document.createElement('option');
+                option.value = level.id;
+                option.textContent = level.height ? `${level.height}p` : level.id;
+                option.selected = level.id === levels.currentVideo;
+                select.appendChild(option);
+            });
+        }
+
+        document.getElementById('load').onclick = () => {
+            call('load', {url: document.getElementById('url').value, autoPlay: true});
+        };
+        document.getElementById('play').onclick = () => call('play');
+        document.getElementById('pause').onclick = () => call('pause');
+        document.getElementById('back').onclick = () => call('seek', {delta: -10});
+        document.getElementById('forward').onclick = () => call('seek', {delta: 10});
+        document.getElementById('fullscreen').onclick = () => call('setFullscreen', {fullscreen: true});
+        document.getElementById('volume').oninput = (e) => call('setVolume', {volume: Number(e.target.value)});
+        document.getElementById('rate').onchange = (e) => call('setPlaybackRate', {rate: Number(e.target.value)});
+        document.getElementById('level').onchange = (e) => call('setVideoLevel', {id: e.target.value});
+
+        player.src = PLAYER_URL;
+    </script>
+</body>
+
+</html>

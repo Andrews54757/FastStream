@@ -2,6 +2,7 @@
 import {MessageTypes} from './enums/MessageTypes.mjs';
 import {PlayerModes} from './enums/PlayerModes.mjs';
 import {FastStreamClient} from './FastStreamClient.mjs';
+import {EmbedAPI} from './modules/EmbedAPI.mjs'; // SPLICER:EXTENSION:REMOVE_LINE
 import {Localize} from './modules/Localize.mjs';
 import {SubtitleTrack} from './SubtitleTrack.mjs';
 import {EnvUtils} from './utils/EnvUtils.mjs';
@@ -319,9 +320,13 @@ async function setup() {
       window.fastStream.destroy();
       delete window.fastStream;
     }
-    chrome.runtime.sendMessage({
-      type: MessageTypes.FRAME_REMOVED,
-    });
+    // Only the extension has a background page that tracks its frames; the web build has
+    // no chrome object to reach for, and reaching for one here threw on every unload.
+    if (EnvUtils.isExtension()) {
+      chrome.runtime.sendMessage({
+        type: MessageTypes.FRAME_REMOVED,
+      });
+    }
   });
 
   if (window.location.hash) {
@@ -361,6 +366,16 @@ async function setup() {
       }
     });
   }
+
+  // SPLICER:EXTENSION:REMOVE_START
+  if (!EnvUtils.isExtension()) {
+    // A page that embeds this player in an iframe cannot reach into the frame to drive
+    // it, the way the extension reaches into its own pages, so it is given a channel to
+    // ask through instead.
+    window.fastStreamEmbedAPI = new EmbedAPI(window.fastStream);
+    window.fastStreamEmbedAPI.start();
+  }
+  // SPLICER:EXTENSION:REMOVE_END
 }
 
 setup().catch((e)=>{

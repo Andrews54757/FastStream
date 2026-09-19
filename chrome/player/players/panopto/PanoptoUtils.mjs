@@ -24,6 +24,11 @@ const VIDEO_CODEC_REGEX = /^(avc|hvc|hev|dvh|vp0|vp8|vp9|av01)/i;
 const AUDIO_CODEC_REGEX = /^(mp4a|ac-3|ec-3|opus|mp3|alac|flac|dts)/i;
 
 const AUDIO_GROUP_ID = 'panopto-audio';
+// Marks the URLs of the audio-only view of a muxed stream. A fragment identifier never
+// reaches the server, so the rendition and the stream it is taken from stay one
+// resource while remaining two things to the player and to the download cache.
+const AUDIO_RENDITION_MARKER = '#panopto-audio-only';
+const MUXED_AUDIO_GROUP_ID = 'panopto-muxed-audio';
 
 /**
  * A parsed HLS media playlist, retaining enough structure to re-emit a trimmed copy.
@@ -142,7 +147,7 @@ export class PanoptoMediaPlaylist {
    *     is how a stream that begins partway into the presentation says so.
    * @return {string} The trimmed playlist body.
    */
-  serialize(startIndex, endIndex, firstSegmentPad = 0) {
+  serialize(startIndex, endIndex, firstSegmentPad = 0, uriSuffix = '') {
     const kept = this.segments.slice(startIndex, endIndex + 1);
     const lines = ['#EXTM3U'];
 
@@ -153,7 +158,9 @@ export class PanoptoMediaPlaylist {
     lines.push(`#EXT-X-MEDIA-SEQUENCE:${this.mediaSequence + startIndex}`);
 
     if (this.mapLine) {
-      lines.push(this.mapLine);
+      lines.push(uriSuffix ?
+          this.mapLine.replace(/URI="([^"]*)"/, (match, uri) => `URI="${uri}${uriSuffix}"`) :
+          this.mapLine);
     }
 
     kept.forEach((segment, index) => {
@@ -165,7 +172,7 @@ export class PanoptoMediaPlaylist {
       if (segment.byteRange) {
         lines.push(`#EXT-X-BYTERANGE:${segment.byteRange.length}@${segment.byteRange.offset}`);
       }
-      lines.push(segment.uri);
+      lines.push(segment.uri + uriSuffix);
     });
 
     lines.push('#EXT-X-ENDLIST');
@@ -215,7 +222,7 @@ export class MP4Boxes {
    * @param {DataView} view - View over the buffer.
    * @param {number} start - Start offset.
    * @param {number} end - End offset.
-   * @param {Function} callback - Called with (type, contentStart, contentEnd).
+   * @param {Function} callback - Called with (type, contentStart, contentEnd, boxStart).
    */
   static walk(view, start, end, callback) {
     let offset = start;
@@ -238,7 +245,7 @@ export class MP4Boxes {
 
       if (size < 8 || offset + size > end) break;
 
-      callback(type, contentStart, offset + size);
+      callback(type, contentStart, offset + size, offset);
       offset += size;
     }
   }
@@ -249,13 +256,13 @@ export class MP4Boxes {
    * @param {number} start - Start offset.
    * @param {number} end - End offset.
    * @param {string[]} path - Box types, outermost first.
-   * @param {Function} callback - Called with (contentStart, contentEnd) for each match.
+   * @param {Function} callback - Called with (contentStart, contentEnd, boxStart) per match.
    */
   static walkPath(view, start, end, path, callback) {
-    this.walk(view, start, end, (type, contentStart, contentEnd) => {
+    this.walk(view, start, end, (type, contentStart, contentEnd, boxStart) => {
       if (type !== path[0]) return;
       if (path.length === 1) {
-        callback(contentStart, contentEnd);
+        callback(contentStart, contentEnd, boxStart);
       } else {
         this.walkPath(view, contentStart, contentEnd, path.slice(1), callback);
       }
@@ -363,6 +370,320 @@ export class MP4Boxes {
 
     return patched;
   }
+
+  /**
+   * Wraps already-serialized contents in a box.
+   * @param {string} type - The four-character box type.
+   * @param {Uint8Array[]} parts - The contents, in order.
+   * @return {Uint8Array} The box.
+   */
+  static box(type, parts) {
+    const length = parts.reduce((total, part) => total + part.byteLength, 0);
+    const out = new Uint8Array(8 + length);
+
+    new DataView(out.buffer).setUint32(0, out.byteLength);
+    for (let i = 0; i < 4; i++) {
+      out[4 + i] = type.charCodeAt(i);
+    }
+
+    let offset = 8;
+    for (const part of parts) {
+      out.set(part, offset);
+      offset += part.byteLength;
+    }
+
+    return out;
+  }
+
+  /**
+   * Concatenates boxes into one buffer.
+   * @param {Uint8Array[]} parts - The boxes, in order.
+   * @return {ArrayBuffer} The buffer.
+   */
+  static join(parts) {
+    const out = new Uint8Array(parts.reduce((total, part) => total + part.byteLength, 0));
+
+    let offset = 0;
+    for (const part of parts) {
+      out.set(part, offset);
+      offset += part.byteLength;
+    }
+
+    return out.buffer;
+  }
+
+  /**
+   * Rewrites an initialization segment to describe only its audio track.
+   *
+   * A session whose audio was captured alongside a camera arrives muxed into that
+   * stream, and a player can only take alternate audio from a rendition that has
+   * nothing else in it — so the rest of the session would play silent. Serving that
+   * stream a second time with its video taken out gives them their sound back.
+   *
+   * @param {ArrayBuffer} buffer - The initialization segment.
+   * @return {{buffer: ArrayBuffer, trackId: number}|null} The rewritten segment and the
+   *     track it kept, or null if it could not be rewritten.
+   */
+  static stripInitToAudio(buffer) {
+    const view = new DataView(buffer);
+    const bytes = new Uint8Array(buffer);
+    let moov = null;
+
+    this.walk(view, 0, buffer.byteLength, (type, contentStart, contentEnd, boxStart) => {
+      if (type === 'moov') {
+        moov = {contentStart, contentEnd, boxStart};
+      }
+    });
+
+    if (!moov) {
+      return null;
+    }
+
+    const traks = [];
+    this.walk(view, moov.contentStart, moov.contentEnd, (type, contentStart, contentEnd, boxStart) => {
+      if (type !== 'trak') return;
+
+      const trak = {boxStart, boxEnd: contentEnd, trackId: null, handler: null};
+      this.walkPath(view, contentStart, contentEnd, ['tkhd'], (start) => {
+        trak.trackId = view.getUint8(start) === 1 ? view.getUint32(start + 20) : view.getUint32(start + 12);
+      });
+      this.walkPath(view, contentStart, contentEnd, ['mdia', 'hdlr'], (start) => {
+        trak.handler = readBoxType(view, start + 8);
+      });
+      traks.push(trak);
+    });
+
+    const audio = traks.find((trak) => trak.handler === 'soun');
+    if (!audio || audio.trackId === null) {
+      return null;
+    }
+
+    if (traks.length === 1) {
+      return {buffer, trackId: audio.trackId};
+    }
+
+    const movie = [];
+    this.walk(view, moov.contentStart, moov.contentEnd, (type, contentStart, contentEnd, boxStart) => {
+      if (type === 'trak') {
+        if (boxStart === audio.boxStart) {
+          movie.push(bytes.subarray(boxStart, contentEnd));
+        }
+        return;
+      }
+
+      // The track extends box carries a default per track, so it loses the same one.
+      if (type === 'mvex') {
+        const kept = [];
+        this.walk(view, contentStart, contentEnd, (childType, childStart, childEnd, childStartBox) => {
+          if (childType === 'trex' && view.getUint32(childStart + 4) !== audio.trackId) return;
+          kept.push(bytes.subarray(childStartBox, childEnd));
+        });
+        movie.push(this.box('mvex', kept));
+        return;
+      }
+
+      movie.push(bytes.subarray(boxStart, contentEnd));
+    });
+
+    const rebuilt = [];
+    this.walk(view, 0, buffer.byteLength, (type, contentStart, contentEnd, boxStart) => {
+      rebuilt.push(type === 'moov' ? this.box('moov', movie) : bytes.subarray(boxStart, contentEnd));
+    });
+
+    return {buffer: this.join(rebuilt), trackId: audio.trackId};
+  }
+
+  /**
+   * Rewrites a media segment to carry only one track's samples.
+   *
+   * The companion to {@link stripInitToAudio}: the other track's fragment and its bytes
+   * are dropped, and what remains is repositioned, since sample offsets are measured
+   * from the start of the movie fragment that just got smaller.
+   *
+   * @param {ArrayBuffer} buffer - The media segment.
+   * @param {number} trackId - The track to keep.
+   * @return {ArrayBuffer|null} The rewritten segment, or null if it could not be.
+   */
+  static stripSegmentToAudio(buffer, trackId) {
+    const view = new DataView(buffer);
+    const bytes = new Uint8Array(buffer);
+
+    const boxes = [];
+    let moof = null;
+    let mdat = null;
+    this.walk(view, 0, buffer.byteLength, (type, contentStart, contentEnd, boxStart) => {
+      const box = {type, contentStart, contentEnd, boxStart};
+      boxes.push(box);
+      if (type === 'moof') moof = box;
+      if (type === 'mdat') mdat = box;
+    });
+
+    if (!moof || !mdat) {
+      return null;
+    }
+
+    const fragments = [];
+    this.walk(view, moof.contentStart, moof.contentEnd, (type, contentStart, contentEnd, boxStart) => {
+      if (type !== 'traf') return;
+
+      const fragment = {boxStart, boxEnd: contentEnd, trackId: null, flags: 0, defaultSampleSize: 0, runs: []};
+      this.walkPath(view, contentStart, contentEnd, ['tfhd'], (start) => {
+        fragment.flags = view.getUint32(start) & 0xffffff;
+        fragment.trackId = view.getUint32(start + 4);
+
+        let cursor = start + 8;
+        if (fragment.flags & 0x000001) cursor += 8;
+        if (fragment.flags & 0x000002) cursor += 4;
+        if (fragment.flags & 0x000008) cursor += 4;
+        if (fragment.flags & 0x000010) fragment.defaultSampleSize = view.getUint32(cursor);
+      });
+      this.walkPath(view, contentStart, contentEnd, ['trun'], (start) => {
+        fragment.runs.push(start);
+      });
+      fragments.push(fragment);
+    });
+
+    const audio = fragments.find((fragment) => fragment.trackId === trackId);
+    if (!audio) {
+      return null;
+    }
+
+    if (fragments.length === 1) {
+      return buffer;
+    }
+
+    // Sample positions given from an absolute base would survive neither the movie
+    // fragment shrinking nor the media data being trimmed.
+    if (audio.flags & 0x000001) {
+      return null;
+    }
+
+    let dataStart = null;
+    let dataLength = 0;
+    let firstOffset = null;
+
+    for (const run of audio.runs) {
+      const flags = view.getUint32(run) & 0xffffff;
+      const count = view.getUint32(run + 4);
+      let cursor = run + 8;
+      let offset = null;
+
+      if (flags & 0x000001) {
+        offset = view.getInt32(cursor);
+        cursor += 4;
+      }
+      if (flags & 0x000004) cursor += 4;
+
+      let length = 0;
+      for (let i = 0; i < count; i++) {
+        if (flags & 0x000100) cursor += 4;
+        if (flags & 0x000200) {
+          length += view.getUint32(cursor);
+          cursor += 4;
+        } else {
+          length += audio.defaultSampleSize;
+        }
+        if (flags & 0x000400) cursor += 4;
+        if (flags & 0x000800) cursor += 4;
+      }
+
+      // A run without an offset of its own carries straight on from the last one.
+      const start = offset === null ? (dataStart === null ? null : dataStart + dataLength) : moof.boxStart + offset;
+      if (start === null) {
+        return null;
+      }
+
+      if (dataStart === null) {
+        dataStart = start;
+        firstOffset = offset;
+      } else if (start !== dataStart + dataLength) {
+        // The track's samples are scattered through the media data rather than laid out
+        // in one run, so they cannot be lifted out by trimming.
+        return null;
+      }
+
+      dataLength += length;
+    }
+
+    if (firstOffset === null || dataLength === 0 ||
+        dataStart < mdat.contentStart || dataStart + dataLength > mdat.contentEnd) {
+      return null;
+    }
+
+    const fragmentBoxes = [];
+    this.walk(view, moof.contentStart, moof.contentEnd, (type, contentStart, contentEnd, boxStart) => {
+      if (type === 'traf' && boxStart !== audio.boxStart) return;
+      fragmentBoxes.push(bytes.subarray(boxStart, contentEnd));
+    });
+
+    const movieFragment = this.box('moof', fragmentBoxes);
+    const fragmentView = new DataView(movieFragment.buffer, movieFragment.byteOffset, movieFragment.byteLength);
+    const shift = movieFragment.byteLength + 8 - firstOffset;
+
+    this.walkPath(fragmentView, 8, movieFragment.byteLength, ['traf', 'trun'], (start) => {
+      if (fragmentView.getUint32(start) & 0x000001) {
+        fragmentView.setInt32(start + 8, fragmentView.getInt32(start + 8) + shift);
+      }
+    });
+
+    const indexedSize = movieFragment.byteLength + 8 + dataLength;
+    const rebuilt = [];
+
+    for (const box of boxes) {
+      if (box.type === 'moof') {
+        rebuilt.push(movieFragment);
+      } else if (box.type === 'mdat') {
+        rebuilt.push(this.box('mdat', [bytes.subarray(dataStart, dataStart + dataLength)]));
+      } else if (box.type === 'sidx') {
+        const index = this.reindexSidx(view, bytes, box, trackId, indexedSize);
+        if (index) rebuilt.push(index);
+      } else {
+        rebuilt.push(bytes.subarray(box.boxStart, box.contentEnd));
+      }
+    }
+
+    return this.join(rebuilt);
+  }
+
+  /**
+   * Rewrites a segment index for a segment that has just been trimmed to one track.
+   * @param {DataView} view - View over the original segment.
+   * @param {Uint8Array} bytes - The original segment.
+   * @param {Object} box - The segment index's bounds.
+   * @param {number} trackId - The track that was kept.
+   * @param {number} indexedSize - How many bytes the index now covers.
+   * @return {Uint8Array|null} The rewritten index, or null if it should be dropped.
+   */
+  static reindexSidx(view, bytes, box, trackId, indexedSize) {
+    if (view.getUint32(box.contentStart + 4) !== trackId) {
+      return null;
+    }
+
+    const version = view.getUint8(box.contentStart);
+    const entries = box.contentStart + (version === 1 ? 32 : 24);
+
+    // Rewriting one entry is a matter of its size; several would have to be re-measured
+    // against the trimmed media, and an index that lies is worse than none at all.
+    if (entries + 4 > box.contentEnd || view.getUint16(entries - 2) !== 1) {
+      return null;
+    }
+
+    const copy = bytes.slice(box.boxStart, box.contentEnd);
+    const copyView = new DataView(copy.buffer, copy.byteOffset, copy.byteLength);
+    const offset = entries - box.boxStart;
+
+    // first_offset, which precedes the entry count and its reserved half-word.
+    if (version === 1) {
+      copyView.setBigUint64(offset - 12, 0n);
+    } else {
+      copyView.setUint32(offset - 8, 0);
+    }
+
+    // The entry's leading bit marks a reference to another index rather than to media.
+    copyView.setUint32(offset, (view.getUint32(entries) & 0x80000000) | indexedSize);
+
+    return copy;
+  }
 }
 
 /**
@@ -432,6 +753,55 @@ export class PanoptoHLS {
   static variantKey(url) {
     const stripped = url.split(/[?#]/)[0];
     return stripped.substring(0, stripped.lastIndexOf('/') + 1);
+  }
+
+  /**
+   * Whether a URL addresses the audio-only view of a muxed stream.
+   * @param {string} url - The URL.
+   * @return {boolean} True if it does.
+   */
+  static isAudioRendition(url) {
+    return url.includes(AUDIO_RENDITION_MARKER);
+  }
+
+  /**
+   * The suffix marking the audio-only view of a muxed stream.
+   * @return {string} The marker.
+   */
+  static get audioRenditionMarker() {
+    return AUDIO_RENDITION_MARKER;
+  }
+
+  /**
+   * Identifies a variant together with the part it is playing, since a muxed stream is
+   * served both whole and as audio alone and the two are processed differently.
+   * @param {string} url - The URL.
+   * @return {string} The key.
+   */
+  static roleKey(url) {
+    return this.variantKey(url) + (this.isAudioRendition(url) ? AUDIO_RENDITION_MARKER : '');
+  }
+
+  /**
+   * Presents a muxed stream as an audio-only rendition.
+   *
+   * Its cheapest variant is used: the video in it is thrown away on arrival, so the
+   * less of it there is the better.
+   *
+   * @param {Object} stream - A stream carrying both audio and video.
+   * @return {Object} A stream entry for the audio in it.
+   */
+  static toAudioRendition(stream) {
+    const variant = stream.variants.reduce((cheapest, candidate) => {
+      return candidate.bandwidth < cheapest.bandwidth ? candidate : cheapest;
+    }, stream.variants[0]);
+
+    return {
+      ...stream,
+      name: `${stream.name} audio`,
+      hasVideo: false,
+      variants: [{...variant, url: variant.url + AUDIO_RENDITION_MARKER}],
+    };
   }
 
   /**
@@ -527,9 +897,10 @@ export class PanoptoHLS {
    *
    * @param {PanoptoMediaPlaylist} playlist - The stream's media playlist.
    * @param {Object} stream - A stream that has been through {@link planTimeline}.
+   * @param {string} uriSuffix - Appended to every URI the playlist names.
    * @return {{text: string, first: number, last: number, pad: number}} The trimmed playlist.
    */
-  static trimToWindow(playlist, stream) {
+  static trimToWindow(playlist, stream, uriSuffix = '') {
     let first = playlist.indexAtTime(stream.windowStart);
     if (playlist.segments[first] && playlist.segments[first].start < stream.windowStart - 0.0005) {
       first = Math.min(first + 1, playlist.segments.length - 1);
@@ -540,7 +911,7 @@ export class PanoptoHLS {
     // Where the first kept segment lands once its decode times are rebased.
     const pad = Math.max(0, playlist.segments[first].start + stream.delta);
 
-    return {text: playlist.serialize(first, last, pad), first, last, pad};
+    return {text: playlist.serialize(first, last, pad, uriSuffix), first, last, pad};
   }
 
   /**
@@ -578,10 +949,28 @@ export class PanoptoHLS {
 
     const audioCodec = audioStreams.length > 0 ? audioStreams[0].audioCodec : null;
 
+    // Leaving a stream that carries its own audio out of the alternate group is not
+    // enough to keep the two from playing at once: a variant that names no group at all
+    // is offered every rendition there is. Saying the audio is already in the stream
+    // takes a group of its own, holding renditions that name no URI.
+    const muxedStreams = audioStreams.length > 0 ? videoStreams.filter((stream) => stream.hasAudio) : [];
+
+    muxedStreams.forEach((stream, index) => {
+      lines.push('#EXT-X-MEDIA:' + [
+        'TYPE=AUDIO',
+        `GROUP-ID="${MUXED_AUDIO_GROUP_ID}"`,
+        `NAME="${escapeAttribute(stream.name)}"`,
+        `DEFAULT=${index === 0 ? 'YES' : 'NO'}`,
+        `AUTOSELECT=${index === 0 ? 'YES' : 'NO'}`,
+      ].join(','));
+    });
+
     for (const stream of videoStreams) {
       // A stream that already carries its own audio keeps it, and is left out of the
       // alternate audio group so that the two are never played together.
       const useAudioGroup = audioStreams.length > 0 && !stream.hasAudio;
+      const audioGroup = useAudioGroup ? AUDIO_GROUP_ID :
+          (muxedStreams.includes(stream) ? MUXED_AUDIO_GROUP_ID : null);
 
       for (const variant of stream.variants) {
         const codecs = splitCodecs(variant.codecs);
@@ -603,8 +992,8 @@ export class PanoptoHLS {
           attributes.push(`FRAME-RATE=${variant.frameRate}`);
         }
         attributes.push(`NAME="${escapeAttribute(stream.name)}"`);
-        if (useAudioGroup) {
-          attributes.push(`AUDIO="${AUDIO_GROUP_ID}"`);
+        if (audioGroup) {
+          attributes.push(`AUDIO="${audioGroup}"`);
         }
 
         lines.push(`#EXT-X-STREAM-INF:${attributes.join(',')}`);
@@ -623,6 +1012,19 @@ export class PanoptoHLS {
   static toPlaylistURL(text) {
     return PLAYLIST_URL_PREFIX + encodeURIComponent(text);
   }
+}
+
+/**
+ * Reads a four-character code.
+ * @param {DataView} view - The view to read from.
+ * @param {number} offset - Where the code starts.
+ * @return {string} The code.
+ */
+function readBoxType(view, offset) {
+  return String.fromCharCode(
+      view.getUint8(offset), view.getUint8(offset + 1),
+      view.getUint8(offset + 2), view.getUint8(offset + 3),
+  );
 }
 
 /**

@@ -59,7 +59,7 @@ export class VolumeControls extends EventEmitter {
     }
 
     if (volume > MAX_VOLUME) {
-      volume = max;
+      volume = MAX_VOLUME;
     }
 
     if (volume === 0 && this.volume !== 0) {

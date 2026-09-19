@@ -1683,7 +1683,7 @@ export class FastStreamClient extends EventEmitter {
    * @return {boolean}
    */
   get paused() {
-    return this.player?.paused || true;
+    return this.player?.paused ?? true;
   }
 
   /**

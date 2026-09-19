@@ -29,10 +29,14 @@ export default class PanoptoPlayer extends HLSPlayer {
     this.streams = [];
     /** Variant directory -> the stream that owns it. */
     this.streamsByVariant = new Map();
-    /** Variant directory -> parsed playlist, then the trimmed body once served. */
+    /** Variant directory -> parsed playlist. */
     this.playlistCache = new Map();
-    /** Variant directory -> track ID -> media timescale, from that variant's init segment. */
+    /** Variant directory and role -> the trimmed playlist body served for it. */
+    this.servedPlaylists = new Map();
+    /** Variant directory and role -> track ID -> media timescale, from its init segment. */
     this.timescales = new Map();
+    /** Variant directory and role -> the track an audio-only rendition was cut down to. */
+    this.audioTrackIds = new Map();
   }
 
   async setSource(source) {
@@ -86,6 +90,17 @@ export default class PanoptoPlayer extends HLSPlayer {
 
     if (videoStreams.length === 0) {
       throw new Error('Panopto session has no video streams');
+    }
+
+    // A session recorded with a camera has its audio muxed into that camera's stream
+    // rather than delivered on its own, which would leave every other stream — the
+    // screen capture the lecture is actually in — silent. That stream is offered a
+    // second time with its video stripped out so the others have something to play.
+    if (audioStreams.length === 0 && videoStreams.length > 1) {
+      const muxed = videoStreams.find((stream) => stream.hasAudio);
+      if (muxed) {
+        audioStreams.push(PanoptoHLS.toAudioRendition(muxed));
+      }
     }
 
     console.log(`Panopto: "${descriptor.title}" — ${videoStreams.length} video / ${audioStreams.length} audio stream(s), lead-in ${this.leadIn.toFixed(3)}s`);
@@ -175,14 +190,20 @@ export default class PanoptoPlayer extends HLSPlayer {
       return data;
     }
 
-    const cached = this.playlistCache.get(key);
-    if (typeof cached === 'string') {
-      return cached;
+    const role = PanoptoHLS.roleKey(context.url);
+    const served = this.servedPlaylists.get(role);
+    if (served !== undefined) {
+      return served;
     }
 
-    const playlist = cached instanceof PanoptoMediaPlaylist ? cached : PanoptoMediaPlaylist.parse(data);
-    const {text, first, last} = PanoptoHLS.trimToWindow(playlist, stream);
-    this.playlistCache.set(key, text);
+    const playlist = this.playlistCache.get(key) || PanoptoMediaPlaylist.parse(data);
+    this.playlistCache.set(key, playlist);
+
+    // An audio-only rendition names the same segments as the stream it is taken from,
+    // so its copies of them are marked to keep the two apart on the way back in.
+    const suffix = PanoptoHLS.isAudioRendition(context.url) ? PanoptoHLS.audioRenditionMarker : '';
+    const {text, first, last} = PanoptoHLS.trimToWindow(playlist, stream, suffix);
+    this.servedPlaylists.set(role, text);
 
     if (last - first + 1 !== playlist.segments.length) {
       console.log(`Panopto: trimmed ${stream.name} to segments ${first}-${last} of ${playlist.segments.length}`);
@@ -213,17 +234,44 @@ export default class PanoptoPlayer extends HLSPlayer {
       return data;
     }
 
+    const audioOnly = PanoptoHLS.isAudioRendition(frag.url);
+    const role = PanoptoHLS.roleKey(frag.url);
+
     // Initialization segments carry no decode times, but they do carry the timescales,
     // which are more authoritative per variant than the stream-level ones read at setup.
     if (frag.sn === 'initSegment') {
+      if (audioOnly) {
+        const stripped = MP4Boxes.stripInitToAudio(data);
+        if (!stripped) {
+          console.error('Panopto: could not separate the audio of', stream.name);
+          return data;
+        }
+
+        this.audioTrackIds.set(role, stripped.trackId);
+        data = stripped.buffer;
+      }
+
       const timescales = MP4Boxes.getTimescales(data);
       if (timescales.size > 0) {
-        this.timescales.set(key, timescales);
+        this.timescales.set(role, timescales);
       }
       return data;
     }
 
-    const timescales = this.timescales.get(key) || stream.timescales;
+    if (audioOnly) {
+      const trackId = this.audioTrackIds.get(role);
+      const stripped = trackId === undefined ? null : MP4Boxes.stripSegmentToAudio(data, trackId);
+      if (!stripped) {
+        console.error('Panopto: could not separate the audio of', stream.name, 'in', frag.url);
+        return data;
+      }
+
+      data = stripped;
+    }
+
+    // The muxed stream's two roles keep separate timescales: the rendition has had one
+    // of its tracks taken out, so the stream-level reading no longer describes it.
+    const timescales = this.timescales.get(role) || (audioOnly ? null : stream.timescales);
     if (!timescales || timescales.size === 0) {
       // Leaving a segment unshifted silently would desync it by however far apart the
       // encodes are, which for a trimmed capture is hours.
