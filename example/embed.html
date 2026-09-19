@@ -204,6 +204,9 @@
                         value="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" />
                     <button id="load">Load</button>
                 </div>
+                <div class="row">
+                    <button id="chapters">Mark chapters</button>
+                </div>
             </div>
 
             <div class="panel">
@@ -296,8 +299,13 @@
                 <td>The subtitle tracks that are loaded, and which are showing</td>
             </tr>
             <tr>
+                <td><code>getChapters</code></td>
+                <td></td>
+                <td>The chapters marked on the timeline</td>
+            </tr>
+            <tr>
                 <td><code>load</code></td>
-                <td><code>{url, mode, headers, subtitles, autoPlay, time}</code></td>
+                <td><code>{url, mode, headers, subtitles, chapters, autoPlay, time}</code></td>
                 <td>Plays a video, replacing whatever was playing</td>
             </tr>
             <tr>
@@ -344,6 +352,12 @@
                 <td><code>setSubtitleTrack</code>, <code>clearSubtitles</code></td>
                 <td><code>{index, active}</code></td>
                 <td></td>
+            </tr>
+            <tr>
+                <td><code>setChapters</code></td>
+                <td><code>{chapters}</code>, each <code>{name, startTime, endTime}</code></td>
+                <td>Marks chapters on the timeline; an end that is left out runs to the next chapter. They belong to
+                    the video that is playing, so send them after (or with) the load</td>
             </tr>
             <tr>
                 <td><code>setFullscreen</code>, <code>setPictureInPicture</code></td>
@@ -455,6 +469,14 @@
 
         document.getElementById('load').onclick = () => {
             call('load', {url: document.getElementById('url').value, autoPlay: true});
+        };
+        document.getElementById('chapters').onclick = async () => {
+            // Whatever is playing, cut into four named parts, to show the markers arriving.
+            const {duration} = await call('getState');
+            const names = ['Opening', 'The middle bit', 'The other middle bit', 'Closing'];
+            call('setChapters', {
+                chapters: names.map((name, i) => ({name, startTime: duration * i / names.length})),
+            }).then(() => call('getChapters')).then((chapters) => log(`chapters: ${chapters.map((c) => c.name).join(', ')}`));
         };
         document.getElementById('play').onclick = () => call('play');
         document.getElementById('pause').onclick = () => call('pause');

@@ -63,6 +63,10 @@ const LOADABLE_MODES = [
 
 // The volume slider goes to 300% when the browser can amplify through a web audio node.
 const MAX_VOLUME = EnvUtils.isWebAudioSupported() ? 3 : 1;
+
+// Each chapter is a marker drawn on the timeline, so an embedder that sends thousands is
+// asking for a page that cannot be drawn rather than for anything useful.
+const MAX_CHAPTERS = 1000;
 const MIN_PLAYBACK_RATE = 0.1;
 
 // How long to let a video become seekable before seeking into it anyway.
@@ -123,6 +127,39 @@ function requireString(args, name) {
     throw new Error(`${name} must be a non-empty string`);
   }
   return value;
+}
+
+/**
+ * Reads a list of chapters out of a command's arguments.
+ * @param {Object} args - The arguments the command was sent with.
+ * @return {Array<Object>} The chapters, as the client describes them.
+ */
+function requireChapters(args) {
+  const chapters = args.chapters;
+  if (!Array.isArray(chapters)) {
+    throw new Error('chapters must be an array');
+  }
+
+  if (chapters.length > MAX_CHAPTERS) {
+    throw new Error(`chapters must number at most ${MAX_CHAPTERS}`);
+  }
+
+  return chapters.map((chapter, i) => {
+    if (!chapter || typeof chapter !== 'object') {
+      throw new Error(`chapter ${i} is not an object`);
+    }
+
+    const startTime = requireNumber(chapter, 'startTime');
+    if (chapter.endTime !== undefined && !isFinite(chapter.endTime)) {
+      throw new Error(`chapter ${i} has an endTime that is not a finite number`);
+    }
+
+    return {
+      name: chapter.name === undefined ? undefined : String(chapter.name),
+      startTime,
+      endTime: chapter.endTime,
+    };
+  });
 }
 
 /**
@@ -411,7 +448,7 @@ const COMMANDS = {
    * along with its subtitles, with the given url.
    *
    * @param {EmbedAPI} api
-   * @param {Object} args - `{url, mode, headers, subtitles, autoPlay, time}`.
+   * @param {Object} args - `{url, mode, headers, subtitles, chapters, autoPlay, time}`.
    * @return {Promise<Object>} What the source was understood as.
    */
   async load(api, args) {
@@ -427,6 +464,10 @@ const COMMANDS = {
 
     if (args.time !== undefined) {
       await COMMANDS.seek(api, {time: args.time});
+    }
+
+    if (args.chapters !== undefined) {
+      COMMANDS.setChapters(api, args);
     }
 
     if (Array.isArray(args.subtitles)) {
@@ -498,6 +539,38 @@ const COMMANDS = {
    */
   clearSubtitles(api) {
     api.client.clearSubtitles();
+  },
+
+  /**
+   * Answers the chapters marked on the timeline.
+   * @param {EmbedAPI} api
+   * @return {Array<Object>} Each chapter's name and span.
+   */
+  getChapters(api) {
+    return api.client.chapters.map((chapter) => {
+      return {
+        name: chapter.name || '',
+        startTime: chapter.startTime,
+        endTime: isFinite(chapter.endTime) ? chapter.endTime : null,
+      };
+    });
+  },
+
+  /**
+   * Marks chapters on the timeline, in place of any the video brought itself.
+   *
+   * They belong to the video that is playing and are dropped when it is replaced, so an
+   * embedder sends them after loading, or with the load itself.
+   *
+   * @param {EmbedAPI} api
+   * @param {Object} args - `{chapters}`, each `{name, startTime, endTime}`. A chapter
+   *     with no end runs until the next one starts.
+   * @return {Object} How many were taken.
+   */
+  setChapters(api, args) {
+    const chapters = requireChapters(args);
+    api.client.setChapters(chapters);
+    return {chapters: api.client.chapters.length};
   },
 
   /**

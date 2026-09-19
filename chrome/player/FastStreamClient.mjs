@@ -143,6 +143,9 @@ export class FastStreamClient extends EventEmitter {
     this.player = null;
     this.syncedAudioPlayer = null;
     this.previewPlayer = null;
+    this.sourceChange = null;
+    this.previewPlayerSetup = null;
+    this.customChapters = null;
     this.subtitleTimelineOffset = 0;
     this.saveSeek = true;
     this.pastSeeks = [];
@@ -245,9 +248,19 @@ export class FastStreamClient extends EventEmitter {
 
   /**
    * Checks if user interaction is needed to start playback.
+   *
+   * What the interaction unlocks is FastStream downloading the video itself, ahead of
+   * where it is playing. Direct playback hands the url to the browser and downloads
+   * nothing of its own, so there is nothing for an interaction to unlock and nothing to
+   * ask the user for.
+   *
    * @return {boolean}
    */
   needsUserInteraction() {
+    if (this.source && this.source.mode === PlayerModes.DIRECT) {
+      return false;
+    }
+
     return this._needsUserInteraction && !this.state.hasUserInteracted && !this.state.playing;
   }
 
@@ -745,21 +758,53 @@ export class FastStreamClient extends EventEmitter {
       return;
     }
 
-    if (this.player.getSource()) {
-      this.previewPlayer = await this.playerLoader.createPlayer(this.player.getSource().mode, this, {
-        isPreview: true,
+    // Building one takes several turns, and the field that says one exists is only filled
+    // in at the end of them. A second caller arriving in between — an options update while
+    // a source is being set, say — would build another and leave its video in the seek
+    // preview alongside the first, so callers join the build that is already running.
+    if (!this.previewPlayerSetup) {
+      this.previewPlayerSetup = this.buildPreviewPlayer();
+      this.previewPlayerSetup.catch(() => {}).then(() => {
+        this.previewPlayerSetup = null;
       });
-
-      // check if its yt mode
-      this.attachProcessorsToPlayer(this.previewPlayer);
-
-      await this.previewPlayer.setup();
-      this.bindPreviewPlayer(this.previewPlayer);
-
-      await this.previewPlayer.setSource(this.player.getSource());
-      this.interfaceController.addPreviewVideo(this.previewPlayer.getVideo());
-      this.updateCSSFilters();
     }
+
+    return this.previewPlayerSetup;
+  }
+
+  /**
+   * Builds the preview player for the source that is playing.
+   * @return {Promise<void>}
+   */
+  async buildPreviewPlayer() {
+    const source = this.player.getSource();
+    if (!source) {
+      return;
+    }
+
+    const previewPlayer = await this.playerLoader.createPlayer(source.mode, this, {
+      isPreview: true,
+    });
+
+    // check if its yt mode
+    this.attachProcessorsToPlayer(previewPlayer);
+
+    await previewPlayer.setup();
+    this.bindPreviewPlayer(previewPlayer);
+
+    await previewPlayer.setSource(source);
+
+    // The video being previewed can be torn down or replaced while its preview is still
+    // being built, and a preview of something that is no longer playing does not belong
+    // in the page.
+    if (this.previewPlayer || this.player?.getSource() !== source) {
+      previewPlayer.destroy();
+      return;
+    }
+
+    this.previewPlayer = previewPlayer;
+    this.interfaceController.addPreviewVideo(previewPlayer.getVideo());
+    this.updateCSSFilters();
   }
 
   initiateWebAudio() {
@@ -779,10 +824,36 @@ export class FastStreamClient extends EventEmitter {
 
   /**
    * Sets the current source and initializes the player.
+   *
+   * Setting a source takes many turns: a player is built, handed the source, given a
+   * video element in the page and an audio context of its own. Two of these running at
+   * once would each do all of that, each leaving its video in the page and its audio
+   * context over the other's, so a source that is asked for while one is being set waits
+   * its turn.
+   *
    * @param {Object} source - Source object.
    * @return {Promise<void>}
    */
-  async setSource(source) {
+  setSource(source) {
+    const run = () => this.setSourceInternal(source);
+    const change = this.sourceChange ? this.sourceChange.then(run, run) : run();
+
+    this.sourceChange = change;
+    change.catch(() => {}).then(() => {
+      if (this.sourceChange === change) {
+        this.sourceChange = null;
+      }
+    });
+
+    return change;
+  }
+
+  /**
+   * Sets the current source and initializes the player, one at a time.
+   * @param {Object} source - Source object.
+   * @return {Promise<void>}
+   */
+  async setSourceInternal(source) {
     try {
       source = source.copy();
 
@@ -1308,6 +1379,8 @@ export class FastStreamClient extends EventEmitter {
       this.source.destroy();
       this.source = null;
     }
+
+    this.customChapters = null;
 
     if (this.previewPlayer) {
       try {
@@ -2018,7 +2091,39 @@ export class FastStreamClient extends EventEmitter {
    * @return {Array}
    */
   get chapters() {
-    return this.player?.chapters || [];
+    return this.customChapters || this.player?.chapters || [];
+  }
+
+  /**
+   * Sets the chapters to mark on the timeline.
+   *
+   * A video often brings its own — a YouTube video's are read out of its description —
+   * but one that does not can be given them by whoever loaded it. They describe the
+   * video that is playing, so they are dropped when it is replaced.
+   *
+   * @param {Array<Object>} chapters - `{name, startTime, endTime}`, in any order. A
+   *     chapter with no end runs until the next one starts, or to the end of the video.
+   */
+  setChapters(chapters) {
+    const cleaned = (chapters || []).filter((chapter) => {
+      return chapter && isFinite(chapter.startTime);
+    }).map((chapter) => {
+      return {
+        name: chapter.name ? String(chapter.name) : 'Chapter',
+        startTime: Math.max(0, chapter.startTime),
+        endTime: isFinite(chapter.endTime) ? chapter.endTime : null,
+      };
+    }).sort((a, b) => a.startTime - b.startTime);
+
+    cleaned.forEach((chapter, i) => {
+      if (chapter.endTime === null) {
+        const next = cleaned[i + 1];
+        chapter.endTime = next ? next.startTime : (this.duration || Infinity);
+      }
+    });
+
+    this.customChapters = cleaned.length ? cleaned : null;
+    this.interfaceController.updateSkipSegments();
   }
 
   /**
