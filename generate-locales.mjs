@@ -8,6 +8,12 @@ import * as url from 'url';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
+function sanitizeCliPath(p) {
+  // Strip any leading '..' traversal segments and normalize before resolving,
+  // to prevent path traversal from a maliciously crafted CLI argument.
+  return path.normalize(String(p)).replace(/^(\.\.[/\\])+/, '');
+}
+
 function parseArgs(argv) {
   const opts = {
     lang: null,
@@ -26,8 +32,8 @@ function parseArgs(argv) {
     if (a === '--lang') opts.lang = argv[++i];
     else if (a === '--source') opts.source = argv[++i];
     else if (a === '--model') opts.model = argv[++i];
-    else if (a === '--input') opts.input = path.resolve(argv[++i]);
-    else if (a === '--output') opts.output = path.resolve(argv[++i]);
+    else if (a === '--input') opts.input = path.resolve(sanitizeCliPath(argv[++i]));
+    else if (a === '--output') opts.output = path.resolve(sanitizeCliPath(argv[++i]));
     else if (a === '--overwrite') opts.overwrite = true;
     else if (a === '--dry-run') opts.dryRun = true;
     else if (a === '--batch') opts.batch = parseInt(argv[++i], 10) || opts.batch;
@@ -105,9 +111,10 @@ function chunk(arr, size) {
 }
 
 function callOpenAI({model, messages}) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = (process.env.OPENAI_API_KEY || '').trim();
   if (!apiKey) {
-    throw new Error('OPENAI_API_KEY is not set');
+    // Fail closed: never fall back to a hardcoded/default credential.
+    throw new Error('OPENAI_API_KEY environment variable is not set');
   }
   const baseUrl = (process.env.OPENAI_BASE_URL || 'https://api.openai.com').replace(/\/$/, '');
   const payload = JSON.stringify({
@@ -363,13 +370,13 @@ async function run() {
   }
 
   if (opts.dryRun) {
-    console.log(`\nDry run: would update ${changed} entries for '${opts.lang}'.`);
+    console.log('\nDry run: would update ' + changed + ` entries for '${opts.lang}'.`);
     console.log(JSON.stringify(results, null, 2));
     return;
   }
 
   fs.writeFileSync(opts.output, JSON.stringify(items, null, 4));
-  console.log(`\nUpdated ${opts.output} with ${changed} '${opts.lang}' translations.`);
+  console.log('\nUpdated ' + opts.output + ` with ${changed} '${opts.lang}' translations.`);
 }
 
 run().catch((err) => {
