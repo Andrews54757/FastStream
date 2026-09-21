@@ -17,7 +17,15 @@ Copyright (c) 2012-2016, Erik de Castro Lopo erikd@mega-nerd.com All rights rese
   \***********************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "625941a851f0440e1705.wasm";
+// webpack emitted this reference with its content-hashed asset name,
+// "625941a851f0440e1705.wasm", but the file vendored beside this module is
+// libsamplerate.wasm. Nothing sets Module.locateFile, so the hashed name
+// 404s at runtime, and because this glue was built with
+// BINARYEN_ASYNC_COMPILATION=0 it instantiates synchronously: the 404 body
+// goes straight to WebAssembly.Module and fails with "at offset 4: failed
+// to match magic number". That broke every audio resample during re-encode.
+// Point the asset import at the file that is actually vendored.
+module.exports = __webpack_require__.p + "libsamplerate.wasm";
 
 /***/ })
 
