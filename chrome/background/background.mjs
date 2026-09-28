@@ -1384,7 +1384,8 @@ async function openPlayersWithSources(tab) {
 }
 
 const webRequestPerms = ['requestHeaders'];
-const webRequestPerms2 = [];
+// Detection reads a page load's Content-Type, to tell an HTML page from a stream.
+const webRequestPerms2 = ['responseHeaders'];
 
 if (EnvUtils.isChrome()) {
   webRequestPerms.push('extraHeaders');
@@ -1401,6 +1402,17 @@ chrome.webRequest.onBeforeRequest.addListener((details) => {
 }, {
   urls: ['<all_urls>'],
 });
+
+/**
+ * Whether a response is an HTML page, by its Content-Type.
+ * @param {Array<{name: string, value: string}>} [headers] - webRequest's responseHeaders.
+ * @return {boolean} True for text/html and application/xhtml+xml.
+ */
+function isHtmlResponse(headers) {
+  const contentType = headers?.find((header) => header.name.toLowerCase() === 'content-type');
+  const type = contentType?.value?.split(';')[0].trim().toLowerCase();
+  return type === 'text/html' || type === 'application/xhtml+xml';
+}
 
 chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   const tab = Tabs.getTabOrCreate(details.tabId);
@@ -1449,8 +1461,18 @@ chrome.webRequest.onHeadersReceived.addListener(
       if (!mode) {
         if (details.type === 'media') {
           mode = PlayerModes.ACCELERATED_MP4;
+        } else if ((details.type === 'main_frame' || details.type === 'sub_frame') &&
+            isHtmlResponse(details.responseHeaders)) {
+          // A page is not a stream, even when its query string names one: an embed page
+          // (embed.php?file=https://cdn/.../index.m3u8) is HTML, and taking it for the
+          // stream could open the player on the page itself. The stream the page plays is
+          // detected by itself, when the page requests it. A page load answered with the
+          // stream itself (a proxy link opened in a tab or an iframe) is not HTML and is
+          // still detected here.
+          return;
         } else {
-        // Check url query parameters
+          // A stream fetched through a proxy names it in the query string:
+          // proxy?url=https://cdn/.../index.m3u8.
           const urlParams = URLUtils.get_url_params(url).values();
           for (const value of urlParams) {
             if (!URLUtils.is_url(value)) continue;
