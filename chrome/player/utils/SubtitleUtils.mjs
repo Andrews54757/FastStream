@@ -171,7 +171,7 @@ export class SubtitleUtils {
     // get time strings
     if (s[line].match(/\d+:\d+:\d+/)) {
       // convert time string
-      const m = s[1].match(/(\d+):(\d+):(\d+)(?:,(\d+))?\s*--?>\s*(\d+):(\d+):(\d+)(?:,(\d+))?/);
+      const m = s[line].match(/(\d+):(\d+):(\d+)(?:,(\d+))?\s*--?>\s*(\d+):(\d+):(\d+)(?:,(\d+))?/);
       if (m) {
         cue += m[1] + ':' + m[2] + ':' + m[3] + '.' + m[4] + ' --> ' +
                     m[5] + ':' + m[6] + ':' + m[7] + '.' + m[8] + '\n';
