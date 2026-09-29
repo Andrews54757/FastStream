@@ -946,9 +946,10 @@ export class InterfaceController {
   }
 
   runProgressLoop() {
+    // Set even if a frame is still pending, or a stop right before this would win
+    this.shouldRunProgressLoop = true;
     if (!this.isRunningProgressLoop) {
       this.isRunningProgressLoop = true;
-      this.shouldRunProgressLoop = true;
       this.progressLoop();
     }
   }
