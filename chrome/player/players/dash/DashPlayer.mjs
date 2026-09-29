@@ -399,26 +399,6 @@ export default class DashPlayer extends EventEmitter {
       });
     }
 
-    zippedFragments.forEach((data) => {
-      data.fragment.addReference(ReferenceTypes.SAVER);
-      data.getEntry = async () => {
-        if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-          while (true) {
-            try {
-              await this.downloadFragment(data.fragment, -1);
-              break;
-            } catch (e) {
-              if (e.message !== 'Aborted download') {
-                throw e;
-              }
-            }
-          }
-        }
-        data.fragment.removeReference(ReferenceTypes.SAVER);
-        return this.client.downloadManager.getEntry(data.fragment.getContext());
-      };
-    });
-
     const videoProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'video');
     const audioProcessor = this.dash.getStreamController()?.getActiveStream()?.getStreamProcessors()?.find((o) => o.getType() === 'audio');
 
@@ -452,6 +432,27 @@ export default class DashPlayer extends EventEmitter {
 
     const videoMimeType = videoProcessor.getRepresentation().mimeType;
     const audioMimeType = audioProcessor.getRepresentation().mimeType;
+
+    // Pin last: only getEntry and the catch below unpin, so nothing that can throw may run in between.
+    zippedFragments.forEach((data) => {
+      data.fragment.addReference(ReferenceTypes.SAVER);
+      data.getEntry = async () => {
+        if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+          while (true) {
+            try {
+              await this.downloadFragment(data.fragment, -1);
+              break;
+            } catch (e) {
+              if (e.message !== 'Aborted download') {
+                throw e;
+              }
+            }
+          }
+        }
+        data.fragment.removeReference(ReferenceTypes.SAVER);
+        return this.client.downloadManager.getEntry(data.fragment.getContext());
+      };
+    });
 
     try {
       const blob = await dash2mp4.convert(videoMimeType, videoDuration, videoInitSegmentData, audioMimeType, audioDuration, audioInitSegmentData, zippedFragments);

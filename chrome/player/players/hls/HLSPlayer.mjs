@@ -129,26 +129,6 @@ export default class HLSPlayer extends EventEmitter {
       });
     }
 
-    zippedFragments.forEach((data) => {
-      data.fragment.addReference(ReferenceTypes.SAVER);
-      data.getEntry = async () => {
-        if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
-          while (true) {
-            try {
-              await this.downloadFragment(data.fragment, -1);
-              break;
-            } catch (e) {
-              if (e.message !== 'Aborted download') {
-                throw e;
-              }
-            }
-          }
-        }
-        data.fragment.removeReference(ReferenceTypes.SAVER);
-        return this.client.downloadManager.getEntry(data.fragment.getContext());
-      };
-    });
-
     const level = this.hls.levels[this.getIndexes(this.getCurrentVideoLevelID()).levelID];
     const audioLevel = this.hls.audioTracks[this.hls.audioTrack];
 
@@ -168,6 +148,27 @@ export default class HLSPlayer extends EventEmitter {
     // its own audio rather than taking it from a separate rendition belongs there too,
     // so the audio side is only handed over when it is a rendition of its own.
     const mergeable = levelInitData && (audioLevelInitData || audioFragments.length === 0);
+
+    // Pin last: only getEntry and the catch below unpin, so nothing that can throw may run in between.
+    zippedFragments.forEach((data) => {
+      data.fragment.addReference(ReferenceTypes.SAVER);
+      data.getEntry = async () => {
+        if (data.fragment.status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+          while (true) {
+            try {
+              await this.downloadFragment(data.fragment, -1);
+              break;
+            } catch (e) {
+              if (e.message !== 'Aborted download') {
+                throw e;
+              }
+            }
+          }
+        }
+        data.fragment.removeReference(ReferenceTypes.SAVER);
+        return this.client.downloadManager.getEntry(data.fragment.getContext());
+      };
+    });
 
     try {
       if (mergeable) {
