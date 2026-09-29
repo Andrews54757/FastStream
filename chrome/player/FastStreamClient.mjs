@@ -966,12 +966,15 @@ export class FastStreamClient extends EventEmitter {
       }
 
       this.loadProgressData().then(async () => {
+        // Another source may have been set in the meantime
+        if (this.source !== source) return;
         this.disableProgressSave = true;
 
         // Wait for the player to be ready
         if (this.initPromise) {
           await this.initPromise;
         }
+        if (this.source !== source) return;
 
         if (timeFromURL) {
           this.setSeekSave(false);
