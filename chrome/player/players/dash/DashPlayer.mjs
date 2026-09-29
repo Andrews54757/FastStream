@@ -450,8 +450,8 @@ export default class DashPlayer extends EventEmitter {
       }
     });
 
-    const videoMimeType = videoProcessor.getRepresentation().mimeType;
-    const audioMimeType = audioProcessor.getRepresentation().mimeType;
+    const videoMimeType = videoProcessor?.getRepresentation()?.mimeType;
+    const audioMimeType = audioProcessor?.getRepresentation()?.mimeType;
 
     try {
       const blob = await dash2mp4.convert(videoMimeType, videoDuration, videoInitSegmentData, audioMimeType, audioDuration, audioInitSegmentData, zippedFragments);
