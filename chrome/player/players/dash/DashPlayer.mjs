@@ -136,6 +136,20 @@ export default class DashPlayer extends EventEmitter {
       initialize();
     });
 
+    // A manifest dash.js could not load or parse is reported only here: <video> gets no
+    // error, so without this the player would wait forever. An error once the stream is
+    // up (a segment, a live refresh) leaves it playing, as before.
+    const manifestErrors = [
+      MediaPlayer.errors.MANIFEST_LOADER_PARSING_FAILURE_ERROR_CODE,
+      MediaPlayer.errors.MANIFEST_LOADER_LOADING_FAILURE_ERROR_CODE,
+      MediaPlayer.errors.DOWNLOAD_ERROR_ID_MANIFEST_CODE,
+    ];
+    this.dash.on('error', (e) => {
+      if (!initAlready && manifestErrors.includes(e.error?.code)) {
+        this.emit(DefaultPlayerEvents.ERROR, e);
+      }
+    });
+
     this.dash.on('REPRESENTATION_UPDATED', (a) => {
       const rep = a.representation;
       this.extractFragments(rep);
