@@ -575,7 +575,13 @@ export default class MP4Player extends EventEmitter {
   set currentTime(value) {
     this.video.currentTime = value;
 
-    if (!VideoUtils.isBuffered(this.buffered, value)) {
+    // Check the time the element actually seeks to: it clamps to [0, duration].
+    let target = Math.max(0, value);
+    const duration = this.video.duration;
+    if (Number.isFinite(duration)) {
+      target = Math.min(target, duration);
+    }
+    if (!VideoUtils.isBuffered(this.buffered, target)) {
       this.resetHLS();
     }
   }

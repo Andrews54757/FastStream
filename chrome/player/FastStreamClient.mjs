@@ -1727,6 +1727,16 @@ export class FastStreamClient extends EventEmitter {
    * @param {number} value
    */
   set currentTime(value) {
+    if (Number.isNaN(value)) {
+      return;
+    }
+    // Relative seeks near either end ask for a time outside the video.
+    value = Math.max(0, value);
+    const duration = this.duration;
+    if (duration > 0 && Number.isFinite(duration)) {
+      value = Math.min(value, duration);
+    }
+
     if (this.saveSeek) {
       this.savePosition();
     }
