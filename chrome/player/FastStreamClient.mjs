@@ -945,7 +945,9 @@ export class FastStreamClient extends EventEmitter {
       this.setSeekSave(true);
 
       if (this.player.getSource()) {
-        await this.setupPreviewPlayer();
+        await this.setupPreviewPlayer().catch((e) => {
+          console.error(e);
+        });
 
         await this.videoAnalyzer.setSource(this.player.getSource());
 
