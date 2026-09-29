@@ -55,11 +55,13 @@ export class MultiRegexMatcher {
         regexesByOutput.get(output).push(regex);
       }
 
+      // Named groups: a pattern's own capture groups would shift group positions
       const joinedRegexes = [];
-      const outputs = [];
+      const outputs = new Map();
       regexesByOutput.forEach((regexes, output) => {
-        joinedRegexes.push('(' + regexes.join('|') + ')');
-        outputs.push(output);
+        const groupName = '__fsOutput' + outputs.size;
+        joinedRegexes.push(`(?<${groupName}>` + regexes.join('|') + ')');
+        outputs.set(groupName, output);
       });
 
       this.compiledRegexes.push({
@@ -76,7 +78,11 @@ export class MultiRegexMatcher {
       regex.lastIndex = 0;
       const match = regex.exec(str);
       if (match) {
-        return outputs[match.findIndex((v, i) => i > 0 && v) - 1];
+        for (const [groupName, output] of outputs) {
+          if (match.groups[groupName] !== undefined) {
+            return output;
+          }
+        }
       }
     }
     return null;
