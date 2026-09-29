@@ -71,7 +71,10 @@ export class MultiRegexMatcher {
 
   match(str) {
     for (const {regex, outputs} of this.compiledRegexes) {
-      const match = str.match(regex);
+      // exec() from the start: str.match() gives no groups for a g regex,
+      // and g or y would carry lastIndex over from the previous call
+      regex.lastIndex = 0;
+      const match = regex.exec(str);
       if (match) {
         return outputs[match.findIndex((v, i) => i > 0 && v) - 1];
       }
