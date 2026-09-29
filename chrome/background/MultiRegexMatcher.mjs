@@ -10,6 +10,11 @@ export class MultiRegexMatcher {
   }
 
   addRegex(regex, flags, output) {
+    // An empty regex matches every string
+    if (!regex) {
+      throw new Error('Empty regex for ' + output);
+    }
+
     // check if regex is valid
     try {
       new RegExp(regex, flags);
