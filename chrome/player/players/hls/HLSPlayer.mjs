@@ -270,6 +270,13 @@ export default class HLSPlayer extends EventEmitter {
     this.hls.on(Hls.Events.AUDIO_TRACK_UPDATED, (a, data) => {
       this.trackUpdated(data.details, 1);
     });
+
+    // After a fatal error hls.js loads nothing more. A manifest or playlist that could not
+    // be loaded gives <video> no error of its own, so without this the player would wait
+    // forever instead of saying it failed.
+    this.hls.on(Hls.Events.ERROR, (event, data) => {
+      if (data.fatal) this.emit(DefaultPlayerEvents.ERROR, data);
+    });
   }
 
   trackUpdated(levelDetails, trackID) {
