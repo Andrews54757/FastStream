@@ -1231,7 +1231,8 @@ async function openPlayer(frame) {
     }, (response) => {
       BackgroundUtils.checkMessageError('player');
 
-      if (response === 'no_video') {
+      // Anything else, including no answer at all, means no player is coming.
+      if (!['redirect', 'replaceall', 'replace'].includes(response)) {
         frame.playerOpening = false;
       }
 
