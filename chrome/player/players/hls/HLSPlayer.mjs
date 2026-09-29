@@ -135,11 +135,18 @@ export default class HLSPlayer extends EventEmitter {
     let levelInitData = null;
     let audioLevelInitData = null;
 
+    // Right after a quality switch, hls.js may not have loaded the new level's init segment yet.
     if (fragments[-1]) {
+      if (fragments[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+        await this.downloadFragment(fragments[-1], -1);
+      }
       levelInitData = new Uint8Array(await this.client.downloadManager.getEntry(fragments[-1].getContext()).getDataFromBlob());
     }
 
     if (audioFragments[-1]) {
+      if (audioFragments[-1].status !== DownloadStatus.DOWNLOAD_COMPLETE) {
+        await this.downloadFragment(audioFragments[-1], -1);
+      }
       audioLevelInitData = new Uint8Array(await this.client.downloadManager.getEntry(audioFragments[-1].getContext()).getDataFromBlob());
     }
 
