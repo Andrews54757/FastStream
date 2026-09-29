@@ -89,8 +89,13 @@ export class StandardDownloader {
 
   async onSuccess(response, stats, entry, xhr) {
     this.updateSpeed(stats);
-    await this.entry.onSuccess(response, stats, this.entry, xhr);
-    this.cleanup();
+    const current = this.entry;
+    await current.onSuccess(response, stats, current, xhr);
+    // An abort during the entry's postProcessor has already cleaned up, and this
+    // downloader may be running another entry by now.
+    if (this.entry === current) {
+      this.cleanup();
+    }
   }
 
   onError(stats, entry, xhr) {
