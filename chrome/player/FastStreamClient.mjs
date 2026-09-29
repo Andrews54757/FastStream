@@ -1668,7 +1668,9 @@ export class FastStreamClient extends EventEmitter {
   undoSeek() {
     if (this.pastSeeks.length) {
       this.pastUnseeks.push(this.player.currentTime);
-      this.player.currentTime = this.pastSeeks.pop();
+      this.setSeekSave(false);
+      this.currentTime = this.pastSeeks.pop();
+      this.setSeekSave(true);
       this.interfaceController.updateMarkers();
     }
   }
@@ -1679,7 +1681,9 @@ export class FastStreamClient extends EventEmitter {
   redoSeek() {
     if (this.pastUnseeks.length) {
       this.pastSeeks.push(this.player.currentTime);
-      this.player.currentTime = this.pastUnseeks.pop();
+      this.setSeekSave(false);
+      this.currentTime = this.pastUnseeks.pop();
+      this.setSeekSave(true);
       this.interfaceController.updateMarkers();
     }
   }
