@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "高速化された Vimeo"
     },
+    "player_source_accelpanopto": {
+        "message": "高速化された Panopto"
+    },
     "player_source_mode": {
         "message": "モード"
     },

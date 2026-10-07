@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "Versnelde Vimeo"
     },
+    "player_source_accelpanopto": {
+        "message": "Versnelde Panopto"
+    },
     "player_source_mode": {
         "message": "Modus"
     },

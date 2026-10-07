@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "Аппарат. ускорение Vimeo"
     },
+    "player_source_accelpanopto": {
+        "message": "Аппарат. ускорение Panopto"
+    },
     "player_source_mode": {
         "message": "Режим"
     },
