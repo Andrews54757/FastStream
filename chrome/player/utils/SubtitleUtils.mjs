@@ -161,10 +161,12 @@ export class SubtitleUtils {
       cue += s[0].match(/\w+/) + '\n';
       line += 1;
     }
+    // a time string may mark its milliseconds with '.', as WebVTT does: read it as ','
+    s[line] = s[line].replace(/(\d+:\d+:\d+)\.(\d+)/g, '$1,$2');
     // get time strings
     if (s[line].match(/\d+:\d+:\d+/)) {
       // convert time string
-      const m = s[line].match(/(\d+):(\d+):(\d+)(?:[,.](\d+))?\s*--?>\s*(\d+):(\d+):(\d+)(?:[,.](\d+))?/);
+      const m = s[line].match(/(\d+):(\d+):(\d+)(?:,(\d+))?\s*--?>\s*(\d+):(\d+):(\d+)(?:,(\d+))?/);
       if (m) {
         // vtt.js needs three millisecond digits; short ones are a number (,5 is 5 ms, as
         // ffmpeg and VLC read them) and missing ones are zero
