@@ -33,6 +33,7 @@ import {SyncedAudioPlayer} from './players/SyncedAudioPlayer.mjs';
 import {AlertPolyfill} from './utils/AlertPolyfill.mjs';
 import {MessageTypes} from './enums/MessageTypes.mjs';
 import {LevelManager} from './players/LevelManager.mjs';
+import {VpnPrompt} from './ui/VpnPrompt.mjs';
 
 
 /**
@@ -119,6 +120,7 @@ export class FastStreamClient extends EventEmitter {
     this.keybindManager = new KeybindManager(this);
     this.downloadManager = new DownloadManager(this);
     this.sourcesBrowser = new SourcesBrowser(this);
+    this.vpnPrompt = new VpnPrompt(this);
     this.videoAnalyzer = new VideoAnalyzer(this);
     this.audioAnalyzer = new AudioAnalyzer(this);
     this.frameExtractor = new PreviewFrameExtractor(this);
@@ -894,6 +896,8 @@ export class FastStreamClient extends EventEmitter {
       await this.resetPlayer();
       this.source = source;
       this.subtitleTimelineOffset = 0;
+      // Did it come through Firefox VPN, which leaves FastStream's requests out? (VpnPrompt.mjs)
+      this.vpnPrompt.check(source);
 
       if (source.defaultLevelInfo?.level !== undefined) {
         this.getLevelManager().setCurrentVideoLevelID(source.defaultLevelInfo.level);
