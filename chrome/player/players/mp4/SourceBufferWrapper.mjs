@@ -47,18 +47,23 @@ export class SourceBufferWrapper extends EventEmitter {
     if (this.toDo.length) {
       const current = this.toDo[0];
 
-      if (current.type === 'append') {
-        this.sourceBuffer.appendBuffer(current.buffer);
-        current.resolve();
-      } else if (current.type === 'remove') {
-        try {
+      // An operation that throws starts no update, so no updateend follows it. Marking the
+      // wrapper updating then left every later operation queued for good, and an append that
+      // threw stayed at the head and was run again, and threw again, by every later call.
+      try {
+        if (current.type === 'append') {
+          this.sourceBuffer.appendBuffer(current.buffer);
+        } else if (current.type === 'remove') {
           this.sourceBuffer.remove(current.start, current.end);
-          current.resolve();
-        } catch (e) {
-          console.log(e);
-          current.reject(e);
         }
+      } catch (e) {
+        console.log(e);
+        current.reject(e);
+        this.toDo.splice(0, 1);
+        this.sourceBufferDo();
+        return;
       }
+      current.resolve();
       this.updating = true;
       this.toDo.splice(0, 1);
     }
