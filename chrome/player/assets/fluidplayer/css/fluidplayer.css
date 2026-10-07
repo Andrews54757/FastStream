@@ -1062,6 +1062,28 @@ body {
     bottom: 88px;
 }
 
+/* VpnPrompt.mjs: at the top, above everything, where a failed load's message leaves room. */
+.vpn_button {
+    color: var(--popbutton-text-color);
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    max-width: calc(100% - 24px);
+    box-sizing: border-box;
+    background-color: var(--popbutton-background-color);
+    border: var(--popbutton-border);
+    padding: 4px 10px;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.vpn_button:hover,
+.vpn_button:focus-visible {
+    background-color: var(--popbutton-hover-background-color);
+    border: var(--popbutton-hover-border);
+}
+
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .hide_button,
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .skip_button,
 .fluid_video_wrapper.fluid_player_layout_default.expanded.controls_visible .next_video_button {

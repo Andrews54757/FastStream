@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Kaynakları arka plan betiğinden oynatıcılara gönderme."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy (isteğe bağlı)"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Yalnızca Firefox VPN ile kullanılır. Firefox bunu tarayıcının proxy ayarlarının denetimi olarak listeler, ancak FastStream hiçbir ayarı değiştirmez: bir video için kendi isteklerini, sayfanın kendi isteklerinin izlediği yolla, VPN üzerinden gönderir. Bu olmadan, videosunu VPN'nin adresine bağlayan bir site FastStream'i reddeder. Oynatıcı, ilk gerektiğinde bunu ister."
+    },
     "perms_page_granted": {
         "message": "Verildi"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "Video yüklenemedi!"
+    },
+    "player_vpn_allow": {
+        "message": "Firefox VPN üzerinden oynat"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "Bu sayfa videosunu Firefox VPN üzerinden alıyor; bu, FastStream'in isteklerini dışarıda bırakıyor ve site bunları reddedebilir. FastStream'in aynı bağlantıyı kullanmasına izin vermek için tıklayın (bir kez, FastStream'in izinler sayfasında)."
     },
     "source_copied": {
         "message": "URL panoya kopyalandı!"

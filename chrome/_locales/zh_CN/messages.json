@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "从后台脚本向播放器发送视频源。"
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "代理（可选）"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "仅与 Firefox VPN 一起使用。Firefox 将其列为浏览器代理设置的控制项，但 FastStream 不会更改任何设置：它会以页面自身请求所经过的相同方式，通过 VPN 发送自己针对视频的请求。没有它，将视频绑定到 VPN 地址的网站会拒绝 FastStream。播放器在首次需要它时请求它。"
+    },
     "perms_page_granted": {
         "message": "已授权"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "视频加载失败！"
+    },
+    "player_vpn_allow": {
+        "message": "通过 Firefox VPN 播放"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "此页面通过 Firefox VPN 获取视频，这会将 FastStream 的请求排除在外，网站可能会拒绝这些请求。点击以允许 FastStream 使用同一连接（仅一次，在 FastStream 的权限页面上）。"
     },
     "source_copied": {
         "message": "已将 URL 复制到剪贴板！"

@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "バックグラウンドスクリプトからプレーヤーにソースを送信"
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "プロキシ（任意）"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Firefox VPN でのみ使用されます。Firefox はこれをブラウザーのプロキシ設定の制御として表示しますが、FastStream は設定を一切変更しません。動画に対する独自のリクエストを、ページ自身のリクエストと同じ経路で、VPN 経由で送信します。これがないと、動画を VPN のアドレスに紐付けるサイトは FastStream を拒否します。プレイヤーは初めて必要になったときにこれを要求します。"
+    },
     "perms_page_granted": {
         "message": "許可"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "動画の読み込みに失敗しました!"
+    },
+    "player_vpn_allow": {
+        "message": "Firefox VPN で再生"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "このページは Firefox VPN 経由で動画を取得しています。FastStream のリクエストは除外され、サイトがそれらを拒否する可能性があります。クリックすると、FastStream が同じ接続を使用できるようになります（1回のみ、FastStream の権限ページで）。"
     },
     "source_copied": {
         "message": "URL をクリップボードにコピーしました!"

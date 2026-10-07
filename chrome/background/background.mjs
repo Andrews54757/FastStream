@@ -10,6 +10,7 @@ import {RuleManager} from './NetRequestRuleManager.mjs';
 import {SponsorBlockIntegration} from './SponsorBlockIntegration.mjs';
 import {StreamSaverBackend} from './StreamSaverBackend.mjs';
 import {TabTracker} from './TabTracker.mjs';
+import {VpnProxyMirror} from './VpnProxyMirror.mjs';
 
 let Options = {};
 const OptionsCache = {};
@@ -22,6 +23,46 @@ const ruleManager = new RuleManager();
 
 
 let CustomSourcePatternsMatcher = new MultiRegexMatcher();
+
+// FastStream's requests follow the page's through Firefox VPN (VpnProxyMirror.mjs). Only
+// builds that declare the optional "proxy" permission have it: the Firefox ones (build.mjs).
+const VpnMirror = chrome.runtime.getManifest().optional_permissions?.includes('proxy') ?
+  new VpnProxyMirror({
+    origin: chrome.runtime.getURL(''),
+    getProxyApi: () => chrome.proxy || null,
+  }) : null;
+
+/**
+ * Reads whether FastStream holds the "proxy" permission, for VpnMirror.
+ * @return {Promise<boolean>}
+ */
+async function refreshProxyPermission() {
+  let permitted = false;
+  try {
+    permitted = await chrome.permissions.contains({permissions: ['proxy']});
+  } catch (e) {
+    console.warn('Could not read the proxy permission', e);
+  }
+  VpnMirror.setPermitted(permitted);
+  return permitted;
+}
+
+if (VpnMirror) {
+  refreshProxyPermission();
+  chrome.permissions.onAdded.addListener(async (added) => {
+    if (!added.permissions?.includes('proxy')) return;
+    const permitted = await refreshProxyPermission();
+    if (!permitted) return;
+    // A player that offered to follow the VPN loads its source again, now through it.
+    for (const tab of await BackgroundUtils.queryTabs()) {
+      if (tab.id === undefined) continue;
+      chrome.tabs.sendMessage(tab.id, {type: MessageTypes.VPN_ALLOWED}, () => {
+        BackgroundUtils.checkMessageError('vpn_allowed', true);
+      });
+    }
+  });
+  chrome.permissions.onRemoved.addListener(() => refreshProxyPermission());
+}
 
 const sponsorBlockBackend = new SponsorBlockIntegration();
 sponsorBlockBackend.setup();
@@ -102,6 +143,7 @@ chrome.action.onClicked.addListener(onClicked);
 
 chrome.tabs.onRemoved.addListener((tabid, removed) => {
   Tabs.removeTab(tabid);
+  VpnMirror?.forgetTab(tabid);
 });
 
 chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
@@ -162,6 +204,31 @@ chrome.tabs.onUpdated.addListener((tabid, changeInfo, tabobj) => {
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === MessageTypes.PING) {
     sendResponse(MessageTypes.PONG);
+    return;
+  } else if (msg.type === MessageTypes.VPN_STATUS) {
+    // The player, about its source: did the page reach it through Firefox VPN, and may
+    // FastStream follow (VpnProxyMirror.mjs)? Only FastStream's own pages may ask: the
+    // answer adds the URL's host to those that follow the VPN.
+    if (!VpnMirror || !String(sender.url || '').startsWith(chrome.runtime.getURL(''))) {
+      sendResponse(null);
+      return;
+    }
+    sendResponse(VpnMirror.status(String(msg.url || ''), !!sender.tab?.incognito, sender.tab?.id));
+    return;
+  } else if (msg.type === MessageTypes.VPN_OPEN_PERMISSION) {
+    // The player's Firefox VPN button: a player in a page has no permissions API, so the
+    // permissions page asks, at its proxy row, in a tab of its own next to the video's.
+    if (!VpnMirror || !String(sender.url || '').startsWith(chrome.runtime.getURL(''))) {
+      sendResponse(false);
+      return;
+    }
+    const create = {url: chrome.runtime.getURL('perms.html') + '#proxy'};
+    if (sender.tab?.id !== undefined) {
+      create.openerTabId = sender.tab.id;
+      create.index = sender.tab.index + 1;
+    }
+    chrome.tabs.create(create).catch((e) => console.error('Opening the permissions page failed', e));
+    sendResponse(true);
     return;
   } else if (msg.type === MessageTypes.LOAD_OPTIONS) {
     loadOptions();
@@ -1392,6 +1459,7 @@ if (EnvUtils.isChrome()) {
 }
 
 chrome.webRequest.onBeforeRequest.addListener((details) => {
+  VpnMirror?.noteRequest(details);
   const tab = Tabs.getTabOrCreate(details.tabId);
   const frame = tab.getFrameOrCreate(details.frameId);
   if (!frame.parent && details.parentFrameId !== -1) {
@@ -1442,6 +1510,7 @@ chrome.webRequest.onHeadersReceived.addListener(
       }
 
       if (BackgroundUtils.isSubtitles(ext)) {
+        VpnMirror?.noteSource(details);
         return handleSubtitles(url, frame, frame.requestHeaders.get(details.requestId));
       }
 
@@ -1472,6 +1541,7 @@ chrome.webRequest.onHeadersReceived.addListener(
         }
       }
 
+      VpnMirror?.noteSource(details);
       onSourceRecieved(details, frame, mode);
     }, {
       urls: ['<all_urls>'],

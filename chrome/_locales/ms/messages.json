@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Menghantar sumber kepada pemain daripada skrip latar belakang."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy (opsyenal)"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Hanya digunakan dengan Firefox VPN. Firefox menyenaraikannya sebagai kawalan tetapan proksi pelayar, tetapi FastStream tidak mengubah sebarang tetapan: ia menghantar permintaannya sendiri untuk video dengan cara yang sama seperti permintaan halaman itu sendiri, melalui VPN. Tanpanya, tapak yang mengikat videonya pada alamat VPN menolak FastStream. Pemain memintanya apabila pertama kali diperlukan."
+    },
     "perms_page_granted": {
         "message": "Dibenarkan"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "Gagal memuatkan video!"
+    },
+    "player_vpn_allow": {
+        "message": "Main melalui Firefox VPN"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "Halaman ini mendapatkan videonya melalui Firefox VPN, yang tidak menyertakan permintaan FastStream, dan laman mungkin menolaknya. Klik untuk membenarkan FastStream menggunakan sambungan yang sama (sekali, pada halaman kebenaran FastStream)."
     },
     "source_copied": {
         "message": "URL disalin ke papan keratan!"

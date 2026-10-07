@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "由背景腳本將來源傳送給播放器。"
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy（選用）"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "僅與 Firefox VPN 一起使用。Firefox 將其列為瀏覽器代理設定的控制項，但 FastStream 不會變更任何設定：它會以頁面自身請求所經過的相同方式，透過 VPN 傳送自己針對影片的請求。沒有它，將影片綁定到 VPN 位址的網站會拒絕 FastStream。播放器在首次需要它時要求它。"
+    },
     "perms_page_granted": {
         "message": "已授權"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "影片載入失敗！"
+    },
+    "player_vpn_allow": {
+        "message": "透過 Firefox VPN 播放"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "此頁面透過 Firefox VPN 取得影片，這會將 FastStream 的請求排除在外，網站可能會拒絕這些請求。點擊以允許 FastStream 使用相同連線（僅一次，在 FastStream 的權限頁面上）。"
     },
     "source_copied": {
         "message": "已將網址複製到剪貼簿！"

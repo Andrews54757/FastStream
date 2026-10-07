@@ -324,6 +324,9 @@ async function buildFirefoxLibre() {
     manifest.optional_permissions = [];
   }
   manifest.optional_permissions.push('userScripts');
+  // Lets FastStream's requests follow the page's through Firefox VPN (VpnProxyMirror.mjs).
+  // Firefox only: Chromium has no proxy.onRequest, so the Chrome builds do not ask for it.
+  manifest.optional_permissions.push('proxy');
 
   manifest.browser_specific_settings = {
     gecko: {
@@ -381,6 +384,9 @@ async function buildFirefoxDist() {
     manifest.optional_permissions = [];
   }
   manifest.optional_permissions.push('userScripts');
+  // Lets FastStream's requests follow the page's through Firefox VPN (VpnProxyMirror.mjs).
+  // Firefox only: Chromium has no proxy.onRequest, so the Chrome builds do not ask for it.
+  manifest.optional_permissions.push('proxy');
 
   delete manifest.incognito;
   delete manifest.minimum_chrome_version;
