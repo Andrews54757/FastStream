@@ -1195,5 +1195,8 @@
     },
     "ytslowdown_ok": {
         "message": "確定"
+    },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
     }
 }

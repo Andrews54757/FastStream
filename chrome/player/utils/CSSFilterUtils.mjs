@@ -85,4 +85,22 @@ export class CSSFilterUtils {
 
     return transforms.join(' ');
   }
+
+  /**
+   * Generates aspect ratio styles based on video options.
+   * @param {Object} options - Video options containing videoAspectRatio.
+   * @return {{objectFit: string, aspectRatio: string}}
+   */
+  static getAspectRatioStyles(options) {
+    if (!options || !options.videoAspectRatio || options.videoAspectRatio === 'auto') {
+      return {objectFit: '', aspectRatio: ''};
+    }
+    if (options.videoAspectRatio === 'stretch') {
+      return {objectFit: 'fill', aspectRatio: ''};
+    }
+    return {
+      objectFit: 'fill',
+      aspectRatio: options.videoAspectRatio.replace(':', '/'),
+    };
+  }
 }
