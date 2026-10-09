@@ -957,7 +957,9 @@ export class FastStreamClient extends EventEmitter {
       this.setSeekSave(true);
 
       if (this.player.getSource()) {
-        await this.setupPreviewPlayer();
+        await this.setupPreviewPlayer().catch((e) => {
+          console.error(e);
+        });
 
         await this.videoAnalyzer.setSource(this.player.getSource());
 
@@ -976,12 +978,15 @@ export class FastStreamClient extends EventEmitter {
       }
 
       this.loadProgressData().then(async () => {
+        // Another source may have been set in the meantime
+        if (this.source !== source) return;
         this.disableProgressSave = true;
 
         // Wait for the player to be ready
         if (this.initPromise) {
           await this.initPromise;
         }
+        if (this.source !== source) return;
 
         if (timeFromURL) {
           this.setSeekSave(false);
@@ -1678,7 +1683,9 @@ export class FastStreamClient extends EventEmitter {
   undoSeek() {
     if (this.pastSeeks.length) {
       this.pastUnseeks.push(this.player.currentTime);
-      this.player.currentTime = this.pastSeeks.pop();
+      this.setSeekSave(false);
+      this.currentTime = this.pastSeeks.pop();
+      this.setSeekSave(true);
       this.interfaceController.updateMarkers();
     }
   }
@@ -1689,7 +1696,9 @@ export class FastStreamClient extends EventEmitter {
   redoSeek() {
     if (this.pastUnseeks.length) {
       this.pastSeeks.push(this.player.currentTime);
-      this.player.currentTime = this.pastUnseeks.pop();
+      this.setSeekSave(false);
+      this.currentTime = this.pastUnseeks.pop();
+      this.setSeekSave(true);
       this.interfaceController.updateMarkers();
     }
   }
@@ -1737,6 +1746,16 @@ export class FastStreamClient extends EventEmitter {
    * @param {number} value
    */
   set currentTime(value) {
+    if (Number.isNaN(value)) {
+      return;
+    }
+    // Relative seeks near either end ask for a time outside the video.
+    value = Math.max(0, value);
+    const duration = this.duration;
+    if (duration > 0 && Number.isFinite(duration)) {
+      value = Math.min(value, duration);
+    }
+
     if (this.saveSeek) {
       this.savePosition();
     }
