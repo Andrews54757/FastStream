@@ -52,7 +52,9 @@ class EventEmitterContext {
     if (!this.events.has(event)) {
       return this;
     }
-    if (!this.events.get(event).every((callback) => {
+    // A copy: a listener that removes itself (once()) took its place away while this was
+    // on it, and the next one, moved into that place, was skipped.
+    if (![...this.events.get(event)].every((callback) => {
       try {
         const result = callback(...args);
         if (result === EmitterCancel) {
@@ -120,7 +122,9 @@ export class EventEmitter {
     if (this.debug) {
       console.log(event, ...args);
     }
-    if (!this.contexts.every((context) => {
+    // A copy, as in the context's emit(): a context destroyed by its own handler skipped
+    // the one after it.
+    if (![...this.contexts].every((context) => {
       const val = context.emit(event, ...args);
       if (val === EmitterCancel) {
         return false;

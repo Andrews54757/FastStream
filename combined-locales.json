@@ -3457,7 +3457,7 @@
     },
     "player_source_accelvm": {
         "en": "Accelerated Vimeo",
-        "de": "Beschleunigtest Vimeo",
+        "de": "Beschleunigtes Vimeo",
         "es": "Vimeo Acelerado",
         "fr": "Vimeo accéléré",
         "id": "Vimeo Dipercepat",
@@ -3472,6 +3472,24 @@
         "tr": "Hızlandırılmış Vimeo",
         "zh_CN": "加速 Vimeo",
         "zh_TW": "加速 Vimeo"
+    },
+    "player_source_accelpanopto": {
+        "en": "Accelerated Panopto",
+        "de": "Beschleunigtes Panopto",
+        "es": "Panopto Acelerado",
+        "fr": "Panopto accéléré",
+        "id": "Panopto Dipercepat",
+        "it": "Panopto Accelerato",
+        "ja": "高速化された Panopto",
+        "ko": "가속 Panopto",
+        "ms": "Panopto dipercepatkan",
+        "nl": "Versnelde Panopto",
+        "pl": "Przyspieszony Panopto",
+        "pt_BR": "Panopto acelerado",
+        "ru": "Аппарат. ускорение Panopto",
+        "tr": "Hızlandırılmış Panopto",
+        "zh_CN": "加速 Panopto",
+        "zh_TW": "加速 Panopto"
     },
     "player_source_mode": {
         "en": "Mode",

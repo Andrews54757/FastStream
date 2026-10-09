@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "Vimeo Dipercepat"
     },
+    "player_source_accelpanopto": {
+        "message": "Panopto Dipercepat"
+    },
     "player_source_mode": {
         "message": "Mode"
     },
