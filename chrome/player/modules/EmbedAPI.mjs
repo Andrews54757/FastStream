@@ -656,6 +656,7 @@ export class EmbedAPI {
     this.subscribers = [];
     this.playerContext = null;
     this.started = false;
+    this.pinnedOrigins = new Map();
     this.onMessage = this.handleMessage.bind(this);
   }
 
@@ -694,6 +695,7 @@ export class EmbedAPI {
     this.started = false;
     window.removeEventListener('message', this.onMessage);
     this.subscribers.length = 0;
+    this.pinnedOrigins.clear();
 
     if (this.playerContext) {
       this.playerContext.destroy();
@@ -804,14 +806,17 @@ export class EmbedAPI {
    * The embedder has no other way to know: an iframe's load event fires before the
    * player's modules have run, so a command sent then would arrive before anything was
    * listening. The announcement is sent with a wildcard target because the embedder's
-   * origin is not knowable from in here, which is safe enough — it reaches only the
-   * window that embedded this one, and says nothing but what this player is.
+   * origin is not knowable from in here. Source URLs and identifiers are omitted until
+   * an embedder has sent a command, since an opener may have navigated in the meantime.
    */
   announce() {
     const message = {
       type: EVENT_TYPE,
       event: READY_EVENT,
-      state: this.getState(),
+      state: {
+        ...this.getState(),
+        source: this.client.source ? {mode: this.client.source.mode} : null,
+      },
       detail: this.describe(),
     };
 
@@ -904,6 +909,9 @@ export class EmbedAPI {
     if (!data || data.type !== COMMAND_TYPE || !event.source) {
       return;
     }
+    if (!this.isEmbedder(event.source, event.origin)) {
+      return;
+    }
 
     const sender = {source: event.source, origin: event.origin};
     const name = data.command;
@@ -920,6 +928,24 @@ export class EmbedAPI {
       console.warn(`Embed API command ${name} failed`, e);
       this.respond(sender, data.id, {ok: false, error: {message: describeError(e)}});
     }
+  }
+
+  /**
+   * Accepts commands only from the direct parent or opener at its initial origin.
+   * @param {Window} source - The window that sent the command.
+   * @param {string} origin - The sender's origin.
+   * @return {boolean} Whether the sender is an authorized embedder.
+   */
+  isEmbedder(source, origin) {
+    if (source === window || (source !== window.parent && source !== window.opener)) {
+      return false;
+    }
+    const pinned = this.pinnedOrigins.get(source);
+    if (pinned === undefined) {
+      this.pinnedOrigins.set(source, origin);
+      return true;
+    }
+    return pinned === origin;
   }
 
   /**

@@ -329,7 +329,9 @@ async function setup() {
     }
   });
 
-  if (window.location.hash) {
+  // Extension player frames receive sources through extension messaging. A page must
+  // not use a framed player's hash to request arbitrary URLs with custom headers.
+  if (window.location.hash && (!EnvUtils.isExtension() || window.top === window)) {
     const url = window.location.hash.substring(1);
     const ext = URLUtils.get_url_extension(url);
     let mode = PlayerModes.DIRECT;
