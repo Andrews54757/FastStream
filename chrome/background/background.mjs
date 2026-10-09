@@ -73,7 +73,8 @@ async function onClicked(tabobj) {
       } else {
         let hasPlayer = false;
         for (const frame of tab.getFrames()) {
-          if (frame.isPlayer) {
+          // A player that is still loading has to go too.
+          if (frame.isPlayer || frame.playerOpening) {
             hasPlayer = true;
             break;
           }
@@ -1249,7 +1250,8 @@ async function openPlayer(frame) {
     }, (response) => {
       BackgroundUtils.checkMessageError('player');
 
-      if (response === 'no_video') {
+      // Anything else, including no answer at all, means no player is coming.
+      if (!['redirect', 'replaceall', 'replace'].includes(response)) {
         frame.playerOpening = false;
       }
 
@@ -1390,6 +1392,11 @@ async function openPlayersWithSources(tab) {
     framesWithSources = await Promise.all(framesWithSources.map(async (frame) => {
       return {frame, videoSize: await getVideoSize(frame)};
     }));
+
+    // The tab may have been turned off while the videos were measured.
+    if (!tab.isOn) {
+      return;
+    }
 
     framesWithSources.sort((a, b) => {
       return b.videoSize - a.videoSize;

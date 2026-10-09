@@ -27,6 +27,7 @@
   const linkRequests = new Map();
   let MiniplayerCooldown = 0;
   let Activated = false;
+  let RedirectingToPlayer = false;
 
   let resizeDebounce = Date.now();
   const Config = {
@@ -252,6 +253,7 @@
           if (request.parentFrameId > -1) {
             newURL.searchParams.set('parent_frame_id', request.parentFrameId);
           }
+          RedirectingToPlayer = true;
           window.location = newURL.href;
           console.log('redirecting to player');
           sendResponse('redirect');
@@ -1477,6 +1479,10 @@
   });
 
   window.addEventListener('beforeunload', () => {
+    // The player loads in this frame and asks for the sources found in it.
+    if (RedirectingToPlayer) {
+      return;
+    }
     chrome.runtime.sendMessage({
       type: MessageTypes.FRAME_REMOVED,
     });
