@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Videoquellen an den Player von einem Hintergrundskript zu senden."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy (optional)"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Nur mit Firefox VPN. Firefox führt sie als Steuerung der Proxy-Einstellungen des Browsers, aber FastStream ändert keine Einstellung: Es schickt seine eigenen Anfragen für ein Video denselben Weg wie die Seite, über das VPN. Ohne diese Berechtigung lehnt eine Seite, die ihr Video an die Adresse des VPN bindet, FastStream ab. Der Player fragt danach, wenn sie das erste Mal gebraucht wird."
+    },
     "perms_page_granted": {
         "message": "Gewährt"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "Laden vom Video fehlgeschlagen!"
+    },
+    "player_vpn_allow": {
+        "message": "Über Firefox VPN abspielen"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "Diese Seite lädt ihr Video über Firefox VPN. Die Anfragen von FastStream laufen nicht darüber, und die Seite kann sie ablehnen. Klicken, um FastStream dieselbe Verbindung zu erlauben (einmalig, auf der Berechtigungsseite von FastStream)."
     },
     "source_copied": {
         "message": "Die Video URL wurde in die Zwischenablage gespeichert!"

@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Mengirim sumber ke pemutar dari skrip latar belakang."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy (opsional)"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Hanya digunakan dengan Firefox VPN. Firefox mencantumkannya sebagai kontrol pengaturan proxy browser, tetapi FastStream tidak mengubah pengaturan apa pun: ia mengirim permintaannya sendiri untuk video dengan cara yang sama seperti permintaan halaman itu sendiri, melalui VPN. Tanpanya, situs yang mengaitkan videonya ke alamat VPN menolak FastStream. Pemutar memintanya saat pertama kali dibutuhkan."
+    },
     "perms_page_granted": {
         "message": "Diizinkan"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "Gagal memuat video!"
+    },
+    "player_vpn_allow": {
+        "message": "Putar melalui Firefox VPN"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "Halaman ini mendapatkan videonya melalui Firefox VPN, yang tidak menyertakan permintaan FastStream, dan situs mungkin menolaknya. Klik untuk mengizinkan FastStream menggunakan koneksi yang sama (sekali, di halaman izin FastStream)."
     },
     "source_copied": {
         "message": "URL disalin ke papan klip!"

@@ -143,6 +143,12 @@
     "perms_page_breakdown_perm5r1": {
         "message": "Invio di sorgenti ai lettori video dallo script in background."
     },
+    "perms_page_breakdown_perm6h": {
+        "message": "Proxy (opzionale)"
+    },
+    "perms_page_breakdown_perm6d": {
+        "message": "Usata solo con Firefox VPN. Firefox la elenca come controllo delle impostazioni proxy del browser, ma FastStream non modifica alcuna impostazione: invia le proprie richieste per un video nello stesso modo in cui sono state inviate le richieste della pagina stessa, tramite la VPN. Senza di essa, un sito che collega il suo video all'indirizzo della VPN rifiuta FastStream. Il player la chiede la prima volta che serve."
+    },
     "perms_page_granted": {
         "message": "Concesso"
     },
@@ -544,6 +550,12 @@
     },
     "player_error_load": {
         "message": "Caricamento del video fallito!"
+    },
+    "player_vpn_allow": {
+        "message": "Riproduci tramite Firefox VPN"
+    },
+    "player_vpn_allow_tooltip": {
+        "message": "Questa pagina ottiene il suo video tramite Firefox VPN, che esclude le richieste di FastStream, e il sito può rifiutarle. Fai clic per consentire a FastStream di usare la stessa connessione (una volta, nella pagina dei permessi di FastStream)."
     },
     "source_copied": {
         "message": "URL copiato negli appunti!"
