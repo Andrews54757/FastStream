@@ -438,6 +438,8 @@ export class FastStreamClient extends EventEmitter {
       this.player.getVideo().style.transform = transformStr;
       this.player.getVideo().style.objectFit = aspectStyle.objectFit;
       this.player.getVideo().style.aspectRatio = aspectStyle.aspectRatio;
+      this.player.getVideo().style.setProperty('--video-aspect-ratio', aspectStyle.aspectRatio);
+      this.player.getVideo().classList.toggle('fixed-aspect-ratio', !!aspectStyle.aspectRatio);
     }
 
     if (this.previewPlayer) {
@@ -2188,4 +2190,3 @@ export class FastStreamClient extends EventEmitter {
     this.player.getVideo().style.objectFit = 'cover';
   }
 }
-

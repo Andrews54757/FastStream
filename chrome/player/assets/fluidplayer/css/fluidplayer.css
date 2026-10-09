@@ -720,6 +720,7 @@ body {
 .video-container {
     position: absolute;
     inset: 0px;
+    container-type: size;
 }
 
 .video-container>video {
@@ -727,6 +728,12 @@ body {
     inset: 0px;
     width: 100%;
     height: 100%;
+}
+
+.video-container>video.fixed-aspect-ratio {
+    width: min(100cqw, calc(100cqh * var(--video-aspect-ratio)));
+    height: auto;
+    margin: auto;
 }
 
 .mainplayer {
