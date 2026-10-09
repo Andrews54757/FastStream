@@ -485,6 +485,24 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
 
     return sponsorBlockBackend.onPlayerMessage(msg, sendResponse);
+  } else if (msg.type === MessageTypes.REQUEST_YT_PO_TOKENS) {
+    const pageFrame = frame.pageFrame;
+    if (!pageFrame) {
+      sendResponse({error: 'No YouTube page is available to mint playback tokens.'});
+      return;
+    }
+
+    chrome.tabs.sendMessage(pageFrame.tab.tabId, {
+      type: MessageTypes.MINT_YT_PO_TOKENS,
+      videoId: msg.videoId,
+      visitorData: msg.visitorData,
+    }, {
+      frameId: pageFrame.frameId,
+    }, (response) => {
+      const error = chrome.runtime.lastError;
+      sendResponse(error ? {error: error.message} : response || {error: 'No response from the YouTube token bridge.'});
+    });
+    return true;
   } else if (msg.type === MessageTypes.REQUEST_YT_DATA) {
     const pageFrame = frame.pageFrame;
     if (!pageFrame) {

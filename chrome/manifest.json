@@ -82,6 +82,21 @@
     },
     {
       "matches": [
+        "https://www.youtube.com/*",
+        "https://youtube.com/*",
+        "https://m.youtube.com/*",
+        "https://music.youtube.com/*",
+        "https://www.youtube-nocookie.com/*"
+      ],
+      "all_frames": true,
+      "run_at": "document_start",
+      "world": "MAIN",
+      "js": [
+        "custom/yt_inject.js"
+      ]
+    },
+    {
+      "matches": [
         "<all_urls>"
       ],
       "all_frames": true,

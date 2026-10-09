@@ -1,5 +1,6 @@
 /* eslint-disable */
 /* https://github.com/Andrews54757/YouTube.js */
+/* eslint-disable */
 var __defProp = Object.defineProperty;
 var __typeError = (msg) => {
   throw TypeError(msg);
@@ -186,7 +187,7 @@ function setLevel(...args) {
 __name(setLevel, "setLevel");
 
 // dist/src/parser/helpers.js
-var isObserved = Symbol("ObservedArray.isObserved");
+var isObserved = /* @__PURE__ */ Symbol("ObservedArray.isObserved");
 var _YTNode = class _YTNode {
   constructor() {
     __publicField(this, "type");
@@ -387,8 +388,8 @@ var _Maybe = class _Maybe {
    * Check if the value is an ObservedArray.
    */
   isObserved() {
-    var _a;
-    return (_a = __privateGet(this, _value)) == null ? void 0 : _a[isObserved];
+    var _a2;
+    return (_a2 = __privateGet(this, _value)) == null ? void 0 : _a2[isObserved];
   }
   /**
    * Get the value of the Maybe as a SuperParsedResult.
@@ -645,7 +646,7 @@ __name(generateSidAuth, "generateSidAuth");
 function generateRandomString(length) {
   const result = [];
   const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-  for (let i = 0; i < length; i++) {
+  for (let i2 = 0; i2 < length; i2++) {
     result.push(alphabet.charAt(Math.floor(Math.random() * alphabet.length)));
   }
   return result.join("");
@@ -737,8 +738,12 @@ ${headers_serialized}
 ${body_contents}`);
   return Platform.shim.fetch(input, init);
 }, "debugFetch");
-function u8ToBase64(u8) {
-  return btoa(String.fromCharCode.apply(null, Array.from(u8)));
+function u8ToBase64(u82, base64url = false) {
+  const result = btoa(String.fromCharCode(...u82));
+  if (base64url) {
+    return result.replace(/\+/g, "-").replace(/\//g, "_");
+  }
+  return result;
 }
 __name(u8ToBase64, "u8ToBase64");
 function base64ToU8(base64) {
@@ -1051,8 +1056,8 @@ async function sha1Hash(str) {
   function hex(arrayBuffer) {
     const buff = new Uint8Array(arrayBuffer);
     const hexOctets = [];
-    for (let i = 0; i < buff.length; ++i)
-      hexOctets.push(byteToHex[buff[i]]);
+    for (let i2 = 0; i2 < buff.length; ++i2)
+      hexOctets.push(byteToHex[buff[i2]]);
     return hexOctets.join("");
   }
   __name(hex, "hex");
@@ -1189,10 +1194,12 @@ __export(nodes_exports, {
   CompactVideo: () => CompactVideo,
   CompositeVideoPrimaryInfo: () => CompositeVideoPrimaryInfo,
   ConfirmDialog: () => ConfirmDialog,
+  ContentListItemView: () => ContentListItemView,
   ContentMetadataView: () => ContentMetadataView,
   ContentPreviewImageView: () => ContentPreviewImageView,
   ContinuationCommand: () => ContinuationCommand,
   ContinuationItem: () => ContinuationItem,
+  ContinuationItemView: () => ContinuationItemView,
   ConversationBar: () => ConversationBar,
   CopyLink: () => CopyLink,
   CreateCommentEndpoint: () => CreateCommentEndpoint,
@@ -1214,6 +1221,7 @@ __export(nodes_exports, {
   DismissableDialog: () => DismissableDialog,
   DismissableDialogContentSection: () => DismissableDialogContentSection,
   DownloadButton: () => DownloadButton,
+  DownloadListItemView: () => DownloadListItemView,
   Dropdown: () => Dropdown,
   DropdownItem: () => DropdownItem,
   DropdownView: () => DropdownView,
@@ -1277,6 +1285,7 @@ __export(nodes_exports, {
   HorizontalList: () => HorizontalList,
   HorizontalMovieList: () => HorizontalMovieList,
   HowThisWasMadeSectionView: () => HowThisWasMadeSectionView,
+  HypeFanCreditsSectionView: () => HypeFanCreditsSectionView,
   HypePointsFactoid: () => HypePointsFactoid,
   IconLink: () => IconLink,
   ImageBannerView: () => ImageBannerView,
@@ -1285,6 +1294,7 @@ __export(nodes_exports, {
   InfoPanelContent: () => InfoPanelContent,
   InfoRow: () => InfoRow,
   InteractiveTabbedHeader: () => InteractiveTabbedHeader,
+  InterstitialView: () => InterstitialView,
   ItemSection: () => ItemSection,
   ItemSectionHeader: () => ItemSectionHeader,
   ItemSectionTab: () => ItemSectionTab,
@@ -1331,6 +1341,8 @@ __export(nodes_exports, {
   LiveChatTickerPaidStickerItem: () => LiveChatTickerPaidStickerItem,
   LiveChatTickerSponsorItem: () => LiveChatTickerSponsorItem,
   LiveChatViewerEngagementMessage: () => LiveChatViewerEngagementMessage,
+  LiveStreamOfflineSlate: () => LiveStreamOfflineSlate,
+  LiveStreamability: () => LiveStreamability,
   LockupMetadataView: () => LockupMetadataView,
   LockupView: () => LockupView,
   MacroMarkersInfoItem: () => MacroMarkersInfoItem,
@@ -1421,6 +1433,7 @@ __export(nodes_exports, {
   PlayerCaptionsTracklist: () => PlayerCaptionsTracklist,
   PlayerControlsOverlay: () => PlayerControlsOverlay,
   PlayerErrorMessage: () => PlayerErrorMessage,
+  PlayerInterstitial: () => PlayerInterstitial,
   PlayerLegacyDesktopYpcOffer: () => PlayerLegacyDesktopYpcOffer,
   PlayerLegacyDesktopYpcTrailer: () => PlayerLegacyDesktopYpcTrailer,
   PlayerLiveStoryboardSpec: () => PlayerLiveStoryboardSpec,
@@ -1432,6 +1445,7 @@ __export(nodes_exports, {
   PlayerStoryboardSpec: () => PlayerStoryboardSpec,
   Playlist: () => Playlist,
   PlaylistAddToOption: () => PlaylistAddToOption,
+  PlaylistCollaborationView: () => PlaylistCollaborationView,
   PlaylistCustomThumbnail: () => PlaylistCustomThumbnail,
   PlaylistEditEndpoint: () => PlaylistEditEndpoint,
   PlaylistHeader: () => PlaylistHeader,
@@ -1510,6 +1524,7 @@ __export(nodes_exports, {
   SharePanelTitleV15: () => SharePanelTitleV15,
   ShareTarget: () => ShareTarget,
   SharedPost: () => SharedPost,
+  SheetView: () => SheetView,
   Shelf: () => Shelf,
   ShortsLockupView: () => ShortsLockupView,
   ShowCustomThumbnail: () => ShowCustomThumbnail,
@@ -1518,6 +1533,7 @@ __export(nodes_exports, {
   ShowLiveChatActionPanelAction: () => ShowLiveChatActionPanelAction,
   ShowLiveChatDialogAction: () => ShowLiveChatDialogAction,
   ShowLiveChatTooltipCommand: () => ShowLiveChatTooltipCommand,
+  ShowSheetCommand: () => ShowSheetCommand,
   ShowingResultsFor: () => ShowingResultsFor,
   SignalAction: () => SignalAction,
   SignalServiceEndpoint: () => SignalServiceEndpoint,
@@ -1555,6 +1571,7 @@ __export(nodes_exports, {
   ThumbnailHoverOverlayToggleActionsView: () => ThumbnailHoverOverlayToggleActionsView,
   ThumbnailHoverOverlayView: () => ThumbnailHoverOverlayView,
   ThumbnailLandscapePortrait: () => ThumbnailLandscapePortrait,
+  ThumbnailOverlayAvatarStackView: () => ThumbnailOverlayAvatarStackView,
   ThumbnailOverlayBadgeView: () => ThumbnailOverlayBadgeView,
   ThumbnailOverlayBottomPanel: () => ThumbnailOverlayBottomPanel,
   ThumbnailOverlayEndorsement: () => ThumbnailOverlayEndorsement,
@@ -1571,6 +1588,8 @@ __export(nodes_exports, {
   ThumbnailOverlayTitleView: () => ThumbnailOverlayTitleView,
   ThumbnailOverlayToggleButton: () => ThumbnailOverlayToggleButton,
   ThumbnailView: () => ThumbnailView,
+  TicketEvent: () => TicketEvent,
+  TicketShelf: () => TicketShelf,
   TimedMarkerDecoration: () => TimedMarkerDecoration,
   TitleAndButtonListHeader: () => TitleAndButtonListHeader,
   ToggleButton: () => ToggleButton,
@@ -1616,6 +1635,7 @@ __export(nodes_exports, {
   VideoDescriptionInfocardsSection: () => VideoDescriptionInfocardsSection,
   VideoDescriptionMusicSection: () => VideoDescriptionMusicSection,
   VideoDescriptionTranscriptSection: () => VideoDescriptionTranscriptSection,
+  VideoDescriptionYouchatSectionView: () => VideoDescriptionYouchatSectionView,
   VideoInfoCardContent: () => VideoInfoCardContent,
   VideoMetadataCarouselView: () => VideoMetadataCarouselView,
   VideoOwner: () => VideoOwner,
@@ -1623,6 +1643,7 @@ __export(nodes_exports, {
   VideoSecondaryInfo: () => VideoSecondaryInfo,
   VideoSummaryContentView: () => VideoSummaryContentView,
   VideoSummaryParagraphView: () => VideoSummaryParagraphView,
+  VideoTitleHeaderView: () => VideoTitleHeaderView,
   VideoViewCount: () => VideoViewCount,
   ViewCountFactoid: () => ViewCountFactoid,
   VoiceReplyContainerView: () => VoiceReplyContainerView,
@@ -1709,7 +1730,7 @@ var CLIENTS = {
   },
   WEB: {
     NAME: "WEB",
-    VERSION: "2.20260206.01.00",
+    VERSION: "2.20260623.01.00",
     API_KEY: "AIzaSyAO_FJ2SlqU8Q4STEHLGCilw_Y9_11qcW8",
     API_VERSION: "v1",
     STATIC_VISITOR_ID: "6zpwvWUNAco",
@@ -1741,6 +1762,15 @@ var CLIENTS = {
     DEVICE_MAKE: "Oculus",
     DEVICE_MODEL: "Quest 3",
     USER_AGENT: "com.google.android.apps.youtube.vr.oculus/1.65.10 (Linux; U; Android 12L; eureka-user Build/SQ3A.220605.009.A1) gzip"
+  },
+  VISIONOS: {
+    NAME: "VISIONOS",
+    VERSION: "1.02",
+    DEVICE_MAKE: "Apple",
+    DEVICE_MODEL: "RealityDevice17,1",
+    OS_NAME: "visionOS",
+    OS_VERSION: "26.5.23O471",
+    USER_AGENT: "Mozilla/5.0 (Macintosh; Intel Mac OS X 15_7_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/26.0 Safari/605.1.15"
   },
   YTSTUDIO_ANDROID: {
     NAME: "ANDROID_CREATOR",
@@ -1788,6 +1818,7 @@ var CLIENT_NAME_IDS = {
   ANDROID_CREATOR: "14",
   ANDROID_MUSIC: "21",
   ANDROID_VR: "28",
+  VISIONOS: "101",
   TVHTML5: "7",
   TVHTML5_SIMPLY: "74",
   TVHTML5_SIMPLY_EMBEDDED_PLAYER: "85",
@@ -1805,51 +1836,75 @@ var INNERTUBE_HEADERS_BASE = {
   "accept-encoding": "gzip, deflate",
   "content-type": "application/json"
 };
-var SUPPORTED_CLIENTS = ["IOS", "WEB", "MWEB", "YTKIDS", "YTMUSIC", "ANDROID", "ANDROID_VR", "YTSTUDIO_ANDROID", "YTMUSIC_ANDROID", "TV", "TV_SIMPLY", "TV_EMBEDDED", "WEB_EMBEDDED", "WEB_CREATOR"];
+var SUPPORTED_CLIENTS = ["IOS", "WEB", "MWEB", "YTKIDS", "YTMUSIC", "ANDROID", "ANDROID_VR", "VISIONOS", "YTSTUDIO_ANDROID", "YTMUSIC_ANDROID", "TV", "TV_SIMPLY", "TV_EMBEDDED", "WEB_EMBEDDED", "WEB_CREATOR"];
 
 // dist/src/utils/EventEmitterLike.js
-var _legacy_listeners;
-var _EventEmitterLike = class _EventEmitterLike extends EventTarget {
+var _EventEmitterLike = class _EventEmitterLike {
   constructor() {
-    super();
-    __privateAdd(this, _legacy_listeners, /* @__PURE__ */ new Map());
+    __publicField(this, "listeners", /* @__PURE__ */ new Map());
+    __publicField(this, "onceWrappers", /* @__PURE__ */ new Map());
   }
   emit(type, ...args) {
-    const event = new Platform.shim.CustomEvent(type, { detail: args });
-    this.dispatchEvent(event);
+    const listeners = this.listeners.get(type);
+    if (!listeners || listeners.size === 0)
+      return;
+    for (const listener of [...listeners])
+      listener(...args);
   }
   on(type, listener) {
-    const wrapper = /* @__PURE__ */ __name((ev) => {
-      if (ev instanceof Platform.shim.CustomEvent) {
-        listener(...ev.detail);
-      } else {
-        listener(ev);
-      }
-    }, "wrapper");
-    __privateGet(this, _legacy_listeners).set(listener, wrapper);
-    this.addEventListener(type, wrapper);
+    let listeners = this.listeners.get(type);
+    if (!listeners) {
+      listeners = /* @__PURE__ */ new Set();
+      this.listeners.set(type, listeners);
+    }
+    listeners.add(listener);
   }
   once(type, listener) {
-    const wrapper = /* @__PURE__ */ __name((ev) => {
-      if (ev instanceof Platform.shim.CustomEvent) {
-        listener(...ev.detail);
-      } else {
-        listener(ev);
-      }
+    const wrapper = /* @__PURE__ */ __name((...args) => {
       this.off(type, listener);
+      listener(...args);
     }, "wrapper");
-    __privateGet(this, _legacy_listeners).set(listener, wrapper);
-    this.addEventListener(type, wrapper);
+    let wrappersByType = this.onceWrappers.get(listener);
+    if (!wrappersByType) {
+      wrappersByType = /* @__PURE__ */ new Map();
+      this.onceWrappers.set(listener, wrappersByType);
+    }
+    wrappersByType.set(type, wrapper);
+    this.on(type, wrapper);
   }
   off(type, listener) {
-    const wrapper = __privateGet(this, _legacy_listeners).get(listener);
-    if (wrapper) {
-      this.removeEventListener(type, wrapper);
-      __privateGet(this, _legacy_listeners).delete(listener);
+    const listeners = this.listeners.get(type);
+    if (!listeners)
+      return;
+    let target = listener;
+    const wrappersByType = this.onceWrappers.get(listener);
+    if (wrappersByType) {
+      const onceWrapper = wrappersByType.get(type);
+      if (onceWrapper) {
+        target = onceWrapper;
+        wrappersByType.delete(type);
+        if (wrappersByType.size === 0)
+          this.onceWrappers.delete(listener);
+      }
+    }
+    listeners.delete(target);
+    if (listeners.size === 0)
+      this.listeners.delete(type);
+  }
+  removeAllListeners(type) {
+    if (!type) {
+      this.listeners.clear();
+      this.onceWrappers.clear();
+      return;
+    }
+    this.listeners.delete(type);
+    for (const [listener, wrappersByType] of this.onceWrappers.entries()) {
+      wrappersByType.delete(type);
+      if (wrappersByType.size === 0)
+        this.onceWrappers.delete(listener);
     }
   }
 };
-_legacy_listeners = new WeakMap();
 __name(_EventEmitterLike, "EventEmitterLike");
 var EventEmitterLike = _EventEmitterLike;
 
@@ -1931,13 +1986,13 @@ var _PlayerStoryboardSpec = class _PlayerStoryboardSpec extends YTNode {
     __publicField(this, "boards");
     const parts = data.spec.split("|");
     const url = new URL(parts.shift());
-    this.boards = parts.map((part, i) => {
+    this.boards = parts.map((part, i2) => {
       const [thumbnail_width, thumbnail_height, thumbnail_count, columns, rows, interval, name, sigh] = part.split("#");
       url.searchParams.set("sigh", sigh);
       const storyboard_count = Math.ceil(parseInt(thumbnail_count, 10) / (parseInt(columns, 10) * parseInt(rows, 10)));
       return {
         type: "vod",
-        template_url: url.toString().replace("$L", i).replace("$N", name),
+        template_url: url.toString().replace("$L", i2).replace("$N", name),
         thumbnail_width: parseInt(thumbnail_width, 10),
         thumbnail_height: parseInt(thumbnail_height, 10),
         thumbnail_count: parseInt(thumbnail_count, 10),
@@ -1956,7 +2011,7 @@ var PlayerStoryboardSpec = _PlayerStoryboardSpec;
 // dist/src/utils/StreamingInfo.js
 var TAG_2 = "StreamingInfo";
 function getFormatGroupings(formats, is_post_live_dvr) {
-  var _a, _b, _c;
+  var _a2, _b2, _c;
   const group_info = /* @__PURE__ */ new Map();
   const has_multiple_audio_tracks = formats.some((fmt) => !!fmt.audio_track);
   for (const format of formats) {
@@ -1964,9 +2019,9 @@ function getFormatGroupings(formats, is_post_live_dvr) {
       continue;
     }
     const mime_type = format.mime_type.split(";")[0];
-    const just_codec = (_a = getStringBetweenStrings(format.mime_type, 'codecs="', '"')) == null ? void 0 : _a.split(".")[0];
+    const just_codec = (_a2 = getStringBetweenStrings(format.mime_type, 'codecs="', '"')) == null ? void 0 : _a2.split(".")[0];
     const color_info = format.color_info ? Object.values(format.color_info).join("-") : "";
-    const audio_track_id = ((_b = format.audio_track) == null ? void 0 : _b.id) || "";
+    const audio_track_id = ((_b2 = format.audio_track) == null ? void 0 : _b2.id) || "";
     const drc = format.is_drc ? "drc" : "";
     const vb = format.is_vb ? "vb" : "";
     const group_id = `${mime_type}-${just_codec}-${color_info}-${audio_track_id}-${drc}-${vb}`;
@@ -2003,7 +2058,7 @@ function hoistAudioChannelsIfPossible(formats, hoisted) {
 }
 __name(hoistAudioChannelsIfPossible, "hoistAudioChannelsIfPossible");
 async function getOTFSegmentTemplate(url, actions) {
-  var _a;
+  var _a2;
   const response = await actions.session.http.fetch_function(`${url}&rn=0&sq=0`, {
     method: "GET",
     headers: STREAM_HEADERS,
@@ -2011,7 +2066,7 @@ async function getOTFSegmentTemplate(url, actions) {
   });
   const resolved_url = response.url.replace("&rn=0", "").replace("&sq=0", "");
   const response_text = await response.text();
-  const segment_duration_strings = (_a = getStringBetweenStrings(response_text, "Segment-Durations-Ms:", "\r\n")) == null ? void 0 : _a.split(",");
+  const segment_duration_strings = (_a2 = getStringBetweenStrings(response_text, "Segment-Durations-Ms:", "\r\n")) == null ? void 0 : _a2.split(",");
   if (!segment_duration_strings) {
     throw new InnertubeError("Failed to extract the segment durations from this OTF stream", { url });
   }
@@ -2091,9 +2146,9 @@ async function getSegmentInfo(format, url_transformer, actions, player, cpn, sha
     if (!actions) {
       throw new InnertubeError("Unable to get segment count for this Post Live DVR video without an Actions instance", { format });
     }
-    const target_duration_dec = format.target_duration_dec;
-    if (typeof target_duration_dec !== "number") {
-      throw new InnertubeError("Format is missing target_duration_dec", { format });
+    const target_duration_sec = format.target_duration_sec;
+    if (typeof target_duration_sec !== "number") {
+      throw new InnertubeError("Format is missing target_duration_sec", { format });
     }
     const info3 = {
       is_oft: false,
@@ -2106,7 +2161,7 @@ async function getSegmentInfo(format, url_transformer, actions, player, cpn, sha
           media_url: `${transformed_url}&sq=$Number$`,
           timeline: [
             {
-              duration: target_duration_dec * 1e3,
+              duration: target_duration_sec * 1e3,
               repeat_count: shared_post_live_dvr_info.item.segment_count
             }
           ]
@@ -2166,7 +2221,7 @@ function getTrackRoles(format, has_drc_streams) {
 }
 __name(getTrackRoles, "getTrackRoles");
 async function getAudioSet(formats, url_transformer, actions, player, cpn, shared_post_live_dvr_info, drc_labels, vb_labels, is_sabr) {
-  var _a, _b;
+  var _a2, _b2;
   const first_format = formats[0];
   const { audio_track } = first_format;
   const hoisted = [];
@@ -2187,12 +2242,12 @@ async function getAudioSet(formats, url_transformer, actions, player, cpn, share
     } else if (has_vb_streams && first_format.is_vb) {
       track_name = vb_labels.label_vb;
     } else {
-      track_name = (_a = drc_labels || vb_labels) == null ? void 0 : _a.label_original;
+      track_name = (_a2 = drc_labels || vb_labels) == null ? void 0 : _a2.label_original;
     }
   }
   const set = {
     mime_type: first_format.mime_type.split(";")[0],
-    language: (_b = first_format.language) != null ? _b : void 0,
+    language: (_b2 = first_format.language) != null ? _b2 : void 0,
     codecs: hoistCodecsIfPossible(formats, hoisted),
     audio_sample_rate: hoistNumberAttributeIfPossible(formats, "audio_sample_rate", hoisted),
     track_name,
@@ -2220,7 +2275,7 @@ var COLOR_MATRIX_COEFFICIENTS = {
   BT2020_NCL: "14"
 };
 function getColorInfo(format) {
-  var _a;
+  var _a2;
   const color_info = format.color_info;
   let primaries;
   let transfer_characteristics;
@@ -2246,7 +2301,7 @@ InnerTube client: ${url.searchParams.get("c")}
 format:`, anonymisedFormat);
       }
     }
-  } else if ((_a = getStringBetweenStrings(format.mime_type, 'codecs="', '"')) == null ? void 0 : _a.startsWith("avc1")) {
+  } else if ((_a2 = getStringBetweenStrings(format.mime_type, 'codecs="', '"')) == null ? void 0 : _a2.startsWith("avc1")) {
     transfer_characteristics = COLOR_TRANSFER_CHARACTERISTICS.BT709;
   }
   const info2 = {
@@ -2287,7 +2342,7 @@ async function getVideoSet(formats, url_transformer, player, actions, cpn, share
 }
 __name(getVideoSet, "getVideoSet");
 function getStoryboardInfo(storyboards) {
-  var _a;
+  var _a2;
   const mime_info = /* @__PURE__ */ new Map();
   const boards = storyboards.is(PlayerStoryboardSpec) ? storyboards.boards : [storyboards.board];
   for (const storyboard of boards) {
@@ -2296,7 +2351,7 @@ function getStoryboardInfo(storyboards) {
     if (!mime_info.has(mime_type)) {
       mime_info.set(mime_type, []);
     }
-    (_a = mime_info.get(mime_type)) == null ? void 0 : _a.push(storyboard);
+    (_a2 = mime_info.get(mime_type)) == null ? void 0 : _a2.push(storyboard);
   }
   return mime_info;
 }
@@ -2317,13 +2372,13 @@ async function getStoryboardBitrate(actions, board, shared_response) {
   const url = board.template_url;
   const response_promises = [];
   const request_limit = Math.min(board.type === "vod" ? board.storyboard_count : 5, 10);
-  for (let i = 0; i < request_limit; i++) {
-    const req_url = new URL(url.replace("$M", i.toString()));
-    const response_promise = i === 0 && shared_response.response ? shared_response.response : actions.session.http.fetch_function(req_url, {
+  for (let i2 = 0; i2 < request_limit; i2++) {
+    const req_url = new URL(url.replace("$M", i2.toString()));
+    const response_promise = i2 === 0 && shared_response.response ? shared_response.response : actions.session.http.fetch_function(req_url, {
       method: "HEAD",
       headers: STREAM_HEADERS
     });
-    if (i === 0)
+    if (i2 === 0)
       shared_response.response = response_promise;
     response_promises.push(response_promise);
   }
@@ -2467,9 +2522,9 @@ async function getStreamingInfo(streaming_data, is_post_live_dvr = false, url_tr
     if (storyboards.is(PlayerStoryboardSpec)) {
       duration = formats[0].approx_duration_ms / 1e3;
     } else {
-      const target_duration_dec = formats[0].target_duration_dec;
+      const target_duration_dec = formats[0].target_duration_sec;
       if (target_duration_dec === void 0)
-        throw new InnertubeError("Format is missing target_duration_dec", { format: formats[0] });
+        throw new InnertubeError("Format is missing target_duration_sec", { format: formats[0] });
       duration = target_duration_dec;
     }
     image_sets = getImageSets(duration, actions, storyboards, url_transformer);
@@ -2792,6 +2847,10 @@ var _HTTPClient = class _HTTPClient {
         request_headers.set("X-GOOG-API-FORMAT-VERSION", "2");
       } else if (adjustedClientName === CLIENTS.IOS.NAME) {
         request_headers.set("User-Agent", CLIENTS.IOS.USER_AGENT);
+      } else if (adjustedClientName === CLIENTS.ANDROID_VR.NAME) {
+        request_headers.set("User-Agent", CLIENTS.ANDROID_VR.USER_AGENT);
+      } else if (adjustedClientName === CLIENTS.VISIONOS.NAME) {
+        request_headers.set("User-Agent", CLIENTS.VISIONOS.USER_AGENT);
       }
     } else if (content_type === "application/x-protobuf") {
       if (Platform.shim.server) {
@@ -2910,6 +2969,18 @@ adjustContext_fn = /* @__PURE__ */ __name(function(ctx, client) {
       ctx.client.clientFormFactor = "SMALL_FORM_FACTOR";
       ctx.client.clientName = CLIENTS.ANDROID_VR.NAME;
       break;
+    case "VISIONOS":
+      ctx.client.deviceMake = CLIENTS.VISIONOS.DEVICE_MAKE;
+      ctx.client.deviceModel = CLIENTS.VISIONOS.DEVICE_MODEL;
+      ctx.client.clientVersion = CLIENTS.VISIONOS.VERSION;
+      ctx.client.clientName = CLIENTS.VISIONOS.NAME;
+      ctx.client.platform = "MOBILE";
+      ctx.client.osName = CLIENTS.VISIONOS.OS_NAME;
+      ctx.client.osVersion = CLIENTS.VISIONOS.OS_VERSION;
+      ctx.client.userAgent = CLIENTS.VISIONOS.USER_AGENT;
+      delete ctx.client.browserName;
+      delete ctx.client.browserVersion;
+      break;
     case "YTMUSIC_ANDROID":
       ctx.client.clientVersion = CLIENTS.YTMUSIC_ANDROID.VERSION;
       ctx.client.clientFormFactor = "SMALL_FORM_FACTOR";
@@ -2986,57 +3057,6 @@ adjustContext_fn = /* @__PURE__ */ __name(function(ctx, client) {
 __name(_HTTPClient, "HTTPClient");
 var HTTPClient = _HTTPClient;
 
-// dist/src/utils/LZW.js
-var LZW_exports = {};
-__export(LZW_exports, {
-  compress: () => compress,
-  decompress: () => decompress
-});
-function compress(input) {
-  const output = [];
-  const dictionary = {};
-  for (let i = 0; i < 256; i++) {
-    dictionary[String.fromCharCode(i)] = i;
-  }
-  let current_string = "";
-  let dictionary_size = 256;
-  for (let i = 0; i < input.length; i++) {
-    const current_char = input[i];
-    const combined_string = current_string + current_char;
-    if (dictionary.hasOwnProperty(combined_string)) {
-      current_string = combined_string;
-    } else {
-      output.push(dictionary[current_string]);
-      dictionary[combined_string] = dictionary_size++;
-      current_string = current_char;
-    }
-  }
-  if (current_string !== "") {
-    output.push(dictionary[current_string]);
-  }
-  return output.map((code) => String.fromCharCode(code)).join("");
-}
-__name(compress, "compress");
-function decompress(input) {
-  const dictionary = {};
-  const input_data = input.split("");
-  const output = [input_data.shift()];
-  const input_length = input_data.length >>> 0;
-  let dictionary_code = 256;
-  let current_char = output[0];
-  let current_string = current_char;
-  for (let i = 0; i < input_length; ++i) {
-    const current_code = input_data[i].charCodeAt(0);
-    const entry = current_code < 256 ? input_data[i] : dictionary[current_code] ? dictionary[current_code] : current_string + current_char;
-    output.push(entry);
-    current_char = entry.charAt(0);
-    dictionary[dictionary_code++] = current_string + current_char;
-    current_string = entry;
-  }
-  return output.join("");
-}
-__name(decompress, "decompress");
-
 // dist/src/utils/BinarySerializer.js
 var BinarySerializer_exports = {};
 __export(BinarySerializer_exports, {
@@ -3045,38 +3065,796 @@ __export(BinarySerializer_exports, {
   deserialize: () => deserialize,
   serialize: () => serialize
 });
+
+// node_modules/fflate/esm/browser.js
+var u8 = Uint8Array;
+var u16 = Uint16Array;
+var i32 = Int32Array;
+var fleb = new u8([
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  3,
+  3,
+  3,
+  3,
+  4,
+  4,
+  4,
+  4,
+  5,
+  5,
+  5,
+  5,
+  0,
+  /* unused */
+  0,
+  0,
+  /* impossible */
+  0
+]);
+var fdeb = new u8([
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  2,
+  2,
+  3,
+  3,
+  4,
+  4,
+  5,
+  5,
+  6,
+  6,
+  7,
+  7,
+  8,
+  8,
+  9,
+  9,
+  10,
+  10,
+  11,
+  11,
+  12,
+  12,
+  13,
+  13,
+  /* unused */
+  0,
+  0
+]);
+var clim = new u8([16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]);
+var freb = /* @__PURE__ */ __name(function(eb, start) {
+  var b = new u16(31);
+  for (var i2 = 0; i2 < 31; ++i2) {
+    b[i2] = start += 1 << eb[i2 - 1];
+  }
+  var r = new i32(b[30]);
+  for (var i2 = 1; i2 < 30; ++i2) {
+    for (var j = b[i2]; j < b[i2 + 1]; ++j) {
+      r[j] = j - b[i2] << 5 | i2;
+    }
+  }
+  return { b, r };
+}, "freb");
+var _a = freb(fleb, 2);
+var fl = _a.b;
+var revfl = _a.r;
+fl[28] = 258, revfl[258] = 28;
+var _b = freb(fdeb, 0);
+var fd = _b.b;
+var revfd = _b.r;
+var rev = new u16(32768);
+for (i = 0; i < 32768; ++i) {
+  x = (i & 43690) >> 1 | (i & 21845) << 1;
+  x = (x & 52428) >> 2 | (x & 13107) << 2;
+  x = (x & 61680) >> 4 | (x & 3855) << 4;
+  rev[i] = ((x & 65280) >> 8 | (x & 255) << 8) >> 1;
+}
+var x;
+var i;
+var hMap = /* @__PURE__ */ __name((function(cd, mb, r) {
+  var s = cd.length;
+  var i2 = 0;
+  var l = new u16(mb);
+  for (; i2 < s; ++i2) {
+    if (cd[i2])
+      ++l[cd[i2] - 1];
+  }
+  var le = new u16(mb);
+  for (i2 = 1; i2 < mb; ++i2) {
+    le[i2] = le[i2 - 1] + l[i2 - 1] << 1;
+  }
+  var co;
+  if (r) {
+    co = new u16(1 << mb);
+    var rvb = 15 - mb;
+    for (i2 = 0; i2 < s; ++i2) {
+      if (cd[i2]) {
+        var sv = i2 << 4 | cd[i2];
+        var r_1 = mb - cd[i2];
+        var v = le[cd[i2] - 1]++ << r_1;
+        for (var m = v | (1 << r_1) - 1; v <= m; ++v) {
+          co[rev[v] >> rvb] = sv;
+        }
+      }
+    }
+  } else {
+    co = new u16(s);
+    for (i2 = 0; i2 < s; ++i2) {
+      if (cd[i2]) {
+        co[i2] = rev[le[cd[i2] - 1]++] >> 15 - cd[i2];
+      }
+    }
+  }
+  return co;
+}), "hMap");
+var flt = new u8(288);
+for (i = 0; i < 144; ++i)
+  flt[i] = 8;
+var i;
+for (i = 144; i < 256; ++i)
+  flt[i] = 9;
+var i;
+for (i = 256; i < 280; ++i)
+  flt[i] = 7;
+var i;
+for (i = 280; i < 288; ++i)
+  flt[i] = 8;
+var i;
+var fdt = new u8(32);
+for (i = 0; i < 32; ++i)
+  fdt[i] = 5;
+var i;
+var flm = /* @__PURE__ */ hMap(flt, 9, 0);
+var flrm = /* @__PURE__ */ hMap(flt, 9, 1);
+var fdm = /* @__PURE__ */ hMap(fdt, 5, 0);
+var fdrm = /* @__PURE__ */ hMap(fdt, 5, 1);
+var max = /* @__PURE__ */ __name(function(a) {
+  var m = a[0];
+  for (var i2 = 1; i2 < a.length; ++i2) {
+    if (a[i2] > m)
+      m = a[i2];
+  }
+  return m;
+}, "max");
+var bits = /* @__PURE__ */ __name(function(d, p, m) {
+  var o = p / 8 | 0;
+  return (d[o] | d[o + 1] << 8) >> (p & 7) & m;
+}, "bits");
+var bits16 = /* @__PURE__ */ __name(function(d, p) {
+  var o = p / 8 | 0;
+  return (d[o] | d[o + 1] << 8 | d[o + 2] << 16) >> (p & 7);
+}, "bits16");
+var shft = /* @__PURE__ */ __name(function(p) {
+  return (p + 7) / 8 | 0;
+}, "shft");
+var slc = /* @__PURE__ */ __name(function(v, s, e) {
+  if (s == null || s < 0)
+    s = 0;
+  if (e == null || e > v.length)
+    e = v.length;
+  return new u8(v.subarray(s, e));
+}, "slc");
+var ec = [
+  "unexpected EOF",
+  "invalid block type",
+  "invalid length/literal",
+  "invalid distance",
+  "stream finished",
+  "no stream handler",
+  ,
+  // determined by compression function
+  "no callback",
+  "invalid UTF-8 data",
+  "extra field too long",
+  "date not in range 1980-2099",
+  "filename too long",
+  "stream finishing",
+  "invalid zip data"
+  // determined by unknown compression method
+];
+var err = /* @__PURE__ */ __name(function(ind, msg, nt) {
+  var e = new Error(msg || ec[ind]);
+  e.code = ind;
+  if (Error.captureStackTrace)
+    Error.captureStackTrace(e, err);
+  if (!nt)
+    throw e;
+  return e;
+}, "err");
+var inflt = /* @__PURE__ */ __name(function(dat, st, buf, dict) {
+  var sl = dat.length, dl = dict ? dict.length : 0;
+  if (!sl || st.f && !st.l)
+    return buf || new u8(0);
+  var noBuf = !buf;
+  var resize = noBuf || st.i != 2;
+  var noSt = st.i;
+  if (noBuf)
+    buf = new u8(sl * 3);
+  var cbuf = /* @__PURE__ */ __name(function(l2) {
+    var bl = buf.length;
+    if (l2 > bl) {
+      var nbuf = new u8(Math.max(bl * 2, l2));
+      nbuf.set(buf);
+      buf = nbuf;
+    }
+  }, "cbuf");
+  var final = st.f || 0, pos = st.p || 0, bt = st.b || 0, lm = st.l, dm = st.d, lbt = st.m, dbt = st.n;
+  var tbts = sl * 8;
+  do {
+    if (!lm) {
+      final = bits(dat, pos, 1);
+      var type = bits(dat, pos + 1, 3);
+      pos += 3;
+      if (!type) {
+        var s = shft(pos) + 4, l = dat[s - 4] | dat[s - 3] << 8, t = s + l;
+        if (t > sl) {
+          if (noSt)
+            err(0);
+          break;
+        }
+        if (resize)
+          cbuf(bt + l);
+        buf.set(dat.subarray(s, t), bt);
+        st.b = bt += l, st.p = pos = t * 8, st.f = final;
+        continue;
+      } else if (type == 1)
+        lm = flrm, dm = fdrm, lbt = 9, dbt = 5;
+      else if (type == 2) {
+        var hLit = bits(dat, pos, 31) + 257, hcLen = bits(dat, pos + 10, 15) + 4;
+        var tl = hLit + bits(dat, pos + 5, 31) + 1;
+        pos += 14;
+        var ldt = new u8(tl);
+        var clt = new u8(19);
+        for (var i2 = 0; i2 < hcLen; ++i2) {
+          clt[clim[i2]] = bits(dat, pos + i2 * 3, 7);
+        }
+        pos += hcLen * 3;
+        var clb = max(clt), clbmsk = (1 << clb) - 1;
+        var clm = hMap(clt, clb, 1);
+        for (var i2 = 0; i2 < tl; ) {
+          var r = clm[bits(dat, pos, clbmsk)];
+          pos += r & 15;
+          var s = r >> 4;
+          if (s < 16) {
+            ldt[i2++] = s;
+          } else {
+            var c = 0, n = 0;
+            if (s == 16)
+              n = 3 + bits(dat, pos, 3), pos += 2, c = ldt[i2 - 1];
+            else if (s == 17)
+              n = 3 + bits(dat, pos, 7), pos += 3;
+            else if (s == 18)
+              n = 11 + bits(dat, pos, 127), pos += 7;
+            while (n--)
+              ldt[i2++] = c;
+          }
+        }
+        var lt = ldt.subarray(0, hLit), dt = ldt.subarray(hLit);
+        lbt = max(lt);
+        dbt = max(dt);
+        lm = hMap(lt, lbt, 1);
+        dm = hMap(dt, dbt, 1);
+      } else
+        err(1);
+      if (pos > tbts) {
+        if (noSt)
+          err(0);
+        break;
+      }
+    }
+    if (resize)
+      cbuf(bt + 131072);
+    var lms = (1 << lbt) - 1, dms = (1 << dbt) - 1;
+    var lpos = pos;
+    for (; ; lpos = pos) {
+      var c = lm[bits16(dat, pos) & lms], sym = c >> 4;
+      pos += c & 15;
+      if (pos > tbts) {
+        if (noSt)
+          err(0);
+        break;
+      }
+      if (!c)
+        err(2);
+      if (sym < 256)
+        buf[bt++] = sym;
+      else if (sym == 256) {
+        lpos = pos, lm = null;
+        break;
+      } else {
+        var add = sym - 254;
+        if (sym > 264) {
+          var i2 = sym - 257, b = fleb[i2];
+          add = bits(dat, pos, (1 << b) - 1) + fl[i2];
+          pos += b;
+        }
+        var d = dm[bits16(dat, pos) & dms], dsym = d >> 4;
+        if (!d)
+          err(3);
+        pos += d & 15;
+        var dt = fd[dsym];
+        if (dsym > 3) {
+          var b = fdeb[dsym];
+          dt += bits16(dat, pos) & (1 << b) - 1, pos += b;
+        }
+        if (pos > tbts) {
+          if (noSt)
+            err(0);
+          break;
+        }
+        if (resize)
+          cbuf(bt + 131072);
+        var end = bt + add;
+        if (bt < dt) {
+          var shift = dl - dt, dend = Math.min(dt, end);
+          if (shift + bt < 0)
+            err(3);
+          for (; bt < dend; ++bt)
+            buf[bt] = dict[shift + bt];
+        }
+        for (; bt < end; ++bt)
+          buf[bt] = buf[bt - dt];
+      }
+    }
+    st.l = lm, st.p = lpos, st.b = bt, st.f = final;
+    if (lm)
+      final = 1, st.m = lbt, st.d = dm, st.n = dbt;
+  } while (!final);
+  return bt != buf.length && noBuf ? slc(buf, 0, bt) : buf.subarray(0, bt);
+}, "inflt");
+var wbits = /* @__PURE__ */ __name(function(d, p, v) {
+  v <<= p & 7;
+  var o = p / 8 | 0;
+  d[o] |= v;
+  d[o + 1] |= v >> 8;
+}, "wbits");
+var wbits16 = /* @__PURE__ */ __name(function(d, p, v) {
+  v <<= p & 7;
+  var o = p / 8 | 0;
+  d[o] |= v;
+  d[o + 1] |= v >> 8;
+  d[o + 2] |= v >> 16;
+}, "wbits16");
+var hTree = /* @__PURE__ */ __name(function(d, mb) {
+  var t = [];
+  for (var i2 = 0; i2 < d.length; ++i2) {
+    if (d[i2])
+      t.push({ s: i2, f: d[i2] });
+  }
+  var s = t.length;
+  var t2 = t.slice();
+  if (!s)
+    return { t: et, l: 0 };
+  if (s == 1) {
+    var v = new u8(t[0].s + 1);
+    v[t[0].s] = 1;
+    return { t: v, l: 1 };
+  }
+  t.sort(function(a, b) {
+    return a.f - b.f;
+  });
+  t.push({ s: -1, f: 25001 });
+  var l = t[0], r = t[1], i0 = 0, i1 = 1, i22 = 2;
+  t[0] = { s: -1, f: l.f + r.f, l, r };
+  while (i1 != s - 1) {
+    l = t[t[i0].f < t[i22].f ? i0++ : i22++];
+    r = t[i0 != i1 && t[i0].f < t[i22].f ? i0++ : i22++];
+    t[i1++] = { s: -1, f: l.f + r.f, l, r };
+  }
+  var maxSym = t2[0].s;
+  for (var i2 = 1; i2 < s; ++i2) {
+    if (t2[i2].s > maxSym)
+      maxSym = t2[i2].s;
+  }
+  var tr = new u16(maxSym + 1);
+  var mbt = ln(t[i1 - 1], tr, 0);
+  if (mbt > mb) {
+    var i2 = 0, dt = 0;
+    var lft = mbt - mb, cst = 1 << lft;
+    t2.sort(function(a, b) {
+      return tr[b.s] - tr[a.s] || a.f - b.f;
+    });
+    for (; i2 < s; ++i2) {
+      var i2_1 = t2[i2].s;
+      if (tr[i2_1] > mb) {
+        dt += cst - (1 << mbt - tr[i2_1]);
+        tr[i2_1] = mb;
+      } else
+        break;
+    }
+    dt >>= lft;
+    while (dt > 0) {
+      var i2_2 = t2[i2].s;
+      if (tr[i2_2] < mb)
+        dt -= 1 << mb - tr[i2_2]++ - 1;
+      else
+        ++i2;
+    }
+    for (; i2 >= 0 && dt; --i2) {
+      var i2_3 = t2[i2].s;
+      if (tr[i2_3] == mb) {
+        --tr[i2_3];
+        ++dt;
+      }
+    }
+    mbt = mb;
+  }
+  return { t: new u8(tr), l: mbt };
+}, "hTree");
+var ln = /* @__PURE__ */ __name(function(n, l, d) {
+  return n.s == -1 ? Math.max(ln(n.l, l, d + 1), ln(n.r, l, d + 1)) : l[n.s] = d;
+}, "ln");
+var lc = /* @__PURE__ */ __name(function(c) {
+  var s = c.length;
+  while (s && !c[--s])
+    ;
+  var cl = new u16(++s);
+  var cli = 0, cln = c[0], cls = 1;
+  var w = /* @__PURE__ */ __name(function(v) {
+    cl[cli++] = v;
+  }, "w");
+  for (var i2 = 1; i2 <= s; ++i2) {
+    if (c[i2] == cln && i2 != s)
+      ++cls;
+    else {
+      if (!cln && cls > 2) {
+        for (; cls > 138; cls -= 138)
+          w(32754);
+        if (cls > 2) {
+          w(cls > 10 ? cls - 11 << 5 | 28690 : cls - 3 << 5 | 12305);
+          cls = 0;
+        }
+      } else if (cls > 3) {
+        w(cln), --cls;
+        for (; cls > 6; cls -= 6)
+          w(8304);
+        if (cls > 2)
+          w(cls - 3 << 5 | 8208), cls = 0;
+      }
+      while (cls--)
+        w(cln);
+      cls = 1;
+      cln = c[i2];
+    }
+  }
+  return { c: cl.subarray(0, cli), n: s };
+}, "lc");
+var clen = /* @__PURE__ */ __name(function(cf, cl) {
+  var l = 0;
+  for (var i2 = 0; i2 < cl.length; ++i2)
+    l += cf[i2] * cl[i2];
+  return l;
+}, "clen");
+var wfblk = /* @__PURE__ */ __name(function(out, pos, dat) {
+  var s = dat.length;
+  var o = shft(pos + 2);
+  out[o] = s & 255;
+  out[o + 1] = s >> 8;
+  out[o + 2] = out[o] ^ 255;
+  out[o + 3] = out[o + 1] ^ 255;
+  for (var i2 = 0; i2 < s; ++i2)
+    out[o + i2 + 4] = dat[i2];
+  return (o + 4 + s) * 8;
+}, "wfblk");
+var wblk = /* @__PURE__ */ __name(function(dat, out, final, syms, lf, df, eb, li, bs, bl, p) {
+  wbits(out, p++, final);
+  ++lf[256];
+  var _a2 = hTree(lf, 15), dlt = _a2.t, mlb = _a2.l;
+  var _b2 = hTree(df, 15), ddt = _b2.t, mdb = _b2.l;
+  var _c = lc(dlt), lclt = _c.c, nlc = _c.n;
+  var _d = lc(ddt), lcdt = _d.c, ndc = _d.n;
+  var lcfreq = new u16(19);
+  for (var i2 = 0; i2 < lclt.length; ++i2)
+    ++lcfreq[lclt[i2] & 31];
+  for (var i2 = 0; i2 < lcdt.length; ++i2)
+    ++lcfreq[lcdt[i2] & 31];
+  var _e = hTree(lcfreq, 7), lct = _e.t, mlcb = _e.l;
+  var nlcc = 19;
+  for (; nlcc > 4 && !lct[clim[nlcc - 1]]; --nlcc)
+    ;
+  var flen = bl + 5 << 3;
+  var ftlen = clen(lf, flt) + clen(df, fdt) + eb;
+  var dtlen = clen(lf, dlt) + clen(df, ddt) + eb + 14 + 3 * nlcc + clen(lcfreq, lct) + 2 * lcfreq[16] + 3 * lcfreq[17] + 7 * lcfreq[18];
+  if (bs >= 0 && flen <= ftlen && flen <= dtlen)
+    return wfblk(out, p, dat.subarray(bs, bs + bl));
+  var lm, ll, dm, dl;
+  wbits(out, p, 1 + (dtlen < ftlen)), p += 2;
+  if (dtlen < ftlen) {
+    lm = hMap(dlt, mlb, 0), ll = dlt, dm = hMap(ddt, mdb, 0), dl = ddt;
+    var llm = hMap(lct, mlcb, 0);
+    wbits(out, p, nlc - 257);
+    wbits(out, p + 5, ndc - 1);
+    wbits(out, p + 10, nlcc - 4);
+    p += 14;
+    for (var i2 = 0; i2 < nlcc; ++i2)
+      wbits(out, p + 3 * i2, lct[clim[i2]]);
+    p += 3 * nlcc;
+    var lcts = [lclt, lcdt];
+    for (var it = 0; it < 2; ++it) {
+      var clct = lcts[it];
+      for (var i2 = 0; i2 < clct.length; ++i2) {
+        var len = clct[i2] & 31;
+        wbits(out, p, llm[len]), p += lct[len];
+        if (len > 15)
+          wbits(out, p, clct[i2] >> 5 & 127), p += clct[i2] >> 12;
+      }
+    }
+  } else {
+    lm = flm, ll = flt, dm = fdm, dl = fdt;
+  }
+  for (var i2 = 0; i2 < li; ++i2) {
+    var sym = syms[i2];
+    if (sym > 255) {
+      var len = sym >> 18 & 31;
+      wbits16(out, p, lm[len + 257]), p += ll[len + 257];
+      if (len > 7)
+        wbits(out, p, sym >> 23 & 31), p += fleb[len];
+      var dst = sym & 31;
+      wbits16(out, p, dm[dst]), p += dl[dst];
+      if (dst > 3)
+        wbits16(out, p, sym >> 5 & 8191), p += fdeb[dst];
+    } else {
+      wbits16(out, p, lm[sym]), p += ll[sym];
+    }
+  }
+  wbits16(out, p, lm[256]);
+  return p + ll[256];
+}, "wblk");
+var deo = /* @__PURE__ */ new i32([65540, 131080, 131088, 131104, 262176, 1048704, 1048832, 2114560, 2117632]);
+var et = /* @__PURE__ */ new u8(0);
+var dflt = /* @__PURE__ */ __name(function(dat, lvl, plvl, pre, post, st) {
+  var s = st.z || dat.length;
+  var o = new u8(pre + s + 5 * (1 + Math.ceil(s / 7e3)) + post);
+  var w = o.subarray(pre, o.length - post);
+  var lst = st.l;
+  var pos = (st.r || 0) & 7;
+  if (lvl) {
+    if (pos)
+      w[0] = st.r >> 3;
+    var opt = deo[lvl - 1];
+    var n = opt >> 13, c = opt & 8191;
+    var msk_1 = (1 << plvl) - 1;
+    var prev = st.p || new u16(32768), head = st.h || new u16(msk_1 + 1);
+    var bs1_1 = Math.ceil(plvl / 3), bs2_1 = 2 * bs1_1;
+    var hsh = /* @__PURE__ */ __name(function(i3) {
+      return (dat[i3] ^ dat[i3 + 1] << bs1_1 ^ dat[i3 + 2] << bs2_1) & msk_1;
+    }, "hsh");
+    var syms = new i32(25e3);
+    var lf = new u16(288), df = new u16(32);
+    var lc_1 = 0, eb = 0, i2 = st.i || 0, li = 0, wi = st.w || 0, bs = 0;
+    for (; i2 + 2 < s; ++i2) {
+      var hv = hsh(i2);
+      var imod = i2 & 32767, pimod = head[hv];
+      prev[imod] = pimod;
+      head[hv] = imod;
+      if (wi <= i2) {
+        var rem = s - i2;
+        if ((lc_1 > 7e3 || li > 24576) && (rem > 423 || !lst)) {
+          pos = wblk(dat, w, 0, syms, lf, df, eb, li, bs, i2 - bs, pos);
+          li = lc_1 = eb = 0, bs = i2;
+          for (var j = 0; j < 286; ++j)
+            lf[j] = 0;
+          for (var j = 0; j < 30; ++j)
+            df[j] = 0;
+        }
+        var l = 2, d = 0, ch_1 = c, dif = imod - pimod & 32767;
+        if (rem > 2 && hv == hsh(i2 - dif)) {
+          var maxn = Math.min(n, rem) - 1;
+          var maxd = Math.min(32767, i2);
+          var ml = Math.min(258, rem);
+          while (dif <= maxd && --ch_1 && imod != pimod) {
+            if (dat[i2 + l] == dat[i2 + l - dif]) {
+              var nl = 0;
+              for (; nl < ml && dat[i2 + nl] == dat[i2 + nl - dif]; ++nl)
+                ;
+              if (nl > l) {
+                l = nl, d = dif;
+                if (nl > maxn)
+                  break;
+                var mmd = Math.min(dif, nl - 2);
+                var md = 0;
+                for (var j = 0; j < mmd; ++j) {
+                  var ti = i2 - dif + j & 32767;
+                  var pti = prev[ti];
+                  var cd = ti - pti & 32767;
+                  if (cd > md)
+                    md = cd, pimod = ti;
+                }
+              }
+            }
+            imod = pimod, pimod = prev[imod];
+            dif += imod - pimod & 32767;
+          }
+        }
+        if (d) {
+          syms[li++] = 268435456 | revfl[l] << 18 | revfd[d];
+          var lin = revfl[l] & 31, din = revfd[d] & 31;
+          eb += fleb[lin] + fdeb[din];
+          ++lf[257 + lin];
+          ++df[din];
+          wi = i2 + l;
+          ++lc_1;
+        } else {
+          syms[li++] = dat[i2];
+          ++lf[dat[i2]];
+        }
+      }
+    }
+    for (i2 = Math.max(i2, wi); i2 < s; ++i2) {
+      syms[li++] = dat[i2];
+      ++lf[dat[i2]];
+    }
+    pos = wblk(dat, w, lst, syms, lf, df, eb, li, bs, i2 - bs, pos);
+    if (!lst) {
+      st.r = pos & 7 | w[pos / 8 | 0] << 3;
+      pos -= 7;
+      st.h = head, st.p = prev, st.i = i2, st.w = wi;
+    }
+  } else {
+    for (var i2 = st.w || 0; i2 < s + lst; i2 += 65535) {
+      var e = i2 + 65535;
+      if (e >= s) {
+        w[pos / 8 | 0] = lst;
+        e = s;
+      }
+      pos = wfblk(w, pos + 1, dat.subarray(i2, e));
+    }
+    st.i = s;
+  }
+  return slc(o, 0, pre + shft(pos) + post);
+}, "dflt");
+var crct = /* @__PURE__ */ (function() {
+  var t = new Int32Array(256);
+  for (var i2 = 0; i2 < 256; ++i2) {
+    var c = i2, k = 9;
+    while (--k)
+      c = (c & 1 && -306674912) ^ c >>> 1;
+    t[i2] = c;
+  }
+  return t;
+})();
+var crc = /* @__PURE__ */ __name(function() {
+  var c = -1;
+  return {
+    p: /* @__PURE__ */ __name(function(d) {
+      var cr = c;
+      for (var i2 = 0; i2 < d.length; ++i2)
+        cr = crct[cr & 255 ^ d[i2]] ^ cr >>> 8;
+      c = cr;
+    }, "p"),
+    d: /* @__PURE__ */ __name(function() {
+      return ~c;
+    }, "d")
+  };
+}, "crc");
+var dopt = /* @__PURE__ */ __name(function(dat, opt, pre, post, st) {
+  if (!st) {
+    st = { l: 1 };
+    if (opt.dictionary) {
+      var dict = opt.dictionary.subarray(-32768);
+      var newDat = new u8(dict.length + dat.length);
+      newDat.set(dict);
+      newDat.set(dat, dict.length);
+      dat = newDat;
+      st.w = dict.length;
+    }
+  }
+  return dflt(dat, opt.level == null ? 6 : opt.level, opt.mem == null ? st.l ? Math.ceil(Math.max(8, Math.min(13, Math.log(dat.length))) * 1.5) : 20 : 12 + opt.mem, pre, post, st);
+}, "dopt");
+var wbytes = /* @__PURE__ */ __name(function(d, b, v) {
+  for (; v; ++b)
+    d[b] = v, v >>>= 8;
+}, "wbytes");
+var gzh = /* @__PURE__ */ __name(function(c, o) {
+  var fn = o.filename;
+  c[0] = 31, c[1] = 139, c[2] = 8, c[8] = o.level < 2 ? 4 : o.level == 9 ? 2 : 0, c[9] = 3;
+  if (o.mtime != 0)
+    wbytes(c, 4, Math.floor(new Date(o.mtime || Date.now()) / 1e3));
+  if (fn) {
+    c[3] = 8;
+    for (var i2 = 0; i2 <= fn.length; ++i2)
+      c[i2 + 10] = fn.charCodeAt(i2);
+  }
+}, "gzh");
+var gzs = /* @__PURE__ */ __name(function(d) {
+  if (d[0] != 31 || d[1] != 139 || d[2] != 8)
+    err(6, "invalid gzip data");
+  var flg = d[3];
+  var st = 10;
+  if (flg & 4)
+    st += (d[10] | d[11] << 8) + 2;
+  for (var zs = (flg >> 3 & 1) + (flg >> 4 & 1); zs > 0; zs -= !d[st++])
+    ;
+  return st + (flg & 2);
+}, "gzs");
+var gzl = /* @__PURE__ */ __name(function(d) {
+  var l = d.length;
+  return (d[l - 4] | d[l - 3] << 8 | d[l - 2] << 16 | d[l - 1] << 24) >>> 0;
+}, "gzl");
+var gzhl = /* @__PURE__ */ __name(function(o) {
+  return 10 + (o.filename ? o.filename.length + 1 : 0);
+}, "gzhl");
+function gzipSync(data, opts) {
+  if (!opts)
+    opts = {};
+  var c = crc(), l = data.length;
+  c.p(data);
+  var d = dopt(data, opts, gzhl(opts), 8), s = d.length;
+  return gzh(d, opts), wbytes(d, s - 8, c.d()), wbytes(d, s - 4, l), d;
+}
+__name(gzipSync, "gzipSync");
+function gunzipSync(data, opts) {
+  var st = gzs(data);
+  if (st + 8 > data.length)
+    err(6, "invalid gzip data");
+  return inflt(data.subarray(st, -8), { i: 2 }, opts && opts.out || new u8(gzl(data)), opts && opts.dictionary);
+}
+__name(gunzipSync, "gunzipSync");
+var td = typeof TextDecoder != "undefined" && /* @__PURE__ */ new TextDecoder();
+var tds = 0;
+try {
+  td.decode(et, { stream: true });
+  tds = 1;
+} catch (e) {
+}
+
+// dist/src/utils/BinarySerializer.js
 var MAGIC_HEADER = 5849684;
-var VERSION = 1;
+var VERSION = 2;
 function serialize(data) {
-  const json_str = JSON.stringify(data);
-  const compressed = compress(json_str);
-  const compressed_bytes = new TextEncoder().encode(compressed);
-  const buffer = new ArrayBuffer(12 + compressed_bytes.byteLength);
+  const json = JSON.stringify(data);
+  const jsonBytes = new TextEncoder().encode(json);
+  const compressed = gzipSync(jsonBytes);
+  const buffer = new ArrayBuffer(12 + compressed.byteLength);
   const view = new DataView(buffer);
   view.setUint32(0, MAGIC_HEADER, true);
   view.setUint32(4, VERSION, true);
-  view.setUint32(8, compressed_bytes.byteLength, true);
-  new Uint8Array(buffer).set(compressed_bytes, 12);
+  view.setUint32(8, compressed.byteLength, true);
+  new Uint8Array(buffer).set(compressed, 12);
   return buffer;
 }
 __name(serialize, "serialize");
 function deserialize(buffer) {
-  if (buffer.byteLength < 12)
+  if (buffer.byteLength < 12) {
     throw new Error("Invalid binary format: buffer too short");
-  const view = new DataView(buffer.buffer, buffer.byteOffset);
+  }
+  const view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   const magic = view.getUint32(0, true);
   if (magic !== MAGIC_HEADER) {
     throw new Error("Invalid binary format: magic header mismatch");
   }
-  const version = view.getUint32(4, true);
-  if (version !== VERSION) {
-    throw new Error(`Unsupported binary format version: ${version}`);
+  const version2 = view.getUint32(4, true);
+  if (version2 !== VERSION) {
+    throw new Error(`Unsupported binary format version: ${version2}`);
   }
-  const data_length = view.getUint32(8, true);
-  const compressed_data = buffer.slice(12, 12 + data_length);
-  const compressed = new TextDecoder().decode(compressed_data);
-  const json_str = decompress(compressed);
-  return JSON.parse(json_str);
+  const length = view.getUint32(8, true);
+  if (12 + length > buffer.byteLength) {
+    throw new Error("Invalid binary format: data length out of bounds");
+  }
+  const compressed = buffer.subarray(12, 12 + length);
+  const decompressed = gunzipSync(compressed);
+  const json = new TextDecoder().decode(decompressed);
+  return JSON.parse(json);
 }
 __name(deserialize, "deserialize");
 
@@ -3091,62 +3869,45 @@ __export(ProtoUtils_exports, {
 
 // node_modules/@bufbuild/protobuf/dist/esm/wire/varint.js
 function varint64read() {
-  let lowBits = 0;
-  let highBits = 0;
+  const buf = this.buf;
+  let pos = this.pos;
+  let lo = 0;
+  let hi = 0;
   for (let shift = 0; shift < 28; shift += 7) {
-    let b = this.buf[this.pos++];
-    lowBits |= (b & 127) << shift;
+    const b = buf[pos++];
+    lo |= (b & 127) << shift;
     if ((b & 128) == 0) {
+      this.pos = pos;
       this.assertBounds();
-      return [lowBits, highBits];
+      this.varint64Lo = lo;
+      this.varint64Hi = hi;
+      return;
     }
   }
-  let middleByte = this.buf[this.pos++];
-  lowBits |= (middleByte & 15) << 28;
-  highBits = (middleByte & 112) >> 4;
+  const middleByte = buf[pos++];
+  lo |= (middleByte & 15) << 28;
+  hi = (middleByte & 112) >> 4;
   if ((middleByte & 128) == 0) {
+    this.pos = pos;
     this.assertBounds();
-    return [lowBits, highBits];
+    this.varint64Lo = lo;
+    this.varint64Hi = hi;
+    return;
   }
   for (let shift = 3; shift <= 31; shift += 7) {
-    let b = this.buf[this.pos++];
-    highBits |= (b & 127) << shift;
+    const b = buf[pos++];
+    hi |= (b & 127) << shift;
     if ((b & 128) == 0) {
+      this.pos = pos;
       this.assertBounds();
-      return [lowBits, highBits];
+      this.varint64Lo = lo;
+      this.varint64Hi = hi;
+      return;
     }
   }
   throw new Error("invalid varint");
 }
 __name(varint64read, "varint64read");
-function varint64write(lo, hi, bytes) {
-  for (let i = 0; i < 28; i = i + 7) {
-    const shift = lo >>> i;
-    const hasNext = !(shift >>> 7 == 0 && hi == 0);
-    const byte = (hasNext ? shift | 128 : shift) & 255;
-    bytes.push(byte);
-    if (!hasNext) {
-      return;
-    }
-  }
-  const splitBits = lo >>> 28 & 15 | (hi & 7) << 4;
-  const hasMoreBits = !(hi >> 3 == 0);
-  bytes.push((hasMoreBits ? splitBits | 128 : splitBits) & 255);
-  if (!hasMoreBits) {
-    return;
-  }
-  for (let i = 3; i < 31; i = i + 7) {
-    const shift = hi >>> i;
-    const hasNext = !(shift >>> 7 == 0);
-    const byte = (hasNext ? shift | 128 : shift) & 255;
-    bytes.push(byte);
-    if (!hasNext) {
-      return;
-    }
-  }
-  bytes.push(hi >>> 31 & 1);
-}
-__name(varint64write, "varint64write");
 var TWO_PWR_32_DBL = 4294967296;
 function int64FromString(dec) {
   const minus = dec[0] === "-";
@@ -3174,12 +3935,12 @@ function int64FromString(dec) {
 }
 __name(int64FromString, "int64FromString");
 function int64ToString(lo, hi) {
-  let bits = newBits(lo, hi);
-  const negative = bits.hi & 2147483648;
+  let bits2 = newBits(lo, hi);
+  const negative = bits2.hi & 2147483648;
   if (negative) {
-    bits = negate(bits.lo, bits.hi);
+    bits2 = negate(bits2.lo, bits2.hi);
   }
-  const result = uInt64ToString(bits.lo, bits.hi);
+  const result = uInt64ToString(bits2.lo, bits2.hi);
   return negative ? "-" + result : result;
 }
 __name(int64ToString, "int64ToString");
@@ -3228,44 +3989,28 @@ var decimalFrom1e7WithLeadingZeros = /* @__PURE__ */ __name((digit1e7) => {
   const partial = String(digit1e7);
   return "0000000".slice(partial.length) + partial;
 }, "decimalFrom1e7WithLeadingZeros");
-function varint32write(value, bytes) {
-  if (value >= 0) {
-    while (value > 127) {
-      bytes.push(value & 127 | 128);
-      value = value >>> 7;
-    }
-    bytes.push(value);
-  } else {
-    for (let i = 0; i < 9; i++) {
-      bytes.push(value & 127 | 128);
-      value = value >> 7;
-    }
-    bytes.push(1);
-  }
-}
-__name(varint32write, "varint32write");
 function varint32read() {
   let b = this.buf[this.pos++];
-  let result = b & 127;
-  if ((b & 128) == 0) {
+  if ((b & 128) === 0) {
     this.assertBounds();
-    return result;
+    return b;
   }
+  let result = b & 127;
   b = this.buf[this.pos++];
   result |= (b & 127) << 7;
-  if ((b & 128) == 0) {
+  if ((b & 128) === 0) {
     this.assertBounds();
     return result;
   }
   b = this.buf[this.pos++];
   result |= (b & 127) << 14;
-  if ((b & 128) == 0) {
+  if ((b & 128) === 0) {
     this.assertBounds();
     return result;
   }
   b = this.buf[this.pos++];
   result |= (b & 127) << 21;
-  if ((b & 128) == 0) {
+  if ((b & 128) === 0) {
     this.assertBounds();
     return result;
   }
@@ -3273,7 +4018,7 @@ function varint32read() {
   result |= (b & 15) << 28;
   for (let readBytes = 5; (b & 128) !== 0 && readBytes < 10; readBytes++)
     b = this.buf[this.pos++];
-  if ((b & 128) != 0)
+  if ((b & 128) !== 0)
     throw new Error("invalid varint");
   this.assertBounds();
   return result >>> 0;
@@ -3284,9 +4029,12 @@ __name(varint32read, "varint32read");
 var protoInt64 = /* @__PURE__ */ makeInt64Support();
 function makeInt64Support() {
   const dv = new DataView(new ArrayBuffer(8));
-  const ok = typeof BigInt === "function" && typeof dv.getBigInt64 === "function" && typeof dv.getBigUint64 === "function" && typeof dv.setBigInt64 === "function" && typeof dv.setBigUint64 === "function" && (typeof process != "object" || typeof process.env != "object" || process.env.BUF_BIGINT_DISABLE !== "1");
+  const ok = typeof BigInt === "function" && typeof dv.getBigInt64 === "function" && typeof dv.getBigUint64 === "function" && typeof dv.setBigInt64 === "function" && typeof dv.setBigUint64 === "function" && (!!globalThis.Deno || !!globalThis.Bun || typeof process != "object" || typeof process.env != "object" || process.env.BUF_BIGINT_DISABLE !== "1");
   if (ok) {
-    const MIN = BigInt("-9223372036854775808"), MAX = BigInt("9223372036854775807"), UMIN = BigInt("0"), UMAX = BigInt("18446744073709551615");
+    const MIN = BigInt("-9223372036854775808");
+    const MAX = BigInt("9223372036854775807");
+    const UMIN = BigInt("0");
+    const UMAX = BigInt("18446744073709551615");
     return {
       zero: BigInt(0),
       supported: true,
@@ -3384,31 +4132,67 @@ function assertUInt64String(value) {
 __name(assertUInt64String, "assertUInt64String");
 
 // node_modules/@bufbuild/protobuf/dist/esm/wire/text-encoding.js
-var symbol = Symbol.for("@bufbuild/protobuf/text-encoding");
+var te;
+function configureTextEncoding(textEncoding) {
+  var _a2;
+  te = Object.assign(Object.assign({}, textEncoding), { encodeUtf8Into: (_a2 = textEncoding.encodeUtf8Into) !== null && _a2 !== void 0 ? _a2 : emulateEncodeInto(textEncoding.encodeUtf8.bind(textEncoding)) });
+}
+__name(configureTextEncoding, "configureTextEncoding");
 function getTextEncoding() {
-  if (globalThis[symbol] == void 0) {
-    const te = new globalThis.TextEncoder();
-    const td = new globalThis.TextDecoder();
-    globalThis[symbol] = {
+  if (!te) {
+    const globals = globalThis;
+    if (!globals.TextEncoder || !globals.TextDecoder) {
+      throw new Error("encoding API missing: install TextEncoder and TextDecoder on globalThis");
+    }
+    const textEncoder = new globals.TextEncoder();
+    const textDecoder = new globals.TextDecoder();
+    let textDecoderStrict;
+    const config = {
       encodeUtf8(text) {
-        return te.encode(text);
+        return textEncoder.encode(text);
       },
-      decodeUtf8(bytes) {
-        return td.decode(bytes);
+      decodeUtf8(bytes, strict) {
+        if (strict) {
+          if (!textDecoderStrict) {
+            textDecoderStrict = new globals.TextDecoder("utf-8", {
+              fatal: true
+            });
+          }
+          return textDecoderStrict.decode(bytes);
+        }
+        return textDecoder.decode(bytes);
       },
       checkUtf8(text) {
         try {
           encodeURIComponent(text);
           return true;
-        } catch (e) {
+        } catch (_) {
           return false;
         }
       }
     };
+    if (textEncoder.encodeInto) {
+      config.encodeUtf8Into = textEncoder.encodeInto.bind(textEncoder);
+    }
+    const nativeStringIsWellFormed = String.prototype.isWellFormed;
+    if (nativeStringIsWellFormed) {
+      config.checkUtf8 = (text) => {
+        return nativeStringIsWellFormed.call(text);
+      };
+    }
+    configureTextEncoding(config);
   }
-  return globalThis[symbol];
+  return te;
 }
 __name(getTextEncoding, "getTextEncoding");
+function emulateEncodeInto(encodeUtf8) {
+  return (text, dest) => {
+    const bytes = encodeUtf8(text);
+    dest.set(bytes);
+    return { written: bytes.byteLength };
+  };
+}
+__name(emulateEncodeInto, "emulateEncodeInto");
 
 // node_modules/@bufbuild/protobuf/dist/esm/wire/binary-encoding.js
 var WireType;
@@ -3426,28 +4210,46 @@ var UINT32_MAX = 4294967295;
 var INT32_MAX = 2147483647;
 var INT32_MIN = -2147483648;
 var _BinaryWriter = class _BinaryWriter {
-  constructor(encodeUtf8 = getTextEncoding().encodeUtf8) {
-    this.encodeUtf8 = encodeUtf8;
-    this.stack = [];
-    this.chunks = [];
-    this.buf = [];
+  constructor(encodeUtf8) {
+    this.stackPos = [];
+    this.encodeUtf8Into = encodeUtf8 ? emulateEncodeInto(encodeUtf8) : getTextEncoding().encodeUtf8Into;
+    this.buffer = EMPTY_BUFFER;
+    this.viewCache = EMPTY_VIEW;
+    this.pos = 0;
+  }
+  ensureCapacity(size) {
+    const required = this.pos + size;
+    if (required > this.buffer.length) {
+      let newLen = this.buffer.length || INITIAL_SIZE;
+      while (newLen < required)
+        newLen *= 2;
+      const newBuf = new Uint8Array(newLen);
+      if (this.pos > 0)
+        newBuf.set(this.buffer);
+      this.buffer = newBuf;
+    }
+  }
+  /**
+   * The DataView over `buffer`, rebuilt only if the buffer has grown since it
+   * was last used.
+   */
+  view() {
+    const bytes = this.buffer;
+    const view = this.viewCache;
+    if (view.byteLength === bytes.byteLength)
+      return view;
+    const newView = new DataView(bytes.buffer);
+    this.viewCache = newView;
+    return newView;
   }
   /**
    * Return all bytes written and reset this writer.
    */
   finish() {
-    this.chunks.push(new Uint8Array(this.buf));
-    let len = 0;
-    for (let i = 0; i < this.chunks.length; i++)
-      len += this.chunks[i].length;
-    let bytes = new Uint8Array(len);
-    let offset = 0;
-    for (let i = 0; i < this.chunks.length; i++) {
-      bytes.set(this.chunks[i], offset);
-      offset += this.chunks[i].length;
-    }
-    this.chunks = [];
-    return bytes;
+    const result = this.buffer.slice(0, this.pos);
+    this.pos = 0;
+    this.stackPos = [];
+    return result;
   }
   /**
    * Start a new fork for length-delimited data like a message
@@ -3456,9 +4258,9 @@ var _BinaryWriter = class _BinaryWriter {
    * Must be joined later with `join()`.
    */
   fork() {
-    this.stack.push({ chunks: this.chunks, buf: this.buf });
-    this.chunks = [];
-    this.buf = [];
+    this.stackPos.push(this.pos);
+    this.ensureCapacity(DEFAULT_LEN_PREFIX_SIZE);
+    this.buffer[this.pos++] = 0;
     return this;
   }
   /**
@@ -3466,14 +4268,19 @@ var _BinaryWriter = class _BinaryWriter {
    * return to the previous state.
    */
   join() {
-    let chunk = this.finish();
-    let prev = this.stack.pop();
-    if (!prev)
+    const forkPos = this.stackPos.pop();
+    if (forkPos === void 0)
       throw new Error("invalid state, fork stack empty");
-    this.chunks = prev.chunks;
-    this.buf = prev.buf;
-    this.uint32(chunk.byteLength);
-    return this.raw(chunk);
+    const len = this.pos - forkPos - DEFAULT_LEN_PREFIX_SIZE;
+    const lenPrefixSize = varint32Size(len);
+    if (lenPrefixSize > DEFAULT_LEN_PREFIX_SIZE) {
+      this.ensureCapacity(lenPrefixSize - DEFAULT_LEN_PREFIX_SIZE);
+      this.buffer.copyWithin(forkPos + lenPrefixSize, forkPos + DEFAULT_LEN_PREFIX_SIZE, this.pos);
+    }
+    this.pos = forkPos;
+    this.uint32(len);
+    this.pos += len;
+    return this;
   }
   /**
    * Writes a tag (field number and wire type).
@@ -3489,11 +4296,9 @@ var _BinaryWriter = class _BinaryWriter {
    * Write a chunk of raw bytes.
    */
   raw(chunk) {
-    if (this.buf.length) {
-      this.chunks.push(new Uint8Array(this.buf));
-      this.buf = [];
-    }
-    this.chunks.push(chunk);
+    this.ensureCapacity(chunk.length);
+    this.buffer.set(chunk, this.pos);
+    this.pos += chunk.length;
     return this;
   }
   /**
@@ -3501,11 +4306,16 @@ var _BinaryWriter = class _BinaryWriter {
    */
   uint32(value) {
     assertUInt32(value);
-    while (value > 127) {
-      this.buf.push(value & 127 | 128);
-      value = value >>> 7;
+    this.ensureCapacity(5);
+    if (value < 128) {
+      this.buffer[this.pos++] = value;
+      return this;
     }
-    this.buf.push(value);
+    while (value > 127) {
+      this.buffer[this.pos++] = value & 127 | 128;
+      value >>>= 7;
+    }
+    this.buffer[this.pos++] = value;
     return this;
   }
   /**
@@ -3513,14 +4323,23 @@ var _BinaryWriter = class _BinaryWriter {
    */
   int32(value) {
     assertInt32(value);
-    varint32write(value, this.buf);
+    if (value >= 0) {
+      return this.uint32(value);
+    }
+    this.ensureCapacity(10);
+    for (let i2 = 0; i2 < 9; i2++) {
+      this.buffer[this.pos++] = value & 127 | 128;
+      value >>= 7;
+    }
+    this.buffer[this.pos++] = 1;
     return this;
   }
   /**
-   * Write a `bool` value, a variant.
+   * Write a `bool` value, a varint.
    */
   bool(value) {
-    this.buf.push(value ? 1 : 0);
+    this.ensureCapacity(1);
+    this.buffer[this.pos++] = value ? 1 : 0;
     return this;
   }
   /**
@@ -3534,102 +4353,196 @@ var _BinaryWriter = class _BinaryWriter {
    * Write a `string` value, length-delimited data converted to UTF-8 text.
    */
   string(value) {
-    let chunk = this.encodeUtf8(value);
-    this.uint32(chunk.byteLength);
-    return this.raw(chunk);
+    if (typeof value !== "string") {
+      value = String(value);
+    }
+    const len = value.length;
+    if (len <= ASCII_MAX_LENGTH) {
+      this.ensureCapacity(len + 1);
+      const ascii = this.buffer;
+      let pos = this.pos;
+      ascii[pos++] = len;
+      let i2 = 0;
+      for (; i2 < len; i2++) {
+        const code = value.charCodeAt(i2);
+        if (code > 127)
+          break;
+        ascii[pos++] = code;
+      }
+      if (i2 == len) {
+        this.pos = pos;
+        return this;
+      }
+    }
+    this.ensureCapacity(len * 3 + 5);
+    const lenPrefixSizeGuess = varint32Size(len);
+    const buf = this.buffer;
+    const start = this.pos;
+    const { written } = this.encodeUtf8Into(value, buf.subarray(start + lenPrefixSizeGuess));
+    const lenPrefixSize = varint32Size(written);
+    if (lenPrefixSize != lenPrefixSizeGuess) {
+      buf.copyWithin(start + lenPrefixSize, start + lenPrefixSizeGuess, start + lenPrefixSizeGuess + written);
+    }
+    this.uint32(written);
+    this.pos += written;
+    return this;
   }
   /**
    * Write a `float` value, 32-bit floating point number.
    */
   float(value) {
     assertFloat32(value);
-    let chunk = new Uint8Array(4);
-    new DataView(chunk.buffer).setFloat32(0, value, true);
-    return this.raw(chunk);
+    this.ensureCapacity(4);
+    this.view().setFloat32(this.pos, value, true);
+    this.pos += 4;
+    return this;
   }
   /**
    * Write a `double` value, a 64-bit floating point number.
    */
   double(value) {
-    let chunk = new Uint8Array(8);
-    new DataView(chunk.buffer).setFloat64(0, value, true);
-    return this.raw(chunk);
+    this.ensureCapacity(8);
+    this.view().setFloat64(this.pos, value, true);
+    this.pos += 8;
+    return this;
   }
   /**
    * Write a `fixed32` value, an unsigned, fixed-length 32-bit integer.
    */
   fixed32(value) {
     assertUInt32(value);
-    let chunk = new Uint8Array(4);
-    new DataView(chunk.buffer).setUint32(0, value, true);
-    return this.raw(chunk);
+    this.ensureCapacity(4);
+    this.view().setUint32(this.pos, value, true);
+    this.pos += 4;
+    return this;
   }
   /**
    * Write a `sfixed32` value, a signed, fixed-length 32-bit integer.
    */
   sfixed32(value) {
     assertInt32(value);
-    let chunk = new Uint8Array(4);
-    new DataView(chunk.buffer).setInt32(0, value, true);
-    return this.raw(chunk);
+    this.ensureCapacity(4);
+    this.view().setInt32(this.pos, value, true);
+    this.pos += 4;
+    return this;
   }
   /**
    * Write a `sint32` value, a signed, zigzag-encoded 32-bit varint.
    */
   sint32(value) {
     assertInt32(value);
-    value = (value << 1 ^ value >> 31) >>> 0;
-    varint32write(value, this.buf);
-    return this;
+    return this.uint32((value << 1 ^ value >> 31) >>> 0);
   }
   /**
-   * Write a `fixed64` value, a signed, fixed-length 64-bit integer.
+   * Write a `sfixed64` value, a signed, fixed-length 64-bit integer.
    */
   sfixed64(value) {
-    let chunk = new Uint8Array(8), view = new DataView(chunk.buffer), tc = protoInt64.enc(value);
-    view.setInt32(0, tc.lo, true);
-    view.setInt32(4, tc.hi, true);
-    return this.raw(chunk);
+    const tc = protoInt64.enc(value);
+    this.ensureCapacity(8);
+    const view = this.view();
+    view.setInt32(this.pos, tc.lo, true);
+    view.setInt32(this.pos + 4, tc.hi, true);
+    this.pos += 8;
+    return this;
   }
   /**
    * Write a `fixed64` value, an unsigned, fixed-length 64 bit integer.
    */
   fixed64(value) {
-    let chunk = new Uint8Array(8), view = new DataView(chunk.buffer), tc = protoInt64.uEnc(value);
-    view.setInt32(0, tc.lo, true);
-    view.setInt32(4, tc.hi, true);
-    return this.raw(chunk);
+    const tc = protoInt64.uEnc(value);
+    this.ensureCapacity(8);
+    const view = this.view();
+    view.setInt32(this.pos, tc.lo, true);
+    view.setInt32(this.pos + 4, tc.hi, true);
+    this.pos += 8;
+    return this;
   }
   /**
    * Write a `int64` value, a signed 64-bit varint.
    */
   int64(value) {
-    let tc = protoInt64.enc(value);
-    varint64write(tc.lo, tc.hi, this.buf);
-    return this;
+    const tc = protoInt64.enc(value);
+    return this.writeVarint64(tc.lo, tc.hi);
   }
   /**
    * Write a `sint64` value, a signed, zig-zag-encoded 64-bit varint.
    */
   sint64(value) {
-    let tc = protoInt64.enc(value), sign = tc.hi >> 31, lo = tc.lo << 1 ^ sign, hi = (tc.hi << 1 | tc.lo >>> 31) ^ sign;
-    varint64write(lo, hi, this.buf);
-    return this;
+    const tc = protoInt64.enc(value), sign = tc.hi >> 31, lo = tc.lo << 1 ^ sign, hi = (tc.hi << 1 | tc.lo >>> 31) ^ sign;
+    return this.writeVarint64(lo, hi);
   }
   /**
    * Write a `uint64` value, an unsigned 64-bit varint.
    */
   uint64(value) {
-    let tc = protoInt64.uEnc(value);
-    varint64write(tc.lo, tc.hi, this.buf);
+    const tc = protoInt64.uEnc(value);
+    return this.writeVarint64(tc.lo, tc.hi);
+  }
+  /**
+   * Write a 64-bit varint directly into the buffer. Accepts the value as
+   * split low/high 32-bit words.
+   *
+   * Ported from varint64write() to avoid the intermediate number[] buffer.
+   * See https://github.com/protocolbuffers/protobuf/blob/8a71927d74a4ce34efe2d8769fda198f52d20d12/js/experimental/runtime/kernel/writer.js#L344
+   */
+  writeVarint64(lo, hi) {
+    this.ensureCapacity(10);
+    const buf = this.buffer;
+    let pos = this.pos;
+    for (let i2 = 0; i2 < 28; i2 = i2 + 7) {
+      const shift = lo >>> i2;
+      const hasNext = !(shift >>> 7 == 0 && hi == 0);
+      buf[pos++] = (hasNext ? shift | 128 : shift) & 255;
+      if (!hasNext) {
+        this.pos = pos;
+        return this;
+      }
+    }
+    const splitBits = lo >>> 28 & 15 | (hi & 7) << 4;
+    const hasMoreBits = !(hi >> 3 == 0);
+    buf[pos++] = (hasMoreBits ? splitBits | 128 : splitBits) & 255;
+    if (!hasMoreBits) {
+      this.pos = pos;
+      return this;
+    }
+    for (let i2 = 3; i2 < 31; i2 = i2 + 7) {
+      const shift = hi >>> i2;
+      const hasNext = !(shift >>> 7 == 0);
+      buf[pos++] = (hasNext ? shift | 128 : shift) & 255;
+      if (!hasNext) {
+        this.pos = pos;
+        return this;
+      }
+    }
+    buf[pos++] = hi >>> 31 & 1;
+    this.pos = pos;
     return this;
   }
 };
 __name(_BinaryWriter, "BinaryWriter");
 var BinaryWriter = _BinaryWriter;
+var INITIAL_SIZE = 128;
+var DEFAULT_LEN_PREFIX_SIZE = 1;
+var EMPTY_BUFFER = new Uint8Array(0);
+var EMPTY_VIEW = new DataView(EMPTY_BUFFER.buffer);
+var ASCII_MAX_LENGTH = 32;
+function varint32Size(value) {
+  if (value < 128)
+    return 1;
+  if (value < 16384)
+    return 2;
+  if (value < 2097152)
+    return 3;
+  if (value < 268435456)
+    return 4;
+  return 5;
+}
+__name(varint32Size, "varint32Size");
 var _BinaryReader = class _BinaryReader {
   constructor(buf, decodeUtf8 = getTextEncoding().decodeUtf8) {
     this.decodeUtf8 = decodeUtf8;
+    this.varint64Lo = 0;
+    this.varint64Hi = 0;
     this.varint64 = varint64read;
     this.uint32 = varint32read;
     this.buf = buf;
@@ -3638,32 +4551,41 @@ var _BinaryReader = class _BinaryReader {
     this.view = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
   }
   /**
-   * Reads a tag - field number and wire type.
+   * Reads a tag - field number and wire type. Tags are uint32 varints; values
+   * that do not fit in uint32 are rejected.
    */
   tag() {
-    let tag = this.uint32(), fieldNo = tag >>> 3, wireType = tag & 7;
-    if (fieldNo <= 0 || wireType < 0 || wireType > 5)
+    const start = this.pos;
+    const tag = this.uint32();
+    const bytesRead = this.pos - start;
+    if (bytesRead > 5 || bytesRead == 5 && this.buf[this.pos - 1] > 15) {
+      throw new Error("illegal tag: varint overflows uint32");
+    }
+    const fieldNo = tag >>> 3;
+    const wireType = tag & 7;
+    if (fieldNo <= 0 || wireType > 5) {
       throw new Error("illegal tag: field no " + fieldNo + " wire type " + wireType);
+    }
     return [fieldNo, wireType];
   }
   /**
    * Skip one element and return the skipped data.
    *
    * When skipping StartGroup, provide the tags field number to check for
-   * matching field number in the EndGroup tag.
+   * matching field number in the EndGroup tag. Recursion into nested groups
+   * is guarded by the `recursionLimit` argument: When the limit is reached,
+   * this method throws.
    */
-  skip(wireType, fieldNo) {
+  skip(wireType, fieldNo, recursionLimit = 100) {
     let start = this.pos;
     switch (wireType) {
       case WireType.Varint:
         while (this.buf[this.pos++] & 128) {
         }
         break;
-      // eslint-disable-next-line
-      // @ts-expect-error TS7029: Fallthrough case in switch
+      // @ts-ignore TS7029: Fallthrough case in switch -- ignore instead of expect-error for compiler settings without noFallthroughCasesInSwitch: true
       case WireType.Bit64:
         this.pos += 4;
-      // eslint-disable-next-line no-fallthrough
       case WireType.Bit32:
         this.pos += 4;
         break;
@@ -3672,6 +4594,9 @@ var _BinaryReader = class _BinaryReader {
         this.pos += len;
         break;
       case WireType.StartGroup:
+        if (recursionLimit <= 0) {
+          throw new Error("maximum recursion depth reached");
+        }
         for (; ; ) {
           const [fn, wt] = this.tag();
           if (wt === WireType.EndGroup) {
@@ -3680,7 +4605,7 @@ var _BinaryReader = class _BinaryReader {
             }
             break;
           }
-          this.skip(wt, fn);
+          this.skip(wt, fn, recursionLimit - 1);
         }
         break;
       default:
@@ -3713,19 +4638,23 @@ var _BinaryReader = class _BinaryReader {
    * Read a `int64` field, a signed 64-bit varint.
    */
   int64() {
-    return protoInt64.dec(...this.varint64());
+    this.varint64();
+    return protoInt64.dec(this.varint64Lo, this.varint64Hi);
   }
   /**
    * Read a `uint64` field, an unsigned 64-bit varint.
    */
   uint64() {
-    return protoInt64.uDec(...this.varint64());
+    this.varint64();
+    return protoInt64.uDec(this.varint64Lo, this.varint64Hi);
   }
   /**
    * Read a `sint64` field, a signed, zig-zag-encoded 64-bit varint.
    */
   sint64() {
-    let [lo, hi] = this.varint64();
+    this.varint64();
+    let lo = this.varint64Lo;
+    let hi = this.varint64Hi;
     let s = -(lo & 1);
     lo = (lo >>> 1 | (hi & 1) << 31) ^ s;
     hi = hi >>> 1 ^ s;
@@ -3735,8 +4664,13 @@ var _BinaryReader = class _BinaryReader {
    * Read a `bool` field, a variant.
    */
   bool() {
-    let [lo, hi] = this.varint64();
-    return lo !== 0 || hi !== 0;
+    const b = this.buf[this.pos];
+    if (b < 128) {
+      this.pos++;
+      return b !== 0;
+    }
+    this.varint64();
+    return this.varint64Lo !== 0 || this.varint64Hi !== 0;
   }
   /**
    * Read a `fixed32` field, an unsigned, fixed-length 32-bit integer.
@@ -3784,10 +4718,24 @@ var _BinaryReader = class _BinaryReader {
     return this.buf.subarray(start, start + len);
   }
   /**
-   * Read a `string` field, length-delimited data converted to UTF-8 text.
+   * Read a `string` field, length-delimited data converted to UTF-8 text. If
+   * `strict` is true, throw on invalid UTF-8 instead of substituting U+FFFD.
    */
-  string() {
-    return this.decodeUtf8(this.bytes());
+  string(strict) {
+    const bytes = this.bytes();
+    const len = bytes.length;
+    if (len <= ASCII_MAX_LENGTH) {
+      const codes = new Array(len);
+      for (let i2 = 0; i2 < len; i2++) {
+        const byte = bytes[i2];
+        if (byte > 127) {
+          return this.decodeUtf8(bytes, strict);
+        }
+        codes[i2] = byte;
+      }
+      return String.fromCharCode.apply(String, codes);
+    }
+    return this.decodeUtf8(bytes, strict);
   }
 };
 __name(_BinaryReader, "BinaryReader");
@@ -3816,7 +4764,7 @@ function assertFloat32(arg) {
   if (typeof arg == "string") {
     const o = arg;
     arg = Number(arg);
-    if (isNaN(arg) && o !== "NaN") {
+    if (Number.isNaN(arg) && o !== "NaN") {
       throw new Error("invalid float32: " + o);
     }
   } else if (typeof arg != "number") {
@@ -4416,7 +5364,7 @@ __export(helpers_exports2, {
   memberToString: () => memberToString,
   walkAst: () => walkAst
 });
-var WALK_STOP = Symbol("WALK_STOP");
+var WALK_STOP = /* @__PURE__ */ Symbol("WALK_STOP");
 var jsBuiltIns = /* @__PURE__ */ new Set([
   "AbortController",
   "AbortSignal",
@@ -4556,13 +5504,13 @@ var jsBuiltIns = /* @__PURE__ */ new Set([
 ]);
 var indent = "  ";
 function walkAst(root, visitor) {
-  var _a, _b;
+  var _a2, _b2;
   if (!root || typeof root !== "object")
     return;
   const stack = [{ node: root, parent: null, exit: false }];
   const ancestors = [];
-  const enter = typeof visitor === "function" ? visitor : (_a = visitor.enter) != null ? _a : null;
-  const leave = typeof visitor === "function" ? null : (_b = visitor.leave) != null ? _b : null;
+  const enter = typeof visitor === "function" ? visitor : (_a2 = visitor.enter) != null ? _a2 : null;
+  const leave = typeof visitor === "function" ? null : (_b2 = visitor.leave) != null ? _b2 : null;
   let shouldStop = false;
   while (!shouldStop && stack.length > 0) {
     const frame = stack.pop();
@@ -4594,8 +5542,8 @@ function walkAst(root, visitor) {
       if (!value)
         continue;
       if (Array.isArray(value)) {
-        for (let i = value.length - 1; i >= 0; i--) {
-          const item = value[i];
+        for (let i2 = value.length - 1; i2 >= 0; i2--) {
+          const item = value[i2];
           if (item && typeof item.type === "string") {
             stack.push({ node: item, parent: node, exit: false });
           }
@@ -4669,10 +5617,10 @@ function memberBaseName(memberExpression, source) {
 }
 __name(memberBaseName, "memberBaseName");
 function createWrapperFunction(analyzer, name, node) {
-  var _a;
+  var _a2;
   if (node.type === "CallExpression" && node.callee.type === "Identifier" && analyzer.declaredVariables.has(node.callee.name)) {
     return generateWrapper(name, node.callee.name, parseFunctionArguments(analyzer, node.arguments));
-  } else if (node.type === "VariableDeclarator" && ((_a = node.init) == null ? void 0 : _a.type) === "FunctionExpression" && node.id.type === "Identifier") {
+  } else if (node.type === "VariableDeclarator" && ((_a2 = node.init) == null ? void 0 : _a2.type) === "FunctionExpression" && node.id.type === "Identifier") {
     return generateWrapper(name, node.id.name, parseFunctionArguments(analyzer, node.init.params));
   } else if (node.type === "NewExpression" && node.callee.type === "MemberExpression" && node.callee.object.type === "Identifier") {
     const targetFunction = memberToString(node.callee, analyzer.getSource());
@@ -4757,8 +5705,8 @@ function nsigMatcher(node) {
 }
 __name(nsigMatcher, "nsigMatcher");
 function timestampMatcher(node) {
-  var _a;
-  if (node.type !== "VariableDeclarator" || ((_a = node.init) == null ? void 0 : _a.type) !== "FunctionExpression") {
+  var _a2;
+  if (node.type !== "VariableDeclarator" || ((_a2 = node.init) == null ? void 0 : _a2.type) !== "FunctionExpression") {
     return false;
   }
   const funcBody = node.init.body;
@@ -4780,11 +5728,15 @@ function timestampMatcher(node) {
 __name(timestampMatcher, "timestampMatcher");
 
 // node_modules/meriyah/dist/meriyah.mjs
+var version$1 = "7.3.3";
+var packageJson = {
+  version: version$1
+};
 var unicodeLookup = ((compressed, lookup) => {
   const result = new Uint32Array(69632);
   let index = 0;
   let subIndex = 0;
-  while (index < 2571) {
+  while (index < 2597) {
     const inst = compressed[index++];
     if (inst < 0) {
       subIndex -= inst;
@@ -4800,74 +5752,9 @@ var unicodeLookup = ((compressed, lookup) => {
     }
   }
   return result;
-})([-1, 2, 26, 2, 27, 2, 5, -1, 0, 77595648, 3, 44, 2, 3, 0, 14, 2, 63, 2, 64, 3, 0, 3, 0, 3168796671, 0, 4294956992, 2, 1, 2, 0, 2, 41, 3, 0, 4, 0, 4294966523, 3, 0, 4, 2, 16, 2, 65, 2, 0, 0, 4294836735, 0, 3221225471, 0, 4294901942, 2, 66, 0, 134152192, 3, 0, 2, 0, 4294951935, 3, 0, 2, 0, 2683305983, 0, 2684354047, 2, 18, 2, 0, 0, 4294961151, 3, 0, 2, 2, 19, 2, 0, 0, 608174079, 2, 0, 2, 60, 2, 7, 2, 6, 0, 4286611199, 3, 0, 2, 2, 1, 3, 0, 3, 0, 4294901711, 2, 40, 0, 4089839103, 0, 2961209759, 0, 1342439375, 0, 4294543342, 0, 3547201023, 0, 1577204103, 0, 4194240, 0, 4294688750, 2, 2, 0, 80831, 0, 4261478351, 0, 4294549486, 2, 2, 0, 2967484831, 0, 196559, 0, 3594373100, 0, 3288319768, 0, 8469959, 0, 65472, 2, 3, 0, 4093640191, 0, 660618719, 0, 65487, 0, 4294828015, 0, 4092591615, 0, 1616920031, 0, 982991, 2, 3, 2, 0, 0, 2163244511, 0, 4227923919, 0, 4236247022, 2, 71, 0, 4284449919, 0, 851904, 2, 4, 2, 12, 0, 67076095, -1, 2, 72, 0, 1073741743, 0, 4093607775, -1, 0, 50331649, 0, 3265266687, 2, 33, 0, 4294844415, 0, 4278190047, 2, 20, 2, 137, -1, 3, 0, 2, 2, 23, 2, 0, 2, 10, 2, 0, 2, 15, 2, 22, 3, 0, 10, 2, 74, 2, 0, 2, 75, 2, 76, 2, 77, 2, 0, 2, 78, 2, 0, 2, 11, 0, 261632, 2, 25, 3, 0, 2, 2, 13, 2, 4, 3, 0, 18, 2, 79, 2, 5, 3, 0, 2, 2, 80, 0, 2151677951, 2, 29, 2, 9, 0, 909311, 3, 0, 2, 0, 814743551, 2, 49, 0, 67090432, 3, 0, 2, 2, 42, 2, 0, 2, 6, 2, 0, 2, 30, 2, 8, 0, 268374015, 2, 110, 2, 51, 2, 0, 2, 81, 0, 134153215, -1, 2, 7, 2, 0, 2, 8, 0, 2684354559, 0, 67044351, 0, 3221160064, 2, 17, -1, 3, 0, 2, 2, 53, 0, 1046528, 3, 0, 3, 2, 9, 2, 0, 2, 54, 0, 4294960127, 2, 10, 2, 6, 2, 11, 0, 4294377472, 2, 12, 3, 0, 16, 2, 13, 2, 0, 2, 82, 2, 10, 2, 0, 2, 83, 2, 84, 2, 85, 0, 12288, 2, 55, 0, 1048577, 2, 86, 2, 14, -1, 2, 14, 0, 131042, 2, 87, 2, 88, 2, 89, 2, 0, 2, 34, -83, 3, 0, 7, 0, 1046559, 2, 0, 2, 15, 2, 0, 0, 2147516671, 2, 21, 3, 90, 2, 2, 0, -16, 2, 91, 0, 524222462, 2, 4, 2, 0, 0, 4269801471, 2, 4, 3, 0, 2, 2, 28, 2, 16, 3, 0, 2, 2, 17, 2, 0, -1, 2, 18, -16, 3, 0, 206, -2, 3, 0, 692, 2, 73, -1, 2, 18, 2, 10, 3, 0, 8, 2, 93, 2, 133, 2, 0, 0, 3220242431, 3, 0, 3, 2, 19, 2, 94, 2, 95, 3, 0, 2, 2, 96, 2, 0, 2, 97, 2, 46, 2, 0, 0, 4351, 2, 0, 2, 9, 3, 0, 2, 0, 67043391, 0, 3909091327, 2, 0, 2, 24, 2, 9, 2, 20, 3, 0, 2, 0, 67076097, 2, 8, 2, 0, 2, 21, 0, 67059711, 0, 4236247039, 3, 0, 2, 0, 939524103, 0, 8191999, 2, 101, 2, 102, 2, 22, 2, 23, 3, 0, 3, 0, 67057663, 3, 0, 349, 2, 103, 2, 104, 2, 7, -264, 3, 0, 11, 2, 24, 3, 0, 2, 2, 32, -1, 0, 3774349439, 2, 105, 2, 106, 3, 0, 2, 2, 19, 2, 107, 3, 0, 10, 2, 10, 2, 18, 2, 0, 2, 47, 2, 0, 2, 31, 2, 108, 2, 25, 0, 1638399, 0, 57344, 2, 109, 3, 0, 3, 2, 20, 2, 26, 2, 27, 2, 5, 2, 28, 2, 0, 2, 8, 2, 111, -1, 2, 112, 2, 113, 2, 114, -1, 3, 0, 3, 2, 12, -2, 2, 0, 2, 29, -3, 0, 536870912, -4, 2, 20, 2, 0, 2, 36, 0, 1, 2, 0, 2, 67, 2, 6, 2, 12, 2, 10, 2, 0, 2, 115, -1, 3, 0, 4, 2, 10, 2, 23, 2, 116, 2, 7, 2, 0, 2, 117, 2, 0, 2, 118, 2, 119, 2, 120, 2, 0, 2, 9, 3, 0, 9, 2, 21, 2, 30, 2, 31, 2, 121, 2, 122, -2, 2, 123, 2, 124, 2, 30, 2, 21, 2, 8, -2, 2, 125, 2, 30, 2, 32, -2, 2, 0, 2, 39, -2, 0, 4277137519, 0, 2269118463, -1, 3, 20, 2, -1, 2, 33, 2, 38, 2, 0, 3, 30, 2, 2, 35, 2, 19, -3, 3, 0, 2, 2, 34, -1, 2, 0, 2, 35, 2, 0, 2, 35, 2, 0, 2, 48, 2, 0, 0, 4294950463, 2, 37, -7, 2, 0, 0, 203775, 2, 57, 0, 4026531840, 2, 20, 2, 43, 2, 36, 2, 18, 2, 37, 2, 18, 2, 126, 2, 21, 3, 0, 2, 2, 38, 0, 2151677888, 2, 0, 2, 12, 0, 4294901764, 2, 144, 2, 0, 2, 58, 2, 56, 0, 5242879, 3, 0, 2, 0, 402644511, -1, 2, 128, 2, 39, 0, 3, -1, 2, 129, 2, 130, 2, 0, 0, 67045375, 2, 40, 0, 4226678271, 0, 3766565279, 0, 2039759, 2, 132, 2, 41, 0, 1046437, 0, 6, 3, 0, 2, 0, 3288270847, 0, 3, 3, 0, 2, 0, 67043519, -5, 2, 0, 0, 4282384383, 0, 1056964609, -1, 3, 0, 2, 0, 67043345, -1, 2, 0, 2, 42, 2, 23, 2, 50, 2, 11, 2, 61, 2, 38, -5, 2, 0, 2, 12, -3, 3, 0, 2, 0, 2147484671, 2, 134, 0, 4190109695, 2, 52, -2, 2, 135, 0, 4244635647, 0, 27, 2, 0, 2, 8, 2, 43, 2, 0, 2, 68, 2, 18, 2, 0, 2, 42, -6, 2, 0, 2, 45, 2, 59, 2, 44, 2, 45, 2, 46, 2, 47, 0, 8388351, -2, 2, 136, 0, 3028287487, 2, 48, 2, 138, 0, 33259519, 2, 49, -9, 2, 21, 0, 4294836223, 0, 3355443199, 0, 134152199, -2, 2, 69, -2, 3, 0, 28, 2, 32, -3, 3, 0, 3, 2, 17, 3, 0, 6, 2, 50, -81, 2, 18, 3, 0, 2, 2, 36, 3, 0, 33, 2, 25, 2, 30, 3, 0, 124, 2, 12, 3, 0, 18, 2, 38, -213, 2, 0, 2, 32, -54, 3, 0, 17, 2, 42, 2, 8, 2, 23, 2, 0, 2, 8, 2, 23, 2, 51, 2, 0, 2, 21, 2, 52, 2, 139, 2, 25, -13, 2, 0, 2, 53, -6, 3, 0, 2, -4, 3, 0, 2, 0, 4294936575, 2, 0, 0, 4294934783, -2, 0, 196635, 3, 0, 191, 2, 54, 3, 0, 38, 2, 30, 2, 55, 2, 34, -278, 2, 140, 3, 0, 9, 2, 141, 2, 142, 2, 56, 3, 0, 11, 2, 7, -72, 3, 0, 3, 2, 143, 0, 1677656575, -130, 2, 26, -16, 2, 0, 2, 24, 2, 38, -16, 0, 4161266656, 0, 4071, 0, 15360, -4, 2, 57, -13, 3, 0, 2, 2, 58, 2, 0, 2, 145, 2, 146, 2, 62, 2, 0, 2, 147, 2, 148, 2, 149, 3, 0, 10, 2, 150, 2, 151, 2, 22, 3, 58, 2, 3, 152, 2, 3, 59, 2, 0, 4294954999, 2, 0, -16, 2, 0, 2, 92, 2, 0, 0, 2105343, 0, 4160749584, 0, 65534, -34, 2, 8, 2, 154, -6, 0, 4194303871, 0, 4294903771, 2, 0, 2, 60, 2, 100, -3, 2, 0, 0, 1073684479, 0, 17407, -9, 2, 18, 2, 17, 2, 0, 2, 32, -14, 2, 18, 2, 32, -6, 2, 18, 2, 12, -15, 2, 155, 3, 0, 6, 0, 8323103, -1, 3, 0, 2, 2, 61, -37, 2, 62, 2, 156, 2, 157, 2, 158, 2, 159, 2, 160, -105, 2, 26, -32, 3, 0, 1335, -1, 3, 0, 129, 2, 32, 3, 0, 6, 2, 10, 3, 0, 180, 2, 161, 3, 0, 233, 2, 162, 3, 0, 18, 2, 10, -77, 3, 0, 16, 2, 10, -47, 3, 0, 154, 2, 6, 3, 0, 130, 2, 25, -22250, 3, 0, 7, 2, 25, -6130, 3, 5, 2, -1, 0, 69207040, 3, 44, 2, 3, 0, 14, 2, 63, 2, 64, -3, 0, 3168731136, 0, 4294956864, 2, 1, 2, 0, 2, 41, 3, 0, 4, 0, 4294966275, 3, 0, 4, 2, 16, 2, 65, 2, 0, 2, 34, -1, 2, 18, 2, 66, -1, 2, 0, 0, 2047, 0, 4294885376, 3, 0, 2, 0, 3145727, 0, 2617294944, 0, 4294770688, 2, 25, 2, 67, 3, 0, 2, 0, 131135, 2, 98, 0, 70256639, 0, 71303167, 0, 272, 2, 42, 2, 6, 0, 32511, 2, 0, 2, 49, -1, 2, 99, 2, 68, 0, 4278255616, 0, 4294836227, 0, 4294549473, 0, 600178175, 0, 2952806400, 0, 268632067, 0, 4294543328, 0, 57540095, 0, 1577058304, 0, 1835008, 0, 4294688736, 2, 70, 2, 69, 0, 33554435, 2, 131, 2, 70, 0, 2952790016, 0, 131075, 0, 3594373096, 0, 67094296, 2, 69, -1, 0, 4294828e3, 0, 603979263, 0, 654311424, 0, 3, 0, 4294828001, 0, 602930687, 0, 1610612736, 0, 393219, 0, 4294828016, 0, 671088639, 0, 2154840064, 0, 4227858435, 0, 4236247008, 2, 71, 2, 38, -1, 2, 4, 0, 917503, 2, 38, -1, 2, 72, 0, 537788335, 0, 4026531935, -1, 0, 1, -1, 2, 33, 2, 73, 0, 7936, -3, 2, 0, 0, 2147485695, 0, 1010761728, 0, 4292984930, 0, 16387, 2, 0, 2, 15, 2, 22, 3, 0, 10, 2, 74, 2, 0, 2, 75, 2, 76, 2, 77, 2, 0, 2, 78, 2, 0, 2, 12, -1, 2, 25, 3, 0, 2, 2, 13, 2, 4, 3, 0, 18, 2, 79, 2, 5, 3, 0, 2, 2, 80, 0, 2147745791, 3, 19, 2, 0, 122879, 2, 0, 2, 9, 0, 276824064, -2, 3, 0, 2, 2, 42, 2, 0, 0, 4294903295, 2, 0, 2, 30, 2, 8, -1, 2, 18, 2, 51, 2, 0, 2, 81, 2, 49, -1, 2, 21, 2, 0, 2, 29, -2, 0, 128, -2, 2, 28, 2, 9, 0, 8160, -1, 2, 127, 0, 4227907585, 2, 0, 2, 37, 2, 0, 2, 50, 0, 4227915776, 2, 10, 2, 6, 2, 11, -1, 0, 74440192, 3, 0, 6, -2, 3, 0, 8, 2, 13, 2, 0, 2, 82, 2, 10, 2, 0, 2, 83, 2, 84, 2, 85, -3, 2, 86, 2, 14, -3, 2, 87, 2, 88, 2, 89, 2, 0, 2, 34, -83, 3, 0, 7, 0, 817183, 2, 0, 2, 15, 2, 0, 0, 33023, 2, 21, 3, 90, 2, -17, 2, 91, 0, 524157950, 2, 4, 2, 0, 2, 92, 2, 4, 2, 0, 2, 22, 2, 28, 2, 16, 3, 0, 2, 2, 17, 2, 0, -1, 2, 18, -16, 3, 0, 206, -2, 3, 0, 692, 2, 73, -1, 2, 18, 2, 10, 3, 0, 8, 2, 93, 0, 3072, 2, 0, 0, 2147516415, 2, 10, 3, 0, 2, 2, 25, 2, 94, 2, 95, 3, 0, 2, 2, 96, 2, 0, 2, 97, 2, 46, 0, 4294965179, 0, 7, 2, 0, 2, 9, 2, 95, 2, 9, -1, 0, 1761345536, 2, 98, 0, 4294901823, 2, 38, 2, 20, 2, 99, 2, 35, 2, 100, 0, 2080440287, 2, 0, 2, 34, 2, 153, 0, 3296722943, 2, 0, 0, 1046675455, 0, 939524101, 0, 1837055, 2, 101, 2, 102, 2, 22, 2, 23, 3, 0, 3, 0, 7, 3, 0, 349, 2, 103, 2, 104, 2, 7, -264, 3, 0, 11, 2, 24, 3, 0, 2, 2, 32, -1, 0, 2700607615, 2, 105, 2, 106, 3, 0, 2, 2, 19, 2, 107, 3, 0, 10, 2, 10, 2, 18, 2, 0, 2, 47, 2, 0, 2, 31, 2, 108, -3, 2, 109, 3, 0, 3, 2, 20, -1, 3, 5, 2, 2, 110, 2, 0, 2, 8, 2, 111, -1, 2, 112, 2, 113, 2, 114, -1, 3, 0, 3, 2, 12, -2, 2, 0, 2, 29, -8, 2, 20, 2, 0, 2, 36, -1, 2, 0, 2, 67, 2, 6, 2, 30, 2, 10, 2, 0, 2, 115, -1, 3, 0, 4, 2, 10, 2, 18, 2, 116, 2, 7, 2, 0, 2, 117, 2, 0, 2, 118, 2, 119, 2, 120, 2, 0, 2, 9, 3, 0, 9, 2, 21, 2, 30, 2, 31, 2, 121, 2, 122, -2, 2, 123, 2, 124, 2, 30, 2, 21, 2, 8, -2, 2, 125, 2, 30, 2, 32, -2, 2, 0, 2, 39, -2, 0, 4277075969, 2, 30, -1, 3, 20, 2, -1, 2, 33, 2, 126, 2, 0, 3, 30, 2, 2, 35, 2, 19, -3, 3, 0, 2, 2, 34, -1, 2, 0, 2, 35, 2, 0, 2, 35, 2, 0, 2, 50, 2, 98, 0, 4294934591, 2, 37, -7, 2, 0, 0, 197631, 2, 57, -1, 2, 20, 2, 43, 2, 37, 2, 18, 0, 3, 2, 18, 2, 126, 2, 21, 2, 127, 2, 54, -1, 0, 2490368, 2, 127, 2, 25, 2, 18, 2, 34, 2, 127, 2, 38, 0, 4294901904, 0, 4718591, 2, 127, 2, 35, 0, 335544350, -1, 2, 128, 0, 2147487743, 0, 1, -1, 2, 129, 2, 130, 2, 8, -1, 2, 131, 2, 70, 0, 3758161920, 0, 3, 2, 132, 0, 12582911, 0, 655360, -1, 2, 0, 2, 29, 0, 2147485568, 0, 3, 2, 0, 2, 25, 0, 176, -5, 2, 0, 2, 17, 0, 251658240, -1, 2, 0, 2, 25, 0, 16, -1, 2, 0, 0, 16779263, -2, 2, 12, -1, 2, 38, -5, 2, 0, 2, 133, -3, 3, 0, 2, 2, 55, 2, 134, 0, 2147549183, 0, 2, -2, 2, 135, 2, 36, 0, 10, 0, 4294965249, 0, 67633151, 0, 4026597376, 2, 0, 0, 536871935, 2, 18, 2, 0, 2, 42, -6, 2, 0, 0, 1, 2, 59, 2, 17, 0, 1, 2, 46, 2, 25, -3, 2, 136, 2, 36, 2, 137, 2, 138, 0, 16778239, -10, 2, 35, 0, 4294836212, 2, 9, -3, 2, 69, -2, 3, 0, 28, 2, 32, -3, 3, 0, 3, 2, 17, 3, 0, 6, 2, 50, -81, 2, 18, 3, 0, 2, 2, 36, 3, 0, 33, 2, 25, 0, 126, 3, 0, 124, 2, 12, 3, 0, 18, 2, 38, -213, 2, 10, -55, 3, 0, 17, 2, 42, 2, 8, 2, 18, 2, 0, 2, 8, 2, 18, 2, 60, 2, 0, 2, 25, 2, 50, 2, 139, 2, 25, -13, 2, 0, 2, 73, -6, 3, 0, 2, -4, 3, 0, 2, 0, 67583, -1, 2, 107, -2, 0, 11, 3, 0, 191, 2, 54, 3, 0, 38, 2, 30, 2, 55, 2, 34, -278, 2, 140, 3, 0, 9, 2, 141, 2, 142, 2, 56, 3, 0, 11, 2, 7, -72, 3, 0, 3, 2, 143, 2, 144, -187, 3, 0, 2, 2, 58, 2, 0, 2, 145, 2, 146, 2, 62, 2, 0, 2, 147, 2, 148, 2, 149, 3, 0, 10, 2, 150, 2, 151, 2, 22, 3, 58, 2, 3, 152, 2, 3, 59, 2, 2, 153, -57, 2, 8, 2, 154, -7, 2, 18, 2, 0, 2, 60, -4, 2, 0, 0, 1065361407, 0, 16384, -9, 2, 18, 2, 60, 2, 0, 2, 133, -14, 2, 18, 2, 133, -6, 2, 18, 0, 81919, -15, 2, 155, 3, 0, 6, 2, 126, -1, 3, 0, 2, 0, 2063, -37, 2, 62, 2, 156, 2, 157, 2, 158, 2, 159, 2, 160, -138, 3, 0, 1335, -1, 3, 0, 129, 2, 32, 3, 0, 6, 2, 10, 3, 0, 180, 2, 161, 3, 0, 233, 2, 162, 3, 0, 18, 2, 10, -77, 3, 0, 16, 2, 10, -47, 3, 0, 154, 2, 6, 3, 0, 130, 2, 25, -28386], [4294967295, 4294967291, 4092460543, 4294828031, 4294967294, 134217726, 4294903807, 268435455, 2147483647, 1048575, 1073741823, 3892314111, 134217727, 1061158911, 536805376, 4294910143, 4294901759, 32767, 4294901760, 262143, 536870911, 8388607, 4160749567, 4294902783, 4294918143, 65535, 67043328, 2281701374, 4294967264, 2097151, 4194303, 255, 67108863, 4294967039, 511, 524287, 131071, 63, 127, 3238002687, 4294549487, 4290772991, 33554431, 4294901888, 4286578687, 67043329, 4294705152, 4294770687, 67043583, 1023, 15, 2047999, 67043343, 67051519, 16777215, 2147483648, 4294902e3, 28, 4292870143, 4294966783, 16383, 67047423, 4294967279, 262083, 20511, 41943039, 493567, 4294959104, 603979775, 65536, 602799615, 805044223, 4294965206, 8191, 1031749119, 4294917631, 2134769663, 4286578493, 4282253311, 4294942719, 33540095, 4294905855, 2868854591, 1608515583, 265232348, 534519807, 2147614720, 1060109444, 4093640016, 17376, 2139062143, 224, 4169138175, 4294909951, 4286578688, 4294967292, 4294965759, 535511039, 4294966272, 4294967280, 32768, 8289918, 4294934399, 4294901775, 4294965375, 1602223615, 4294967259, 4294443008, 268369920, 4292804608, 4294967232, 486341884, 4294963199, 3087007615, 1073692671, 4128527, 4279238655, 4294902015, 4160684047, 4290246655, 469499899, 4294967231, 134086655, 4294966591, 2445279231, 3670015, 31, 4294967288, 4294705151, 3221208447, 4294902271, 4294549472, 4294921215, 4095, 4285526655, 4294966527, 4294966143, 64, 4294966719, 3774873592, 1877934080, 262151, 2555904, 536807423, 67043839, 3758096383, 3959414372, 3755993023, 2080374783, 4294835295, 4294967103, 4160749565, 4294934527, 4087, 2016, 2147446655, 184024726, 2862017156, 1593309078, 268434431, 268434414, 4294901763, 4294901761]);
+})([-1, 2, 26, 2, 27, 2, 5, -1, 0, 77595648, 3, 44, 2, 3, 0, 14, 2, 61, 2, 62, 3, 0, 3, 0, 3168796671, 0, 4294956992, 2, 1, 2, 0, 2, 41, 3, 0, 4, 0, 4294966523, 3, 0, 4, 2, 16, 2, 63, 2, 0, 0, 4294836735, 0, 3221225471, 0, 4294901942, 2, 64, 0, 134152192, 3, 0, 2, 0, 4294951935, 3, 0, 2, 0, 2683305983, 0, 2684354047, 2, 17, 2, 0, 0, 4294961151, 3, 0, 2, 2, 19, 2, 0, 0, 608174079, 2, 0, 2, 58, 2, 7, 2, 6, 0, 4286643967, 3, 0, 2, 2, 1, 3, 0, 3, 0, 4294901711, 2, 40, 0, 4089839103, 0, 2961209759, 0, 1342439375, 0, 4294543342, 0, 3547201023, 0, 1577204103, 0, 4194240, 0, 4294688750, 2, 2, 0, 80831, 0, 4261478351, 0, 4294549486, 2, 2, 0, 2967484831, 0, 196559, 0, 3594373100, 0, 3288319768, 0, 8469959, 0, 65472, 2, 3, 0, 4093640191, 0, 929054175, 0, 65487, 0, 4294828015, 0, 4092591615, 0, 1885355487, 0, 982991, 2, 3, 2, 0, 0, 2163244511, 0, 4227923919, 0, 4236247022, 2, 69, 0, 4284449919, 0, 851904, 2, 4, 2, 12, 0, 67076095, -1, 2, 70, 0, 1073741743, 0, 4093607775, -1, 0, 50331649, 0, 3265266687, 2, 33, 0, 4294844415, 0, 4278190047, 2, 20, 2, 137, -1, 3, 0, 2, 2, 23, 2, 0, 2, 9, 2, 0, 2, 15, 2, 22, 3, 0, 10, 2, 72, 2, 0, 2, 73, 2, 74, 2, 75, 2, 0, 2, 76, 2, 0, 2, 11, 0, 261632, 2, 25, 3, 0, 2, 2, 13, 2, 4, 3, 0, 18, 2, 77, 2, 5, 3, 0, 2, 2, 78, 0, 2151677951, 2, 29, 2, 10, 0, 909311, 3, 0, 2, 0, 814743551, 2, 48, 0, 67090432, 3, 0, 2, 2, 42, 2, 0, 2, 6, 2, 0, 2, 30, 2, 8, 0, 268374015, 2, 108, 2, 51, 2, 0, 2, 79, 0, 134153215, -1, 2, 7, 2, 0, 2, 8, 0, 2684354559, 0, 67044351, 0, 3221160064, 2, 9, 2, 18, 3, 0, 2, 2, 53, 0, 1046528, 3, 0, 3, 2, 10, 2, 0, 2, 127, 0, 4294960127, 2, 9, 2, 6, 2, 11, 0, 4294377472, 2, 12, 3, 0, 16, 2, 13, 2, 0, 2, 80, 2, 9, 2, 0, 2, 81, 2, 82, 2, 83, 0, 12288, 2, 54, 0, 1048577, 2, 84, 2, 14, -1, 2, 14, 0, 131042, 2, 85, 2, 86, 2, 87, 2, 0, 2, 34, -83, 3, 0, 7, 0, 1046559, 2, 0, 2, 15, 2, 0, 0, 2147516671, 2, 21, 3, 88, 2, 2, 0, -16, 2, 89, 0, 524222462, 2, 4, 2, 0, 0, 4269801471, 2, 4, 3, 0, 2, 2, 28, 2, 16, 3, 0, 2, 2, 49, 2, 0, -1, 2, 17, -16, 3, 0, 206, -2, 3, 0, 692, 2, 71, -1, 2, 17, 2, 9, 3, 0, 8, 2, 91, 2, 18, 2, 0, 0, 3220242431, 3, 0, 3, 2, 19, 2, 92, 2, 93, 3, 0, 2, 2, 94, 2, 0, 2, 20, 2, 95, 2, 0, 0, 4351, 2, 0, 2, 10, 3, 0, 2, 0, 67043391, 0, 3909091327, 2, 0, 2, 24, 2, 10, 2, 20, 3, 0, 2, 0, 67076097, 2, 8, 2, 0, 2, 21, 0, 67059711, 0, 4236247039, 3, 0, 2, 0, 939524103, 0, 8191999, 2, 99, 2, 100, 2, 22, 2, 23, 3, 0, 3, 0, 67057663, 3, 0, 349, 2, 101, 2, 102, 2, 7, -264, 3, 0, 11, 2, 24, 3, 0, 2, 2, 32, -1, 0, 3774349439, 2, 103, 2, 104, 3, 0, 2, 2, 19, 2, 105, 3, 0, 10, 2, 9, 2, 17, 2, 0, 2, 46, 2, 0, 2, 31, 2, 106, 2, 25, 0, 1638399, 0, 57344, 2, 107, 3, 0, 3, 2, 20, 2, 26, 2, 27, 2, 5, 2, 28, 2, 0, 2, 8, 2, 109, -1, 2, 110, 2, 111, 2, 112, -1, 3, 0, 3, 2, 12, -2, 2, 0, 2, 29, -3, 0, 536870912, -4, 2, 20, 2, 0, 2, 36, 0, 1, 2, 0, 2, 65, 2, 6, 2, 12, 2, 9, 2, 0, 2, 113, -1, 3, 0, 4, 2, 9, 2, 23, 2, 114, 2, 7, 2, 0, 2, 115, 2, 0, 2, 116, 2, 117, 2, 118, 2, 0, 2, 10, 3, 0, 9, 2, 21, 2, 30, 2, 31, 2, 119, 2, 120, -2, 2, 121, 2, 122, 2, 30, 2, 21, 2, 8, -2, 2, 123, 2, 30, 3, 32, 2, -1, 2, 0, 2, 39, -2, 0, 4277137519, 0, 2269118463, -1, 3, 20, 2, -1, 2, 33, 2, 38, 2, 0, 3, 30, 2, 2, 35, 2, 19, -3, 3, 0, 2, 2, 34, -1, 2, 0, 2, 35, 2, 0, 2, 35, 2, 0, 2, 47, 2, 0, 0, 4294950463, 2, 37, -7, 2, 0, 0, 203775, 2, 125, 0, 4227858432, 2, 20, 2, 43, 2, 36, 2, 17, 2, 37, 2, 17, 2, 124, 2, 21, 3, 0, 2, 2, 38, 0, 2151677888, 2, 0, 2, 12, 0, 4294901764, 2, 145, 2, 0, 2, 56, 2, 55, 0, 5242879, 3, 0, 2, 0, 402644511, -1, 2, 128, 2, 39, 0, 3, -1, 2, 129, 2, 130, 2, 0, 0, 67045375, 2, 40, 0, 4226678271, 0, 3766565279, 0, 2039759, 2, 132, 2, 41, 0, 1046437, 0, 6, 3, 0, 2, 0, 3288270847, 0, 3, 3, 0, 2, 0, 67043519, -5, 2, 0, 0, 4282384383, 0, 1056964609, -1, 3, 0, 2, 0, 67043345, -1, 2, 0, 2, 42, 2, 23, 2, 50, 2, 11, 2, 59, 2, 38, -5, 2, 0, 2, 12, -3, 3, 0, 2, 0, 2147484671, 2, 133, 0, 4190109695, 2, 52, -2, 2, 134, 0, 4244635647, 0, 27, 2, 0, 2, 8, 2, 43, 2, 0, 2, 66, 2, 17, 2, 0, 2, 42, -3, 2, 31, -2, 2, 0, 2, 45, 2, 57, 2, 44, 2, 45, 2, 135, 2, 46, 0, 8388351, -2, 2, 136, 0, 3028287487, 2, 47, 2, 138, 0, 33259519, 2, 23, 2, 7, 2, 48, -7, 2, 21, 0, 4294836223, 0, 3355443199, 0, 134152199, -2, 2, 67, -2, 3, 0, 28, 2, 32, -3, 3, 0, 3, 2, 49, 3, 0, 6, 2, 50, -81, 2, 17, 3, 0, 2, 2, 36, 3, 0, 33, 2, 25, 2, 30, 3, 0, 124, 2, 12, 3, 0, 18, 2, 38, -213, 2, 0, 2, 32, -54, 3, 0, 17, 2, 42, 2, 8, 2, 23, 2, 0, 2, 8, 2, 23, 2, 51, 2, 0, 2, 21, 2, 52, 2, 139, 2, 25, -13, 2, 0, 2, 53, -6, 3, 0, 2, -1, 2, 140, 2, 10, -1, 3, 0, 2, 0, 4294936575, 2, 0, 0, 4294934783, -2, 0, 8323099, 3, 0, 230, 2, 30, 2, 54, 2, 8, -3, 3, 0, 3, 2, 35, -271, 2, 141, 3, 0, 9, 2, 142, 2, 143, 2, 55, 3, 0, 11, 2, 7, -72, 3, 0, 3, 2, 144, 0, 1677656575, -130, 2, 26, -16, 2, 0, 2, 24, 2, 38, -16, 0, 4161266656, 0, 4071, 0, 15360, -4, 0, 28, -13, 3, 0, 2, 2, 56, 2, 0, 2, 146, 2, 147, 2, 60, 2, 0, 2, 148, 2, 149, 2, 150, 3, 0, 10, 2, 151, 2, 152, 2, 22, 3, 56, 2, 3, 153, 2, 3, 57, 2, 0, 4294954999, 2, 0, -16, 2, 0, 2, 90, 2, 0, 0, 2105343, 0, 4160749584, 0, 65534, -34, 2, 8, 2, 155, -6, 0, 4194303871, 0, 4294903771, 2, 0, 2, 58, 2, 98, -3, 2, 0, 0, 1073684479, 0, 17407, -9, 2, 17, 2, 49, 2, 0, 2, 32, -14, 2, 17, 2, 32, -6, 2, 17, 2, 12, -6, 2, 8, 0, 3225419775, -7, 2, 156, 3, 0, 6, 0, 8323103, -1, 3, 0, 2, 2, 59, -37, 2, 60, 2, 157, 2, 158, 2, 159, 2, 160, 2, 161, -105, 2, 26, -32, 3, 0, 1335, -1, 3, 0, 136, 2, 9, 3, 0, 180, 2, 24, 3, 0, 233, 2, 162, 3, 0, 18, 2, 9, -77, 3, 0, 16, 2, 9, -47, 3, 0, 154, 2, 6, 3, 0, 264, 2, 32, -22116, 3, 0, 7, 2, 25, -6130, 3, 5, 2, -1, 0, 69207040, 3, 44, 2, 3, 0, 14, 2, 61, 2, 62, -3, 0, 3168731136, 0, 4294956864, 2, 1, 2, 0, 2, 41, 3, 0, 4, 0, 4294966275, 3, 0, 4, 2, 16, 2, 63, 2, 0, 2, 34, -1, 2, 17, 2, 64, -1, 2, 0, 0, 2047, 0, 4294885376, 3, 0, 2, 0, 3145727, 0, 2617294944, 0, 4294770688, 2, 25, 2, 65, 3, 0, 2, 0, 131135, 2, 96, 0, 70256639, 0, 71303167, 0, 272, 2, 42, 2, 6, 0, 65279, 2, 0, 2, 48, -1, 2, 97, 2, 66, 0, 4278255616, 0, 4294836227, 0, 4294549473, 0, 600178175, 0, 2952806400, 0, 268632067, 0, 4294543328, 0, 57540095, 0, 1577058304, 0, 1835008, 0, 4294688736, 2, 68, 2, 67, 0, 33554435, 2, 131, 2, 68, 0, 2952790016, 0, 131075, 0, 3594373096, 0, 67094296, 2, 67, -1, 0, 4294828e3, 0, 603979263, 0, 922746880, 0, 3, 0, 4294828001, 0, 602930687, 0, 1879048192, 0, 393219, 0, 4294828016, 0, 671088639, 0, 2154840064, 0, 4227858435, 0, 4236247008, 2, 69, 2, 38, -1, 2, 4, 0, 917503, 2, 38, -1, 2, 70, 0, 537788335, 0, 4026531935, -1, 0, 1, -1, 2, 33, 2, 71, 0, 7936, -3, 2, 0, 0, 2147485695, 0, 1010761728, 0, 4292984930, 0, 16387, 2, 0, 2, 15, 2, 22, 3, 0, 10, 2, 72, 2, 0, 2, 73, 2, 74, 2, 75, 2, 0, 2, 76, 2, 0, 2, 12, -1, 2, 25, 3, 0, 2, 2, 13, 2, 4, 3, 0, 18, 2, 77, 2, 5, 3, 0, 2, 2, 78, 0, 2147745791, 3, 19, 2, 0, 122879, 2, 0, 2, 10, 0, 276824064, -2, 3, 0, 2, 2, 42, 2, 0, 0, 4294903295, 2, 0, 2, 30, 2, 8, -1, 2, 17, 2, 51, 2, 0, 2, 79, 2, 48, -1, 2, 21, 2, 0, 2, 29, -2, 0, 128, -2, 2, 28, 2, 10, 0, 8160, -1, 2, 126, 0, 4227907585, 2, 0, 2, 37, 2, 0, 2, 50, 0, 4227915776, 2, 9, 2, 6, 2, 11, -1, 0, 74440192, 3, 0, 6, -2, 3, 0, 8, 2, 13, 2, 0, 2, 80, 2, 9, 2, 0, 2, 81, 2, 82, 2, 83, -3, 2, 84, 2, 14, -3, 2, 85, 2, 86, 2, 87, 2, 0, 2, 34, -83, 3, 0, 7, 0, 817183, 2, 0, 2, 15, 2, 0, 0, 33023, 2, 21, 3, 88, 2, -17, 2, 89, 0, 524157950, 2, 4, 2, 0, 2, 90, 2, 4, 2, 0, 2, 22, 2, 28, 2, 16, 3, 0, 2, 2, 49, 2, 0, -1, 2, 17, -16, 3, 0, 206, -2, 3, 0, 692, 2, 71, -1, 2, 17, 2, 9, 3, 0, 8, 2, 91, 0, 3072, 2, 0, 0, 2147516415, 2, 9, 3, 0, 2, 2, 25, 2, 92, 2, 93, 3, 0, 2, 2, 94, 2, 0, 2, 20, 2, 95, 0, 4294965179, 0, 7, 2, 0, 2, 10, 2, 93, 2, 10, -1, 0, 1761345536, 2, 96, 0, 4294901823, 2, 38, 2, 20, 2, 97, 2, 35, 2, 98, 0, 2080440287, 2, 0, 2, 34, 2, 154, 0, 3296722943, 2, 0, 0, 1046675455, 0, 939524101, 0, 1837055, 2, 99, 2, 100, 2, 22, 2, 23, 3, 0, 3, 0, 7, 3, 0, 349, 2, 101, 2, 102, 2, 7, -264, 3, 0, 11, 2, 24, 3, 0, 2, 2, 32, -1, 0, 2700607615, 2, 103, 2, 104, 3, 0, 2, 2, 19, 2, 105, 3, 0, 10, 2, 9, 2, 17, 2, 0, 2, 46, 2, 0, 2, 31, 2, 106, -3, 2, 107, 3, 0, 3, 2, 20, -1, 3, 5, 2, 2, 108, 2, 0, 2, 8, 2, 109, -1, 2, 110, 2, 111, 2, 112, -1, 3, 0, 3, 2, 12, -2, 2, 0, 2, 29, -8, 2, 20, 2, 0, 2, 36, -1, 2, 0, 2, 65, 2, 6, 2, 30, 2, 9, 2, 0, 2, 113, -1, 3, 0, 4, 2, 9, 2, 17, 2, 114, 2, 7, 2, 0, 2, 115, 2, 0, 2, 116, 2, 117, 2, 118, 2, 0, 2, 10, 3, 0, 9, 2, 21, 2, 30, 2, 31, 2, 119, 2, 120, -2, 2, 121, 2, 122, 2, 30, 2, 21, 2, 8, -2, 2, 123, 2, 30, 3, 32, 2, -1, 2, 0, 2, 39, -2, 0, 4277075969, 2, 30, -1, 3, 20, 2, -1, 2, 33, 2, 124, 2, 0, 3, 30, 2, 2, 35, 2, 19, -3, 3, 0, 2, 2, 34, -1, 2, 0, 2, 35, 2, 0, 2, 35, 2, 0, 2, 50, 2, 96, 0, 4294934591, 2, 37, -7, 2, 0, 0, 197631, 2, 125, -1, 2, 20, 2, 43, 2, 37, 2, 17, 0, 3, 2, 17, 2, 124, 2, 21, 2, 126, 2, 127, -1, 0, 2490368, 2, 126, 2, 25, 2, 17, 2, 34, 2, 126, 2, 38, 0, 4294901904, 0, 4718591, 2, 126, 2, 35, 0, 335544350, -1, 2, 128, 0, 2147487743, 0, 1, -1, 2, 129, 2, 130, 2, 8, -1, 2, 131, 2, 68, 0, 3758161920, 0, 3, 2, 132, 0, 12582911, 0, 655360, -1, 2, 0, 2, 29, 0, 2147485568, 0, 3, 2, 0, 2, 25, 0, 176, -5, 2, 0, 2, 49, 0, 251658240, -1, 2, 0, 2, 25, 0, 16, -1, 2, 0, 0, 16779263, -2, 2, 12, -1, 2, 38, -5, 2, 0, 2, 18, -3, 3, 0, 2, 2, 54, 2, 133, 0, 2147549183, 0, 2, -2, 2, 134, 2, 36, 0, 10, 0, 4294965249, 0, 67633151, 0, 4026597376, 2, 0, 0, 536871935, 2, 17, 2, 0, 2, 42, -6, 2, 0, 0, 1, 2, 57, 2, 49, 0, 1, 2, 135, 2, 25, -3, 2, 136, 2, 36, 2, 137, 2, 138, 0, 16778239, 2, 17, 2, 7, -8, 2, 35, 0, 4294836212, 2, 10, -3, 2, 67, -2, 3, 0, 28, 2, 32, -3, 3, 0, 3, 2, 49, 3, 0, 6, 2, 50, -81, 2, 17, 3, 0, 2, 2, 36, 3, 0, 33, 2, 25, 0, 126, 3, 0, 124, 2, 12, 3, 0, 18, 2, 38, -213, 2, 9, -55, 3, 0, 17, 2, 42, 2, 8, 2, 17, 2, 0, 2, 8, 2, 17, 2, 58, 2, 0, 2, 25, 2, 50, 2, 139, 2, 25, -13, 2, 0, 2, 71, -6, 3, 0, 2, -1, 2, 140, 2, 10, -1, 3, 0, 2, 0, 67583, -1, 2, 105, -2, 0, 8126475, 3, 0, 230, 2, 30, 2, 54, 2, 8, -3, 3, 0, 3, 2, 35, -271, 2, 141, 3, 0, 9, 2, 142, 2, 143, 2, 55, 3, 0, 11, 2, 7, -72, 3, 0, 3, 2, 144, 2, 145, -187, 3, 0, 2, 2, 56, 2, 0, 2, 146, 2, 147, 2, 60, 2, 0, 2, 148, 2, 149, 2, 150, 3, 0, 10, 2, 151, 2, 152, 2, 22, 3, 56, 2, 3, 153, 2, 3, 57, 2, 2, 154, -57, 2, 8, 2, 155, -7, 2, 17, 2, 0, 2, 58, -4, 2, 0, 0, 1065361407, 0, 16384, -9, 2, 17, 2, 58, 2, 0, 2, 18, -14, 2, 17, 2, 18, -6, 2, 17, 0, 81919, -6, 2, 8, 0, 3223273399, -7, 2, 156, 3, 0, 6, 2, 124, -1, 3, 0, 2, 0, 2063, -37, 2, 60, 2, 157, 2, 158, 2, 159, 2, 160, 2, 161, -138, 3, 0, 1335, -1, 3, 0, 136, 2, 9, 3, 0, 180, 2, 24, 3, 0, 233, 2, 162, 3, 0, 18, 2, 9, -77, 3, 0, 16, 2, 9, -47, 3, 0, 154, 2, 6, 3, 0, 264, 2, 32, -28252], [4294967295, 4294967291, 4092460543, 4294828031, 4294967294, 134217726, 4294903807, 268435455, 2147483647, 1073741823, 1048575, 3892314111, 134217727, 1061158911, 536805376, 4294910143, 4294901759, 4294901760, 4095, 262143, 536870911, 8388607, 4160749567, 4294902783, 4294918143, 65535, 67043328, 2281701374, 4294967264, 2097151, 4194303, 255, 67108863, 4294967039, 511, 524287, 131071, 63, 127, 3238002687, 4294549487, 4290772991, 33554431, 4294901888, 4286578687, 67043329, 4294770687, 67043583, 1023, 32767, 15, 2047999, 67043343, 67051519, 2147483648, 4294902e3, 4292870143, 4294966783, 16383, 67047423, 4294967279, 262083, 20511, 41943039, 493567, 4294959104, 603979775, 65536, 602799615, 805044223, 4294965206, 8191, 1031749119, 4294917631, 2134769663, 4286578493, 4282253311, 4294942719, 33540095, 4294905855, 2868854591, 1608515583, 265232348, 534519807, 2147614720, 1060109444, 4093640016, 17376, 2139062143, 224, 4169138175, 4294909951, 4286578688, 4294967292, 4294965759, 4294836224, 4294966272, 4294967280, 32768, 8289918, 4294934399, 4294901775, 4294965375, 1602223615, 4294967259, 4294443008, 268369920, 4292804608, 4294967232, 486341884, 4294963199, 3087007615, 1073692671, 4128527, 4279238655, 4294902015, 4160684047, 4290246655, 469499899, 4294967231, 134086655, 4294966591, 2445279231, 3670015, 31, 252, 4294967288, 16777215, 4294705151, 3221208447, 4294902271, 4294549472, 4294921215, 4285526655, 4294966527, 4294705152, 4294966143, 64, 4294966719, 3774873592, 4194303999, 1877934080, 262151, 2555904, 536807423, 67043839, 3758096383, 3959414372, 3755993023, 2080374783, 4294835295, 4294967103, 4160749565, 4294934527, 4087, 2016, 2147446655, 184024726, 2862017156, 1593309078, 268434431, 268434414, 4294901761]);
 var isIDContinue = /* @__PURE__ */ __name((code) => (unicodeLookup[(code >>> 5) + 0] >>> code & 31 & 1) !== 0, "isIDContinue");
 var isIDStart = /* @__PURE__ */ __name((code) => (unicodeLookup[(code >>> 5) + 34816] >>> code & 31 & 1) !== 0, "isIDStart");
-function advanceChar(parser) {
-  parser.column++;
-  return parser.currentChar = parser.source.charCodeAt(++parser.index);
-}
-__name(advanceChar, "advanceChar");
-function consumePossibleSurrogatePair(parser) {
-  const hi = parser.currentChar;
-  if ((hi & 64512) !== 55296)
-    return 0;
-  const lo = parser.source.charCodeAt(parser.index + 1);
-  if ((lo & 64512) !== 56320)
-    return 0;
-  return 65536 + ((hi & 1023) << 10) + (lo & 1023);
-}
-__name(consumePossibleSurrogatePair, "consumePossibleSurrogatePair");
-function consumeLineFeed(parser, state) {
-  parser.currentChar = parser.source.charCodeAt(++parser.index);
-  parser.flags |= 1;
-  if ((state & 4) === 0) {
-    parser.column = 0;
-    parser.line++;
-  }
-}
-__name(consumeLineFeed, "consumeLineFeed");
-function scanNewLine(parser) {
-  parser.flags |= 1;
-  parser.currentChar = parser.source.charCodeAt(++parser.index);
-  parser.column = 0;
-  parser.line++;
-}
-__name(scanNewLine, "scanNewLine");
-function isExoticECMAScriptWhitespace(ch) {
-  return ch === 160 || ch === 65279 || ch === 133 || ch === 5760 || ch >= 8192 && ch <= 8203 || ch === 8239 || ch === 8287 || ch === 12288 || ch === 8201 || ch === 65519;
-}
-__name(isExoticECMAScriptWhitespace, "isExoticECMAScriptWhitespace");
-function toHex(code) {
-  return code < 65 ? code - 48 : code - 65 + 10 & 15;
-}
-__name(toHex, "toHex");
-function convertTokenType(t) {
-  switch (t) {
-    case 134283266:
-      return "NumericLiteral";
-    case 134283267:
-      return "StringLiteral";
-    case 86021:
-    case 86022:
-      return "BooleanLiteral";
-    case 86023:
-      return "NullLiteral";
-    case 65540:
-      return "RegularExpression";
-    case 67174408:
-    case 67174409:
-    case 131:
-      return "TemplateLiteral";
-    default:
-      if ((t & 143360) === 143360)
-        return "Identifier";
-      if ((t & 4096) === 4096)
-        return "Keyword";
-      return "Punctuator";
-  }
-}
-__name(convertTokenType, "convertTokenType");
 var CharTypes = [
   0,
   0,
@@ -4931,7 +5818,7 @@ var CharTypes = [
   0,
   16384,
   0,
-  0,
+  16384,
   0,
   0,
   1 | 2 | 64,
@@ -4994,7 +5881,7 @@ var CharTypes = [
   1 | 2 | 4,
   16384,
   0,
-  0,
+  16384,
   0,
   0
 ];
@@ -5266,6 +6153,71 @@ function isIdentifierPart(code) {
   return code <= 127 ? isIdPart[code] > 0 : isIDContinue(code) || (code === 8204 || code === 8205);
 }
 __name(isIdentifierPart, "isIdentifierPart");
+function advanceChar(parser) {
+  parser.column++;
+  return parser.currentChar = parser.source.charCodeAt(++parser.index);
+}
+__name(advanceChar, "advanceChar");
+function consumePossibleSurrogatePair(parser) {
+  const hi = parser.currentChar;
+  if ((hi & 64512) !== 55296)
+    return 0;
+  const lo = parser.source.charCodeAt(parser.index + 1);
+  if ((lo & 64512) !== 56320)
+    return 0;
+  return 65536 + ((hi & 1023) << 10) + (lo & 1023);
+}
+__name(consumePossibleSurrogatePair, "consumePossibleSurrogatePair");
+function consumeLineFeed(parser, state) {
+  parser.currentChar = parser.source.charCodeAt(++parser.index);
+  parser.flags |= 1;
+  if ((state & 4) === 0) {
+    parser.column = 0;
+    parser.line++;
+  }
+}
+__name(consumeLineFeed, "consumeLineFeed");
+function scanNewLine(parser) {
+  parser.flags |= 1;
+  parser.currentChar = parser.source.charCodeAt(++parser.index);
+  parser.column = 0;
+  parser.line++;
+}
+__name(scanNewLine, "scanNewLine");
+function isExoticECMAScriptWhitespace(ch) {
+  return ch === 160 || ch === 65279 || ch === 133 || ch === 5760 || ch >= 8192 && ch <= 8203 || ch === 8239 || ch === 8287 || ch === 12288 || ch === 8201 || ch === 65519;
+}
+__name(isExoticECMAScriptWhitespace, "isExoticECMAScriptWhitespace");
+function toHex(code) {
+  return code < 65 ? code - 48 : code - 65 + 10 & 15;
+}
+__name(toHex, "toHex");
+function convertTokenType(t) {
+  switch (t) {
+    case 134283266:
+      return "NumericLiteral";
+    case 134283267:
+      return "StringLiteral";
+    case 86021:
+    case 86022:
+      return "BooleanLiteral";
+    case 86023:
+      return "NullLiteral";
+    case 65540:
+      return "RegularExpression";
+    case 67174408:
+    case 67174409:
+    case 132:
+      return "TemplateLiteral";
+    default:
+      if ((t & 143360) === 143360)
+        return "Identifier";
+      if ((t & 4096) === 4096)
+        return "Keyword";
+      return "Punctuator";
+  }
+}
+__name(convertTokenType, "convertTokenType");
 var CommentTypes = ["SingleLine", "MultiLine", "HTMLOpen", "HTMLClose", "HashbangComment"];
 function skipHashBang(parser) {
   const { source } = parser;
@@ -5375,6 +6327,757 @@ function skipMultiLineComment(parser, source, state) {
   parser.report(18);
 }
 __name(skipMultiLineComment, "skipMultiLineComment");
+var errorMessages = {
+  [0]: "Unexpected token",
+  [30]: "Unexpected token: '%0'",
+  [1]: "Octal escape sequences are not allowed in strict mode",
+  [2]: "Octal escape sequences are not allowed in template strings",
+  [3]: "\\8 and \\9 are not allowed in template strings",
+  [4]: "Private identifier #%0 is not defined",
+  [5]: "Illegal Unicode escape sequence",
+  [6]: "Invalid code point %0",
+  [7]: "Invalid hexadecimal escape sequence",
+  [9]: "Octal literals are not allowed in strict mode",
+  [8]: "Decimal integer literals with a leading zero are forbidden in strict mode",
+  [10]: "Expected number in radix %0",
+  [153]: "Invalid left-hand side assignment to a destructible right-hand side",
+  [11]: "Non-number found after exponent indicator",
+  [12]: "Invalid BigIntLiteral",
+  [13]: "No identifiers allowed directly after numeric literal",
+  [14]: "Escapes \\8 or \\9 are not syntactically valid escapes",
+  [15]: "Escapes \\8 or \\9 are not allowed in strict mode",
+  [16]: "Unterminated string literal",
+  [17]: "Unterminated template literal",
+  [18]: "Multiline comment was not closed properly",
+  [19]: "The identifier contained dynamic unicode escape that was not closed",
+  [20]: "Illegal character '%0'",
+  [21]: "Missing hexadecimal digits",
+  [22]: "Invalid implicit octal",
+  [23]: "Invalid line break in string literal",
+  [24]: "Only unicode escapes are legal in identifier names",
+  [25]: "Expected '%0'",
+  [26]: "Invalid left-hand side in assignment",
+  [27]: "Invalid left-hand side in async arrow",
+  [28]: 'Calls to super must be in the "constructor" method of a class expression or class declaration that has a superclass',
+  [29]: "Member access on super must be in a method",
+  [31]: "Await expression not allowed in formal parameter",
+  [32]: "Yield expression not allowed in formal parameter",
+  [95]: "Unexpected token: 'escaped keyword'",
+  [33]: "Unary expressions as the left operand of an exponentiation expression must be disambiguated with parentheses",
+  [125]: "Async functions can only be declared at the top level or inside a block",
+  [34]: "Unterminated regular expression",
+  [35]: "Unexpected regular expression flag",
+  [36]: "Duplicate regular expression flag '%0'",
+  [37]: "%0 functions must have exactly %1 argument%2",
+  [38]: "Setter function argument must not be a rest parameter",
+  [39]: "%0 declaration must have a name in this context",
+  [40]: "Function name may not contain any reserved words or be eval or arguments in strict mode",
+  [41]: "The rest operator is missing an argument",
+  [42]: "A getter cannot be a generator",
+  [43]: "A setter cannot be a generator",
+  [44]: "A computed property name must be followed by a colon or paren",
+  [136]: "Object literal keys that are strings or numbers must be a method or have a colon",
+  [46]: "Found `* async x(){}` but this should be `async * x(){}`",
+  [45]: "Getters and setters can not be generators",
+  [47]: "'%0' can not be generator method",
+  [48]: "No line break is allowed after '=>'",
+  [49]: "The left-hand side of the arrow can only be destructed through assignment",
+  [50]: "The binding declaration is not destructible",
+  [51]: "Async arrow can not be followed by new expression",
+  [52]: "Classes may not have a static property named 'prototype'",
+  [53]: "Class constructor may not be a %0",
+  [54]: "Duplicate constructor method in class",
+  [55]: "Invalid increment/decrement operand",
+  [56]: "Invalid use of `new` keyword on an increment/decrement expression",
+  [57]: "`=>` is an invalid assignment target",
+  [58]: "Rest element may not have a trailing comma",
+  [59]: "Missing initializer in %0 declaration",
+  [60]: "'for-%0' loop head declarations can not have an initializer",
+  [61]: "Invalid left-hand side in for-%0 loop: Must have a single binding",
+  [62]: "Invalid shorthand property initializer",
+  [63]: "Property name __proto__ appears more than once in object literal",
+  [64]: "Let is disallowed as a lexically bound name",
+  [65]: "Invalid use of '%0' inside new expression",
+  [66]: "Illegal 'use strict' directive in function with non-simple parameter list",
+  [67]: 'Identifier "let" disallowed as left-hand side expression in strict mode',
+  [68]: "Illegal continue statement",
+  [69]: "Illegal break statement",
+  [70]: "Cannot have `let[...]` as a var name in strict mode",
+  [71]: "Invalid destructuring assignment target",
+  [72]: "Rest parameter may not have a default initializer",
+  [73]: "The rest argument must the be last parameter",
+  [74]: "Invalid rest argument",
+  [76]: "In strict mode code, functions can only be declared at top level or inside a block",
+  [77]: "In non-strict mode code, functions can only be declared at top level, inside a block, or as the body of an if statement",
+  [78]: "Without web compatibility enabled functions can not be declared at top level, inside a block, or as the body of an if statement",
+  [79]: "Class declaration can't appear in single-statement context",
+  [80]: "Invalid left-hand side in for-%0",
+  [81]: "Invalid assignment in for-%0",
+  [82]: "for await (... of ...) is only valid in async functions and async generators",
+  [83]: "The first token after the template expression should be a continuation of the template",
+  [85]: "`let` declaration not allowed here and `let` cannot be a regular var name in strict mode",
+  [84]: "`let \n [` is a restricted production at the start of a statement",
+  [86]: "Catch clause requires exactly one parameter, not more (and no trailing comma)",
+  [87]: "Catch clause parameter does not support default values",
+  [88]: "Missing catch or finally after try",
+  [89]: "More than one default clause in switch statement",
+  [90]: "Illegal newline after throw",
+  [91]: "Strict mode code may not include a with statement",
+  [92]: "Illegal return statement",
+  [93]: "The left hand side of the for-header binding declaration is not destructible",
+  [94]: "new.target only allowed within functions or static blocks",
+  [96]: "'#' not followed by identifier",
+  [102]: "Invalid keyword",
+  [101]: "Can not use 'let' as a class name",
+  [100]: "'A lexical declaration can't define a 'let' binding",
+  [99]: "Can not use `let` as variable name in strict mode",
+  [97]: "'%0' may not be used as an identifier in this context",
+  [98]: "Await is only valid in async functions",
+  [103]: "The %0 keyword can only be used with the module goal",
+  [104]: "Unicode codepoint must not be greater than 0x10FFFF",
+  [105]: "%0 source must be string",
+  [106]: "Only a identifier or string can be used to indicate alias",
+  [107]: "Only '*' or '{...}' can be imported after default",
+  [108]: "'import defer' must be followed by a namespace import",
+  [109]: "'import source' must be followed by a default import",
+  [110]: "Trailing decorator may be followed by method",
+  [111]: "Decorators can't be used with a constructor",
+  [112]: "Can not use `await` as identifier in module or async func",
+  [113]: "Can not use `await` as identifier in module",
+  [114]: "HTML comments are only allowed with web compatibility (Annex B)",
+  [115]: "The identifier 'let' must not be in expression position in strict mode",
+  [116]: "Cannot assign to `eval` and `arguments` in strict mode",
+  [117]: "The left-hand side of a for-of loop may not start with 'let'",
+  [118]: "Block body arrows can not be immediately invoked without a group",
+  [119]: "Block body arrows can not be immediately accessed without a group",
+  [120]: "Unexpected strict mode reserved word",
+  [121]: "Unexpected eval or arguments in strict mode",
+  [122]: "Decorators must not be followed by a semicolon",
+  [123]: "Calling delete on expression not allowed in strict mode",
+  [124]: "Pattern can not have a tail",
+  [126]: "Can not have a `yield` expression on the left side of a ternary",
+  [127]: "An arrow function can not have a postfix update operator",
+  [128]: "Invalid object literal key character after generator star",
+  [129]: "Private fields can not be deleted",
+  [131]: "Classes may not have a field called constructor",
+  [130]: "Classes may not have a private element named constructor",
+  [132]: "A class field initializer or static block may not contain arguments",
+  [133]: "Generators can only be declared at the top level or inside a block",
+  [134]: "Async methods are a restricted production and cannot have a newline following it",
+  [135]: "Unexpected character after object literal property name",
+  [137]: "Invalid key token",
+  [138]: "Label '%0' has already been declared",
+  [139]: "continue statement must be nested within an iteration statement",
+  [140]: "Undefined label '%0'",
+  [141]: "Trailing comma is disallowed inside import(...) arguments",
+  [142]: "Invalid binding in JSON import",
+  [143]: "import() requires exactly one argument",
+  [144]: "Cannot use new with import(...)",
+  [145]: "... is not allowed in import()",
+  [146]: "Expected '=>'",
+  [147]: "Duplicate binding '%0'",
+  [148]: "Duplicate private identifier #%0",
+  [149]: "Cannot export a duplicate name '%0'",
+  [152]: "Duplicate %0 for-binding",
+  [150]: "Exported binding '%0' needs to refer to a top-level declared variable",
+  [151]: "Unexpected private field",
+  [155]: "Numeric separators are not allowed at the end of numeric literals",
+  [154]: "Only one underscore is allowed as numeric separator",
+  [156]: "JSX value should be either an expression or a quoted JSX text",
+  [157]: "Expected corresponding JSX closing tag for %0",
+  [158]: "Adjacent JSX elements must be wrapped in an enclosing tag",
+  [159]: "JSX attributes must only be assigned a non-empty 'expression'",
+  [160]: "'%0' has already been declared",
+  [161]: "'%0' shadowed a catch clause binding",
+  [162]: "Dot property must be an identifier",
+  [163]: "Encountered invalid input after spread/rest argument",
+  [164]: "Catch without try",
+  [165]: "Finally without try",
+  [166]: "Expected corresponding closing tag for JSX fragment",
+  [167]: "Coalescing and logical operators used together in the same expression must be disambiguated with parentheses",
+  [168]: "Invalid tagged template on optional chain",
+  [169]: "Invalid optional chain from super property",
+  [170]: "Invalid optional chain from new expression",
+  [171]: 'Cannot use "import.meta" outside a module',
+  [172]: "Leading decorators must be attached to a class declaration",
+  [173]: "An export name cannot include a lone surrogate",
+  [174]: "A string literal cannot be used as an exported binding without `from`",
+  [175]: "Private fields can't be accessed on super",
+  [176]: "The only valid meta property for import is 'import.meta'",
+  [177]: "'import.meta' must not contain escaped characters",
+  [178]: 'cannot use "await" as identifier inside an async function',
+  [179]: 'cannot use "await" in static blocks',
+  [180]: "Unexpected token `}`. Did you mean `&rbrace;` or `{'}'}`?",
+  [181]: "Unexpected token `>`. Did you mean `&gt;` or `{'>'}`?"
+};
+var _ParseError = class _ParseError extends SyntaxError {
+  constructor(start, end, type, ...params) {
+    const description = errorMessages[type].replaceAll(/%(\d+)/g, (_, i2) => params[i2]);
+    const message = "[" + start.line + ":" + start.column + "-" + end.line + ":" + end.column + "]: " + description;
+    super(message);
+    __publicField(this, "start");
+    __publicField(this, "end");
+    __publicField(this, "range");
+    __publicField(this, "loc");
+    __publicField(this, "description");
+    this.start = start.index;
+    this.end = end.index;
+    this.range = [start.index, end.index];
+    this.loc = {
+      start: { line: start.line, column: start.column },
+      end: { line: end.line, column: end.column }
+    };
+    this.description = description;
+  }
+};
+__name(_ParseError, "ParseError");
+var ParseError = _ParseError;
+var KeywordDescTable = [
+  "end of source",
+  "identifier",
+  "number",
+  "string",
+  "regular expression",
+  "false",
+  "true",
+  "null",
+  "template continuation",
+  "template tail",
+  "=>",
+  "(",
+  "{",
+  ".",
+  "...",
+  "}",
+  ")",
+  ";",
+  ",",
+  "[",
+  "]",
+  ":",
+  "?",
+  "'",
+  '"',
+  "++",
+  "--",
+  "=",
+  "<<=",
+  ">>=",
+  ">>>=",
+  "**=",
+  "+=",
+  "-=",
+  "*=",
+  "/=",
+  "%=",
+  "^=",
+  "|=",
+  "&=",
+  "||=",
+  "&&=",
+  "??=",
+  "typeof",
+  "delete",
+  "void",
+  "!",
+  "~",
+  "+",
+  "-",
+  "in",
+  "instanceof",
+  "*",
+  "%",
+  "/",
+  "**",
+  "&&",
+  "||",
+  "===",
+  "!==",
+  "==",
+  "!=",
+  "<=",
+  ">=",
+  "<",
+  ">",
+  "<<",
+  ">>",
+  ">>>",
+  "&",
+  "|",
+  "^",
+  "var",
+  "let",
+  "const",
+  "break",
+  "case",
+  "catch",
+  "class",
+  "continue",
+  "debugger",
+  "default",
+  "do",
+  "else",
+  "export",
+  "extends",
+  "finally",
+  "for",
+  "function",
+  "if",
+  "import",
+  "new",
+  "return",
+  "super",
+  "switch",
+  "this",
+  "throw",
+  "try",
+  "while",
+  "with",
+  "implements",
+  "interface",
+  "package",
+  "private",
+  "protected",
+  "public",
+  "static",
+  "yield",
+  "as",
+  "async",
+  "await",
+  "constructor",
+  "get",
+  "set",
+  "accessor",
+  "from",
+  "of",
+  "using",
+  "enum",
+  "eval",
+  "arguments",
+  "escaped keyword",
+  "escaped future reserved keyword",
+  "reserved if strict",
+  "#",
+  "BigIntLiteral",
+  "??",
+  "?.",
+  "WhiteSpace",
+  "Illegal",
+  "LineTerminator",
+  "PrivateField",
+  "Template",
+  "@",
+  "target",
+  "meta",
+  "LineFeed",
+  "Escaped",
+  "JSXText"
+];
+var descKeywordTable = /* @__PURE__ */ new Map([
+  ["this", 86111],
+  ["function", 86104],
+  ["if", 20569],
+  ["return", 20572],
+  ["var", 86088],
+  ["else", 20563],
+  ["for", 20567],
+  ["new", 86107],
+  ["in", 8673330],
+  ["typeof", 16863275],
+  ["while", 20578],
+  ["case", 20556],
+  ["break", 20555],
+  ["try", 20577],
+  ["catch", 20557],
+  ["delete", 16863276],
+  ["throw", 86112],
+  ["switch", 86110],
+  ["continue", 20559],
+  ["default", 20561],
+  ["instanceof", 8411187],
+  ["do", 20562],
+  ["void", 16863277],
+  ["finally", 20566],
+  ["async", 209005],
+  ["await", 209006],
+  ["class", 86094],
+  ["const", 86090],
+  ["constructor", 209007],
+  ["debugger", 20560],
+  ["export", 20564],
+  ["extends", 20565],
+  ["false", 86021],
+  ["from", 209011],
+  ["get", 209008],
+  ["implements", 36964],
+  ["import", 86106],
+  ["interface", 36965],
+  ["let", 241737],
+  ["null", 86023],
+  ["of", 471156],
+  ["using", 209013],
+  ["package", 36966],
+  ["private", 36967],
+  ["protected", 36968],
+  ["public", 36969],
+  ["set", 209009],
+  ["static", 36970],
+  ["super", 86109],
+  ["true", 86022],
+  ["with", 20579],
+  ["yield", 241771],
+  ["enum", 86134],
+  ["eval", 537079927],
+  ["as", 77932],
+  ["arguments", 537079928],
+  ["target", 209030],
+  ["meta", 209031],
+  ["accessor", 209010]
+]);
+var keywordLengths = [...descKeywordTable.keys()].map((keyword) => keyword.length);
+var minKeywordLength = Math.min(...keywordLengths);
+var maxKeywordLength = Math.max(...keywordLengths);
+function scanIdentifier(parser, context, isValidAsKeyword) {
+  var _a2;
+  while (isIdPart[advanceChar(parser)])
+    ;
+  parser.tokenValue = parser.source.slice(parser.tokenIndex, parser.index);
+  if (parser.currentChar === 92 || parser.currentChar > 126) {
+    return scanIdentifierSlowCase(parser, context, 0, isValidAsKeyword);
+  }
+  const length = parser.index - parser.tokenIndex;
+  if (length < minKeywordLength || length > maxKeywordLength)
+    return 208897;
+  return (_a2 = descKeywordTable.get(parser.tokenValue)) != null ? _a2 : 208897;
+}
+__name(scanIdentifier, "scanIdentifier");
+function scanUnicodeIdentifier(parser, context) {
+  const cookedChar = scanIdentifierUnicodeEscape(parser);
+  if (!isIdentifierStart(cookedChar))
+    parser.report(5);
+  parser.tokenValue = String.fromCodePoint(cookedChar);
+  return scanIdentifierSlowCase(parser, context, 1, CharTypes[cookedChar] & 4);
+}
+__name(scanUnicodeIdentifier, "scanUnicodeIdentifier");
+function scanIdentifierSlowCase(parser, context, hasEscape, isValidAsKeyword) {
+  let start = parser.index;
+  while (parser.index < parser.end) {
+    if (parser.currentChar === 92) {
+      parser.tokenValue += parser.source.slice(start, parser.index);
+      hasEscape = 1;
+      const code = scanIdentifierUnicodeEscape(parser);
+      if (!isIdentifierPart(code))
+        parser.report(5);
+      isValidAsKeyword = isValidAsKeyword && CharTypes[code] & 4;
+      parser.tokenValue += String.fromCodePoint(code);
+      start = parser.index;
+    } else {
+      const merged = consumePossibleSurrogatePair(parser);
+      if (merged > 0) {
+        if (!isIdentifierPart(merged)) {
+          parser.report(20, String.fromCodePoint(merged));
+        }
+        parser.currentChar = merged;
+        parser.index++;
+        parser.column++;
+      } else if (!isIdentifierPart(parser.currentChar)) {
+        break;
+      }
+      advanceChar(parser);
+    }
+  }
+  if (parser.index <= parser.end) {
+    parser.tokenValue += parser.source.slice(start, parser.index);
+  }
+  const { length } = parser.tokenValue;
+  if (isValidAsKeyword && length >= minKeywordLength && length <= maxKeywordLength) {
+    const token = descKeywordTable.get(parser.tokenValue);
+    if (token === void 0)
+      return 208897 | (hasEscape ? -2147483648 : 0);
+    if (!hasEscape)
+      return token;
+    if (token === 209006) {
+      if ((context & (2 | 2048)) === 0) {
+        return token | -2147483648;
+      }
+      return -2147483527;
+    }
+    if (context & 1) {
+      if (token === 36970) {
+        return -2147483526;
+      }
+      if ((token & 36864) === 36864) {
+        return -2147483526;
+      }
+      if ((token & 20480) === 20480) {
+        if (context & 262144 && (context & 8) === 0) {
+          return token | -2147483648;
+        } else {
+          return -2147483527;
+        }
+      }
+      return 209019 | -2147483648;
+    }
+    if (context & 262144 && (context & 8) === 0 && (token & 20480) === 20480) {
+      return token | -2147483648;
+    }
+    if (token === 241771) {
+      return context & 262144 ? 209019 | -2147483648 : context & 1024 ? -2147483527 : token | -2147483648;
+    }
+    if (token === 209005) {
+      return 209019 | -2147483648;
+    }
+    if ((token & 36864) === 36864) {
+      return token | 12288 | -2147483648;
+    }
+    return -2147483527;
+  }
+  return 208897 | (hasEscape ? -2147483648 : 0);
+}
+__name(scanIdentifierSlowCase, "scanIdentifierSlowCase");
+function scanPrivateIdentifier(parser) {
+  let char = advanceChar(parser);
+  if (char === 92)
+    return 131;
+  const merged = consumePossibleSurrogatePair(parser);
+  if (merged)
+    char = merged;
+  if (!isIdentifierStart(char))
+    parser.report(96);
+  return 131;
+}
+__name(scanPrivateIdentifier, "scanPrivateIdentifier");
+function scanIdentifierUnicodeEscape(parser) {
+  if (parser.source.charCodeAt(parser.index + 1) !== 117) {
+    parser.report(5);
+  }
+  parser.currentChar = parser.source.charCodeAt(parser.index += 2);
+  parser.column += 2;
+  return scanUnicodeEscape(parser);
+}
+__name(scanIdentifierUnicodeEscape, "scanIdentifierUnicodeEscape");
+function scanUnicodeEscape(parser) {
+  let codePoint = 0;
+  const char = parser.currentChar;
+  if (char === 123) {
+    const begin = parser.index - 2;
+    while (CharTypes[advanceChar(parser)] & 64) {
+      codePoint = codePoint << 4 | toHex(parser.currentChar);
+      if (codePoint > 1114111)
+        throw new ParseError({ index: begin, line: parser.line, column: parser.column }, parser.currentLocation, 104);
+    }
+    if (parser.currentChar !== 125) {
+      throw new ParseError({ index: begin, line: parser.line, column: parser.column }, parser.currentLocation, 7);
+    }
+    advanceChar(parser);
+    return codePoint;
+  }
+  if ((CharTypes[char] & 64) === 0)
+    parser.report(7);
+  const char2 = parser.source.charCodeAt(parser.index + 1);
+  if ((CharTypes[char2] & 64) === 0)
+    parser.report(7);
+  const char3 = parser.source.charCodeAt(parser.index + 2);
+  if ((CharTypes[char3] & 64) === 0)
+    parser.report(7);
+  const char4 = parser.source.charCodeAt(parser.index + 3);
+  if ((CharTypes[char4] & 64) === 0)
+    parser.report(7);
+  codePoint = toHex(char) << 12 | toHex(char2) << 8 | toHex(char3) << 4 | toHex(char4);
+  parser.currentChar = parser.source.charCodeAt(parser.index += 4);
+  parser.column += 4;
+  return codePoint;
+}
+__name(scanUnicodeEscape, "scanUnicodeEscape");
+function scanNumber(parser, context, kind) {
+  let char = parser.currentChar;
+  let value = 0;
+  let digit = 9;
+  let atStart = kind & 64 ? 0 : 1;
+  let digits = 0;
+  let allowSeparator = 0;
+  if (kind & 64) {
+    value = "." + scanDecimalDigitsOrSeparator(parser, char);
+    char = parser.currentChar;
+    if (char === 110)
+      parser.report(12);
+  } else {
+    if (char === 48) {
+      char = advanceChar(parser);
+      if ((char | 32) === 120) {
+        kind = 8 | 128;
+        char = advanceChar(parser);
+        while (CharTypes[char] & (64 | 4096)) {
+          if (char === 95) {
+            if (!allowSeparator)
+              parser.report(154);
+            allowSeparator = 0;
+            char = advanceChar(parser);
+            continue;
+          }
+          allowSeparator = 1;
+          value = value * 16 + toHex(char);
+          digits++;
+          char = advanceChar(parser);
+        }
+        if (digits === 0 || !allowSeparator) {
+          parser.report(digits === 0 ? 21 : 155);
+        }
+      } else if ((char | 32) === 111) {
+        kind = 4 | 128;
+        char = advanceChar(parser);
+        while (CharTypes[char] & (32 | 4096)) {
+          if (char === 95) {
+            if (!allowSeparator) {
+              parser.report(154);
+            }
+            allowSeparator = 0;
+            char = advanceChar(parser);
+            continue;
+          }
+          allowSeparator = 1;
+          value = value * 8 + (char - 48);
+          digits++;
+          char = advanceChar(parser);
+        }
+        if (digits === 0 || !allowSeparator) {
+          parser.report(digits === 0 ? 0 : 155);
+        }
+      } else if ((char | 32) === 98) {
+        kind = 2 | 128;
+        char = advanceChar(parser);
+        while (CharTypes[char] & (128 | 4096)) {
+          if (char === 95) {
+            if (!allowSeparator) {
+              parser.report(154);
+            }
+            allowSeparator = 0;
+            char = advanceChar(parser);
+            continue;
+          }
+          allowSeparator = 1;
+          value = value * 2 + (char - 48);
+          digits++;
+          char = advanceChar(parser);
+        }
+        if (digits === 0 || !allowSeparator) {
+          parser.report(digits === 0 ? 0 : 155);
+        }
+      } else if (CharTypes[char] & 32) {
+        if (context & 1)
+          parser.report(1);
+        kind = 1;
+        while (CharTypes[char] & 16) {
+          if (CharTypes[char] & 512) {
+            kind = 32;
+            atStart = 0;
+            break;
+          }
+          value = value * 8 + (char - 48);
+          char = advanceChar(parser);
+        }
+      } else if (CharTypes[char] & 512) {
+        if (context & 1)
+          parser.report(1);
+        parser.flags |= 64;
+        kind = 32;
+      } else if (char === 95) {
+        parser.report(0);
+      }
+    }
+    if (kind & 48) {
+      if (atStart) {
+        while (digit >= 0 && CharTypes[char] & (16 | 4096)) {
+          if (char === 95) {
+            char = advanceChar(parser);
+            if (char === 95 || kind & 32) {
+              throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 154);
+            }
+            allowSeparator = 1;
+            continue;
+          }
+          allowSeparator = 0;
+          value = 10 * value + (char - 48);
+          char = advanceChar(parser);
+          --digit;
+        }
+        if (allowSeparator) {
+          throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 155);
+        }
+        if (digit >= 0 && !isIdentifierStart(char) && char !== 46) {
+          parser.tokenValue = value;
+          if (parser.options.raw)
+            parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
+          return 134283266;
+        }
+      }
+      value += scanDecimalDigitsOrSeparator(parser, char);
+      char = parser.currentChar;
+      if (char === 46) {
+        if (advanceChar(parser) === 95)
+          parser.report(0);
+        kind = 64;
+        value += "." + scanDecimalDigitsOrSeparator(parser, parser.currentChar);
+        char = parser.currentChar;
+      }
+    }
+  }
+  const end = parser.index;
+  let isBigInt = 0;
+  if (char === 110 && kind & 128) {
+    isBigInt = 1;
+    char = advanceChar(parser);
+  } else {
+    if ((char | 32) === 101) {
+      char = advanceChar(parser);
+      if (CharTypes[char] & 256)
+        char = advanceChar(parser);
+      const { index } = parser;
+      if ((CharTypes[char] & 16) === 0)
+        parser.report(11);
+      value += parser.source.substring(end, index) + scanDecimalDigitsOrSeparator(parser, char);
+      char = parser.currentChar;
+    }
+  }
+  if (parser.index < parser.end && CharTypes[char] & 16 || isIdentifierStart(char)) {
+    parser.report(13);
+  }
+  if (isBigInt) {
+    parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
+    parser.tokenValue = BigInt(parser.tokenRaw.slice(0, -1).replaceAll("_", ""));
+    return 134283389;
+  }
+  parser.tokenValue = kind & (1 | 2 | 8 | 4) ? value : kind & 32 ? parseFloat(parser.source.substring(parser.tokenIndex, parser.index)) : +value;
+  if (parser.options.raw)
+    parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
+  return 134283266;
+}
+__name(scanNumber, "scanNumber");
+function scanDecimalDigitsOrSeparator(parser, char) {
+  let allowSeparator = 0;
+  let start = parser.index;
+  let ret = "";
+  while (CharTypes[char] & (16 | 4096)) {
+    if (char === 95) {
+      const { index } = parser;
+      char = advanceChar(parser);
+      if (char === 95) {
+        throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 154);
+      }
+      allowSeparator = 1;
+      ret += parser.source.substring(start, index);
+      start = parser.index;
+      continue;
+    }
+    allowSeparator = 0;
+    char = advanceChar(parser);
+  }
+  if (allowSeparator) {
+    throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 155);
+  }
+  return ret + parser.source.substring(start, parser.index);
+}
+__name(scanDecimalDigitsOrSeparator, "scanDecimalDigitsOrSeparator");
 var RegexState;
 (function(RegexState2) {
   RegexState2[RegexState2["Empty"] = 0] = "Empty";
@@ -5494,12 +7197,10 @@ function validate(parser, pattern, flags) {
   try {
     return new RegExp(pattern, flags);
   } catch {
-    try {
-      new RegExp(pattern, flags);
+    if (!parser.options.validateRegex) {
       return null;
-    } catch {
-      parser.report(34);
     }
+    parser.report(34);
   }
 }
 __name(validate, "validate");
@@ -5644,12 +7345,14 @@ function parseEscape(parser, context, first, isTemplate = 0) {
       const ch = advanceChar(parser);
       if (parser.currentChar === 123) {
         let code = 0;
+        let digits = 0;
         while ((CharTypes[advanceChar(parser)] & 64) !== 0) {
           code = code << 4 | toHex(parser.currentChar);
           if (code > 1114111)
             return -5;
+          digits++;
         }
-        if (parser.currentChar < 1 || parser.currentChar !== 125) {
+        if (digits === 0 || parser.currentChar < 1 || parser.currentChar !== 125) {
           return -4;
         }
         return code;
@@ -5673,7 +7376,7 @@ function parseEscape(parser, context, first, isTemplate = 0) {
     }
     case 56:
     case 57:
-      if (isTemplate || !parser.options.webcompat || context & 1)
+      if (isTemplate || context & 1)
         return -3;
       parser.flags |= 4096;
     default:
@@ -5700,6 +7403,7 @@ function scanTemplate(parser, context) {
   const { index: start } = parser;
   let token = 67174409;
   let ret = "";
+  let hasCarriageReturn = false;
   let char = advanceChar(parser);
   while (char !== 96) {
     if (char === 36 && parser.source.charCodeAt(parser.index + 1) === 123) {
@@ -5708,6 +7412,8 @@ function scanTemplate(parser, context) {
       break;
     } else if (char === 92) {
       char = advanceChar(parser);
+      if (char === 13)
+        hasCarriageReturn = true;
       if (char > 126) {
         ret += String.fromCodePoint(char);
       } else {
@@ -5720,7 +7426,9 @@ function scanTemplate(parser, context) {
           parser.line = line;
           parser.column = column;
           ret = null;
-          char = scanBadTemplate(parser, char);
+          char = scanBadTemplate(parser, char, () => {
+            hasCarriageReturn = true;
+          });
           if (char < 0)
             token = 67174408;
           break;
@@ -5729,10 +7437,13 @@ function scanTemplate(parser, context) {
         }
       }
     } else if (parser.index < parser.end) {
-      if (char === 13 && parser.source.charCodeAt(parser.index) === 10) {
-        ret += String.fromCodePoint(char);
+      if (char === 13)
+        hasCarriageReturn = true;
+      if (char === 13 && parser.source.charCodeAt(parser.index + 1) === 10) {
         parser.currentChar = parser.source.charCodeAt(++parser.index);
       }
+      if (char === 13)
+        char = 10;
       if ((char & 83) < 3 && char === 10 || (char ^ 8232) <= 1) {
         parser.column = -1;
         parser.line++;
@@ -5745,13 +7456,17 @@ function scanTemplate(parser, context) {
   }
   advanceChar(parser);
   parser.tokenValue = ret;
-  parser.tokenRaw = parser.source.slice(start + 1, parser.index - (token === 67174409 ? 1 : 2));
+  const tokenRaw = parser.source.slice(start + 1, parser.index - (token === 67174409 ? 1 : 2));
+  parser.tokenRaw = hasCarriageReturn ? tokenRaw.replaceAll(/\r\n?/g, "\n") : tokenRaw;
   return token;
 }
 __name(scanTemplate, "scanTemplate");
-function scanBadTemplate(parser, ch) {
+function scanBadTemplate(parser, ch, onCarriageReturn) {
   while (ch !== 96) {
     switch (ch) {
+      case 13:
+        onCarriageReturn();
+        break;
       case 36: {
         const index = parser.index + 1;
         if (index < parser.end && parser.source.charCodeAt(index) === 123) {
@@ -5782,978 +7497,43 @@ function scanTemplateTail(parser, context) {
   return scanTemplate(parser, context);
 }
 __name(scanTemplateTail, "scanTemplateTail");
-var errorMessages = {
-  [0]: "Unexpected token",
-  [30]: "Unexpected token: '%0'",
-  [1]: "Octal escape sequences are not allowed in strict mode",
-  [2]: "Octal escape sequences are not allowed in template strings",
-  [3]: "\\8 and \\9 are not allowed in template strings",
-  [4]: "Private identifier #%0 is not defined",
-  [5]: "Illegal Unicode escape sequence",
-  [6]: "Invalid code point %0",
-  [7]: "Invalid hexadecimal escape sequence",
-  [9]: "Octal literals are not allowed in strict mode",
-  [8]: "Decimal integer literals with a leading zero are forbidden in strict mode",
-  [10]: "Expected number in radix %0",
-  [151]: "Invalid left-hand side assignment to a destructible right-hand side",
-  [11]: "Non-number found after exponent indicator",
-  [12]: "Invalid BigIntLiteral",
-  [13]: "No identifiers allowed directly after numeric literal",
-  [14]: "Escapes \\8 or \\9 are not syntactically valid escapes",
-  [15]: "Escapes \\8 or \\9 are not allowed in strict mode",
-  [16]: "Unterminated string literal",
-  [17]: "Unterminated template literal",
-  [18]: "Multiline comment was not closed properly",
-  [19]: "The identifier contained dynamic unicode escape that was not closed",
-  [20]: "Illegal character '%0'",
-  [21]: "Missing hexadecimal digits",
-  [22]: "Invalid implicit octal",
-  [23]: "Invalid line break in string literal",
-  [24]: "Only unicode escapes are legal in identifier names",
-  [25]: "Expected '%0'",
-  [26]: "Invalid left-hand side in assignment",
-  [27]: "Invalid left-hand side in async arrow",
-  [28]: 'Calls to super must be in the "constructor" method of a class expression or class declaration that has a superclass',
-  [29]: "Member access on super must be in a method",
-  [31]: "Await expression not allowed in formal parameter",
-  [32]: "Yield expression not allowed in formal parameter",
-  [95]: "Unexpected token: 'escaped keyword'",
-  [33]: "Unary expressions as the left operand of an exponentiation expression must be disambiguated with parentheses",
-  [123]: "Async functions can only be declared at the top level or inside a block",
-  [34]: "Unterminated regular expression",
-  [35]: "Unexpected regular expression flag",
-  [36]: "Duplicate regular expression flag '%0'",
-  [37]: "%0 functions must have exactly %1 argument%2",
-  [38]: "Setter function argument must not be a rest parameter",
-  [39]: "%0 declaration must have a name in this context",
-  [40]: "Function name may not contain any reserved words or be eval or arguments in strict mode",
-  [41]: "The rest operator is missing an argument",
-  [42]: "A getter cannot be a generator",
-  [43]: "A setter cannot be a generator",
-  [44]: "A computed property name must be followed by a colon or paren",
-  [134]: "Object literal keys that are strings or numbers must be a method or have a colon",
-  [46]: "Found `* async x(){}` but this should be `async * x(){}`",
-  [45]: "Getters and setters can not be generators",
-  [47]: "'%0' can not be generator method",
-  [48]: "No line break is allowed after '=>'",
-  [49]: "The left-hand side of the arrow can only be destructed through assignment",
-  [50]: "The binding declaration is not destructible",
-  [51]: "Async arrow can not be followed by new expression",
-  [52]: "Classes may not have a static property named 'prototype'",
-  [53]: "Class constructor may not be a %0",
-  [54]: "Duplicate constructor method in class",
-  [55]: "Invalid increment/decrement operand",
-  [56]: "Invalid use of `new` keyword on an increment/decrement expression",
-  [57]: "`=>` is an invalid assignment target",
-  [58]: "Rest element may not have a trailing comma",
-  [59]: "Missing initializer in %0 declaration",
-  [60]: "'for-%0' loop head declarations can not have an initializer",
-  [61]: "Invalid left-hand side in for-%0 loop: Must have a single binding",
-  [62]: "Invalid shorthand property initializer",
-  [63]: "Property name __proto__ appears more than once in object literal",
-  [64]: "Let is disallowed as a lexically bound name",
-  [65]: "Invalid use of '%0' inside new expression",
-  [66]: "Illegal 'use strict' directive in function with non-simple parameter list",
-  [67]: 'Identifier "let" disallowed as left-hand side expression in strict mode',
-  [68]: "Illegal continue statement",
-  [69]: "Illegal break statement",
-  [70]: "Cannot have `let[...]` as a var name in strict mode",
-  [71]: "Invalid destructuring assignment target",
-  [72]: "Rest parameter may not have a default initializer",
-  [73]: "The rest argument must the be last parameter",
-  [74]: "Invalid rest argument",
-  [76]: "In strict mode code, functions can only be declared at top level or inside a block",
-  [77]: "In non-strict mode code, functions can only be declared at top level, inside a block, or as the body of an if statement",
-  [78]: "Without web compatibility enabled functions can not be declared at top level, inside a block, or as the body of an if statement",
-  [79]: "Class declaration can't appear in single-statement context",
-  [80]: "Invalid left-hand side in for-%0",
-  [81]: "Invalid assignment in for-%0",
-  [82]: "for await (... of ...) is only valid in async functions and async generators",
-  [83]: "The first token after the template expression should be a continuation of the template",
-  [85]: "`let` declaration not allowed here and `let` cannot be a regular var name in strict mode",
-  [84]: "`let \n [` is a restricted production at the start of a statement",
-  [86]: "Catch clause requires exactly one parameter, not more (and no trailing comma)",
-  [87]: "Catch clause parameter does not support default values",
-  [88]: "Missing catch or finally after try",
-  [89]: "More than one default clause in switch statement",
-  [90]: "Illegal newline after throw",
-  [91]: "Strict mode code may not include a with statement",
-  [92]: "Illegal return statement",
-  [93]: "The left hand side of the for-header binding declaration is not destructible",
-  [94]: "new.target only allowed within functions or static blocks",
-  [96]: "'#' not followed by identifier",
-  [102]: "Invalid keyword",
-  [101]: "Can not use 'let' as a class name",
-  [100]: "'A lexical declaration can't define a 'let' binding",
-  [99]: "Can not use `let` as variable name in strict mode",
-  [97]: "'%0' may not be used as an identifier in this context",
-  [98]: "Await is only valid in async functions",
-  [103]: "The %0 keyword can only be used with the module goal",
-  [104]: "Unicode codepoint must not be greater than 0x10FFFF",
-  [105]: "%0 source must be string",
-  [106]: "Only a identifier or string can be used to indicate alias",
-  [107]: "Only '*' or '{...}' can be imported after default",
-  [108]: "Trailing decorator may be followed by method",
-  [109]: "Decorators can't be used with a constructor",
-  [110]: "Can not use `await` as identifier in module or async func",
-  [111]: "Can not use `await` as identifier in module",
-  [112]: "HTML comments are only allowed with web compatibility (Annex B)",
-  [113]: "The identifier 'let' must not be in expression position in strict mode",
-  [114]: "Cannot assign to `eval` and `arguments` in strict mode",
-  [115]: "The left-hand side of a for-of loop may not start with 'let'",
-  [116]: "Block body arrows can not be immediately invoked without a group",
-  [117]: "Block body arrows can not be immediately accessed without a group",
-  [118]: "Unexpected strict mode reserved word",
-  [119]: "Unexpected eval or arguments in strict mode",
-  [120]: "Decorators must not be followed by a semicolon",
-  [121]: "Calling delete on expression not allowed in strict mode",
-  [122]: "Pattern can not have a tail",
-  [124]: "Can not have a `yield` expression on the left side of a ternary",
-  [125]: "An arrow function can not have a postfix update operator",
-  [126]: "Invalid object literal key character after generator star",
-  [127]: "Private fields can not be deleted",
-  [129]: "Classes may not have a field called constructor",
-  [128]: "Classes may not have a private element named constructor",
-  [130]: "A class field initializer or static block may not contain arguments",
-  [131]: "Generators can only be declared at the top level or inside a block",
-  [132]: "Async methods are a restricted production and cannot have a newline following it",
-  [133]: "Unexpected character after object literal property name",
-  [135]: "Invalid key token",
-  [136]: "Label '%0' has already been declared",
-  [137]: "continue statement must be nested within an iteration statement",
-  [138]: "Undefined label '%0'",
-  [139]: "Trailing comma is disallowed inside import(...) arguments",
-  [140]: "Invalid binding in JSON import",
-  [141]: "import() requires exactly one argument",
-  [142]: "Cannot use new with import(...)",
-  [143]: "... is not allowed in import()",
-  [144]: "Expected '=>'",
-  [145]: "Duplicate binding '%0'",
-  [146]: "Duplicate private identifier #%0",
-  [147]: "Cannot export a duplicate name '%0'",
-  [150]: "Duplicate %0 for-binding",
-  [148]: "Exported binding '%0' needs to refer to a top-level declared variable",
-  [149]: "Unexpected private field",
-  [153]: "Numeric separators are not allowed at the end of numeric literals",
-  [152]: "Only one underscore is allowed as numeric separator",
-  [154]: "JSX value should be either an expression or a quoted JSX text",
-  [155]: "Expected corresponding JSX closing tag for %0",
-  [156]: "Adjacent JSX elements must be wrapped in an enclosing tag",
-  [157]: "JSX attributes must only be assigned a non-empty 'expression'",
-  [158]: "'%0' has already been declared",
-  [159]: "'%0' shadowed a catch clause binding",
-  [160]: "Dot property must be an identifier",
-  [161]: "Encountered invalid input after spread/rest argument",
-  [162]: "Catch without try",
-  [163]: "Finally without try",
-  [164]: "Expected corresponding closing tag for JSX fragment",
-  [165]: "Coalescing and logical operators used together in the same expression must be disambiguated with parentheses",
-  [166]: "Invalid tagged template on optional chain",
-  [167]: "Invalid optional chain from super property",
-  [168]: "Invalid optional chain from new expression",
-  [169]: 'Cannot use "import.meta" outside a module',
-  [170]: "Leading decorators must be attached to a class declaration",
-  [171]: "An export name cannot include a lone surrogate, found %0",
-  [172]: "A string literal cannot be used as an exported binding without `from`",
-  [173]: "Private fields can't be accessed on super",
-  [174]: "The only valid meta property for import is 'import.meta'",
-  [175]: "'import.meta' must not contain escaped characters",
-  [176]: 'cannot use "await" as identifier inside an async function',
-  [177]: 'cannot use "await" in static blocks'
-};
-var _ParseError = class _ParseError extends SyntaxError {
-  constructor(start, end, type, ...params) {
-    const description = errorMessages[type].replace(/%(\d+)/g, (_, i) => params[i]);
-    const message = "[" + start.line + ":" + start.column + "-" + end.line + ":" + end.column + "]: " + description;
-    super(message);
-    __publicField(this, "start");
-    __publicField(this, "end");
-    __publicField(this, "range");
-    __publicField(this, "loc");
-    __publicField(this, "description");
-    this.start = start.index;
-    this.end = end.index;
-    this.range = [start.index, end.index];
-    this.loc = {
-      start: { line: start.line, column: start.column },
-      end: { line: end.line, column: end.column }
-    };
-    this.description = description;
-  }
-};
-__name(_ParseError, "ParseError");
-var ParseError = _ParseError;
-function scanNumber(parser, context, kind) {
-  let char = parser.currentChar;
-  let value = 0;
-  let digit = 9;
-  let atStart = kind & 64 ? 0 : 1;
-  let digits = 0;
-  let allowSeparator = 0;
-  if (kind & 64) {
-    value = "." + scanDecimalDigitsOrSeparator(parser, char);
-    char = parser.currentChar;
-    if (char === 110)
-      parser.report(12);
-  } else {
-    if (char === 48) {
-      char = advanceChar(parser);
-      if ((char | 32) === 120) {
-        kind = 8 | 128;
-        char = advanceChar(parser);
-        while (CharTypes[char] & (64 | 4096)) {
-          if (char === 95) {
-            if (!allowSeparator)
-              parser.report(152);
-            allowSeparator = 0;
-            char = advanceChar(parser);
-            continue;
-          }
-          allowSeparator = 1;
-          value = value * 16 + toHex(char);
-          digits++;
-          char = advanceChar(parser);
-        }
-        if (digits === 0 || !allowSeparator) {
-          parser.report(digits === 0 ? 21 : 153);
-        }
-      } else if ((char | 32) === 111) {
-        kind = 4 | 128;
-        char = advanceChar(parser);
-        while (CharTypes[char] & (32 | 4096)) {
-          if (char === 95) {
-            if (!allowSeparator) {
-              parser.report(152);
-            }
-            allowSeparator = 0;
-            char = advanceChar(parser);
-            continue;
-          }
-          allowSeparator = 1;
-          value = value * 8 + (char - 48);
-          digits++;
-          char = advanceChar(parser);
-        }
-        if (digits === 0 || !allowSeparator) {
-          parser.report(digits === 0 ? 0 : 153);
-        }
-      } else if ((char | 32) === 98) {
-        kind = 2 | 128;
-        char = advanceChar(parser);
-        while (CharTypes[char] & (128 | 4096)) {
-          if (char === 95) {
-            if (!allowSeparator) {
-              parser.report(152);
-            }
-            allowSeparator = 0;
-            char = advanceChar(parser);
-            continue;
-          }
-          allowSeparator = 1;
-          value = value * 2 + (char - 48);
-          digits++;
-          char = advanceChar(parser);
-        }
-        if (digits === 0 || !allowSeparator) {
-          parser.report(digits === 0 ? 0 : 153);
-        }
-      } else if (CharTypes[char] & 32) {
-        if (context & 1)
-          parser.report(1);
-        kind = 1;
-        while (CharTypes[char] & 16) {
-          if (CharTypes[char] & 512) {
-            kind = 32;
-            atStart = 0;
-            break;
-          }
-          value = value * 8 + (char - 48);
-          char = advanceChar(parser);
-        }
-      } else if (CharTypes[char] & 512) {
-        if (context & 1)
-          parser.report(1);
-        parser.flags |= 64;
-        kind = 32;
-      } else if (char === 95) {
-        parser.report(0);
-      }
-    }
-    if (kind & 48) {
-      if (atStart) {
-        while (digit >= 0 && CharTypes[char] & (16 | 4096)) {
-          if (char === 95) {
-            char = advanceChar(parser);
-            if (char === 95 || kind & 32) {
-              throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 152);
-            }
-            allowSeparator = 1;
-            continue;
-          }
-          allowSeparator = 0;
-          value = 10 * value + (char - 48);
-          char = advanceChar(parser);
-          --digit;
-        }
-        if (allowSeparator) {
-          throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 153);
-        }
-        if (digit >= 0 && !isIdentifierStart(char) && char !== 46) {
-          parser.tokenValue = value;
-          if (parser.options.raw)
-            parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
-          return 134283266;
-        }
-      }
-      value += scanDecimalDigitsOrSeparator(parser, char);
-      char = parser.currentChar;
-      if (char === 46) {
-        if (advanceChar(parser) === 95)
-          parser.report(0);
-        kind = 64;
-        value += "." + scanDecimalDigitsOrSeparator(parser, parser.currentChar);
-        char = parser.currentChar;
-      }
-    }
-  }
-  const end = parser.index;
-  let isBigInt = 0;
-  if (char === 110 && kind & 128) {
-    isBigInt = 1;
-    char = advanceChar(parser);
-  } else {
-    if ((char | 32) === 101) {
-      char = advanceChar(parser);
-      if (CharTypes[char] & 256)
-        char = advanceChar(parser);
-      const { index } = parser;
-      if ((CharTypes[char] & 16) === 0)
-        parser.report(11);
-      value += parser.source.substring(end, index) + scanDecimalDigitsOrSeparator(parser, char);
-      char = parser.currentChar;
-    }
-  }
-  if (parser.index < parser.end && CharTypes[char] & 16 || isIdentifierStart(char)) {
-    parser.report(13);
-  }
-  if (isBigInt) {
-    parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
-    parser.tokenValue = BigInt(parser.tokenRaw.slice(0, -1).replaceAll("_", ""));
-    return 134283388;
-  }
-  parser.tokenValue = kind & (1 | 2 | 8 | 4) ? value : kind & 32 ? parseFloat(parser.source.substring(parser.tokenIndex, parser.index)) : +value;
-  if (parser.options.raw)
-    parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
-  return 134283266;
-}
-__name(scanNumber, "scanNumber");
-function scanDecimalDigitsOrSeparator(parser, char) {
-  let allowSeparator = 0;
-  let start = parser.index;
-  let ret = "";
-  while (CharTypes[char] & (16 | 4096)) {
-    if (char === 95) {
-      const { index } = parser;
-      char = advanceChar(parser);
-      if (char === 95) {
-        throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 152);
-      }
-      allowSeparator = 1;
-      ret += parser.source.substring(start, index);
-      start = parser.index;
-      continue;
-    }
-    allowSeparator = 0;
-    char = advanceChar(parser);
-  }
-  if (allowSeparator) {
-    throw new ParseError(parser.currentLocation, { index: parser.index + 1, line: parser.line, column: parser.column }, 153);
-  }
-  return ret + parser.source.substring(start, parser.index);
-}
-__name(scanDecimalDigitsOrSeparator, "scanDecimalDigitsOrSeparator");
-var KeywordDescTable = [
-  "end of source",
-  "identifier",
-  "number",
-  "string",
-  "regular expression",
-  "false",
-  "true",
-  "null",
-  "template continuation",
-  "template tail",
-  "=>",
-  "(",
-  "{",
-  ".",
-  "...",
-  "}",
-  ")",
-  ";",
-  ",",
-  "[",
-  "]",
-  ":",
-  "?",
-  "'",
-  '"',
-  "++",
-  "--",
-  "=",
-  "<<=",
-  ">>=",
-  ">>>=",
-  "**=",
-  "+=",
-  "-=",
-  "*=",
-  "/=",
-  "%=",
-  "^=",
-  "|=",
-  "&=",
-  "||=",
-  "&&=",
-  "??=",
-  "typeof",
-  "delete",
-  "void",
-  "!",
-  "~",
-  "+",
-  "-",
-  "in",
-  "instanceof",
-  "*",
-  "%",
-  "/",
-  "**",
-  "&&",
-  "||",
-  "===",
-  "!==",
-  "==",
-  "!=",
-  "<=",
-  ">=",
-  "<",
-  ">",
-  "<<",
-  ">>",
-  ">>>",
-  "&",
-  "|",
-  "^",
-  "var",
-  "let",
-  "const",
-  "break",
-  "case",
-  "catch",
-  "class",
-  "continue",
-  "debugger",
-  "default",
-  "do",
-  "else",
-  "export",
-  "extends",
-  "finally",
-  "for",
-  "function",
-  "if",
-  "import",
-  "new",
-  "return",
-  "super",
-  "switch",
-  "this",
-  "throw",
-  "try",
-  "while",
-  "with",
-  "implements",
-  "interface",
-  "package",
-  "private",
-  "protected",
-  "public",
-  "static",
-  "yield",
-  "as",
-  "async",
-  "await",
-  "constructor",
-  "get",
-  "set",
-  "accessor",
-  "from",
-  "of",
-  "enum",
-  "eval",
-  "arguments",
-  "escaped keyword",
-  "escaped future reserved keyword",
-  "reserved if strict",
-  "#",
-  "BigIntLiteral",
-  "??",
-  "?.",
-  "WhiteSpace",
-  "Illegal",
-  "LineTerminator",
-  "PrivateField",
-  "Template",
-  "@",
-  "target",
-  "meta",
-  "LineFeed",
-  "Escaped",
-  "JSXText"
-];
-var descKeywordTable = {
-  this: 86111,
-  function: 86104,
-  if: 20569,
-  return: 20572,
-  var: 86088,
-  else: 20563,
-  for: 20567,
-  new: 86107,
-  in: 8673330,
-  typeof: 16863275,
-  while: 20578,
-  case: 20556,
-  break: 20555,
-  try: 20577,
-  catch: 20557,
-  delete: 16863276,
-  throw: 86112,
-  switch: 86110,
-  continue: 20559,
-  default: 20561,
-  instanceof: 8411187,
-  do: 20562,
-  void: 16863277,
-  finally: 20566,
-  async: 209005,
-  await: 209006,
-  class: 86094,
-  const: 86090,
-  constructor: 12399,
-  debugger: 20560,
-  export: 20564,
-  extends: 20565,
-  false: 86021,
-  from: 209011,
-  get: 209008,
-  implements: 36964,
-  import: 86106,
-  interface: 36965,
-  let: 241737,
-  null: 86023,
-  of: 471156,
-  package: 36966,
-  private: 36967,
-  protected: 36968,
-  public: 36969,
-  set: 209009,
-  static: 36970,
-  super: 86109,
-  true: 86022,
-  with: 20579,
-  yield: 241771,
-  enum: 86133,
-  eval: 537079926,
-  as: 77932,
-  arguments: 537079927,
-  target: 209029,
-  meta: 209030,
-  accessor: 12402
-};
-function matchOrInsertSemicolon(parser, context) {
-  var _a, _b;
-  if ((parser.flags & 1) === 0 && (parser.getToken() & 1048576) !== 1048576) {
-    parser.report(30, KeywordDescTable[parser.getToken() & 255]);
-  }
-  if (!consumeOpt(parser, context, 1074790417)) {
-    (_b = (_a = parser.options).onInsertedSemicolon) == null ? void 0 : _b.call(_a, parser.startIndex);
-  }
-}
-__name(matchOrInsertSemicolon, "matchOrInsertSemicolon");
-function isValidStrictMode(parser, index, tokenIndex, tokenValue) {
-  if (index - tokenIndex < 13 && tokenValue === "use strict") {
-    if ((parser.getToken() & 1048576) === 1048576 || parser.flags & 1) {
-      return 1;
-    }
-  }
-  return 0;
-}
-__name(isValidStrictMode, "isValidStrictMode");
-function optionalBit(parser, context, t) {
-  if (parser.getToken() !== t)
-    return 0;
-  nextToken(parser, context);
-  return 1;
-}
-__name(optionalBit, "optionalBit");
-function consumeOpt(parser, context, t) {
-  if (parser.getToken() !== t)
-    return false;
-  nextToken(parser, context);
-  return true;
-}
-__name(consumeOpt, "consumeOpt");
-function consume(parser, context, t) {
-  if (parser.getToken() !== t)
-    parser.report(25, KeywordDescTable[t & 255]);
-  nextToken(parser, context);
-}
-__name(consume, "consume");
-function reinterpretToPattern(parser, node) {
-  switch (node.type) {
-    case "ArrayExpression": {
-      node.type = "ArrayPattern";
-      const { elements } = node;
-      for (let i = 0, n = elements.length; i < n; ++i) {
-        const element = elements[i];
-        if (element)
-          reinterpretToPattern(parser, element);
-      }
-      return;
-    }
-    case "ObjectExpression": {
-      node.type = "ObjectPattern";
-      const { properties } = node;
-      for (let i = 0, n = properties.length; i < n; ++i) {
-        reinterpretToPattern(parser, properties[i]);
-      }
-      return;
-    }
-    case "AssignmentExpression":
-      node.type = "AssignmentPattern";
-      if (node.operator !== "=")
-        parser.report(71);
-      delete node.operator;
-      reinterpretToPattern(parser, node.left);
-      return;
-    case "Property":
-      reinterpretToPattern(parser, node.value);
-      return;
-    case "SpreadElement":
-      node.type = "RestElement";
-      reinterpretToPattern(parser, node.argument);
-  }
-}
-__name(reinterpretToPattern, "reinterpretToPattern");
-function validateBindingIdentifier(parser, context, kind, t, skipEvalArgCheck) {
-  if (context & 1) {
-    if ((t & 36864) === 36864) {
-      parser.report(118);
-    }
-    if (!skipEvalArgCheck && (t & 537079808) === 537079808) {
-      parser.report(119);
-    }
-  }
-  if ((t & 20480) === 20480 || t === -2147483528) {
-    parser.report(102);
-  }
-  if (kind & (8 | 16) && (t & 255) === (241737 & 255)) {
-    parser.report(100);
-  }
-  if (context & (2048 | 2) && t === 209006) {
-    parser.report(110);
-  }
-  if (context & (1024 | 1) && t === 241771) {
-    parser.report(97, "yield");
-  }
-}
-__name(validateBindingIdentifier, "validateBindingIdentifier");
-function validateFunctionName(parser, context, t) {
-  if (context & 1) {
-    if ((t & 36864) === 36864) {
-      parser.report(118);
-    }
-    if ((t & 537079808) === 537079808) {
-      parser.report(119);
-    }
-    if (t === -2147483527) {
-      parser.report(95);
-    }
-    if (t === -2147483528) {
-      parser.report(95);
-    }
-  }
-  if ((t & 20480) === 20480) {
-    parser.report(102);
-  }
-  if (context & (2048 | 2) && t === 209006) {
-    parser.report(110);
-  }
-  if (context & (1024 | 1) && t === 241771) {
-    parser.report(97, "yield");
-  }
-}
-__name(validateFunctionName, "validateFunctionName");
-function isStrictReservedWord(parser, context, t) {
-  if (t === 209006) {
-    if (context & (2048 | 2))
-      parser.report(110);
-    parser.destructible |= 128;
-  }
-  if (t === 241771 && context & 1024)
-    parser.report(97, "yield");
-  return (t & 20480) === 20480 || (t & 36864) === 36864 || t == -2147483527;
-}
-__name(isStrictReservedWord, "isStrictReservedWord");
-function isPropertyWithPrivateFieldKey(expr) {
-  return !expr.property ? false : expr.property.type === "PrivateIdentifier";
-}
-__name(isPropertyWithPrivateFieldKey, "isPropertyWithPrivateFieldKey");
-function isValidLabel(parser, labels, name, isIterationStatement) {
-  while (labels) {
-    if (labels["$" + name]) {
-      if (isIterationStatement)
-        parser.report(137);
-      return 1;
-    }
-    if (isIterationStatement && labels.loop)
-      isIterationStatement = 0;
-    labels = labels["$"];
-  }
-  return 0;
-}
-__name(isValidLabel, "isValidLabel");
-function validateAndDeclareLabel(parser, labels, name) {
-  let set = labels;
-  while (set) {
-    if (set["$" + name])
-      parser.report(136, name);
-    set = set["$"];
-  }
-  labels["$" + name] = 1;
-}
-__name(validateAndDeclareLabel, "validateAndDeclareLabel");
-function isEqualTagName(elementName) {
-  switch (elementName.type) {
-    case "JSXIdentifier":
-      return elementName.name;
-    case "JSXNamespacedName":
-      return elementName.namespace + ":" + elementName.name;
-    case "JSXMemberExpression":
-      return isEqualTagName(elementName.object) + "." + isEqualTagName(elementName.property);
-  }
-}
-__name(isEqualTagName, "isEqualTagName");
-function isValidIdentifier(context, t) {
-  if (context & (1 | 1024)) {
-    if (context & 2 && t === 209006)
-      return false;
-    if (context & 1024 && t === 241771)
-      return false;
-    return (t & 12288) === 12288;
-  }
-  return (t & 12288) === 12288 || (t & 36864) === 36864;
-}
-__name(isValidIdentifier, "isValidIdentifier");
-function classifyIdentifier(parser, context, t) {
-  if ((t & 537079808) === 537079808) {
-    if (context & 1)
-      parser.report(119);
-    parser.flags |= 512;
-  }
-  if (!isValidIdentifier(context, t))
-    parser.report(0);
-}
-__name(classifyIdentifier, "classifyIdentifier");
-function getOwnProperty(object, key) {
-  return Object.hasOwn(object, key) ? object[key] : void 0;
-}
-__name(getOwnProperty, "getOwnProperty");
-function scanIdentifier(parser, context, isValidAsKeyword) {
-  var _a;
-  while (isIdPart[advanceChar(parser)])
-    ;
-  parser.tokenValue = parser.source.slice(parser.tokenIndex, parser.index);
-  return parser.currentChar !== 92 && parser.currentChar <= 126 ? (_a = getOwnProperty(descKeywordTable, parser.tokenValue)) != null ? _a : 208897 : scanIdentifierSlowCase(parser, context, 0, isValidAsKeyword);
-}
-__name(scanIdentifier, "scanIdentifier");
-function scanUnicodeIdentifier(parser, context) {
-  const cookedChar = scanIdentifierUnicodeEscape(parser);
-  if (!isIdentifierStart(cookedChar))
-    parser.report(5);
-  parser.tokenValue = String.fromCodePoint(cookedChar);
-  return scanIdentifierSlowCase(parser, context, 1, CharTypes[cookedChar] & 4);
-}
-__name(scanUnicodeIdentifier, "scanUnicodeIdentifier");
-function scanIdentifierSlowCase(parser, context, hasEscape, isValidAsKeyword) {
-  let start = parser.index;
-  while (parser.index < parser.end) {
-    if (parser.currentChar === 92) {
-      parser.tokenValue += parser.source.slice(start, parser.index);
-      hasEscape = 1;
-      const code = scanIdentifierUnicodeEscape(parser);
-      if (!isIdentifierPart(code))
-        parser.report(5);
-      isValidAsKeyword = isValidAsKeyword && CharTypes[code] & 4;
-      parser.tokenValue += String.fromCodePoint(code);
-      start = parser.index;
-    } else {
-      const merged = consumePossibleSurrogatePair(parser);
-      if (merged > 0) {
-        if (!isIdentifierPart(merged)) {
-          parser.report(20, String.fromCodePoint(merged));
-        }
-        parser.currentChar = merged;
-        parser.index++;
-        parser.column++;
-      } else if (!isIdentifierPart(parser.currentChar)) {
-        break;
-      }
-      advanceChar(parser);
-    }
-  }
-  if (parser.index <= parser.end) {
-    parser.tokenValue += parser.source.slice(start, parser.index);
-  }
-  const { length } = parser.tokenValue;
-  if (isValidAsKeyword && length >= 2 && length <= 11) {
-    const token = getOwnProperty(descKeywordTable, parser.tokenValue);
-    if (token === void 0)
-      return 208897 | (hasEscape ? -2147483648 : 0);
-    if (!hasEscape)
-      return token;
-    if (token === 209006) {
-      if ((context & (2 | 2048)) === 0) {
-        return token | -2147483648;
-      }
-      return -2147483528;
-    }
-    if (context & 1) {
-      if (token === 36970) {
-        return -2147483527;
-      }
-      if ((token & 36864) === 36864) {
-        return -2147483527;
-      }
-      if ((token & 20480) === 20480) {
-        if (context & 262144 && (context & 8) === 0) {
-          return token | -2147483648;
-        } else {
-          return -2147483528;
-        }
-      }
-      return 209018 | -2147483648;
-    }
-    if (context & 262144 && (context & 8) === 0 && (token & 20480) === 20480) {
-      return token | -2147483648;
-    }
-    if (token === 241771) {
-      return context & 262144 ? 209018 | -2147483648 : context & 1024 ? -2147483528 : token | -2147483648;
-    }
-    if (token === 209005) {
-      return 209018 | -2147483648;
-    }
-    if ((token & 36864) === 36864) {
-      return token | 12288 | -2147483648;
-    }
-    return -2147483528;
-  }
-  return 208897 | (hasEscape ? -2147483648 : 0);
-}
-__name(scanIdentifierSlowCase, "scanIdentifierSlowCase");
-function scanPrivateIdentifier(parser) {
-  let char = advanceChar(parser);
-  if (char === 92)
-    return 130;
-  const merged = consumePossibleSurrogatePair(parser);
-  if (merged)
-    char = merged;
-  if (!isIdentifierStart(char))
-    parser.report(96);
-  return 130;
-}
-__name(scanPrivateIdentifier, "scanPrivateIdentifier");
-function scanIdentifierUnicodeEscape(parser) {
-  if (parser.source.charCodeAt(parser.index + 1) !== 117) {
-    parser.report(5);
-  }
-  parser.currentChar = parser.source.charCodeAt(parser.index += 2);
-  parser.column += 2;
-  return scanUnicodeEscape(parser);
-}
-__name(scanIdentifierUnicodeEscape, "scanIdentifierUnicodeEscape");
-function scanUnicodeEscape(parser) {
-  let codePoint = 0;
-  const char = parser.currentChar;
-  if (char === 123) {
-    const begin = parser.index - 2;
-    while (CharTypes[advanceChar(parser)] & 64) {
-      codePoint = codePoint << 4 | toHex(parser.currentChar);
-      if (codePoint > 1114111)
-        throw new ParseError({ index: begin, line: parser.line, column: parser.column }, parser.currentLocation, 104);
-    }
-    if (parser.currentChar !== 125) {
-      throw new ParseError({ index: begin, line: parser.line, column: parser.column }, parser.currentLocation, 7);
-    }
-    advanceChar(parser);
-    return codePoint;
-  }
-  if ((CharTypes[char] & 64) === 0)
-    parser.report(7);
-  const char2 = parser.source.charCodeAt(parser.index + 1);
-  if ((CharTypes[char2] & 64) === 0)
-    parser.report(7);
-  const char3 = parser.source.charCodeAt(parser.index + 2);
-  if ((CharTypes[char3] & 64) === 0)
-    parser.report(7);
-  const char4 = parser.source.charCodeAt(parser.index + 3);
-  if ((CharTypes[char4] & 64) === 0)
-    parser.report(7);
-  codePoint = toHex(char) << 12 | toHex(char2) << 8 | toHex(char3) << 4 | toHex(char4);
-  parser.currentChar = parser.source.charCodeAt(parser.index += 4);
-  parser.column += 4;
-  return codePoint;
-}
-__name(scanUnicodeEscape, "scanUnicodeEscape");
 var TokenLookup = [
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  127,
-  135,
-  127,
-  127,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
   129,
   128,
+  136,
   128,
   128,
+  130,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
+  129,
   128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  128,
-  127,
   16842798,
   134283267,
-  130,
+  131,
   208897,
   8391477,
   8390213,
@@ -6782,7 +7562,7 @@ var TokenLookup = [
   1077936155,
   8390721,
   22,
-  132,
+  133,
   208897,
   208897,
   208897,
@@ -6810,11 +7590,11 @@ var TokenLookup = [
   208897,
   208897,
   69271571,
-  136,
+  137,
   20,
   8389959,
   208897,
-  131,
+  132,
   4096,
   4096,
   4096,
@@ -6845,7 +7625,7 @@ var TokenLookup = [
   8389702,
   1074790415,
   16842799,
-  128
+  129
 ];
 function nextToken(parser, context) {
   parser.flags = (parser.flags | 1) ^ 1;
@@ -6858,7 +7638,6 @@ __name(nextToken, "nextToken");
 function scanSingleToken(parser, context, state) {
   const isStartOfLine = parser.index === 0;
   const { source } = parser;
-  let start = parser.currentLocation;
   while (parser.index < parser.end) {
     parser.tokenIndex = parser.index;
     parser.tokenColumn = parser.column;
@@ -6877,8 +7656,8 @@ function scanSingleToken(parser, context, state) {
         case 1074790417:
         case 18:
         case 16842799:
-        case 132:
-        case 128:
+        case 133:
+        case 129:
           advanceChar(parser);
           return token;
         case 208897:
@@ -6889,20 +7668,20 @@ function scanSingleToken(parser, context, state) {
           return scanNumber(parser, context, 16 | 128);
         case 134283267:
           return scanString(parser, context, char);
-        case 131:
+        case 132:
           return scanTemplate(parser, context);
-        case 136:
+        case 137:
           return scanUnicodeIdentifier(parser, context);
-        case 130:
+        case 131:
           return scanPrivateIdentifier(parser);
-        case 127:
+        case 128:
           advanceChar(parser);
           break;
-        case 129:
+        case 130:
           state |= 1 | 4;
           scanNewLine(parser);
           break;
-        case 135:
+        case 136:
           consumeLineFeed(parser, state);
           state = state & -5 | 1;
           break;
@@ -6925,7 +7704,6 @@ function scanSingleToken(parser, context, state) {
                 parser.column += 3;
                 parser.currentChar = source.charCodeAt(parser.index += 3);
                 state = skipSingleHTMLComment(parser, source, state, context, 2, parser.tokenStart);
-                start = parser.tokenStart;
                 continue;
               }
               return 8456256;
@@ -7004,10 +7782,9 @@ function scanSingleToken(parser, context, state) {
             advanceChar(parser);
             if ((state & 1 || isStartOfLine) && parser.currentChar === 62) {
               if (!parser.options.webcompat)
-                parser.report(112);
+                parser.report(114);
               advanceChar(parser);
-              state = skipSingleHTMLComment(parser, source, state, context, 3, start);
-              start = parser.tokenStart;
+              state = skipSingleHTMLComment(parser, source, state, context, 3, parser.tokenStart);
               continue;
             }
             return 33619994;
@@ -7025,13 +7802,11 @@ function scanSingleToken(parser, context, state) {
             if (ch === 47) {
               advanceChar(parser);
               state = skipSingleLineComment(parser, source, state, 0, parser.tokenStart);
-              start = parser.tokenStart;
               continue;
             }
             if (ch === 42) {
               advanceChar(parser);
               state = skipMultiLineComment(parser, source, state);
-              start = parser.tokenStart;
               continue;
             }
             if (context & 32) {
@@ -7065,7 +7840,7 @@ function scanSingleToken(parser, context, state) {
             advanceChar(parser);
             if (parser.currentChar === 61) {
               advanceChar(parser);
-              return 4194344;
+              return 4718632;
             }
             return 8913465;
           }
@@ -7077,6 +7852,9 @@ function scanSingleToken(parser, context, state) {
         }
         case 8390721: {
           advanceChar(parser);
+          if (context & 1048576) {
+            return 8390721;
+          }
           const ch = parser.currentChar;
           if (ch === 61) {
             advanceChar(parser);
@@ -7108,7 +7886,7 @@ function scanSingleToken(parser, context, state) {
             advanceChar(parser);
             if (parser.currentChar === 61) {
               advanceChar(parser);
-              return 4194345;
+              return 4718633;
             }
             return 8913720;
           }
@@ -7124,9 +7902,9 @@ function scanSingleToken(parser, context, state) {
             advanceChar(parser);
             if (parser.currentChar === 61) {
               advanceChar(parser);
-              return 4194346;
+              return 4718634;
             }
-            return 276824445;
+            return 276824446;
           }
           if (ch === 46) {
             const index = parser.index + 1;
@@ -7134,7 +7912,7 @@ function scanSingleToken(parser, context, state) {
               ch = source.charCodeAt(index);
               if (!(ch >= 48 && ch <= 57)) {
                 advanceChar(parser);
-                return 67108990;
+                return 67108991;
               }
             }
           }
@@ -7164,2183 +7942,472 @@ function scanSingleToken(parser, context, state) {
   return 1048576;
 }
 __name(scanSingleToken, "scanSingleToken");
-var entities = {
-  AElig: "\xC6",
-  AMP: "&",
-  Aacute: "\xC1",
-  Abreve: "\u0102",
-  Acirc: "\xC2",
-  Acy: "\u0410",
-  Afr: "\u{1D504}",
-  Agrave: "\xC0",
-  Alpha: "\u0391",
-  Amacr: "\u0100",
-  And: "\u2A53",
-  Aogon: "\u0104",
-  Aopf: "\u{1D538}",
-  ApplyFunction: "\u2061",
-  Aring: "\xC5",
-  Ascr: "\u{1D49C}",
-  Assign: "\u2254",
-  Atilde: "\xC3",
-  Auml: "\xC4",
-  Backslash: "\u2216",
-  Barv: "\u2AE7",
-  Barwed: "\u2306",
-  Bcy: "\u0411",
-  Because: "\u2235",
-  Bernoullis: "\u212C",
-  Beta: "\u0392",
-  Bfr: "\u{1D505}",
-  Bopf: "\u{1D539}",
-  Breve: "\u02D8",
-  Bscr: "\u212C",
-  Bumpeq: "\u224E",
-  CHcy: "\u0427",
-  COPY: "\xA9",
-  Cacute: "\u0106",
-  Cap: "\u22D2",
-  CapitalDifferentialD: "\u2145",
-  Cayleys: "\u212D",
-  Ccaron: "\u010C",
-  Ccedil: "\xC7",
-  Ccirc: "\u0108",
-  Cconint: "\u2230",
-  Cdot: "\u010A",
-  Cedilla: "\xB8",
-  CenterDot: "\xB7",
-  Cfr: "\u212D",
-  Chi: "\u03A7",
-  CircleDot: "\u2299",
-  CircleMinus: "\u2296",
-  CirclePlus: "\u2295",
-  CircleTimes: "\u2297",
-  ClockwiseContourIntegral: "\u2232",
-  CloseCurlyDoubleQuote: "\u201D",
-  CloseCurlyQuote: "\u2019",
-  Colon: "\u2237",
-  Colone: "\u2A74",
-  Congruent: "\u2261",
-  Conint: "\u222F",
-  ContourIntegral: "\u222E",
-  Copf: "\u2102",
-  Coproduct: "\u2210",
-  CounterClockwiseContourIntegral: "\u2233",
-  Cross: "\u2A2F",
-  Cscr: "\u{1D49E}",
-  Cup: "\u22D3",
-  CupCap: "\u224D",
-  DD: "\u2145",
-  DDotrahd: "\u2911",
-  DJcy: "\u0402",
-  DScy: "\u0405",
-  DZcy: "\u040F",
-  Dagger: "\u2021",
-  Darr: "\u21A1",
-  Dashv: "\u2AE4",
-  Dcaron: "\u010E",
-  Dcy: "\u0414",
-  Del: "\u2207",
-  Delta: "\u0394",
-  Dfr: "\u{1D507}",
-  DiacriticalAcute: "\xB4",
-  DiacriticalDot: "\u02D9",
-  DiacriticalDoubleAcute: "\u02DD",
-  DiacriticalGrave: "`",
-  DiacriticalTilde: "\u02DC",
-  Diamond: "\u22C4",
-  DifferentialD: "\u2146",
-  Dopf: "\u{1D53B}",
-  Dot: "\xA8",
-  DotDot: "\u20DC",
-  DotEqual: "\u2250",
-  DoubleContourIntegral: "\u222F",
-  DoubleDot: "\xA8",
-  DoubleDownArrow: "\u21D3",
-  DoubleLeftArrow: "\u21D0",
-  DoubleLeftRightArrow: "\u21D4",
-  DoubleLeftTee: "\u2AE4",
-  DoubleLongLeftArrow: "\u27F8",
-  DoubleLongLeftRightArrow: "\u27FA",
-  DoubleLongRightArrow: "\u27F9",
-  DoubleRightArrow: "\u21D2",
-  DoubleRightTee: "\u22A8",
-  DoubleUpArrow: "\u21D1",
-  DoubleUpDownArrow: "\u21D5",
-  DoubleVerticalBar: "\u2225",
-  DownArrow: "\u2193",
-  DownArrowBar: "\u2913",
-  DownArrowUpArrow: "\u21F5",
-  DownBreve: "\u0311",
-  DownLeftRightVector: "\u2950",
-  DownLeftTeeVector: "\u295E",
-  DownLeftVector: "\u21BD",
-  DownLeftVectorBar: "\u2956",
-  DownRightTeeVector: "\u295F",
-  DownRightVector: "\u21C1",
-  DownRightVectorBar: "\u2957",
-  DownTee: "\u22A4",
-  DownTeeArrow: "\u21A7",
-  Downarrow: "\u21D3",
-  Dscr: "\u{1D49F}",
-  Dstrok: "\u0110",
-  ENG: "\u014A",
-  ETH: "\xD0",
-  Eacute: "\xC9",
-  Ecaron: "\u011A",
-  Ecirc: "\xCA",
-  Ecy: "\u042D",
-  Edot: "\u0116",
-  Efr: "\u{1D508}",
-  Egrave: "\xC8",
-  Element: "\u2208",
-  Emacr: "\u0112",
-  EmptySmallSquare: "\u25FB",
-  EmptyVerySmallSquare: "\u25AB",
-  Eogon: "\u0118",
-  Eopf: "\u{1D53C}",
-  Epsilon: "\u0395",
-  Equal: "\u2A75",
-  EqualTilde: "\u2242",
-  Equilibrium: "\u21CC",
-  Escr: "\u2130",
-  Esim: "\u2A73",
-  Eta: "\u0397",
-  Euml: "\xCB",
-  Exists: "\u2203",
-  ExponentialE: "\u2147",
-  Fcy: "\u0424",
-  Ffr: "\u{1D509}",
-  FilledSmallSquare: "\u25FC",
-  FilledVerySmallSquare: "\u25AA",
-  Fopf: "\u{1D53D}",
-  ForAll: "\u2200",
-  Fouriertrf: "\u2131",
-  Fscr: "\u2131",
-  GJcy: "\u0403",
-  GT: ">",
-  Gamma: "\u0393",
-  Gammad: "\u03DC",
-  Gbreve: "\u011E",
-  Gcedil: "\u0122",
-  Gcirc: "\u011C",
-  Gcy: "\u0413",
-  Gdot: "\u0120",
-  Gfr: "\u{1D50A}",
-  Gg: "\u22D9",
-  Gopf: "\u{1D53E}",
-  GreaterEqual: "\u2265",
-  GreaterEqualLess: "\u22DB",
-  GreaterFullEqual: "\u2267",
-  GreaterGreater: "\u2AA2",
-  GreaterLess: "\u2277",
-  GreaterSlantEqual: "\u2A7E",
-  GreaterTilde: "\u2273",
-  Gscr: "\u{1D4A2}",
-  Gt: "\u226B",
-  HARDcy: "\u042A",
-  Hacek: "\u02C7",
-  Hat: "^",
-  Hcirc: "\u0124",
-  Hfr: "\u210C",
-  HilbertSpace: "\u210B",
-  Hopf: "\u210D",
-  HorizontalLine: "\u2500",
-  Hscr: "\u210B",
-  Hstrok: "\u0126",
-  HumpDownHump: "\u224E",
-  HumpEqual: "\u224F",
-  IEcy: "\u0415",
-  IJlig: "\u0132",
-  IOcy: "\u0401",
-  Iacute: "\xCD",
-  Icirc: "\xCE",
-  Icy: "\u0418",
-  Idot: "\u0130",
-  Ifr: "\u2111",
-  Igrave: "\xCC",
-  Im: "\u2111",
-  Imacr: "\u012A",
-  ImaginaryI: "\u2148",
-  Implies: "\u21D2",
-  Int: "\u222C",
-  Integral: "\u222B",
-  Intersection: "\u22C2",
-  InvisibleComma: "\u2063",
-  InvisibleTimes: "\u2062",
-  Iogon: "\u012E",
-  Iopf: "\u{1D540}",
-  Iota: "\u0399",
-  Iscr: "\u2110",
-  Itilde: "\u0128",
-  Iukcy: "\u0406",
-  Iuml: "\xCF",
-  Jcirc: "\u0134",
-  Jcy: "\u0419",
-  Jfr: "\u{1D50D}",
-  Jopf: "\u{1D541}",
-  Jscr: "\u{1D4A5}",
-  Jsercy: "\u0408",
-  Jukcy: "\u0404",
-  KHcy: "\u0425",
-  KJcy: "\u040C",
-  Kappa: "\u039A",
-  Kcedil: "\u0136",
-  Kcy: "\u041A",
-  Kfr: "\u{1D50E}",
-  Kopf: "\u{1D542}",
-  Kscr: "\u{1D4A6}",
-  LJcy: "\u0409",
-  LT: "<",
-  Lacute: "\u0139",
-  Lambda: "\u039B",
-  Lang: "\u27EA",
-  Laplacetrf: "\u2112",
-  Larr: "\u219E",
-  Lcaron: "\u013D",
-  Lcedil: "\u013B",
-  Lcy: "\u041B",
-  LeftAngleBracket: "\u27E8",
-  LeftArrow: "\u2190",
-  LeftArrowBar: "\u21E4",
-  LeftArrowRightArrow: "\u21C6",
-  LeftCeiling: "\u2308",
-  LeftDoubleBracket: "\u27E6",
-  LeftDownTeeVector: "\u2961",
-  LeftDownVector: "\u21C3",
-  LeftDownVectorBar: "\u2959",
-  LeftFloor: "\u230A",
-  LeftRightArrow: "\u2194",
-  LeftRightVector: "\u294E",
-  LeftTee: "\u22A3",
-  LeftTeeArrow: "\u21A4",
-  LeftTeeVector: "\u295A",
-  LeftTriangle: "\u22B2",
-  LeftTriangleBar: "\u29CF",
-  LeftTriangleEqual: "\u22B4",
-  LeftUpDownVector: "\u2951",
-  LeftUpTeeVector: "\u2960",
-  LeftUpVector: "\u21BF",
-  LeftUpVectorBar: "\u2958",
-  LeftVector: "\u21BC",
-  LeftVectorBar: "\u2952",
-  Leftarrow: "\u21D0",
-  Leftrightarrow: "\u21D4",
-  LessEqualGreater: "\u22DA",
-  LessFullEqual: "\u2266",
-  LessGreater: "\u2276",
-  LessLess: "\u2AA1",
-  LessSlantEqual: "\u2A7D",
-  LessTilde: "\u2272",
-  Lfr: "\u{1D50F}",
-  Ll: "\u22D8",
-  Lleftarrow: "\u21DA",
-  Lmidot: "\u013F",
-  LongLeftArrow: "\u27F5",
-  LongLeftRightArrow: "\u27F7",
-  LongRightArrow: "\u27F6",
-  Longleftarrow: "\u27F8",
-  Longleftrightarrow: "\u27FA",
-  Longrightarrow: "\u27F9",
-  Lopf: "\u{1D543}",
-  LowerLeftArrow: "\u2199",
-  LowerRightArrow: "\u2198",
-  Lscr: "\u2112",
-  Lsh: "\u21B0",
-  Lstrok: "\u0141",
-  Lt: "\u226A",
-  Map: "\u2905",
-  Mcy: "\u041C",
-  MediumSpace: "\u205F",
-  Mellintrf: "\u2133",
-  Mfr: "\u{1D510}",
-  MinusPlus: "\u2213",
-  Mopf: "\u{1D544}",
-  Mscr: "\u2133",
-  Mu: "\u039C",
-  NJcy: "\u040A",
-  Nacute: "\u0143",
-  Ncaron: "\u0147",
-  Ncedil: "\u0145",
-  Ncy: "\u041D",
-  NegativeMediumSpace: "\u200B",
-  NegativeThickSpace: "\u200B",
-  NegativeThinSpace: "\u200B",
-  NegativeVeryThinSpace: "\u200B",
-  NestedGreaterGreater: "\u226B",
-  NestedLessLess: "\u226A",
-  NewLine: "\n",
-  Nfr: "\u{1D511}",
-  NoBreak: "\u2060",
-  NonBreakingSpace: "\xA0",
-  Nopf: "\u2115",
-  Not: "\u2AEC",
-  NotCongruent: "\u2262",
-  NotCupCap: "\u226D",
-  NotDoubleVerticalBar: "\u2226",
-  NotElement: "\u2209",
-  NotEqual: "\u2260",
-  NotEqualTilde: "\u2242\u0338",
-  NotExists: "\u2204",
-  NotGreater: "\u226F",
-  NotGreaterEqual: "\u2271",
-  NotGreaterFullEqual: "\u2267\u0338",
-  NotGreaterGreater: "\u226B\u0338",
-  NotGreaterLess: "\u2279",
-  NotGreaterSlantEqual: "\u2A7E\u0338",
-  NotGreaterTilde: "\u2275",
-  NotHumpDownHump: "\u224E\u0338",
-  NotHumpEqual: "\u224F\u0338",
-  NotLeftTriangle: "\u22EA",
-  NotLeftTriangleBar: "\u29CF\u0338",
-  NotLeftTriangleEqual: "\u22EC",
-  NotLess: "\u226E",
-  NotLessEqual: "\u2270",
-  NotLessGreater: "\u2278",
-  NotLessLess: "\u226A\u0338",
-  NotLessSlantEqual: "\u2A7D\u0338",
-  NotLessTilde: "\u2274",
-  NotNestedGreaterGreater: "\u2AA2\u0338",
-  NotNestedLessLess: "\u2AA1\u0338",
-  NotPrecedes: "\u2280",
-  NotPrecedesEqual: "\u2AAF\u0338",
-  NotPrecedesSlantEqual: "\u22E0",
-  NotReverseElement: "\u220C",
-  NotRightTriangle: "\u22EB",
-  NotRightTriangleBar: "\u29D0\u0338",
-  NotRightTriangleEqual: "\u22ED",
-  NotSquareSubset: "\u228F\u0338",
-  NotSquareSubsetEqual: "\u22E2",
-  NotSquareSuperset: "\u2290\u0338",
-  NotSquareSupersetEqual: "\u22E3",
-  NotSubset: "\u2282\u20D2",
-  NotSubsetEqual: "\u2288",
-  NotSucceeds: "\u2281",
-  NotSucceedsEqual: "\u2AB0\u0338",
-  NotSucceedsSlantEqual: "\u22E1",
-  NotSucceedsTilde: "\u227F\u0338",
-  NotSuperset: "\u2283\u20D2",
-  NotSupersetEqual: "\u2289",
-  NotTilde: "\u2241",
-  NotTildeEqual: "\u2244",
-  NotTildeFullEqual: "\u2247",
-  NotTildeTilde: "\u2249",
-  NotVerticalBar: "\u2224",
-  Nscr: "\u{1D4A9}",
-  Ntilde: "\xD1",
-  Nu: "\u039D",
-  OElig: "\u0152",
-  Oacute: "\xD3",
-  Ocirc: "\xD4",
-  Ocy: "\u041E",
-  Odblac: "\u0150",
-  Ofr: "\u{1D512}",
-  Ograve: "\xD2",
-  Omacr: "\u014C",
-  Omega: "\u03A9",
-  Omicron: "\u039F",
-  Oopf: "\u{1D546}",
-  OpenCurlyDoubleQuote: "\u201C",
-  OpenCurlyQuote: "\u2018",
-  Or: "\u2A54",
-  Oscr: "\u{1D4AA}",
-  Oslash: "\xD8",
-  Otilde: "\xD5",
-  Otimes: "\u2A37",
-  Ouml: "\xD6",
-  OverBar: "\u203E",
-  OverBrace: "\u23DE",
-  OverBracket: "\u23B4",
-  OverParenthesis: "\u23DC",
-  PartialD: "\u2202",
-  Pcy: "\u041F",
-  Pfr: "\u{1D513}",
-  Phi: "\u03A6",
-  Pi: "\u03A0",
-  PlusMinus: "\xB1",
-  Poincareplane: "\u210C",
-  Popf: "\u2119",
-  Pr: "\u2ABB",
-  Precedes: "\u227A",
-  PrecedesEqual: "\u2AAF",
-  PrecedesSlantEqual: "\u227C",
-  PrecedesTilde: "\u227E",
-  Prime: "\u2033",
-  Product: "\u220F",
-  Proportion: "\u2237",
-  Proportional: "\u221D",
-  Pscr: "\u{1D4AB}",
-  Psi: "\u03A8",
-  QUOT: '"',
-  Qfr: "\u{1D514}",
-  Qopf: "\u211A",
-  Qscr: "\u{1D4AC}",
-  RBarr: "\u2910",
-  REG: "\xAE",
-  Racute: "\u0154",
-  Rang: "\u27EB",
-  Rarr: "\u21A0",
-  Rarrtl: "\u2916",
-  Rcaron: "\u0158",
-  Rcedil: "\u0156",
-  Rcy: "\u0420",
-  Re: "\u211C",
-  ReverseElement: "\u220B",
-  ReverseEquilibrium: "\u21CB",
-  ReverseUpEquilibrium: "\u296F",
-  Rfr: "\u211C",
-  Rho: "\u03A1",
-  RightAngleBracket: "\u27E9",
-  RightArrow: "\u2192",
-  RightArrowBar: "\u21E5",
-  RightArrowLeftArrow: "\u21C4",
-  RightCeiling: "\u2309",
-  RightDoubleBracket: "\u27E7",
-  RightDownTeeVector: "\u295D",
-  RightDownVector: "\u21C2",
-  RightDownVectorBar: "\u2955",
-  RightFloor: "\u230B",
-  RightTee: "\u22A2",
-  RightTeeArrow: "\u21A6",
-  RightTeeVector: "\u295B",
-  RightTriangle: "\u22B3",
-  RightTriangleBar: "\u29D0",
-  RightTriangleEqual: "\u22B5",
-  RightUpDownVector: "\u294F",
-  RightUpTeeVector: "\u295C",
-  RightUpVector: "\u21BE",
-  RightUpVectorBar: "\u2954",
-  RightVector: "\u21C0",
-  RightVectorBar: "\u2953",
-  Rightarrow: "\u21D2",
-  Ropf: "\u211D",
-  RoundImplies: "\u2970",
-  Rrightarrow: "\u21DB",
-  Rscr: "\u211B",
-  Rsh: "\u21B1",
-  RuleDelayed: "\u29F4",
-  SHCHcy: "\u0429",
-  SHcy: "\u0428",
-  SOFTcy: "\u042C",
-  Sacute: "\u015A",
-  Sc: "\u2ABC",
-  Scaron: "\u0160",
-  Scedil: "\u015E",
-  Scirc: "\u015C",
-  Scy: "\u0421",
-  Sfr: "\u{1D516}",
-  ShortDownArrow: "\u2193",
-  ShortLeftArrow: "\u2190",
-  ShortRightArrow: "\u2192",
-  ShortUpArrow: "\u2191",
-  Sigma: "\u03A3",
-  SmallCircle: "\u2218",
-  Sopf: "\u{1D54A}",
-  Sqrt: "\u221A",
-  Square: "\u25A1",
-  SquareIntersection: "\u2293",
-  SquareSubset: "\u228F",
-  SquareSubsetEqual: "\u2291",
-  SquareSuperset: "\u2290",
-  SquareSupersetEqual: "\u2292",
-  SquareUnion: "\u2294",
-  Sscr: "\u{1D4AE}",
-  Star: "\u22C6",
-  Sub: "\u22D0",
-  Subset: "\u22D0",
-  SubsetEqual: "\u2286",
-  Succeeds: "\u227B",
-  SucceedsEqual: "\u2AB0",
-  SucceedsSlantEqual: "\u227D",
-  SucceedsTilde: "\u227F",
-  SuchThat: "\u220B",
-  Sum: "\u2211",
-  Sup: "\u22D1",
-  Superset: "\u2283",
-  SupersetEqual: "\u2287",
-  Supset: "\u22D1",
-  THORN: "\xDE",
-  TRADE: "\u2122",
-  TSHcy: "\u040B",
-  TScy: "\u0426",
-  Tab: "	",
-  Tau: "\u03A4",
-  Tcaron: "\u0164",
-  Tcedil: "\u0162",
-  Tcy: "\u0422",
-  Tfr: "\u{1D517}",
-  Therefore: "\u2234",
-  Theta: "\u0398",
-  ThickSpace: "\u205F\u200A",
-  ThinSpace: "\u2009",
-  Tilde: "\u223C",
-  TildeEqual: "\u2243",
-  TildeFullEqual: "\u2245",
-  TildeTilde: "\u2248",
-  Topf: "\u{1D54B}",
-  TripleDot: "\u20DB",
-  Tscr: "\u{1D4AF}",
-  Tstrok: "\u0166",
-  Uacute: "\xDA",
-  Uarr: "\u219F",
-  Uarrocir: "\u2949",
-  Ubrcy: "\u040E",
-  Ubreve: "\u016C",
-  Ucirc: "\xDB",
-  Ucy: "\u0423",
-  Udblac: "\u0170",
-  Ufr: "\u{1D518}",
-  Ugrave: "\xD9",
-  Umacr: "\u016A",
-  UnderBar: "_",
-  UnderBrace: "\u23DF",
-  UnderBracket: "\u23B5",
-  UnderParenthesis: "\u23DD",
-  Union: "\u22C3",
-  UnionPlus: "\u228E",
-  Uogon: "\u0172",
-  Uopf: "\u{1D54C}",
-  UpArrow: "\u2191",
-  UpArrowBar: "\u2912",
-  UpArrowDownArrow: "\u21C5",
-  UpDownArrow: "\u2195",
-  UpEquilibrium: "\u296E",
-  UpTee: "\u22A5",
-  UpTeeArrow: "\u21A5",
-  Uparrow: "\u21D1",
-  Updownarrow: "\u21D5",
-  UpperLeftArrow: "\u2196",
-  UpperRightArrow: "\u2197",
-  Upsi: "\u03D2",
-  Upsilon: "\u03A5",
-  Uring: "\u016E",
-  Uscr: "\u{1D4B0}",
-  Utilde: "\u0168",
-  Uuml: "\xDC",
-  VDash: "\u22AB",
-  Vbar: "\u2AEB",
-  Vcy: "\u0412",
-  Vdash: "\u22A9",
-  Vdashl: "\u2AE6",
-  Vee: "\u22C1",
-  Verbar: "\u2016",
-  Vert: "\u2016",
-  VerticalBar: "\u2223",
-  VerticalLine: "|",
-  VerticalSeparator: "\u2758",
-  VerticalTilde: "\u2240",
-  VeryThinSpace: "\u200A",
-  Vfr: "\u{1D519}",
-  Vopf: "\u{1D54D}",
-  Vscr: "\u{1D4B1}",
-  Vvdash: "\u22AA",
-  Wcirc: "\u0174",
-  Wedge: "\u22C0",
-  Wfr: "\u{1D51A}",
-  Wopf: "\u{1D54E}",
-  Wscr: "\u{1D4B2}",
-  Xfr: "\u{1D51B}",
-  Xi: "\u039E",
-  Xopf: "\u{1D54F}",
-  Xscr: "\u{1D4B3}",
-  YAcy: "\u042F",
-  YIcy: "\u0407",
-  YUcy: "\u042E",
-  Yacute: "\xDD",
-  Ycirc: "\u0176",
-  Ycy: "\u042B",
-  Yfr: "\u{1D51C}",
-  Yopf: "\u{1D550}",
-  Yscr: "\u{1D4B4}",
-  Yuml: "\u0178",
-  ZHcy: "\u0416",
-  Zacute: "\u0179",
-  Zcaron: "\u017D",
-  Zcy: "\u0417",
-  Zdot: "\u017B",
-  ZeroWidthSpace: "\u200B",
-  Zeta: "\u0396",
-  Zfr: "\u2128",
-  Zopf: "\u2124",
-  Zscr: "\u{1D4B5}",
-  aacute: "\xE1",
-  abreve: "\u0103",
-  ac: "\u223E",
-  acE: "\u223E\u0333",
-  acd: "\u223F",
-  acirc: "\xE2",
-  acute: "\xB4",
-  acy: "\u0430",
-  aelig: "\xE6",
-  af: "\u2061",
-  afr: "\u{1D51E}",
-  agrave: "\xE0",
-  alefsym: "\u2135",
-  aleph: "\u2135",
-  alpha: "\u03B1",
-  amacr: "\u0101",
-  amalg: "\u2A3F",
-  amp: "&",
-  and: "\u2227",
-  andand: "\u2A55",
-  andd: "\u2A5C",
-  andslope: "\u2A58",
-  andv: "\u2A5A",
-  ang: "\u2220",
-  ange: "\u29A4",
-  angle: "\u2220",
-  angmsd: "\u2221",
-  angmsdaa: "\u29A8",
-  angmsdab: "\u29A9",
-  angmsdac: "\u29AA",
-  angmsdad: "\u29AB",
-  angmsdae: "\u29AC",
-  angmsdaf: "\u29AD",
-  angmsdag: "\u29AE",
-  angmsdah: "\u29AF",
-  angrt: "\u221F",
-  angrtvb: "\u22BE",
-  angrtvbd: "\u299D",
-  angsph: "\u2222",
-  angst: "\xC5",
-  angzarr: "\u237C",
-  aogon: "\u0105",
-  aopf: "\u{1D552}",
-  ap: "\u2248",
-  apE: "\u2A70",
-  apacir: "\u2A6F",
-  ape: "\u224A",
-  apid: "\u224B",
-  apos: "'",
-  approx: "\u2248",
-  approxeq: "\u224A",
-  aring: "\xE5",
-  ascr: "\u{1D4B6}",
-  ast: "*",
-  asymp: "\u2248",
-  asympeq: "\u224D",
-  atilde: "\xE3",
-  auml: "\xE4",
-  awconint: "\u2233",
-  awint: "\u2A11",
-  bNot: "\u2AED",
-  backcong: "\u224C",
-  backepsilon: "\u03F6",
-  backprime: "\u2035",
-  backsim: "\u223D",
-  backsimeq: "\u22CD",
-  barvee: "\u22BD",
-  barwed: "\u2305",
-  barwedge: "\u2305",
-  bbrk: "\u23B5",
-  bbrktbrk: "\u23B6",
-  bcong: "\u224C",
-  bcy: "\u0431",
-  bdquo: "\u201E",
-  becaus: "\u2235",
-  because: "\u2235",
-  bemptyv: "\u29B0",
-  bepsi: "\u03F6",
-  bernou: "\u212C",
-  beta: "\u03B2",
-  beth: "\u2136",
-  between: "\u226C",
-  bfr: "\u{1D51F}",
-  bigcap: "\u22C2",
-  bigcirc: "\u25EF",
-  bigcup: "\u22C3",
-  bigodot: "\u2A00",
-  bigoplus: "\u2A01",
-  bigotimes: "\u2A02",
-  bigsqcup: "\u2A06",
-  bigstar: "\u2605",
-  bigtriangledown: "\u25BD",
-  bigtriangleup: "\u25B3",
-  biguplus: "\u2A04",
-  bigvee: "\u22C1",
-  bigwedge: "\u22C0",
-  bkarow: "\u290D",
-  blacklozenge: "\u29EB",
-  blacksquare: "\u25AA",
-  blacktriangle: "\u25B4",
-  blacktriangledown: "\u25BE",
-  blacktriangleleft: "\u25C2",
-  blacktriangleright: "\u25B8",
-  blank: "\u2423",
-  blk12: "\u2592",
-  blk14: "\u2591",
-  blk34: "\u2593",
-  block: "\u2588",
-  bne: "=\u20E5",
-  bnequiv: "\u2261\u20E5",
-  bnot: "\u2310",
-  bopf: "\u{1D553}",
-  bot: "\u22A5",
-  bottom: "\u22A5",
-  bowtie: "\u22C8",
-  boxDL: "\u2557",
-  boxDR: "\u2554",
-  boxDl: "\u2556",
-  boxDr: "\u2553",
-  boxH: "\u2550",
-  boxHD: "\u2566",
-  boxHU: "\u2569",
-  boxHd: "\u2564",
-  boxHu: "\u2567",
-  boxUL: "\u255D",
-  boxUR: "\u255A",
-  boxUl: "\u255C",
-  boxUr: "\u2559",
-  boxV: "\u2551",
-  boxVH: "\u256C",
-  boxVL: "\u2563",
-  boxVR: "\u2560",
-  boxVh: "\u256B",
-  boxVl: "\u2562",
-  boxVr: "\u255F",
-  boxbox: "\u29C9",
-  boxdL: "\u2555",
-  boxdR: "\u2552",
-  boxdl: "\u2510",
-  boxdr: "\u250C",
-  boxh: "\u2500",
-  boxhD: "\u2565",
-  boxhU: "\u2568",
-  boxhd: "\u252C",
-  boxhu: "\u2534",
-  boxminus: "\u229F",
-  boxplus: "\u229E",
-  boxtimes: "\u22A0",
-  boxuL: "\u255B",
-  boxuR: "\u2558",
-  boxul: "\u2518",
-  boxur: "\u2514",
-  boxv: "\u2502",
-  boxvH: "\u256A",
-  boxvL: "\u2561",
-  boxvR: "\u255E",
-  boxvh: "\u253C",
-  boxvl: "\u2524",
-  boxvr: "\u251C",
-  bprime: "\u2035",
-  breve: "\u02D8",
-  brvbar: "\xA6",
-  bscr: "\u{1D4B7}",
-  bsemi: "\u204F",
-  bsim: "\u223D",
-  bsime: "\u22CD",
-  bsol: "\\",
-  bsolb: "\u29C5",
-  bsolhsub: "\u27C8",
-  bull: "\u2022",
-  bullet: "\u2022",
-  bump: "\u224E",
-  bumpE: "\u2AAE",
-  bumpe: "\u224F",
-  bumpeq: "\u224F",
-  cacute: "\u0107",
-  cap: "\u2229",
-  capand: "\u2A44",
-  capbrcup: "\u2A49",
-  capcap: "\u2A4B",
-  capcup: "\u2A47",
-  capdot: "\u2A40",
-  caps: "\u2229\uFE00",
-  caret: "\u2041",
-  caron: "\u02C7",
-  ccaps: "\u2A4D",
-  ccaron: "\u010D",
-  ccedil: "\xE7",
-  ccirc: "\u0109",
-  ccups: "\u2A4C",
-  ccupssm: "\u2A50",
-  cdot: "\u010B",
-  cedil: "\xB8",
-  cemptyv: "\u29B2",
-  cent: "\xA2",
-  centerdot: "\xB7",
-  cfr: "\u{1D520}",
-  chcy: "\u0447",
-  check: "\u2713",
-  checkmark: "\u2713",
-  chi: "\u03C7",
-  cir: "\u25CB",
-  cirE: "\u29C3",
-  circ: "\u02C6",
-  circeq: "\u2257",
-  circlearrowleft: "\u21BA",
-  circlearrowright: "\u21BB",
-  circledR: "\xAE",
-  circledS: "\u24C8",
-  circledast: "\u229B",
-  circledcirc: "\u229A",
-  circleddash: "\u229D",
-  cire: "\u2257",
-  cirfnint: "\u2A10",
-  cirmid: "\u2AEF",
-  cirscir: "\u29C2",
-  clubs: "\u2663",
-  clubsuit: "\u2663",
-  colon: ":",
-  colone: "\u2254",
-  coloneq: "\u2254",
-  comma: ",",
-  commat: "@",
-  comp: "\u2201",
-  compfn: "\u2218",
-  complement: "\u2201",
-  complexes: "\u2102",
-  cong: "\u2245",
-  congdot: "\u2A6D",
-  conint: "\u222E",
-  copf: "\u{1D554}",
-  coprod: "\u2210",
-  copy: "\xA9",
-  copysr: "\u2117",
-  crarr: "\u21B5",
-  cross: "\u2717",
-  cscr: "\u{1D4B8}",
-  csub: "\u2ACF",
-  csube: "\u2AD1",
-  csup: "\u2AD0",
-  csupe: "\u2AD2",
-  ctdot: "\u22EF",
-  cudarrl: "\u2938",
-  cudarrr: "\u2935",
-  cuepr: "\u22DE",
-  cuesc: "\u22DF",
-  cularr: "\u21B6",
-  cularrp: "\u293D",
-  cup: "\u222A",
-  cupbrcap: "\u2A48",
-  cupcap: "\u2A46",
-  cupcup: "\u2A4A",
-  cupdot: "\u228D",
-  cupor: "\u2A45",
-  cups: "\u222A\uFE00",
-  curarr: "\u21B7",
-  curarrm: "\u293C",
-  curlyeqprec: "\u22DE",
-  curlyeqsucc: "\u22DF",
-  curlyvee: "\u22CE",
-  curlywedge: "\u22CF",
-  curren: "\xA4",
-  curvearrowleft: "\u21B6",
-  curvearrowright: "\u21B7",
-  cuvee: "\u22CE",
-  cuwed: "\u22CF",
-  cwconint: "\u2232",
-  cwint: "\u2231",
-  cylcty: "\u232D",
-  dArr: "\u21D3",
-  dHar: "\u2965",
-  dagger: "\u2020",
-  daleth: "\u2138",
-  darr: "\u2193",
-  dash: "\u2010",
-  dashv: "\u22A3",
-  dbkarow: "\u290F",
-  dblac: "\u02DD",
-  dcaron: "\u010F",
-  dcy: "\u0434",
-  dd: "\u2146",
-  ddagger: "\u2021",
-  ddarr: "\u21CA",
-  ddotseq: "\u2A77",
-  deg: "\xB0",
-  delta: "\u03B4",
-  demptyv: "\u29B1",
-  dfisht: "\u297F",
-  dfr: "\u{1D521}",
-  dharl: "\u21C3",
-  dharr: "\u21C2",
-  diam: "\u22C4",
-  diamond: "\u22C4",
-  diamondsuit: "\u2666",
-  diams: "\u2666",
-  die: "\xA8",
-  digamma: "\u03DD",
-  disin: "\u22F2",
-  div: "\xF7",
-  divide: "\xF7",
-  divideontimes: "\u22C7",
-  divonx: "\u22C7",
-  djcy: "\u0452",
-  dlcorn: "\u231E",
-  dlcrop: "\u230D",
-  dollar: "$",
-  dopf: "\u{1D555}",
-  dot: "\u02D9",
-  doteq: "\u2250",
-  doteqdot: "\u2251",
-  dotminus: "\u2238",
-  dotplus: "\u2214",
-  dotsquare: "\u22A1",
-  doublebarwedge: "\u2306",
-  downarrow: "\u2193",
-  downdownarrows: "\u21CA",
-  downharpoonleft: "\u21C3",
-  downharpoonright: "\u21C2",
-  drbkarow: "\u2910",
-  drcorn: "\u231F",
-  drcrop: "\u230C",
-  dscr: "\u{1D4B9}",
-  dscy: "\u0455",
-  dsol: "\u29F6",
-  dstrok: "\u0111",
-  dtdot: "\u22F1",
-  dtri: "\u25BF",
-  dtrif: "\u25BE",
-  duarr: "\u21F5",
-  duhar: "\u296F",
-  dwangle: "\u29A6",
-  dzcy: "\u045F",
-  dzigrarr: "\u27FF",
-  eDDot: "\u2A77",
-  eDot: "\u2251",
-  eacute: "\xE9",
-  easter: "\u2A6E",
-  ecaron: "\u011B",
-  ecir: "\u2256",
-  ecirc: "\xEA",
-  ecolon: "\u2255",
-  ecy: "\u044D",
-  edot: "\u0117",
-  ee: "\u2147",
-  efDot: "\u2252",
-  efr: "\u{1D522}",
-  eg: "\u2A9A",
-  egrave: "\xE8",
-  egs: "\u2A96",
-  egsdot: "\u2A98",
-  el: "\u2A99",
-  elinters: "\u23E7",
-  ell: "\u2113",
-  els: "\u2A95",
-  elsdot: "\u2A97",
-  emacr: "\u0113",
-  empty: "\u2205",
-  emptyset: "\u2205",
-  emptyv: "\u2205",
-  emsp13: "\u2004",
-  emsp14: "\u2005",
-  emsp: "\u2003",
-  eng: "\u014B",
-  ensp: "\u2002",
-  eogon: "\u0119",
-  eopf: "\u{1D556}",
-  epar: "\u22D5",
-  eparsl: "\u29E3",
-  eplus: "\u2A71",
-  epsi: "\u03B5",
-  epsilon: "\u03B5",
-  epsiv: "\u03F5",
-  eqcirc: "\u2256",
-  eqcolon: "\u2255",
-  eqsim: "\u2242",
-  eqslantgtr: "\u2A96",
-  eqslantless: "\u2A95",
-  equals: "=",
-  equest: "\u225F",
-  equiv: "\u2261",
-  equivDD: "\u2A78",
-  eqvparsl: "\u29E5",
-  erDot: "\u2253",
-  erarr: "\u2971",
-  escr: "\u212F",
-  esdot: "\u2250",
-  esim: "\u2242",
-  eta: "\u03B7",
-  eth: "\xF0",
-  euml: "\xEB",
-  euro: "\u20AC",
-  excl: "!",
-  exist: "\u2203",
-  expectation: "\u2130",
-  exponentiale: "\u2147",
-  fallingdotseq: "\u2252",
-  fcy: "\u0444",
-  female: "\u2640",
-  ffilig: "\uFB03",
-  fflig: "\uFB00",
-  ffllig: "\uFB04",
-  ffr: "\u{1D523}",
-  filig: "\uFB01",
-  fjlig: "fj",
-  flat: "\u266D",
-  fllig: "\uFB02",
-  fltns: "\u25B1",
-  fnof: "\u0192",
-  fopf: "\u{1D557}",
-  forall: "\u2200",
-  fork: "\u22D4",
-  forkv: "\u2AD9",
-  fpartint: "\u2A0D",
-  frac12: "\xBD",
-  frac13: "\u2153",
-  frac14: "\xBC",
-  frac15: "\u2155",
-  frac16: "\u2159",
-  frac18: "\u215B",
-  frac23: "\u2154",
-  frac25: "\u2156",
-  frac34: "\xBE",
-  frac35: "\u2157",
-  frac38: "\u215C",
-  frac45: "\u2158",
-  frac56: "\u215A",
-  frac58: "\u215D",
-  frac78: "\u215E",
-  frasl: "\u2044",
-  frown: "\u2322",
-  fscr: "\u{1D4BB}",
-  gE: "\u2267",
-  gEl: "\u2A8C",
-  gacute: "\u01F5",
-  gamma: "\u03B3",
-  gammad: "\u03DD",
-  gap: "\u2A86",
-  gbreve: "\u011F",
-  gcirc: "\u011D",
-  gcy: "\u0433",
-  gdot: "\u0121",
-  ge: "\u2265",
-  gel: "\u22DB",
-  geq: "\u2265",
-  geqq: "\u2267",
-  geqslant: "\u2A7E",
-  ges: "\u2A7E",
-  gescc: "\u2AA9",
-  gesdot: "\u2A80",
-  gesdoto: "\u2A82",
-  gesdotol: "\u2A84",
-  gesl: "\u22DB\uFE00",
-  gesles: "\u2A94",
-  gfr: "\u{1D524}",
-  gg: "\u226B",
-  ggg: "\u22D9",
-  gimel: "\u2137",
-  gjcy: "\u0453",
-  gl: "\u2277",
-  glE: "\u2A92",
-  gla: "\u2AA5",
-  glj: "\u2AA4",
-  gnE: "\u2269",
-  gnap: "\u2A8A",
-  gnapprox: "\u2A8A",
-  gne: "\u2A88",
-  gneq: "\u2A88",
-  gneqq: "\u2269",
-  gnsim: "\u22E7",
-  gopf: "\u{1D558}",
-  grave: "`",
-  gscr: "\u210A",
-  gsim: "\u2273",
-  gsime: "\u2A8E",
-  gsiml: "\u2A90",
-  gt: ">",
-  gtcc: "\u2AA7",
-  gtcir: "\u2A7A",
-  gtdot: "\u22D7",
-  gtlPar: "\u2995",
-  gtquest: "\u2A7C",
-  gtrapprox: "\u2A86",
-  gtrarr: "\u2978",
-  gtrdot: "\u22D7",
-  gtreqless: "\u22DB",
-  gtreqqless: "\u2A8C",
-  gtrless: "\u2277",
-  gtrsim: "\u2273",
-  gvertneqq: "\u2269\uFE00",
-  gvnE: "\u2269\uFE00",
-  hArr: "\u21D4",
-  hairsp: "\u200A",
-  half: "\xBD",
-  hamilt: "\u210B",
-  hardcy: "\u044A",
-  harr: "\u2194",
-  harrcir: "\u2948",
-  harrw: "\u21AD",
-  hbar: "\u210F",
-  hcirc: "\u0125",
-  hearts: "\u2665",
-  heartsuit: "\u2665",
-  hellip: "\u2026",
-  hercon: "\u22B9",
-  hfr: "\u{1D525}",
-  hksearow: "\u2925",
-  hkswarow: "\u2926",
-  hoarr: "\u21FF",
-  homtht: "\u223B",
-  hookleftarrow: "\u21A9",
-  hookrightarrow: "\u21AA",
-  hopf: "\u{1D559}",
-  horbar: "\u2015",
-  hscr: "\u{1D4BD}",
-  hslash: "\u210F",
-  hstrok: "\u0127",
-  hybull: "\u2043",
-  hyphen: "\u2010",
-  iacute: "\xED",
-  ic: "\u2063",
-  icirc: "\xEE",
-  icy: "\u0438",
-  iecy: "\u0435",
-  iexcl: "\xA1",
-  iff: "\u21D4",
-  ifr: "\u{1D526}",
-  igrave: "\xEC",
-  ii: "\u2148",
-  iiiint: "\u2A0C",
-  iiint: "\u222D",
-  iinfin: "\u29DC",
-  iiota: "\u2129",
-  ijlig: "\u0133",
-  imacr: "\u012B",
-  image: "\u2111",
-  imagline: "\u2110",
-  imagpart: "\u2111",
-  imath: "\u0131",
-  imof: "\u22B7",
-  imped: "\u01B5",
-  in: "\u2208",
-  incare: "\u2105",
-  infin: "\u221E",
-  infintie: "\u29DD",
-  inodot: "\u0131",
-  int: "\u222B",
-  intcal: "\u22BA",
-  integers: "\u2124",
-  intercal: "\u22BA",
-  intlarhk: "\u2A17",
-  intprod: "\u2A3C",
-  iocy: "\u0451",
-  iogon: "\u012F",
-  iopf: "\u{1D55A}",
-  iota: "\u03B9",
-  iprod: "\u2A3C",
-  iquest: "\xBF",
-  iscr: "\u{1D4BE}",
-  isin: "\u2208",
-  isinE: "\u22F9",
-  isindot: "\u22F5",
-  isins: "\u22F4",
-  isinsv: "\u22F3",
-  isinv: "\u2208",
-  it: "\u2062",
-  itilde: "\u0129",
-  iukcy: "\u0456",
-  iuml: "\xEF",
-  jcirc: "\u0135",
-  jcy: "\u0439",
-  jfr: "\u{1D527}",
-  jmath: "\u0237",
-  jopf: "\u{1D55B}",
-  jscr: "\u{1D4BF}",
-  jsercy: "\u0458",
-  jukcy: "\u0454",
-  kappa: "\u03BA",
-  kappav: "\u03F0",
-  kcedil: "\u0137",
-  kcy: "\u043A",
-  kfr: "\u{1D528}",
-  kgreen: "\u0138",
-  khcy: "\u0445",
-  kjcy: "\u045C",
-  kopf: "\u{1D55C}",
-  kscr: "\u{1D4C0}",
-  lAarr: "\u21DA",
-  lArr: "\u21D0",
-  lAtail: "\u291B",
-  lBarr: "\u290E",
-  lE: "\u2266",
-  lEg: "\u2A8B",
-  lHar: "\u2962",
-  lacute: "\u013A",
-  laemptyv: "\u29B4",
-  lagran: "\u2112",
-  lambda: "\u03BB",
-  lang: "\u27E8",
-  langd: "\u2991",
-  langle: "\u27E8",
-  lap: "\u2A85",
-  laquo: "\xAB",
-  larr: "\u2190",
-  larrb: "\u21E4",
-  larrbfs: "\u291F",
-  larrfs: "\u291D",
-  larrhk: "\u21A9",
-  larrlp: "\u21AB",
-  larrpl: "\u2939",
-  larrsim: "\u2973",
-  larrtl: "\u21A2",
-  lat: "\u2AAB",
-  latail: "\u2919",
-  late: "\u2AAD",
-  lates: "\u2AAD\uFE00",
-  lbarr: "\u290C",
-  lbbrk: "\u2772",
-  lbrace: "{",
-  lbrack: "[",
-  lbrke: "\u298B",
-  lbrksld: "\u298F",
-  lbrkslu: "\u298D",
-  lcaron: "\u013E",
-  lcedil: "\u013C",
-  lceil: "\u2308",
-  lcub: "{",
-  lcy: "\u043B",
-  ldca: "\u2936",
-  ldquo: "\u201C",
-  ldquor: "\u201E",
-  ldrdhar: "\u2967",
-  ldrushar: "\u294B",
-  ldsh: "\u21B2",
-  le: "\u2264",
-  leftarrow: "\u2190",
-  leftarrowtail: "\u21A2",
-  leftharpoondown: "\u21BD",
-  leftharpoonup: "\u21BC",
-  leftleftarrows: "\u21C7",
-  leftrightarrow: "\u2194",
-  leftrightarrows: "\u21C6",
-  leftrightharpoons: "\u21CB",
-  leftrightsquigarrow: "\u21AD",
-  leftthreetimes: "\u22CB",
-  leg: "\u22DA",
-  leq: "\u2264",
-  leqq: "\u2266",
-  leqslant: "\u2A7D",
-  les: "\u2A7D",
-  lescc: "\u2AA8",
-  lesdot: "\u2A7F",
-  lesdoto: "\u2A81",
-  lesdotor: "\u2A83",
-  lesg: "\u22DA\uFE00",
-  lesges: "\u2A93",
-  lessapprox: "\u2A85",
-  lessdot: "\u22D6",
-  lesseqgtr: "\u22DA",
-  lesseqqgtr: "\u2A8B",
-  lessgtr: "\u2276",
-  lesssim: "\u2272",
-  lfisht: "\u297C",
-  lfloor: "\u230A",
-  lfr: "\u{1D529}",
-  lg: "\u2276",
-  lgE: "\u2A91",
-  lhard: "\u21BD",
-  lharu: "\u21BC",
-  lharul: "\u296A",
-  lhblk: "\u2584",
-  ljcy: "\u0459",
-  ll: "\u226A",
-  llarr: "\u21C7",
-  llcorner: "\u231E",
-  llhard: "\u296B",
-  lltri: "\u25FA",
-  lmidot: "\u0140",
-  lmoust: "\u23B0",
-  lmoustache: "\u23B0",
-  lnE: "\u2268",
-  lnap: "\u2A89",
-  lnapprox: "\u2A89",
-  lne: "\u2A87",
-  lneq: "\u2A87",
-  lneqq: "\u2268",
-  lnsim: "\u22E6",
-  loang: "\u27EC",
-  loarr: "\u21FD",
-  lobrk: "\u27E6",
-  longleftarrow: "\u27F5",
-  longleftrightarrow: "\u27F7",
-  longmapsto: "\u27FC",
-  longrightarrow: "\u27F6",
-  looparrowleft: "\u21AB",
-  looparrowright: "\u21AC",
-  lopar: "\u2985",
-  lopf: "\u{1D55D}",
-  loplus: "\u2A2D",
-  lotimes: "\u2A34",
-  lowast: "\u2217",
-  lowbar: "_",
-  loz: "\u25CA",
-  lozenge: "\u25CA",
-  lozf: "\u29EB",
-  lpar: "(",
-  lparlt: "\u2993",
-  lrarr: "\u21C6",
-  lrcorner: "\u231F",
-  lrhar: "\u21CB",
-  lrhard: "\u296D",
-  lrm: "\u200E",
-  lrtri: "\u22BF",
-  lsaquo: "\u2039",
-  lscr: "\u{1D4C1}",
-  lsh: "\u21B0",
-  lsim: "\u2272",
-  lsime: "\u2A8D",
-  lsimg: "\u2A8F",
-  lsqb: "[",
-  lsquo: "\u2018",
-  lsquor: "\u201A",
-  lstrok: "\u0142",
-  lt: "<",
-  ltcc: "\u2AA6",
-  ltcir: "\u2A79",
-  ltdot: "\u22D6",
-  lthree: "\u22CB",
-  ltimes: "\u22C9",
-  ltlarr: "\u2976",
-  ltquest: "\u2A7B",
-  ltrPar: "\u2996",
-  ltri: "\u25C3",
-  ltrie: "\u22B4",
-  ltrif: "\u25C2",
-  lurdshar: "\u294A",
-  luruhar: "\u2966",
-  lvertneqq: "\u2268\uFE00",
-  lvnE: "\u2268\uFE00",
-  mDDot: "\u223A",
-  macr: "\xAF",
-  male: "\u2642",
-  malt: "\u2720",
-  maltese: "\u2720",
-  map: "\u21A6",
-  mapsto: "\u21A6",
-  mapstodown: "\u21A7",
-  mapstoleft: "\u21A4",
-  mapstoup: "\u21A5",
-  marker: "\u25AE",
-  mcomma: "\u2A29",
-  mcy: "\u043C",
-  mdash: "\u2014",
-  measuredangle: "\u2221",
-  mfr: "\u{1D52A}",
-  mho: "\u2127",
-  micro: "\xB5",
-  mid: "\u2223",
-  midast: "*",
-  midcir: "\u2AF0",
-  middot: "\xB7",
-  minus: "\u2212",
-  minusb: "\u229F",
-  minusd: "\u2238",
-  minusdu: "\u2A2A",
-  mlcp: "\u2ADB",
-  mldr: "\u2026",
-  mnplus: "\u2213",
-  models: "\u22A7",
-  mopf: "\u{1D55E}",
-  mp: "\u2213",
-  mscr: "\u{1D4C2}",
-  mstpos: "\u223E",
-  mu: "\u03BC",
-  multimap: "\u22B8",
-  mumap: "\u22B8",
-  nGg: "\u22D9\u0338",
-  nGt: "\u226B\u20D2",
-  nGtv: "\u226B\u0338",
-  nLeftarrow: "\u21CD",
-  nLeftrightarrow: "\u21CE",
-  nLl: "\u22D8\u0338",
-  nLt: "\u226A\u20D2",
-  nLtv: "\u226A\u0338",
-  nRightarrow: "\u21CF",
-  nVDash: "\u22AF",
-  nVdash: "\u22AE",
-  nabla: "\u2207",
-  nacute: "\u0144",
-  nang: "\u2220\u20D2",
-  nap: "\u2249",
-  napE: "\u2A70\u0338",
-  napid: "\u224B\u0338",
-  napos: "\u0149",
-  napprox: "\u2249",
-  natur: "\u266E",
-  natural: "\u266E",
-  naturals: "\u2115",
-  nbsp: "\xA0",
-  nbump: "\u224E\u0338",
-  nbumpe: "\u224F\u0338",
-  ncap: "\u2A43",
-  ncaron: "\u0148",
-  ncedil: "\u0146",
-  ncong: "\u2247",
-  ncongdot: "\u2A6D\u0338",
-  ncup: "\u2A42",
-  ncy: "\u043D",
-  ndash: "\u2013",
-  ne: "\u2260",
-  neArr: "\u21D7",
-  nearhk: "\u2924",
-  nearr: "\u2197",
-  nearrow: "\u2197",
-  nedot: "\u2250\u0338",
-  nequiv: "\u2262",
-  nesear: "\u2928",
-  nesim: "\u2242\u0338",
-  nexist: "\u2204",
-  nexists: "\u2204",
-  nfr: "\u{1D52B}",
-  ngE: "\u2267\u0338",
-  nge: "\u2271",
-  ngeq: "\u2271",
-  ngeqq: "\u2267\u0338",
-  ngeqslant: "\u2A7E\u0338",
-  nges: "\u2A7E\u0338",
-  ngsim: "\u2275",
-  ngt: "\u226F",
-  ngtr: "\u226F",
-  nhArr: "\u21CE",
-  nharr: "\u21AE",
-  nhpar: "\u2AF2",
-  ni: "\u220B",
-  nis: "\u22FC",
-  nisd: "\u22FA",
-  niv: "\u220B",
-  njcy: "\u045A",
-  nlArr: "\u21CD",
-  nlE: "\u2266\u0338",
-  nlarr: "\u219A",
-  nldr: "\u2025",
-  nle: "\u2270",
-  nleftarrow: "\u219A",
-  nleftrightarrow: "\u21AE",
-  nleq: "\u2270",
-  nleqq: "\u2266\u0338",
-  nleqslant: "\u2A7D\u0338",
-  nles: "\u2A7D\u0338",
-  nless: "\u226E",
-  nlsim: "\u2274",
-  nlt: "\u226E",
-  nltri: "\u22EA",
-  nltrie: "\u22EC",
-  nmid: "\u2224",
-  nopf: "\u{1D55F}",
-  not: "\xAC",
-  notin: "\u2209",
-  notinE: "\u22F9\u0338",
-  notindot: "\u22F5\u0338",
-  notinva: "\u2209",
-  notinvb: "\u22F7",
-  notinvc: "\u22F6",
-  notni: "\u220C",
-  notniva: "\u220C",
-  notnivb: "\u22FE",
-  notnivc: "\u22FD",
-  npar: "\u2226",
-  nparallel: "\u2226",
-  nparsl: "\u2AFD\u20E5",
-  npart: "\u2202\u0338",
-  npolint: "\u2A14",
-  npr: "\u2280",
-  nprcue: "\u22E0",
-  npre: "\u2AAF\u0338",
-  nprec: "\u2280",
-  npreceq: "\u2AAF\u0338",
-  nrArr: "\u21CF",
-  nrarr: "\u219B",
-  nrarrc: "\u2933\u0338",
-  nrarrw: "\u219D\u0338",
-  nrightarrow: "\u219B",
-  nrtri: "\u22EB",
-  nrtrie: "\u22ED",
-  nsc: "\u2281",
-  nsccue: "\u22E1",
-  nsce: "\u2AB0\u0338",
-  nscr: "\u{1D4C3}",
-  nshortmid: "\u2224",
-  nshortparallel: "\u2226",
-  nsim: "\u2241",
-  nsime: "\u2244",
-  nsimeq: "\u2244",
-  nsmid: "\u2224",
-  nspar: "\u2226",
-  nsqsube: "\u22E2",
-  nsqsupe: "\u22E3",
-  nsub: "\u2284",
-  nsubE: "\u2AC5\u0338",
-  nsube: "\u2288",
-  nsubset: "\u2282\u20D2",
-  nsubseteq: "\u2288",
-  nsubseteqq: "\u2AC5\u0338",
-  nsucc: "\u2281",
-  nsucceq: "\u2AB0\u0338",
-  nsup: "\u2285",
-  nsupE: "\u2AC6\u0338",
-  nsupe: "\u2289",
-  nsupset: "\u2283\u20D2",
-  nsupseteq: "\u2289",
-  nsupseteqq: "\u2AC6\u0338",
-  ntgl: "\u2279",
-  ntilde: "\xF1",
-  ntlg: "\u2278",
-  ntriangleleft: "\u22EA",
-  ntrianglelefteq: "\u22EC",
-  ntriangleright: "\u22EB",
-  ntrianglerighteq: "\u22ED",
-  nu: "\u03BD",
-  num: "#",
-  numero: "\u2116",
-  numsp: "\u2007",
-  nvDash: "\u22AD",
-  nvHarr: "\u2904",
-  nvap: "\u224D\u20D2",
-  nvdash: "\u22AC",
-  nvge: "\u2265\u20D2",
-  nvgt: ">\u20D2",
-  nvinfin: "\u29DE",
-  nvlArr: "\u2902",
-  nvle: "\u2264\u20D2",
-  nvlt: "<\u20D2",
-  nvltrie: "\u22B4\u20D2",
-  nvrArr: "\u2903",
-  nvrtrie: "\u22B5\u20D2",
-  nvsim: "\u223C\u20D2",
-  nwArr: "\u21D6",
-  nwarhk: "\u2923",
-  nwarr: "\u2196",
-  nwarrow: "\u2196",
-  nwnear: "\u2927",
-  oS: "\u24C8",
-  oacute: "\xF3",
-  oast: "\u229B",
-  ocir: "\u229A",
-  ocirc: "\xF4",
-  ocy: "\u043E",
-  odash: "\u229D",
-  odblac: "\u0151",
-  odiv: "\u2A38",
-  odot: "\u2299",
-  odsold: "\u29BC",
-  oelig: "\u0153",
-  ofcir: "\u29BF",
-  ofr: "\u{1D52C}",
-  ogon: "\u02DB",
-  ograve: "\xF2",
-  ogt: "\u29C1",
-  ohbar: "\u29B5",
-  ohm: "\u03A9",
-  oint: "\u222E",
-  olarr: "\u21BA",
-  olcir: "\u29BE",
-  olcross: "\u29BB",
-  oline: "\u203E",
-  olt: "\u29C0",
-  omacr: "\u014D",
-  omega: "\u03C9",
-  omicron: "\u03BF",
-  omid: "\u29B6",
-  ominus: "\u2296",
-  oopf: "\u{1D560}",
-  opar: "\u29B7",
-  operp: "\u29B9",
-  oplus: "\u2295",
-  or: "\u2228",
-  orarr: "\u21BB",
-  ord: "\u2A5D",
-  order: "\u2134",
-  orderof: "\u2134",
-  ordf: "\xAA",
-  ordm: "\xBA",
-  origof: "\u22B6",
-  oror: "\u2A56",
-  orslope: "\u2A57",
-  orv: "\u2A5B",
-  oscr: "\u2134",
-  oslash: "\xF8",
-  osol: "\u2298",
-  otilde: "\xF5",
-  otimes: "\u2297",
-  otimesas: "\u2A36",
-  ouml: "\xF6",
-  ovbar: "\u233D",
-  par: "\u2225",
-  para: "\xB6",
-  parallel: "\u2225",
-  parsim: "\u2AF3",
-  parsl: "\u2AFD",
-  part: "\u2202",
-  pcy: "\u043F",
-  percnt: "%",
-  period: ".",
-  permil: "\u2030",
-  perp: "\u22A5",
-  pertenk: "\u2031",
-  pfr: "\u{1D52D}",
-  phi: "\u03C6",
-  phiv: "\u03D5",
-  phmmat: "\u2133",
-  phone: "\u260E",
-  pi: "\u03C0",
-  pitchfork: "\u22D4",
-  piv: "\u03D6",
-  planck: "\u210F",
-  planckh: "\u210E",
-  plankv: "\u210F",
-  plus: "+",
-  plusacir: "\u2A23",
-  plusb: "\u229E",
-  pluscir: "\u2A22",
-  plusdo: "\u2214",
-  plusdu: "\u2A25",
-  pluse: "\u2A72",
-  plusmn: "\xB1",
-  plussim: "\u2A26",
-  plustwo: "\u2A27",
-  pm: "\xB1",
-  pointint: "\u2A15",
-  popf: "\u{1D561}",
-  pound: "\xA3",
-  pr: "\u227A",
-  prE: "\u2AB3",
-  prap: "\u2AB7",
-  prcue: "\u227C",
-  pre: "\u2AAF",
-  prec: "\u227A",
-  precapprox: "\u2AB7",
-  preccurlyeq: "\u227C",
-  preceq: "\u2AAF",
-  precnapprox: "\u2AB9",
-  precneqq: "\u2AB5",
-  precnsim: "\u22E8",
-  precsim: "\u227E",
-  prime: "\u2032",
-  primes: "\u2119",
-  prnE: "\u2AB5",
-  prnap: "\u2AB9",
-  prnsim: "\u22E8",
-  prod: "\u220F",
-  profalar: "\u232E",
-  profline: "\u2312",
-  profsurf: "\u2313",
-  prop: "\u221D",
-  propto: "\u221D",
-  prsim: "\u227E",
-  prurel: "\u22B0",
-  pscr: "\u{1D4C5}",
-  psi: "\u03C8",
-  puncsp: "\u2008",
-  qfr: "\u{1D52E}",
-  qint: "\u2A0C",
-  qopf: "\u{1D562}",
-  qprime: "\u2057",
-  qscr: "\u{1D4C6}",
-  quaternions: "\u210D",
-  quatint: "\u2A16",
-  quest: "?",
-  questeq: "\u225F",
+function matchOrInsertSemicolon(parser, context) {
+  var _a2, _b2;
+  if ((parser.flags & 1) === 0 && (parser.getToken() & 1048576) !== 1048576) {
+    parser.report(30, KeywordDescTable[parser.getToken() & 255]);
+  }
+  if (!consumeOpt(parser, context, 1074790417)) {
+    (_b2 = (_a2 = parser.options).onInsertedSemicolon) == null ? void 0 : _b2.call(_a2, parser.startIndex);
+  }
+}
+__name(matchOrInsertSemicolon, "matchOrInsertSemicolon");
+function isValidStrictMode(parser, index, tokenIndex, tokenValue) {
+  if (index - tokenIndex < 13 && tokenValue === "use strict") {
+    if ((parser.getToken() & 1048576) === 1048576 || parser.flags & 1) {
+      return 1;
+    }
+  }
+  return 0;
+}
+__name(isValidStrictMode, "isValidStrictMode");
+function optionalBit(parser, context, t) {
+  if (parser.getToken() !== t)
+    return 0;
+  nextToken(parser, context);
+  return 1;
+}
+__name(optionalBit, "optionalBit");
+function consumeOpt(parser, context, t) {
+  if (parser.getToken() !== t)
+    return false;
+  nextToken(parser, context);
+  return true;
+}
+__name(consumeOpt, "consumeOpt");
+function consume(parser, context, t) {
+  if (parser.getToken() !== t)
+    parser.report(25, KeywordDescTable[t & 255]);
+  nextToken(parser, context);
+}
+__name(consume, "consume");
+function reinterpretToPattern(parser, node) {
+  switch (node.type) {
+    case "ArrayExpression": {
+      node.type = "ArrayPattern";
+      const { elements } = node;
+      for (let i2 = 0, n = elements.length; i2 < n; ++i2) {
+        const element = elements[i2];
+        if (element)
+          reinterpretToPattern(parser, element);
+      }
+      return;
+    }
+    case "ObjectExpression": {
+      node.type = "ObjectPattern";
+      const { properties } = node;
+      for (let i2 = 0, n = properties.length; i2 < n; ++i2) {
+        reinterpretToPattern(parser, properties[i2]);
+      }
+      return;
+    }
+    case "AssignmentExpression":
+      node.type = "AssignmentPattern";
+      if (node.operator !== "=")
+        parser.report(71);
+      delete node.operator;
+      reinterpretToPattern(parser, node.left);
+      return;
+    case "Property":
+      reinterpretToPattern(parser, node.value);
+      return;
+    case "SpreadElement":
+      node.type = "RestElement";
+      reinterpretToPattern(parser, node.argument);
+  }
+}
+__name(reinterpretToPattern, "reinterpretToPattern");
+function validateBindingIdentifier(parser, context, kind, t, skipEvalArgCheck) {
+  if (context & 1) {
+    if ((t & 36864) === 36864) {
+      parser.report(120);
+    }
+    if (!skipEvalArgCheck && (t & 537079808) === 537079808) {
+      parser.report(121);
+    }
+  }
+  if ((t & 20480) === 20480 || t === -2147483527) {
+    parser.report(102);
+  }
+  if (kind & (8 | 16) && (t & 255) === (241737 & 255)) {
+    parser.report(100);
+  }
+  if (context & (2048 | 2) && t === 209006) {
+    parser.report(112);
+  }
+  if (context & (1024 | 1) && t === 241771) {
+    parser.report(97, "yield");
+  }
+}
+__name(validateBindingIdentifier, "validateBindingIdentifier");
+function validateFunctionName(parser, context, t) {
+  if (context & 1) {
+    if ((t & 36864) === 36864) {
+      parser.report(120);
+    }
+    if ((t & 537079808) === 537079808) {
+      parser.report(121);
+    }
+    if (t === -2147483526) {
+      parser.report(95);
+    }
+    if (t === -2147483527) {
+      parser.report(95);
+    }
+  }
+  if ((t & 20480) === 20480) {
+    parser.report(102);
+  }
+  if (context & (2048 | 2) && t === 209006) {
+    parser.report(112);
+  }
+  if (context & (1024 | 1) && t === 241771) {
+    parser.report(97, "yield");
+  }
+}
+__name(validateFunctionName, "validateFunctionName");
+function isStrictReservedWord(parser, context, t) {
+  var _a2;
+  if (t === 209006) {
+    if (context & (2048 | 2))
+      parser.report(112);
+    if ((parser.destructible & 128) === 0) {
+      (_a2 = parser.firstAwaitLocation) != null ? _a2 : parser.firstAwaitLocation = { start: parser.tokenStart, end: parser.currentLocation };
+    }
+    parser.destructible |= 128;
+  }
+  if (t === 241771 && context & 1024)
+    parser.report(97, "yield");
+  return (t & 20480) === 20480 || (t & 36864) === 36864 || t == -2147483526;
+}
+__name(isStrictReservedWord, "isStrictReservedWord");
+function isPropertyWithPrivateFieldKey(expr) {
+  return !expr.property ? false : expr.property.type === "PrivateIdentifier";
+}
+__name(isPropertyWithPrivateFieldKey, "isPropertyWithPrivateFieldKey");
+function isValidLabel(parser, labels, name, isIterationStatement) {
+  while (labels) {
+    if (labels["$" + name]) {
+      if (isIterationStatement)
+        parser.report(139);
+      return 1;
+    }
+    if (isIterationStatement && labels.loop)
+      isIterationStatement = 0;
+    labels = labels["$"];
+  }
+  return 0;
+}
+__name(isValidLabel, "isValidLabel");
+function validateAndDeclareLabel(parser, labels, name) {
+  let set = labels;
+  while (set) {
+    if (set["$" + name])
+      parser.report(138, name);
+    set = set["$"];
+  }
+  labels["$" + name] = 1;
+}
+__name(validateAndDeclareLabel, "validateAndDeclareLabel");
+function isEqualTagName(elementName) {
+  switch (elementName.type) {
+    case "JSXIdentifier":
+      return elementName.name;
+    case "JSXNamespacedName":
+      return elementName.namespace + ":" + elementName.name;
+    case "JSXMemberExpression":
+      return isEqualTagName(elementName.object) + "." + isEqualTagName(elementName.property);
+  }
+}
+__name(isEqualTagName, "isEqualTagName");
+function isValidIdentifier(context, t) {
+  if (context & (1 | 1024)) {
+    if (context & 2 && t === 209006)
+      return false;
+    if (context & 1024 && t === 241771)
+      return false;
+    return (t & 12288) === 12288;
+  }
+  return (t & 12288) === 12288 || (t & 36864) === 36864;
+}
+__name(isValidIdentifier, "isValidIdentifier");
+function classifyIdentifier(parser, context, t) {
+  if ((t & 537079808) === 537079808) {
+    if (context & 1)
+      parser.report(121);
+    parser.flags |= 512;
+  }
+  if (!isValidIdentifier(context, t))
+    parser.report(0);
+}
+__name(classifyIdentifier, "classifyIdentifier");
+var entities = new Map(Object.entries({
   quot: '"',
-  rAarr: "\u21DB",
-  rArr: "\u21D2",
-  rAtail: "\u291C",
-  rBarr: "\u290F",
-  rHar: "\u2964",
-  race: "\u223D\u0331",
-  racute: "\u0155",
-  radic: "\u221A",
-  raemptyv: "\u29B3",
-  rang: "\u27E9",
-  rangd: "\u2992",
-  range: "\u29A5",
-  rangle: "\u27E9",
-  raquo: "\xBB",
-  rarr: "\u2192",
-  rarrap: "\u2975",
-  rarrb: "\u21E5",
-  rarrbfs: "\u2920",
-  rarrc: "\u2933",
-  rarrfs: "\u291E",
-  rarrhk: "\u21AA",
-  rarrlp: "\u21AC",
-  rarrpl: "\u2945",
-  rarrsim: "\u2974",
-  rarrtl: "\u21A3",
-  rarrw: "\u219D",
-  ratail: "\u291A",
-  ratio: "\u2236",
-  rationals: "\u211A",
-  rbarr: "\u290D",
-  rbbrk: "\u2773",
-  rbrace: "}",
-  rbrack: "]",
-  rbrke: "\u298C",
-  rbrksld: "\u298E",
-  rbrkslu: "\u2990",
-  rcaron: "\u0159",
-  rcedil: "\u0157",
-  rceil: "\u2309",
-  rcub: "}",
-  rcy: "\u0440",
-  rdca: "\u2937",
-  rdldhar: "\u2969",
-  rdquo: "\u201D",
-  rdquor: "\u201D",
-  rdsh: "\u21B3",
-  real: "\u211C",
-  realine: "\u211B",
-  realpart: "\u211C",
-  reals: "\u211D",
-  rect: "\u25AD",
-  reg: "\xAE",
-  rfisht: "\u297D",
-  rfloor: "\u230B",
-  rfr: "\u{1D52F}",
-  rhard: "\u21C1",
-  rharu: "\u21C0",
-  rharul: "\u296C",
-  rho: "\u03C1",
-  rhov: "\u03F1",
-  rightarrow: "\u2192",
-  rightarrowtail: "\u21A3",
-  rightharpoondown: "\u21C1",
-  rightharpoonup: "\u21C0",
-  rightleftarrows: "\u21C4",
-  rightleftharpoons: "\u21CC",
-  rightrightarrows: "\u21C9",
-  rightsquigarrow: "\u219D",
-  rightthreetimes: "\u22CC",
-  ring: "\u02DA",
-  risingdotseq: "\u2253",
-  rlarr: "\u21C4",
-  rlhar: "\u21CC",
-  rlm: "\u200F",
-  rmoust: "\u23B1",
-  rmoustache: "\u23B1",
-  rnmid: "\u2AEE",
-  roang: "\u27ED",
-  roarr: "\u21FE",
-  robrk: "\u27E7",
-  ropar: "\u2986",
-  ropf: "\u{1D563}",
-  roplus: "\u2A2E",
-  rotimes: "\u2A35",
-  rpar: ")",
-  rpargt: "\u2994",
-  rppolint: "\u2A12",
-  rrarr: "\u21C9",
-  rsaquo: "\u203A",
-  rscr: "\u{1D4C7}",
-  rsh: "\u21B1",
-  rsqb: "]",
-  rsquo: "\u2019",
-  rsquor: "\u2019",
-  rthree: "\u22CC",
-  rtimes: "\u22CA",
-  rtri: "\u25B9",
-  rtrie: "\u22B5",
-  rtrif: "\u25B8",
-  rtriltri: "\u29CE",
-  ruluhar: "\u2968",
-  rx: "\u211E",
-  sacute: "\u015B",
-  sbquo: "\u201A",
-  sc: "\u227B",
-  scE: "\u2AB4",
-  scap: "\u2AB8",
-  scaron: "\u0161",
-  sccue: "\u227D",
-  sce: "\u2AB0",
-  scedil: "\u015F",
-  scirc: "\u015D",
-  scnE: "\u2AB6",
-  scnap: "\u2ABA",
-  scnsim: "\u22E9",
-  scpolint: "\u2A13",
-  scsim: "\u227F",
-  scy: "\u0441",
-  sdot: "\u22C5",
-  sdotb: "\u22A1",
-  sdote: "\u2A66",
-  seArr: "\u21D8",
-  searhk: "\u2925",
-  searr: "\u2198",
-  searrow: "\u2198",
+  amp: "&",
+  apos: "'",
+  lt: "<",
+  gt: ">",
+  nbsp: "\xA0",
+  iexcl: "\xA1",
+  cent: "\xA2",
+  pound: "\xA3",
+  curren: "\xA4",
+  yen: "\xA5",
+  brvbar: "\xA6",
   sect: "\xA7",
-  semi: ";",
-  seswar: "\u2929",
-  setminus: "\u2216",
-  setmn: "\u2216",
-  sext: "\u2736",
-  sfr: "\u{1D530}",
-  sfrown: "\u2322",
-  sharp: "\u266F",
-  shchcy: "\u0449",
-  shcy: "\u0448",
-  shortmid: "\u2223",
-  shortparallel: "\u2225",
+  uml: "\xA8",
+  copy: "\xA9",
+  ordf: "\xAA",
+  laquo: "\xAB",
+  not: "\xAC",
   shy: "\xAD",
-  sigma: "\u03C3",
-  sigmaf: "\u03C2",
-  sigmav: "\u03C2",
-  sim: "\u223C",
-  simdot: "\u2A6A",
-  sime: "\u2243",
-  simeq: "\u2243",
-  simg: "\u2A9E",
-  simgE: "\u2AA0",
-  siml: "\u2A9D",
-  simlE: "\u2A9F",
-  simne: "\u2246",
-  simplus: "\u2A24",
-  simrarr: "\u2972",
-  slarr: "\u2190",
-  smallsetminus: "\u2216",
-  smashp: "\u2A33",
-  smeparsl: "\u29E4",
-  smid: "\u2223",
-  smile: "\u2323",
-  smt: "\u2AAA",
-  smte: "\u2AAC",
-  smtes: "\u2AAC\uFE00",
-  softcy: "\u044C",
-  sol: "/",
-  solb: "\u29C4",
-  solbar: "\u233F",
-  sopf: "\u{1D564}",
-  spades: "\u2660",
-  spadesuit: "\u2660",
-  spar: "\u2225",
-  sqcap: "\u2293",
-  sqcaps: "\u2293\uFE00",
-  sqcup: "\u2294",
-  sqcups: "\u2294\uFE00",
-  sqsub: "\u228F",
-  sqsube: "\u2291",
-  sqsubset: "\u228F",
-  sqsubseteq: "\u2291",
-  sqsup: "\u2290",
-  sqsupe: "\u2292",
-  sqsupset: "\u2290",
-  sqsupseteq: "\u2292",
-  squ: "\u25A1",
-  square: "\u25A1",
-  squarf: "\u25AA",
-  squf: "\u25AA",
-  srarr: "\u2192",
-  sscr: "\u{1D4C8}",
-  ssetmn: "\u2216",
-  ssmile: "\u2323",
-  sstarf: "\u22C6",
-  star: "\u2606",
-  starf: "\u2605",
-  straightepsilon: "\u03F5",
-  straightphi: "\u03D5",
-  strns: "\xAF",
-  sub: "\u2282",
-  subE: "\u2AC5",
-  subdot: "\u2ABD",
-  sube: "\u2286",
-  subedot: "\u2AC3",
-  submult: "\u2AC1",
-  subnE: "\u2ACB",
-  subne: "\u228A",
-  subplus: "\u2ABF",
-  subrarr: "\u2979",
-  subset: "\u2282",
-  subseteq: "\u2286",
-  subseteqq: "\u2AC5",
-  subsetneq: "\u228A",
-  subsetneqq: "\u2ACB",
-  subsim: "\u2AC7",
-  subsub: "\u2AD5",
-  subsup: "\u2AD3",
-  succ: "\u227B",
-  succapprox: "\u2AB8",
-  succcurlyeq: "\u227D",
-  succeq: "\u2AB0",
-  succnapprox: "\u2ABA",
-  succneqq: "\u2AB6",
-  succnsim: "\u22E9",
-  succsim: "\u227F",
-  sum: "\u2211",
-  sung: "\u266A",
-  sup1: "\xB9",
+  reg: "\xAE",
+  macr: "\xAF",
+  deg: "\xB0",
+  plusmn: "\xB1",
   sup2: "\xB2",
   sup3: "\xB3",
-  sup: "\u2283",
-  supE: "\u2AC6",
-  supdot: "\u2ABE",
-  supdsub: "\u2AD8",
-  supe: "\u2287",
-  supedot: "\u2AC4",
-  suphsol: "\u27C9",
-  suphsub: "\u2AD7",
-  suplarr: "\u297B",
-  supmult: "\u2AC2",
-  supnE: "\u2ACC",
-  supne: "\u228B",
-  supplus: "\u2AC0",
-  supset: "\u2283",
-  supseteq: "\u2287",
-  supseteqq: "\u2AC6",
-  supsetneq: "\u228B",
-  supsetneqq: "\u2ACC",
-  supsim: "\u2AC8",
-  supsub: "\u2AD4",
-  supsup: "\u2AD6",
-  swArr: "\u21D9",
-  swarhk: "\u2926",
-  swarr: "\u2199",
-  swarrow: "\u2199",
-  swnwar: "\u292A",
-  szlig: "\xDF",
-  target: "\u2316",
-  tau: "\u03C4",
-  tbrk: "\u23B4",
-  tcaron: "\u0165",
-  tcedil: "\u0163",
-  tcy: "\u0442",
-  tdot: "\u20DB",
-  telrec: "\u2315",
-  tfr: "\u{1D531}",
-  there4: "\u2234",
-  therefore: "\u2234",
-  theta: "\u03B8",
-  thetasym: "\u03D1",
-  thetav: "\u03D1",
-  thickapprox: "\u2248",
-  thicksim: "\u223C",
-  thinsp: "\u2009",
-  thkap: "\u2248",
-  thksim: "\u223C",
-  thorn: "\xFE",
-  tilde: "\u02DC",
+  acute: "\xB4",
+  micro: "\xB5",
+  para: "\xB6",
+  middot: "\xB7",
+  cedil: "\xB8",
+  sup1: "\xB9",
+  ordm: "\xBA",
+  raquo: "\xBB",
+  frac14: "\xBC",
+  frac12: "\xBD",
+  frac34: "\xBE",
+  iquest: "\xBF",
+  Agrave: "\xC0",
+  Aacute: "\xC1",
+  Acirc: "\xC2",
+  Atilde: "\xC3",
+  Auml: "\xC4",
+  Aring: "\xC5",
+  AElig: "\xC6",
+  Ccedil: "\xC7",
+  Egrave: "\xC8",
+  Eacute: "\xC9",
+  Ecirc: "\xCA",
+  Euml: "\xCB",
+  Igrave: "\xCC",
+  Iacute: "\xCD",
+  Icirc: "\xCE",
+  Iuml: "\xCF",
+  ETH: "\xD0",
+  Ntilde: "\xD1",
+  Ograve: "\xD2",
+  Oacute: "\xD3",
+  Ocirc: "\xD4",
+  Otilde: "\xD5",
+  Ouml: "\xD6",
   times: "\xD7",
-  timesb: "\u22A0",
-  timesbar: "\u2A31",
-  timesd: "\u2A30",
-  tint: "\u222D",
-  toea: "\u2928",
-  top: "\u22A4",
-  topbot: "\u2336",
-  topcir: "\u2AF1",
-  topf: "\u{1D565}",
-  topfork: "\u2ADA",
-  tosa: "\u2929",
-  tprime: "\u2034",
-  trade: "\u2122",
-  triangle: "\u25B5",
-  triangledown: "\u25BF",
-  triangleleft: "\u25C3",
-  trianglelefteq: "\u22B4",
-  triangleq: "\u225C",
-  triangleright: "\u25B9",
-  trianglerighteq: "\u22B5",
-  tridot: "\u25EC",
-  trie: "\u225C",
-  triminus: "\u2A3A",
-  triplus: "\u2A39",
-  trisb: "\u29CD",
-  tritime: "\u2A3B",
-  trpezium: "\u23E2",
-  tscr: "\u{1D4C9}",
-  tscy: "\u0446",
-  tshcy: "\u045B",
-  tstrok: "\u0167",
-  twixt: "\u226C",
-  twoheadleftarrow: "\u219E",
-  twoheadrightarrow: "\u21A0",
-  uArr: "\u21D1",
-  uHar: "\u2963",
-  uacute: "\xFA",
-  uarr: "\u2191",
-  ubrcy: "\u045E",
-  ubreve: "\u016D",
-  ucirc: "\xFB",
-  ucy: "\u0443",
-  udarr: "\u21C5",
-  udblac: "\u0171",
-  udhar: "\u296E",
-  ufisht: "\u297E",
-  ufr: "\u{1D532}",
+  Oslash: "\xD8",
+  Ugrave: "\xD9",
+  Uacute: "\xDA",
+  Ucirc: "\xDB",
+  Uuml: "\xDC",
+  Yacute: "\xDD",
+  THORN: "\xDE",
+  szlig: "\xDF",
+  agrave: "\xE0",
+  aacute: "\xE1",
+  acirc: "\xE2",
+  atilde: "\xE3",
+  auml: "\xE4",
+  aring: "\xE5",
+  aelig: "\xE6",
+  ccedil: "\xE7",
+  egrave: "\xE8",
+  eacute: "\xE9",
+  ecirc: "\xEA",
+  euml: "\xEB",
+  igrave: "\xEC",
+  iacute: "\xED",
+  icirc: "\xEE",
+  iuml: "\xEF",
+  eth: "\xF0",
+  ntilde: "\xF1",
+  ograve: "\xF2",
+  oacute: "\xF3",
+  ocirc: "\xF4",
+  otilde: "\xF5",
+  ouml: "\xF6",
+  divide: "\xF7",
+  oslash: "\xF8",
   ugrave: "\xF9",
-  uharl: "\u21BF",
-  uharr: "\u21BE",
-  uhblk: "\u2580",
-  ulcorn: "\u231C",
-  ulcorner: "\u231C",
-  ulcrop: "\u230F",
-  ultri: "\u25F8",
-  umacr: "\u016B",
-  uml: "\xA8",
-  uogon: "\u0173",
-  uopf: "\u{1D566}",
-  uparrow: "\u2191",
-  updownarrow: "\u2195",
-  upharpoonleft: "\u21BF",
-  upharpoonright: "\u21BE",
-  uplus: "\u228E",
-  upsi: "\u03C5",
-  upsih: "\u03D2",
-  upsilon: "\u03C5",
-  upuparrows: "\u21C8",
-  urcorn: "\u231D",
-  urcorner: "\u231D",
-  urcrop: "\u230E",
-  uring: "\u016F",
-  urtri: "\u25F9",
-  uscr: "\u{1D4CA}",
-  utdot: "\u22F0",
-  utilde: "\u0169",
-  utri: "\u25B5",
-  utrif: "\u25B4",
-  uuarr: "\u21C8",
+  uacute: "\xFA",
+  ucirc: "\xFB",
   uuml: "\xFC",
-  uwangle: "\u29A7",
-  vArr: "\u21D5",
-  vBar: "\u2AE8",
-  vBarv: "\u2AE9",
-  vDash: "\u22A8",
-  vangrt: "\u299C",
-  varepsilon: "\u03F5",
-  varkappa: "\u03F0",
-  varnothing: "\u2205",
-  varphi: "\u03D5",
-  varpi: "\u03D6",
-  varpropto: "\u221D",
-  varr: "\u2195",
-  varrho: "\u03F1",
-  varsigma: "\u03C2",
-  varsubsetneq: "\u228A\uFE00",
-  varsubsetneqq: "\u2ACB\uFE00",
-  varsupsetneq: "\u228B\uFE00",
-  varsupsetneqq: "\u2ACC\uFE00",
-  vartheta: "\u03D1",
-  vartriangleleft: "\u22B2",
-  vartriangleright: "\u22B3",
-  vcy: "\u0432",
-  vdash: "\u22A2",
-  vee: "\u2228",
-  veebar: "\u22BB",
-  veeeq: "\u225A",
-  vellip: "\u22EE",
-  verbar: "|",
-  vert: "|",
-  vfr: "\u{1D533}",
-  vltri: "\u22B2",
-  vnsub: "\u2282\u20D2",
-  vnsup: "\u2283\u20D2",
-  vopf: "\u{1D567}",
-  vprop: "\u221D",
-  vrtri: "\u22B3",
-  vscr: "\u{1D4CB}",
-  vsubnE: "\u2ACB\uFE00",
-  vsubne: "\u228A\uFE00",
-  vsupnE: "\u2ACC\uFE00",
-  vsupne: "\u228B\uFE00",
-  vzigzag: "\u299A",
-  wcirc: "\u0175",
-  wedbar: "\u2A5F",
-  wedge: "\u2227",
-  wedgeq: "\u2259",
-  weierp: "\u2118",
-  wfr: "\u{1D534}",
-  wopf: "\u{1D568}",
-  wp: "\u2118",
-  wr: "\u2240",
-  wreath: "\u2240",
-  wscr: "\u{1D4CC}",
-  xcap: "\u22C2",
-  xcirc: "\u25EF",
-  xcup: "\u22C3",
-  xdtri: "\u25BD",
-  xfr: "\u{1D535}",
-  xhArr: "\u27FA",
-  xharr: "\u27F7",
-  xi: "\u03BE",
-  xlArr: "\u27F8",
-  xlarr: "\u27F5",
-  xmap: "\u27FC",
-  xnis: "\u22FB",
-  xodot: "\u2A00",
-  xopf: "\u{1D569}",
-  xoplus: "\u2A01",
-  xotime: "\u2A02",
-  xrArr: "\u27F9",
-  xrarr: "\u27F6",
-  xscr: "\u{1D4CD}",
-  xsqcup: "\u2A06",
-  xuplus: "\u2A04",
-  xutri: "\u25B3",
-  xvee: "\u22C1",
-  xwedge: "\u22C0",
   yacute: "\xFD",
-  yacy: "\u044F",
-  ycirc: "\u0177",
-  ycy: "\u044B",
-  yen: "\xA5",
-  yfr: "\u{1D536}",
-  yicy: "\u0457",
-  yopf: "\u{1D56A}",
-  yscr: "\u{1D4CE}",
-  yucy: "\u044E",
+  thorn: "\xFE",
   yuml: "\xFF",
-  zacute: "\u017A",
-  zcaron: "\u017E",
-  zcy: "\u0437",
-  zdot: "\u017C",
-  zeetrf: "\u2128",
+  OElig: "\u0152",
+  oelig: "\u0153",
+  Scaron: "\u0160",
+  scaron: "\u0161",
+  Yuml: "\u0178",
+  fnof: "\u0192",
+  circ: "\u02C6",
+  tilde: "\u02DC",
+  Alpha: "\u0391",
+  Beta: "\u0392",
+  Gamma: "\u0393",
+  Delta: "\u0394",
+  Epsilon: "\u0395",
+  Zeta: "\u0396",
+  Eta: "\u0397",
+  Theta: "\u0398",
+  Iota: "\u0399",
+  Kappa: "\u039A",
+  Lambda: "\u039B",
+  Mu: "\u039C",
+  Nu: "\u039D",
+  Xi: "\u039E",
+  Omicron: "\u039F",
+  Pi: "\u03A0",
+  Rho: "\u03A1",
+  Sigma: "\u03A3",
+  Tau: "\u03A4",
+  Upsilon: "\u03A5",
+  Phi: "\u03A6",
+  Chi: "\u03A7",
+  Psi: "\u03A8",
+  Omega: "\u03A9",
+  alpha: "\u03B1",
+  beta: "\u03B2",
+  gamma: "\u03B3",
+  delta: "\u03B4",
+  epsilon: "\u03B5",
   zeta: "\u03B6",
-  zfr: "\u{1D537}",
-  zhcy: "\u0436",
-  zigrarr: "\u21DD",
-  zopf: "\u{1D56B}",
-  zscr: "\u{1D4CF}",
+  eta: "\u03B7",
+  theta: "\u03B8",
+  iota: "\u03B9",
+  kappa: "\u03BA",
+  lambda: "\u03BB",
+  mu: "\u03BC",
+  nu: "\u03BD",
+  xi: "\u03BE",
+  omicron: "\u03BF",
+  pi: "\u03C0",
+  rho: "\u03C1",
+  sigmaf: "\u03C2",
+  sigma: "\u03C3",
+  tau: "\u03C4",
+  upsilon: "\u03C5",
+  phi: "\u03C6",
+  chi: "\u03C7",
+  psi: "\u03C8",
+  omega: "\u03C9",
+  thetasym: "\u03D1",
+  upsih: "\u03D2",
+  piv: "\u03D6",
+  ensp: "\u2002",
+  emsp: "\u2003",
+  thinsp: "\u2009",
+  zwnj: "\u200C",
   zwj: "\u200D",
-  zwnj: "\u200C"
-};
-var decodeMap = {
-  "0": 65533,
-  "128": 8364,
-  "130": 8218,
-  "131": 402,
-  "132": 8222,
-  "133": 8230,
-  "134": 8224,
-  "135": 8225,
-  "136": 710,
-  "137": 8240,
-  "138": 352,
-  "139": 8249,
-  "140": 338,
-  "142": 381,
-  "145": 8216,
-  "146": 8217,
-  "147": 8220,
-  "148": 8221,
-  "149": 8226,
-  "150": 8211,
-  "151": 8212,
-  "152": 732,
-  "153": 8482,
-  "154": 353,
-  "155": 8250,
-  "156": 339,
-  "158": 382,
-  "159": 376
-};
+  lrm: "\u200E",
+  rlm: "\u200F",
+  ndash: "\u2013",
+  mdash: "\u2014",
+  lsquo: "\u2018",
+  rsquo: "\u2019",
+  sbquo: "\u201A",
+  ldquo: "\u201C",
+  rdquo: "\u201D",
+  bdquo: "\u201E",
+  dagger: "\u2020",
+  Dagger: "\u2021",
+  bull: "\u2022",
+  hellip: "\u2026",
+  permil: "\u2030",
+  prime: "\u2032",
+  Prime: "\u2033",
+  lsaquo: "\u2039",
+  rsaquo: "\u203A",
+  oline: "\u203E",
+  frasl: "\u2044",
+  euro: "\u20AC",
+  image: "\u2111",
+  weierp: "\u2118",
+  real: "\u211C",
+  trade: "\u2122",
+  alefsym: "\u2135",
+  larr: "\u2190",
+  uarr: "\u2191",
+  rarr: "\u2192",
+  darr: "\u2193",
+  harr: "\u2194",
+  crarr: "\u21B5",
+  lArr: "\u21D0",
+  uArr: "\u21D1",
+  rArr: "\u21D2",
+  dArr: "\u21D3",
+  hArr: "\u21D4",
+  forall: "\u2200",
+  part: "\u2202",
+  exist: "\u2203",
+  empty: "\u2205",
+  nabla: "\u2207",
+  isin: "\u2208",
+  notin: "\u2209",
+  ni: "\u220B",
+  prod: "\u220F",
+  sum: "\u2211",
+  minus: "\u2212",
+  lowast: "\u2217",
+  radic: "\u221A",
+  prop: "\u221D",
+  infin: "\u221E",
+  ang: "\u2220",
+  and: "\u2227",
+  or: "\u2228",
+  cap: "\u2229",
+  cup: "\u222A",
+  int: "\u222B",
+  there4: "\u2234",
+  sim: "\u223C",
+  cong: "\u2245",
+  asymp: "\u2248",
+  ne: "\u2260",
+  equiv: "\u2261",
+  le: "\u2264",
+  ge: "\u2265",
+  sub: "\u2282",
+  sup: "\u2283",
+  nsub: "\u2284",
+  sube: "\u2286",
+  supe: "\u2287",
+  oplus: "\u2295",
+  otimes: "\u2297",
+  perp: "\u22A5",
+  sdot: "\u22C5",
+  lceil: "\u2308",
+  rceil: "\u2309",
+  lfloor: "\u230A",
+  rfloor: "\u230B",
+  lang: "\u2329",
+  rang: "\u232A",
+  loz: "\u25CA",
+  spades: "\u2660",
+  clubs: "\u2663",
+  hearts: "\u2665",
+  diams: "\u2666"
+}));
 function decodeHTMLStrict(text) {
-  return text.replace(/&(?:[a-zA-Z]+|#[xX][\da-fA-F]+|#\d+);/g, (key) => {
-    var _a;
+  return text.replaceAll(/&(?:[\da-zA-Z]+|#x[\da-fA-F]+|#\d+);/g, (key) => {
+    var _a2;
     if (key.charAt(1) === "#") {
       const secondChar = key.charAt(2);
-      const codePoint = secondChar === "X" || secondChar === "x" ? parseInt(key.slice(3), 16) : parseInt(key.slice(2), 10);
-      return decodeCodePoint(codePoint);
+      const codePoint = secondChar === "x" ? parseInt(key.slice(3), 16) : parseInt(key.slice(2), 10);
+      return codePoint > 1114111 ? key : String.fromCodePoint(codePoint);
     }
-    return (_a = getOwnProperty(entities, key.slice(1, -1))) != null ? _a : key;
+    return (_a2 = entities.get(key.slice(1, -1))) != null ? _a2 : key;
   });
 }
 __name(decodeHTMLStrict, "decodeHTMLStrict");
-function decodeCodePoint(codePoint) {
-  var _a;
-  if (codePoint >= 55296 && codePoint <= 57343 || codePoint > 1114111) {
-    return "\uFFFD";
-  }
-  return String.fromCodePoint((_a = getOwnProperty(decodeMap, codePoint)) != null ? _a : codePoint);
-}
-__name(decodeCodePoint, "decodeCodePoint");
 function scanJSXAttributeValue(parser, context) {
   parser.startIndex = parser.tokenIndex = parser.index;
   parser.startColumn = parser.tokenColumn = parser.column;
@@ -9356,11 +8423,20 @@ function scanJSXString(parser) {
   while (char !== quote) {
     if (parser.index >= parser.end)
       parser.report(16);
+    if (char === 13) {
+      if (parser.source.charCodeAt(parser.index + 1) === 10)
+        advanceChar(parser);
+      parser.column = -1;
+      parser.line++;
+    } else if (char === 10 || char === 8232 || char === 8233) {
+      parser.column = -1;
+      parser.line++;
+    }
     char = advanceChar(parser);
   }
   if (char !== quote)
     parser.report(16);
-  parser.tokenValue = parser.source.slice(start, parser.index);
+  parser.tokenValue = decodeHTMLStrict(parser.source.slice(start, parser.index));
   advanceChar(parser);
   if (parser.options.raw)
     parser.tokenRaw = parser.source.slice(parser.tokenIndex, parser.index);
@@ -9385,14 +8461,28 @@ function nextJSXToken(parser) {
     parser.setToken(2162700);
     return;
   }
+  if (parser.currentChar === 125) {
+    parser.report(180);
+  }
+  if (parser.currentChar === 62) {
+    parser.report(181);
+  }
   let state = 0;
+  let hasCarriageReturn = false;
   while (parser.index < parser.end) {
-    const type = CharTypes[parser.source.charCodeAt(parser.index)];
-    if (type & 1024) {
+    const char = parser.source.charCodeAt(parser.index);
+    if (char === 13) {
       state |= 1 | 4;
+      hasCarriageReturn = true;
       scanNewLine(parser);
-    } else if (type & 2048) {
+    } else if (char === 10) {
       consumeLineFeed(parser, state);
+      state = state & -5 | 1;
+    } else if (char === 8232 || char === 8233) {
+      parser.flags |= 1;
+      parser.currentChar = parser.source.charCodeAt(++parser.index);
+      parser.column = 0;
+      parser.line++;
       state = state & -5 | 1;
     } else {
       advanceChar(parser);
@@ -9402,15 +8492,16 @@ function nextJSXToken(parser) {
   }
   if (parser.tokenIndex === parser.index)
     parser.report(0);
-  const raw = parser.source.slice(parser.tokenIndex, parser.index);
+  const sourceSlice = parser.source.slice(parser.tokenIndex, parser.index);
+  const raw = hasCarriageReturn ? sourceSlice.replaceAll("\r\n", "\n") : sourceSlice;
   if (parser.options.raw)
     parser.tokenRaw = raw;
   parser.tokenValue = decodeHTMLStrict(raw);
-  parser.setToken(137);
+  parser.setToken(138);
 }
 __name(nextJSXToken, "nextJSXToken");
 function rescanJSXIdentifier(parser) {
-  if ((parser.getToken() & 143360) === 143360) {
+  if (parser.getToken() & 143360) {
     const { index } = parser;
     let char = parser.currentChar;
     while (CharTypes[char] & (32768 | 2)) {
@@ -9422,107 +8513,45 @@ function rescanJSXIdentifier(parser) {
   return parser.getToken();
 }
 __name(rescanJSXIdentifier, "rescanJSXIdentifier");
-var _Scope = class _Scope {
-  constructor(parser, type = 2, parent) {
-    __publicField(this, "parser");
-    __publicField(this, "type");
-    __publicField(this, "parent");
-    __publicField(this, "scopeError");
-    __publicField(this, "variableBindings", /* @__PURE__ */ new Map());
-    this.parser = parser;
-    this.type = type;
-    this.parent = parent;
-  }
-  createChildScope(type) {
-    return new _Scope(this.parser, type, this);
-  }
-  addVarOrBlock(context, name, kind, origin) {
-    if (kind & 4) {
-      this.addVarName(context, name, kind);
-    } else {
-      this.addBlockName(context, name, kind, origin);
-    }
-    if (origin & 64) {
-      this.parser.declareUnboundVariable(name);
-    }
-  }
-  addVarName(context, name, kind) {
-    const { parser } = this;
-    let currentScope = this;
-    while (currentScope && (currentScope.type & 128) === 0) {
-      const { variableBindings } = currentScope;
-      const value = variableBindings.get(name);
-      if (value && value & 248) {
-        if (parser.options.webcompat && (context & 1) === 0 && (kind & 128 && value & 68 || value & 128 && kind & 68)) ;
-        else {
-          parser.report(145, name);
-        }
-      }
-      if (currentScope === this) {
-        if (value && value & 1 && kind & 1) {
-          currentScope.recordScopeError(145, name);
-        }
-      }
-      if (value && (value & 256 || value & 512 && !parser.options.webcompat)) {
-        parser.report(145, name);
-      }
-      currentScope.variableBindings.set(name, kind);
-      currentScope = currentScope.parent;
-    }
-  }
-  hasVariable(name) {
-    return this.variableBindings.has(name);
-  }
-  addBlockName(context, name, kind, origin) {
-    var _a;
-    const { parser } = this;
-    const value = this.variableBindings.get(name);
-    if (value && (value & 2) === 0) {
-      if (kind & 1) {
-        this.recordScopeError(145, name);
-      } else if (parser.options.webcompat && (context & 1) === 0 && origin & 2 && value === 64 && kind === 64) ;
-      else {
-        parser.report(145, name);
-      }
-    }
-    if (this.type & 64 && ((_a = this.parent) == null ? void 0 : _a.hasVariable(name)) && (this.parent.variableBindings.get(name) & 2) === 0) {
-      parser.report(145, name);
-    }
-    if (this.type & 512 && value && (value & 2) === 0) {
-      if (kind & 1) {
-        this.recordScopeError(145, name);
-      }
-    }
-    if (this.type & 32) {
-      if (this.parent.variableBindings.get(name) & 768)
-        parser.report(159, name);
-    }
-    this.variableBindings.set(name, kind);
-  }
-  recordScopeError(type, ...params) {
-    this.scopeError = {
-      type,
-      params,
-      start: this.parser.tokenStart,
-      end: this.parser.currentLocation
-    };
-  }
-  reportScopeError() {
-    const { scopeError } = this;
-    if (!scopeError) {
-      return;
-    }
-    throw new ParseError(scopeError.start, scopeError.end, scopeError.type, ...scopeError.params);
-  }
-};
-__name(_Scope, "Scope");
-var Scope = _Scope;
-function createArrowHeadParsingScope(parser, context, value) {
-  const scope = parser.createScope().createChildScope(512);
-  scope.addBlockName(context, value, 1, 0);
-  return scope;
+var nextFeatures = 1 | 2 | 4;
+function normalizeRanges(ranges) {
+  var _a2, _b2, _c;
+  if (!ranges)
+    return void 0;
+  if (ranges === true)
+    return { start: true, end: true, range: true };
+  return {
+    start: (_a2 = ranges.start) != null ? _a2 : false,
+    end: (_b2 = ranges.end) != null ? _b2 : false,
+    range: (_c = ranges.range) != null ? _c : false
+  };
 }
-__name(createArrowHeadParsingScope, "createArrowHeadParsingScope");
+__name(normalizeRanges, "normalizeRanges");
+function normalizeOptions(rawOptions) {
+  let { features, next, ranges, module, sourceType, globalReturn, ...restOptions } = {
+    validateRegex: true,
+    features: 0,
+    ...rawOptions
+  };
+  if (next) {
+    features |= nextFeatures;
+  }
+  ranges = normalizeRanges(ranges);
+  if (module && !sourceType) {
+    sourceType = "module";
+  }
+  if (globalReturn && (!sourceType || sourceType === "script")) {
+    sourceType = "commonjs";
+  }
+  const options = {
+    ...restOptions,
+    ranges,
+    features,
+    sourceType
+  };
+  return options;
+}
+__name(normalizeOptions, "normalizeOptions");
 var _PrivateScope = class _PrivateScope {
   constructor(parser, parent) {
     __publicField(this, "parser");
@@ -9539,18 +8568,18 @@ var _PrivateScope = class _PrivateScope {
       focusKind |= 768;
     const value = privateIdentifiers.get(name);
     if (this.hasPrivateIdentifier(name) && ((value & 32) !== (focusKind & 32) || value & focusKind & 768)) {
-      this.parser.report(146, name);
+      this.parser.report(148, name);
     }
     privateIdentifiers.set(name, this.hasPrivateIdentifier(name) ? value | focusKind : focusKind);
   }
   addPrivateIdentifierRef(name) {
-    var _a, _b;
-    (_b = (_a = this.refs)[name]) != null ? _b : _a[name] = [];
+    var _a2, _b2;
+    (_b2 = (_a2 = this.refs)[name]) != null ? _b2 : _a2[name] = [];
     this.refs[name].push(this.parser.tokenStart);
   }
   isPrivateIdentifierDefined(name) {
-    var _a;
-    return this.hasPrivateIdentifier(name) || Boolean((_a = this.parent) == null ? void 0 : _a.isPrivateIdentifierDefined(name));
+    var _a2;
+    return this.hasPrivateIdentifier(name) || Boolean((_a2 = this.parent) == null ? void 0 : _a2.isPrivateIdentifierDefined(name));
   }
   validatePrivateIdentifierRefs() {
     for (const name in this.refs) {
@@ -9566,13 +8595,116 @@ var _PrivateScope = class _PrivateScope {
 };
 __name(_PrivateScope, "PrivateScope");
 var PrivateScope = _PrivateScope;
+var _Scope = class _Scope {
+  constructor(parser, type = 2, parent) {
+    __publicField(this, "parser");
+    __publicField(this, "type");
+    __publicField(this, "parent");
+    __publicField(this, "scopeError");
+    __publicField(this, "variableBindings", /* @__PURE__ */ new Map());
+    this.parser = parser;
+    this.type = type;
+    this.parent = parent;
+  }
+  createChildScope(type) {
+    return new _Scope(this.parser, type, this);
+  }
+  addVarOrBlock(context, name, kind, tokenStart, tokenEnd, origin) {
+    if (kind & 4) {
+      this.addVarName(context, name, kind, tokenStart, tokenEnd);
+    } else {
+      this.addBlockName(context, name, kind, tokenStart, tokenEnd, origin);
+    }
+    if (origin & 64) {
+      this.parser.declareUnboundVariable(name);
+    }
+  }
+  addVarName(context, name, kind, tokenStart, tokenEnd) {
+    const { parser } = this;
+    let currentScope = this;
+    while (currentScope && (currentScope.type & 128) === 0) {
+      const { variableBindings } = currentScope;
+      const value = variableBindings.get(name);
+      if (value && value & 248) {
+        if (parser.options.webcompat && (context & 1) === 0 && (kind & 128 && value & 68 || value & 128 && kind & 68)) ;
+        else {
+          throw new ParseError(tokenStart, tokenEnd, 147, name);
+        }
+      }
+      if (currentScope === this) {
+        if (value && value & 1 && kind & 1) {
+          currentScope.recordScopeError(147, tokenStart, tokenEnd, name);
+        }
+      }
+      if (value && (value & 256 || value & 512 && !parser.options.webcompat)) {
+        throw new ParseError(tokenStart, tokenEnd, 147, name);
+      }
+      currentScope.variableBindings.set(name, kind);
+      currentScope = currentScope.parent;
+    }
+  }
+  hasVariable(name) {
+    return this.variableBindings.has(name);
+  }
+  addBlockName(context, name, kind, tokenStart, tokenEnd, origin = 0) {
+    var _a2;
+    const { parser } = this;
+    const value = this.variableBindings.get(name);
+    if (value && (value & 2) === 0) {
+      if (kind & 1) {
+        this.recordScopeError(147, tokenStart, tokenEnd, name);
+      } else if (parser.options.webcompat && (context & 1) === 0 && origin & 2 && value === 64 && kind === 64) ;
+      else {
+        throw new ParseError(tokenStart, tokenEnd, 147, name);
+      }
+    }
+    if (this.type & 64 && ((_a2 = this.parent) == null ? void 0 : _a2.hasVariable(name)) && (this.parent.variableBindings.get(name) & 2) === 0) {
+      throw new ParseError(tokenStart, tokenEnd, 147, name);
+    }
+    if (this.type & 512 && value && (value & 2) === 0) {
+      if (kind & 1) {
+        this.recordScopeError(147, tokenStart, tokenEnd, name);
+      }
+    }
+    if (this.type & 32) {
+      if (this.parent.variableBindings.get(name) & 768)
+        throw new ParseError(tokenStart, tokenEnd, 161, name);
+    }
+    this.variableBindings.set(name, kind);
+  }
+  recordScopeError(type, tokenStart, tokenEnd, ...params) {
+    var _a2;
+    (_a2 = this.scopeError) != null ? _a2 : this.scopeError = {
+      type,
+      params,
+      start: tokenStart,
+      end: tokenEnd
+    };
+  }
+  reportScopeError() {
+    const { scopeError } = this;
+    if (!scopeError) {
+      return;
+    }
+    throw new ParseError(scopeError.start, scopeError.end, scopeError.type, ...scopeError.params);
+  }
+};
+__name(_Scope, "Scope");
+var Scope = _Scope;
+function createArrowHeadParsingScope(parser, context, value, tokenStart, tokenEnd) {
+  const scope = parser.createScope().createChildScope(512);
+  scope.addBlockName(context, value, 1, tokenStart, tokenEnd);
+  return scope;
+}
+__name(createArrowHeadParsingScope, "createArrowHeadParsingScope");
 var _Parser = class _Parser {
-  constructor(source, options = {}) {
+  constructor(source, rawOptions = {}) {
     __publicField(this, "source");
-    __publicField(this, "options");
     __publicField(this, "lastOnToken", null);
+    __publicField(this, "options");
     __publicField(this, "token", 1048576);
     __publicField(this, "flags", 0);
+    __publicField(this, "features", 0);
     __publicField(this, "index", 0);
     __publicField(this, "line", 1);
     __publicField(this, "column", 0);
@@ -9589,13 +8721,22 @@ var _Parser = class _Parser {
     __publicField(this, "currentChar", 0);
     __publicField(this, "exportedNames", /* @__PURE__ */ new Set());
     __publicField(this, "exportedBindings", /* @__PURE__ */ new Set());
-    __publicField(this, "assignable", 1);
+    __publicField(this, "assignable", 0);
     __publicField(this, "destructible", 0);
+    __publicField(this, "strictReservedRange", null);
+    __publicField(this, "firstAwaitLocation", null);
     __publicField(this, "leadingDecorators", { decorators: [] });
     this.source = source;
-    this.options = options;
     this.end = source.length;
     this.currentChar = source.charCodeAt(0);
+    this.options = normalizeOptions(rawOptions);
+    this.features = this.options.features;
+    if (Array.isArray(this.options.onComment)) {
+      this.options.onComment = pushComment(this.options.onComment, this.options);
+    }
+    if (Array.isArray(this.options.onToken)) {
+      this.options.onToken = pushToken(this.options.onToken, this.options);
+    }
   }
   getToken() {
     return this.token;
@@ -9635,15 +8776,26 @@ var _Parser = class _Parser {
       column: this.tokenColumn
     };
   }
+  get startPosition() {
+    return {
+      index: this.startIndex,
+      line: this.startLine,
+      column: this.startColumn
+    };
+  }
   get currentLocation() {
     return { index: this.index, line: this.line, column: this.column };
   }
   finishNode(node, start, end) {
-    if (this.options.ranges) {
-      node.start = start.index;
+    const { ranges } = this.options;
+    if (ranges) {
       const endIndex = end ? end.index : this.startIndex;
-      node.end = endIndex;
-      node.range = [start.index, endIndex];
+      if (ranges.start)
+        node.start = start.index;
+      if (ranges.end)
+        node.end = endIndex;
+      if (ranges.range)
+        node.range = [start.index, endIndex];
     }
     if (this.options.loc) {
       node.loc = {
@@ -9665,7 +8817,7 @@ var _Parser = class _Parser {
   declareUnboundVariable(name) {
     const { exportedNames } = this;
     if (exportedNames.has(name)) {
-      this.report(147, name);
+      this.report(149, name);
     }
     exportedNames.add(name);
   }
@@ -9687,6 +8839,12 @@ var _Parser = class _Parser {
     }
     return void 0;
   }
+  cloneIdentifier(original) {
+    return structuredClone(original);
+  }
+  cloneStringLiteral(original) {
+    return structuredClone(original);
+  }
 };
 __name(_Parser, "Parser");
 var Parser = _Parser;
@@ -9696,10 +8854,14 @@ function pushComment(comments, options) {
       type,
       value
     };
-    if (options.ranges) {
-      comment.start = start;
-      comment.end = end;
-      comment.range = [start, end];
+    const { ranges } = options;
+    if (ranges) {
+      if (ranges.start)
+        comment.start = start;
+      if (ranges.end)
+        comment.end = end;
+      if (ranges.range)
+        comment.range = [start, end];
     }
     if (options.loc) {
       comment.loc = loc;
@@ -9713,10 +8875,14 @@ function pushToken(tokens, options) {
     const token = {
       token: type
     };
-    if (options.ranges) {
-      token.start = start;
-      token.end = end;
-      token.range = [start, end];
+    const { ranges } = options;
+    if (ranges) {
+      if (ranges.start)
+        token.start = start;
+      if (ranges.end)
+        token.end = end;
+      if (ranges.range)
+        token.range = [start, end];
     }
     if (options.loc) {
       token.loc = loc;
@@ -9725,29 +8891,17 @@ function pushToken(tokens, options) {
   };
 }
 __name(pushToken, "pushToken");
-function normalizeOptions(rawOptions) {
-  const options = { ...rawOptions };
-  if (options.onComment) {
-    options.onComment = Array.isArray(options.onComment) ? pushComment(options.onComment, options) : options.onComment;
-  }
-  if (options.onToken) {
-    options.onToken = Array.isArray(options.onToken) ? pushToken(options.onToken, options) : options.onToken;
-  }
-  return options;
-}
-__name(normalizeOptions, "normalizeOptions");
 function parseSource(source, rawOptions = {}, context = 0) {
-  const options = normalizeOptions(rawOptions);
-  if (options.module)
+  const parser = new Parser(source, rawOptions);
+  if (parser.options.sourceType === "module")
     context |= 2 | 1;
-  if (options.globalReturn)
-    context |= 4096;
-  if (options.impliedStrict)
+  if (parser.options.sourceType === "commonjs")
+    context |= 4096 | 65536;
+  if (parser.options.impliedStrict)
     context |= 1;
-  const parser = new Parser(source, options);
   skipHashBang(parser);
   const scope = parser.createScopeIfLexical();
-  let body = [];
+  let body;
   let sourceType = "script";
   if (context & 2) {
     sourceType = "module";
@@ -9755,7 +8909,7 @@ function parseSource(source, rawOptions = {}, context = 0) {
     if (scope) {
       for (const name of parser.exportedBindings) {
         if (!scope.hasVariable(name))
-          parser.report(148, name);
+          parser.report(150, name);
       }
     }
   } else {
@@ -9787,7 +8941,7 @@ function parseStatementList(parser, context, scope) {
     statements.push(parseDirective(parser, context, expr, token, tokenStart));
   }
   while (parser.getToken() !== 1048576) {
-    statements.push(parseStatementListItem(parser, context, scope, void 0, 4, {}));
+    statements.push(parseStatementListItem(parser, context, scope, void 0, {}, 4));
   }
   return statements;
 }
@@ -9807,8 +8961,7 @@ function parseModuleItemList(parser, context, scope) {
 }
 __name(parseModuleItemList, "parseModuleItemList");
 function parseModuleItem(parser, context, scope) {
-  var _a;
-  if (parser.getToken() === 132) {
+  if (parser.getToken() === 133) {
     Object.assign(parser.leadingDecorators, {
       start: parser.tokenStart,
       decorators: parseDecorators(parser, context, void 0)
@@ -9820,29 +8973,42 @@ function parseModuleItem(parser, context, scope) {
       moduleItem = parseExportDeclaration(parser, context, scope);
       break;
     case 86106:
+      if (parser.leadingDecorators.decorators.length) {
+        parser.report(172);
+      }
       moduleItem = parseImportDeclaration(parser, context, scope);
       break;
     default:
-      moduleItem = parseStatementListItem(parser, context, scope, void 0, 4, {});
-  }
-  if ((_a = parser.leadingDecorators) == null ? void 0 : _a.decorators.length) {
-    parser.report(170);
+      moduleItem = parseStatementListItem(parser, context, scope, void 0, {}, 4);
   }
   return moduleItem;
 }
 __name(parseModuleItem, "parseModuleItem");
-function parseStatementListItem(parser, context, scope, privateScope, origin, labels) {
+function parseStatementListItem(parser, context, scope, privateScope, labels, origin = 2) {
   const start = parser.tokenStart;
+  if (parser.leadingDecorators.decorators.length && parser.getToken() !== 86094) {
+    parser.report(172);
+  }
   switch (parser.getToken()) {
     case 86104:
-      return parseFunctionDeclaration(parser, context, scope, privateScope, origin, 1, 0, 0, start);
-    case 132:
+      return parseFunctionDeclaration(parser, context, scope, privateScope, 1, 0, 0, start, origin);
+    case 133:
+      if (!(parser.features & 1)) {
+        parser.report(30, "@");
+      }
     case 86094:
       return parseClassDeclaration(parser, context, scope, privateScope, 0);
     case 86090:
-      return parseLexicalDeclaration(parser, context, scope, privateScope, 16, 0);
+      return parseLexicalDeclaration(parser, context, scope, privateScope, 16);
     case 241737:
       return parseLetIdentOrVarDeclarationStatement(parser, context, scope, privateScope, origin);
+    case 209013:
+      return parseUsingDeclarationOrExpressionStatement(parser, context, scope, privateScope, labels, origin);
+    case 209006:
+      if ((context & 2048 || context & 2 && context & 8) && nextTokenIsUsingOnSameLine(parser)) {
+        return parseAwaitUsingDeclarationOrExpressionStatement(parser, context, scope, privateScope, labels, origin);
+      }
+      return parseStatement(parser, context, scope, privateScope, labels, 1, origin);
     case 20564:
       parser.report(103, "export");
     case 86106:
@@ -9856,16 +9022,16 @@ function parseStatementListItem(parser, context, scope, privateScope, origin, la
           parser.report(103, "import");
       }
     case 209005:
-      return parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, origin, labels, 1);
+      return parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, labels, 1, origin);
     default:
-      return parseStatement(parser, context, scope, privateScope, origin, labels, 1);
+      return parseStatement(parser, context, scope, privateScope, labels, 1, origin);
   }
 }
 __name(parseStatementListItem, "parseStatementListItem");
-function parseStatement(parser, context, scope, privateScope, origin, labels, allowFuncDecl) {
+function parseStatement(parser, context, scope, privateScope, labels, allowFuncDecl, origin = 0) {
   switch (parser.getToken()) {
     case 86088:
-      return parseVariableStatement(parser, context, scope, privateScope, 0);
+      return parseVariableStatement(parser, context, scope, privateScope);
     case 20572:
       return parseReturnStatement(parser, context, privateScope);
     case 20569:
@@ -9895,21 +9061,21 @@ function parseStatement(parser, context, scope, privateScope, origin, labels, al
     case 20560:
       return parseDebuggerStatement(parser, context);
     case 209005:
-      return parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, origin, labels, 0);
+      return parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, labels, 0, origin);
     case 20557:
-      parser.report(162);
+      parser.report(164);
     case 20566:
-      parser.report(163);
+      parser.report(165);
     case 86104:
       parser.report(context & 1 ? 76 : !parser.options.webcompat ? 78 : 77);
     case 86094:
       parser.report(79);
     default:
-      return parseExpressionOrLabelledStatement(parser, context, scope, privateScope, origin, labels, allowFuncDecl);
+      return parseExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, allowFuncDecl, origin);
   }
 }
 __name(parseStatement, "parseStatement");
-function parseExpressionOrLabelledStatement(parser, context, scope, privateScope, origin, labels, allowFuncDecl) {
+function parseExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, allowFuncDecl, origin) {
   const { tokenValue, tokenStart } = parser;
   const token = parser.getToken();
   let expr;
@@ -9922,24 +9088,28 @@ function parseExpressionOrLabelledStatement(parser, context, scope, privateScope
         parser.report(84);
       break;
     default:
-      expr = parsePrimaryExpression(parser, context, privateScope, 2, 0, 1, 0, 1, parser.tokenStart);
+      expr = parsePrimaryExpression(parser, context, privateScope, 2, 0, 1, 0, 1, parser.tokenStart, 0, 1);
   }
-  if (token & 143360 && parser.getToken() === 21) {
-    return parseLabelledStatement(parser, context, scope, privateScope, origin, labels, tokenValue, expr, token, allowFuncDecl, tokenStart);
-  }
-  expr = parseMemberOrUpdateExpression(parser, context, privateScope, expr, 0, 0, tokenStart);
-  expr = parseAssignmentExpression(parser, context, privateScope, 0, 0, tokenStart, expr);
-  if (parser.getToken() === 18) {
-    expr = parseSequenceExpression(parser, context, privateScope, 0, tokenStart, expr);
-  }
-  return parseExpressionStatement(parser, context, expr, tokenStart);
+  return finishExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, allowFuncDecl, expr, token, tokenValue, tokenStart, origin);
 }
 __name(parseExpressionOrLabelledStatement, "parseExpressionOrLabelledStatement");
+function finishExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, allowFuncDecl, initialExpression, token, tokenValue, tokenStart, origin) {
+  if (token & 143360 && parser.getToken() === 21) {
+    return parseLabelledStatement(parser, context, scope, privateScope, labels, tokenValue, initialExpression, token, allowFuncDecl, tokenStart, origin);
+  }
+  let expression = parseMemberOrUpdateExpression(parser, context, privateScope, initialExpression, 0, 0, tokenStart);
+  expression = parseAssignmentExpression(parser, context, privateScope, 0, 0, tokenStart, expression);
+  if (parser.getToken() === 18) {
+    expression = parseSequenceExpression(parser, context, privateScope, 0, tokenStart, expression);
+  }
+  return parseExpressionStatement(parser, context, expression, tokenStart);
+}
+__name(finishExpressionOrLabelledStatement, "finishExpressionOrLabelledStatement");
 function parseBlock(parser, context, scope, privateScope, labels, start = parser.tokenStart, type = "BlockStatement") {
   const body = [];
   consume(parser, context | 32, 2162700);
   while (parser.getToken() !== 1074790415) {
-    body.push(parseStatementListItem(parser, context, scope, privateScope, 2, { $: labels }));
+    body.push(parseStatementListItem(parser, context, scope, privateScope, { $: labels }));
   }
   consume(parser, context | 32, 1074790415);
   return parser.finishNode({
@@ -9969,11 +9139,11 @@ function parseExpressionStatement(parser, context, expression, start) {
   }, start);
 }
 __name(parseExpressionStatement, "parseExpressionStatement");
-function parseLabelledStatement(parser, context, scope, privateScope, origin, labels, value, expr, token, allowFuncDecl, start) {
+function parseLabelledStatement(parser, context, scope, privateScope, labels, value, expr, token, allowFuncDecl, start, origin) {
   validateBindingIdentifier(parser, context, 0, token, 1);
   validateAndDeclareLabel(parser, labels, value);
   nextToken(parser, context | 32);
-  const body = allowFuncDecl && (context & 1) === 0 && parser.options.webcompat && parser.getToken() === 86104 ? parseFunctionDeclaration(parser, context, scope == null ? void 0 : scope.createChildScope(), privateScope, origin, 0, 0, 0, parser.tokenStart) : parseStatement(parser, context, scope, privateScope, origin, labels, allowFuncDecl);
+  const body = allowFuncDecl && (context & 1) === 0 && parser.options.webcompat && parser.getToken() === 86104 ? parseFunctionDeclaration(parser, context, scope == null ? void 0 : scope.createChildScope(), privateScope, 0, 0, 0, parser.tokenStart, origin) : parseStatement(parser, context, scope, privateScope, labels, allowFuncDecl, origin);
   return parser.finishNode({
     type: "LabeledStatement",
     label: expr,
@@ -9981,19 +9151,19 @@ function parseLabelledStatement(parser, context, scope, privateScope, origin, la
   }, start);
 }
 __name(parseLabelledStatement, "parseLabelledStatement");
-function parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, origin, labels, allowFuncDecl) {
+function parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, privateScope, labels, allowFuncDecl, origin) {
   const { tokenValue, tokenStart: start } = parser;
   const token = parser.getToken();
   let expr = parseIdentifier(parser, context);
   if (parser.getToken() === 21) {
-    return parseLabelledStatement(parser, context, scope, privateScope, origin, labels, tokenValue, expr, token, 1, start);
+    return parseLabelledStatement(parser, context, scope, privateScope, labels, tokenValue, expr, token, 1, start, origin);
   }
   const asyncNewLine = parser.flags & 1;
   if (!asyncNewLine) {
     if (parser.getToken() === 86104) {
       if (!allowFuncDecl)
-        parser.report(123);
-      return parseFunctionDeclaration(parser, context, scope, privateScope, origin, 1, 0, 1, start);
+        parser.report(125);
+      return parseFunctionDeclaration(parser, context, scope, privateScope, 1, 0, 1, start, origin);
     }
     if (isValidIdentifier(context, parser.getToken())) {
       expr = parseAsyncArrowAfterIdent(parser, context, privateScope, 1, start);
@@ -10003,7 +9173,7 @@ function parseAsyncArrowOrAsyncFunctionDeclaration(parser, context, scope, priva
     }
   }
   if (parser.getToken() === 67174411) {
-    expr = parseAsyncArrowOrCallExpression(parser, context, privateScope, expr, 1, 1, 0, asyncNewLine, start);
+    expr = parseAsyncArrowOrCallExpression(parser, context, privateScope, expr, 1, 1, asyncNewLine, start);
   } else {
     if (parser.getToken() === 10) {
       classifyIdentifier(parser, context, token);
@@ -10090,7 +9260,7 @@ function parseIfStatement(parser, context, scope, privateScope, labels) {
 __name(parseIfStatement, "parseIfStatement");
 function parseConsequentOrAlternative(parser, context, scope, privateScope, labels) {
   const { tokenStart } = parser;
-  return context & 1 || !parser.options.webcompat || parser.getToken() !== 86104 ? parseStatement(parser, context, scope, privateScope, 0, { $: labels }, 0) : parseFunctionDeclaration(parser, context, scope == null ? void 0 : scope.createChildScope(), privateScope, 0, 0, 0, 0, tokenStart);
+  return context & 1 || !parser.options.webcompat || parser.getToken() !== 86104 ? parseStatement(parser, context, scope, privateScope, { $: labels }, 0) : parseFunctionDeclaration(parser, context, scope == null ? void 0 : scope.createChildScope(), privateScope, 0, 0, 0, tokenStart);
 }
 __name(parseConsequentOrAlternative, "parseConsequentOrAlternative");
 function parseSwitchStatement(parser, context, scope, privateScope, labels) {
@@ -10117,9 +9287,13 @@ function parseSwitchStatement(parser, context, scope, privateScope, labels) {
     }
     consume(parser, context | 32, 21);
     while (parser.getToken() !== 20556 && parser.getToken() !== 1074790415 && parser.getToken() !== 20561) {
-      consequent.push(parseStatementListItem(parser, context | 4, scope, privateScope, 2, {
+      const statement = parseStatementListItem(parser, context | 4, scope, privateScope, {
         $: labels
-      }));
+      });
+      if (statement.type === "VariableDeclaration" && (statement.kind === "using" || statement.kind === "await using")) {
+        parser.report(30, statement.kind);
+      }
+      consequent.push(statement);
     }
     cases.push(parser.finishNode({
       type: "SwitchCase",
@@ -10150,7 +9324,7 @@ function parseWhileStatement(parser, context, scope, privateScope, labels) {
 }
 __name(parseWhileStatement, "parseWhileStatement");
 function parseIterationStatementBody(parser, context, scope, privateScope, labels) {
-  return parseStatement(parser, (context | 131072) ^ 131072 | 128, scope, privateScope, 0, { loop: 1, $: labels }, 0);
+  return parseStatement(parser, (context | 131072) ^ 131072 | 128, scope, privateScope, { loop: 1, $: labels }, 0);
 }
 __name(parseIterationStatementBody, "parseIterationStatementBody");
 function parseContinueStatement(parser, context, labels) {
@@ -10163,7 +9337,7 @@ function parseContinueStatement(parser, context, labels) {
     const { tokenValue } = parser;
     label = parseIdentifier(parser, context | 32);
     if (!isValidLabel(parser, labels, tokenValue, 1))
-      parser.report(138, tokenValue);
+      parser.report(140, tokenValue);
   }
   matchOrInsertSemicolon(parser, context | 32);
   return parser.finishNode({
@@ -10180,7 +9354,7 @@ function parseBreakStatement(parser, context, labels) {
     const { tokenValue } = parser;
     label = parseIdentifier(parser, context | 32);
     if (!isValidLabel(parser, labels, tokenValue, 0))
-      parser.report(138, tokenValue);
+      parser.report(140, tokenValue);
   } else if ((context & (4 | 128)) === 0) {
     parser.report(69);
   }
@@ -10199,7 +9373,7 @@ function parseWithStatement(parser, context, scope, privateScope, labels) {
   consume(parser, context | 32, 67174411);
   const object = parseExpressions(parser, context, privateScope, 0, 1, parser.tokenStart);
   consume(parser, context | 32, 16);
-  const body = parseStatement(parser, context, scope, privateScope, 2, labels, 0);
+  const body = parseStatement(parser, context, scope, privateScope, labels, 0, 2);
   return parser.finishNode({
     type: "WithStatement",
     object,
@@ -10243,10 +9417,9 @@ function parseTryStatement(parser, context, scope, privateScope, labels) {
 __name(parseTryStatement, "parseTryStatement");
 function parseCatchBlock(parser, context, scope, privateScope, labels, start) {
   let param = null;
-  let additionalScope = scope;
   if (consumeOpt(parser, context, 67174411)) {
     scope = scope == null ? void 0 : scope.createChildScope(4);
-    param = parseBindingPattern(parser, context, scope, privateScope, (parser.getToken() & 2097152) === 2097152 ? 256 : 512, 0);
+    param = parseBindingPattern(parser, context, scope, privateScope, (parser.getToken() & 2097152) === 2097152 ? 256 : 512);
     if (parser.getToken() === 18) {
       parser.report(86);
     } else if (parser.getToken() === 1077936155) {
@@ -10254,7 +9427,7 @@ function parseCatchBlock(parser, context, scope, privateScope, labels, start) {
     }
     consume(parser, context | 32, 16);
   }
-  additionalScope = scope == null ? void 0 : scope.createChildScope(32);
+  const additionalScope = scope == null ? void 0 : scope.createChildScope(32);
   const body = parseBlock(parser, context, additionalScope, privateScope, { $: labels });
   return parser.finishNode({
     type: "CatchClause",
@@ -10287,11 +9460,11 @@ function parseDoWhileStatement(parser, context, scope, privateScope, labels) {
 }
 __name(parseDoWhileStatement, "parseDoWhileStatement");
 function parseLetIdentOrVarDeclarationStatement(parser, context, scope, privateScope, origin) {
-  const { tokenValue, tokenStart } = parser;
+  const { tokenValue, tokenStart, currentLocation } = parser;
   const token = parser.getToken();
   let expr = parseIdentifier(parser, context);
-  if (parser.getToken() & (143360 | 2097152)) {
-    const declarations = parseVariableDeclarationList(parser, context, scope, privateScope, 8, 0);
+  if (parser.getToken() & (143360 | 2097152) && (parser.getToken() & 20480) !== 20480) {
+    const declarations = parseVariableDeclarationList(parser, context, scope, privateScope, 8);
     matchOrInsertSemicolon(parser, context | 32);
     return parser.finishNode({
       type: "VariableDeclaration",
@@ -10303,12 +9476,12 @@ function parseLetIdentOrVarDeclarationStatement(parser, context, scope, privateS
   if (context & 1)
     parser.report(85);
   if (parser.getToken() === 21) {
-    return parseLabelledStatement(parser, context, scope, privateScope, origin, {}, tokenValue, expr, token, 0, tokenStart);
+    return parseLabelledStatement(parser, context, scope, privateScope, {}, tokenValue, expr, token, 0, tokenStart, origin);
   }
   if (parser.getToken() === 10) {
     let scope2 = void 0;
     if (parser.options.lexical)
-      scope2 = createArrowHeadParsingScope(parser, context, tokenValue);
+      scope2 = createArrowHeadParsingScope(parser, context, tokenValue, tokenStart, currentLocation);
     parser.flags = (parser.flags | 128) ^ 128;
     expr = parseArrowFunctionExpression(parser, context, scope2, privateScope, [expr], 0, tokenStart);
   } else {
@@ -10321,19 +9494,106 @@ function parseLetIdentOrVarDeclarationStatement(parser, context, scope, privateS
   return parseExpressionStatement(parser, context, expr, tokenStart);
 }
 __name(parseLetIdentOrVarDeclarationStatement, "parseLetIdentOrVarDeclarationStatement");
-function parseLexicalDeclaration(parser, context, scope, privateScope, kind, origin) {
+function nextTokenIsUsingOnSameLine(parser) {
+  const { index: parserIndex, source } = parser;
+  let index = parserIndex;
+  while (index < parser.end) {
+    const char = source.charCodeAt(index);
+    if (char === 10 || char === 13 || char === 8232 || char === 8233)
+      return false;
+    if (/\s/u.test(source[index])) {
+      index++;
+      continue;
+    }
+    if (char === 47 && source.charCodeAt(index + 1) === 42) {
+      index += 2;
+      while (index < parser.end) {
+        const commentChar = source.charCodeAt(index);
+        if (commentChar === 10 || commentChar === 13 || commentChar === 8232 || commentChar === 8233) {
+          return false;
+        }
+        if (commentChar === 42 && source.charCodeAt(index + 1) === 47) {
+          index += 2;
+          break;
+        }
+        index++;
+      }
+      continue;
+    }
+    break;
+  }
+  if (source.slice(index, index + 5) !== "using")
+    return false;
+  const following = source.codePointAt(index + 5);
+  return following === void 0 || following !== 92 && !isIdentifierPart(following);
+}
+__name(nextTokenIsUsingOnSameLine, "nextTokenIsUsingOnSameLine");
+function isResourceBindingStart(token) {
+  return (token & 143360) === 143360 && (token & 20480) !== 20480;
+}
+__name(isResourceBindingStart, "isResourceBindingStart");
+function parseUsingDeclarationOrExpressionStatement(parser, context, scope, privateScope, labels, origin) {
+  const { tokenStart, tokenValue, currentLocation } = parser;
+  const token = parser.getToken();
+  const expression = parseIdentifier(parser, context);
+  if ((parser.flags & 1) === 0 && isResourceBindingStart(parser.getToken())) {
+    if (origin & 4 && context & 8 && (context & 2) === 0 && (context & 4096) === 0) {
+      parser.report(30, KeywordDescTable[parser.getToken() & 255]);
+    }
+    return parseLexicalDeclaration(parser, context, scope, privateScope, 16, origin, "using", tokenStart, 1);
+  }
+  parser.assignable = 1;
+  if (parser.getToken() === 10) {
+    let arrowScope = void 0;
+    if (parser.options.lexical)
+      arrowScope = createArrowHeadParsingScope(parser, context, tokenValue, tokenStart, currentLocation);
+    parser.flags = (parser.flags | 128) ^ 128;
+    const arrow = parseArrowFunctionExpression(parser, context, arrowScope, privateScope, [expression], 0, tokenStart);
+    return parseExpressionStatement(parser, context, arrow, tokenStart);
+  }
+  return finishExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, 1, expression, token, tokenValue, tokenStart, origin);
+}
+__name(parseUsingDeclarationOrExpressionStatement, "parseUsingDeclarationOrExpressionStatement");
+function parseAwaitUsingDeclarationOrExpressionStatement(parser, context, scope, privateScope, labels, origin) {
   const start = parser.tokenStart;
-  nextToken(parser, context);
-  const declarations = parseVariableDeclarationList(parser, context, scope, privateScope, kind, origin);
+  if (context & 524288)
+    parser.report(179);
+  nextToken(parser, context | 32);
+  let argument;
+  if ((parser.flags & 1) === 0 && parser.getToken() === 209013) {
+    const usingStart = parser.tokenStart;
+    const usingIdentifier = parseIdentifier(parser, context);
+    if ((parser.flags & 1) === 0 && isResourceBindingStart(parser.getToken())) {
+      return parseLexicalDeclaration(parser, context, scope, privateScope, 16, origin, "await using", start, 1);
+    }
+    argument = parseMemberOrUpdateExpression(parser, context, privateScope, usingIdentifier, 0, 0, usingStart);
+  } else {
+    argument = parseLeftHandSideExpression(parser, context, privateScope, 0, 0, 1);
+  }
+  if (parser.getToken() === 8391735)
+    parser.report(33);
+  parser.assignable = 2;
+  const expression = parser.finishNode({
+    type: "AwaitExpression",
+    argument
+  }, start);
+  return finishExpressionOrLabelledStatement(parser, context, scope, privateScope, labels, 0, expression, 1048576, "", start, origin);
+}
+__name(parseAwaitUsingDeclarationOrExpressionStatement, "parseAwaitUsingDeclarationOrExpressionStatement");
+function parseLexicalDeclaration(parser, context, scope, privateScope, kind, origin = 0, declarationKind, declarationStart = parser.tokenStart, keywordConsumed = 0) {
+  const start = declarationStart;
+  if (!keywordConsumed)
+    nextToken(parser, context);
+  const declarations = parseVariableDeclarationList(parser, context, scope, privateScope, kind, origin, declarationKind);
   matchOrInsertSemicolon(parser, context | 32);
   return parser.finishNode({
     type: "VariableDeclaration",
-    kind: kind & 8 ? "let" : "const",
+    kind: declarationKind != null ? declarationKind : kind & 8 ? "let" : "const",
     declarations
   }, start);
 }
 __name(parseLexicalDeclaration, "parseLexicalDeclaration");
-function parseVariableStatement(parser, context, scope, privateScope, origin) {
+function parseVariableStatement(parser, context, scope, privateScope, origin = 0) {
   const start = parser.tokenStart;
   nextToken(parser, context);
   const declarations = parseVariableDeclarationList(parser, context, scope, privateScope, 4, origin);
@@ -10345,14 +9605,21 @@ function parseVariableStatement(parser, context, scope, privateScope, origin) {
   }, start);
 }
 __name(parseVariableStatement, "parseVariableStatement");
-function parseVariableDeclarationList(parser, context, scope, privateScope, kind, origin) {
+function parseVariableDeclarationList(parser, context, scope, privateScope, kind, origin = 0, declarationKind) {
   let bindingCount = 1;
-  const list = [
-    parseVariableDeclaration(parser, context, scope, privateScope, kind, origin)
-  ];
+  const firstDeclaration = parseVariableDeclaration(parser, context, scope, privateScope, kind, origin, declarationKind);
+  const list = [firstDeclaration];
+  const resourceNames = declarationKind && parser.options.lexical ? /* @__PURE__ */ new Set([firstDeclaration.id.name]) : void 0;
   while (consumeOpt(parser, context, 18)) {
     bindingCount++;
-    list.push(parseVariableDeclaration(parser, context, scope, privateScope, kind, origin));
+    const declaration = parseVariableDeclaration(parser, context, scope, privateScope, kind, origin, declarationKind);
+    if (resourceNames) {
+      const { name } = declaration.id;
+      if (resourceNames.has(name))
+        parser.report(147, name);
+      resourceNames.add(name);
+    }
+    list.push(declaration);
   }
   if (bindingCount > 1 && origin & 32 && parser.getToken() & 262144) {
     parser.report(61, KeywordDescTable[parser.getToken() & 255]);
@@ -10360,21 +9627,24 @@ function parseVariableDeclarationList(parser, context, scope, privateScope, kind
   return list;
 }
 __name(parseVariableDeclarationList, "parseVariableDeclarationList");
-function parseVariableDeclaration(parser, context, scope, privateScope, kind, origin) {
+function parseVariableDeclaration(parser, context, scope, privateScope, kind, origin, declarationKind) {
   const { tokenStart } = parser;
   const token = parser.getToken();
   let init = null;
+  if (declarationKind && (token & 2097152) === 2097152) {
+    parser.report(50);
+  }
   const id = parseBindingPattern(parser, context, scope, privateScope, kind, origin);
   if (parser.getToken() === 1077936155) {
     nextToken(parser, context | 32);
-    init = parseExpression(parser, context, privateScope, 1, 0, parser.tokenStart);
-    if (origin & 32 || (token & 2097152) === 0) {
-      if (parser.getToken() === 471156 || parser.getToken() === 8673330 && (token & 2097152 || (kind & 4) === 0 || context & 1)) {
+    init = parseExpression(parser, context, privateScope, 1, 0, parser.tokenStart, origin);
+    if (origin & 32) {
+      if (parser.getToken() === 471156 || parser.getToken() === 8673330 && (token & 2097152 || (kind & 4) === 0 || context & 1 || !parser.options.webcompat)) {
         throw new ParseError(tokenStart, parser.currentLocation, 60, parser.getToken() === 471156 ? "of" : "in");
       }
     }
   } else if ((kind & 16 || (token & 2097152) > 0) && (parser.getToken() & 262144) !== 262144) {
-    parser.report(59, kind & 16 ? "const" : "destructuring");
+    parser.report(59, declarationKind != null ? declarationKind : kind & 16 ? "const" : "destructuring");
   }
   return parser.finishNode({
     type: "VariableDeclarator",
@@ -10393,24 +9663,21 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
   let update = null;
   let destructible = 0;
   let init = null;
-  let isVarDecl = parser.getToken() === 86088 || parser.getToken() === 241737 || parser.getToken() === 86090;
+  let isVarDecl = parser.getToken() === 86088 || parser.getToken() === 241737 || parser.getToken() === 86090 || parser.getToken() === 209013;
+  let resourceDeclarationKind;
+  let consumedForOfDelimiter = false;
   let right;
   const { tokenStart } = parser;
   const token = parser.getToken();
   if (isVarDecl) {
     if (token === 241737) {
       init = parseIdentifier(parser, context);
-      if (parser.getToken() & (143360 | 2097152)) {
-        if (parser.getToken() === 8673330) {
-          if (context & 1)
-            parser.report(67);
-        } else {
-          init = parser.finishNode({
-            type: "VariableDeclaration",
-            kind: "let",
-            declarations: parseVariableDeclarationList(parser, context | 131072, scope, privateScope, 8, 32)
-          }, tokenStart);
-        }
+      if (parser.getToken() & (143360 | 2097152) && (parser.getToken() & 20480) !== 20480) {
+        init = parser.finishNode({
+          type: "VariableDeclaration",
+          kind: "let",
+          declarations: parseVariableDeclarationList(parser, context | 131072, scope, privateScope, 8, 32)
+        }, tokenStart);
         parser.assignable = 1;
       } else if (context & 1) {
         parser.report(67);
@@ -10419,7 +9686,75 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
         parser.assignable = 1;
         init = parseMemberOrUpdateExpression(parser, context, privateScope, init, 0, 0, tokenStart);
         if (parser.getToken() === 471156)
-          parser.report(115);
+          parser.report(117);
+      }
+    } else if (token === 209013) {
+      const usingIdentifier = parseIdentifier(parser, context);
+      if ((parser.flags & 1) !== 0 || !isResourceBindingStart(parser.getToken())) {
+        isVarDecl = false;
+        parser.assignable = 1;
+        init = parseMemberOrUpdateExpression(parser, context, privateScope, usingIdentifier, 0, 0, tokenStart);
+      } else if (parser.getToken() === 471156) {
+        const ofStart = parser.tokenStart;
+        const ofEnd = parser.currentLocation;
+        const ofToken = parser.getToken();
+        const ofValue = parser.tokenValue;
+        const ofIdentifier = parseIdentifier(parser, context);
+        if (parser.getToken() !== 1077936155 && parser.getToken() !== 8673330 && parser.getToken() !== 1074790417 && parser.getToken() !== 18) {
+          isVarDecl = false;
+          consumedForOfDelimiter = true;
+          parser.assignable = 1;
+          init = usingIdentifier;
+        } else {
+          resourceDeclarationKind = "using";
+          validateBindingIdentifier(parser, context, 16, ofToken, 0);
+          scope == null ? void 0 : scope.addBlockName(context, ofValue, 16, ofStart, ofEnd, 32);
+          let declarationInitializer = null;
+          if (parser.getToken() === 1077936155) {
+            nextToken(parser, context | 32);
+            declarationInitializer = parseExpression(parser, context | 131072, privateScope, 1, 0, parser.tokenStart);
+            if ((parser.getToken() & 262144) === 262144) {
+              throw new ParseError(ofStart, parser.currentLocation, 60, parser.getToken() === 471156 ? "of" : "in");
+            }
+          } else if (parser.getToken() !== 8673330) {
+            parser.report(59, resourceDeclarationKind);
+          }
+          const declarations = [
+            parser.finishNode({
+              type: "VariableDeclarator",
+              id: ofIdentifier,
+              init: declarationInitializer
+            }, ofStart)
+          ];
+          const resourceNames = parser.options.lexical ? /* @__PURE__ */ new Set([ofValue]) : void 0;
+          while (consumeOpt(parser, context | 131072, 18)) {
+            const declaration = parseVariableDeclaration(parser, context | 131072, scope, privateScope, 16, 32, resourceDeclarationKind);
+            if (resourceNames) {
+              const { name } = declaration.id;
+              if (resourceNames.has(name))
+                parser.report(147, name);
+              resourceNames.add(name);
+            }
+            declarations.push(declaration);
+          }
+          if (declarations.length > 1 && parser.getToken() & 262144) {
+            parser.report(61, KeywordDescTable[parser.getToken() & 255]);
+          }
+          init = parser.finishNode({
+            type: "VariableDeclaration",
+            kind: resourceDeclarationKind,
+            declarations
+          }, tokenStart);
+          parser.assignable = 1;
+        }
+      } else {
+        resourceDeclarationKind = "using";
+        init = parser.finishNode({
+          type: "VariableDeclaration",
+          kind: resourceDeclarationKind,
+          declarations: parseVariableDeclarationList(parser, context | 131072, scope, privateScope, 16, 32, resourceDeclarationKind)
+        }, tokenStart);
+        parser.assignable = 1;
       }
     } else {
       nextToken(parser, context);
@@ -10434,6 +9769,42 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
       }, tokenStart);
       parser.assignable = 1;
     }
+  } else if (token === 209006 && (context & 2048 || context & 2 && context & 8)) {
+    if (context & 524288)
+      parser.report(179);
+    nextToken(parser, context | 32);
+    let awaitArgument;
+    if ((parser.flags & 1) === 0 && parser.getToken() === 209013) {
+      const usingStart = parser.tokenStart;
+      const usingIdentifier = parseIdentifier(parser, context);
+      if ((parser.flags & 1) === 0 && isResourceBindingStart(parser.getToken())) {
+        resourceDeclarationKind = "await using";
+        isVarDecl = true;
+        init = parser.finishNode({
+          type: "VariableDeclaration",
+          kind: resourceDeclarationKind,
+          declarations: parseVariableDeclarationList(parser, context | 131072, scope, privateScope, 16, 32, resourceDeclarationKind)
+        }, tokenStart);
+        parser.assignable = 1;
+      } else {
+        awaitArgument = parseMemberOrUpdateExpression(parser, context, privateScope, usingIdentifier, 0, 0, usingStart);
+      }
+    } else {
+      awaitArgument = parseLeftHandSideExpression(parser, context, privateScope, 0, 0, 1);
+    }
+    if (!isVarDecl) {
+      if (parser.getToken() === 8391735)
+        parser.report(33);
+      parser.assignable = 2;
+      init = parser.finishNode({
+        type: "AwaitExpression",
+        argument: awaitArgument
+      }, tokenStart);
+    }
+  } else if (forAwait && token === 209005) {
+    const asyncIdentifier = parseIdentifier(parser, context);
+    parser.assignable = 1;
+    init = parseMemberOrUpdateExpression(parser, context | 131072, privateScope, asyncIdentifier, 0, 0, tokenStart);
   } else if (token === 1074790417) {
     if (forAwait)
       parser.report(82);
@@ -10449,12 +9820,13 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
   } else {
     init = parseLeftHandSideExpression(parser, context | 131072, privateScope, 1, 0, 1);
   }
-  if ((parser.getToken() & 262144) === 262144) {
-    if (parser.getToken() === 471156) {
+  if (consumedForOfDelimiter || (parser.getToken() & 262144) === 262144) {
+    if (consumedForOfDelimiter || parser.getToken() === 471156) {
       if (parser.assignable & 2)
         parser.report(80, forAwait ? "await" : "of");
       reinterpretToPattern(parser, init);
-      nextToken(parser, context | 32);
+      if (!consumedForOfDelimiter)
+        nextToken(parser, context | 32);
       right = parseExpression(parser, context, privateScope, 1, 0, parser.tokenStart);
       consume(parser, context | 32, 16);
       const body3 = parseIterationStatementBody(parser, context, scope, privateScope, labels);
@@ -10466,6 +9838,8 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
         await: forAwait
       }, start);
     }
+    if (resourceDeclarationKind)
+      parser.report(30, "in");
     if (parser.assignable & 2)
       parser.report(80, "in");
     reinterpretToPattern(parser, init);
@@ -10511,31 +9885,105 @@ function parseForStatement(parser, context, scope, privateScope, labels) {
 __name(parseForStatement, "parseForStatement");
 function parseRestrictedIdentifier(parser, context, scope) {
   if (!isValidIdentifier(context, parser.getToken()))
-    parser.report(118);
+    parser.report(120);
   if ((parser.getToken() & 537079808) === 537079808)
-    parser.report(119);
-  scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, 8, 0);
+    parser.report(121);
+  scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, 8, parser.tokenStart, parser.currentLocation);
   return parseIdentifier(parser, context);
 }
 __name(parseRestrictedIdentifier, "parseRestrictedIdentifier");
 function parseImportDeclaration(parser, context, scope) {
   const start = parser.tokenStart;
   nextToken(parser, context);
-  let source = null;
+  let source;
+  let sourceParsed = false;
+  let phase = null;
   const { tokenStart } = parser;
   let specifiers = [];
   if (parser.getToken() === 134283267) {
     source = parseLiteral(parser, context);
   } else {
     if (parser.getToken() & 143360) {
-      const local = parseRestrictedIdentifier(parser, context, scope);
-      specifiers = [
-        parser.finishNode({
-          type: "ImportDefaultSpecifier",
-          local
-        }, tokenStart)
-      ];
-      if (consumeOpt(parser, context, 18)) {
+      const token = parser.getToken();
+      const { tokenValue, tokenStart: start2, currentLocation } = parser;
+      const isPhaseDefer = parser.features & 2 && (token & -2147483648) === 0 && tokenValue == "defer";
+      const isPhaseSource = parser.features & 4 && (token & -2147483648) === 0 && tokenValue == "source";
+      if (isPhaseDefer || isPhaseSource) {
+        const phaseOrLocal = parseIdentifier(parser, context);
+        if (tokenValue === "defer") {
+          if (parser.getToken() === 8391476) {
+            phase = "defer";
+            specifiers = [parseImportNamespaceSpecifier(parser, context, scope)];
+          } else if (parser.getToken() === 209011 || parser.getToken() === 18) {
+            scope == null ? void 0 : scope.addBlockName(context, tokenValue, 8, start2, currentLocation);
+            specifiers = [
+              parser.finishNode({
+                type: "ImportDefaultSpecifier",
+                local: phaseOrLocal
+              }, tokenStart)
+            ];
+          } else {
+            parser.report(108);
+          }
+        } else if (parser.getToken() === 209011) {
+          const fromToken = parser.getToken();
+          const fromStart = parser.tokenStart;
+          const fromEnd = parser.currentLocation;
+          const fromLocal = parseIdentifier(parser, context);
+          if (parser.getToken() === 209011) {
+            validateBindingIdentifier(parser, context, 16, fromToken, 0);
+            scope == null ? void 0 : scope.addBlockName(context, fromLocal.name, 8, fromStart, fromEnd);
+            phase = "source";
+            specifiers = [
+              parser.finishNode({
+                type: "ImportDefaultSpecifier",
+                local: fromLocal
+              }, fromStart)
+            ];
+          } else {
+            scope == null ? void 0 : scope.addBlockName(context, tokenValue, 8, start2, currentLocation);
+            specifiers = [
+              parser.finishNode({
+                type: "ImportDefaultSpecifier",
+                local: phaseOrLocal
+              }, tokenStart)
+            ];
+            if (parser.getToken() !== 134283267)
+              parser.report(105, "Import");
+            source = parseLiteral(parser, context);
+            sourceParsed = true;
+          }
+        } else if (parser.getToken() & 143360) {
+          phase = "source";
+          const localStart = parser.tokenStart;
+          const local = parseRestrictedIdentifier(parser, context, scope);
+          specifiers = [
+            parser.finishNode({
+              type: "ImportDefaultSpecifier",
+              local
+            }, localStart)
+          ];
+        } else if (parser.getToken() === 18) {
+          scope == null ? void 0 : scope.addBlockName(context, tokenValue, 8, start2, currentLocation);
+          specifiers = [
+            parser.finishNode({
+              type: "ImportDefaultSpecifier",
+              local: phaseOrLocal
+            }, tokenStart)
+          ];
+        } else {
+          parser.report(109);
+        }
+      } else {
+        const local = parseRestrictedIdentifier(parser, context, scope);
+        specifiers = [
+          parser.finishNode({
+            type: "ImportDefaultSpecifier",
+            local
+          }, tokenStart)
+        ];
+      }
+      if (phase === null && !sourceParsed && consumeOpt(parser, context, 18)) {
         switch (parser.getToken()) {
           case 8391476:
             specifiers.push(parseImportNamespaceSpecifier(parser, context, scope));
@@ -10563,14 +10011,16 @@ function parseImportDeclaration(parser, context, scope) {
           parser.report(30, KeywordDescTable[parser.getToken() & 255]);
       }
     }
-    source = parseModuleSpecifier(parser, context);
+    if (!sourceParsed)
+      source = parseModuleSpecifier(parser, context);
   }
   const attributes = parseImportAttributes(parser, context);
   const node = {
     type: "ImportDeclaration",
     specifiers,
     source,
-    attributes
+    attributes,
+    ...parser.features & 2 || parser.features & 4 ? { phase } : null
   };
   matchOrInsertSemicolon(parser, context | 32);
   return parser.finishNode(node, start);
@@ -10599,7 +10049,8 @@ __name(parseModuleSpecifier, "parseModuleSpecifier");
 function parseImportSpecifierOrNamedImports(parser, context, scope, specifiers) {
   nextToken(parser, context);
   while (parser.getToken() & 143360 || parser.getToken() === 134283267) {
-    let { tokenValue, tokenStart } = parser;
+    let { tokenValue, tokenStart, currentLocation } = parser;
+    const start = tokenStart;
     const token = parser.getToken();
     const imported = parseModuleExportName(parser, context);
     let local;
@@ -10610,19 +10061,21 @@ function parseImportSpecifierOrNamedImports(parser, context, scope, specifiers) 
         validateBindingIdentifier(parser, context, 16, parser.getToken(), 0);
       }
       tokenValue = parser.tokenValue;
+      tokenStart = parser.tokenStart;
+      currentLocation = parser.currentLocation;
       local = parseIdentifier(parser, context);
     } else if (imported.type === "Identifier") {
       validateBindingIdentifier(parser, context, 16, token, 0);
-      local = imported;
+      local = parser.cloneIdentifier(imported);
     } else {
       parser.report(25, KeywordDescTable[77932 & 255]);
     }
-    scope == null ? void 0 : scope.addBlockName(context, tokenValue, 8, 0);
+    scope == null ? void 0 : scope.addBlockName(context, tokenValue, 8, tokenStart, currentLocation);
     specifiers.push(parser.finishNode({
       type: "ImportSpecifier",
       local,
       imported
-    }, tokenStart));
+    }, start));
     if (parser.getToken() !== 1074790415)
       consume(parser, context, 18);
   }
@@ -10655,17 +10108,24 @@ __name(parseImportCallDeclaration, "parseImportCallDeclaration");
 function parseExportDeclaration(parser, context, scope) {
   const start = parser.leadingDecorators.decorators.length ? parser.leadingDecorators.start : parser.tokenStart;
   nextToken(parser, context | 32);
+  const isDefaultExport = consumeOpt(parser, context | 32, 20561);
+  if (parser.leadingDecorators.decorators.length && parser.getToken() !== 86094) {
+    parser.report(172);
+  }
   const specifiers = [];
   let declaration = null;
   let source = null;
   let attributes = [];
-  if (consumeOpt(parser, context | 32, 20561)) {
+  if (isDefaultExport) {
     switch (parser.getToken()) {
       case 86104: {
-        declaration = parseFunctionDeclaration(parser, context, scope, void 0, 4, 1, 1, 0, parser.tokenStart);
+        declaration = parseFunctionDeclaration(parser, context, scope, void 0, 1, 1, 0, parser.tokenStart, 4);
         break;
       }
-      case 132:
+      case 133:
+        if (!(parser.features & 1)) {
+          parser.report(30, "@");
+        }
       case 86094:
         declaration = parseClassDeclaration(parser, context, scope, void 0, 1);
         break;
@@ -10675,15 +10135,15 @@ function parseExportDeclaration(parser, context, scope) {
         const { flags } = parser;
         if ((flags & 1) === 0) {
           if (parser.getToken() === 86104) {
-            declaration = parseFunctionDeclaration(parser, context, scope, void 0, 4, 1, 1, 1, tokenStart);
+            declaration = parseFunctionDeclaration(parser, context, scope, void 0, 1, 1, 1, tokenStart, 4);
           } else {
             if (parser.getToken() === 67174411) {
-              declaration = parseAsyncArrowOrCallExpression(parser, context, void 0, declaration, 1, 1, 0, flags, tokenStart);
+              declaration = parseAsyncArrowOrCallExpression(parser, context, void 0, declaration, 1, 1, flags, tokenStart);
               declaration = parseMemberOrUpdateExpression(parser, context, void 0, declaration, 0, 0, tokenStart);
               declaration = parseAssignmentExpression(parser, context, void 0, 0, 0, tokenStart, declaration);
             } else if (parser.getToken() & 143360) {
               if (scope)
-                scope = createArrowHeadParsingScope(parser, context, parser.tokenValue);
+                scope = createArrowHeadParsingScope(parser, context, parser.tokenValue, parser.tokenStart, parser.currentLocation);
               declaration = parseIdentifier(parser, context);
               declaration = parseArrowFunctionExpression(parser, context, scope, void 0, [declaration], 1, tokenStart);
             }
@@ -10753,7 +10213,7 @@ function parseExportDeclaration(parser, context, scope) {
             tmpExportedNames.push(parser.tokenValue);
             tmpExportedBindings.push(parser.tokenValue);
           }
-          exported = local;
+          exported = local.type === "Literal" ? parser.cloneStringLiteral(local) : parser.cloneIdentifier(local);
         }
         specifiers.push(parser.finishNode({
           type: "ExportSpecifier",
@@ -10774,7 +10234,7 @@ function parseExportDeclaration(parser, context, scope) {
         }
       } else {
         if (hasLiteralLocal) {
-          parser.report(172);
+          parser.report(174);
         }
         if (scope) {
           tmpExportedNames.forEach((n) => parser.declareUnboundVariable(n));
@@ -10784,12 +10244,15 @@ function parseExportDeclaration(parser, context, scope) {
       matchOrInsertSemicolon(parser, context | 32);
       break;
     }
-    case 132:
+    case 133:
+      if (!(parser.features & 1)) {
+        parser.report(30, "@");
+      }
     case 86094:
       declaration = parseClassDeclaration(parser, context, scope, void 0, 2);
       break;
     case 86104:
-      declaration = parseFunctionDeclaration(parser, context, scope, void 0, 4, 1, 2, 0, parser.tokenStart);
+      declaration = parseFunctionDeclaration(parser, context, scope, void 0, 1, 2, 0, parser.tokenStart, 4);
       break;
     case 241737:
       declaration = parseLexicalDeclaration(parser, context, scope, void 0, 8, 64);
@@ -10804,7 +10267,7 @@ function parseExportDeclaration(parser, context, scope) {
       const { tokenStart } = parser;
       nextToken(parser, context);
       if ((parser.flags & 1) === 0 && parser.getToken() === 86104) {
-        declaration = parseFunctionDeclaration(parser, context, scope, void 0, 4, 1, 2, 1, tokenStart);
+        declaration = parseFunctionDeclaration(parser, context, scope, void 0, 1, 2, 1, tokenStart, 4);
         break;
       }
     }
@@ -10821,8 +10284,8 @@ function parseExportDeclaration(parser, context, scope) {
   return parser.finishNode(node, start);
 }
 __name(parseExportDeclaration, "parseExportDeclaration");
-function parseExpression(parser, context, privateScope, canAssign, inGroup, start) {
-  let expr = parsePrimaryExpression(parser, context, privateScope, 2, 0, canAssign, inGroup, 1, start);
+function parseExpression(parser, context, privateScope, canAssign, inGroup, start, origin = 0) {
+  let expr = parsePrimaryExpression(parser, context, privateScope, 2, 0, canAssign, inGroup, 1, start, origin, context & 131072 ? 0 : 1);
   expr = parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGroup, 0, start);
   return parseAssignmentExpression(parser, context, privateScope, inGroup, 0, start, expr);
 }
@@ -10847,6 +10310,8 @@ function parseAssignmentExpression(parser, context, privateScope, inGroup, isPat
   const token = parser.getToken();
   if ((token & 4194304) === 4194304) {
     if (parser.assignable & 2)
+      parser.report(26);
+    if ((token & 524288) === 524288 && parser.assignable & 4)
       parser.report(26);
     if (!isPattern && token === 1077936155 && left.type === "ArrayExpression" || left.type === "ObjectExpression") {
       reinterpretToPattern(parser, left);
@@ -10915,7 +10380,7 @@ function parseBinaryExpression(parser, context, privateScope, inGroup, start, mi
     t = parser.getToken();
     precedence = t & 3840;
     if (t & 524288 && operator & 268435456 || operator & 524288 && t & 268435456) {
-      parser.report(165);
+      parser.report(167);
     }
     if (precedence + ((t === 8391735) << 8) - ((bit === t) << 12) <= minPrecedence)
       break;
@@ -10923,7 +10388,7 @@ function parseBinaryExpression(parser, context, privateScope, inGroup, start, mi
     left = parser.finishNode({
       type: t & 524288 || t & 268435456 ? "LogicalExpression" : "BinaryExpression",
       left,
-      right: parseBinaryExpression(parser, context, privateScope, inGroup, parser.tokenStart, precedence, t, parseLeftHandSideExpression(parser, context, privateScope, 0, inGroup, 1)),
+      right: parseBinaryExpression(parser, context, privateScope, inGroup, parser.tokenStart, precedence, t, parseLeftHandSideExpression(parser, context, privateScope, 0, inGroup, 1, (context & 131072) === 0 && (8673330 & 3840) > precedence ? 1 : 0)),
       operator: KeywordDescTable[t & 255]
     }, start);
   }
@@ -10943,9 +10408,9 @@ function parseUnaryExpression(parser, context, privateScope, isLHS, inGroup) {
     parser.report(33);
   if (context & 1 && unaryOperator === 16863276) {
     if (arg.type === "Identifier") {
-      parser.report(121);
+      parser.report(123);
     } else if (isPropertyWithPrivateFieldKey(arg)) {
-      parser.report(127);
+      parser.report(129);
     }
   }
   parser.assignable = 2;
@@ -10975,7 +10440,7 @@ function parseAsyncExpression(parser, context, privateScope, inGroup, isLHS, can
     }
   }
   if (!inNew && parser.getToken() === 67174411) {
-    return parseAsyncArrowOrCallExpression(parser, context, privateScope, expr, canAssign, 1, 0, flags, start);
+    return parseAsyncArrowOrCallExpression(parser, context, privateScope, expr, canAssign, 1, flags, start);
   }
   if (parser.getToken() === 10) {
     classifyIdentifier(parser, context, token);
@@ -11000,7 +10465,7 @@ function parseYieldExpressionOrIdentifier(parser, context, privateScope, inGroup
     if (!canAssign)
       parser.report(26);
     if (parser.getToken() === 22)
-      parser.report(124);
+      parser.report(126);
     let argument = null;
     let delegate = false;
     if ((parser.flags & 1) === 0) {
@@ -11024,27 +10489,32 @@ function parseYieldExpressionOrIdentifier(parser, context, privateScope, inGroup
 }
 __name(parseYieldExpressionOrIdentifier, "parseYieldExpressionOrIdentifier");
 function parseAwaitExpressionOrIdentifier(parser, context, privateScope, inNew, inGroup, start) {
-  if (inGroup)
+  var _a2;
+  if (inGroup) {
+    if ((parser.destructible & 128) === 0) {
+      (_a2 = parser.firstAwaitLocation) != null ? _a2 : parser.firstAwaitLocation = { start, end: parser.currentLocation };
+    }
     parser.destructible |= 128;
+  }
   if (context & 524288)
-    parser.report(177);
+    parser.report(179);
   const possibleIdentifierOrArrowFunc = parseIdentifierOrArrow(parser, context, privateScope);
   const isIdentifier = possibleIdentifierOrArrowFunc.type === "ArrowFunctionExpression" || (parser.getToken() & 65536) === 0;
   if (isIdentifier) {
     if (context & 2048)
-      throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 176);
+      throw new ParseError(start, parser.startPosition, 178);
     if (context & 2)
-      throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 110);
+      throw new ParseError(start, parser.startPosition, 112);
     if (context & 8192 && context & 2048)
-      throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 110);
+      throw new ParseError(start, parser.startPosition, 112);
     return possibleIdentifierOrArrowFunc;
   }
   if (context & 8192) {
-    throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 31);
+    throw new ParseError(start, parser.startPosition, 31);
   }
   if (context & 2048 || context & 2 && context & 8) {
     if (inNew)
-      throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 0);
+      throw new ParseError(start, parser.startPosition, 0);
     const argument = parseLeftHandSideExpression(parser, context, privateScope, 0, 0, 1);
     if (parser.getToken() === 8391735)
       parser.report(33);
@@ -11055,12 +10525,13 @@ function parseAwaitExpressionOrIdentifier(parser, context, privateScope, inNew, 
     }, start);
   }
   if (context & 2)
-    throw new ParseError(start, { index: parser.startIndex, line: parser.startLine, column: parser.startColumn }, 98);
+    throw new ParseError(start, parser.startPosition, 98);
   return possibleIdentifierOrArrowFunc;
 }
 __name(parseAwaitExpressionOrIdentifier, "parseAwaitExpressionOrIdentifier");
-function parseFunctionBody(parser, context, scope, privateScope, origin, funcNameToken, functionScope) {
+function parseFunctionBody(parser, context, scope, privateScope, funcNameToken, functionScope, origin = 0) {
   const { tokenStart } = parser;
+  parser.flags &= -4161;
   consume(parser, context | 32, 2162700);
   const body = [];
   if (parser.getToken() !== 1074790415) {
@@ -11086,22 +10557,26 @@ function parseFunctionBody(parser, context, scope, privateScope, origin, funcNam
     if (context & 1) {
       if (funcNameToken) {
         if ((funcNameToken & 537079808) === 537079808) {
-          parser.report(119);
+          parser.report(121);
         }
         if ((funcNameToken & 36864) === 36864) {
           parser.report(40);
         }
       }
       if (parser.flags & 512)
-        parser.report(119);
-      if (parser.flags & 256)
-        parser.report(118);
+        parser.report(121);
+      if (parser.flags & 256) {
+        if (parser.strictReservedRange) {
+          throw new ParseError(parser.strictReservedRange[0], parser.strictReservedRange[1], 120);
+        }
+        parser.report(120);
+      }
     }
   }
   parser.flags = (parser.flags | 512 | 256 | 64 | 4096) ^ (512 | 256 | 64 | 4096);
   parser.destructible = (parser.destructible | 256) ^ 256;
   while (parser.getToken() !== 1074790415) {
-    body.push(parseStatementListItem(parser, context, scope, privateScope, 4, {}));
+    body.push(parseStatementListItem(parser, context, scope, privateScope, {}, 4));
   }
   consume(parser, origin & (16 | 8) ? context | 32 : context, 1074790415);
   parser.flags &= -4289;
@@ -11117,8 +10592,8 @@ function parseSuperExpression(parser, context) {
   const { tokenStart } = parser;
   nextToken(parser, context);
   switch (parser.getToken()) {
-    case 67108990:
-      parser.report(167);
+    case 67108991:
+      parser.report(169);
     case 67174411: {
       if ((context & 512) === 0)
         parser.report(28);
@@ -11138,9 +10613,9 @@ function parseSuperExpression(parser, context) {
   return parser.finishNode({ type: "Super" }, tokenStart);
 }
 __name(parseSuperExpression, "parseSuperExpression");
-function parseLeftHandSideExpression(parser, context, privateScope, canAssign, inGroup, isLHS) {
+function parseLeftHandSideExpression(parser, context, privateScope, canAssign, inGroup, isLHS, allowPrivateId = 0) {
   const start = parser.tokenStart;
-  const expression = parsePrimaryExpression(parser, context, privateScope, 2, 0, canAssign, inGroup, isLHS, start);
+  const expression = parsePrimaryExpression(parser, context, privateScope, 2, 0, canAssign, inGroup, isLHS, start, 0, allowPrivateId);
   return parseMemberOrUpdateExpression(parser, context, privateScope, expression, inGroup, 0, start);
 }
 __name(parseLeftHandSideExpression, "parseLeftHandSideExpression");
@@ -11166,11 +10641,11 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
     switch (parser.getToken()) {
       case 67108877: {
         nextToken(parser, (context | 262144 | 8) ^ 8);
-        if (context & 16 && parser.getToken() === 130 && parser.tokenValue === "super") {
-          parser.report(173);
+        if (context & 16 && parser.getToken() === 131 && parser.tokenValue === "super") {
+          parser.report(175);
         }
-        parser.assignable = 1;
-        const property = parsePropertyOrPrivatePropertyName(parser, context | 64, privateScope);
+        parser.assignable = (parser.flags & 2048) === 2048 ? 2 : 1;
+        const property = parsePropertyOrPrivatePropertyName(parser, context | 64, privateScope, 1);
         expr = parser.finishNode({
           type: "MemberExpression",
           object: expr,
@@ -11181,6 +10656,10 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
         break;
       }
       case 69271571: {
+        if ((parser.flags & 8192) === 8192) {
+          parser.flags = (parser.flags | 8192) ^ 8192;
+          return expr;
+        }
         let restoreHasOptionalChaining = false;
         if ((parser.flags & 2048) === 2048) {
           restoreHasOptionalChaining = true;
@@ -11190,7 +10669,7 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
         const { tokenStart } = parser;
         const property = parseExpressions(parser, context, privateScope, inGroup, 1, tokenStart);
         consume(parser, context, 20);
-        parser.assignable = 1;
+        parser.assignable = restoreHasOptionalChaining ? 2 : 1;
         expr = parser.finishNode({
           type: "MemberExpression",
           object: expr,
@@ -11214,7 +10693,11 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
           parser.flags = (parser.flags | 2048) ^ 2048;
         }
         const args = parseArguments(parser, context, privateScope, inGroup);
-        parser.assignable = 2;
+        if (!(context & 1) && parser.options.webcompat) {
+          parser.assignable = 4;
+        } else {
+          parser.assignable = 2;
+        }
         expr = parser.finishNode({
           type: "CallExpression",
           callee: expr,
@@ -11226,7 +10709,7 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
         }
         break;
       }
-      case 67108990: {
+      case 67108991: {
         nextToken(parser, (context | 262144 | 8) ^ 8);
         parser.flags |= 2048;
         parser.assignable = 2;
@@ -11235,7 +10718,7 @@ function parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGr
       }
       default:
         if ((parser.flags & 2048) === 2048) {
-          parser.report(166);
+          parser.report(168);
         }
         parser.assignable = 2;
         expr = parser.finishNode({
@@ -11280,7 +10763,11 @@ function parseOptionalChain(parser, context, privateScope, expr, start) {
     }, start);
   } else if (parser.getToken() === 67174411) {
     const args = parseArguments(parser, context, privateScope, 0);
-    parser.assignable = 2;
+    if (!(context & 1) && parser.options.webcompat) {
+      parser.assignable = 4;
+    } else {
+      parser.assignable = 2;
+    }
     node = parser.finishNode({
       type: "CallExpression",
       callee: expr,
@@ -11288,7 +10775,7 @@ function parseOptionalChain(parser, context, privateScope, expr, start) {
       optional: true
     }, start);
   } else {
-    const property = parsePropertyOrPrivatePropertyName(parser, context, privateScope);
+    const property = parsePropertyOrPrivatePropertyName(parser, context, privateScope, 1);
     parser.assignable = 2;
     node = parser.finishNode({
       type: "MemberExpression",
@@ -11304,11 +10791,11 @@ function parseOptionalChain(parser, context, privateScope, expr, start) {
   return node;
 }
 __name(parseOptionalChain, "parseOptionalChain");
-function parsePropertyOrPrivatePropertyName(parser, context, privateScope) {
-  if ((parser.getToken() & 143360) === 0 && parser.getToken() !== -2147483528 && parser.getToken() !== -2147483527 && parser.getToken() !== 130) {
-    parser.report(160);
+function parsePropertyOrPrivatePropertyName(parser, context, privateScope, allowPrivateId = 0) {
+  if ((parser.getToken() & 143360) === 0 && parser.getToken() !== -2147483527 && parser.getToken() !== -2147483526 && (parser.getToken() !== 131 || !allowPrivateId)) {
+    parser.report(162);
   }
-  return parser.getToken() === 130 ? parsePrivateIdentifier(parser, context, privateScope, 0) : parseIdentifier(parser, context);
+  return parser.getToken() === 131 ? parsePrivateIdentifier(parser, context, privateScope, 0) : parseIdentifier(parser, context);
 }
 __name(parsePropertyOrPrivatePropertyName, "parsePropertyOrPrivatePropertyName");
 function parseUpdateExpressionPrefixed(parser, context, privateScope, inNew, isLHS, start) {
@@ -11331,7 +10818,7 @@ function parseUpdateExpressionPrefixed(parser, context, privateScope, inNew, isL
   }, start);
 }
 __name(parseUpdateExpressionPrefixed, "parseUpdateExpressionPrefixed");
-function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canAssign, inGroup, isLHS, start) {
+function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canAssign, inGroup, isLHS, start, origin = 0, allowPrivateId = 0) {
   if ((parser.getToken() & 143360) === 143360) {
     switch (parser.getToken()) {
       case 209006:
@@ -11351,13 +10838,13 @@ function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canA
       if ((token & 36864) === 36864) {
         parser.flags |= 256;
       }
-      return parseArrowFromIdentifier(parser, context, privateScope, tokenValue, expr, inNew, canAssign, 0, start);
+      return parseArrowFromIdentifier(parser, context, privateScope, tokenValue, expr, inNew, canAssign, 0, start, origin);
     }
     if (context & 16 && !(context & 32768) && !(context & 8192) && parser.tokenValue === "arguments")
-      parser.report(130);
+      parser.report(132);
     if ((token & 255) === (241737 & 255)) {
       if (context & 1)
-        parser.report(113);
+        parser.report(115);
       if (kind & (8 | 16))
         parser.report(100);
     }
@@ -11386,7 +10873,7 @@ function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canA
     case 69271571:
       return parseArrayLiteral(parser, context, privateScope, canAssign ? 0 : 1, inGroup);
     case 67174411:
-      return parseParenthesizedExpression(parser, context | 64, privateScope, canAssign, 1, 0, start);
+      return parseParenthesizedExpression(parser, context | 64, privateScope, canAssign, 1, start, origin);
     case 86021:
     case 86022:
     case 86023:
@@ -11395,7 +10882,10 @@ function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canA
       return parseThisExpression(parser, context);
     case 65540:
       return parseRegExpLiteral(parser, context);
-    case 132:
+    case 133:
+      if (!(parser.features & 1)) {
+        parser.report(30, "@");
+      }
     case 86094:
       return parseClassExpression(parser, context, privateScope, inGroup, start);
     case 86109:
@@ -11406,10 +10896,18 @@ function parsePrimaryExpression(parser, context, privateScope, kind, inNew, canA
       return parseTemplate(parser, context, privateScope);
     case 86107:
       return parseNewExpression(parser, context, privateScope, inGroup);
-    case 134283388:
+    case 134283389:
       return parseBigIntLiteral(parser, context);
-    case 130:
-      return parsePrivateIdentifier(parser, context, privateScope, 0);
+    case 131: {
+      if (!allowPrivateId)
+        parser.report(30, "PrivateField");
+      const { tokenStart } = parser;
+      const expression = parsePrivateIdentifier(parser, context, privateScope, 0);
+      if (parser.getToken() !== 8673330) {
+        throw new ParseError(tokenStart, parser.startPosition, 151);
+      }
+      return expression;
+    }
     case 86106:
       return parseImportCallOrMetaExpression(parser, context, privateScope, inNew, inGroup, start);
     case 8456256:
@@ -11425,24 +10923,37 @@ __name(parsePrimaryExpression, "parsePrimaryExpression");
 function parseImportCallOrMetaExpression(parser, context, privateScope, inNew, inGroup, start) {
   let expr = parseIdentifier(parser, context);
   if (parser.getToken() === 67108877) {
-    return parseImportMetaExpression(parser, context, expr, start);
+    return parseImportMetaExpression(parser, context, expr, start, privateScope, inGroup, inNew);
   }
   if (inNew)
-    parser.report(142);
+    parser.report(144);
   expr = parseImportExpression(parser, context, privateScope, inGroup, start);
   parser.assignable = 2;
   return parseMemberOrUpdateExpression(parser, context, privateScope, expr, inGroup, 0, start);
 }
 __name(parseImportCallOrMetaExpression, "parseImportCallOrMetaExpression");
-function parseImportMetaExpression(parser, context, meta, start) {
-  if ((context & 2) === 0)
-    parser.report(169);
+function parseImportMetaExpression(parser, context, meta, start, privateScope, inGroup = 0, inNew = 0) {
+  const propertyStart = parser.tokenStart;
+  const propertyEnd = parser.currentLocation;
   nextToken(parser, context);
   const token = parser.getToken();
-  if (token !== 209030 && parser.tokenValue !== "meta") {
-    parser.report(174);
+  const isPhaseDefer = parser.features & 2 && (token & -2147483648) === 0 && parser.tokenValue === "defer";
+  const isPhaseSource = parser.features & 4 && (token & -2147483648) === 0 && parser.tokenValue === "source";
+  if (isPhaseDefer || isPhaseSource) {
+    if (inNew)
+      parser.report(144);
+    nextToken(parser, context);
+    const expression = parseImportExpression(parser, context, privateScope, inGroup, start, parser.tokenValue);
+    parser.assignable = 2;
+    return expression;
+  }
+  if ((context & 2) === 0) {
+    throw new ParseError(propertyStart, propertyEnd, 171);
+  }
+  if (token !== 209031 && parser.tokenValue !== "meta") {
+    parser.report(176);
   } else if (token & -2147483648) {
-    parser.report(175);
+    parser.report(177);
   }
   parser.assignable = 2;
   return parser.finishNode({
@@ -11452,10 +10963,10 @@ function parseImportMetaExpression(parser, context, meta, start) {
   }, start);
 }
 __name(parseImportMetaExpression, "parseImportMetaExpression");
-function parseImportExpression(parser, context, privateScope, inGroup, start) {
+function parseImportExpression(parser, context, privateScope, inGroup, start, phase = null) {
   consume(parser, context | 32, 67174411);
   if (parser.getToken() === 14)
-    parser.report(143);
+    parser.report(145);
   const source = parseExpression(parser, context, privateScope, 1, inGroup, parser.tokenStart);
   let options = null;
   if (parser.getToken() === 18) {
@@ -11469,7 +10980,8 @@ function parseImportExpression(parser, context, privateScope, inGroup, start) {
   const node = {
     type: "ImportExpression",
     source,
-    options
+    options,
+    ...parser.features & 2 || parser.features & 4 ? { phase } : null
   };
   consume(parser, context, 16);
   return parser.finishNode(node, start);
@@ -11488,7 +11000,7 @@ function parseImportAttributes(parser, context) {
     const value = parseStringLiteral(parser, context);
     const keyContent = key.type === "Literal" ? key.value : key.name;
     if (keysContent.has(keyContent)) {
-      parser.report(145, `${keyContent}`);
+      parser.report(147, keyContent);
     }
     keysContent.add(keyContent);
     attributes.push(parser.finishNode({
@@ -11522,21 +11034,12 @@ function parseIdentifierOrStringLiteral(parser, context) {
   }
 }
 __name(parseIdentifierOrStringLiteral, "parseIdentifierOrStringLiteral");
-function validateStringWellFormed(parser, str) {
-  const len = str.length;
-  for (let i = 0; i < len; i++) {
-    const code = str.charCodeAt(i);
-    if ((code & 64512) !== 55296)
-      continue;
-    if (code > 56319 || ++i >= len || (str.charCodeAt(i) & 64512) !== 56320) {
-      parser.report(171, JSON.stringify(str.charAt(i--)));
-    }
-  }
-}
-__name(validateStringWellFormed, "validateStringWellFormed");
 function parseModuleExportName(parser, context) {
   if (parser.getToken() === 134283267) {
-    validateStringWellFormed(parser, parser.tokenValue);
+    const value = parser.tokenValue;
+    if (!value.isWellFormed()) {
+      parser.report(173);
+    }
     return parseLiteral(parser, context);
   } else if (parser.getToken() & 143360) {
     return parseIdentifier(parser, context);
@@ -11595,6 +11098,7 @@ function parseTemplate(parser, context, privateScope) {
     consume(parser, context, 67174409);
     quasis.push(parseTemplateElement(parser, tokenValue2, tokenRaw2, tokenStart2, true));
   }
+  parser.assignable = 2;
   return parser.finishNode({
     type: "TemplateLiteral",
     expressions,
@@ -11612,11 +11116,16 @@ function parseTemplateElement(parser, cooked, raw, start, tail) {
     tail
   }, start);
   const tailSize = tail ? 1 : 2;
-  if (parser.options.ranges) {
-    node.start += 1;
-    node.range[0] += 1;
-    node.end -= tailSize;
-    node.range[1] -= tailSize;
+  const { ranges } = parser.options;
+  if (ranges) {
+    if (ranges.start)
+      node.start += 1;
+    if (ranges.end)
+      node.end -= tailSize;
+    if (ranges.range) {
+      node.range[0] += 1;
+      node.range[1] -= tailSize;
+    }
   }
   if (parser.options.loc) {
     node.loc.start.column += 1;
@@ -11672,35 +11181,35 @@ function parseIdentifier(parser, context) {
 __name(parseIdentifier, "parseIdentifier");
 function parseLiteral(parser, context) {
   const { tokenValue, tokenRaw, tokenStart } = parser;
-  if (parser.getToken() === 134283388) {
+  if (parser.getToken() === 134283389) {
     return parseBigIntLiteral(parser, context);
+  }
+  const node = {
+    type: "Literal",
+    value: tokenValue
+  };
+  if (parser.options.raw) {
+    node.raw = tokenRaw;
   }
   nextToken(parser, context);
   parser.assignable = 2;
-  return parser.finishNode(parser.options.raw ? {
-    type: "Literal",
-    value: tokenValue,
-    raw: tokenRaw
-  } : {
-    type: "Literal",
-    value: tokenValue
-  }, tokenStart);
+  return parser.finishNode(node, tokenStart);
 }
 __name(parseLiteral, "parseLiteral");
 function parseNullOrTrueOrFalseLiteral(parser, context) {
   const start = parser.tokenStart;
   const raw = KeywordDescTable[parser.getToken() & 255];
   const value = parser.getToken() === 86023 ? null : raw === "true";
-  nextToken(parser, context);
-  parser.assignable = 2;
-  return parser.finishNode(parser.options.raw ? {
-    type: "Literal",
-    value,
-    raw
-  } : {
+  const node = {
     type: "Literal",
     value
-  }, start);
+  };
+  if (parser.options.raw) {
+    node.raw = raw;
+  }
+  nextToken(parser, context);
+  parser.assignable = 2;
+  return parser.finishNode(node, start);
 }
 __name(parseNullOrTrueOrFalseLiteral, "parseNullOrTrueOrFalseLiteral");
 function parseThisExpression(parser, context) {
@@ -11712,7 +11221,7 @@ function parseThisExpression(parser, context) {
   }, tokenStart);
 }
 __name(parseThisExpression, "parseThisExpression");
-function parseFunctionDeclaration(parser, context, scope, privateScope, origin, allowGen, flags, isAsync, start) {
+function parseFunctionDeclaration(parser, context, scope, privateScope, allowGen, flags, isAsync, start, origin = 0) {
   nextToken(parser, context | 32);
   const isGenerator = allowGen ? optionalBit(parser, context, 8391476) : 0;
   let id = null;
@@ -11725,11 +11234,7 @@ function parseFunctionDeclaration(parser, context, scope, privateScope, origin, 
     const kind = origin & 4 && ((context & 8) === 0 || (context & 2) === 0) ? 4 : 64 | (isAsync ? 1024 : 0) | (isGenerator ? 1024 : 0);
     validateFunctionName(parser, context, parser.getToken());
     if (scope) {
-      if (kind & 4) {
-        scope.addVarName(context, parser.tokenValue, kind);
-      } else {
-        scope.addBlockName(context, parser.tokenValue, kind, origin);
-      }
+      scope.addVarOrBlock(context, parser.tokenValue, kind, parser.tokenStart, parser.currentLocation, origin);
       functionScope = functionScope == null ? void 0 : functionScope.createChildScope(128);
       if (flags) {
         if (flags & 2) {
@@ -11751,7 +11256,7 @@ function parseFunctionDeclaration(parser, context, scope, privateScope, origin, 
   functionScope = functionScope == null ? void 0 : functionScope.createChildScope(256);
   const params = parseFormalParametersOrFormalList(parser, (context | 8192) & -524289, functionScope, privateScope, 0, 1);
   const modifierFlags = 8 | 4 | 128 | 524288;
-  const body = parseFunctionBody(parser, (context | modifierFlags) ^ modifierFlags | 32768 | 4096, functionScope == null ? void 0 : functionScope.createChildScope(64), privateScope, 8, funcNameToken, functionScope);
+  const body = parseFunctionBody(parser, (context | modifierFlags) ^ modifierFlags | 32768 | 4096, functionScope == null ? void 0 : functionScope.createChildScope(64), privateScope, funcNameToken, functionScope, 8);
   return parser.finishNode({
     type: "FunctionDeclaration",
     id,
@@ -11779,7 +11284,7 @@ function parseFunctionExpression(parser, context, privateScope, isAsync, inGroup
   context = (context | modifierFlags) ^ modifierFlags | 65536 | generatorAndAsyncFlags | (isGenerator ? 0 : 262144);
   scope = scope == null ? void 0 : scope.createChildScope(256);
   const params = parseFormalParametersOrFormalList(parser, (context | 8192) & -524289, scope, privateScope, inGroup, 1);
-  const body = parseFunctionBody(parser, context & -131229 | 32768 | 4096, scope == null ? void 0 : scope.createChildScope(64), privateScope, 0, funcNameToken, scope);
+  const body = parseFunctionBody(parser, context & -131229 | 32768 | 4096, scope == null ? void 0 : scope.createChildScope(64), privateScope, funcNameToken, scope);
   parser.assignable = 2;
   return parser.finishNode({
     type: "FunctionExpression",
@@ -11792,7 +11297,7 @@ function parseFunctionExpression(parser, context, privateScope, isAsync, inGroup
 }
 __name(parseFunctionExpression, "parseFunctionExpression");
 function parseArrayLiteral(parser, context, privateScope, skipInitializer, inGroup) {
-  const expr = parseArrayExpressionOrPattern(parser, context, void 0, privateScope, skipInitializer, inGroup, 0, 2, 0);
+  const expr = parseArrayExpressionOrPattern(parser, context, void 0, privateScope, skipInitializer, inGroup, 0, 2);
   if (parser.destructible & 64) {
     parser.report(63);
   }
@@ -11802,7 +11307,7 @@ function parseArrayLiteral(parser, context, privateScope, skipInitializer, inGro
   return expr;
 }
 __name(parseArrayLiteral, "parseArrayLiteral");
-function parseArrayExpressionOrPattern(parser, context, scope, privateScope, skipInitializer, inGroup, isPattern, kind, origin) {
+function parseArrayExpressionOrPattern(parser, context, scope, privateScope, skipInitializer, inGroup, isPattern, kind, origin = 0) {
   const { tokenStart: start } = parser;
   nextToken(parser, context | 32);
   const elements = [];
@@ -11813,7 +11318,7 @@ function parseArrayExpressionOrPattern(parser, context, scope, privateScope, ski
       elements.push(null);
     } else {
       let left;
-      const { tokenStart, tokenValue } = parser;
+      const { tokenStart, tokenValue, currentLocation } = parser;
       const token = parser.getToken();
       if (token & 143360) {
         left = parsePrimaryExpression(parser, context, privateScope, kind, 0, 1, inGroup, 1, tokenStart);
@@ -11821,7 +11326,7 @@ function parseArrayExpressionOrPattern(parser, context, scope, privateScope, ski
           if (parser.assignable & 2)
             parser.report(26);
           nextToken(parser, context | 32);
-          scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, origin);
+          scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, tokenStart, currentLocation, origin);
           const right = parseExpression(parser, context, privateScope, 1, inGroup, parser.tokenStart);
           left = parser.finishNode(isPattern ? {
             type: "AssignmentPattern",
@@ -11833,14 +11338,14 @@ function parseArrayExpressionOrPattern(parser, context, scope, privateScope, ski
             left,
             right
           }, tokenStart);
-          destructible |= parser.destructible & 256 ? 256 : 0 | parser.destructible & 128 ? 128 : 0;
+          destructible |= (parser.destructible & 256 ? 256 : 0) | (parser.destructible & 128 ? 128 : 0);
         } else if (parser.getToken() === 18 || parser.getToken() === 20) {
           if (parser.assignable & 2) {
             destructible |= 16;
           } else {
-            scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, origin);
+            scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, tokenStart, currentLocation, origin);
           }
-          destructible |= parser.destructible & 256 ? 256 : 0 | parser.destructible & 128 ? 128 : 0;
+          destructible |= (parser.destructible & 256 ? 256 : 0) | (parser.destructible & 128 ? 128 : 0);
         } else {
           destructible |= kind & 1 ? 32 : (kind & 2) === 0 ? 16 : 0;
           left = parseMemberOrUpdateExpression(parser, context, privateScope, left, inGroup, 0, tokenStart);
@@ -11849,7 +11354,7 @@ function parseArrayExpressionOrPattern(parser, context, scope, privateScope, ski
               destructible |= 16;
             left = parseAssignmentExpression(parser, context, privateScope, inGroup, isPattern, tokenStart, left);
           } else if (parser.getToken() !== 1077936155) {
-            destructible |= parser.assignable & 2 ? 16 : 32;
+            destructible |= parser.assignable & 1 ? 32 : 16;
           }
         }
       } else if (token & 2097152) {
@@ -11868,11 +11373,11 @@ function parseArrayExpressionOrPattern(parser, context, scope, privateScope, ski
           if (parser.getToken() !== 18 && parser.getToken() !== 20) {
             left = parseAssignmentExpression(parser, context, privateScope, inGroup, isPattern, tokenStart, left);
           } else if (parser.getToken() !== 1077936155) {
-            destructible |= parser.assignable & 2 ? 16 : 32;
+            destructible |= parser.assignable & 1 ? 32 : 16;
           }
         }
       } else if (token === 14) {
-        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 20, kind, origin, 0, inGroup, isPattern);
+        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 20, kind, 0, inGroup, isPattern, origin);
         destructible |= parser.destructible;
         if (parser.getToken() !== 18 && parser.getToken() !== 20)
           parser.report(30, KeywordDescTable[parser.getToken() & 255]);
@@ -11931,12 +11436,12 @@ function parseArrayOrObjectAssignmentPattern(parser, context, privateScope, dest
   }, start);
 }
 __name(parseArrayOrObjectAssignmentPattern, "parseArrayOrObjectAssignmentPattern");
-function parseSpreadOrRestElement(parser, context, scope, privateScope, closingToken, kind, origin, isAsync, inGroup, isPattern) {
+function parseSpreadOrRestElement(parser, context, scope, privateScope, closingToken, kind, isAsync, inGroup, isPattern, origin = 0) {
   const { tokenStart: start } = parser;
   nextToken(parser, context | 32);
   let argument = null;
   let destructible = 0;
-  const { tokenValue, tokenStart } = parser;
+  const { tokenValue, tokenStart, currentLocation } = parser;
   let token = parser.getToken();
   if (token & 143360) {
     parser.assignable = 1;
@@ -11952,7 +11457,7 @@ function parseSpreadOrRestElement(parser, context, scope, privateScope, closingT
     if (parser.assignable & 2) {
       destructible |= 16;
     } else if (token === closingToken || token === 18) {
-      scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, origin);
+      scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, tokenStart, currentLocation, origin);
     } else {
       destructible |= 32;
     }
@@ -11966,7 +11471,7 @@ function parseSpreadOrRestElement(parser, context, scope, privateScope, closingT
       if (parser.destructible & 8)
         parser.report(71);
       argument = parseMemberOrUpdateExpression(parser, context, privateScope, argument, inGroup, 0, tokenStart);
-      destructible |= parser.assignable & 2 ? 16 : 0;
+      destructible |= parser.assignable & 1 ? 0 : 16;
       if ((parser.getToken() & 4194304) === 4194304) {
         if (parser.getToken() !== 1077936155)
           destructible |= 16;
@@ -11978,7 +11483,7 @@ function parseSpreadOrRestElement(parser, context, scope, privateScope, closingT
         if (consumeOpt(parser, context | 32, 22)) {
           argument = parseConditionalExpression(parser, context, privateScope, argument, tokenStart);
         }
-        destructible |= parser.assignable & 2 ? 16 : 32;
+        destructible |= parser.assignable & 1 ? 32 : 16;
       }
     } else {
       destructible |= closingToken === 1074790415 && token !== 1077936155 ? 16 : parser.destructible;
@@ -12003,7 +11508,7 @@ function parseSpreadOrRestElement(parser, context, scope, privateScope, closingT
     }
     parser.destructible = destructible;
     if (parser.getToken() !== closingToken && parser.getToken() !== 18)
-      parser.report(161);
+      parser.report(163);
     return parser.finishNode({
       type: isPattern ? "RestElement" : "SpreadElement",
       argument
@@ -12045,7 +11550,7 @@ function parseMethodDefinition(parser, context, privateScope, kind, inGroup, sta
   let scope = parser.createScopeIfLexical(256);
   const params = parseMethodFormals(parser, (context | 8192) & -524289, scope, privateScope, kind, 1, inGroup);
   scope = scope == null ? void 0 : scope.createChildScope(64);
-  const body = parseFunctionBody(parser, context & -655373 | 32768 | 4096, scope, privateScope, 0, void 0, scope == null ? void 0 : scope.parent);
+  const body = parseFunctionBody(parser, context & -655373 | 32768 | 4096, scope, privateScope, void 0, scope == null ? void 0 : scope.parent);
   return parser.finishNode({
     type: "FunctionExpression",
     params,
@@ -12057,7 +11562,7 @@ function parseMethodDefinition(parser, context, privateScope, kind, inGroup, sta
 }
 __name(parseMethodDefinition, "parseMethodDefinition");
 function parseObjectLiteral(parser, context, privateScope, skipInitializer, inGroup) {
-  const expr = parseObjectLiteralOrPattern(parser, context, void 0, privateScope, skipInitializer, inGroup, 0, 2, 0);
+  const expr = parseObjectLiteralOrPattern(parser, context, void 0, privateScope, skipInitializer, inGroup, 0, 2);
   if (parser.destructible & 64) {
     parser.report(63);
   }
@@ -12067,7 +11572,7 @@ function parseObjectLiteral(parser, context, privateScope, skipInitializer, inGr
   return expr;
 }
 __name(parseObjectLiteral, "parseObjectLiteral");
-function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipInitializer, inGroup, isPattern, kind, origin) {
+function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipInitializer, inGroup, isPattern, kind, origin = 0) {
   const { tokenStart: start } = parser;
   nextToken(parser, context);
   const properties = [];
@@ -12075,16 +11580,16 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
   let prototypeCount = 0;
   context = (context | 131072) ^ 131072;
   while (parser.getToken() !== 1074790415) {
-    const { tokenValue, tokenStart } = parser;
+    const { tokenValue, tokenStart, currentLocation } = parser;
     const token = parser.getToken();
     if (token === 14) {
-      properties.push(parseSpreadOrRestElement(parser, context, scope, privateScope, 1074790415, kind, origin, 0, inGroup, isPattern));
+      properties.push(parseSpreadOrRestElement(parser, context, scope, privateScope, 1074790415, kind, 0, inGroup, isPattern, origin));
     } else {
       let state = 0;
       let key = null;
       let value;
-      if (parser.getToken() & 143360 || parser.getToken() === -2147483528 || parser.getToken() === -2147483527) {
-        if (parser.getToken() === -2147483527)
+      if (parser.getToken() & 143360 || parser.getToken() === -2147483527 || parser.getToken() === -2147483526) {
+        if (parser.getToken() === -2147483526)
           destructible |= 16;
         key = parseIdentifier(parser, context);
         if (parser.getToken() === 18 || parser.getToken() === 1074790415 || parser.getToken() === 1077936155) {
@@ -12094,22 +11599,22 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
           } else {
             validateBindingIdentifier(parser, context, kind, token, 0);
           }
-          scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, origin);
+          scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, tokenStart, currentLocation, origin);
           if (consumeOpt(parser, context | 32, 1077936155)) {
             destructible |= 8;
             const right = parseExpression(parser, context, privateScope, 1, inGroup, parser.tokenStart);
-            destructible |= parser.destructible & 256 ? 256 : 0 | parser.destructible & 128 ? 128 : 0;
+            destructible |= (parser.destructible & 256 ? 256 : 0) | (parser.destructible & 128 ? 128 : 0);
             value = parser.finishNode({
               type: "AssignmentPattern",
-              left: parser.options.uniqueKeyInPattern ? Object.assign({}, key) : key,
+              left: parser.cloneIdentifier(key),
               right
             }, tokenStart);
           } else {
-            destructible |= (token === 209006 ? 128 : 0) | (token === -2147483528 ? 16 : 0);
-            value = parser.options.uniqueKeyInPattern ? Object.assign({}, key) : key;
+            destructible |= (token === 209006 ? 128 : 0) | (token === -2147483527 ? 16 : 0);
+            value = parser.cloneIdentifier(key);
           }
         } else if (consumeOpt(parser, context | 32, 21)) {
-          const { tokenStart: tokenStart2 } = parser;
+          const { tokenStart: tokenStart2, currentLocation: currentLocation2 } = parser;
           if (tokenValue === "__proto__")
             prototypeCount++;
           if (parser.getToken() & 143360) {
@@ -12124,7 +11629,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
                 if (parser.assignable & 2) {
                   destructible |= 16;
                 } else if ((tokenAfterColon & 143360) === 143360) {
-                  scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, origin);
+                  scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, tokenStart2, currentLocation2, origin);
                 }
               } else {
                 destructible |= parser.assignable & 1 ? 32 : 16;
@@ -12135,7 +11640,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
               } else if (token2 !== 1077936155) {
                 destructible |= 32;
               } else {
-                scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, origin);
+                scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, tokenStart2, currentLocation2, origin);
               }
               value = parseAssignmentExpression(parser, context, privateScope, inGroup, isPattern, tokenStart2, value);
             } else {
@@ -12168,7 +11673,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
                 if (consumeOpt(parser, context | 32, 22)) {
                   value = parseConditionalExpression(parser, context, privateScope, value, tokenStart2);
                 }
-                destructible |= parser.assignable & 2 ? 16 : 32;
+                destructible |= parser.assignable & 1 ? 32 : 16;
               }
             }
           } else {
@@ -12197,11 +11702,11 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
           value = parseMethodDefinition(parser, context, privateScope, state, inGroup, parser.tokenStart);
         } else if (parser.getToken() & 143360) {
           destructible |= 16;
-          if (token === -2147483528)
+          if (token === -2147483527)
             parser.report(95);
           if (token === 209005) {
             if (parser.flags & 1)
-              parser.report(132);
+              parser.report(134);
             state |= 16 | 1;
           } else if (token === 209008) {
             state |= 256;
@@ -12247,7 +11752,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
           key = parseLiteral(parser, context);
           value = parseMethodDefinition(parser, context, privateScope, state, inGroup, parser.tokenStart);
         } else {
-          parser.report(133);
+          parser.report(135);
         }
       } else if ((parser.getToken() & 134217728) === 134217728) {
         key = parseLiteral(parser, context);
@@ -12258,7 +11763,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
             prototypeCount++;
           if (parser.getToken() & 143360) {
             value = parsePrimaryExpression(parser, context, privateScope, kind, 0, 1, inGroup, 1, tokenStart2);
-            const { tokenValue: valueAfterColon } = parser;
+            const { tokenValue: valueAfterColon, tokenStart: start2, currentLocation: currentLocation2 } = parser;
             const token2 = parser.getToken();
             value = parseMemberOrUpdateExpression(parser, context, privateScope, value, inGroup, 0, tokenStart2);
             if (parser.getToken() === 18 || parser.getToken() === 1074790415) {
@@ -12266,7 +11771,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
                 if (parser.assignable & 2) {
                   destructible |= 16;
                 } else {
-                  scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, origin);
+                  scope == null ? void 0 : scope.addVarOrBlock(context, valueAfterColon, kind, start2, currentLocation2, origin);
                 }
               } else {
                 destructible |= parser.assignable & 1 ? 32 : 16;
@@ -12299,7 +11804,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
                 if (consumeOpt(parser, context | 32, 22)) {
                   value = parseConditionalExpression(parser, context, privateScope, value, tokenStart2);
                 }
-                destructible |= parser.assignable & 2 ? 16 : 32;
+                destructible |= parser.assignable & 1 ? 32 : 16;
               }
             }
           } else {
@@ -12322,9 +11827,9 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
         } else if (parser.getToken() === 67174411) {
           state |= 1;
           value = parseMethodDefinition(parser, context, privateScope, state, inGroup, parser.tokenStart);
-          destructible = parser.assignable | 16;
+          destructible = 16;
         } else {
-          parser.report(134);
+          parser.report(136);
         }
       } else if (parser.getToken() === 69271571) {
         key = parseComputedPropertyName(parser, context, privateScope, inGroup);
@@ -12332,21 +11837,21 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
         state |= 2;
         if (parser.getToken() === 21) {
           nextToken(parser, context | 32);
-          const { tokenStart: tokenStart2, tokenValue: tokenValue2 } = parser;
+          const { tokenStart: tokenStart2, tokenValue: tokenValue2, currentLocation: currentLocation2 } = parser;
           const tokenAfterColon = parser.getToken();
           if (parser.getToken() & 143360) {
             value = parsePrimaryExpression(parser, context, privateScope, kind, 0, 1, inGroup, 1, tokenStart2);
             const token2 = parser.getToken();
             value = parseMemberOrUpdateExpression(parser, context, privateScope, value, inGroup, 0, tokenStart2);
             if ((parser.getToken() & 4194304) === 4194304) {
-              destructible |= parser.assignable & 2 ? 16 : token2 === 1077936155 ? 0 : 32;
+              destructible |= parser.assignable & 1 ? token2 === 1077936155 ? 0 : 32 : 16;
               value = parseAssignmentExpressionOrPattern(parser, context, privateScope, inGroup, isPattern, tokenStart2, value);
             } else if (parser.getToken() === 18 || parser.getToken() === 1074790415) {
               if (token2 === 1077936155 || token2 === 1074790415 || token2 === 18) {
                 if (parser.assignable & 2) {
                   destructible |= 16;
                 } else if ((tokenAfterColon & 143360) === 143360) {
-                  scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue2, kind, origin);
+                  scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue2, kind, tokenStart2, currentLocation2, origin);
                 }
               } else {
                 destructible |= parser.assignable & 1 ? 32 : 16;
@@ -12378,7 +11883,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
                 if (consumeOpt(parser, context | 32, 22)) {
                   value = parseConditionalExpression(parser, context, privateScope, value, tokenStart2);
                 }
-                destructible |= parser.assignable & 2 ? 16 : 32;
+                destructible |= parser.assignable & 1 ? 32 : 16;
               }
             }
           } else {
@@ -12428,7 +11933,7 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
           key = parseComputedPropertyName(parser, context, privateScope, inGroup);
           value = parseMethodDefinition(parser, context, privateScope, state, inGroup, parser.tokenStart);
         } else {
-          parser.report(126);
+          parser.report(128);
         }
       } else {
         parser.report(30, KeywordDescTable[token & 255]);
@@ -12465,9 +11970,12 @@ function parseObjectLiteralOrPattern(parser, context, scope, privateScope, skipI
 }
 __name(parseObjectLiteralOrPattern, "parseObjectLiteralOrPattern");
 function parseMethodFormals(parser, context, scope, privateScope, kind, type, inGroup) {
+  var _a2;
   consume(parser, context, 67174411);
   const params = [];
   parser.flags = (parser.flags | 128) ^ 128;
+  parser.strictReservedRange = null;
+  parser.firstAwaitLocation = null;
   if (parser.getToken() === 16) {
     if (kind & 512) {
       parser.report(37, "Setter", "one", "");
@@ -12491,19 +11999,20 @@ function parseMethodFormals(parser, context, scope, privateScope, kind, type, in
       if ((context & 1) === 0) {
         if ((parser.getToken() & 36864) === 36864) {
           parser.flags |= 256;
+          (_a2 = parser.strictReservedRange) != null ? _a2 : parser.strictReservedRange = [tokenStart, parser.currentLocation];
         }
         if ((parser.getToken() & 537079808) === 537079808) {
           parser.flags |= 512;
         }
       }
-      left = parseAndClassifyIdentifier(parser, context, scope, kind | 1, 0);
+      left = parseAndClassifyIdentifier(parser, context, scope, kind | 1);
     } else {
       if (parser.getToken() === 2162700) {
-        left = parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, type, 0);
+        left = parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, type);
       } else if (parser.getToken() === 69271571) {
-        left = parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, type, 0);
+        left = parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, type);
       } else if (parser.getToken() === 14) {
-        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, type, 0, 0, inGroup, 1);
+        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, type, 0, inGroup, 1);
       }
       isNonSimpleParameterList = 1;
       if (parser.destructible & (32 | 16))
@@ -12544,18 +12053,21 @@ function parseComputedPropertyName(parser, context, privateScope, inGroup) {
   return key;
 }
 __name(parseComputedPropertyName, "parseComputedPropertyName");
-function parseParenthesizedExpression(parser, context, privateScope, canAssign, kind, origin, start) {
-  var _a;
+function parseParenthesizedExpression(parser, context, privateScope, canAssign, kind, start, origin) {
+  var _a2;
   parser.flags = (parser.flags | 128) ^ 128;
   const parenthesesStart = parser.tokenStart;
   nextToken(parser, context | 32 | 262144);
-  const scope = (_a = parser.createScopeIfLexical()) == null ? void 0 : _a.createChildScope(512);
+  const scope = (_a2 = parser.createScopeIfLexical()) == null ? void 0 : _a2.createChildScope(512);
   context = (context | 131072) ^ 131072;
   if (consumeOpt(parser, context, 16)) {
-    return parseParenthesizedArrow(parser, context, scope, privateScope, [], canAssign, 0, start);
+    return parseParenthesizedArrow(parser, context, scope, privateScope, [], canAssign, 0, start, origin);
   }
   let destructible = 0;
+  const previousAwaitYield = parser.destructible & (256 | 128);
   parser.destructible &= -385;
+  const previousFirstAwaitLocation = parser.firstAwaitLocation;
+  parser.firstAwaitLocation = null;
   let expr;
   let expressions = [];
   let isSequence = 0;
@@ -12564,16 +12076,16 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
   const tokenAfterParenthesesStart = parser.tokenStart;
   parser.assignable = 1;
   while (parser.getToken() !== 16) {
-    const { tokenStart } = parser;
+    const { tokenStart, currentLocation } = parser;
     const token = parser.getToken();
     if (token & 143360) {
-      scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, 1, 0);
+      scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, 1, tokenStart, currentLocation);
       if ((token & 537079808) === 537079808) {
         isNonSimpleParameterList = 1;
       } else if ((token & 36864) === 36864) {
         hasStrictReserved = 1;
       }
-      expr = parsePrimaryExpression(parser, context, privateScope, kind, 0, 1, 1, 1, tokenStart);
+      expr = parsePrimaryExpression(parser, context, privateScope, kind, 0, 1, 1, 1, tokenStart, 0);
       if (parser.getToken() === 16 || parser.getToken() === 18) {
         if (parser.assignable & 2) {
           destructible |= 16;
@@ -12591,13 +12103,13 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
         }
       }
     } else if ((token & 2097152) === 2097152) {
-      expr = token === 2162700 ? parseObjectLiteralOrPattern(parser, context | 262144, scope, privateScope, 0, 1, 0, kind, origin) : parseArrayExpressionOrPattern(parser, context | 262144, scope, privateScope, 0, 1, 0, kind, origin);
+      expr = token === 2162700 ? parseObjectLiteralOrPattern(parser, context | 262144, scope, privateScope, 0, 1, 0, kind) : parseArrayExpressionOrPattern(parser, context | 262144, scope, privateScope, 0, 1, 0, kind);
       destructible |= parser.destructible;
       isNonSimpleParameterList = 1;
       parser.assignable = 2;
       if (parser.getToken() !== 16 && parser.getToken() !== 18) {
         if (destructible & 8)
-          parser.report(122);
+          parser.report(124);
         expr = parseMemberOrUpdateExpression(parser, context, privateScope, expr, 0, 0, tokenStart);
         destructible |= 16;
         if (parser.getToken() !== 16 && parser.getToken() !== 18) {
@@ -12605,7 +12117,7 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
         }
       }
     } else if (token === 14) {
-      expr = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, origin, 0, 1, 0);
+      expr = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, 0, 1, 0);
       if (parser.destructible & 16)
         parser.report(74);
       isNonSimpleParameterList = 1;
@@ -12637,7 +12149,10 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
         }, tokenAfterParenthesesStart);
       }
       consume(parser, context, 16);
-      parser.destructible = destructible;
+      parser.destructible = destructible | previousAwaitYield;
+      if (previousFirstAwaitLocation) {
+        parser.firstAwaitLocation = previousFirstAwaitLocation;
+      }
       return parser.options.preserveParens ? parser.finishNode({
         type: "ParenthesizedExpression",
         expression: expr
@@ -12666,13 +12181,17 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
   }
   consume(parser, context, 16);
   if (destructible & 16 && destructible & 8)
-    parser.report(151);
-  destructible |= parser.destructible & 256 ? 256 : 0 | parser.destructible & 128 ? 128 : 0;
+    parser.report(153);
+  destructible |= (parser.destructible & 256 ? 256 : 0) | (parser.destructible & 128 ? 128 : 0);
   if (parser.getToken() === 10) {
     if (destructible & (32 | 16))
       parser.report(49);
-    if (context & (2048 | 2) && destructible & 128)
+    if (context & (2048 | 2) && destructible & 128) {
+      const loc = parser.firstAwaitLocation;
+      if (loc)
+        throw new ParseError(loc.start, loc.end, 31);
       parser.report(31);
+    }
     if (context & (1 | 1024) && destructible & 256) {
       parser.report(32);
     }
@@ -12680,15 +12199,22 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
       parser.flags |= 128;
     if (hasStrictReserved)
       parser.flags |= 256;
-    return parseParenthesizedArrow(parser, context, scope, privateScope, isSequence ? expressions : [expr], canAssign, 0, start);
+    parser.destructible |= previousAwaitYield;
+    if (previousFirstAwaitLocation) {
+      parser.firstAwaitLocation = previousFirstAwaitLocation;
+    }
+    return parseParenthesizedArrow(parser, context, scope, privateScope, isSequence ? expressions : [expr], canAssign, 0, start, origin);
   }
   if (destructible & 64) {
     parser.report(63);
   }
   if (destructible & 8) {
-    parser.report(144);
+    parser.report(146);
   }
-  parser.destructible = (parser.destructible | 256) ^ 256 | destructible;
+  parser.destructible = (parser.destructible | 256) ^ 256 | destructible | previousAwaitYield;
+  if (previousFirstAwaitLocation) {
+    parser.firstAwaitLocation = previousFirstAwaitLocation;
+  }
   return parser.options.preserveParens ? parser.finishNode({
     type: "ParenthesizedExpression",
     expression: expr
@@ -12696,8 +12222,7 @@ function parseParenthesizedExpression(parser, context, privateScope, canAssign, 
 }
 __name(parseParenthesizedExpression, "parseParenthesizedExpression");
 function parseIdentifierOrArrow(parser, context, privateScope) {
-  const { tokenStart: start } = parser;
-  const { tokenValue } = parser;
+  const { tokenValue, tokenStart, currentLocation } = parser;
   let isNonSimpleParameterList = 0;
   let hasStrictReserved = 0;
   if ((parser.getToken() & 537079808) === 537079808) {
@@ -12708,35 +12233,35 @@ function parseIdentifierOrArrow(parser, context, privateScope) {
   const expr = parseIdentifier(parser, context);
   parser.assignable = 1;
   if (parser.getToken() === 10) {
-    const scope = parser.options.lexical ? createArrowHeadParsingScope(parser, context, tokenValue) : void 0;
+    const scope = parser.options.lexical ? createArrowHeadParsingScope(parser, context, tokenValue, tokenStart, currentLocation) : void 0;
     if (isNonSimpleParameterList)
       parser.flags |= 128;
     if (hasStrictReserved)
       parser.flags |= 256;
-    return parseArrowFunctionExpression(parser, context, scope, privateScope, [expr], 0, start);
+    return parseArrowFunctionExpression(parser, context, scope, privateScope, [expr], 0, tokenStart);
   }
   return expr;
 }
 __name(parseIdentifierOrArrow, "parseIdentifierOrArrow");
-function parseArrowFromIdentifier(parser, context, privateScope, value, expr, inNew, canAssign, isAsync, start) {
+function parseArrowFromIdentifier(parser, context, privateScope, value, expr, inNew, canAssign, isAsync, start, origin = 0) {
   if (!canAssign)
     parser.report(57);
   if (inNew)
     parser.report(51);
   parser.flags &= -129;
-  const scope = parser.options.lexical ? createArrowHeadParsingScope(parser, context, value) : void 0;
-  return parseArrowFunctionExpression(parser, context, scope, privateScope, [expr], isAsync, start);
+  const scope = parser.options.lexical ? createArrowHeadParsingScope(parser, context, value, start, parser.currentLocation) : void 0;
+  return parseArrowFunctionExpression(parser, context, scope, privateScope, [expr], isAsync, start, origin);
 }
 __name(parseArrowFromIdentifier, "parseArrowFromIdentifier");
-function parseParenthesizedArrow(parser, context, scope, privateScope, params, canAssign, isAsync, start) {
+function parseParenthesizedArrow(parser, context, scope, privateScope, params, canAssign, isAsync, start, origin = 0) {
   if (!canAssign)
     parser.report(57);
-  for (let i = 0; i < params.length; ++i)
-    reinterpretToPattern(parser, params[i]);
-  return parseArrowFunctionExpression(parser, context, scope, privateScope, params, isAsync, start);
+  for (let i2 = 0; i2 < params.length; ++i2)
+    reinterpretToPattern(parser, params[i2]);
+  return parseArrowFunctionExpression(parser, context, scope, privateScope, params, isAsync, start, origin);
 }
 __name(parseParenthesizedArrow, "parseParenthesizedArrow");
-function parseArrowFunctionExpression(parser, context, scope, privateScope, params, isAsync, start) {
+function parseArrowFunctionExpression(parser, context, scope, privateScope, params, isAsync, start, origin = 0) {
   if (parser.flags & 1)
     parser.report(48);
   consume(parser, context | 32, 10);
@@ -12751,28 +12276,32 @@ function parseArrowFunctionExpression(parser, context, scope, privateScope, para
   } else {
     scope = scope == null ? void 0 : scope.createChildScope(64);
     const modifierFlags2 = 4 | 131072 | 8;
-    body = parseFunctionBody(parser, (context | modifierFlags2) ^ modifierFlags2 | 4096, scope, privateScope, 16, void 0, void 0);
+    body = parseFunctionBody(parser, (context | modifierFlags2) ^ modifierFlags2 | 4096, scope, privateScope, void 0, void 0, 16);
     switch (parser.getToken()) {
       case 69271571:
         if ((parser.flags & 1) === 0) {
-          parser.report(116);
+          parser.report(118);
         }
+        parser.flags |= 8192;
         break;
       case 67108877:
       case 67174409:
       case 22:
-        parser.report(117);
+        parser.report(119);
       case 67174411:
         if ((parser.flags & 1) === 0) {
-          parser.report(116);
+          parser.report(118);
         }
         parser.flags |= 1024;
         break;
     }
-    if ((parser.getToken() & 8388608) === 8388608 && (parser.flags & 1) === 0)
-      parser.report(30, KeywordDescTable[parser.getToken() & 255]);
+    if ((parser.getToken() & 8388608) === 8388608 && (parser.flags & 1) === 0) {
+      if (parser.getToken() !== 8673330 || origin !== 32) {
+        parser.report(30, KeywordDescTable[parser.getToken() & 255]);
+      }
+    }
     if ((parser.getToken() & 33619968) === 33619968)
-      parser.report(125);
+      parser.report(127);
   }
   parser.assignable = 2;
   return parser.finishNode({
@@ -12786,8 +12315,11 @@ function parseArrowFunctionExpression(parser, context, scope, privateScope, para
 }
 __name(parseArrowFunctionExpression, "parseArrowFunctionExpression");
 function parseFormalParametersOrFormalList(parser, context, scope, privateScope, inGroup, kind) {
+  var _a2;
   consume(parser, context, 67174411);
   parser.flags = (parser.flags | 128) ^ 128;
+  parser.strictReservedRange = null;
+  parser.firstAwaitLocation = null;
   const params = [];
   if (consumeOpt(parser, context, 16))
     return params;
@@ -12801,19 +12333,20 @@ function parseFormalParametersOrFormalList(parser, context, scope, privateScope,
       if ((context & 1) === 0) {
         if ((token & 36864) === 36864) {
           parser.flags |= 256;
+          (_a2 = parser.strictReservedRange) != null ? _a2 : parser.strictReservedRange = [tokenStart, parser.currentLocation];
         }
         if ((token & 537079808) === 537079808) {
           parser.flags |= 512;
         }
       }
-      left = parseAndClassifyIdentifier(parser, context, scope, kind | 1, 0);
+      left = parseAndClassifyIdentifier(parser, context, scope, kind | 1);
     } else {
       if (token === 2162700) {
-        left = parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, kind, 0);
+        left = parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, kind);
       } else if (token === 69271571) {
-        left = parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, kind, 0);
+        left = parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, inGroup, 1, kind);
       } else if (token === 14) {
-        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, 0, 0, inGroup, 1);
+        left = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, 0, inGroup, 1);
       } else {
         parser.report(30, KeywordDescTable[token & 255]);
       }
@@ -12854,7 +12387,7 @@ function parseMemberExpressionNoCall(parser, context, privateScope, expr, inGrou
     if (token === 67108877) {
       nextToken(parser, context | 262144);
       parser.assignable = 1;
-      const property = parsePropertyOrPrivatePropertyName(parser, context, privateScope);
+      const property = parsePropertyOrPrivatePropertyName(parser, context, privateScope, 1);
       return parseMemberExpressionNoCall(parser, context, privateScope, parser.finishNode({
         type: "MemberExpression",
         object: expr,
@@ -12892,7 +12425,7 @@ function parseNewExpression(parser, context, privateScope, inGroup) {
   const id = parseIdentifier(parser, context | 32);
   const { tokenStart } = parser;
   if (consumeOpt(parser, context, 67108877)) {
-    if (context & 65536 && parser.getToken() === 209029) {
+    if (context & 65536 && parser.getToken() === 209030) {
       parser.assignable = 2;
       return parseMetaProperty(parser, context, id, start);
     }
@@ -12904,8 +12437,8 @@ function parseNewExpression(parser, context, privateScope, inGroup) {
   }
   const expr = parsePrimaryExpression(parser, context, privateScope, 2, 1, 0, inGroup, 1, tokenStart);
   context = (context | 131072) ^ 131072;
-  if (parser.getToken() === 67108990)
-    parser.report(168);
+  if (parser.getToken() === 67108991)
+    parser.report(170);
   const callee = parseMemberExpressionNoCall(parser, context, privateScope, expr, inGroup, tokenStart);
   parser.assignable = 2;
   return parser.finishNode({
@@ -12937,10 +12470,12 @@ function parseAsyncArrowAfterIdent(parser, context, privateScope, canAssign, sta
   return parseArrowFromIdentifier(parser, context & -524289 | 2048, privateScope, parser.tokenValue, parseIdentifier(parser, context), 0, canAssign, 1, start);
 }
 __name(parseAsyncArrowAfterIdent, "parseAsyncArrowAfterIdent");
-function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, canAssign, kind, origin, flags, start) {
-  var _a;
+function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, canAssign, kind, flags, start) {
+  var _a2;
   nextToken(parser, context | 32);
-  const scope = (_a = parser.createScopeIfLexical()) == null ? void 0 : _a.createChildScope(512);
+  const scope = (_a2 = parser.createScopeIfLexical()) == null ? void 0 : _a2.createChildScope(512);
+  const previousFirstAwaitLocation = parser.firstAwaitLocation;
+  parser.firstAwaitLocation = null;
   context = (context | 131072) ^ 131072;
   if (consumeOpt(parser, context, 16)) {
     if (parser.getToken() === 10) {
@@ -12948,6 +12483,13 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
         parser.report(48);
       return parseParenthesizedArrow(parser, context, scope, privateScope, [], canAssign, 1, start);
     }
+    if (!(context & 1) && parser.options.webcompat) {
+      parser.assignable = 4;
+    } else {
+      parser.assignable = 2;
+    }
+    if (previousFirstAwaitLocation)
+      parser.firstAwaitLocation = previousFirstAwaitLocation;
     return parser.finishNode({
       type: "CallExpression",
       callee,
@@ -12956,15 +12498,15 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
     }, start);
   }
   let destructible = 0;
-  let expr = null;
+  let expr;
   let isNonSimpleParameterList = 0;
   parser.destructible = (parser.destructible | 256 | 128) ^ (256 | 128);
   const params = [];
   while (parser.getToken() !== 16) {
-    const { tokenStart } = parser;
+    const { tokenStart, currentLocation } = parser;
     const token = parser.getToken();
     if (token & 143360) {
-      scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, kind, 0);
+      scope == null ? void 0 : scope.addBlockName(context, parser.tokenValue, kind, tokenStart, currentLocation);
       if ((token & 537079808) === 537079808) {
         parser.flags |= 512;
       } else if ((token & 36864) === 36864) {
@@ -12988,12 +12530,12 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
         }
       }
     } else if (token & 2097152) {
-      expr = token === 2162700 ? parseObjectLiteralOrPattern(parser, context, scope, privateScope, 0, 1, 0, kind, origin) : parseArrayExpressionOrPattern(parser, context, scope, privateScope, 0, 1, 0, kind, origin);
+      expr = token === 2162700 ? parseObjectLiteralOrPattern(parser, context, scope, privateScope, 0, 1, 0, kind) : parseArrayExpressionOrPattern(parser, context, scope, privateScope, 0, 1, 0, kind);
       destructible |= parser.destructible;
       isNonSimpleParameterList = 1;
       if (parser.getToken() !== 16 && parser.getToken() !== 18) {
         if (destructible & 8)
-          parser.report(122);
+          parser.report(124);
         expr = parseMemberOrUpdateExpression(parser, context, privateScope, expr, 0, 0, tokenStart);
         destructible |= 16;
         if ((parser.getToken() & 8388608) === 8388608) {
@@ -13004,12 +12546,12 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
         }
       }
     } else if (token === 14) {
-      expr = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, origin, 1, 1, 0);
+      expr = parseSpreadOrRestElement(parser, context, scope, privateScope, 16, kind, 1, 1, 0);
       destructible |= (parser.getToken() === 16 ? 0 : 16) | parser.destructible;
       isNonSimpleParameterList = 1;
     } else {
       expr = parseExpression(parser, context, privateScope, 1, 0, tokenStart);
-      destructible = parser.assignable;
+      destructible = 0;
       params.push(expr);
       while (consumeOpt(parser, context | 32, 18)) {
         params.push(parseExpression(parser, context, privateScope, 1, 0, tokenStart));
@@ -13017,7 +12559,13 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
       destructible |= parser.assignable;
       consume(parser, context, 16);
       parser.destructible = destructible | 16;
-      parser.assignable = 2;
+      if (!(context & 1) && parser.options.webcompat) {
+        parser.assignable = 4;
+      } else {
+        parser.assignable = 2;
+      }
+      if (previousFirstAwaitLocation)
+        parser.firstAwaitLocation = previousFirstAwaitLocation;
       return parser.finishNode({
         type: "CallExpression",
         callee,
@@ -13030,14 +12578,18 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
       break;
   }
   consume(parser, context, 16);
-  destructible |= parser.destructible & 256 ? 256 : 0 | parser.destructible & 128 ? 128 : 0;
+  destructible |= (parser.destructible & 256 ? 256 : 0) | (parser.destructible & 128 ? 128 : 0);
   if (parser.getToken() === 10) {
     if (destructible & (32 | 16))
       parser.report(27);
     if (parser.flags & 1 || flags & 1)
       parser.report(48);
-    if (destructible & 128)
+    if (destructible & 128) {
+      const loc = parser.firstAwaitLocation;
+      if (loc)
+        throw new ParseError(loc.start, loc.end, 31);
       parser.report(31);
+    }
     if (context & (1 | 1024) && destructible & 256)
       parser.report(32);
     if (isNonSimpleParameterList)
@@ -13050,7 +12602,13 @@ function parseAsyncArrowOrCallExpression(parser, context, privateScope, callee, 
   if (destructible & 8) {
     parser.report(62);
   }
-  parser.assignable = 2;
+  if (!(context & 1) && parser.options.webcompat) {
+    parser.assignable = 4;
+  } else {
+    parser.assignable = 2;
+  }
+  if (previousFirstAwaitLocation)
+    parser.firstAwaitLocation = previousFirstAwaitLocation;
   return parser.finishNode({
     type: "CallExpression",
     callee,
@@ -13078,9 +12636,6 @@ function parseClassDeclaration(parser, context, scope, privateScope, flags) {
   let start;
   let decorators;
   if (parser.leadingDecorators.decorators.length) {
-    if (parser.getToken() === 132) {
-      parser.report(30, "@");
-    }
     start = parser.leadingDecorators.start;
     decorators = [...parser.leadingDecorators.decorators];
     parser.leadingDecorators.decorators.length = 0;
@@ -13089,19 +12644,19 @@ function parseClassDeclaration(parser, context, scope, privateScope, flags) {
     decorators = parseDecorators(parser, context, privateScope);
   }
   context = (context | 16384 | 1) ^ 16384;
-  nextToken(parser, context);
+  consume(parser, context, 86094);
   let id = null;
   let superClass = null;
-  const { tokenValue } = parser;
+  const { tokenValue, tokenStart, currentLocation } = parser;
   if (parser.getToken() & 4096 && parser.getToken() !== 20565) {
     if (isStrictReservedWord(parser, context, parser.getToken())) {
-      parser.report(118);
+      parser.report(120);
     }
     if ((parser.getToken() & 537079808) === 537079808) {
-      parser.report(119);
+      parser.report(121);
     }
     if (scope) {
-      scope.addBlockName(context, tokenValue, 32, 0);
+      scope.addBlockName(context, tokenValue, 32, tokenStart, currentLocation);
       if (flags) {
         if (flags & 2) {
           parser.declareUnboundVariable(tokenValue);
@@ -13120,13 +12675,13 @@ function parseClassDeclaration(parser, context, scope, privateScope, flags) {
   } else {
     inheritedContext = (inheritedContext | 512) ^ 512;
   }
-  const body = parseClassBody(parser, inheritedContext, context, scope, privateScope, 2, 8, 0);
+  const body = parseClassBody(parser, inheritedContext, context, scope, privateScope, 2, 0, 8);
   return parser.finishNode({
     type: "ClassDeclaration",
     id,
     superClass,
     body,
-    ...parser.options.next ? { decorators } : null
+    ...parser.features & 1 ? { decorators } : null
   }, start);
 }
 __name(parseClassDeclaration, "parseClassDeclaration");
@@ -13135,12 +12690,12 @@ function parseClassExpression(parser, context, privateScope, inGroup, start) {
   let superClass = null;
   const decorators = parseDecorators(parser, context, privateScope);
   context = (context | 1 | 16384) ^ 16384;
-  nextToken(parser, context);
+  consume(parser, context, 86094);
   if (parser.getToken() & 4096 && parser.getToken() !== 20565) {
     if (isStrictReservedWord(parser, context, parser.getToken()))
-      parser.report(118);
+      parser.report(120);
     if ((parser.getToken() & 537079808) === 537079808) {
-      parser.report(119);
+      parser.report(121);
     }
     id = parseIdentifier(parser, context);
   }
@@ -13151,39 +12706,75 @@ function parseClassExpression(parser, context, privateScope, inGroup, start) {
   } else {
     inheritedContext = (inheritedContext | 512) ^ 512;
   }
-  const body = parseClassBody(parser, inheritedContext, context, void 0, privateScope, 2, 0, inGroup);
+  const body = parseClassBody(parser, inheritedContext, context, void 0, privateScope, 2, inGroup);
   parser.assignable = 2;
   return parser.finishNode({
     type: "ClassExpression",
     id,
     superClass,
     body,
-    ...parser.options.next ? { decorators } : null
+    ...parser.features & 1 ? { decorators } : null
   }, start);
 }
 __name(parseClassExpression, "parseClassExpression");
 function parseDecorators(parser, context, privateScope) {
   const list = [];
-  if (parser.options.next) {
-    while (parser.getToken() === 132) {
-      list.push(parseDecoratorList(parser, context, privateScope));
+  if (parser.features & 1) {
+    while (parser.getToken() === 133) {
+      list.push(parseDecorator(parser, context, privateScope));
     }
   }
   return list;
 }
 __name(parseDecorators, "parseDecorators");
-function parseDecoratorList(parser, context, privateScope) {
+function parseDecorator(parser, context, privateScope) {
   const start = parser.tokenStart;
   nextToken(parser, context | 32);
-  let expression = parsePrimaryExpression(parser, context, privateScope, 2, 0, 1, 0, 1, start);
-  expression = parseMemberOrUpdateExpression(parser, context, privateScope, expression, 0, 0, parser.tokenStart);
+  const expressionStart = parser.tokenStart;
+  let expression;
+  if (parser.getToken() === 67174411) {
+    expression = parsePrimaryExpression(parser, context, privateScope, 2, 0, 1, 0, 1, start);
+  } else {
+    const token = parser.getToken();
+    if ((token & 143360) !== 143360 && !isValidIdentifier(context, token) || context & 1 && (token & 36864) === 36864) {
+      parser.report(30, KeywordDescTable[token & 255]);
+    }
+    if (token === 209006 && context & (2048 | 2)) {
+      parser.report(112);
+    }
+    if (token === 241771 && context & 1024) {
+      parser.report(97, "yield");
+    }
+    let memberExpression = parseIdentifier(parser, context | 64);
+    while (parser.getToken() === 67108877) {
+      nextToken(parser, (context | 262144 | 8) ^ 8);
+      const property = parsePropertyOrPrivatePropertyName(parser, context | 64, privateScope, 1);
+      memberExpression = parser.finishNode({
+        type: "MemberExpression",
+        object: memberExpression,
+        computed: false,
+        property,
+        optional: false
+      }, expressionStart);
+    }
+    expression = memberExpression;
+    if (parser.getToken() === 67174411) {
+      const args = parseArguments(parser, context, privateScope, 0);
+      expression = parser.finishNode({
+        type: "CallExpression",
+        callee: memberExpression,
+        arguments: args,
+        optional: false
+      }, expressionStart);
+    }
+  }
   return parser.finishNode({
     type: "Decorator",
     expression
   }, start);
 }
-__name(parseDecoratorList, "parseDecoratorList");
-function parseClassBody(parser, context, inheritedContext, scope, parentScope, kind, origin, inGroup) {
+__name(parseDecorator, "parseDecorator");
+function parseClassBody(parser, context, inheritedContext, scope, parentScope, kind, inGroup, origin = 0) {
   const { tokenStart } = parser;
   const privateScope = parser.createPrivateScopeIfLexical(parentScope);
   consume(parser, context | 32, 2162700);
@@ -13196,13 +12787,13 @@ function parseClassBody(parser, context, inheritedContext, scope, parentScope, k
     const decoratorStart = parser.tokenStart;
     const decorators = parseDecorators(parser, context, privateScope);
     if (decorators.length > 0 && parser.tokenValue === "constructor") {
-      parser.report(109);
+      parser.report(111);
     }
     if (parser.getToken() === 1074790415)
-      parser.report(108);
+      parser.report(110);
     if (consumeOpt(parser, context, 1074790417)) {
       if (decorators.length > 0)
-        parser.report(120);
+        parser.report(122);
       continue;
     }
     body.push(parseClassElementList(parser, context, scope, privateScope, inheritedContext, kind, decorators, 0, inGroup, decorators.length > 0 ? decoratorStart : parser.tokenStart));
@@ -13220,7 +12811,7 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
   let kind = isStatic ? 32 : 0;
   let key = null;
   const token = parser.getToken();
-  if (token & (143360 | 36864) || token === -2147483528) {
+  if (token & (143360 | 36864) || token === -2147483527) {
     key = parseIdentifier(parser, context);
     switch (token) {
       case 36970:
@@ -13238,6 +12829,9 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
         break;
       case 209008:
         if (parser.getToken() !== 67174411) {
+          if (parser.getToken() === 8391476 && parser.flags & 1) {
+            return parsePropertyDefinition(parser, context, privateScope, key, kind, decorators, start);
+          }
           if ((parser.getToken() & 1073741824) === 1073741824) {
             return parsePropertyDefinition(parser, context, privateScope, key, kind, decorators, start);
           }
@@ -13246,18 +12840,21 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
         break;
       case 209009:
         if (parser.getToken() !== 67174411) {
+          if (parser.getToken() === 8391476 && parser.flags & 1) {
+            return parsePropertyDefinition(parser, context, privateScope, key, kind, decorators, start);
+          }
           if ((parser.getToken() & 1073741824) === 1073741824) {
             return parsePropertyDefinition(parser, context, privateScope, key, kind, decorators, start);
           }
           kind |= 512;
         }
         break;
-      case 12402:
+      case 209010:
         if (parser.getToken() !== 67174411 && (parser.flags & 1) === 0) {
           if ((parser.getToken() & 1073741824) === 1073741824) {
             return parsePropertyDefinition(parser, context, privateScope, key, kind, decorators, start);
           }
-          if (parser.options.next)
+          if (parser.features & 1)
             kind |= 1024;
         }
         break;
@@ -13270,14 +12867,14 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
   } else if (token === 8391476) {
     kind |= 8;
     nextToken(parser, context);
-  } else if (parser.getToken() === 130) {
+  } else if (parser.getToken() === 131) {
     kind |= 8192;
     key = parsePrivateIdentifier(parser, context | 16, privateScope, 768);
   } else if ((parser.getToken() & 1073741824) === 1073741824) {
     kind |= 128;
   } else if (isStatic && token === 2162700) {
     return parseStaticBlock(parser, context | 16, scope, privateScope, start);
-  } else if (token === -2147483527) {
+  } else if (token === -2147483526) {
     key = parseIdentifier(parser, context);
     if (parser.getToken() !== 67174411)
       parser.report(30, KeywordDescTable[parser.getToken() & 255]);
@@ -13285,23 +12882,23 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
     parser.report(30, KeywordDescTable[parser.getToken() & 255]);
   }
   if (kind & (8 | 16 | 768 | 1024)) {
-    if (parser.getToken() & 143360 || parser.getToken() === -2147483528 || parser.getToken() === -2147483527) {
+    if (parser.getToken() & 143360 || parser.getToken() === -2147483527 || parser.getToken() === -2147483526) {
       key = parseIdentifier(parser, context);
     } else if ((parser.getToken() & 134217728) === 134217728) {
       key = parseLiteral(parser, context);
     } else if (parser.getToken() === 69271571) {
       kind |= 2;
       key = parseComputedPropertyName(parser, context, privateScope, 0);
-    } else if (parser.getToken() === 130) {
+    } else if (parser.getToken() === 131) {
       kind |= 8192;
       key = parsePrivateIdentifier(parser, context, privateScope, kind);
     } else
-      parser.report(135);
+      parser.report(137);
   }
   if ((kind & 2) === 0) {
     if (parser.tokenValue === "constructor") {
       if ((parser.getToken() & 1073741824) === 1073741824) {
-        parser.report(129);
+        parser.report(131);
       } else if ((kind & 32) === 0 && parser.getToken() === 67174411) {
         if (kind & (768 | 16 | 128 | 8)) {
           parser.report(53, "accessor");
@@ -13328,7 +12925,7 @@ function parseClassElementList(parser, context, scope, privateScope, inheritedCo
     computed: (kind & 2) > 0,
     key,
     value,
-    ...parser.options.next ? { decorators } : null
+    ...parser.features & 1 ? { decorators } : null
   }, start);
 }
 __name(parseClassElementList, "parseClassElementList");
@@ -13337,7 +12934,7 @@ function parsePrivateIdentifier(parser, context, privateScope, kind) {
   nextToken(parser, context);
   const { tokenValue } = parser;
   if (tokenValue === "constructor")
-    parser.report(128);
+    parser.report(130);
   if (parser.options.lexical) {
     if (!privateScope)
       parser.report(4, tokenValue);
@@ -13361,11 +12958,11 @@ function parsePropertyDefinition(parser, context, privateScope, key, state, deco
   if (parser.getToken() === 1077936155) {
     nextToken(parser, context | 32);
     const { tokenStart } = parser;
-    if (parser.getToken() === 537079927)
-      parser.report(119);
+    if (parser.getToken() === 537079928)
+      parser.report(121);
     const modifierFlags = 1024 | 2048 | 8192 | ((state & 64) === 0 ? 512 | 16384 : 0);
     context = (context | modifierFlags) ^ modifierFlags | (state & 8 ? 1024 : 0) | (state & 16 ? 2048 : 0) | (state & 64 ? 16384 : 0) | 256 | 65536;
-    value = parsePrimaryExpression(parser, context | 16, privateScope, 2, 0, 1, 0, 1, tokenStart);
+    value = parsePrimaryExpression(parser, context | 16, privateScope, 2, 0, 1, 0, 1, tokenStart, 0, 1);
     if ((parser.getToken() & 1073741824) !== 1073741824 || (parser.getToken() & 4194304) === 4194304) {
       value = parseMemberOrUpdateExpression(parser, context | 16, privateScope, value, 0, 0, tokenStart);
       value = parseAssignmentExpression(parser, context | 16, privateScope, 0, 0, tokenStart, value);
@@ -13378,16 +12975,16 @@ function parsePropertyDefinition(parser, context, privateScope, key, state, deco
     value,
     static: (state & 32) > 0,
     computed: (state & 2) > 0,
-    ...parser.options.next ? { decorators } : null
+    ...parser.features & 1 ? { decorators } : null
   }, start);
 }
 __name(parsePropertyDefinition, "parsePropertyDefinition");
-function parseBindingPattern(parser, context, scope, privateScope, type, origin) {
-  if (parser.getToken() & 143360 || (context & 1) === 0 && parser.getToken() === -2147483527)
-    return parseAndClassifyIdentifier(parser, context, scope, type, origin);
+function parseBindingPattern(parser, context, scope, privateScope, kind, origin = 0) {
+  if (parser.getToken() & 143360 || (context & 1) === 0 && parser.getToken() === -2147483526)
+    return parseAndClassifyIdentifier(parser, context, scope, kind, origin);
   if ((parser.getToken() & 2097152) !== 2097152)
     parser.report(30, KeywordDescTable[parser.getToken() & 255]);
-  const left = parser.getToken() === 69271571 ? parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, 0, 1, type, origin) : parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, 0, 1, type, origin);
+  const left = parser.getToken() === 69271571 ? parseArrayExpressionOrPattern(parser, context, scope, privateScope, 1, 0, 1, kind, origin) : parseObjectLiteralOrPattern(parser, context, scope, privateScope, 1, 0, 1, kind, origin);
   if (parser.destructible & 16)
     parser.report(50);
   if (parser.destructible & 32)
@@ -13395,13 +12992,13 @@ function parseBindingPattern(parser, context, scope, privateScope, type, origin)
   return left;
 }
 __name(parseBindingPattern, "parseBindingPattern");
-function parseAndClassifyIdentifier(parser, context, scope, kind, origin) {
+function parseAndClassifyIdentifier(parser, context, scope, kind, origin = 0) {
   const token = parser.getToken();
   if (context & 1) {
     if ((token & 537079808) === 537079808) {
-      parser.report(119);
-    } else if ((token & 36864) === 36864 || token === -2147483527) {
-      parser.report(118);
+      parser.report(121);
+    } else if ((token & 36864) === 36864 || token === -2147483526) {
+      parser.report(120);
     }
   }
   if ((token & 20480) === 20480) {
@@ -13411,7 +13008,7 @@ function parseAndClassifyIdentifier(parser, context, scope, kind, origin) {
     if (context & 1024)
       parser.report(32);
     if (context & 2)
-      parser.report(111);
+      parser.report(113);
   }
   if ((token & 255) === (241737 & 255)) {
     if (kind & (8 | 16))
@@ -13419,17 +13016,17 @@ function parseAndClassifyIdentifier(parser, context, scope, kind, origin) {
   }
   if (token === 209006) {
     if (context & 2048)
-      parser.report(176);
+      parser.report(178);
     if (context & 2)
-      parser.report(110);
+      parser.report(112);
   }
-  const { tokenValue, tokenStart: start } = parser;
+  const { tokenValue, tokenStart, currentLocation } = parser;
   nextToken(parser, context);
-  scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, origin);
+  scope == null ? void 0 : scope.addVarOrBlock(context, tokenValue, kind, tokenStart, currentLocation, origin);
   return parser.finishNode({
     type: "Identifier",
     name: tokenValue
-  }, start);
+  }, tokenStart);
 }
 __name(parseAndClassifyIdentifier, "parseAndClassifyIdentifier");
 function parseJSXRootElementOrFragment(parser, context, privateScope, inJSXChild, start) {
@@ -13454,7 +13051,7 @@ function parseJSXRootElementOrFragment(parser, context, privateScope, inJSXChild
     [children, closingElement] = parseJSXChildrenAndClosingElement(parser, context, privateScope, inJSXChild);
     const close = isEqualTagName(closingElement.name);
     if (isEqualTagName(openingElement.name) !== close)
-      parser.report(155, close);
+      parser.report(157, close);
   }
   return parser.finishNode({
     type: "JSXElement",
@@ -13526,8 +13123,8 @@ function parseJSXChildrenAndClosingFragment(parser, context, privateScope, inJSX
 }
 __name(parseJSXChildrenAndClosingFragment, "parseJSXChildrenAndClosingFragment");
 function parseJSXChildOrClosingElement(parser, context, privateScope, inJSXChild) {
-  if (parser.getToken() === 137)
-    return parseJSXText(parser, context);
+  if (parser.getToken() === 138)
+    return parseJSXText(parser);
   if (parser.getToken() === 2162700)
     return parseJSXExpressionContainer(parser, context, privateScope, 1, 0);
   if (parser.getToken() === 8456256) {
@@ -13541,8 +13138,8 @@ function parseJSXChildOrClosingElement(parser, context, privateScope, inJSXChild
 }
 __name(parseJSXChildOrClosingElement, "parseJSXChildOrClosingElement");
 function parseJSXChildOrClosingFragment(parser, context, privateScope, inJSXChild) {
-  if (parser.getToken() === 137)
-    return parseJSXText(parser, context);
+  if (parser.getToken() === 138)
+    return parseJSXText(parser);
   if (parser.getToken() === 2162700)
     return parseJSXExpressionContainer(parser, context, privateScope, 1, 0);
   if (parser.getToken() === 8456256) {
@@ -13555,9 +13152,9 @@ function parseJSXChildOrClosingFragment(parser, context, privateScope, inJSXChil
   parser.report(0);
 }
 __name(parseJSXChildOrClosingFragment, "parseJSXChildOrClosingFragment");
-function parseJSXText(parser, context) {
+function parseJSXText(parser) {
   const start = parser.tokenStart;
-  nextToken(parser, context);
+  nextJSXToken(parser);
   const node = {
     type: "JSXText",
     value: parser.tokenValue
@@ -13575,7 +13172,7 @@ function parseJSXOpeningElementOrSelfCloseElement(parser, context, privateScope,
   const attributes = parseJSXAttributes(parser, context, privateScope);
   const selfClosing = parser.getToken() === 8457014;
   if (selfClosing)
-    consume(parser, context, 8457014);
+    consume(parser, context | 1048576, 8457014);
   if (parser.getToken() !== 8390721) {
     parser.report(25, KeywordDescTable[8390721 & 255]);
   }
@@ -13657,7 +13254,7 @@ function parseJsxAttribute(parser, context, privateScope) {
         value = parseJSXExpressionContainer(parser, context, privateScope, 0, 1);
         break;
       default:
-        parser.report(154);
+        parser.report(156);
     }
   }
   return parser.finishNode({
@@ -13683,10 +13280,10 @@ function parseJSXExpressionContainer(parser, context, privateScope, inJSXChild, 
   const { tokenStart } = parser;
   if (parser.getToken() === 14)
     return parseJSXSpreadChild(parser, context, privateScope, start);
-  let expression = null;
+  let expression;
   if (parser.getToken() === 1074790415) {
     if (isAttr)
-      parser.report(157);
+      parser.report(159);
     expression = parseJSXEmptyExpression(parser, {
       index: parser.startIndex,
       line: parser.startLine,
@@ -13731,15 +13328,16 @@ function parseJSXIdentifier(parser, context) {
     parser.report(30, KeywordDescTable[parser.getToken() & 255]);
   }
   const { tokenValue } = parser;
-  nextToken(parser, context);
+  nextToken(parser, context | 1048576);
   return parser.finishNode({
     type: "JSXIdentifier",
     name: tokenValue
   }, start);
 }
 __name(parseJSXIdentifier, "parseJSXIdentifier");
+var { version } = packageJson;
 function parseScript(source, options) {
-  return parseSource(source, options);
+  return parseSource(source, { ...options, sourceType: "script" });
 }
 __name(parseScript, "parseScript");
 
@@ -13779,7 +13377,7 @@ var _JsAnalyzer = class _JsAnalyzer {
    * Walks the AST to collect declarations and resolve initial targets.
    */
   analyzeAst() {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     let iifeBody;
     for (const statement of this.programAst.body) {
       if (statement.type === "ExpressionStatement" && statement.expression.type === "CallExpression") {
@@ -13790,7 +13388,7 @@ var _JsAnalyzer = class _JsAnalyzer {
           if (!this.iifeParamName && (firstParam == null ? void 0 : firstParam.type) === "Identifier") {
             this.iifeParamName = firstParam.name;
           }
-          if (((_a = funcExpr.body) == null ? void 0 : _a.type) === "BlockStatement") {
+          if (((_a2 = funcExpr.body) == null ? void 0 : _a2.type) === "BlockStatement") {
             iifeBody = funcExpr.body;
             break;
           }
@@ -13832,7 +13430,7 @@ var _JsAnalyzer = class _JsAnalyzer {
               return;
           } else if (assignment.left.type === "MemberExpression") {
             const memberName = memberToString(assignment.left, this.source);
-            const activeAliasExpr = (_b = this.pendingPrototypeAliasBinding) == null ? void 0 : _b[0];
+            const activeAliasExpr = (_b2 = this.pendingPrototypeAliasBinding) == null ? void 0 : _b2[0];
             if (activeAliasExpr && ((memberName == null ? void 0 : memberName.includes(activeAliasExpr)) || memberName === activeAliasExpr.slice(0, -1))) {
               const aliasOwnerMeta = this.declaredVariables.get(((_c = this.pendingPrototypeAliasBinding) == null ? void 0 : _c[1].name) || "");
               if (aliasOwnerMeta) {
@@ -14041,7 +13639,7 @@ var _JsAnalyzer = class _JsAnalyzer {
    * @param identifierName - Name of the identifier represented by `rootNode`, used for tracking dependents.
    */
   findDependencies(rootNode, identifierName) {
-    var _a;
+    var _a2;
     const dependencies = /* @__PURE__ */ new Set();
     if (!rootNode)
       return dependencies;
@@ -14053,13 +13651,13 @@ var _JsAnalyzer = class _JsAnalyzer {
     ];
     const currentScope = /* @__PURE__ */ __name(() => scopeStack[scopeStack.length - 1], "currentScope");
     const isInScope = /* @__PURE__ */ __name((name) => {
-      for (let i = scopeStack.length - 1; i >= 0; i--) {
-        if (scopeStack[i].names.has(name))
+      for (let i2 = scopeStack.length - 1; i2 >= 0; i2--) {
+        if (scopeStack[i2].names.has(name))
           return true;
       }
       return false;
     }, "isInScope");
-    const rootIdentifierName = "id" in rootNode && ((_a = rootNode == null ? void 0 : rootNode.id) == null ? void 0 : _a.type) === "Identifier" ? rootNode.id.name : void 0;
+    const rootIdentifierName = "id" in rootNode && ((_a2 = rootNode == null ? void 0 : rootNode.id) == null ? void 0 : _a2.type) === "Identifier" ? rootNode.id.name : void 0;
     const collectBindingIdentifiers = /* @__PURE__ */ __name((pattern, target) => {
       if (!pattern)
         return;
@@ -14098,7 +13696,7 @@ var _JsAnalyzer = class _JsAnalyzer {
     }, "collectParams");
     walkAst(rootNode, {
       enter: /* @__PURE__ */ __name((n, parent) => {
-        var _a2, _b, _c, _d;
+        var _a3, _b2, _c, _d;
         switch (n.type) {
           // Note for anybody debugging this in the future:
           // *DO NOT* add MethodDefinition here.
@@ -14107,7 +13705,7 @@ var _JsAnalyzer = class _JsAnalyzer {
           case "FunctionExpression":
           case "ArrowFunctionExpression": {
             const isDecl = n.type === "FunctionDeclaration";
-            const fnName = "id" in n ? (_a2 = n.id) == null ? void 0 : _a2.name : void 0;
+            const fnName = "id" in n ? (_a3 = n.id) == null ? void 0 : _a3.name : void 0;
             if (isDecl && fnName) {
               currentScope().names.add(fnName);
             }
@@ -14131,7 +13729,7 @@ var _JsAnalyzer = class _JsAnalyzer {
             break;
           }
           case "VariableDeclaration": {
-            const targetScope = n.kind === "var" ? (_b = scopeStack.findLast((s) => s.type === "function")) != null ? _b : currentScope() : currentScope();
+            const targetScope = n.kind === "var" ? (_b2 = scopeStack.findLast((s) => s.type === "function")) != null ? _b2 : currentScope() : currentScope();
             for (const d of n.declarations) {
               collectBindingIdentifiers(d.id, targetScope.names);
             }
@@ -14268,7 +13866,7 @@ var _JsExtractor = class _JsExtractor {
    * @param mode - The side effect mode to use ('strict' or 'loose').
    */
   isSafeInitializer(node, mode = "strict") {
-    var _a;
+    var _a2;
     if (!node)
       return true;
     switch (node.type) {
@@ -14370,7 +13968,7 @@ var _JsExtractor = class _JsExtractor {
       case "AssignmentExpression": {
         if (node.left.type === "MemberExpression" && !node.left.computed) {
           const object = node.left.object;
-          if (object.type === "Identifier" && ((_a = this.analyzer.declaredVariables.get(object.name)) == null ? void 0 : _a.node.init) !== void 0) {
+          if (object.type === "Identifier" && ((_a2 = this.analyzer.declaredVariables.get(object.name)) == null ? void 0 : _a2.node.init) !== void 0) {
             return this.isSafeInitializer(node.right, mode);
           }
         } else if (node.left.type === "Identifier") {
@@ -14410,11 +14008,11 @@ var _JsExtractor = class _JsExtractor {
    * @param options - Configuration options for the emitter.
    */
   renderNode(node, preDeclared, options = {}) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     const source = this.analyzer.getSource();
     const declaredVariables = this.analyzer.declaredVariables;
     const sideEffectPolicy = options.disallowSideEffectInitializers;
-    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_a = sideEffectPolicy.mode) != null ? _a : "strict" : "strict";
+    const sideEffectMode = typeof sideEffectPolicy === "object" && sideEffectPolicy !== null ? (_a2 = sideEffectPolicy.mode) != null ? _a2 : "strict" : "strict";
     const canDisallow = Boolean(sideEffectPolicy);
     const assignmentTarget = node.type === "AssignmentExpression" ? node : node.type === "ExpressionStatement" && node.expression.type === "AssignmentExpression" ? node.expression : null;
     const init = assignmentTarget && assignmentTarget.operator === "=" ? assignmentTarget.right : node.type === "VariableDeclarator" ? node.init : null;
@@ -14432,7 +14030,7 @@ var _JsExtractor = class _JsExtractor {
             return `${indent}// Skipped ${memberToString(left, source)} assignment.`;
           }
         }
-        initSource = ((_b = extractNodeSource(init, source)) == null ? void 0 : _b.trim().replace(/;\s*$/, "")) || "undefined // [JsExtractor] Failed to extract initializer source.";
+        initSource = ((_b2 = extractNodeSource(init, source)) == null ? void 0 : _b2.trim().replace(/;\s*$/, "")) || "undefined // [JsExtractor] Failed to extract initializer source.";
       }
     }
     if (!forceRemove && init && init.type === "SequenceExpression" && !initSource.startsWith("(")) {
@@ -14452,12 +14050,12 @@ var _JsExtractor = class _JsExtractor {
    * @param config - Configuration options for the emitter.
    */
   buildScript(config) {
-    var _a, _b;
+    var _a2, _b2;
     const { maxDepth = Infinity, forceVarPredeclaration = false, exportRawValues = false, rawValueOnly: skipEmitFor = [] } = config;
     const extractions = this.analyzer.getExtractedMatches();
     const seen = new Set(extractions.map((e) => {
-      var _a2;
-      return ((_a2 = e.metadata) == null ? void 0 : _a2.name) || "";
+      var _a3;
+      return ((_a3 = e.metadata) == null ? void 0 : _a3.name) || "";
     }));
     const snippets = [];
     const predeclaredVarSet = /* @__PURE__ */ new Set();
@@ -14569,7 +14167,7 @@ var _JsExtractor = class _JsExtractor {
       let currentFunctionNode = null;
       if (node.type === "Identifier") {
         const decl = this.analyzer.declaredVariables.get(node.name);
-        if (((_a = decl == null ? void 0 : decl.node) == null ? void 0 : _a.type) === "VariableDeclarator" && ((_b = decl.node.init) == null ? void 0 : _b.type) === "FunctionExpression") {
+        if (((_a2 = decl == null ? void 0 : decl.node) == null ? void 0 : _a2.type) === "VariableDeclarator" && ((_b2 = decl.node.init) == null ? void 0 : _b2.type) === "FunctionExpression") {
           currentFunctionNode = decl.node;
         }
       } else if (node.type === "CallExpression" || node.type === "NewExpression" || node.type === "VariableDeclarator") {
@@ -14687,7 +14285,7 @@ var Button = _Button;
 // dist/src/parser/classes/DropdownItem.js
 var _DropdownItem = class _DropdownItem extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "label");
     __publicField(this, "selected");
@@ -14706,7 +14304,7 @@ var _DropdownItem = class _DropdownItem extends YTNode {
       this.endpoint = new NavigationEndpoint(data.onSelectCommand);
     }
     if (Reflect.has(data, "icon")) {
-      this.icon_type = (_a = data.icon) == null ? void 0 : _a.iconType;
+      this.icon_type = (_a2 = data.icon) == null ? void 0 : _a2.iconType;
     }
     if (Reflect.has(data, "descriptionText")) {
       this.description = new Text2(data.descriptionText);
@@ -14766,7 +14364,7 @@ var CommandExecutorCommand = _CommandExecutorCommand;
 // dist/src/parser/classes/NavigationEndpoint.js
 var _NavigationEndpoint = class _NavigationEndpoint extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h;
     super();
     __publicField(this, "name");
     __publicField(this, "payload");
@@ -14804,7 +14402,7 @@ var _NavigationEndpoint = class _NavigationEndpoint extends YTNode {
       data = data.serviceEndpoint;
     }
     this.metadata = {};
-    if ((_b = (_a = data == null ? void 0 : data.commandMetadata) == null ? void 0 : _a.webCommandMetadata) == null ? void 0 : _b.url) {
+    if ((_b2 = (_a2 = data == null ? void 0 : data.commandMetadata) == null ? void 0 : _a2.webCommandMetadata) == null ? void 0 : _b2.url) {
       this.metadata.url = data.commandMetadata.webCommandMetadata.url;
     }
     if ((_d = (_c = data == null ? void 0 : data.commandMetadata) == null ? void 0 : _c.webCommandMetadata) == null ? void 0 : _d.webPageType) {
@@ -14892,7 +14490,7 @@ var _Thumbnail = class _Thumbnail {
       thumbnail_data = data.sources;
     }
     if (thumbnail_data) {
-      return thumbnail_data.map((x) => new _Thumbnail(x)).sort((a, b) => b.width - a.width);
+      return thumbnail_data.map((x2) => new _Thumbnail(x2)).sort((a, b) => b.width - a.width);
     }
     return [];
   }
@@ -14905,8 +14503,8 @@ var _EmojiRun = class _EmojiRun {
   constructor(data) {
     __publicField(this, "text");
     __publicField(this, "emoji");
-    var _a, _b, _c, _d, _e, _f;
-    this.text = ((_a = data.emoji) == null ? void 0 : _a.emojiId) || ((_c = (_b = data.emoji) == null ? void 0 : _b.shortcuts) == null ? void 0 : _c[0]) || data.text || "";
+    var _a2, _b2, _c, _d, _e, _f;
+    this.text = ((_a2 = data.emoji) == null ? void 0 : _a2.emojiId) || ((_c = (_b2 = data.emoji) == null ? void 0 : _b2.shortcuts) == null ? void 0 : _c[0]) || data.text || "";
     this.emoji = {
       emoji_id: data.emoji.emojiId,
       shortcuts: ((_d = data.emoji) == null ? void 0 : _d.shortcuts) || [],
@@ -14968,7 +14566,7 @@ var _TextRun = class _TextRun {
     return this.text;
   }
   toHTML() {
-    var _a;
+    var _a2;
     const tags = [];
     if (this.bold)
       tags.push("b");
@@ -14982,7 +14580,7 @@ var _TextRun = class _TextRun {
       tags.push("u");
     if (this.error_underline)
       tags.push("u");
-    if (!((_a = this.text) == null ? void 0 : _a.length))
+    if (!((_a2 = this.text) == null ? void 0 : _a2.length))
       return "";
     const escaped_text = escape(this.text);
     const styled_text = tags.map((tag) => `<${tag}>`).join("") + escaped_text + tags.map((tag) => `</${tag}>`).join("");
@@ -15058,14 +14656,14 @@ var _Text = class _Text {
     return this.isObject(data) && Reflect.has(data, "runs") && Array.isArray(data.runs);
   }
   parseEndpoint(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     if (!this.isObject(data))
       return;
     if ("navigationEndpoint" in data) {
       this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
     } else if ("titleNavigationEndpoint" in data) {
       this.endpoint = new NavigationEndpoint(data.titleNavigationEndpoint);
-    } else if ((_b = (_a = this.runs) == null ? void 0 : _a[0]) == null ? void 0 : _b.endpoint) {
+    } else if ((_b2 = (_a2 = this.runs) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.endpoint) {
       this.endpoint = ((_c = this.runs) == null ? void 0 : _c[0]).endpoint;
     }
   }
@@ -15073,7 +14671,7 @@ var _Text = class _Text {
     return typeof data === "object" && data !== null;
   }
   static fromAttributed(data) {
-    var _a;
+    var _a2;
     const { content, commandRuns: command_runs, attachmentRuns: attachment_runs } = data;
     const runs = [
       {
@@ -15081,20 +14679,28 @@ var _Text = class _Text {
         startIndex: 0
       }
     ];
-    const style_runs = (_a = data.styleRuns) == null ? void 0 : _a.map((run) => {
-      var _a2, _b;
+    const style_runs = (_a2 = data.styleRuns) == null ? void 0 : _a2.map((run) => {
+      var _a3, _b2;
       return {
         ...run,
-        startIndex: (_a2 = run.startIndex) != null ? _a2 : 0,
-        length: (_b = run.length) != null ? _b : content.length
+        startIndex: (_a3 = run.startIndex) != null ? _a3 : 0,
+        length: (_b2 = run.length) != null ? _b2 : content.length
       };
     });
     if (style_runs == null ? void 0 : style_runs.length)
       this.processStyleRuns(runs, style_runs, data);
     if (command_runs == null ? void 0 : command_runs.length)
       this.processCommandRuns(runs, command_runs, data);
-    if (attachment_runs == null ? void 0 : attachment_runs.length)
-      this.processAttachmentRuns(runs, attachment_runs, data);
+    const normalized_attachment_runs = attachment_runs == null ? void 0 : attachment_runs.map((run) => {
+      var _a3, _b2;
+      return {
+        ...run,
+        startIndex: (_a3 = run.startIndex) != null ? _a3 : 0,
+        length: (_b2 = run.length) != null ? _b2 : 0
+      };
+    });
+    if (normalized_attachment_runs == null ? void 0 : normalized_attachment_runs.length)
+      this.processAttachmentRuns(runs, normalized_attachment_runs, data);
     return new _Text({ runs });
   }
   static processStyleRuns(runs, style_runs, data) {
@@ -15152,7 +14758,7 @@ var _Text = class _Text {
     }
   }
   static processAttachmentRuns(runs, attachment_runs, data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     for (const attachment_run of attachment_runs) {
       const matching_run = findMatchingRun(runs, attachment_run);
       if (!matching_run) {
@@ -15172,7 +14778,7 @@ var _Text = class _Text {
         const offset_start_index = attachment_run.startIndex - matching_run.startIndex;
         const text = matching_run.text.substring(offset_start_index, offset_start_index + attachment_run.length);
         const is_custom_emoji = /^:[^:]+:$/.test(text);
-        if (((_c = (_b = (_a = attachment_run.element) == null ? void 0 : _a.type) == null ? void 0 : _b.imageType) == null ? void 0 : _c.image) && (is_custom_emoji || new RegExp("^(?:\\p{Emoji}|\\u200d)+$", "u").test(text))) {
+        if (((_c = (_b2 = (_a2 = attachment_run.element) == null ? void 0 : _a2.type) == null ? void 0 : _b2.imageType) == null ? void 0 : _c.image) && (is_custom_emoji || new RegExp("^(?:\\p{Emoji}|\\u200d)+$", "u").test(text))) {
           const emoji = {
             image: attachment_run.element.type.imageType.image,
             isCustomEmoji: is_custom_emoji,
@@ -15578,11 +15184,11 @@ var _SortFilterSubMenu = class _SortFilterSubMenu extends YTNode {
     }
     if ("subMenuItems" in data) {
       this.sub_menu_items = data.subMenuItems.map((item) => {
-        var _a, _b;
+        var _a2, _b2;
         return {
           title: item.title,
           selected: item.selected,
-          continuation: (_b = (_a = item.continuation) == null ? void 0 : _a.reloadContinuationData) == null ? void 0 : _b.continuation,
+          continuation: (_b2 = (_a2 = item.continuation) == null ? void 0 : _a2.reloadContinuationData) == null ? void 0 : _b2.continuation,
           endpoint: new NavigationEndpoint(item.serviceEndpoint || item.navigationEndpoint),
           subtitle: item.subtitle || null
         };
@@ -15595,8 +15201,8 @@ var _SortFilterSubMenu = class _SortFilterSubMenu extends YTNode {
     }
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_SortFilterSubMenu, "SortFilterSubMenu");
@@ -15623,8 +15229,11 @@ __export(misc_exports, {
   Author: () => Author,
   ChildElement: () => ChildElement,
   CommandContext: () => CommandContext,
+  CommentsContinuation: () => CommentsContinuation,
   EmojiRun: () => EmojiRun,
   Format: () => Format,
+  PlaylistCollaborationFormSchema: () => PlaylistCollaborationFormSchema,
+  PlaylistCollaborationViewModelPlaylistCollaboratorData: () => PlaylistCollaborationViewModelPlaylistCollaboratorData,
   RendererContext: () => RendererContext,
   SubscriptionButton: () => SubscriptionButton,
   Text: () => Text2,
@@ -15643,67 +15252,274 @@ var _AccessibilityContext = class _AccessibilityContext {
 __name(_AccessibilityContext, "AccessibilityContext");
 var AccessibilityContext = _AccessibilityContext;
 
-// dist/src/parser/classes/misc/Author.js
-var _Author = class _Author {
-  constructor(item, badges, thumbs, id) {
-    __publicField(this, "id");
-    __publicField(this, "name");
-    __publicField(this, "thumbnails");
-    __publicField(this, "endpoint");
-    __publicField(this, "badges");
-    __publicField(this, "is_moderator");
-    __publicField(this, "is_verified");
-    __publicField(this, "is_verified_artist");
-    __publicField(this, "url");
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A;
-    const nav_text = new Text2(item);
-    this.id = id || ((_d = (_c = (_b = (_a = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _a[0]) == null ? void 0 : _b.endpoint) == null ? void 0 : _c.payload) == null ? void 0 : _d.browseId) || ((_f = (_e = nav_text == null ? void 0 : nav_text.endpoint) == null ? void 0 : _e.payload) == null ? void 0 : _f.browseId) || "N/A";
-    this.name = (nav_text == null ? void 0 : nav_text.text) || "N/A";
-    this.thumbnails = thumbs ? Thumbnail.fromResponse(thumbs) : [];
-    this.endpoint = ((_h = (_g = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _g[0]) == null ? void 0 : _h.endpoint) || (nav_text == null ? void 0 : nav_text.endpoint);
-    if (badges) {
-      if (Array.isArray(badges)) {
-        this.badges = parser_exports.parseArray(badges);
-        this.is_moderator = (_i = this.badges) == null ? void 0 : _i.some((badge) => badge.icon_type == "MODERATOR");
-        this.is_verified = (_j = this.badges) == null ? void 0 : _j.some((badge) => badge.style == "BADGE_STYLE_TYPE_VERIFIED");
-        this.is_verified_artist = (_k = this.badges) == null ? void 0 : _k.some((badge) => badge.style == "BADGE_STYLE_TYPE_VERIFIED_ARTIST");
-      } else {
-        this.badges = observe([]);
-        this.is_verified = !!badges.isVerified;
-        this.is_verified_artist = !!badges.isArtist;
-      }
-    } else {
-      this.badges = observe([]);
-    }
-    this.url = ((_o = (_n = (_m = (_l = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _l[0]) == null ? void 0 : _m.endpoint) == null ? void 0 : _n.metadata) == null ? void 0 : _o.api_url) === "/browse" && `${URLS.YT_BASE}${((_s = (_r = (_q = (_p = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _p[0]) == null ? void 0 : _q.endpoint) == null ? void 0 : _r.payload) == null ? void 0 : _s.canonicalBaseUrl) || `/u/${(_w = (_v = (_u = (_t = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _t[0]) == null ? void 0 : _u.endpoint) == null ? void 0 : _v.payload) == null ? void 0 : _w.browseId}`}` || `${URLS.YT_BASE}${((_y = (_x = nav_text == null ? void 0 : nav_text.endpoint) == null ? void 0 : _x.payload) == null ? void 0 : _y.canonicalBaseUrl) || `/u/${(_A = (_z = nav_text == null ? void 0 : nav_text.endpoint) == null ? void 0 : _z.payload) == null ? void 0 : _A.browseId}`}`;
-  }
-  get best_thumbnail() {
-    return this.thumbnails[0];
-  }
-};
-__name(_Author, "Author");
-var Author = _Author;
-
-// dist/src/parser/classes/misc/ChildElement.js
-var _ChildElement = class _ChildElement extends YTNode {
+// dist/src/parser/classes/commands/ShowDialogCommand.js
+var _ShowDialogCommand = class _ShowDialogCommand extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
-    __publicField(this, "text");
-    __publicField(this, "properties");
-    __publicField(this, "child_elements");
-    if (Reflect.has(data, "type") && Reflect.has(data.type, "textType")) {
-      this.text = (_a = data.type.textType.text) == null ? void 0 : _a.content;
-    }
-    this.properties = data.properties;
-    if (Reflect.has(data, "childElements")) {
-      this.child_elements = data.childElements.map((el) => new _ChildElement(el));
+    __publicField(this, "inline_content");
+    __publicField(this, "remove_default_padding");
+    this.inline_content = parser_exports.parseItem((_a2 = data.panelLoadingStrategy) == null ? void 0 : _a2.inlineContent);
+    this.remove_default_padding = !!data.removeDefaultPadding;
+  }
+};
+__name(_ShowDialogCommand, "ShowDialogCommand");
+__publicField(_ShowDialogCommand, "type", "ShowDialogCommand");
+var ShowDialogCommand = _ShowDialogCommand;
+
+// dist/src/parser/classes/DialogHeaderView.js
+var _DialogHeaderView = class _DialogHeaderView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "headline");
+    this.headline = Text2.fromAttributed(data.headline);
+  }
+};
+__name(_DialogHeaderView, "DialogHeaderView");
+__publicField(_DialogHeaderView, "type", "DialogHeaderView");
+var DialogHeaderView = _DialogHeaderView;
+
+// dist/src/parser/classes/ButtonView.js
+var _ButtonView = class _ButtonView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "secondary_icon_image");
+    __publicField(this, "icon_name");
+    __publicField(this, "enable_icon_button");
+    __publicField(this, "tooltip");
+    __publicField(this, "icon_image_flip_for_rtl");
+    __publicField(this, "button_size");
+    __publicField(this, "icon_position");
+    __publicField(this, "is_full_width");
+    __publicField(this, "state");
+    __publicField(this, "on_disabled_tap");
+    __publicField(this, "custom_border_color");
+    __publicField(this, "on_tap");
+    __publicField(this, "style");
+    __publicField(this, "icon_image");
+    __publicField(this, "custom_dark_theme_border_color");
+    __publicField(this, "title");
+    __publicField(this, "target_id");
+    __publicField(this, "enable_full_width_margins");
+    __publicField(this, "custom_font_color");
+    __publicField(this, "button_type");
+    __publicField(this, "enabled");
+    __publicField(this, "accessibility_id");
+    __publicField(this, "custom_background_color");
+    __publicField(this, "on_long_press");
+    __publicField(this, "title_formatted");
+    __publicField(this, "on_visible");
+    __publicField(this, "icon_trailing");
+    __publicField(this, "accessibility_text");
+    if ("secondaryIconImage" in data)
+      this.secondary_icon_image = Thumbnail.fromResponse(data.secondaryIconImage);
+    if ("iconName" in data)
+      this.icon_name = data.iconName;
+    if ("enableIconButton" in data)
+      this.enable_icon_button = data.enableIconButton;
+    if ("tooltip" in data)
+      this.tooltip = data.tooltip;
+    if ("iconImageFlipForRtl" in data)
+      this.icon_image_flip_for_rtl = data.iconImageFlipForRtl;
+    if ("buttonSize" in data)
+      this.button_size = data.buttonSize;
+    if ("iconPosition" in data)
+      this.icon_position = data.iconPosition;
+    if ("isFullWidth" in data)
+      this.is_full_width = data.isFullWidth;
+    if ("state" in data)
+      this.state = data.state;
+    if ("onDisabledTap" in data)
+      this.on_disabled_tap = new NavigationEndpoint(data.onDisabledTap);
+    if ("customBorderColor" in data)
+      this.custom_border_color = data.customBorderColor;
+    if ("onTap" in data)
+      this.on_tap = new NavigationEndpoint(data.onTap);
+    if ("style" in data)
+      this.style = data.style;
+    if ("iconImage" in data)
+      this.icon_image = data.iconImage;
+    if ("customDarkThemeBorderColor" in data)
+      this.custom_dark_theme_border_color = data.customDarkThemeBorderColor;
+    if ("title" in data)
+      this.title = data.title;
+    if ("targetId" in data)
+      this.target_id = data.targetId;
+    if ("enableFullWidthMargins" in data)
+      this.enable_full_width_margins = data.enableFullWidthMargins;
+    if ("customFontColor" in data)
+      this.custom_font_color = data.customFontColor;
+    if ("type" in data)
+      this.button_type = data.type;
+    if ("enabled" in data)
+      this.enabled = data.enabled;
+    if ("accessibilityId" in data)
+      this.accessibility_id = data.accessibilityId;
+    if ("customBackgroundColor" in data)
+      this.custom_background_color = data.customBackgroundColor;
+    if ("onLongPress" in data)
+      this.on_long_press = new NavigationEndpoint(data.onLongPress);
+    if ("titleFormatted" in data)
+      this.title_formatted = data.titleFormatted;
+    if ("onVisible" in data)
+      this.on_visible = data.onVisible;
+    if ("iconTrailing" in data)
+      this.icon_trailing = data.iconTrailing;
+    if ("accessibilityText" in data)
+      this.accessibility_text = data.accessibilityText;
+  }
+};
+__name(_ButtonView, "ButtonView");
+__publicField(_ButtonView, "type", "ButtonView");
+var ButtonView = _ButtonView;
+
+// dist/src/parser/classes/PanelFooterView.js
+var _PanelFooterView = class _PanelFooterView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "primary_button");
+    __publicField(this, "secondary_button");
+    __publicField(this, "should_hide_divider");
+    this.primary_button = parser_exports.parseItem(data.primaryButton, ButtonView);
+    this.secondary_button = parser_exports.parseItem(data.secondaryButton, ButtonView);
+    this.should_hide_divider = !!data.shouldHideDivider;
+  }
+};
+__name(_PanelFooterView, "PanelFooterView");
+__publicField(_PanelFooterView, "type", "PanelFooterView");
+var PanelFooterView = _PanelFooterView;
+
+// dist/src/parser/classes/FormFooterView.js
+var _FormFooterView = class _FormFooterView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "panel_footer");
+    __publicField(this, "form_id");
+    __publicField(this, "container_type");
+    this.panel_footer = parser_exports.parseItem(data.panelFooter, PanelFooterView);
+    this.form_id = data.formId;
+    this.container_type = data.containerType;
+  }
+};
+__name(_FormFooterView, "FormFooterView");
+__publicField(_FormFooterView, "type", "FormFooterView");
+var FormFooterView = _FormFooterView;
+
+// dist/src/parser/classes/DropdownView.js
+var _DropdownView = class _DropdownView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "label");
+    __publicField(this, "placeholder_text");
+    __publicField(this, "disabled");
+    __publicField(this, "options");
+    __publicField(this, "dropdown_type");
+    __publicField(this, "id");
+    this.label = new Text2(data.label);
+    this.placeholder_text = new Text2(data.placeholderText);
+    this.disabled = !!data.disabled;
+    this.dropdown_type = data.type;
+    this.id = data.id;
+    if (Reflect.has(data, "options")) {
+      this.options = data.options.map((option) => {
+        var _a2;
+        return {
+          title: new Text2(option.title),
+          subtitle: new Text2(option.subtitle),
+          leading_image: Thumbnail.fromResponse(option.leadingImage),
+          value: { privacy_status_value: (_a2 = option.value) == null ? void 0 : _a2.privacyStatusValue },
+          on_tap: new NavigationEndpoint(option.onTap),
+          is_selected: !!option.isSelected
+        };
+      });
     }
   }
 };
-__name(_ChildElement, "ChildElement");
-__publicField(_ChildElement, "type", "ChildElement");
-var ChildElement = _ChildElement;
+__name(_DropdownView, "DropdownView");
+__publicField(_DropdownView, "type", "DropdownView");
+var DropdownView = _DropdownView;
+
+// dist/src/parser/classes/TextFieldView.js
+var _TextFieldView = class _TextFieldView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "display_properties");
+    __publicField(this, "content_properties");
+    __publicField(this, "initial_state");
+    __publicField(this, "form_field_metadata");
+    if (Reflect.has(data, "displayProperties")) {
+      this.display_properties = {
+        isMultiline: !!data.displayProperties.isMultiline,
+        disableNewLines: !!data.displayProperties.disableNewLines
+      };
+    }
+    if (Reflect.has(data, "contentProperties")) {
+      this.content_properties = {
+        labelText: data.contentProperties.labelText,
+        placeholderText: data.contentProperties.placeholderText,
+        maxCharacterCount: data.contentProperties.maxCharacterCount
+      };
+    }
+    if (Reflect.has(data, "initialState")) {
+      this.initial_state = {
+        isFocused: !!data.initialState.isFocused
+      };
+    }
+    if (Reflect.has(data, "formFieldMetadata")) {
+      this.form_field_metadata = {
+        formId: data.formFieldMetadata.formId,
+        fieldId: data.formFieldMetadata.fieldId
+      };
+    }
+  }
+};
+__name(_TextFieldView, "TextFieldView");
+__publicField(_TextFieldView, "type", "TextFieldView");
+var TextFieldView = _TextFieldView;
+
+// dist/src/parser/classes/CreatePlaylistDialogFormView.js
+var _CreatePlaylistDialogFormView = class _CreatePlaylistDialogFormView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "playlist_title");
+    __publicField(this, "playlist_visibility");
+    __publicField(this, "disable_playlist_collaborate");
+    __publicField(this, "create_playlist_params_collaboration_enabled");
+    __publicField(this, "create_playlist_params_collaboration_disabled");
+    __publicField(this, "video_ids");
+    this.playlist_title = parser_exports.parseItem(data.playlistTitle, TextFieldView);
+    this.playlist_visibility = parser_exports.parseItem(data.playlistVisibility, DropdownView);
+    this.disable_playlist_collaborate = !!data.disablePlaylistCollaborate;
+    this.create_playlist_params_collaboration_enabled = data.createPlaylistParamsCollaborationEnabled;
+    this.create_playlist_params_collaboration_disabled = data.createPlaylistParamsCollaborationDisabled;
+    this.video_ids = data.videoIds;
+  }
+};
+__name(_CreatePlaylistDialogFormView, "CreatePlaylistDialogFormView");
+__publicField(_CreatePlaylistDialogFormView, "type", "CreatePlaylistDialogFormView");
+var CreatePlaylistDialogFormView = _CreatePlaylistDialogFormView;
+
+// dist/src/parser/classes/AvatarView.js
+var _AvatarView = class _AvatarView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "image");
+    __publicField(this, "image_processor");
+    __publicField(this, "avatar_image_size");
+    this.image = Thumbnail.fromResponse(data.image);
+    this.avatar_image_size = data.avatarImageSize;
+    if (data.image.processor) {
+      this.image_processor = {
+        border_image_processor: {
+          circular: data.image.processor.borderImageProcessor.circular
+        }
+      };
+    }
+  }
+};
+__name(_AvatarView, "AvatarView");
+__publicField(_AvatarView, "type", "AvatarView");
+var AvatarView = _AvatarView;
 
 // dist/src/parser/classes/misc/CommandContext.js
 var _CommandContext = class _CommandContext {
@@ -15742,6 +15558,729 @@ var _CommandContext = class _CommandContext {
 };
 __name(_CommandContext, "CommandContext");
 var CommandContext = _CommandContext;
+
+// dist/src/parser/classes/misc/RendererContext.js
+var _RendererContext = class _RendererContext {
+  constructor(data) {
+    __publicField(this, "command_context");
+    __publicField(this, "accessibility_context");
+    if (!data)
+      return;
+    if ("commandContext" in data) {
+      this.command_context = new CommandContext(data.commandContext);
+    }
+    if ("accessibilityContext" in data) {
+      this.accessibility_context = new AccessibilityContext(data.accessibilityContext);
+    }
+  }
+};
+__name(_RendererContext, "RendererContext");
+var RendererContext = _RendererContext;
+
+// dist/src/parser/classes/SubscribeButtonView.js
+var _SubscribeButtonView_instances, parseButtonContent_fn;
+var _SubscribeButtonView = class _SubscribeButtonView extends YTNode {
+  constructor(data) {
+    var _a2, _b2, _c, _d, _e, _f;
+    super();
+    __privateAdd(this, _SubscribeButtonView_instances);
+    __publicField(this, "subscribe_button_content");
+    __publicField(this, "unsubscribe_button_content");
+    __publicField(this, "disable_notification_bell");
+    __publicField(this, "button_style");
+    __publicField(this, "is_signed_out");
+    __publicField(this, "background_style");
+    __publicField(this, "disable_subscribe_button");
+    __publicField(this, "on_show_subscription_options");
+    __publicField(this, "channel_id");
+    __publicField(this, "enable_subscribe_button_post_click_animation");
+    __publicField(this, "bell_accessibility_data");
+    this.subscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.subscribeButtonContent);
+    this.unsubscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.unsubscribeButtonContent);
+    this.disable_notification_bell = data.disableNotificationBell;
+    if ("buttonStyle" in data) {
+      this.button_style = {
+        unsubscribed_state_style: (_a2 = data.buttonStyle) == null ? void 0 : _a2.unsubscribedStateStyle,
+        subscribed_state_style: (_b2 = data.buttonStyle) == null ? void 0 : _b2.subscribedStateStyle
+      };
+    }
+    this.is_signed_out = data.isSignedOut;
+    this.background_style = data.backgroundStyle;
+    this.disable_subscribe_button = data.disableSubscribeButton;
+    if ("onShowSubscriptionOptions" in data) {
+      this.on_show_subscription_options = new NavigationEndpoint(data.onShowSubscriptionOptions);
+    }
+    this.channel_id = data.channelId;
+    this.enable_subscribe_button_post_click_animation = data.enableSubscribeButtonPostClickAnimation;
+    if ("bellAccessibilityData" in data) {
+      this.bell_accessibility_data = {
+        off_label: (_c = data.bellAccessibilityData) == null ? void 0 : _c.offLabel,
+        all_label: (_d = data.bellAccessibilityData) == null ? void 0 : _d.allLabel,
+        occasional_label: (_e = data.bellAccessibilityData) == null ? void 0 : _e.occasionalLabel,
+        disabled_label: (_f = data.bellAccessibilityData) == null ? void 0 : _f.disabledLabel
+      };
+    }
+  }
+};
+_SubscribeButtonView_instances = new WeakSet();
+parseButtonContent_fn = /* @__PURE__ */ __name(function(data) {
+  return {
+    button_text: data.buttonText,
+    accessibility_text: data.accessibilityText,
+    image_name: data.imageName,
+    subscribe_state_subscribed: data.subscribeState.subscribed,
+    endpoint: new NavigationEndpoint(data.onTapCommand)
+  };
+}, "#parseButtonContent");
+__name(_SubscribeButtonView, "SubscribeButtonView");
+__publicField(_SubscribeButtonView, "type", "SubscribeButtonView");
+var SubscribeButtonView = _SubscribeButtonView;
+
+// dist/src/parser/classes/ListItemView.js
+var _ListItemView = class _ListItemView extends YTNode {
+  constructor(data) {
+    var _a2;
+    super();
+    __publicField(this, "title");
+    __publicField(this, "subtitle");
+    __publicField(this, "selection_text");
+    __publicField(this, "selection_style");
+    __publicField(this, "background_color");
+    __publicField(this, "leading_accessory");
+    __publicField(this, "trailing_button");
+    __publicField(this, "trailing_buttons");
+    __publicField(this, "is_disabled");
+    __publicField(this, "is_selected");
+    __publicField(this, "has_divider_below");
+    __publicField(this, "renderer_context");
+    if ("title" in data) {
+      this.title = Text2.fromAttributed(data.title);
+    }
+    if ("subtitle" in data) {
+      this.subtitle = Text2.fromAttributed(data.subtitle);
+    }
+    if ("selectionText" in data) {
+      this.selection_text = Text2.fromAttributed(data.selectionText);
+    }
+    if ("selectionStyle" in data) {
+      this.selection_style = data.selectionStyle;
+    }
+    if ("backgroundColor" in data) {
+      this.background_color = parseInt(data.backgroundColor, 16);
+    }
+    this.leading_accessory = parser_exports.parseItem(data.leadingAccessory, AvatarView);
+    this.trailing_buttons = parser_exports.parseArray((_a2 = data.trailingButtons) == null ? void 0 : _a2.buttons, SubscribeButtonView);
+    this.trailing_button = parser_exports.parseItem(data.trailingButton);
+    this.is_disabled = !!data.isDisabled;
+    this.is_selected = !!data.isSelected;
+    this.has_divider_below = !!data.hasDividerBelow;
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_ListItemView, "ListItemView");
+__publicField(_ListItemView, "type", "ListItemView");
+var ListItemView = _ListItemView;
+
+// dist/src/parser/classes/DownloadListItemView.js
+var _DownloadListItemView = class _DownloadListItemView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "renderer_context");
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_DownloadListItemView, "DownloadListItemView");
+__publicField(_DownloadListItemView, "type", "DownloadListItemView");
+var DownloadListItemView = _DownloadListItemView;
+
+// dist/src/parser/classes/ListView.js
+var _ListView = class _ListView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "items");
+    __publicField(this, "renderer_context");
+    this.items = parser_exports.parseArray(data.listItems, [ListItemView, DownloadListItemView]);
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_ListView, "ListView");
+__publicField(_ListView, "type", "ListView");
+var ListView = _ListView;
+
+// dist/src/parser/classes/DialogView.js
+var _DialogView = class _DialogView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "header");
+    __publicField(this, "footer");
+    __publicField(this, "custom_content");
+    this.header = parser_exports.parseItem(data.header, DialogHeaderView);
+    this.footer = parser_exports.parseItem(data.footer, [FormFooterView, PanelFooterView]);
+    this.custom_content = parser_exports.parseItem(data.customContent, [CreatePlaylistDialogFormView, ListView]);
+  }
+};
+__name(_DialogView, "DialogView");
+__publicField(_DialogView, "type", "DialogView");
+var DialogView = _DialogView;
+
+// dist/src/parser/classes/misc/Author.js
+var _Author = class _Author {
+  constructor(item, badges, thumbs, id) {
+    __publicField(this, "id");
+    __publicField(this, "name");
+    __publicField(this, "thumbnails");
+    __publicField(this, "endpoint");
+    __publicField(this, "badges");
+    __publicField(this, "avatar_thumbnail_url");
+    __publicField(this, "is_current_user");
+    __publicField(this, "is_public_subscriber");
+    __publicField(this, "is_creator");
+    __publicField(this, "is_moderator");
+    __publicField(this, "is_verified");
+    __publicField(this, "is_verified_artist");
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k;
+    let nav_text;
+    if (item) {
+      if ("content" in item) {
+        nav_text = Text2.fromAttributed(item);
+      } else {
+        nav_text = new Text2(item);
+      }
+    }
+    this.id = id || ((_d = (_c = (_b2 = (_a2 = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.endpoint) == null ? void 0 : _c.payload) == null ? void 0 : _d.browseId) || ((_f = (_e = nav_text == null ? void 0 : nav_text.endpoint) == null ? void 0 : _e.payload) == null ? void 0 : _f.browseId) || (badges == null ? void 0 : badges.channelId);
+    this.name = (nav_text == null ? void 0 : nav_text.text) || "N/A";
+    this.thumbnails = thumbs ? Thumbnail.fromResponse(thumbs) : [];
+    this.endpoint = ((_h = (_g = nav_text == null ? void 0 : nav_text.runs) == null ? void 0 : _g[0]) == null ? void 0 : _h.endpoint) || (nav_text == null ? void 0 : nav_text.endpoint);
+    if (badges) {
+      if (Array.isArray(badges)) {
+        this.badges = parser_exports.parseArray(badges);
+        this.is_moderator = (_i = this.badges) == null ? void 0 : _i.some((badge) => badge.icon_type == "MODERATOR");
+        this.is_verified = (_j = this.badges) == null ? void 0 : _j.some((badge) => badge.style == "BADGE_STYLE_TYPE_VERIFIED");
+        this.is_verified_artist = (_k = this.badges) == null ? void 0 : _k.some((badge) => badge.style == "BADGE_STYLE_TYPE_VERIFIED_ARTIST");
+      } else {
+        this.badges = observe([]);
+        if ("avatarThumbnailUrl" in badges) {
+          this.avatar_thumbnail_url = badges.avatarThumbnailUrl;
+        }
+        if ("isCurrentUser" in badges) {
+          this.is_current_user = !!badges.isCurrentUser;
+        }
+        if ("isPublicSubscriber" in badges) {
+          this.is_public_subscriber = !!badges.isPublicSubscriber;
+        }
+        if ("isCreator" in badges) {
+          this.is_creator = !!badges.isCreator;
+        }
+        if ("isVerified" in badges) {
+          this.is_verified = !!badges.isVerified;
+        }
+        if ("isArtist" in badges) {
+          this.is_verified_artist = !!badges.isArtist;
+        }
+      }
+    } else {
+      this.badges = observe([]);
+    }
+  }
+  get url() {
+    var _a2;
+    return (_a2 = this.endpoint) == null ? void 0 : _a2.toURL();
+  }
+  get best_thumbnail() {
+    return this.thumbnails[0];
+  }
+  get collaborators() {
+    var _a2, _b2, _c, _d;
+    if (((_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.command) == null ? void 0 : _b2.is(ShowDialogCommand)) && ((_c = this.endpoint.command.inline_content) == null ? void 0 : _c.is(DialogView))) {
+      const dialog = this.endpoint.command.inline_content;
+      if ((_d = dialog.custom_content) == null ? void 0 : _d.is(ListView)) {
+        return dialog.custom_content.items.as(ListItemView).filter((item) => {
+          var _a3, _b3, _c2, _d2;
+          return ((_d2 = (_c2 = (_b3 = (_a3 = item.renderer_context) == null ? void 0 : _a3.command_context) == null ? void 0 : _b3.on_tap) == null ? void 0 : _c2.metadata) == null ? void 0 : _d2.page_type) === "WEB_PAGE_TYPE_CHANNEL";
+        });
+      }
+    }
+    return [];
+  }
+};
+__name(_Author, "Author");
+var Author = _Author;
+
+// dist/src/parser/classes/misc/ChildElement.js
+var _ChildElement = class _ChildElement extends YTNode {
+  constructor(data) {
+    var _a2;
+    super();
+    __publicField(this, "text");
+    __publicField(this, "properties");
+    __publicField(this, "child_elements");
+    if (Reflect.has(data, "type") && Reflect.has(data.type, "textType")) {
+      this.text = (_a2 = data.type.textType.text) == null ? void 0 : _a2.content;
+    }
+    this.properties = data.properties;
+    if (Reflect.has(data, "childElements")) {
+      this.child_elements = data.childElements.map((el) => new _ChildElement(el));
+    }
+  }
+};
+__name(_ChildElement, "ChildElement");
+__publicField(_ChildElement, "type", "ChildElement");
+var ChildElement = _ChildElement;
+
+// dist/src/parser/classes/ContinuationItem.js
+var _ContinuationItem = class _ContinuationItem extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "trigger");
+    __publicField(this, "button");
+    __publicField(this, "endpoint");
+    this.trigger = data.trigger;
+    if (Reflect.has(data, "button")) {
+      this.button = parser_exports.parseItem(data.button, Button);
+    }
+    this.endpoint = new NavigationEndpoint(data.continuationEndpoint);
+  }
+};
+__name(_ContinuationItem, "ContinuationItem");
+__publicField(_ContinuationItem, "type", "ContinuationItem");
+var ContinuationItem = _ContinuationItem;
+
+// dist/src/parser/classes/comments/CommentReplyDialog.js
+var _CommentReplyDialog = class _CommentReplyDialog extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "reply_button");
+    __publicField(this, "cancel_button");
+    __publicField(this, "author_thumbnail");
+    __publicField(this, "placeholder");
+    __publicField(this, "error_message");
+    this.reply_button = parser_exports.parseItem(data.replyButton, Button);
+    this.cancel_button = parser_exports.parseItem(data.cancelButton, Button);
+    this.author_thumbnail = Thumbnail.fromResponse(data.authorThumbnail);
+    this.placeholder = new Text2(data.placeholderText);
+    this.error_message = new Text2(data.errorMessage);
+  }
+};
+__name(_CommentReplyDialog, "CommentReplyDialog");
+__publicField(_CommentReplyDialog, "type", "CommentReplyDialog");
+var CommentReplyDialog = _CommentReplyDialog;
+
+// dist/src/parser/classes/comments/VoiceReplyContainerView.js
+var _VoiceReplyContainerView = class _VoiceReplyContainerView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "voice_reply_unavailable_text");
+    __publicField(this, "transcript_text");
+    this.voice_reply_unavailable_text = Text2.fromAttributed(data.voiceReplyUnavailableText);
+    this.transcript_text = Text2.fromAttributed(data.transcriptText);
+  }
+};
+__name(_VoiceReplyContainerView, "VoiceReplyContainerView");
+__publicField(_VoiceReplyContainerView, "type", "VoiceReplyContainerView");
+var VoiceReplyContainerView = _VoiceReplyContainerView;
+
+// dist/src/parser/classes/comments/CommentView.js
+var _actions;
+var _CommentView = class _CommentView extends YTNode {
+  constructor(data) {
+    super();
+    __privateAdd(this, _actions);
+    __publicField(this, "like_command");
+    __publicField(this, "dislike_command");
+    __publicField(this, "unlike_command");
+    __publicField(this, "undislike_command");
+    __publicField(this, "reply_command");
+    __publicField(this, "prepare_account_command");
+    __publicField(this, "comment_id");
+    __publicField(this, "is_pinned");
+    __publicField(this, "keys");
+    __publicField(this, "content");
+    __publicField(this, "published_time");
+    __publicField(this, "author_is_channel_owner");
+    __publicField(this, "author_button_a11y");
+    __publicField(this, "creator_thumbnail_url");
+    __publicField(this, "like_button_a11y");
+    __publicField(this, "like_count");
+    __publicField(this, "like_count_liked");
+    __publicField(this, "like_count_a11y");
+    __publicField(this, "like_active_tooltip");
+    __publicField(this, "like_inactive_tooltip");
+    __publicField(this, "dislike_active_tooltip");
+    __publicField(this, "dislike_inactive_tooltip");
+    __publicField(this, "heart_active_tooltip");
+    __publicField(this, "reply_count");
+    __publicField(this, "reply_count_a11y");
+    __publicField(this, "reply_level");
+    __publicField(this, "is_member");
+    __publicField(this, "member_badge");
+    __publicField(this, "author");
+    __publicField(this, "is_liked");
+    __publicField(this, "is_disliked");
+    __publicField(this, "is_hearted");
+    __publicField(this, "voice_reply_container");
+    this.comment_id = data.commentId;
+    this.is_pinned = !!data.pinnedText;
+    this.keys = {
+      comment: data.commentKey,
+      comment_surface: data.commentSurfaceKey,
+      toolbar_state: data.toolbarStateKey,
+      toolbar_surface: data.toolbarSurfaceKey,
+      shared: data.sharedKey
+    };
+  }
+  applyMutations(comment, toolbar_state, toolbar_surface, comment_surface) {
+    var _a2, _b2, _c, _d, _e, _f, _g;
+    if (comment) {
+      this.content = Text2.fromAttributed(comment.properties.content);
+      this.published_time = comment.properties.publishedTime;
+      this.reply_level = ((_a2 = comment.properties) == null ? void 0 : _a2.replyLevel) ? (_b2 = comment.properties) == null ? void 0 : _b2.replyLevel : 0;
+      this.author_button_a11y = (_c = comment.properties) == null ? void 0 : _c.authorButtonA11y;
+      this.author_is_channel_owner = !!comment.author.isCreator;
+      this.creator_thumbnail_url = comment.toolbar.creatorThumbnailUrl;
+      this.like_count = comment.toolbar.likeCountNotliked ? comment.toolbar.likeCountNotliked : "0";
+      this.like_count_liked = comment.toolbar.likeCountLiked ? comment.toolbar.likeCountLiked : "0";
+      this.like_count_a11y = comment.toolbar.likeCountA11y;
+      this.like_active_tooltip = comment.toolbar.likeActiveTooltip;
+      this.like_inactive_tooltip = comment.toolbar.likeInactiveTooltip;
+      this.dislike_active_tooltip = comment.toolbar.dislikeActiveTooltip;
+      this.dislike_inactive_tooltip = comment.toolbar.dislikeInactiveTooltip;
+      this.like_button_a11y = comment.toolbar.likeButtonA11y;
+      this.heart_active_tooltip = comment.toolbar.heartActiveTooltip;
+      this.reply_count_a11y = comment.toolbar.replyCountA11y;
+      this.reply_count = comment.toolbar.replyCount ? comment.toolbar.replyCount : "0";
+      this.is_member = !!comment.author.sponsorBadgeUrl;
+      if ("sponsorBadgeUrl" in comment.author) {
+        this.member_badge = {
+          url: comment.author.sponsorBadgeUrl,
+          a11y: (_d = comment.author) == null ? void 0 : _d.sponsorBadgeA11y
+        };
+      }
+      let thumbs = (_e = comment.avatar) == null ? void 0 : _e.image;
+      if (!thumbs && "avatarThumbnailUrl" in comment.author) {
+        thumbs = { thumbnails: [{ url: comment.author.avatarThumbnailUrl, width: 88, height: 88 }] };
+      }
+      this.author = new Author({
+        simpleText: comment.author.displayName,
+        navigationEndpoint: ((_f = comment.avatar) == null ? void 0 : _f.endpoint) || ((_g = comment.author) == null ? void 0 : _g.channelCommand)
+      }, comment.author, thumbs, comment.author.channelId);
+    }
+    if (toolbar_state) {
+      this.is_hearted = toolbar_state.heartState === "TOOLBAR_HEART_STATE_HEARTED";
+      this.is_liked = toolbar_state.likeState === "TOOLBAR_LIKE_STATE_LIKED";
+      this.is_disliked = toolbar_state.likeState === "TOOLBAR_LIKE_STATE_DISLIKED";
+    }
+    if (toolbar_surface) {
+      if ("prepareAccountCommand" in toolbar_surface) {
+        this.prepare_account_command = new NavigationEndpoint(toolbar_surface.prepareAccountCommand);
+      } else {
+        this.like_command = new NavigationEndpoint(toolbar_surface.likeCommand);
+        this.dislike_command = new NavigationEndpoint(toolbar_surface.dislikeCommand);
+        this.unlike_command = new NavigationEndpoint(toolbar_surface.unlikeCommand);
+        this.undislike_command = new NavigationEndpoint(toolbar_surface.undislikeCommand);
+        this.reply_command = new NavigationEndpoint(toolbar_surface.replyCommand);
+      }
+    }
+    if (comment_surface) {
+      if ("voiceReplyContainerViewModel" in comment_surface) {
+        this.voice_reply_container = parser_exports.parseItem(comment_surface.voiceReplyContainerViewModel, VoiceReplyContainerView);
+      }
+    }
+  }
+  /**
+   * Likes the comment.
+   * @returns A promise that resolves to the API response.
+   * @throws If the Actions instance is not set for this comment or if the like command is not found.
+   */
+  async like() {
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.like_command)
+      throw new InnertubeError("Like command not found.");
+    if (this.is_liked)
+      throw new InnertubeError("This comment is already liked.", { comment_id: this.comment_id });
+    return this.like_command.call(__privateGet(this, _actions));
+  }
+  /**
+   * Dislikes the comment.
+   * @returns A promise that resolves to the API response.
+   * @throws If the Actions instance is not set for this comment or if the dislike command is not found.
+   */
+  async dislike() {
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.dislike_command)
+      throw new InnertubeError("Dislike command not found.");
+    if (this.is_disliked)
+      throw new InnertubeError("This comment is already disliked.", { comment_id: this.comment_id });
+    return this.dislike_command.call(__privateGet(this, _actions));
+  }
+  /**
+   * Unlikes the comment.
+   * @returns A promise that resolves to the API response.
+   * @throws If the Actions instance is not set for this comment or if the unlike command is not found.
+   */
+  async unlike() {
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.unlike_command)
+      throw new InnertubeError("Unlike command not found.");
+    if (!this.is_liked)
+      throw new InnertubeError("This comment is not liked.", { comment_id: this.comment_id });
+    return this.unlike_command.call(__privateGet(this, _actions));
+  }
+  /**
+   * Undislikes the comment.
+   * @returns A promise that resolves to the API response.
+   * @throws If the Actions instance is not set for this comment or if the undislike command is not found.
+   */
+  async undislike() {
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.undislike_command)
+      throw new InnertubeError("Undislike command not found.");
+    if (!this.is_disliked)
+      throw new InnertubeError("This comment is not disliked.", { comment_id: this.comment_id });
+    return this.undislike_command.call(__privateGet(this, _actions));
+  }
+  /**
+   * Replies to the comment.
+   * @param comment_text - The text of the reply.
+   * @returns A promise that resolves to the API response.
+   * @throws If the Actions instance is not set for this comment or if the reply command is not found.
+   */
+  async reply(comment_text) {
+    var _a2;
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.reply_command)
+      throw new InnertubeError("Reply command not found.");
+    const dialog = (_a2 = this.reply_command.dialog) == null ? void 0 : _a2.as(CommentReplyDialog);
+    if (!dialog)
+      throw new InnertubeError("Reply dialog not found.");
+    const reply_button = dialog.reply_button;
+    if (!reply_button)
+      throw new InnertubeError("Reply button not found in the dialog.");
+    if (!reply_button.endpoint)
+      throw new InnertubeError("Reply button endpoint not found.");
+    return reply_button.endpoint.call(__privateGet(this, _actions), { commentText: comment_text });
+  }
+  /**
+   * Translates the comment to the specified target language.
+   * @param target_language - The target language to translate the comment to, e.g. 'en', 'ja'.
+   * @returns Resolves to an ApiResponse object with the translated content, if available.
+   * @throws if the Actions instance is not set for this comment or if the comment content is not found.
+   */
+  async translate(target_language) {
+    var _a2, _b2, _c, _d, _e, _f;
+    if (!__privateGet(this, _actions))
+      throw new InnertubeError("Actions instance not set for this comment.");
+    if (!this.content)
+      throw new InnertubeError("Comment content not found.", { comment_id: this.comment_id });
+    const text = this.content.toString().replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, "");
+    const payload = { text, target_language };
+    const action = encodeCommentActionParams(22, payload);
+    const response = await __privateGet(this, _actions).execute("comment/perform_comment_action", { action });
+    const mutations = (_b2 = (_a2 = response.data.frameworkUpdates) == null ? void 0 : _a2.entityBatchUpdate) == null ? void 0 : _b2.mutations;
+    const content = (_f = (_e = (_d = (_c = mutations == null ? void 0 : mutations[0]) == null ? void 0 : _c.payload) == null ? void 0 : _d.commentEntityPayload) == null ? void 0 : _e.translatedContent) == null ? void 0 : _f.content;
+    return { ...response, content };
+  }
+  setActions(actions) {
+    __privateSet(this, _actions, actions);
+  }
+};
+_actions = new WeakMap();
+__name(_CommentView, "CommentView");
+__publicField(_CommentView, "type", "CommentView");
+var CommentView = _CommentView;
+
+// dist/src/parser/classes/comments/CommentReplies.js
+var _CommentReplies = class _CommentReplies extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "contents");
+    __publicField(this, "sub_threads");
+    __publicField(this, "view_replies");
+    __publicField(this, "hide_replies");
+    __publicField(this, "view_replies_creator_thumbnail");
+    __publicField(this, "has_channel_owner_replied");
+    this.contents = parser_exports.parseArray(data.contents, [CommentView, ContinuationItem]);
+    this.sub_threads = parser_exports.parseArray(data.subThreads, [CommentThread, ContinuationItem]);
+    this.view_replies = parser_exports.parseItem(data.viewReplies, Button);
+    this.hide_replies = parser_exports.parseItem(data.hideReplies, Button);
+    this.view_replies_creator_thumbnail = Thumbnail.fromResponse(data.viewRepliesCreatorThumbnail);
+    this.has_channel_owner_replied = !!data.viewRepliesCreatorThumbnail;
+  }
+};
+__name(_CommentReplies, "CommentReplies");
+__publicField(_CommentReplies, "type", "CommentReplies");
+var CommentReplies = _CommentReplies;
+
+// dist/src/parser/classes/comments/CommentThread.js
+var _actions2, _continuation, _CommentThread_instances, processList_fn;
+var _CommentThread = class _CommentThread extends YTNode {
+  constructor(data) {
+    super();
+    __privateAdd(this, _CommentThread_instances);
+    __publicField(this, "comment");
+    __publicField(this, "replies");
+    __publicField(this, "comment_replies_data");
+    __publicField(this, "is_moderated_elq_comment");
+    __publicField(this, "has_replies");
+    __publicField(this, "rendering_priority");
+    __privateAdd(this, _actions2);
+    __privateAdd(this, _continuation);
+    this.comment = parser_exports.parseItem(data.commentViewModel, CommentView);
+    this.comment_replies_data = parser_exports.parseItem(data.replies, CommentReplies);
+    this.is_moderated_elq_comment = data.isModeratedElqComment;
+    this.rendering_priority = data.renderingPriority;
+    this.has_replies = !!this.comment_replies_data;
+  }
+  /**
+   * Indicates whether this comment thread has more replies that can be fetched.
+   */
+  get has_continuation() {
+    if (!this.replies)
+      throw new InnertubeError("Cannot determine if there is a continuation because this comment thread's replies have not been loaded");
+    return !!__privateGet(this, _continuation);
+  }
+  /**
+   * Indicates whether this comment thread has prepopulated reply data. If false, you will need to call {@link CommentThread.getReplies} to fetch the initial batch of replies.
+   */
+  get is_prepopulated() {
+    var _a2;
+    return !!this.comment_replies_data && ((_a2 = this.comment_replies_data.sub_threads[0]) == null ? void 0 : _a2.is(_CommentThread));
+  }
+  /**
+   * Retrieves replies to this comment thread.
+   */
+  async getReplies() {
+    if (!__privateGet(this, _actions2))
+      throw new InnertubeError("Actions instance not set for this comment thread");
+    if (!this.comment_replies_data)
+      throw new InnertubeError("This comment thread has no replies", this);
+    if (!this.is_prepopulated) {
+      const continuation = this.comment_replies_data.sub_threads.firstOfType(ContinuationItem);
+      if (!continuation)
+        throw new InnertubeError("Replies continuation item not found");
+      let endpoint = continuation.endpoint;
+      if (continuation.button)
+        endpoint = continuation.button.endpoint;
+      const response = await endpoint.call(__privateGet(this, _actions2), { parse: true });
+      if (!response.on_response_received_endpoints)
+        throw new InnertubeError("Unexpected response", response);
+      const appendContinuationItemsNode = response.on_response_received_endpoints.firstOfType(AppendContinuationItemsAction);
+      if (appendContinuationItemsNode) {
+        __privateMethod(this, _CommentThread_instances, processList_fn).call(this, appendContinuationItemsNode.contents.as(_CommentThread, ContinuationItem));
+      }
+    }
+    return this;
+  }
+  /**
+   * Retrieves next batch of replies.
+   */
+  async getContinuation() {
+    var _a2;
+    if (!this.replies)
+      throw new InnertubeError("Cannot retrieve continuation because this comment thread's replies have not been loaded");
+    if (!__privateGet(this, _continuation))
+      throw new InnertubeError("No continuation item found");
+    if (!__privateGet(this, _actions2))
+      throw new InnertubeError("Actions instance not set for this comment thread");
+    const loadMoreButton = (_a2 = __privateGet(this, _continuation).button) == null ? void 0 : _a2.as(Button);
+    if (!loadMoreButton)
+      throw new InnertubeError('Cannot retrieve continuation because the "Load more" button is missing');
+    const response = await loadMoreButton.endpoint.call(__privateGet(this, _actions2), { parse: true });
+    return new CommentsContinuation(__privateGet(this, _actions2), response);
+  }
+  /**
+   * @internal
+   */
+  setActions(actions) {
+    __privateSet(this, _actions2, actions);
+  }
+  /**
+   * @internal
+   */
+  processRepliesData() {
+    if (this.is_prepopulated && !this.replies) {
+      __privateMethod(this, _CommentThread_instances, processList_fn).call(this, this.comment_replies_data.sub_threads);
+    }
+  }
+};
+_actions2 = new WeakMap();
+_continuation = new WeakMap();
+_CommentThread_instances = new WeakSet();
+processList_fn = /* @__PURE__ */ __name(function(contents) {
+  if (!__privateGet(this, _actions2))
+    throw new InnertubeError("Actions instance not set for this comment thread");
+  this.replies = observe([]);
+  for (const item of contents) {
+    if (item.is(_CommentThread)) {
+      item.setActions(__privateGet(this, _actions2));
+      item.processRepliesData();
+      this.replies.push(item);
+    } else if (item.is(ContinuationItem)) {
+      __privateSet(this, _continuation, item);
+    }
+  }
+}, "#processList");
+__name(_CommentThread, "CommentThread");
+__publicField(_CommentThread, "type", "CommentThread");
+var CommentThread = _CommentThread;
+
+// dist/src/parser/classes/misc/CommentsContinuation.js
+var _actions3, _nextContinuationItem;
+var _CommentsContinuation = class _CommentsContinuation {
+  constructor(actions, data) {
+    __publicField(this, "replies", observe([]));
+    __privateAdd(this, _actions3);
+    __privateAdd(this, _nextContinuationItem);
+    __privateSet(this, _actions3, actions);
+    if (!data.on_response_received_endpoints || !data.on_response_received_endpoints_memo) {
+      throw new InnertubeError("Invalid response received for comments continuation", data);
+    }
+    const appendContinuationItemsNode = data.on_response_received_endpoints.firstOfType(AppendContinuationItemsAction);
+    if (appendContinuationItemsNode) {
+      for (const item of appendContinuationItemsNode.contents) {
+        if (item.is(CommentThread)) {
+          item.setActions(__privateGet(this, _actions3));
+          item.processRepliesData();
+          this.replies.push(item);
+        } else if (item.is(ContinuationItem)) {
+          __privateSet(this, _nextContinuationItem, item);
+        }
+      }
+    }
+  }
+  /**
+   * Indicates whether this comment thread has more replies that can be fetched.
+   */
+  get has_continuation() {
+    return !!__privateGet(this, _nextContinuationItem);
+  }
+  /**
+   * Retrieves next batch of replies.
+   */
+  async getContinuation() {
+    if (!__privateGet(this, _nextContinuationItem))
+      throw new InnertubeError("No continuation item found");
+    const loadMoreButton = __privateGet(this, _nextContinuationItem).button;
+    if (!loadMoreButton)
+      throw new InnertubeError('"Load more" button not found in continuation item');
+    const response = await loadMoreButton.endpoint.call(__privateGet(this, _actions3), { parse: true });
+    return new _CommentsContinuation(__privateGet(this, _actions3), response);
+  }
+};
+_actions3 = new WeakMap();
+_nextContinuationItem = new WeakMap();
+__name(_CommentsContinuation, "CommentsContinuation");
+var CommentsContinuation = _CommentsContinuation;
 
 // dist/protos/generated/misc/common.js
 function createBaseKeyValuePair() {
@@ -15844,7 +16383,7 @@ var _Format = class _Format {
     __publicField(this, "average_bitrate");
     __publicField(this, "bitrate");
     __publicField(this, "spatial_audio_type");
-    __publicField(this, "target_duration_dec");
+    __publicField(this, "target_duration_sec");
     __publicField(this, "fair_play_key_uri");
     __publicField(this, "stereo_layout");
     __publicField(this, "max_dvr_duration_sec");
@@ -15878,7 +16417,7 @@ var _Format = class _Format {
     __publicField(this, "is_original");
     __publicField(this, "color_info");
     __publicField(this, "caption_track");
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a2, _b2, _c, _d, _e, _f, _g;
     if (this_response_nsig_cache)
       __privateSet(this, _this_response_nsig_cache, this_response_nsig_cache);
     this.itag = data.itag;
@@ -15893,7 +16432,7 @@ var _Format = class _Format {
     if (Reflect.has(data, "projectionType"))
       this.projection_type = data.projectionType;
     if (Reflect.has(data, "stereoLayout"))
-      this.stereo_layout = (_a = data.stereoLayout) == null ? void 0 : _a.replace("STEREO_LAYOUT_", "");
+      this.stereo_layout = (_a2 = data.stereoLayout) == null ? void 0 : _a2.replace("STEREO_LAYOUT_", "");
     if (Reflect.has(data, "initRange"))
       this.init_range = {
         start: parseInt(data.initRange.start),
@@ -15930,11 +16469,11 @@ var _Format = class _Format {
     if (Reflect.has(data, "loudnessDb"))
       this.loudness_db = data.loudnessDb;
     if (Reflect.has(data, "spatialAudioType"))
-      this.spatial_audio_type = (_b = data.spatialAudioType) == null ? void 0 : _b.replace("SPATIAL_AUDIO_TYPE_", "");
+      this.spatial_audio_type = (_b2 = data.spatialAudioType) == null ? void 0 : _b2.replace("SPATIAL_AUDIO_TYPE_", "");
     if (Reflect.has(data, "maxDvrDurationSec"))
       this.max_dvr_duration_sec = data.maxDvrDurationSec;
     if (Reflect.has(data, "targetDurationSec"))
-      this.target_duration_dec = data.targetDurationSec;
+      this.target_duration_sec = data.targetDurationSec;
     this.has_audio = !!data.audioBitrate || !!data.audioQuality;
     this.has_video = !!data.qualityLabel;
     this.has_text = !!data.captionTrack;
@@ -16008,23 +16547,39 @@ _this_response_nsig_cache = new WeakMap();
 __name(_Format, "Format");
 var Format = _Format;
 
-// dist/src/parser/classes/misc/RendererContext.js
-var _RendererContext = class _RendererContext {
+// dist/src/parser/classes/misc/PlaylistCollaborationFormSchema.js
+var _PlaylistCollaborationFormSchema = class _PlaylistCollaborationFormSchema {
   constructor(data) {
-    __publicField(this, "command_context");
-    __publicField(this, "accessibility_context");
-    if (!data)
-      return;
-    if ("commandContext" in data) {
-      this.command_context = new CommandContext(data.commandContext);
-    }
-    if ("accessibilityContext" in data) {
-      this.accessibility_context = new AccessibilityContext(data.accessibilityContext);
+    __publicField(this, "id");
+    __publicField(this, "initial_values");
+    var _a2, _b2, _c, _d;
+    this.id = data.id;
+    if ("initialValues" in data) {
+      this.initial_values = {
+        collaborator_channel_ids: (_a2 = data.initialValues) == null ? void 0 : _a2.collaboratorChannelIds,
+        is_allow_new_collaborators_enabled: (_b2 = data.initialValues) == null ? void 0 : _b2.isAllowNewCollaboratorsEnabled,
+        is_collaboration_enabled: (_c = data.initialValues) == null ? void 0 : _c.isCollaborationEnabled,
+        is_invite_collaborators_button_enabled: (_d = data.initialValues) == null ? void 0 : _d.isInviteCollaboratorsButtonEnabled
+      };
     }
   }
 };
-__name(_RendererContext, "RendererContext");
-var RendererContext = _RendererContext;
+__name(_PlaylistCollaborationFormSchema, "PlaylistCollaborationFormSchema");
+var PlaylistCollaborationFormSchema = _PlaylistCollaborationFormSchema;
+
+// dist/src/parser/classes/misc/PlaylistCollaborationViewModelPlaylistCollaboratorData.js
+var _PlaylistCollaborationViewModelPlaylistCollaboratorData = class _PlaylistCollaborationViewModelPlaylistCollaboratorData {
+  constructor(data) {
+    __publicField(this, "remove_collaborator_confirmation_dialog");
+    __publicField(this, "external_channel_id");
+    __publicField(this, "collaborator_content_list_item");
+    this.remove_collaborator_confirmation_dialog = parser_exports.parseItem(data.removeCollaboratorConfirmationDialog);
+    this.external_channel_id = data.externalChannelId;
+    this.collaborator_content_list_item = parser_exports.parseItem(data.collaboratorContentListItem);
+  }
+};
+__name(_PlaylistCollaborationViewModelPlaylistCollaboratorData, "PlaylistCollaborationViewModelPlaylistCollaboratorData");
+var PlaylistCollaborationViewModelPlaylistCollaboratorData = _PlaylistCollaborationViewModelPlaylistCollaboratorData;
 
 // dist/src/parser/classes/misc/SubscriptionButton.js
 var _SubscriptionButton = class _SubscriptionButton {
@@ -16032,10 +16587,15 @@ var _SubscriptionButton = class _SubscriptionButton {
     __publicField(this, "text");
     __publicField(this, "subscribed");
     __publicField(this, "subscription_type");
-    this.text = new Text2(data.text);
-    this.subscribed = data.isSubscribed;
-    if ("subscriptionType" in data)
-      this.subscription_type = data.subscriptionType;
+    if ("text" in data) {
+      this.text = new Text2(data.text);
+    }
+    if ("subscribed" in data) {
+      this.subscribed = data.subscribed;
+    }
+    if ("type" in data) {
+      this.subscription_type = data.type;
+    }
   }
 };
 __name(_SubscriptionButton, "SubscriptionButton");
@@ -16255,7 +16815,7 @@ var MenuTitle = _MenuTitle;
 // dist/src/parser/classes/PlaylistAddToOption.js
 var _PlaylistAddToOption = class _PlaylistAddToOption extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "add_to_playlist_service_endpoint");
     __publicField(this, "contains_selected_videos");
@@ -16268,7 +16828,7 @@ var _PlaylistAddToOption = class _PlaylistAddToOption extends YTNode {
     this.contains_selected_videos = data.containsSelectedVideos;
     this.playlist_id = data.playlistId;
     this.privacy = data.privacy;
-    this.privacy_icon = { icon_type: ((_a = data.privacyIcon) == null ? void 0 : _a.iconType) || null };
+    this.privacy_icon = { icon_type: ((_a2 = data.privacyIcon) == null ? void 0 : _a2.iconType) || null };
     this.remove_from_playlist_service_endpoint = new NavigationEndpoint(data.removeFromPlaylistServiceEndpoint);
     this.title = new Text2(data.title);
   }
@@ -16362,10 +16922,10 @@ var AudioOnlyPlayability = _AudioOnlyPlayability;
 // dist/src/parser/classes/AutomixPreviewVideo.js
 var _AutomixPreviewVideo = class _AutomixPreviewVideo extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "playlist_video");
-    if ((_b = (_a = data == null ? void 0 : data.content) == null ? void 0 : _a.automixPlaylistVideoRenderer) == null ? void 0 : _b.navigationEndpoint) {
+    if ((_b2 = (_a2 = data == null ? void 0 : data.content) == null ? void 0 : _a2.automixPlaylistVideoRenderer) == null ? void 0 : _b2.navigationEndpoint) {
       this.playlist_video = {
         endpoint: new NavigationEndpoint(data.content.automixPlaylistVideoRenderer.navigationEndpoint)
       };
@@ -16376,138 +16936,31 @@ __name(_AutomixPreviewVideo, "AutomixPreviewVideo");
 __publicField(_AutomixPreviewVideo, "type", "AutomixPreviewVideo");
 var AutomixPreviewVideo = _AutomixPreviewVideo;
 
-// dist/src/parser/classes/AvatarView.js
-var _AvatarView = class _AvatarView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "image");
-    __publicField(this, "image_processor");
-    __publicField(this, "avatar_image_size");
-    this.image = Thumbnail.fromResponse(data.image);
-    this.avatar_image_size = data.avatarImageSize;
-    if (data.image.processor) {
-      this.image_processor = {
-        border_image_processor: {
-          circular: data.image.processor.borderImageProcessor.circular
-        }
-      };
-    }
-  }
-};
-__name(_AvatarView, "AvatarView");
-__publicField(_AvatarView, "type", "AvatarView");
-var AvatarView = _AvatarView;
-
 // dist/src/parser/classes/AvatarStackView.js
 var _AvatarStackView = class _AvatarStackView extends YTNode {
   constructor(data) {
     super();
     __publicField(this, "avatars");
     __publicField(this, "text");
+    __publicField(this, "avatar_cluster_size");
+    __publicField(this, "layout_type");
     __publicField(this, "renderer_context");
     this.avatars = parser_exports.parseArray(data.avatars, AvatarView);
-    if (Reflect.has(data, "text"))
+    if ("text" in data) {
       this.text = Text2.fromAttributed(data.text);
+    }
+    if ("avatarClusterSize" in data) {
+      this.avatar_cluster_size = data.avatarClusterSize;
+    }
+    if ("layoutType" in data) {
+      this.layout_type = data.layoutType;
+    }
     this.renderer_context = new RendererContext(data.rendererContext);
   }
 };
 __name(_AvatarStackView, "AvatarStackView");
 __publicField(_AvatarStackView, "type", "AvatarStackView");
 var AvatarStackView = _AvatarStackView;
-
-// dist/src/parser/classes/ButtonView.js
-var _ButtonView = class _ButtonView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "secondary_icon_image");
-    __publicField(this, "icon_name");
-    __publicField(this, "enable_icon_button");
-    __publicField(this, "tooltip");
-    __publicField(this, "icon_image_flip_for_rtl");
-    __publicField(this, "button_size");
-    __publicField(this, "icon_position");
-    __publicField(this, "is_full_width");
-    __publicField(this, "state");
-    __publicField(this, "on_disabled_tap");
-    __publicField(this, "custom_border_color");
-    __publicField(this, "on_tap");
-    __publicField(this, "style");
-    __publicField(this, "icon_image");
-    __publicField(this, "custom_dark_theme_border_color");
-    __publicField(this, "title");
-    __publicField(this, "target_id");
-    __publicField(this, "enable_full_width_margins");
-    __publicField(this, "custom_font_color");
-    __publicField(this, "button_type");
-    __publicField(this, "enabled");
-    __publicField(this, "accessibility_id");
-    __publicField(this, "custom_background_color");
-    __publicField(this, "on_long_press");
-    __publicField(this, "title_formatted");
-    __publicField(this, "on_visible");
-    __publicField(this, "icon_trailing");
-    __publicField(this, "accessibility_text");
-    if ("secondaryIconImage" in data)
-      this.secondary_icon_image = Thumbnail.fromResponse(data.secondaryIconImage);
-    if ("iconName" in data)
-      this.icon_name = data.iconName;
-    if ("enableIconButton" in data)
-      this.enable_icon_button = data.enableIconButton;
-    if ("tooltip" in data)
-      this.tooltip = data.tooltip;
-    if ("iconImageFlipForRtl" in data)
-      this.icon_image_flip_for_rtl = data.iconImageFlipForRtl;
-    if ("buttonSize" in data)
-      this.button_size = data.buttonSize;
-    if ("iconPosition" in data)
-      this.icon_position = data.iconPosition;
-    if ("isFullWidth" in data)
-      this.is_full_width = data.isFullWidth;
-    if ("state" in data)
-      this.state = data.state;
-    if ("onDisabledTap" in data)
-      this.on_disabled_tap = new NavigationEndpoint(data.onDisabledTap);
-    if ("customBorderColor" in data)
-      this.custom_border_color = data.customBorderColor;
-    if ("onTap" in data)
-      this.on_tap = new NavigationEndpoint(data.onTap);
-    if ("style" in data)
-      this.style = data.style;
-    if ("iconImage" in data)
-      this.icon_image = data.iconImage;
-    if ("customDarkThemeBorderColor" in data)
-      this.custom_dark_theme_border_color = data.customDarkThemeBorderColor;
-    if ("title" in data)
-      this.title = data.title;
-    if ("targetId" in data)
-      this.target_id = data.targetId;
-    if ("enableFullWidthMargins" in data)
-      this.enable_full_width_margins = data.enableFullWidthMargins;
-    if ("customFontColor" in data)
-      this.custom_font_color = data.customFontColor;
-    if ("type" in data)
-      this.button_type = data.type;
-    if ("enabled" in data)
-      this.enabled = data.enabled;
-    if ("accessibilityId" in data)
-      this.accessibility_id = data.accessibilityId;
-    if ("customBackgroundColor" in data)
-      this.custom_background_color = data.customBackgroundColor;
-    if ("onLongPress" in data)
-      this.on_long_press = new NavigationEndpoint(data.onLongPress);
-    if ("titleFormatted" in data)
-      this.title_formatted = data.titleFormatted;
-    if ("onVisible" in data)
-      this.on_visible = data.onVisible;
-    if ("iconTrailing" in data)
-      this.icon_trailing = data.iconTrailing;
-    if ("accessibilityText" in data)
-      this.accessibility_text = data.accessibilityText;
-  }
-};
-__name(_ButtonView, "ButtonView");
-__publicField(_ButtonView, "type", "ButtonView");
-var ButtonView = _ButtonView;
 
 // dist/src/parser/classes/BackgroundPromo.js
 var _BackgroundPromo = class _BackgroundPromo extends YTNode {
@@ -16545,7 +16998,7 @@ var BackstageImage = _BackstageImage;
 // dist/src/parser/classes/ToggleButton.js
 var _ToggleButton = class _ToggleButton extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i;
     super();
     __publicField(this, "text");
     __publicField(this, "toggled_text");
@@ -16566,8 +17019,8 @@ var _ToggleButton = class _ToggleButton extends YTNode {
     this.toggled_tooltip = data.toggledTooltip;
     this.is_toggled = data.isToggled;
     this.is_disabled = data.isDisabled;
-    this.icon_type = (_a = data.defaultIcon) == null ? void 0 : _a.iconType;
-    const acc_label = ((_d = (_c = (_b = data == null ? void 0 : data.defaultText) == null ? void 0 : _b.accessibility) == null ? void 0 : _c.accessibilityData) == null ? void 0 : _d.label) || ((_f = (_e = data == null ? void 0 : data.accessibilityData) == null ? void 0 : _e.accessibilityData) == null ? void 0 : _f.label) || ((_g = data == null ? void 0 : data.accessibility) == null ? void 0 : _g.label);
+    this.icon_type = (_a2 = data.defaultIcon) == null ? void 0 : _a2.iconType;
+    const acc_label = ((_d = (_c = (_b2 = data == null ? void 0 : data.defaultText) == null ? void 0 : _b2.accessibility) == null ? void 0 : _c.accessibilityData) == null ? void 0 : _d.label) || ((_f = (_e = data == null ? void 0 : data.accessibilityData) == null ? void 0 : _e.accessibilityData) == null ? void 0 : _f.label) || ((_g = data == null ? void 0 : data.accessibility) == null ? void 0 : _g.label);
     if (this.icon_type == "LIKE") {
       this.like_count = parseInt(acc_label.replace(/\D/g, ""));
       this.short_like_count = new Text2(data.defaultText).toString();
@@ -16589,7 +17042,7 @@ var ToggleButton = _ToggleButton;
 // dist/src/parser/classes/comments/CreatorHeart.js
 var _CreatorHeart = class _CreatorHeart extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "creator_thumbnail");
     __publicField(this, "heart_icon_type");
@@ -16604,7 +17057,7 @@ var _CreatorHeart = class _CreatorHeart extends YTNode {
     }
     this.heart_color = {
       basic_color_palette_data: {
-        foreground_title_color: (_b = (_a = data.heartColor) == null ? void 0 : _a.basicColorPaletteData) == null ? void 0 : _b.foregroundTitleColor
+        foreground_title_color: (_b2 = (_a2 = data.heartColor) == null ? void 0 : _a2.basicColorPaletteData) == null ? void 0 : _b2.foregroundTitleColor
       }
     };
     this.hearted_tooltip = data.heartedTooltip;
@@ -16774,92 +17227,6 @@ __name(_MenuServiceItemDownload, "MenuServiceItemDownload");
 __publicField(_MenuServiceItemDownload, "type", "MenuServiceItemDownload");
 var MenuServiceItemDownload = _MenuServiceItemDownload;
 
-// dist/src/parser/classes/SubscribeButtonView.js
-var _SubscribeButtonView_instances, parseButtonContent_fn;
-var _SubscribeButtonView = class _SubscribeButtonView extends YTNode {
-  constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
-    super();
-    __privateAdd(this, _SubscribeButtonView_instances);
-    __publicField(this, "subscribe_button_content");
-    __publicField(this, "unsubscribe_button_content");
-    __publicField(this, "disable_notification_bell");
-    __publicField(this, "button_style");
-    __publicField(this, "is_signed_out");
-    __publicField(this, "background_style");
-    __publicField(this, "disable_subscribe_button");
-    __publicField(this, "on_show_subscription_options");
-    __publicField(this, "channel_id");
-    __publicField(this, "enable_subscribe_button_post_click_animation");
-    __publicField(this, "bell_accessibility_data");
-    this.subscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.subscribeButtonContent);
-    this.unsubscribe_button_content = __privateMethod(this, _SubscribeButtonView_instances, parseButtonContent_fn).call(this, data.unsubscribeButtonContent);
-    this.disable_notification_bell = data.disableNotificationBell;
-    if ("buttonStyle" in data) {
-      this.button_style = {
-        unsubscribed_state_style: (_a = data.buttonStyle) == null ? void 0 : _a.unsubscribedStateStyle,
-        subscribed_state_style: (_b = data.buttonStyle) == null ? void 0 : _b.subscribedStateStyle
-      };
-    }
-    this.is_signed_out = data.isSignedOut;
-    this.background_style = data.backgroundStyle;
-    this.disable_subscribe_button = data.disableSubscribeButton;
-    if ("onShowSubscriptionOptions" in data) {
-      this.on_show_subscription_options = new NavigationEndpoint(data.onShowSubscriptionOptions);
-    }
-    this.channel_id = data.channelId;
-    this.enable_subscribe_button_post_click_animation = data.enableSubscribeButtonPostClickAnimation;
-    if ("bellAccessibilityData" in data) {
-      this.bell_accessibility_data = {
-        off_label: (_c = data.bellAccessibilityData) == null ? void 0 : _c.offLabel,
-        all_label: (_d = data.bellAccessibilityData) == null ? void 0 : _d.allLabel,
-        occasional_label: (_e = data.bellAccessibilityData) == null ? void 0 : _e.occasionalLabel,
-        disabled_label: (_f = data.bellAccessibilityData) == null ? void 0 : _f.disabledLabel
-      };
-    }
-  }
-};
-_SubscribeButtonView_instances = new WeakSet();
-parseButtonContent_fn = /* @__PURE__ */ __name(function(data) {
-  return {
-    button_text: data.buttonText,
-    accessibility_text: data.accessibilityText,
-    image_name: data.imageName,
-    subscribe_state_subscribed: data.subscribeState.subscribed,
-    endpoint: new NavigationEndpoint(data.onTapCommand)
-  };
-}, "#parseButtonContent");
-__name(_SubscribeButtonView, "SubscribeButtonView");
-__publicField(_SubscribeButtonView, "type", "SubscribeButtonView");
-var SubscribeButtonView = _SubscribeButtonView;
-
-// dist/src/parser/classes/ListItemView.js
-var _ListItemView = class _ListItemView extends YTNode {
-  constructor(data) {
-    var _a;
-    super();
-    __publicField(this, "title");
-    __publicField(this, "subtitle");
-    __publicField(this, "leading_accessory");
-    __publicField(this, "renderer_context");
-    __publicField(this, "trailing_buttons");
-    if ("title" in data) {
-      this.title = Text2.fromAttributed(data.title);
-    }
-    if ("subtitle" in data) {
-      this.subtitle = Text2.fromAttributed(data.subtitle);
-    }
-    this.leading_accessory = parser_exports.parseItem(data.leadingAccessory, AvatarView);
-    if ("rendererContext" in data) {
-      this.renderer_context = new RendererContext(data.rendererContext);
-    }
-    this.trailing_buttons = parser_exports.parseArray((_a = data.trailingButtons) == null ? void 0 : _a.buttons, SubscribeButtonView);
-  }
-};
-__name(_ListItemView, "ListItemView");
-__publicField(_ListItemView, "type", "ListItemView");
-var ListItemView = _ListItemView;
-
 // dist/src/parser/classes/menus/MenuFlexibleItem.js
 var _MenuFlexibleItem = class _MenuFlexibleItem extends YTNode {
   constructor(data) {
@@ -16930,8 +17297,8 @@ var _Menu = class _Menu extends YTNode {
     }
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
   // XXX: alias for consistency
   get contents() {
@@ -17149,12 +17516,12 @@ __publicField(_HeaderLink, "type", "HeaderLink");
 var HeaderLink = _HeaderLink;
 var _ChannelHeaderLinks = class _ChannelHeaderLinks extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "primary");
     __publicField(this, "secondary");
-    this.primary = observe(((_a = data.primaryLinks) == null ? void 0 : _a.map((link) => new HeaderLink(link))) || []);
-    this.secondary = observe(((_b = data.secondaryLinks) == null ? void 0 : _b.map((link) => new HeaderLink(link))) || []);
+    this.primary = observe(((_a2 = data.primaryLinks) == null ? void 0 : _a2.map((link) => new HeaderLink(link))) || []);
+    this.secondary = observe(((_b2 = data.secondaryLinks) == null ? void 0 : _b2.map((link) => new HeaderLink(link))) || []);
   }
 };
 __name(_ChannelHeaderLinks, "ChannelHeaderLinks");
@@ -17196,7 +17563,7 @@ var ClipCreationTextInput = _ClipCreationTextInput;
 // dist/src/parser/classes/ClipCreationScrubber.js
 var _ClipCreationScrubber = class _ClipCreationScrubber extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "length_template");
     __publicField(this, "max_length_ms");
@@ -17211,7 +17578,7 @@ var _ClipCreationScrubber = class _ClipCreationScrubber extends YTNode {
     this.min_length_ms = data.minLengthMs;
     this.default_length_ms = data.defaultLengthMs;
     this.window_size_ms = data.windowSizeMs;
-    this.start_label = (_b = (_a = data.startAccessibility) == null ? void 0 : _a.accessibilityData) == null ? void 0 : _b.label;
+    this.start_label = (_b2 = (_a2 = data.startAccessibility) == null ? void 0 : _a2.accessibilityData) == null ? void 0 : _b2.label;
     this.end_label = (_d = (_c = data.endAccessibility) == null ? void 0 : _c.accessibilityData) == null ? void 0 : _d.label;
     this.duration_label = (_f = (_e = data.durationAccessibility) == null ? void 0 : _e.accessibilityData) == null ? void 0 : _f.label;
   }
@@ -17275,24 +17642,6 @@ var _ClipSection = class _ClipSection extends YTNode {
 __name(_ClipSection, "ClipSection");
 __publicField(_ClipSection, "type", "ClipSection");
 var ClipSection = _ClipSection;
-
-// dist/src/parser/classes/ContinuationItem.js
-var _ContinuationItem = class _ContinuationItem extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "trigger");
-    __publicField(this, "button");
-    __publicField(this, "endpoint");
-    this.trigger = data.trigger;
-    if (Reflect.has(data, "button")) {
-      this.button = parser_exports.parseItem(data.button, Button);
-    }
-    this.endpoint = new NavigationEndpoint(data.continuationEndpoint);
-  }
-};
-__name(_ContinuationItem, "ContinuationItem");
-__publicField(_ContinuationItem, "type", "ContinuationItem");
-var ContinuationItem = _ContinuationItem;
 
 // dist/src/parser/classes/EngagementPanelTitleHeader.js
 var _EngagementPanelTitleHeader = class _EngagementPanelTitleHeader extends YTNode {
@@ -17361,6 +17710,68 @@ var _MacroMarkersList = class _MacroMarkersList extends YTNode {
 __name(_MacroMarkersList, "MacroMarkersList");
 __publicField(_MacroMarkersList, "type", "MacroMarkersList");
 var MacroMarkersList = _MacroMarkersList;
+
+// dist/src/parser/classes/ContentListItemView.js
+var _ContentListItemView = class _ContentListItemView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "title");
+    __publicField(this, "action_button");
+    __publicField(this, "avatar");
+    __publicField(this, "image");
+    __publicField(this, "metadata");
+    __publicField(this, "renderer_context");
+    this.title = Text2.fromAttributed(data.title);
+    this.action_button = parser_exports.parseItem(data.actionButton);
+    this.avatar = parser_exports.parseItem(data.avatar);
+    this.image = Thumbnail.fromResponse(data.image);
+    this.metadata = parser_exports.parseItem(data.metadata);
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_ContentListItemView, "ContentListItemView");
+__publicField(_ContentListItemView, "type", "ContentListItemView");
+var ContentListItemView = _ContentListItemView;
+
+// dist/src/parser/classes/PlaylistCollaborationView.js
+var _PlaylistCollaborationView = class _PlaylistCollaborationView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "playlist_collaborators");
+    __publicField(this, "turn_off_collaboration_dialog");
+    __publicField(this, "copy_link_button");
+    __publicField(this, "collaborate_playlist_collaboration_setting");
+    __publicField(this, "playlist_collaboration_entity_key");
+    __publicField(this, "playlist_collaborators_data");
+    __publicField(this, "leave_collaborative_playlist_confirmation_dialog");
+    __publicField(this, "collaboration_type");
+    __publicField(this, "allow_new_collaborators_playlist_collaboration_setting");
+    __publicField(this, "playlist_collaboration_form_schema");
+    __publicField(this, "turn_off_allow_new_collaborators_dialog");
+    __publicField(this, "invite_collaborators_button");
+    this.playlist_collaborators = parser_exports.parseArray(data.playlistCollaborators, ContentListItemView);
+    this.turn_off_collaboration_dialog = parser_exports.parseItem(data.turnOffCollaborationDialog);
+    this.copy_link_button = parser_exports.parseItem(data.copyLinkButton);
+    this.collaborate_playlist_collaboration_setting = parser_exports.parseItem(data.collaboratePlaylistCollaborationSetting);
+    if ("playlistCollaboratorsData" in data) {
+      this.playlist_collaborators_data = data.playlistCollaboratorsData.map((item) => new PlaylistCollaborationViewModelPlaylistCollaboratorData(item));
+    }
+    if ("playlistCollaborationFormSchema" in data) {
+      this.playlist_collaboration_form_schema = new PlaylistCollaborationFormSchema(data.playlistCollaborationFormSchema);
+    }
+    this.leave_collaborative_playlist_confirmation_dialog = parser_exports.parseItem(data.leaveCollaborativePlaylistConfirmationDialog);
+    this.allow_new_collaborators_playlist_collaboration_setting = parser_exports.parseItem(data.allowNewCollaboratorsPlaylistCollaborationSetting);
+    this.turn_off_allow_new_collaborators_dialog = parser_exports.parseItem(data.turnOffAllowNewCollaboratorsDialog);
+    this.invite_collaborators_button = parser_exports.parseItem(data.inviteCollaboratorsButton);
+    this.playlist_collaboration_entity_key = data.playlistCollaborationEntityKey;
+    this.collaboration_type = data.collaborationType;
+  }
+};
+__name(_PlaylistCollaborationView, "PlaylistCollaborationView");
+__publicField(_PlaylistCollaborationView, "type", "PlaylistCollaborationView");
+var PlaylistCollaborationView = _PlaylistCollaborationView;
 
 // dist/src/parser/classes/ProductList.js
 var _ProductList = class _ProductList extends YTNode {
@@ -17570,7 +17981,7 @@ var ThumbnailOverlayTimeStatus = _ThumbnailOverlayTimeStatus;
 // dist/src/parser/classes/Video.js
 var _Video = class _Video extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "video_id");
     __publicField(this, "title");
@@ -17617,7 +18028,7 @@ var _Video = class _Video extends YTNode {
     this.thumbnail_overlays = parser_exports.parseArray(data.thumbnailOverlays);
     if ("richThumbnail" in data)
       this.rich_thumbnail = parser_exports.parseItem(data.richThumbnail);
-    this.author = new Author(data.ownerText, data.ownerBadges, (_b = (_a = data.channelThumbnailSupportedRenderers) == null ? void 0 : _a.channelThumbnailWithLinkRenderer) == null ? void 0 : _b.thumbnail);
+    this.author = new Author(data.ownerText, data.ownerBadges, (_b2 = (_a2 = data.channelThumbnailSupportedRenderers) == null ? void 0 : _a2.channelThumbnailWithLinkRenderer) == null ? void 0 : _b2.thumbnail);
     this.badges = parser_exports.parseArray(data.badges, MetadataBadge);
     if ("navigationEndpoint" in data)
       this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
@@ -17652,17 +18063,17 @@ var _Video = class _Video extends YTNode {
     return this.video_id;
   }
   get description() {
-    var _a;
+    var _a2;
     if (this.snippets)
       return this.snippets.map((snip) => snip.text.toString()).join("");
-    return ((_a = this.description_snippet) == null ? void 0 : _a.toString()) || "";
+    return ((_a2 = this.description_snippet) == null ? void 0 : _a2.toString()) || "";
   }
   get is_live() {
-    var _a;
+    var _a2;
     return this.badges.some((badge) => {
       if (badge.style === "BADGE_STYLE_TYPE_LIVE_NOW" || badge.label === "LIVE")
         return true;
-    }) || ((_a = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a.style) === "LIVE";
+    }) || ((_a2 = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a2.style) === "LIVE";
   }
   get is_upcoming() {
     return this.upcoming && this.upcoming > /* @__PURE__ */ new Date();
@@ -17680,9 +18091,9 @@ var _Video = class _Video extends YTNode {
     return this.thumbnails[0];
   }
   get duration() {
-    var _a;
+    var _a2;
     const overlay_time_status = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus);
-    const length_text = ((_a = this.length_text) == null ? void 0 : _a.toString()) || (overlay_time_status == null ? void 0 : overlay_time_status.text.toString());
+    const length_text = ((_a2 = this.length_text) == null ? void 0 : _a2.toString()) || (overlay_time_status == null ? void 0 : overlay_time_status.text.toString());
     return {
       text: length_text,
       seconds: length_text ? timeToSeconds(length_text) : 0
@@ -17696,14 +18107,14 @@ var Video = _Video;
 // dist/src/parser/classes/VideoCard.js
 var _VideoCard = class _VideoCard extends Video {
   constructor(data) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     super(data);
     __publicField(this, "metadata_text");
     if (Reflect.has(data, "metadataText")) {
       this.metadata_text = new Text2(data.metadataText);
       if (this.metadata_text.text) {
-        this.short_view_count = new Text2({ simpleText: (_a = this.metadata_text.text.split("\xB7")[0]) == null ? void 0 : _a.trim() });
-        this.published = new Text2({ simpleText: (_b = this.metadata_text.text.split("\xB7")[1]) == null ? void 0 : _b.trim() });
+        this.short_view_count = new Text2({ simpleText: (_a2 = this.metadata_text.text.split("\xB7")[0]) == null ? void 0 : _a2.trim() });
+        this.published = new Text2({ simpleText: (_b2 = this.metadata_text.text.split("\xB7")[1]) == null ? void 0 : _b2.trim() });
       }
     }
     if (Reflect.has(data, "bylineText")) {
@@ -17732,7 +18143,7 @@ var ContentPreviewImageView = _ContentPreviewImageView;
 // dist/src/parser/classes/VideoAttributeView.js
 var _VideoAttributeView = class _VideoAttributeView extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "image");
     __publicField(this, "image_style");
@@ -17743,7 +18154,7 @@ var _VideoAttributeView = class _VideoAttributeView extends YTNode {
     __publicField(this, "sizing_rule");
     __publicField(this, "overflow_menu_on_tap");
     __publicField(this, "overflow_menu_a11y_label");
-    if ((_a = data.image) == null ? void 0 : _a.sources) {
+    if ((_a2 = data.image) == null ? void 0 : _a2.sources) {
       this.image = Thumbnail.fromResponse(data.image);
     } else {
       this.image = parser_exports.parseItem(data.image, ContentPreviewImageView);
@@ -17971,9 +18382,9 @@ var _CompactVideo = class _CompactVideo extends YTNode {
     return this.video_id;
   }
   get duration() {
-    var _a;
+    var _a2;
     const overlay_time_status = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus);
-    const length_text = ((_a = this.length_text) == null ? void 0 : _a.toString()) || (overlay_time_status == null ? void 0 : overlay_time_status.text.toString());
+    const length_text = ((_a2 = this.length_text) == null ? void 0 : _a2.toString()) || (overlay_time_status == null ? void 0 : overlay_time_status.text.toString());
     return {
       text: length_text,
       seconds: length_text ? timeToSeconds(length_text) : 0
@@ -18117,12 +18528,15 @@ var _HowThisWasMadeSectionView = class _HowThisWasMadeSectionView extends YTNode
     __publicField(this, "section_title");
     __publicField(this, "body_text");
     __publicField(this, "body_header");
+    __publicField(this, "attribution_text");
     if (Reflect.has(data, "sectionText"))
       this.section_title = Text2.fromAttributed(data.sectionText);
     if (Reflect.has(data, "bodyText"))
       this.body_text = Text2.fromAttributed(data.bodyText);
     if (Reflect.has(data, "bodyHeader"))
       this.body_header = Text2.fromAttributed(data.bodyHeader);
+    if (Reflect.has(data, "attributionText"))
+      this.attribution_text = Text2.fromAttributed(data.attributionText);
   }
 };
 __name(_HowThisWasMadeSectionView, "HowThisWasMadeSectionView");
@@ -18171,6 +18585,50 @@ __name(_MerchandiseShelf, "MerchandiseShelf");
 __publicField(_MerchandiseShelf, "type", "MerchandiseShelf");
 var MerchandiseShelf = _MerchandiseShelf;
 
+// dist/src/parser/classes/SectionHeaderView.js
+var _SectionHeaderView = class _SectionHeaderView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "headline");
+    this.headline = Text2.fromAttributed(data.headline);
+  }
+};
+__name(_SectionHeaderView, "SectionHeaderView");
+__publicField(_SectionHeaderView, "type", "SectionHeaderView");
+var SectionHeaderView = _SectionHeaderView;
+
+// dist/src/parser/classes/HypeFanCreditsSectionView.js
+var _HypeFanCreditsSectionView = class _HypeFanCreditsSectionView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "header");
+    this.header = parser_exports.parseItem(data.header, SectionHeaderView);
+  }
+};
+__name(_HypeFanCreditsSectionView, "HypeFanCreditsSectionView");
+__publicField(_HypeFanCreditsSectionView, "type", "HypeFanCreditsSectionView");
+var HypeFanCreditsSectionView = _HypeFanCreditsSectionView;
+
+// dist/src/parser/classes/VideoDescriptionYouchatSectionView.js
+var _VideoDescriptionYouchatSectionView = class _VideoDescriptionYouchatSectionView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "section_title");
+    __publicField(this, "sub_header_text");
+    __publicField(this, "primary_button");
+    if ("sectionTitle" in data) {
+      this.section_title = Text2.fromAttributed(data.sectionTitle);
+    }
+    if ("subHeaderText" in data) {
+      this.sub_header_text = Text2.fromAttributed(data.subHeaderText);
+    }
+    this.primary_button = parser_exports.parseItem(data.primaryButton, ButtonView);
+  }
+};
+__name(_VideoDescriptionYouchatSectionView, "VideoDescriptionYouchatSectionView");
+__publicField(_VideoDescriptionYouchatSectionView, "type", "VideoDescriptionYouchatSectionView");
+var VideoDescriptionYouchatSectionView = _VideoDescriptionYouchatSectionView;
+
 // dist/src/parser/classes/StructuredDescriptionContent.js
 var _StructuredDescriptionContent = class _StructuredDescriptionContent extends YTNode {
   constructor(data) {
@@ -18183,13 +18641,14 @@ var _StructuredDescriptionContent = class _StructuredDescriptionContent extends 
       VideoDescriptionInfocardsSection,
       VideoDescriptionCourseSection,
       VideoDescriptionTranscriptSection,
-      VideoDescriptionTranscriptSection,
+      VideoDescriptionYouchatSectionView,
       HorizontalCardList,
       ReelShelf,
       VideoAttributesSectionView,
       HowThisWasMadeSectionView,
       ExpandableMetadata,
-      MerchandiseShelf
+      MerchandiseShelf,
+      HypeFanCreditsSectionView
     ]);
   }
 };
@@ -18208,12 +18667,23 @@ var _EngagementPanelSectionList = class _EngagementPanelSectionList extends YTNo
     __publicField(this, "identifier");
     __publicField(this, "visibility");
     this.header = parser_exports.parseItem(data.header, EngagementPanelTitleHeader);
-    this.content = parser_exports.parseItem(data.content, [VideoAttributeView, SectionList, ContinuationItem, ClipSection, StructuredDescriptionContent, MacroMarkersList, ProductList]);
+    this.content = parser_exports.parseItem(data.content, [
+      PlaylistCollaborationView,
+      VideoAttributeView,
+      SectionList,
+      ContinuationItem,
+      ClipSection,
+      StructuredDescriptionContent,
+      MacroMarkersList,
+      ProductList
+    ]);
     this.panel_identifier = data.panelIdentifier;
-    this.identifier = data.identifier ? {
-      surface: data.identifier.surface,
-      tag: data.identifier.tag
-    } : void 0;
+    if ("identifier" in data) {
+      this.identifier = {
+        surface: data.identifier.surface,
+        tag: data.identifier.tag
+      };
+    }
     this.target_id = data.targetId;
     this.visibility = data.visibility;
   }
@@ -18276,7 +18746,7 @@ var SubscriptionNotificationToggleButton = _SubscriptionNotificationToggleButton
 // dist/src/parser/classes/SubscribeButton.js
 var _SubscribeButton = class _SubscribeButton extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "button_text");
     __publicField(this, "subscribed");
@@ -18319,9 +18789,9 @@ var _SubscribeButton = class _SubscribeButton extends YTNode {
     if (Reflect.has(data, "targetId"))
       this.target_id = data.targetId;
     if (Reflect.has(data, "subscribeAccessibility"))
-      this.subscribe_accessibility_label = (_a = data.subscribeAccessibility.accessibilityData) == null ? void 0 : _a.label;
+      this.subscribe_accessibility_label = (_a2 = data.subscribeAccessibility.accessibilityData) == null ? void 0 : _a2.label;
     if (Reflect.has(data, "unsubscribeAccessibility"))
-      this.unsubscribe_accessibility_label = (_b = data.unsubscribeAccessibility.accessibilityData) == null ? void 0 : _b.label;
+      this.unsubscribe_accessibility_label = (_b2 = data.unsubscribeAccessibility.accessibilityData) == null ? void 0 : _b2.label;
   }
 };
 __name(_SubscribeButton, "SubscribeButton");
@@ -18566,7 +19036,7 @@ var Channel = _Channel;
 // dist/src/parser/classes/ChannelAboutFullMetadata.js
 var _ChannelAboutFullMetadata = class _ChannelAboutFullMetadata extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "id");
     __publicField(this, "name");
@@ -18584,11 +19054,11 @@ var _ChannelAboutFullMetadata = class _ChannelAboutFullMetadata extends YTNode {
     this.name = new Text2(data.title);
     this.avatar = Thumbnail.fromResponse(data.avatar);
     this.canonical_channel_url = data.canonicalChannelUrl;
-    this.primary_links = (_b = (_a = data.primaryLinks) == null ? void 0 : _a.map((link) => ({
+    this.primary_links = (_b2 = (_a2 = data.primaryLinks) == null ? void 0 : _a2.map((link) => ({
       endpoint: new NavigationEndpoint(link.navigationEndpoint),
       icon: Thumbnail.fromResponse(link.icon),
       title: new Text2(link.title)
-    }))) != null ? _b : [];
+    }))) != null ? _b2 : [];
     this.view_count = new Text2(data.viewCountText);
     this.joined_date = new Text2(data.joinedDateText);
     this.description = new Text2(data.description);
@@ -18723,11 +19193,11 @@ var ChannelOwnerEmptyState = _ChannelOwnerEmptyState;
 // dist/src/parser/classes/ChannelSubMenu.js
 var _ChannelSubMenu = class _ChannelSubMenu extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "content_type_sub_menu_items");
     __publicField(this, "sort_setting");
-    this.content_type_sub_menu_items = ((_c = (_b = (_a = data.sortSetting) == null ? void 0 : _a.sortFilterSubMenuRenderer) == null ? void 0 : _b.subMenuItems) == null ? void 0 : _c.map((item) => ({
+    this.content_type_sub_menu_items = ((_c = (_b2 = (_a2 = data.sortSetting) == null ? void 0 : _a2.sortFilterSubMenuRenderer) == null ? void 0 : _b2.subMenuItems) == null ? void 0 : _c.map((item) => ({
       endpoint: new NavigationEndpoint(item.navigationEndpoint || item.endpoint),
       selected: item.selected,
       title: item.title
@@ -18771,8 +19241,8 @@ var _ChannelThumbnailWithLink = class _ChannelThumbnailWithLink extends YTNode {
     }
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_ChannelThumbnailWithLink, "ChannelThumbnailWithLink");
@@ -18840,14 +19310,55 @@ var ChildVideo = _ChildVideo;
 var _ChipView = class _ChipView extends YTNode {
   constructor(data) {
     super();
+    __publicField(this, "accessibility_hint");
+    __publicField(this, "accessibility_label");
     __publicField(this, "text");
+    __publicField(this, "trailing_text");
     __publicField(this, "display_type");
-    __publicField(this, "endpoint");
+    __publicField(this, "max_text_width");
+    __publicField(this, "secondary_accessibility_label");
+    __publicField(this, "original_text");
+    __publicField(this, "tap_command");
+    __publicField(this, "secondary_tap_command");
     __publicField(this, "chip_entity_key");
-    this.text = data.text;
-    this.display_type = data.displayType;
-    this.endpoint = new NavigationEndpoint(data.tapCommand);
-    this.chip_entity_key = data.chipEntityKey;
+    __publicField(this, "selected");
+    if ("accessibilityHint" in data) {
+      this.accessibility_hint = data.accessibilityHint;
+    }
+    if ("accessibilityLabel" in data) {
+      this.accessibility_label = data.accessibilityLabel;
+    }
+    if ("chipEntityKey" in data) {
+      this.chip_entity_key = data.chipEntityKey;
+    }
+    if ("text" in data) {
+      this.text = data.text;
+    }
+    if ("trailingText" in data) {
+      this.trailing_text = data.trailingText;
+    }
+    if ("displayType" in data) {
+      this.display_type = data.displayType;
+    }
+    if ("maxTextWidth" in data) {
+      this.max_text_width = data.maxTextWidth;
+    }
+    if ("originalText" in data) {
+      this.original_text = data.originalText;
+    }
+    if ("secondaryAccessibilityLabel" in data) {
+      this.secondary_accessibility_label = data.secondaryAccessibilityLabel;
+    }
+    if ("tapCommand" in data) {
+      this.tap_command = new NavigationEndpoint(data.tapCommand);
+    }
+    if ("secondaryTapCommand" in data) {
+      this.secondary_tap_command = new NavigationEndpoint(data.secondaryTapCommand);
+    }
+    this.selected = !!data.selected;
+  }
+  get endpoint() {
+    return this.tap_command;
   }
 };
 __name(_ChipView, "ChipView");
@@ -18859,7 +19370,13 @@ var _ChipBarView = class _ChipBarView extends YTNode {
   constructor(data) {
     super();
     __publicField(this, "chips");
+    __publicField(this, "chip_bar_state_entity_key");
+    __publicField(this, "renderer_context");
     this.chips = parser_exports.parseArray(data.chips, ChipView);
+    this.chip_bar_state_entity_key = data.chipBarStateEntityKey;
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
   }
 };
 __name(_ChipBarView, "ChipBarView");
@@ -19007,7 +19524,7 @@ var _ThumbnailBadgeView = class _ThumbnailBadgeView extends YTNode {
         dark_theme: data.backgroundColor.darkTheme
       };
     }
-    if (data.iconName) {
+    if (data.icon) {
       this.icon_name = data.icon.sources[0].clientResource.imageName;
     }
   }
@@ -19098,15 +19615,15 @@ var ThumbnailView = _ThumbnailView;
 // dist/src/parser/classes/CollectionThumbnailView.js
 var _CollectionThumbnailView = class _CollectionThumbnailView extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "primary_thumbnail");
     __publicField(this, "stack_color");
     this.primary_thumbnail = parser_exports.parseItem(data.primaryThumbnail, ThumbnailView);
     if ("stackColor" in data) {
       this.stack_color = {
-        light_theme: (_a = data.stackColor) == null ? void 0 : _a.lightTheme,
-        dark_theme: (_b = data.stackColor) == null ? void 0 : _b.darkTheme
+        light_theme: (_a2 = data.stackColor) == null ? void 0 : _a2.lightTheme,
+        dark_theme: (_b2 = data.stackColor) == null ? void 0 : _b2.darkTheme
       };
     }
   }
@@ -19237,20 +19754,20 @@ __name(_RunAttestationCommand, "RunAttestationCommand");
 __publicField(_RunAttestationCommand, "type", "RunAttestationCommand");
 var RunAttestationCommand = _RunAttestationCommand;
 
-// dist/src/parser/classes/commands/ShowDialogCommand.js
-var _ShowDialogCommand = class _ShowDialogCommand extends YTNode {
+// dist/src/parser/classes/commands/ShowSheetCommand.js
+var _ShowSheetCommand = class _ShowSheetCommand extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "inline_content");
     __publicField(this, "remove_default_padding");
-    this.inline_content = parser_exports.parseItem((_a = data.panelLoadingStrategy) == null ? void 0 : _a.inlineContent);
+    this.inline_content = parser_exports.parseItem((_a2 = data.panelLoadingStrategy) == null ? void 0 : _a2.inlineContent);
     this.remove_default_padding = !!data.removeDefaultPadding;
   }
 };
-__name(_ShowDialogCommand, "ShowDialogCommand");
-__publicField(_ShowDialogCommand, "type", "ShowDialogCommand");
-var ShowDialogCommand = _ShowDialogCommand;
+__name(_ShowSheetCommand, "ShowSheetCommand");
+__publicField(_ShowSheetCommand, "type", "ShowSheetCommand");
+var ShowSheetCommand = _ShowSheetCommand;
 
 // dist/src/parser/classes/commands/UpdateEngagementPanelContentCommand.js
 var _UpdateEngagementPanelContentCommand = class _UpdateEngagementPanelContentCommand extends YTNode {
@@ -19353,46 +19870,6 @@ var _CommentDialog = class _CommentDialog extends YTNode {
 __name(_CommentDialog, "CommentDialog");
 __publicField(_CommentDialog, "type", "CommentDialog");
 var CommentDialog = _CommentDialog;
-
-// dist/src/parser/classes/comments/CommentReplies.js
-var _CommentReplies = class _CommentReplies extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "contents");
-    __publicField(this, "view_replies");
-    __publicField(this, "hide_replies");
-    __publicField(this, "view_replies_creator_thumbnail");
-    __publicField(this, "has_channel_owner_replied");
-    this.contents = parser_exports.parseArray(data.contents);
-    this.view_replies = parser_exports.parseItem(data.viewReplies, Button);
-    this.hide_replies = parser_exports.parseItem(data.hideReplies, Button);
-    this.view_replies_creator_thumbnail = Thumbnail.fromResponse(data.viewRepliesCreatorThumbnail);
-    this.has_channel_owner_replied = !!data.viewRepliesCreatorThumbnail;
-  }
-};
-__name(_CommentReplies, "CommentReplies");
-__publicField(_CommentReplies, "type", "CommentReplies");
-var CommentReplies = _CommentReplies;
-
-// dist/src/parser/classes/comments/CommentReplyDialog.js
-var _CommentReplyDialog = class _CommentReplyDialog extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "reply_button");
-    __publicField(this, "cancel_button");
-    __publicField(this, "author_thumbnail");
-    __publicField(this, "placeholder");
-    __publicField(this, "error_message");
-    this.reply_button = parser_exports.parseItem(data.replyButton, Button);
-    this.cancel_button = parser_exports.parseItem(data.cancelButton, Button);
-    this.author_thumbnail = Thumbnail.fromResponse(data.authorThumbnail);
-    this.placeholder = new Text2(data.placeholderText);
-    this.error_message = new Text2(data.errorMessage);
-  }
-};
-__name(_CommentReplyDialog, "CommentReplyDialog");
-__publicField(_CommentReplyDialog, "type", "CommentReplyDialog");
-var CommentReplyDialog = _CommentReplyDialog;
 
 // dist/src/parser/classes/comments/CommentsSimplebox.js
 var _CommentsSimplebox = class _CommentsSimplebox extends YTNode {
@@ -19510,317 +19987,18 @@ __name(_CommentSimplebox, "CommentSimplebox");
 __publicField(_CommentSimplebox, "type", "CommentSimplebox");
 var CommentSimplebox = _CommentSimplebox;
 
-// dist/src/parser/classes/comments/VoiceReplyContainerView.js
-var _VoiceReplyContainerView = class _VoiceReplyContainerView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "voice_reply_unavailable_text");
-    __publicField(this, "transcript_text");
-    this.voice_reply_unavailable_text = Text2.fromAttributed(data.voiceReplyUnavailableText);
-    this.transcript_text = Text2.fromAttributed(data.transcriptText);
-  }
-};
-__name(_VoiceReplyContainerView, "VoiceReplyContainerView");
-__publicField(_VoiceReplyContainerView, "type", "VoiceReplyContainerView");
-var VoiceReplyContainerView = _VoiceReplyContainerView;
-
-// dist/src/parser/classes/comments/CommentView.js
-var _actions;
-var _CommentView = class _CommentView extends YTNode {
-  constructor(data) {
-    super();
-    __privateAdd(this, _actions);
-    __publicField(this, "like_command");
-    __publicField(this, "dislike_command");
-    __publicField(this, "unlike_command");
-    __publicField(this, "undislike_command");
-    __publicField(this, "reply_command");
-    __publicField(this, "prepare_account_command");
-    __publicField(this, "comment_id");
-    __publicField(this, "is_pinned");
-    __publicField(this, "keys");
-    __publicField(this, "content");
-    __publicField(this, "published_time");
-    __publicField(this, "author_is_channel_owner");
-    __publicField(this, "creator_thumbnail_url");
-    __publicField(this, "like_button_a11y");
-    __publicField(this, "like_count");
-    __publicField(this, "like_count_liked");
-    __publicField(this, "like_count_a11y");
-    __publicField(this, "like_active_tooltip");
-    __publicField(this, "like_inactive_tooltip");
-    __publicField(this, "dislike_active_tooltip");
-    __publicField(this, "dislike_inactive_tooltip");
-    __publicField(this, "heart_active_tooltip");
-    __publicField(this, "reply_count");
-    __publicField(this, "reply_count_a11y");
-    __publicField(this, "is_member");
-    __publicField(this, "member_badge");
-    __publicField(this, "author");
-    __publicField(this, "is_liked");
-    __publicField(this, "is_disliked");
-    __publicField(this, "is_hearted");
-    __publicField(this, "voice_reply_container");
-    this.comment_id = data.commentId;
-    this.is_pinned = !!data.pinnedText;
-    this.keys = {
-      comment: data.commentKey,
-      comment_surface: data.commentSurfaceKey,
-      toolbar_state: data.toolbarStateKey,
-      toolbar_surface: data.toolbarSurfaceKey,
-      shared: data.sharedKey
-    };
-  }
-  applyMutations(comment, toolbar_state, toolbar_surface, comment_surface) {
-    if (comment) {
-      this.content = Text2.fromAttributed(comment.properties.content);
-      this.published_time = comment.properties.publishedTime;
-      this.author_is_channel_owner = !!comment.author.isCreator;
-      this.creator_thumbnail_url = comment.toolbar.creatorThumbnailUrl;
-      this.like_count = comment.toolbar.likeCountNotliked ? comment.toolbar.likeCountNotliked : "0";
-      this.like_count_liked = comment.toolbar.likeCountLiked ? comment.toolbar.likeCountLiked : "0";
-      this.like_count_a11y = comment.toolbar.likeCountA11y;
-      this.like_active_tooltip = comment.toolbar.likeActiveTooltip;
-      this.like_inactive_tooltip = comment.toolbar.likeInactiveTooltip;
-      this.dislike_active_tooltip = comment.toolbar.dislikeActiveTooltip;
-      this.dislike_inactive_tooltip = comment.toolbar.dislikeInactiveTooltip;
-      this.like_button_a11y = comment.toolbar.likeButtonA11y;
-      this.heart_active_tooltip = comment.toolbar.heartActiveTooltip;
-      this.reply_count_a11y = comment.toolbar.replyCountA11y;
-      this.reply_count = comment.toolbar.replyCount ? comment.toolbar.replyCount : "0";
-      this.is_member = !!comment.author.sponsorBadgeUrl;
-      if (Reflect.has(comment.author, "sponsorBadgeUrl")) {
-        this.member_badge = {
-          url: comment.author.sponsorBadgeUrl,
-          a11y: comment.author.A11y
-        };
-      }
-      this.author = new Author({
-        simpleText: comment.author.displayName,
-        navigationEndpoint: comment.avatar.endpoint
-      }, comment.author, comment.avatar.image, comment.author.channelId);
-    }
-    if (toolbar_state) {
-      this.is_hearted = toolbar_state.heartState === "TOOLBAR_HEART_STATE_HEARTED";
-      this.is_liked = toolbar_state.likeState === "TOOLBAR_LIKE_STATE_LIKED";
-      this.is_disliked = toolbar_state.likeState === "TOOLBAR_LIKE_STATE_DISLIKED";
-    }
-    if (toolbar_surface) {
-      if ("prepareAccountCommand" in toolbar_surface) {
-        this.prepare_account_command = new NavigationEndpoint(toolbar_surface.prepareAccountCommand);
-      } else {
-        this.like_command = new NavigationEndpoint(toolbar_surface.likeCommand);
-        this.dislike_command = new NavigationEndpoint(toolbar_surface.dislikeCommand);
-        this.unlike_command = new NavigationEndpoint(toolbar_surface.unlikeCommand);
-        this.undislike_command = new NavigationEndpoint(toolbar_surface.undislikeCommand);
-        this.reply_command = new NavigationEndpoint(toolbar_surface.replyCommand);
-      }
-    }
-    if (comment_surface) {
-      if ("voiceReplyContainerViewModel" in comment_surface) {
-        this.voice_reply_container = parser_exports.parseItem(comment_surface.voiceReplyContainerViewModel, VoiceReplyContainerView);
-      }
-    }
-  }
-  /**
-   * Likes the comment.
-   * @returns A promise that resolves to the API response.
-   * @throws If the Actions instance is not set for this comment or if the like command is not found.
-   */
-  async like() {
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.like_command)
-      throw new InnertubeError("Like command not found.");
-    if (this.is_liked)
-      throw new InnertubeError("This comment is already liked.", { comment_id: this.comment_id });
-    return this.like_command.call(__privateGet(this, _actions));
-  }
-  /**
-   * Dislikes the comment.
-   * @returns A promise that resolves to the API response.
-   * @throws If the Actions instance is not set for this comment or if the dislike command is not found.
-   */
-  async dislike() {
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.dislike_command)
-      throw new InnertubeError("Dislike command not found.");
-    if (this.is_disliked)
-      throw new InnertubeError("This comment is already disliked.", { comment_id: this.comment_id });
-    return this.dislike_command.call(__privateGet(this, _actions));
-  }
-  /**
-   * Unlikes the comment.
-   * @returns A promise that resolves to the API response.
-   * @throws If the Actions instance is not set for this comment or if the unlike command is not found.
-   */
-  async unlike() {
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.unlike_command)
-      throw new InnertubeError("Unlike command not found.");
-    if (!this.is_liked)
-      throw new InnertubeError("This comment is not liked.", { comment_id: this.comment_id });
-    return this.unlike_command.call(__privateGet(this, _actions));
-  }
-  /**
-   * Undislikes the comment.
-   * @returns A promise that resolves to the API response.
-   * @throws If the Actions instance is not set for this comment or if the undislike command is not found.
-   */
-  async undislike() {
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.undislike_command)
-      throw new InnertubeError("Undislike command not found.");
-    if (!this.is_disliked)
-      throw new InnertubeError("This comment is not disliked.", { comment_id: this.comment_id });
-    return this.undislike_command.call(__privateGet(this, _actions));
-  }
-  /**
-   * Replies to the comment.
-   * @param comment_text - The text of the reply.
-   * @returns A promise that resolves to the API response.
-   * @throws If the Actions instance is not set for this comment or if the reply command is not found.
-   */
-  async reply(comment_text) {
-    var _a;
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.reply_command)
-      throw new InnertubeError("Reply command not found.");
-    const dialog = (_a = this.reply_command.dialog) == null ? void 0 : _a.as(CommentReplyDialog);
-    if (!dialog)
-      throw new InnertubeError("Reply dialog not found.");
-    const reply_button = dialog.reply_button;
-    if (!reply_button)
-      throw new InnertubeError("Reply button not found in the dialog.");
-    if (!reply_button.endpoint)
-      throw new InnertubeError("Reply button endpoint not found.");
-    return reply_button.endpoint.call(__privateGet(this, _actions), { commentText: comment_text });
-  }
-  /**
-   * Translates the comment to the specified target language.
-   * @param target_language - The target language to translate the comment to, e.g. 'en', 'ja'.
-   * @returns Resolves to an ApiResponse object with the translated content, if available.
-   * @throws if the Actions instance is not set for this comment or if the comment content is not found.
-   */
-  async translate(target_language) {
-    var _a, _b, _c, _d, _e, _f;
-    if (!__privateGet(this, _actions))
-      throw new InnertubeError("Actions instance not set for this comment.");
-    if (!this.content)
-      throw new InnertubeError("Comment content not found.", { comment_id: this.comment_id });
-    const text = this.content.toString().replace(/[^\p{L}\p{N}\p{P}\p{Z}]/gu, "");
-    const payload = { text, target_language };
-    const action = encodeCommentActionParams(22, payload);
-    const response = await __privateGet(this, _actions).execute("comment/perform_comment_action", { action });
-    const mutations = (_b = (_a = response.data.frameworkUpdates) == null ? void 0 : _a.entityBatchUpdate) == null ? void 0 : _b.mutations;
-    const content = (_f = (_e = (_d = (_c = mutations == null ? void 0 : mutations[0]) == null ? void 0 : _c.payload) == null ? void 0 : _d.commentEntityPayload) == null ? void 0 : _e.translatedContent) == null ? void 0 : _f.content;
-    return { ...response, content };
-  }
-  setActions(actions) {
-    __privateSet(this, _actions, actions);
-  }
-};
-_actions = new WeakMap();
-__name(_CommentView, "CommentView");
-__publicField(_CommentView, "type", "CommentView");
-var CommentView = _CommentView;
-
-// dist/src/parser/classes/comments/CommentThread.js
-var _actions2, _continuation, _CommentThread_instances, getPatchedReplies_fn;
-var _CommentThread = class _CommentThread extends YTNode {
-  constructor(data) {
-    super();
-    __privateAdd(this, _CommentThread_instances);
-    __publicField(this, "comment");
-    __publicField(this, "replies");
-    __publicField(this, "comment_replies_data");
-    __publicField(this, "is_moderated_elq_comment");
-    __publicField(this, "has_replies");
-    __privateAdd(this, _actions2);
-    __privateAdd(this, _continuation);
-    this.comment = parser_exports.parseItem(data.commentViewModel, CommentView);
-    this.comment_replies_data = parser_exports.parseItem(data.replies, CommentReplies);
-    this.is_moderated_elq_comment = data.isModeratedElqComment;
-    this.has_replies = !!this.comment_replies_data;
-  }
-  get has_continuation() {
-    if (!this.replies)
-      throw new InnertubeError("Cannot determine if there is a continuation because this thread's replies have not been loaded.");
-    return !!__privateGet(this, _continuation);
-  }
-  /**
-   * Retrieves replies to this comment thread.
-   */
-  async getReplies() {
-    var _a;
-    if (!__privateGet(this, _actions2))
-      throw new InnertubeError("Actions instance not set for this thread.");
-    if (!this.comment_replies_data)
-      throw new InnertubeError("This comment has no replies.", this);
-    const continuation = (_a = this.comment_replies_data.contents) == null ? void 0 : _a.firstOfType(ContinuationItem);
-    if (!continuation)
-      throw new InnertubeError("Replies continuation not found.");
-    const response = await continuation.endpoint.call(__privateGet(this, _actions2), { parse: true });
-    if (!response.on_response_received_endpoints_memo)
-      throw new InnertubeError("Unexpected response.", response);
-    this.replies = __privateMethod(this, _CommentThread_instances, getPatchedReplies_fn).call(this, response.on_response_received_endpoints_memo);
-    __privateSet(this, _continuation, response.on_response_received_endpoints_memo.getType(ContinuationItem)[0]);
-    return this;
-  }
-  /**
-   * Retrieves next batch of replies.
-   */
-  async getContinuation() {
-    var _a;
-    if (!this.replies)
-      throw new InnertubeError("Cannot retrieve continuation because this thread's replies have not been loaded.");
-    if (!__privateGet(this, _continuation))
-      throw new InnertubeError("Continuation not found.");
-    if (!__privateGet(this, _actions2))
-      throw new InnertubeError("Actions instance not set for this thread.");
-    const load_more_button = (_a = __privateGet(this, _continuation).button) == null ? void 0 : _a.as(Button);
-    if (!load_more_button)
-      throw new InnertubeError('"Load more" button not found.');
-    const response = await load_more_button.endpoint.call(__privateGet(this, _actions2), { parse: true });
-    if (!response.on_response_received_endpoints_memo)
-      throw new InnertubeError("Unexpected response.", response);
-    this.replies = __privateMethod(this, _CommentThread_instances, getPatchedReplies_fn).call(this, response.on_response_received_endpoints_memo);
-    __privateSet(this, _continuation, response.on_response_received_endpoints_memo.getType(ContinuationItem)[0]);
-    return this;
-  }
-  setActions(actions) {
-    __privateSet(this, _actions2, actions);
-  }
-};
-_actions2 = new WeakMap();
-_continuation = new WeakMap();
-_CommentThread_instances = new WeakSet();
-getPatchedReplies_fn = /* @__PURE__ */ __name(function(data) {
-  return observe(data.getType(CommentView).map((comment) => {
-    comment.setActions(__privateGet(this, _actions2));
-    return comment;
-  }));
-}, "#getPatchedReplies");
-__name(_CommentThread, "CommentThread");
-__publicField(_CommentThread, "type", "CommentThread");
-var CommentThread = _CommentThread;
-
 // dist/src/parser/classes/comments/PdgCommentChip.js
 var _PdgCommentChip = class _PdgCommentChip extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "text");
     __publicField(this, "color_pallette");
     __publicField(this, "icon_type");
     this.text = new Text2(data.chipText);
     this.color_pallette = {
-      background_color: (_a = data.chipColorPalette) == null ? void 0 : _a.backgroundColor,
-      foreground_title_color: (_b = data.chipColorPalette) == null ? void 0 : _b.foregroundTitleColor
+      background_color: (_a2 = data.chipColorPalette) == null ? void 0 : _a2.backgroundColor,
+      foreground_title_color: (_b2 = data.chipColorPalette) == null ? void 0 : _b2.foregroundTitleColor
     };
     if (Reflect.has(data, "chipIcon") && Reflect.has(data.chipIcon, "iconType")) {
       this.icon_type = data.chipIcon.iconType;
@@ -19900,7 +20078,7 @@ var PlaylistVideoThumbnail = _PlaylistVideoThumbnail;
 // dist/src/parser/classes/Playlist.js
 var _Playlist = class _Playlist extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -19918,7 +20096,7 @@ var _Playlist = class _Playlist extends YTNode {
     __publicField(this, "view_playlist");
     this.id = data.playlistId;
     this.title = new Text2(data.title);
-    this.author = ((_a = data.shortBylineText) == null ? void 0 : _a.simpleText) ? new Text2(data.shortBylineText) : new Author(data.longBylineText, data.ownerBadges, null);
+    this.author = ((_a2 = data.shortBylineText) == null ? void 0 : _a2.simpleText) ? new Text2(data.shortBylineText) : new Author(data.longBylineText, data.ownerBadges, null);
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail || { thumbnails: data.thumbnails.map((th) => th.thumbnails).flat(1) });
     this.video_count = new Text2(data.thumbnailText);
     this.video_count_short = new Text2(data.videoCountShortText);
@@ -19953,7 +20131,7 @@ var CompactMix = _CompactMix;
 // dist/src/parser/classes/CompactMovie.js
 var _CompactMovie = class _CompactMovie extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -19966,7 +20144,7 @@ var _CompactMovie = class _CompactMovie extends YTNode {
     __publicField(this, "badges");
     __publicField(this, "use_vertical_poster");
     __publicField(this, "menu");
-    const overlay_time_status = ((_a = data.thumbnailOverlays.find((overlay) => overlay.thumbnailOverlayTimeStatusRenderer)) == null ? void 0 : _a.thumbnailOverlayTimeStatusRenderer.text) || "N/A";
+    const overlay_time_status = ((_a2 = data.thumbnailOverlays.find((overlay) => overlay.thumbnailOverlayTimeStatusRenderer)) == null ? void 0 : _a2.thumbnailOverlayTimeStatusRenderer.text) || "N/A";
     this.id = data.videoId;
     this.title = new Text2(data.title);
     this.top_metadata_items = new Text2(data.topMetadataItems);
@@ -20021,7 +20199,7 @@ var CompactStation = _CompactStation;
 
 // dist/src/parser/classes/CompositeVideoPrimaryInfo.js
 var _CompositeVideoPrimaryInfo = class _CompositeVideoPrimaryInfo extends YTNode {
-  constructor(_data23) {
+  constructor(_data24) {
     super();
   }
 };
@@ -20050,14 +20228,14 @@ var ConfirmDialog = _ConfirmDialog;
 // dist/src/parser/classes/ContentMetadataView.js
 var _ContentMetadataView = class _ContentMetadataView extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "metadata_rows");
     __publicField(this, "delimiter");
-    this.metadata_rows = ((_a = data.metadataRows) == null ? void 0 : _a.map((row) => {
-      var _a2;
+    this.metadata_rows = ((_a2 = data.metadataRows) == null ? void 0 : _a2.map((row) => {
+      var _a3;
       return {
-        metadata_parts: (_a2 = row.metadataParts) == null ? void 0 : _a2.map((part) => ({
+        metadata_parts: (_a3 = row.metadataParts) == null ? void 0 : _a3.map((part) => ({
           text: part.text ? Text2.fromAttributed(part.text) : null,
           avatar_stack: parser_exports.parseItem(part.avatarStack, AvatarStackView),
           enable_truncation: data.enableTruncation
@@ -20071,6 +20249,20 @@ var _ContentMetadataView = class _ContentMetadataView extends YTNode {
 __name(_ContentMetadataView, "ContentMetadataView");
 __publicField(_ContentMetadataView, "type", "ContentMetadataView");
 var ContentMetadataView = _ContentMetadataView;
+
+// dist/src/parser/classes/ContinuationItemView.js
+var _ContinuationItemView = class _ContinuationItemView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "trigger");
+    __publicField(this, "endpoint");
+    this.trigger = data.trigger;
+    this.endpoint = new NavigationEndpoint(data.continuationCommand);
+  }
+};
+__name(_ContinuationItemView, "ContinuationItemView");
+__publicField(_ContinuationItemView, "type", "ContinuationItemView");
+var ContinuationItemView = _ContinuationItemView;
 
 // dist/src/parser/classes/Message.js
 var _Message = class _Message extends YTNode {
@@ -20111,100 +20303,6 @@ var _CopyLink = class _CopyLink extends YTNode {
 __name(_CopyLink, "CopyLink");
 __publicField(_CopyLink, "type", "CopyLink");
 var CopyLink = _CopyLink;
-
-// dist/src/parser/classes/DropdownView.js
-var _DropdownView = class _DropdownView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "label");
-    __publicField(this, "placeholder_text");
-    __publicField(this, "disabled");
-    __publicField(this, "options");
-    __publicField(this, "dropdown_type");
-    __publicField(this, "id");
-    this.label = new Text2(data.label);
-    this.placeholder_text = new Text2(data.placeholderText);
-    this.disabled = !!data.disabled;
-    this.dropdown_type = data.type;
-    this.id = data.id;
-    if (Reflect.has(data, "options")) {
-      this.options = data.options.map((option) => {
-        var _a;
-        return {
-          title: new Text2(option.title),
-          subtitle: new Text2(option.subtitle),
-          leading_image: Thumbnail.fromResponse(option.leadingImage),
-          value: { privacy_status_value: (_a = option.value) == null ? void 0 : _a.privacyStatusValue },
-          on_tap: new NavigationEndpoint(option.onTap),
-          is_selected: !!option.isSelected
-        };
-      });
-    }
-  }
-};
-__name(_DropdownView, "DropdownView");
-__publicField(_DropdownView, "type", "DropdownView");
-var DropdownView = _DropdownView;
-
-// dist/src/parser/classes/TextFieldView.js
-var _TextFieldView = class _TextFieldView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "display_properties");
-    __publicField(this, "content_properties");
-    __publicField(this, "initial_state");
-    __publicField(this, "form_field_metadata");
-    if (Reflect.has(data, "displayProperties")) {
-      this.display_properties = {
-        isMultiline: !!data.displayProperties.isMultiline,
-        disableNewLines: !!data.displayProperties.disableNewLines
-      };
-    }
-    if (Reflect.has(data, "contentProperties")) {
-      this.content_properties = {
-        labelText: data.contentProperties.labelText,
-        placeholderText: data.contentProperties.placeholderText,
-        maxCharacterCount: data.contentProperties.maxCharacterCount
-      };
-    }
-    if (Reflect.has(data, "initialState")) {
-      this.initial_state = {
-        isFocused: !!data.initialState.isFocused
-      };
-    }
-    if (Reflect.has(data, "formFieldMetadata")) {
-      this.form_field_metadata = {
-        formId: data.formFieldMetadata.formId,
-        fieldId: data.formFieldMetadata.fieldId
-      };
-    }
-  }
-};
-__name(_TextFieldView, "TextFieldView");
-__publicField(_TextFieldView, "type", "TextFieldView");
-var TextFieldView = _TextFieldView;
-
-// dist/src/parser/classes/CreatePlaylistDialogFormView.js
-var _CreatePlaylistDialogFormView = class _CreatePlaylistDialogFormView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "playlist_title");
-    __publicField(this, "playlist_visibility");
-    __publicField(this, "disable_playlist_collaborate");
-    __publicField(this, "create_playlist_params_collaboration_enabled");
-    __publicField(this, "create_playlist_params_collaboration_disabled");
-    __publicField(this, "video_ids");
-    this.playlist_title = parser_exports.parseItem(data.playlistTitle, TextFieldView);
-    this.playlist_visibility = parser_exports.parseItem(data.playlistVisibility, DropdownView);
-    this.disable_playlist_collaborate = !!data.disablePlaylistCollaborate;
-    this.create_playlist_params_collaboration_enabled = data.createPlaylistParamsCollaborationEnabled;
-    this.create_playlist_params_collaboration_disabled = data.createPlaylistParamsCollaborationDisabled;
-    this.video_ids = data.videoIds;
-  }
-};
-__name(_CreatePlaylistDialogFormView, "CreatePlaylistDialogFormView");
-__publicField(_CreatePlaylistDialogFormView, "type", "CreatePlaylistDialogFormView");
-var CreatePlaylistDialogFormView = _CreatePlaylistDialogFormView;
 
 // dist/src/parser/classes/DecoratedAvatarView.js
 var _DecoratedAvatarView = class _DecoratedAvatarView extends YTNode {
@@ -20301,10 +20399,10 @@ __publicField(_Marker, "type", "Marker");
 var Marker = _Marker;
 var _MultiMarkersPlayerBar = class _MultiMarkersPlayerBar extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "markers_map");
-    this.markers_map = observe(((_a = data.markersMap) == null ? void 0 : _a.map((marker) => new Marker(marker))) || []);
+    this.markers_map = observe(((_a2 = data.markersMap) == null ? void 0 : _a2.map((marker) => new Marker(marker))) || []);
   }
 };
 __name(_MultiMarkersPlayerBar, "MultiMarkersPlayerBar");
@@ -20360,7 +20458,7 @@ var DefaultPromoPanel = _DefaultPromoPanel;
 // dist/src/parser/classes/DescriptionPreviewView.js
 var _DescriptionPreviewView = class _DescriptionPreviewView extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "description");
     __publicField(this, "max_lines");
@@ -20375,7 +20473,7 @@ var _DescriptionPreviewView = class _DescriptionPreviewView extends YTNode {
     if ("truncationText" in data)
       this.truncation_text = Text2.fromAttributed(data.truncationText);
     this.always_show_truncation_text = !!data.alwaysShowTruncationText;
-    if ((_c = (_b = (_a = data.rendererContext.commandContext) == null ? void 0 : _a.onTap) == null ? void 0 : _b.innertubeCommand) == null ? void 0 : _c.showEngagementPanelEndpoint) {
+    if ((_c = (_b2 = (_a2 = data.rendererContext.commandContext) == null ? void 0 : _a2.onTap) == null ? void 0 : _b2.innertubeCommand) == null ? void 0 : _c.showEngagementPanelEndpoint) {
       const endpoint = (_f = (_e = (_d = data.rendererContext.commandContext) == null ? void 0 : _d.onTap) == null ? void 0 : _e.innertubeCommand) == null ? void 0 : _f.showEngagementPanelEndpoint;
       this.more_endpoint = {
         show_engagement_panel_endpoint: {
@@ -20394,78 +20492,6 @@ var _DescriptionPreviewView = class _DescriptionPreviewView extends YTNode {
 __name(_DescriptionPreviewView, "DescriptionPreviewView");
 __publicField(_DescriptionPreviewView, "type", "DescriptionPreviewView");
 var DescriptionPreviewView = _DescriptionPreviewView;
-
-// dist/src/parser/classes/DialogHeaderView.js
-var _DialogHeaderView = class _DialogHeaderView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "headline");
-    this.headline = Text2.fromAttributed(data.headline);
-  }
-};
-__name(_DialogHeaderView, "DialogHeaderView");
-__publicField(_DialogHeaderView, "type", "DialogHeaderView");
-var DialogHeaderView = _DialogHeaderView;
-
-// dist/src/parser/classes/PanelFooterView.js
-var _PanelFooterView = class _PanelFooterView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "primary_button");
-    __publicField(this, "secondary_button");
-    __publicField(this, "should_hide_divider");
-    this.primary_button = parser_exports.parseItem(data.primaryButton, ButtonView);
-    this.secondary_button = parser_exports.parseItem(data.secondaryButton, ButtonView);
-    this.should_hide_divider = !!data.shouldHideDivider;
-  }
-};
-__name(_PanelFooterView, "PanelFooterView");
-__publicField(_PanelFooterView, "type", "PanelFooterView");
-var PanelFooterView = _PanelFooterView;
-
-// dist/src/parser/classes/FormFooterView.js
-var _FormFooterView = class _FormFooterView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "panel_footer");
-    __publicField(this, "form_id");
-    __publicField(this, "container_type");
-    this.panel_footer = parser_exports.parseItem(data.panelFooter, PanelFooterView);
-    this.form_id = data.formId;
-    this.container_type = data.containerType;
-  }
-};
-__name(_FormFooterView, "FormFooterView");
-__publicField(_FormFooterView, "type", "FormFooterView");
-var FormFooterView = _FormFooterView;
-
-// dist/src/parser/classes/ListView.js
-var _ListView = class _ListView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "items");
-    this.items = parser_exports.parseArray(data.listItems, ListItemView);
-  }
-};
-__name(_ListView, "ListView");
-__publicField(_ListView, "type", "ListView");
-var ListView = _ListView;
-
-// dist/src/parser/classes/DialogView.js
-var _DialogView = class _DialogView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "header");
-    __publicField(this, "footer");
-    __publicField(this, "custom_content");
-    this.header = parser_exports.parseItem(data.header, DialogHeaderView);
-    this.footer = parser_exports.parseItem(data.footer, [FormFooterView, PanelFooterView]);
-    this.custom_content = parser_exports.parseItem(data.customContent, [CreatePlaylistDialogFormView, ListView]);
-  }
-};
-__name(_DialogView, "DialogView");
-__publicField(_DialogView, "type", "DialogView");
-var DialogView = _DialogView;
 
 // dist/src/parser/classes/DidYouMean.js
 var _DidYouMean = class _DidYouMean extends YTNode {
@@ -20532,7 +20558,7 @@ var DynamicTextView = _DynamicTextView;
 // dist/src/parser/classes/Element.js
 var _Element = class _Element extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "model");
     __publicField(this, "child_elements");
@@ -20542,7 +20568,7 @@ var _Element = class _Element extends YTNode {
     const type = data.newElement.type.componentType;
     this.model = parser_exports.parseItem(type == null ? void 0 : type.model);
     if (Reflect.has(data, "newElement") && Reflect.has(data.newElement, "childElements")) {
-      this.child_elements = observe(((_a = data.newElement.childElements) == null ? void 0 : _a.map((el) => new ChildElement(el))) || []);
+      this.child_elements = observe(((_a2 = data.newElement.childElements) == null ? void 0 : _a2.map((el) => new ChildElement(el))) || []);
     }
   }
 };
@@ -20589,14 +20615,14 @@ var EmojiPickerCategory = _EmojiPickerCategory;
 // dist/src/parser/classes/EmojiPickerCategoryButton.js
 var _EmojiPickerCategoryButton = class _EmojiPickerCategoryButton extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "category_id");
     __publicField(this, "icon_type");
     __publicField(this, "tooltip");
     this.category_id = data.categoryId;
     if (Reflect.has(data, "icon")) {
-      this.icon_type = (_a = data.icon) == null ? void 0 : _a.iconType;
+      this.icon_type = (_a2 = data.icon) == null ? void 0 : _a2.iconType;
     }
     this.tooltip = data.tooltip;
   }
@@ -21203,15 +21229,33 @@ __publicField(_ShareEntityEndpoint, "type", "ShareEntityEndpoint");
 var ShareEntityEndpoint = _ShareEntityEndpoint;
 
 // dist/src/parser/classes/endpoints/ShowEngagementPanelEndpoint.js
+var API_PATH17 = "get_panel";
+var _data20;
 var _ShowEngagementPanelEndpoint = class _ShowEngagementPanelEndpoint extends YTNode {
   constructor(data) {
     super();
+    __privateAdd(this, _data20);
     __publicField(this, "panel_identifier");
     __publicField(this, "source_panel_identifier");
+    __privateSet(this, _data20, data);
     this.panel_identifier = data.panelIdentifier;
     this.source_panel_identifier = data.sourcePanelIdentifier;
   }
+  getApiPath() {
+    return API_PATH17;
+  }
+  buildRequest() {
+    var _a2, _b2, _c;
+    const request = {};
+    const panelId = __privateGet(this, _data20).panelIdentifier || ((_a2 = __privateGet(this, _data20).identifier) == null ? void 0 : _a2.tag);
+    if (panelId)
+      request.panelId = panelId;
+    if ((_b2 = __privateGet(this, _data20).globalConfiguration) == null ? void 0 : _b2.params)
+      request.params = (_c = __privateGet(this, _data20).globalConfiguration) == null ? void 0 : _c.params;
+    return request;
+  }
 };
+_data20 = new WeakMap();
 __name(_ShowEngagementPanelEndpoint, "ShowEngagementPanelEndpoint");
 __publicField(_ShowEngagementPanelEndpoint, "type", "ShowEngagementPanelEndpoint");
 var ShowEngagementPanelEndpoint = _ShowEngagementPanelEndpoint;
@@ -21236,41 +21280,9 @@ __publicField(_SignalServiceEndpoint, "type", "SignalServiceEndpoint");
 var SignalServiceEndpoint = _SignalServiceEndpoint;
 
 // dist/src/parser/classes/endpoints/SubscribeEndpoint.js
-var API_PATH17 = "subscription/subscribe";
-var _data20;
-var _SubscribeEndpoint = class _SubscribeEndpoint extends YTNode {
-  constructor(data) {
-    super();
-    __privateAdd(this, _data20);
-    __privateSet(this, _data20, data);
-  }
-  getApiPath() {
-    return API_PATH17;
-  }
-  buildRequest() {
-    const request = {};
-    if (__privateGet(this, _data20).channelIds)
-      request.channelIds = __privateGet(this, _data20).channelIds;
-    if (__privateGet(this, _data20).siloName)
-      request.siloName = __privateGet(this, _data20).siloName;
-    if (__privateGet(this, _data20).params)
-      request.params = __privateGet(this, _data20).params;
-    if (__privateGet(this, _data20).botguardResponse)
-      request.botguardResponse = __privateGet(this, _data20).botguardResponse;
-    if (__privateGet(this, _data20).feature)
-      request.clientFeature = __privateGet(this, _data20).feature;
-    return request;
-  }
-};
-_data20 = new WeakMap();
-__name(_SubscribeEndpoint, "SubscribeEndpoint");
-__publicField(_SubscribeEndpoint, "type", "SubscribeEndpoint");
-var SubscribeEndpoint = _SubscribeEndpoint;
-
-// dist/src/parser/classes/endpoints/UnsubscribeEndpoint.js
-var API_PATH18 = "subscription/unsubscribe";
+var API_PATH18 = "subscription/subscribe";
 var _data21;
-var _UnsubscribeEndpoint = class _UnsubscribeEndpoint extends YTNode {
+var _SubscribeEndpoint = class _SubscribeEndpoint extends YTNode {
   constructor(data) {
     super();
     __privateAdd(this, _data21);
@@ -21287,18 +21299,22 @@ var _UnsubscribeEndpoint = class _UnsubscribeEndpoint extends YTNode {
       request.siloName = __privateGet(this, _data21).siloName;
     if (__privateGet(this, _data21).params)
       request.params = __privateGet(this, _data21).params;
+    if (__privateGet(this, _data21).botguardResponse)
+      request.botguardResponse = __privateGet(this, _data21).botguardResponse;
+    if (__privateGet(this, _data21).feature)
+      request.clientFeature = __privateGet(this, _data21).feature;
     return request;
   }
 };
 _data21 = new WeakMap();
-__name(_UnsubscribeEndpoint, "UnsubscribeEndpoint");
-__publicField(_UnsubscribeEndpoint, "type", "UnsubscribeEndpoint");
-var UnsubscribeEndpoint = _UnsubscribeEndpoint;
+__name(_SubscribeEndpoint, "SubscribeEndpoint");
+__publicField(_SubscribeEndpoint, "type", "SubscribeEndpoint");
+var SubscribeEndpoint = _SubscribeEndpoint;
 
-// dist/src/parser/classes/endpoints/WatchNextEndpoint.js
-var API_PATH19 = "next";
+// dist/src/parser/classes/endpoints/UnsubscribeEndpoint.js
+var API_PATH19 = "subscription/unsubscribe";
 var _data22;
-var _WatchNextEndpoint = class _WatchNextEndpoint extends YTNode {
+var _UnsubscribeEndpoint = class _UnsubscribeEndpoint extends YTNode {
   constructor(data) {
     super();
     __privateAdd(this, _data22);
@@ -21309,20 +21325,48 @@ var _WatchNextEndpoint = class _WatchNextEndpoint extends YTNode {
   }
   buildRequest() {
     const request = {};
-    if (__privateGet(this, _data22).videoId)
-      request.videoId = __privateGet(this, _data22).videoId;
-    if (__privateGet(this, _data22).playlistId)
-      request.playlistId = __privateGet(this, _data22).playlistId;
-    if (__privateGet(this, _data22).index !== void 0 || __privateGet(this, _data22).playlistIndex !== void 0)
-      request.playlistIndex = __privateGet(this, _data22).index || __privateGet(this, _data22).playlistIndex;
-    if (__privateGet(this, _data22).playerParams || __privateGet(this, _data22).params)
-      request.params = __privateGet(this, _data22).playerParams || __privateGet(this, _data22).params;
-    request.racyCheckOk = !!__privateGet(this, _data22).racyCheckOk;
-    request.contentCheckOk = !!__privateGet(this, _data22).contentCheckOk;
+    if (__privateGet(this, _data22).channelIds)
+      request.channelIds = __privateGet(this, _data22).channelIds;
+    if (__privateGet(this, _data22).siloName)
+      request.siloName = __privateGet(this, _data22).siloName;
+    if (__privateGet(this, _data22).params)
+      request.params = __privateGet(this, _data22).params;
     return request;
   }
 };
 _data22 = new WeakMap();
+__name(_UnsubscribeEndpoint, "UnsubscribeEndpoint");
+__publicField(_UnsubscribeEndpoint, "type", "UnsubscribeEndpoint");
+var UnsubscribeEndpoint = _UnsubscribeEndpoint;
+
+// dist/src/parser/classes/endpoints/WatchNextEndpoint.js
+var API_PATH20 = "next";
+var _data23;
+var _WatchNextEndpoint = class _WatchNextEndpoint extends YTNode {
+  constructor(data) {
+    super();
+    __privateAdd(this, _data23);
+    __privateSet(this, _data23, data);
+  }
+  getApiPath() {
+    return API_PATH20;
+  }
+  buildRequest() {
+    const request = {};
+    if (__privateGet(this, _data23).videoId)
+      request.videoId = __privateGet(this, _data23).videoId;
+    if (__privateGet(this, _data23).playlistId)
+      request.playlistId = __privateGet(this, _data23).playlistId;
+    if (__privateGet(this, _data23).index !== void 0 || __privateGet(this, _data23).playlistIndex !== void 0)
+      request.playlistIndex = __privateGet(this, _data23).index || __privateGet(this, _data23).playlistIndex;
+    if (__privateGet(this, _data23).playerParams || __privateGet(this, _data23).params)
+      request.params = __privateGet(this, _data23).playerParams || __privateGet(this, _data23).params;
+    request.racyCheckOk = !!__privateGet(this, _data23).racyCheckOk;
+    request.contentCheckOk = !!__privateGet(this, _data23).contentCheckOk;
+    return request;
+  }
+};
+_data23 = new WeakMap();
 __name(_WatchNextEndpoint, "WatchNextEndpoint");
 __publicField(_WatchNextEndpoint, "type", "WatchNextEndpoint");
 var WatchNextEndpoint = _WatchNextEndpoint;
@@ -21621,7 +21665,7 @@ var GameDetails = _GameDetails;
 // dist/src/parser/classes/Grid.js
 var _Grid = class _Grid extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "items");
     __publicField(this, "is_collapsible");
@@ -21642,7 +21686,7 @@ var _Grid = class _Grid extends YTNode {
     if (Reflect.has(data, "targetId")) {
       this.target_id = data.targetId;
     }
-    this.continuation = ((_c = (_b = (_a = data.continuations) == null ? void 0 : _a[0]) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation) || null;
+    this.continuation = ((_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation) || null;
   }
   // XXX: Alias for consistency.
   get contents() {
@@ -21693,7 +21737,7 @@ var GridHeader = _GridHeader;
 // dist/src/parser/classes/GridMix.js
 var _GridMix = class _GridMix extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -21706,7 +21750,7 @@ var _GridMix = class _GridMix extends YTNode {
     __publicField(this, "thumbnail_overlays");
     this.id = data.playlistId;
     this.title = new Text2(data.title);
-    this.author = ((_a = data.shortBylineText) == null ? void 0 : _a.simpleText) ? new Text2(data.shortBylineText) : ((_b = data.longBylineText) == null ? void 0 : _b.simpleText) ? new Text2(data.longBylineText) : null;
+    this.author = ((_a2 = data.shortBylineText) == null ? void 0 : _a2.simpleText) ? new Text2(data.shortBylineText) : ((_b2 = data.longBylineText) == null ? void 0 : _b2.simpleText) ? new Text2(data.longBylineText) : null;
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail);
     this.video_count = new Text2(data.videoCountText);
     this.video_count_short = new Text2(data.videoCountShortText);
@@ -21722,7 +21766,7 @@ var GridMix = _GridMix;
 // dist/src/parser/classes/GridMovie.js
 var _GridMovie = class _GridMovie extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -21732,7 +21776,7 @@ var _GridMovie = class _GridMovie extends YTNode {
     __publicField(this, "badges");
     __publicField(this, "metadata");
     __publicField(this, "thumbnail_overlays");
-    const length_alt = (_a = data.thumbnailOverlays.find((overlay) => overlay.hasOwnProperty("thumbnailOverlayTimeStatusRenderer"))) == null ? void 0 : _a.thumbnailOverlayTimeStatusRenderer;
+    const length_alt = (_a2 = data.thumbnailOverlays.find((overlay) => overlay.hasOwnProperty("thumbnailOverlayTimeStatusRenderer"))) == null ? void 0 : _a2.thumbnailOverlayTimeStatusRenderer;
     this.id = data.videoId;
     this.title = new Text2(data.title);
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail);
@@ -21750,7 +21794,7 @@ var GridMovie = _GridMovie;
 // dist/src/parser/classes/GridPlaylist.js
 var _GridPlaylist = class _GridPlaylist extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -21759,6 +21803,7 @@ var _GridPlaylist = class _GridPlaylist extends YTNode {
     __publicField(this, "endpoint");
     __publicField(this, "view_playlist");
     __publicField(this, "thumbnails");
+    __publicField(this, "thumbnail_overlays");
     __publicField(this, "thumbnail_renderer");
     __publicField(this, "sidebar_thumbnails");
     __publicField(this, "video_count");
@@ -21772,8 +21817,9 @@ var _GridPlaylist = class _GridPlaylist extends YTNode {
     this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
     this.view_playlist = new Text2(data.viewPlaylistText);
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail);
+    this.thumbnail_overlays = parser_exports.parseArray(data.thumbnailOverlays);
     this.thumbnail_renderer = parser_exports.parseItem(data.thumbnailRenderer);
-    this.sidebar_thumbnails = [].concat(...((_a = data.sidebarThumbnails) == null ? void 0 : _a.map((thumbnail) => Thumbnail.fromResponse(thumbnail))) || []) || null;
+    this.sidebar_thumbnails = [].concat(...((_a2 = data.sidebarThumbnails) == null ? void 0 : _a2.map((thumbnail) => Thumbnail.fromResponse(thumbnail))) || []) || null;
     this.video_count = new Text2(data.thumbnailText);
     this.video_count_short = new Text2(data.videoCountShortText);
   }
@@ -21861,7 +21907,7 @@ var GridShow = _GridShow;
 // dist/src/parser/classes/GridVideo.js
 var _GridVideo = class _GridVideo extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "video_id");
     __publicField(this, "title");
@@ -21879,7 +21925,7 @@ var _GridVideo = class _GridVideo extends YTNode {
     __publicField(this, "upcoming");
     __publicField(this, "upcoming_text");
     __publicField(this, "is_reminder_set");
-    const length_alt = (_a = data.thumbnailOverlays.find((overlay) => overlay.hasOwnProperty("thumbnailOverlayTimeStatusRenderer"))) == null ? void 0 : _a.thumbnailOverlayTimeStatusRenderer;
+    const length_alt = (_a2 = data.thumbnailOverlays.find((overlay) => overlay.hasOwnProperty("thumbnailOverlayTimeStatusRenderer"))) == null ? void 0 : _a2.thumbnailOverlayTimeStatusRenderer;
     this.video_id = data.videoId;
     this.title = new Text2(data.title);
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail);
@@ -21898,7 +21944,7 @@ var _GridVideo = class _GridVideo extends YTNode {
     if (Reflect.has(data, "upcomingEventData")) {
       this.upcoming = new Date(Number(`${data.upcomingEventData.startTime}000`));
       this.upcoming_text = new Text2(data.upcomingEventData.upcomingEventText);
-      this.is_reminder_set = !!((_b = data.upcomingEventData) == null ? void 0 : _b.isReminderSet);
+      this.is_reminder_set = !!((_b2 = data.upcomingEventData) == null ? void 0 : _b2.isReminderSet);
     }
   }
   /**
@@ -22170,12 +22216,12 @@ var HorizontalMovieList = _HorizontalMovieList;
 // dist/src/parser/classes/IconLink.js
 var _IconLink = class _IconLink extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "icon_type");
     __publicField(this, "tooltip");
     __publicField(this, "endpoint");
-    this.icon_type = (_a = data.icon) == null ? void 0 : _a.iconType;
+    this.icon_type = (_a2 = data.icon) == null ? void 0 : _a2.iconType;
     if (Reflect.has(data, "tooltip")) {
       this.tooltip = new Text2(data.tooltip).toString();
     }
@@ -22257,7 +22303,7 @@ var InfoPanelContent = _InfoPanelContent;
 // dist/src/parser/classes/InfoPanelContainer.js
 var _InfoPanelContainer = class _InfoPanelContainer extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "title");
     __publicField(this, "menu");
@@ -22274,7 +22320,7 @@ var _InfoPanelContainer = class _InfoPanelContainer extends YTNode {
     this.background = data.background;
     this.title_style = data.titleStyle;
     if (Reflect.has(data, "icon")) {
-      this.icon_type = (_a = data.icon) == null ? void 0 : _a.iconType;
+      this.icon_type = (_a2 = data.icon) == null ? void 0 : _a2.iconType;
     }
   }
 };
@@ -22309,6 +22355,26 @@ var _InteractiveTabbedHeader = class _InteractiveTabbedHeader extends YTNode {
 __name(_InteractiveTabbedHeader, "InteractiveTabbedHeader");
 __publicField(_InteractiveTabbedHeader, "type", "InteractiveTabbedHeader");
 var InteractiveTabbedHeader = _InteractiveTabbedHeader;
+
+// dist/src/parser/classes/InterstitialView.js
+var _InterstitialView = class _InterstitialView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "title");
+    __publicField(this, "description");
+    __publicField(this, "icon");
+    __publicField(this, "primary_button");
+    this.title = Text2.fromAttributed(data.title);
+    this.description = Text2.fromAttributed(data.description);
+    if ("icon" in data) {
+      this.icon = Thumbnail.fromResponse(data.icon);
+    }
+    this.primary_button = parser_exports.parseItem(data.primaryButton, ButtonView);
+  }
+};
+__name(_InterstitialView, "InterstitialView");
+__publicField(_InterstitialView, "type", "InterstitialView");
+var InterstitialView = _InterstitialView;
 
 // dist/src/parser/classes/ItemSectionHeader.js
 var _ItemSectionHeader = class _ItemSectionHeader extends YTNode {
@@ -22368,22 +22434,36 @@ __name(_SortFilterHeader, "SortFilterHeader");
 __publicField(_SortFilterHeader, "type", "SortFilterHeader");
 var SortFilterHeader = _SortFilterHeader;
 
+// dist/src/parser/classes/RelatedChipCloud.js
+var _RelatedChipCloud = class _RelatedChipCloud extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "content");
+    __publicField(this, "show_prominent_chips");
+    this.content = parser_exports.parseItem(data.content);
+    this.show_prominent_chips = Boolean(data.showProminentChips);
+  }
+};
+__name(_RelatedChipCloud, "RelatedChipCloud");
+__publicField(_RelatedChipCloud, "type", "RelatedChipCloud");
+var RelatedChipCloud = _RelatedChipCloud;
+
 // dist/src/parser/classes/ItemSection.js
 var _ItemSection = class _ItemSection extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "header");
     __publicField(this, "contents");
     __publicField(this, "target_id");
     __publicField(this, "continuation");
-    this.header = parser_exports.parseItem(data.header, [CommentsHeader, ItemSectionHeader, ItemSectionTabbedHeader, SortFilterHeader, FeedFilterChipBar]);
+    this.header = parser_exports.parseItem(data.header, [CommentsHeader, ItemSectionHeader, ItemSectionTabbedHeader, SortFilterHeader, FeedFilterChipBar, ChipBarView, RelatedChipCloud]);
     this.contents = parser_exports.parseArray(data.contents);
     if (data.targetId || data.sectionIdentifier) {
       this.target_id = data.targetId || data.sectionIdentifier;
     }
     if (data.continuations) {
-      this.continuation = (_c = (_b = (_a = data.continuations) == null ? void 0 : _a.at(0)) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation;
+      this.continuation = (_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation;
     }
   }
 };
@@ -22394,7 +22474,7 @@ var ItemSection = _ItemSection;
 // dist/src/parser/classes/LiveChat.js
 var _LiveChat = class _LiveChat extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "header");
     __publicField(this, "initial_display_state");
@@ -22403,7 +22483,7 @@ var _LiveChat = class _LiveChat extends YTNode {
     __publicField(this, "is_replay");
     this.header = parser_exports.parseItem(data.header);
     this.initial_display_state = data.initialDisplayState;
-    this.continuation = (_b = (_a = data.continuations[0]) == null ? void 0 : _a.reloadContinuationData) == null ? void 0 : _b.continuation;
+    this.continuation = (_b2 = (_a2 = data.continuations[0]) == null ? void 0 : _a2.reloadContinuationData) == null ? void 0 : _b2.continuation;
     this.client_messages = {
       reconnect_message: new Text2(data.clientMessages.reconnectMessage),
       unable_to_reconnect_message: new Text2(data.clientMessages.unableToReconnectMessage),
@@ -23036,7 +23116,7 @@ var LiveChatTextMessage = _LiveChatTextMessage;
 // dist/src/parser/classes/livechat/items/LiveChatTickerPaidMessageItem.js
 var _LiveChatTickerPaidMessageItem = class _LiveChatTickerPaidMessageItem extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "id");
     __publicField(this, "author");
@@ -23060,7 +23140,7 @@ var _LiveChatTickerPaidMessageItem = class _LiveChatTickerPaidMessageItem extend
     this.end_background_color = data.endBackgroundColor;
     this.duration_sec = data.durationSec;
     this.full_duration_sec = data.fullDurationSec;
-    this.show_item = parser_exports.parseItem((_b = (_a = data.showItemEndpoint) == null ? void 0 : _a.showLiveChatItemEndpoint) == null ? void 0 : _b.renderer);
+    this.show_item = parser_exports.parseItem((_b2 = (_a2 = data.showItemEndpoint) == null ? void 0 : _a2.showLiveChatItemEndpoint) == null ? void 0 : _b2.renderer);
     this.show_item_endpoint = new NavigationEndpoint(data.showItemEndpoint);
     this.animation_origin = data.animationOrigin;
     this.open_engagement_panel_command = new NavigationEndpoint(data.openEngagementPanelCommand);
@@ -23073,7 +23153,7 @@ var LiveChatTickerPaidMessageItem = _LiveChatTickerPaidMessageItem;
 // dist/src/parser/classes/livechat/items/LiveChatTickerPaidStickerItem.js
 var _LiveChatTickerPaidStickerItem = class _LiveChatTickerPaidStickerItem extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "id");
     __publicField(this, "author_external_channel_id");
@@ -23092,13 +23172,13 @@ var _LiveChatTickerPaidStickerItem = class _LiveChatTickerPaidStickerItem extend
     this.end_background_color = data.endBackgroundColor;
     this.duration_sec = data.durationSec;
     this.full_duration_sec = data.fullDurationSec;
-    this.show_item = parser_exports.parseItem((_b = (_a = data.showItemEndpoint) == null ? void 0 : _a.showLiveChatItemEndpoint) == null ? void 0 : _b.renderer);
+    this.show_item = parser_exports.parseItem((_b2 = (_a2 = data.showItemEndpoint) == null ? void 0 : _a2.showLiveChatItemEndpoint) == null ? void 0 : _b2.renderer);
     this.show_item_endpoint = new NavigationEndpoint(data.showItemEndpoint);
     this.ticker_thumbnails = data.tickerThumbnails.map((item) => {
-      var _a2, _b2;
+      var _a3, _b3;
       return {
         thumbnails: Thumbnail.fromResponse(item),
-        label: (_b2 = (_a2 = item == null ? void 0 : item.accessibility) == null ? void 0 : _a2.accessibilityData) == null ? void 0 : _b2.label
+        label: (_b3 = (_a3 = item == null ? void 0 : item.accessibility) == null ? void 0 : _a3.accessibilityData) == null ? void 0 : _b3.label
       };
     });
   }
@@ -23290,11 +23370,11 @@ var ReplaceLiveChatAction = _ReplaceLiveChatAction;
 // dist/src/parser/classes/livechat/ReplayChatItemAction.js
 var _ReplayChatItemAction = class _ReplayChatItemAction extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "actions");
     __publicField(this, "video_offset_time_msec");
-    this.actions = parser_exports.parseArray((_a = data.actions) == null ? void 0 : _a.map((action) => {
+    this.actions = parser_exports.parseArray((_a2 = data.actions) == null ? void 0 : _a2.map((action) => {
       delete action.clickTrackingParams;
       return action;
     }));
@@ -23448,43 +23528,43 @@ var _UpdateViewershipAction = class _UpdateViewershipAction extends YTNode {
    * @deprecated Use `view_count_node.view_count` instead.
    */
   get view_count() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.view_count;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.view_count;
   }
   /**
    * @deprecated Use `view_count_node.extra_short_view_count` instead.
    */
   get extra_short_view_count() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.extra_short_view_count;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.extra_short_view_count;
   }
   /**
    * @deprecated Use `view_count_node.short_view_count` instead.
    */
   get short_view_count() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.short_view_count;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.short_view_count;
   }
   /**
    * @deprecated Use `view_count_node.original_view_count` instead.
    */
   get original_view_count() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.original_view_count;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.original_view_count;
   }
   /**
    * @deprecated Use `view_count_node.unlabeled_view_count_value` instead.
    */
   get unlabeled_view_count_value() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.unlabeled_view_count_value;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.unlabeled_view_count_value;
   }
   /**
    * @deprecated Use `view_count_node.is_live` instead.
    */
   get is_live() {
-    var _a;
-    return (_a = this.view_count_node) == null ? void 0 : _a.is_live;
+    var _a2;
+    return (_a2 = this.view_count_node) == null ? void 0 : _a2.is_live;
   }
 };
 __name(_UpdateViewershipAction, "UpdateViewershipAction");
@@ -23583,6 +23663,69 @@ __name(_LiveChatParticipantsList, "LiveChatParticipantsList");
 __publicField(_LiveChatParticipantsList, "type", "LiveChatParticipantsList");
 var LiveChatParticipantsList = _LiveChatParticipantsList;
 
+// dist/src/parser/classes/LiveStreamOfflineSlate.js
+var _LiveStreamOfflineSlate = class _LiveStreamOfflineSlate extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "main_text");
+    __publicField(this, "subtitle_text");
+    __publicField(this, "thumbnail");
+    __publicField(this, "action_buttons");
+    this.main_text = new Text2(data.mainText);
+    this.subtitle_text = new Text2(data.subtitleText);
+    this.thumbnail = Thumbnail.fromResponse(data.thumbnail);
+    this.action_buttons = parser_exports.parseArray(data.actionButtons, Button);
+  }
+};
+__name(_LiveStreamOfflineSlate, "LiveStreamOfflineSlate");
+__publicField(_LiveStreamOfflineSlate, "type", "LiveStreamOfflineSlate");
+var LiveStreamOfflineSlate = _LiveStreamOfflineSlate;
+
+// dist/src/parser/classes/LiveStreamability.js
+var _LiveStreamability = class _LiveStreamability extends YTNode {
+  constructor(data) {
+    var _a2;
+    super();
+    __publicField(this, "video_id");
+    __publicField(this, "broadcast_id");
+    __publicField(this, "stream_transition_endpoint");
+    __publicField(this, "switch_streams_immediately");
+    __publicField(this, "display_endscreen");
+    __publicField(this, "poll_delay_ms");
+    __publicField(this, "creator_redirect");
+    __publicField(this, "transition_timing");
+    __publicField(this, "offline_slate");
+    __publicField(this, "renderer_context");
+    this.video_id = data.videoId;
+    this.broadcast_id = data.broadcastId;
+    this.transition_timing = data.transitionTiming;
+    this.offline_slate = parser_exports.parseItem(data.offlineSlate, LiveStreamOfflineSlate);
+    if ("pollDelayMs" in data) {
+      this.poll_delay_ms = data.pollDelayMs;
+    }
+    if ("switchStreamsImmediately" in data) {
+      this.switch_streams_immediately = data.switchStreamsImmediately;
+    }
+    if ("displayEndscreen" in data) {
+      this.display_endscreen = data.displayEndscreen;
+    }
+    if ("streamTransitionEndpoint" in data) {
+      this.stream_transition_endpoint = new NavigationEndpoint(data.streamTransitionEndpoint);
+    }
+    if ("creatorRedirect" in data) {
+      this.creator_redirect = {
+        hide_autoplay_toggle: (_a2 = data.creatorRedirect) == null ? void 0 : _a2.hideAutoplayToggle
+      };
+    }
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_LiveStreamability, "LiveStreamability");
+__publicField(_LiveStreamability, "type", "LiveStreamability");
+var LiveStreamability = _LiveStreamability;
+
 // dist/src/parser/classes/LockupMetadataView.js
 var _LockupMetadataView = class _LockupMetadataView extends YTNode {
   constructor(data) {
@@ -23624,7 +23767,7 @@ var LockupView = _LockupView;
 // dist/src/parser/classes/MacroMarkersListEntity.js
 var _MacroMarkersListEntity = class _MacroMarkersListEntity extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "marker_entity_key");
     __publicField(this, "external_video_id");
@@ -23640,8 +23783,8 @@ var _MacroMarkersListEntity = class _MacroMarkersListEntity extends YTNode {
     __publicField(this, "raw_api_decorations");
     this.marker_entity_key = data.key;
     this.external_video_id = data.externalVideoId;
-    this.marker_type = ((_a = data.markersList) == null ? void 0 : _a.markerType) || "";
-    this.raw_api_markers = ((_b = data.markersList) == null ? void 0 : _b.markers) || [];
+    this.marker_type = ((_a2 = data.markersList) == null ? void 0 : _a2.markerType) || "";
+    this.raw_api_markers = ((_b2 = data.markersList) == null ? void 0 : _b2.markers) || [];
     this.raw_api_decorations = ((_d = (_c = data.markersList) == null ? void 0 : _c.markersDecoration) == null ? void 0 : _d.timedMarkerDecorations) || [];
     this.markers = observe(this.raw_api_markers.map((marker) => new HeatMarker(marker)));
     const heatmapMetadata = (_f = (_e = data.markersList) == null ? void 0 : _e.markersMetadata) == null ? void 0 : _f.heatmapMetadata;
@@ -23754,7 +23897,7 @@ var MultiPageMenuNotificationSection = _MultiPageMenuNotificationSection;
 
 // dist/src/parser/classes/menus/MusicMenuItemDivider.js
 var _MusicMenuItemDivider = class _MusicMenuItemDivider extends YTNode {
-  constructor(_data23) {
+  constructor(_data24) {
     super();
   }
 };
@@ -23789,12 +23932,12 @@ var MusicMultiSelectMenuItem = _MusicMultiSelectMenuItem;
 // dist/src/parser/classes/menus/MusicMultiSelectMenu.js
 var _MusicMultiSelectMenu = class _MusicMultiSelectMenu extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "title");
     __publicField(this, "options");
     if (Reflect.has(data, "title") && Reflect.has(data.title, "musicMenuTitleRenderer")) {
-      this.title = new Text2((_a = data.title.musicMenuTitleRenderer) == null ? void 0 : _a.primaryText);
+      this.title = new Text2((_a2 = data.title.musicMenuTitleRenderer) == null ? void 0 : _a2.primaryText);
     }
     this.options = parser_exports.parseArray(data.options, [MusicMultiSelectMenuItem, MusicMenuItemDivider]);
   }
@@ -23988,7 +24131,7 @@ var ModalWithTitleAndButton = _ModalWithTitleAndButton;
 // dist/src/parser/classes/Movie.js
 var _Movie = class _Movie extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "id");
     __publicField(this, "title");
@@ -24003,7 +24146,7 @@ var _Movie = class _Movie extends YTNode {
     __publicField(this, "use_vertical_poster");
     __publicField(this, "show_action_menu");
     __publicField(this, "menu");
-    const overlay_time_status = ((_a = data.thumbnailOverlays.find((overlay) => overlay.thumbnailOverlayTimeStatusRenderer)) == null ? void 0 : _a.thumbnailOverlayTimeStatusRenderer.text) || "N/A";
+    const overlay_time_status = ((_a2 = data.thumbnailOverlays.find((overlay) => overlay.thumbnailOverlayTimeStatusRenderer)) == null ? void 0 : _a2.thumbnailOverlayTimeStatusRenderer.text) || "N/A";
     this.id = data.videoId;
     this.title = new Text2(data.title);
     if (Reflect.has(data, "descriptionSnippet")) {
@@ -24012,7 +24155,7 @@ var _Movie = class _Movie extends YTNode {
     this.top_metadata_items = new Text2(data.topMetadataItems);
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail);
     this.thumbnail_overlays = parser_exports.parseArray(data.thumbnailOverlays);
-    this.author = new Author(data.longBylineText, data.ownerBadges, (_c = (_b = data.channelThumbnailSupportedRenderers) == null ? void 0 : _b.channelThumbnailWithLinkRenderer) == null ? void 0 : _c.thumbnail);
+    this.author = new Author(data.longBylineText, data.ownerBadges, (_c = (_b2 = data.channelThumbnailSupportedRenderers) == null ? void 0 : _b2.channelThumbnailWithLinkRenderer) == null ? void 0 : _c.thumbnail);
     this.duration = {
       text: data.lengthText ? new Text2(data.lengthText).toString() : new Text2(overlay_time_status).toString(),
       seconds: timeToSeconds(data.lengthText ? new Text2(data.lengthText).toString() : new Text2(overlay_time_status).toString())
@@ -24031,9 +24174,9 @@ var Movie = _Movie;
 // dist/src/parser/classes/MovingThumbnail.js
 var _MovingThumbnail = class _MovingThumbnail extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
-    return (_a = data.movingThumbnailDetails) == null ? void 0 : _a.thumbnails.map((thumbnail) => new Thumbnail(thumbnail)).sort((a, b) => b.width - a.width);
+    return (_a2 = data.movingThumbnailDetails) == null ? void 0 : _a2.thumbnails.map((thumbnail) => new Thumbnail(thumbnail)).sort((a, b) => b.width - a.width);
   }
 };
 __name(_MovingThumbnail, "MovingThumbnail");
@@ -24066,8 +24209,8 @@ var _MusicInlineBadge = class _MusicInlineBadge extends YTNode {
     }
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_MusicInlineBadge, "MusicInlineBadge");
@@ -24100,12 +24243,12 @@ var _MusicPlayButton = class _MusicPlayButton extends YTNode {
     this.icon_color = data.iconColor;
   }
   get play_label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility_play_data) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility_play_data) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
   get pause_label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility_pause_data) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility_pause_data) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_MusicPlayButton, "MusicPlayButton");
@@ -24281,10 +24424,16 @@ __publicField(_MusicResponsiveListItemFlexColumn, "type", "MusicResponsiveListIt
 var MusicResponsiveListItemFlexColumn = _MusicResponsiveListItemFlexColumn;
 
 // dist/src/parser/classes/MusicResponsiveListItem.js
+var DURATION_TEXT = /^\d+(?::[0-5]\d)+$/;
+function findDurationText(runs) {
+  var _a2;
+  return (_a2 = runs == null ? void 0 : runs.findLast((run) => DURATION_TEXT.test(run.text))) == null ? void 0 : _a2.text;
+}
+__name(findDurationText, "findDurationText");
 var _MusicResponsiveListItem_instances, parseOther_fn, parseVideoOrSong_fn, parseSong_fn, parseVideo_fn, parseArtist_fn, parseLibraryArtist_fn, parseNonMusicTrack_fn, parsePodcastShow_fn, parseAlbum_fn, parsePlaylist_fn;
 var _MusicResponsiveListItem = class _MusicResponsiveListItem extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __privateAdd(this, _MusicResponsiveListItem_instances);
     __publicField(this, "flex_columns");
@@ -24314,17 +24463,17 @@ var _MusicResponsiveListItem = class _MusicResponsiveListItem extends YTNode {
     this.flex_columns = parser_exports.parseArray(data.flexColumns, MusicResponsiveListItemFlexColumn);
     this.fixed_columns = parser_exports.parseArray(data.fixedColumns, MusicResponsiveListItemFixedColumn);
     const playlist_item_data = {
-      video_id: ((_a = data == null ? void 0 : data.playlistItemData) == null ? void 0 : _a.videoId) || null,
-      playlist_set_video_id: ((_b = data == null ? void 0 : data.playlistItemData) == null ? void 0 : _b.playlistSetVideoId) || null
+      video_id: ((_a2 = data == null ? void 0 : data.playlistItemData) == null ? void 0 : _a2.videoId) || null,
+      playlist_set_video_id: ((_b2 = data == null ? void 0 : data.playlistItemData) == null ? void 0 : _b2.playlistSetVideoId) || null
     };
-    if (Reflect.has(data, "navigationEndpoint")) {
+    if ("navigationEndpoint" in data) {
       this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
     }
     let page_type = (_f = (_e = (_d = (_c = this.endpoint) == null ? void 0 : _c.payload) == null ? void 0 : _d.browseEndpointContextSupportedConfigs) == null ? void 0 : _e.browseEndpointContextMusicConfig) == null ? void 0 : _f.pageType;
     if (!page_type) {
       const is_non_music_track = this.flex_columns.find((col) => {
-        var _a2, _b2, _c2, _d2;
-        return ((_d2 = (_c2 = (_b2 = (_a2 = col.title.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseEndpointContextSupportedConfigs) == null ? void 0 : _c2.browseEndpointContextMusicConfig) == null ? void 0 : _d2.pageType) === "MUSIC_PAGE_TYPE_NON_MUSIC_AUDIO_TRACK_PAGE";
+        var _a3, _b3, _c2, _d2;
+        return ((_d2 = (_c2 = (_b3 = (_a3 = col.title.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseEndpointContextSupportedConfigs) == null ? void 0 : _c2.browseEndpointContextMusicConfig) == null ? void 0 : _d2.pageType) === "MUSIC_PAGE_TYPE_NON_MUSIC_AUDIO_TRACK_PAGE";
       });
       if (is_non_music_track) {
         page_type = "MUSIC_PAGE_TYPE_NON_MUSIC_AUDIO_TRACK_PAGE";
@@ -24363,25 +24512,25 @@ var _MusicResponsiveListItem = class _MusicResponsiveListItem extends YTNode {
           __privateMethod(this, _MusicResponsiveListItem_instances, parseOther_fn).call(this);
         }
     }
-    if (Reflect.has(data, "index")) {
+    if ("index" in data) {
       this.index = new Text2(data.index);
     }
-    if (Reflect.has(data, "thumbnail")) {
+    if ("thumbnail" in data) {
       this.thumbnail = parser_exports.parseItem(data.thumbnail, MusicThumbnail);
     }
-    if (Reflect.has(data, "badges")) {
+    if ("badges" in data) {
       this.badges = parser_exports.parseArray(data.badges);
     }
-    if (Reflect.has(data, "menu")) {
+    if ("menu" in data) {
       this.menu = parser_exports.parseItem(data.menu, Menu);
     }
-    if (Reflect.has(data, "overlay")) {
+    if ("overlay" in data) {
       this.overlay = parser_exports.parseItem(data.overlay, MusicItemThumbnailOverlay);
     }
   }
   get thumbnails() {
-    var _a;
-    return ((_a = this.thumbnail) == null ? void 0 : _a.contents) || [];
+    var _a2;
+    return ((_a2 = this.thumbnail) == null ? void 0 : _a2.contents) || [];
   }
 };
 _MusicResponsiveListItem_instances = new WeakSet();
@@ -24394,8 +24543,8 @@ parseOther_fn = /* @__PURE__ */ __name(function() {
   }
 }, "#parseOther");
 parseVideoOrSong_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
-  var _a, _b, _c, _d, _e, _f, _g;
-  const music_video_type = (_g = (_f = (_e = (_d = (_c = (_b = (_a = this.flex_columns.at(0)) == null ? void 0 : _a.title.runs) == null ? void 0 : _b.at(0)) == null ? void 0 : _c.endpoint) == null ? void 0 : _d.payload) == null ? void 0 : _e.watchEndpointMusicSupportedConfigs) == null ? void 0 : _f.watchEndpointMusicConfig) == null ? void 0 : _g.musicVideoType;
+  var _a2, _b2, _c, _d, _e, _f, _g;
+  const music_video_type = (_g = (_f = (_e = (_d = (_c = (_b2 = (_a2 = this.flex_columns.at(0)) == null ? void 0 : _a2.title.runs) == null ? void 0 : _b2.at(0)) == null ? void 0 : _c.endpoint) == null ? void 0 : _d.payload) == null ? void 0 : _e.watchEndpointMusicSupportedConfigs) == null ? void 0 : _f.watchEndpointMusicConfig) == null ? void 0 : _g.musicVideoType;
   switch (music_video_type) {
     case "MUSIC_VIDEO_TYPE_UGC":
     case "MUSIC_VIDEO_TYPE_OMV":
@@ -24411,53 +24560,53 @@ parseVideoOrSong_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
   }
 }, "#parseVideoOrSong");
 parseSong_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o;
-  this.id = playlist_item_data.video_id || ((_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.videoId);
+  var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m;
+  this.id = playlist_item_data.video_id || ((_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.videoId);
   this.title = this.flex_columns[0].title.toString();
-  const duration_text = ((_e = (_d = (_c = this.flex_columns.at(1)) == null ? void 0 : _c.title.runs) == null ? void 0 : _d.find((run) => /^\d+$/.test(run.text.replace(/:/g, "")))) == null ? void 0 : _e.text) || ((_g = (_f = this.fixed_columns[0]) == null ? void 0 : _f.title) == null ? void 0 : _g.toString());
+  const duration_text = findDurationText((_c = this.flex_columns.at(1)) == null ? void 0 : _c.title.runs) || ((_e = (_d = this.fixed_columns[0]) == null ? void 0 : _d.title) == null ? void 0 : _e.toString());
   if (duration_text) {
     this.duration = {
       text: duration_text,
       seconds: timeToSeconds(duration_text)
     };
   }
-  const album_run = ((_i = (_h = this.flex_columns.at(1)) == null ? void 0 : _h.title.runs) == null ? void 0 : _i.find((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("MPR"))) || ((_k = (_j = this.flex_columns.at(2)) == null ? void 0 : _j.title.runs) == null ? void 0 : _k.find((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("MPR")));
+  const album_run = ((_g = (_f = this.flex_columns.at(1)) == null ? void 0 : _f.title.runs) == null ? void 0 : _g.find((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("MPR"))) || ((_i = (_h = this.flex_columns.at(2)) == null ? void 0 : _h.title.runs) == null ? void 0 : _i.find((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("MPR")));
   if (album_run && isTextRun(album_run)) {
     this.album = {
-      id: (_m = (_l = album_run.endpoint) == null ? void 0 : _l.payload) == null ? void 0 : _m.browseId,
+      id: (_k = (_j = album_run.endpoint) == null ? void 0 : _j.payload) == null ? void 0 : _k.browseId,
       name: album_run.text,
       endpoint: album_run.endpoint
     };
   }
-  const artist_runs = (_o = (_n = this.flex_columns.at(1)) == null ? void 0 : _n.title.runs) == null ? void 0 : _o.filter((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("UC"));
+  const artist_runs = (_m = (_l = this.flex_columns.at(1)) == null ? void 0 : _l.title.runs) == null ? void 0 : _m.filter((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("UC"));
   if (artist_runs) {
     this.artists = artist_runs.map((run) => {
-      var _a2, _b2;
+      var _a3, _b3;
       return {
         name: run.text,
-        channel_id: isTextRun(run) ? (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId : void 0,
+        channel_id: isTextRun(run) ? (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId : void 0,
         endpoint: isTextRun(run) ? run.endpoint : void 0
       };
     });
   }
 }, "#parseSong");
 parseVideo_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j;
+  var _a2, _b2, _c, _d, _e, _f;
   this.id = playlist_item_data.video_id;
   this.title = this.flex_columns[0].title.toString();
-  this.views = (_c = (_b = (_a = this.flex_columns.at(1)) == null ? void 0 : _a.title.runs) == null ? void 0 : _b.find((run) => run.text.match(/(.*?) views/))) == null ? void 0 : _c.toString();
+  this.views = (_c = (_b2 = (_a2 = this.flex_columns.at(1)) == null ? void 0 : _a2.title.runs) == null ? void 0 : _b2.find((run) => run.text.match(/(.*?) views/))) == null ? void 0 : _c.toString();
   const author_runs = (_e = (_d = this.flex_columns.at(1)) == null ? void 0 : _d.title.runs) == null ? void 0 : _e.filter((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("UC"));
   if (author_runs) {
     this.authors = author_runs.map((run) => {
-      var _a2, _b2;
+      var _a3, _b3;
       return {
         name: run.text,
-        channel_id: isTextRun(run) ? (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId : void 0,
+        channel_id: isTextRun(run) ? (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId : void 0,
         endpoint: isTextRun(run) ? run.endpoint : void 0
       };
     });
   }
-  const duration_text = ((_g = (_f = this.flex_columns[1].title.runs) == null ? void 0 : _f.find((run) => /^\d+$/.test(run.text.replace(/:/g, "")))) == null ? void 0 : _g.text) || ((_j = (_i = (_h = this.fixed_columns[0]) == null ? void 0 : _h.title.runs) == null ? void 0 : _i.find((run) => /^\d+$/.test(run.text.replace(/:/g, "")))) == null ? void 0 : _j.text);
+  const duration_text = findDurationText(this.flex_columns[1].title.runs) || findDurationText((_f = this.fixed_columns[0]) == null ? void 0 : _f.title.runs);
   if (duration_text) {
     this.duration = {
       text: duration_text,
@@ -24466,31 +24615,31 @@ parseVideo_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
   }
 }, "#parseVideo");
 parseArtist_fn = /* @__PURE__ */ __name(function() {
-  var _a, _b, _c, _d, _e, _f;
-  this.id = (_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.browseId;
+  var _a2, _b2, _c, _d, _e, _f;
+  this.id = (_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId;
   this.name = this.flex_columns[0].title.toString();
   this.subtitle = (_c = this.flex_columns.at(1)) == null ? void 0 : _c.title;
   this.subscribers = ((_f = (_e = (_d = this.subtitle) == null ? void 0 : _d.runs) == null ? void 0 : _e.find((run) => /^(\d*\.)?\d+[M|K]? subscribers?$/i.test(run.text))) == null ? void 0 : _f.text) || "";
 }, "#parseArtist");
 parseLibraryArtist_fn = /* @__PURE__ */ __name(function() {
-  var _a, _b, _c, _d;
+  var _a2, _b2, _c, _d;
   this.name = this.flex_columns[0].title.toString();
-  this.subtitle = (_a = this.flex_columns.at(1)) == null ? void 0 : _a.title;
-  this.song_count = ((_d = (_c = (_b = this.subtitle) == null ? void 0 : _b.runs) == null ? void 0 : _c.find((run) => /^\d+(,\d+)? songs?$/i.test(run.text))) == null ? void 0 : _d.text) || "";
+  this.subtitle = (_a2 = this.flex_columns.at(1)) == null ? void 0 : _a2.title;
+  this.song_count = ((_d = (_c = (_b2 = this.subtitle) == null ? void 0 : _b2.runs) == null ? void 0 : _c.find((run) => /^\d+(,\d+)? songs?$/i.test(run.text))) == null ? void 0 : _d.text) || "";
 }, "#parseLibraryArtist");
 parseNonMusicTrack_fn = /* @__PURE__ */ __name(function(playlist_item_data) {
-  var _a, _b;
-  this.id = playlist_item_data.video_id || ((_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.videoId);
+  var _a2, _b2;
+  this.id = playlist_item_data.video_id || ((_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.videoId);
   this.title = this.flex_columns[0].title.toString();
 }, "#parseNonMusicTrack");
 parsePodcastShow_fn = /* @__PURE__ */ __name(function() {
-  var _a, _b;
-  this.id = (_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.browseId;
+  var _a2, _b2;
+  this.id = (_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId;
   this.title = this.flex_columns[0].title.toString();
 }, "#parsePodcastShow");
 parseAlbum_fn = /* @__PURE__ */ __name(function() {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i;
-  this.id = (_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.browseId;
+  var _a2, _b2, _c, _d, _e, _f, _g, _h, _i;
+  this.id = (_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId;
   this.title = this.flex_columns[0].title.toString();
   const author_run = (_d = (_c = this.flex_columns.at(1)) == null ? void 0 : _c.title.runs) == null ? void 0 : _d.find((run) => isTextRun(run) && run.endpoint && run.endpoint.payload.browseId.startsWith("UC"));
   if (author_run && isTextRun(author_run)) {
@@ -24503,8 +24652,8 @@ parseAlbum_fn = /* @__PURE__ */ __name(function() {
   this.year = (_i = (_h = (_g = this.flex_columns.at(1)) == null ? void 0 : _g.title.runs) == null ? void 0 : _h.find((run) => /^[12][0-9]{3}$/.test(run.text))) == null ? void 0 : _i.text;
 }, "#parseAlbum");
 parsePlaylist_fn = /* @__PURE__ */ __name(function() {
-  var _a, _b, _c, _d, _e, _f, _g, _h;
-  this.id = (_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.browseId;
+  var _a2, _b2, _c, _d, _e, _f, _g, _h;
+  this.id = (_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId;
   this.title = this.flex_columns[0].title.toString();
   const item_count_run = (_d = (_c = this.flex_columns.at(1)) == null ? void 0 : _c.title.runs) == null ? void 0 : _d.find((run) => run.text.match(/\d+ (song|songs)/));
   this.item_count = item_count_run ? item_count_run.text : void 0;
@@ -24524,7 +24673,7 @@ var MusicResponsiveListItem = _MusicResponsiveListItem;
 // dist/src/parser/classes/MusicTwoRowItem.js
 var _MusicTwoRowItem = class _MusicTwoRowItem extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v;
     super();
     __publicField(this, "title");
     __publicField(this, "endpoint");
@@ -24543,7 +24692,7 @@ var _MusicTwoRowItem = class _MusicTwoRowItem extends YTNode {
     __publicField(this, "menu");
     this.title = new Text2(data.title);
     this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
-    this.id = ((_b = (_a = this.endpoint) == null ? void 0 : _a.payload) == null ? void 0 : _b.browseId) || ((_d = (_c = this.endpoint) == null ? void 0 : _c.payload) == null ? void 0 : _d.videoId);
+    this.id = ((_b2 = (_a2 = this.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId) || ((_d = (_c = this.endpoint) == null ? void 0 : _c.payload) == null ? void 0 : _d.videoId);
     this.subtitle = new Text2(data.subtitle);
     this.badges = parser_exports.parse(data.subtitleBadges);
     const page_type = (_h = (_g = (_f = (_e = this.endpoint) == null ? void 0 : _e.payload) == null ? void 0 : _f.browseEndpointContextSupportedConfigs) == null ? void 0 : _g.browseEndpointContextMusicConfig) == null ? void 0 : _h.pageType;
@@ -24580,15 +24729,15 @@ var _MusicTwoRowItem = class _MusicTwoRowItem extends YTNode {
       this.item_count = item_count_run ? item_count_run.text : null;
     } else if (this.item_type == "album") {
       const artists = (_o = this.subtitle.runs) == null ? void 0 : _o.filter((run) => {
-        var _a2, _b2;
-        return (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId.startsWith("UC");
+        var _a3, _b3;
+        return (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId.startsWith("UC");
       });
       if (artists) {
         this.artists = artists.map((artist) => {
-          var _a2, _b2;
+          var _a3, _b3;
           return {
             name: artist.text,
-            channel_id: (_b2 = (_a2 = artist.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId,
+            channel_id: (_b3 = (_a3 = artist.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId,
             endpoint: artist.endpoint
           };
         });
@@ -24599,8 +24748,8 @@ var _MusicTwoRowItem = class _MusicTwoRowItem extends YTNode {
     } else if (this.item_type == "video") {
       this.views = ((_r = (_q = this == null ? void 0 : this.subtitle.runs) == null ? void 0 : _q.find((run) => run == null ? void 0 : run.text.match(/(.*?) views/))) == null ? void 0 : _r.text) || "N/A";
       const author = (_s = this.subtitle.runs) == null ? void 0 : _s.find((run) => {
-        var _a2, _b2, _c2;
-        return (_c2 = (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId) == null ? void 0 : _c2.startsWith("UC");
+        var _a3, _b3, _c2;
+        return (_c2 = (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId) == null ? void 0 : _c2.startsWith("UC");
       });
       if (author) {
         this.author = {
@@ -24611,15 +24760,15 @@ var _MusicTwoRowItem = class _MusicTwoRowItem extends YTNode {
       }
     } else if (this.item_type == "song") {
       const artists = (_v = this.subtitle.runs) == null ? void 0 : _v.filter((run) => {
-        var _a2, _b2;
-        return (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId.startsWith("UC");
+        var _a3, _b3;
+        return (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId.startsWith("UC");
       });
       if (artists) {
         this.artists = artists.map((artist) => {
-          var _a2, _b2;
+          var _a3, _b3;
           return {
             name: artist == null ? void 0 : artist.text,
-            channel_id: (_b2 = (_a2 = artist == null ? void 0 : artist.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId,
+            channel_id: (_b3 = (_a3 = artist == null ? void 0 : artist.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId,
             endpoint: artist == null ? void 0 : artist.endpoint
           };
         });
@@ -24677,7 +24826,7 @@ var MusicDescriptionShelf = _MusicDescriptionShelf;
 // dist/src/parser/classes/MusicDetailHeader.js
 var _MusicDetailHeader = class _MusicDetailHeader extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i;
     super();
     __publicField(this, "title");
     __publicField(this, "description");
@@ -24694,14 +24843,14 @@ var _MusicDetailHeader = class _MusicDetailHeader extends YTNode {
     this.description = new Text2(data.description);
     this.subtitle = new Text2(data.subtitle);
     this.second_subtitle = new Text2(data.secondSubtitle);
-    this.year = ((_b = (_a = this.subtitle.runs) == null ? void 0 : _a.find((run) => /^[12][0-9]{3}$/.test(run.text))) == null ? void 0 : _b.text) || "";
+    this.year = ((_b2 = (_a2 = this.subtitle.runs) == null ? void 0 : _a2.find((run) => /^[12][0-9]{3}$/.test(run.text))) == null ? void 0 : _b2.text) || "";
     this.song_count = ((_d = (_c = this.second_subtitle.runs) == null ? void 0 : _c[0]) == null ? void 0 : _d.text) || "";
     this.total_duration = ((_f = (_e = this.second_subtitle.runs) == null ? void 0 : _e[2]) == null ? void 0 : _f.text) || "";
     this.thumbnails = Thumbnail.fromResponse(data.thumbnail.croppedSquareThumbnailRenderer.thumbnail);
     this.badges = parser_exports.parseArray(data.subtitleBadges);
     const author = (_g = this.subtitle.runs) == null ? void 0 : _g.find((run) => {
-      var _a2, _b2;
-      return (_b2 = (_a2 = run == null ? void 0 : run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId.startsWith("UC");
+      var _a3, _b3;
+      return (_b3 = (_a3 = run == null ? void 0 : run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId.startsWith("UC");
     });
     if (author) {
       this.author = {
@@ -24881,7 +25030,7 @@ var MusicPlaylistEditHeader = _MusicPlaylistEditHeader;
 // dist/src/parser/classes/MusicPlaylistShelf.js
 var _MusicPlaylistShelf = class _MusicPlaylistShelf extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "playlist_id");
     __publicField(this, "contents");
@@ -24890,7 +25039,7 @@ var _MusicPlaylistShelf = class _MusicPlaylistShelf extends YTNode {
     this.playlist_id = data.playlistId;
     this.contents = parser_exports.parseArray(data.contents, [MusicResponsiveListItem, ContinuationItem]);
     this.collapsed_item_count = data.collapsedItemCount;
-    this.continuation = ((_c = (_b = (_a = data.continuations) == null ? void 0 : _a[0]) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation) || null;
+    this.continuation = ((_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation) || null;
   }
 };
 __name(_MusicPlaylistShelf, "MusicPlaylistShelf");
@@ -24900,7 +25049,7 @@ var MusicPlaylistShelf = _MusicPlaylistShelf;
 // dist/src/parser/classes/PlaylistPanelVideo.js
 var _PlaylistPanelVideo = class _PlaylistPanelVideo extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     super();
     __publicField(this, "title");
     __publicField(this, "thumbnail");
@@ -24923,13 +25072,13 @@ var _PlaylistPanelVideo = class _PlaylistPanelVideo extends YTNode {
       text: new Text2(data.lengthText).toString(),
       seconds: timeToSeconds(new Text2(data.lengthText).toString())
     };
-    const album = (_a = new Text2(data.longBylineText).runs) == null ? void 0 : _a.find((run) => {
-      var _a2, _b2, _c2;
-      return (_c2 = (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId) == null ? void 0 : _c2.startsWith("MPR");
+    const album = (_a2 = new Text2(data.longBylineText).runs) == null ? void 0 : _a2.find((run) => {
+      var _a3, _b3, _c2;
+      return (_c2 = (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId) == null ? void 0 : _c2.startsWith("MPR");
     });
-    const artists = (_b = new Text2(data.longBylineText).runs) == null ? void 0 : _b.filter((run) => {
-      var _a2, _b2, _c2;
-      return (_c2 = (_b2 = (_a2 = run.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId) == null ? void 0 : _c2.startsWith("UC");
+    const artists = (_b2 = new Text2(data.longBylineText).runs) == null ? void 0 : _b2.filter((run) => {
+      var _a3, _b3, _c2;
+      return (_c2 = (_b3 = (_a3 = run.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId) == null ? void 0 : _c2.startsWith("UC");
     });
     this.author = new Text2(data.shortBylineText).toString();
     if (album) {
@@ -24942,10 +25091,10 @@ var _PlaylistPanelVideo = class _PlaylistPanelVideo extends YTNode {
     }
     if (artists) {
       this.artists = artists.map((artist) => {
-        var _a2, _b2;
+        var _a3, _b3;
         return {
           name: artist.text,
-          channel_id: (_b2 = (_a2 = artist.endpoint) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.browseId,
+          channel_id: (_b3 = (_a3 = artist.endpoint) == null ? void 0 : _a3.payload) == null ? void 0 : _b3.browseId,
           endpoint: artist.endpoint
         };
       });
@@ -24978,7 +25127,7 @@ var PlaylistPanelVideoWrapper = _PlaylistPanelVideoWrapper;
 // dist/src/parser/classes/PlaylistPanel.js
 var _PlaylistPanel = class _PlaylistPanel extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "title");
     __publicField(this, "title_text");
@@ -24994,7 +25143,7 @@ var _PlaylistPanel = class _PlaylistPanel extends YTNode {
     this.contents = parser_exports.parseArray(data.contents, [PlaylistPanelVideoWrapper, PlaylistPanelVideo, AutomixPreviewVideo]);
     this.playlist_id = data.playlistId;
     this.is_infinite = data.isInfinite;
-    this.continuation = ((_c = (_b = (_a = data.continuations) == null ? void 0 : _a[0]) == null ? void 0 : _b.nextRadioContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.nextContinuationData) == null ? void 0 : _f.continuation);
+    this.continuation = ((_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextRadioContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.nextContinuationData) == null ? void 0 : _f.continuation);
     this.is_editable = data.isEditable;
     this.preview_description = data.previewDescription;
     this.num_items_to_show = data.numItemsToShow;
@@ -25051,7 +25200,7 @@ var MusicResponsiveHeader = _MusicResponsiveHeader;
 // dist/src/parser/classes/MusicShelf.js
 var _MusicShelf = class _MusicShelf extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     super();
     __publicField(this, "title");
     __publicField(this, "contents");
@@ -25066,7 +25215,7 @@ var _MusicShelf = class _MusicShelf extends YTNode {
       this.endpoint = new NavigationEndpoint(data.bottomEndpoint);
     }
     if (Reflect.has(data, "continuations")) {
-      this.continuation = ((_b = (_a = data.continuations) == null ? void 0 : _a[0].nextContinuationData) == null ? void 0 : _b.continuation) || ((_d = (_c = data.continuations) == null ? void 0 : _c[0].reloadContinuationData) == null ? void 0 : _d.continuation);
+      this.continuation = ((_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0].nextContinuationData) == null ? void 0 : _b2.continuation) || ((_d = (_c = data.continuations) == null ? void 0 : _c[0].reloadContinuationData) == null ? void 0 : _d.continuation);
     }
     if (Reflect.has(data, "bottomText")) {
       this.bottom_text = new Text2(data.bottomText);
@@ -25154,16 +25303,16 @@ var MusicTasteBuilderShelf = _MusicTasteBuilderShelf;
 // dist/src/parser/classes/MusicVisualHeader.js
 var _MusicVisualHeader = class _MusicVisualHeader extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "title");
     __publicField(this, "thumbnail");
     __publicField(this, "menu");
     __publicField(this, "foreground_thumbnail");
     this.title = new Text2(data.title);
-    this.thumbnail = data.thumbnail ? Thumbnail.fromResponse((_a = data.thumbnail.musicThumbnailRenderer) == null ? void 0 : _a.thumbnail) : [];
+    this.thumbnail = data.thumbnail ? Thumbnail.fromResponse((_a2 = data.thumbnail.musicThumbnailRenderer) == null ? void 0 : _a2.thumbnail) : [];
     this.menu = parser_exports.parseItem(data.menu, Menu);
-    this.foreground_thumbnail = data.foregroundThumbnail ? Thumbnail.fromResponse((_b = data.foregroundThumbnail.musicThumbnailRenderer) == null ? void 0 : _b.thumbnail) : [];
+    this.foreground_thumbnail = data.foregroundThumbnail ? Thumbnail.fromResponse((_b2 = data.foregroundThumbnail.musicThumbnailRenderer) == null ? void 0 : _b2.thumbnail) : [];
   }
 };
 __name(_MusicVisualHeader, "MusicVisualHeader");
@@ -25233,8 +25382,8 @@ var _PivotBarItem = class _PivotBarItem extends YTNode {
       this.icon_type = data.icon.iconType;
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_PivotBarItem, "PivotBarItem");
@@ -25331,12 +25480,12 @@ var PageHeader = _PageHeader;
 // dist/src/parser/classes/PageIndicatorView.js
 var _PageIndicatorView = class _PageIndicatorView extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "indicator_count");
     __publicField(this, "selected_index");
-    this.indicator_count = (_a = data.indicatorCount) != null ? _a : 0;
-    this.selected_index = (_b = data.selectedIndex) != null ? _b : 0;
+    this.indicator_count = (_a2 = data.indicatorCount) != null ? _a2 : 0;
+    this.selected_index = (_b2 = data.selectedIndex) != null ? _b2 : 0;
   }
 };
 __name(_PageIndicatorView, "PageIndicatorView");
@@ -25531,6 +25680,22 @@ __name(_PlayerErrorMessage, "PlayerErrorMessage");
 __publicField(_PlayerErrorMessage, "type", "PlayerErrorMessage");
 var PlayerErrorMessage = _PlayerErrorMessage;
 
+// dist/src/parser/classes/PlayerInterstitial.js
+var _PlayerInterstitial = class _PlayerInterstitial extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "content");
+    __publicField(this, "state_entity_store_key");
+    this.content = parser_exports.parseItem(data.content, InterstitialView);
+    if ("stateEntityStoreKey" in data) {
+      this.state_entity_store_key = data.stateEntityStoreKey;
+    }
+  }
+};
+__name(_PlayerInterstitial, "PlayerInterstitial");
+__publicField(_PlayerInterstitial, "type", "PlayerInterstitial");
+var PlayerInterstitial = _PlayerInterstitial;
+
 // dist/src/parser/classes/PlayerLegacyDesktopYpcOffer.js
 var _PlayerLegacyDesktopYpcOffer = class _PlayerLegacyDesktopYpcOffer extends YTNode {
   constructor(data) {
@@ -25614,7 +25779,7 @@ var PlayerLiveStoryboardSpec = _PlayerLiveStoryboardSpec;
 // dist/src/parser/classes/PlayerMicroformat.js
 var _PlayerMicroformat = class _PlayerMicroformat extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "title");
     __publicField(this, "description");
@@ -25658,8 +25823,8 @@ var _PlayerMicroformat = class _PlayerMicroformat extends YTNode {
     this.publish_date = data.publishDate;
     this.upload_date = data.uploadDate;
     this.available_countries = data.availableCountries;
-    this.start_timestamp = ((_a = data.liveBroadcastDetails) == null ? void 0 : _a.startTimestamp) ? new Date(data.liveBroadcastDetails.startTimestamp) : null;
-    this.end_timestamp = ((_b = data.liveBroadcastDetails) == null ? void 0 : _b.endTimestamp) ? new Date(data.liveBroadcastDetails.endTimestamp) : null;
+    this.start_timestamp = ((_a2 = data.liveBroadcastDetails) == null ? void 0 : _a2.startTimestamp) ? new Date(data.liveBroadcastDetails.startTimestamp) : null;
+    this.end_timestamp = ((_b2 = data.liveBroadcastDetails) == null ? void 0 : _b2.endTimestamp) ? new Date(data.liveBroadcastDetails.endTimestamp) : null;
   }
 };
 __name(_PlayerMicroformat, "PlayerMicroformat");
@@ -25948,12 +26113,12 @@ var _PlaylistVideo = class _PlaylistVideo extends YTNode {
     };
   }
   get is_live() {
-    var _a;
-    return ((_a = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a.style) === "LIVE";
+    var _a2;
+    return ((_a2 = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a2.style) === "LIVE";
   }
   get is_upcoming() {
-    var _a;
-    return ((_a = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a.style) === "UPCOMING";
+    var _a2;
+    return ((_a2 = this.thumbnail_overlays.firstOfType(ThumbnailOverlayTimeStatus)) == null ? void 0 : _a2.style) === "UPCOMING";
   }
 };
 __name(_PlaylistVideo, "PlaylistVideo");
@@ -26201,8 +26366,8 @@ var _ReelItem = class _ReelItem extends YTNode {
     }
   }
   get label() {
-    var _a, _b;
-    return (_b = (_a = this.accessibility) == null ? void 0 : _a.accessibility_data) == null ? void 0 : _b.label;
+    var _a2, _b2;
+    return (_b2 = (_a2 = this.accessibility) == null ? void 0 : _a2.accessibility_data) == null ? void 0 : _b2.label;
   }
 };
 __name(_ReelItem, "ReelItem");
@@ -26260,18 +26425,6 @@ var _ReelPlayerOverlay = class _ReelPlayerOverlay extends YTNode {
 __name(_ReelPlayerOverlay, "ReelPlayerOverlay");
 __publicField(_ReelPlayerOverlay, "type", "ReelPlayerOverlay");
 var ReelPlayerOverlay = _ReelPlayerOverlay;
-
-// dist/src/parser/classes/RelatedChipCloud.js
-var _RelatedChipCloud = class _RelatedChipCloud extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "content");
-    this.content = parser_exports.parseItem(data.content);
-  }
-};
-__name(_RelatedChipCloud, "RelatedChipCloud");
-__publicField(_RelatedChipCloud, "type", "RelatedChipCloud");
-var RelatedChipCloud = _RelatedChipCloud;
 
 // dist/src/parser/classes/RichGrid.js
 var _RichGrid = class _RichGrid extends YTNode {
@@ -26552,18 +26705,6 @@ __name(_SecondarySearchContainer, "SecondarySearchContainer");
 __publicField(_SecondarySearchContainer, "type", "SecondarySearchContainer");
 var SecondarySearchContainer = _SecondarySearchContainer;
 
-// dist/src/parser/classes/SectionHeaderView.js
-var _SectionHeaderView = class _SectionHeaderView extends YTNode {
-  constructor(data) {
-    super();
-    __publicField(this, "headline");
-    this.headline = Text2.fromAttributed(data.headline);
-  }
-};
-__name(_SectionHeaderView, "SectionHeaderView");
-__publicField(_SectionHeaderView, "type", "SectionHeaderView");
-var SectionHeaderView = _SectionHeaderView;
-
 // dist/src/parser/classes/SegmentedLikeDislikeButton.js
 var _SegmentedLikeDislikeButton = class _SegmentedLikeDislikeButton extends YTNode {
   constructor(data) {
@@ -26763,6 +26904,26 @@ __name(_ShareTarget, "ShareTarget");
 __publicField(_ShareTarget, "type", "ShareTarget");
 var ShareTarget = _ShareTarget;
 
+// dist/src/parser/classes/SheetView.js
+var _SheetView = class _SheetView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "content");
+    __publicField(this, "footer");
+    __publicField(this, "header");
+    __publicField(this, "renderer_context");
+    this.content = parser_exports.parseItem(data.content);
+    this.footer = parser_exports.parseItem(data.footer);
+    this.header = parser_exports.parseItem(data.header);
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_SheetView, "SheetView");
+__publicField(_SheetView, "type", "SheetView");
+var SheetView = _SheetView;
+
 // dist/src/parser/classes/Shelf.js
 var _Shelf = class _Shelf extends YTNode {
   constructor(data) {
@@ -26800,7 +26961,7 @@ var Shelf = _Shelf;
 // dist/src/parser/classes/ShortsLockupView.js
 var _ShortsLockupView = class _ShortsLockupView extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "entity_id");
     __publicField(this, "accessibility_text");
@@ -26823,7 +26984,7 @@ var _ShortsLockupView = class _ShortsLockupView extends YTNode {
       primary_text: data.overlayMetadata.primaryText ? Text2.fromAttributed(data.overlayMetadata.primaryText) : void 0,
       secondary_text: data.overlayMetadata.secondaryText ? Text2.fromAttributed(data.overlayMetadata.secondaryText) : void 0
     };
-    if ((_a = data.inlinePlayerData) == null ? void 0 : _a.onVisible) {
+    if ((_a2 = data.inlinePlayerData) == null ? void 0 : _a2.onVisible) {
       this.inline_player_data = new NavigationEndpoint(data.inlinePlayerData.onVisible);
     }
     if (data.badge) {
@@ -27102,6 +27263,18 @@ __name(_ThumbnailLandscapePortrait, "ThumbnailLandscapePortrait");
 __publicField(_ThumbnailLandscapePortrait, "type", "ThumbnailLandscapePortrait");
 var ThumbnailLandscapePortrait = _ThumbnailLandscapePortrait;
 
+// dist/src/parser/classes/ThumbnailOverlayAvatarStackView.js
+var _ThumbnailOverlayAvatarStackView = class _ThumbnailOverlayAvatarStackView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "avatar_stack");
+    this.avatar_stack = parser_exports.parseItem(data.avatarStack, AvatarStackView);
+  }
+};
+__name(_ThumbnailOverlayAvatarStackView, "ThumbnailOverlayAvatarStackView");
+__publicField(_ThumbnailOverlayAvatarStackView, "type", "ThumbnailOverlayAvatarStackView");
+var ThumbnailOverlayAvatarStackView = _ThumbnailOverlayAvatarStackView;
+
 // dist/src/parser/classes/ThumbnailOverlayEndorsement.js
 var _ThumbnailOverlayEndorsement = class _ThumbnailOverlayEndorsement extends YTNode {
   constructor(data) {
@@ -27219,11 +27392,11 @@ var ThumbnailOverlaySidePanel = _ThumbnailOverlaySidePanel;
 // dist/src/parser/classes/ThumbnailOverlayTitleView.js
 var _ThumbnailOverlayTitleView = class _ThumbnailOverlayTitleView extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     super();
     __publicField(this, "title");
     __publicField(this, "subtitle");
-    this.title = (_b = (_a = data.title) == null ? void 0 : _a.content) != null ? _b : "";
+    this.title = (_b2 = (_a2 = data.title) == null ? void 0 : _a2.content) != null ? _b2 : "";
     this.subtitle = (_d = (_c = data.subtitle) == null ? void 0 : _c.content) != null ? _d : "";
   }
 };
@@ -27260,6 +27433,60 @@ var _ThumbnailOverlayToggleButton = class _ThumbnailOverlayToggleButton extends 
 __name(_ThumbnailOverlayToggleButton, "ThumbnailOverlayToggleButton");
 __publicField(_ThumbnailOverlayToggleButton, "type", "ThumbnailOverlayToggleButton");
 var ThumbnailOverlayToggleButton = _ThumbnailOverlayToggleButton;
+
+// dist/src/parser/classes/TicketEvent.js
+var _TicketEvent = class _TicketEvent extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "title");
+    __publicField(this, "time_month");
+    __publicField(this, "time_day");
+    __publicField(this, "link_text");
+    __publicField(this, "button_text");
+    __publicField(this, "endpoint");
+    __publicField(this, "subtitle1");
+    __publicField(this, "subtitle2");
+    __publicField(this, "time_date");
+    __publicField(this, "time_time");
+    __publicField(this, "time_weekday");
+    __publicField(this, "button_accessibility_text");
+    __publicField(this, "has_multiple_offers");
+    this.title = data.title;
+    this.time_month = data.timeMonth;
+    this.time_day = data.timeDay;
+    this.link_text = data.linkText;
+    this.button_text = data.buttonText;
+    this.endpoint = new NavigationEndpoint(data.buttonCommand);
+    this.subtitle1 = data.subtitle1;
+    this.subtitle2 = data.subtitle2;
+    this.time_date = data.timeDate;
+    this.time_time = data.timeTime;
+    this.time_weekday = data.timeWeekday;
+    this.button_accessibility_text = data.buttonAccessibilityText;
+    this.has_multiple_offers = data.hasMultipleOffers;
+  }
+};
+__name(_TicketEvent, "TicketEvent");
+__publicField(_TicketEvent, "type", "TicketEvent");
+var TicketEvent = _TicketEvent;
+
+// dist/src/parser/classes/TicketShelf.js
+var _TicketShelf = class _TicketShelf extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "title");
+    __publicField(this, "events");
+    __publicField(this, "information_text");
+    __publicField(this, "use_calendar_avatar");
+    this.title = data.title;
+    this.events = parser_exports.parseArray(data.events, TicketEvent);
+    this.information_text = data.informationText;
+    this.use_calendar_avatar = data.useCalendarAvatar;
+  }
+};
+__name(_TicketShelf, "TicketShelf");
+__publicField(_TicketShelf, "type", "TicketShelf");
+var TicketShelf = _TicketShelf;
 
 // dist/src/parser/classes/TitleAndButtonListHeader.js
 var _TitleAndButtonListHeader = class _TitleAndButtonListHeader extends YTNode {
@@ -27325,7 +27552,7 @@ var Tooltip = _Tooltip;
 // dist/src/parser/classes/TopicChannelDetails.js
 var _TopicChannelDetails = class _TopicChannelDetails extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "title");
     __publicField(this, "avatar");
@@ -27333,7 +27560,7 @@ var _TopicChannelDetails = class _TopicChannelDetails extends YTNode {
     __publicField(this, "subscribe_button");
     __publicField(this, "endpoint");
     this.title = new Text2(data.title);
-    this.avatar = Thumbnail.fromResponse((_a = data.thumbnail) != null ? _a : data.avatar);
+    this.avatar = Thumbnail.fromResponse((_a2 = data.thumbnail) != null ? _a2 : data.avatar);
     this.subtitle = new Text2(data.subtitle);
     this.subscribe_button = parser_exports.parseItem(data.subscribeButton, SubscribeButton);
     this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
@@ -27381,7 +27608,7 @@ var TwoColumnSearchResults = _TwoColumnSearchResults;
 var _TwoColumnWatchNextResults_instances, parseAutoplaySet_fn;
 var _TwoColumnWatchNextResults = class _TwoColumnWatchNextResults extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     super();
     __privateAdd(this, _TwoColumnWatchNextResults_instances);
     __publicField(this, "results");
@@ -27389,8 +27616,8 @@ var _TwoColumnWatchNextResults = class _TwoColumnWatchNextResults extends YTNode
     __publicField(this, "conversation_bar");
     __publicField(this, "playlist");
     __publicField(this, "autoplay");
-    this.results = parser_exports.parseArray((_a = data.results) == null ? void 0 : _a.results.contents);
-    this.secondary_results = parser_exports.parseArray((_b = data.secondaryResults) == null ? void 0 : _b.secondaryResults.results);
+    this.results = parser_exports.parseArray((_a2 = data.results) == null ? void 0 : _a2.results.contents);
+    this.secondary_results = parser_exports.parseArray((_b2 = data.secondaryResults) == null ? void 0 : _b2.secondaryResults.results);
     this.conversation_bar = parser_exports.parseItem(data == null ? void 0 : data.conversationBar);
     const playlistData = (_c = data.playlist) == null ? void 0 : _c.playlist;
     if (playlistData) {
@@ -27561,14 +27788,29 @@ var VideoMetadataCarouselView = _VideoMetadataCarouselView;
 var _VideoOwner = class _VideoOwner extends YTNode {
   constructor(data) {
     super();
+    __publicField(this, "title");
+    __publicField(this, "attributed_title");
     __publicField(this, "subscription_button");
     __publicField(this, "subscriber_count");
+    __publicField(this, "avatar_stack");
+    __publicField(this, "endpoint");
     __publicField(this, "author");
-    if ("subscriptionButton" in data)
+    if ("title" in data) {
+      this.title = new Text2(data.title);
+    }
+    if ("attributedTitle" in data) {
+      this.attributed_title = Text2.fromAttributed(data.attributedTitle);
+    }
+    if ("subscriptionButton" in data) {
       this.subscription_button = new SubscriptionButton(data.subscriptionButton);
+    }
+    if ("navigationEndpoint" in data) {
+      this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
+    }
+    this.avatar_stack = parser_exports.parseItem(data.avatarStack, AvatarStackView);
     this.subscriber_count = new Text2(data.subscriberCountText);
     this.author = new Author({
-      ...data.title,
+      ...data.title || data.attributedTitle,
       navigationEndpoint: data.navigationEndpoint
     }, data.badges, data.thumbnail);
   }
@@ -27636,6 +27878,24 @@ __name(_VideoSecondaryInfo, "VideoSecondaryInfo");
 __publicField(_VideoSecondaryInfo, "type", "VideoSecondaryInfo");
 var VideoSecondaryInfo = _VideoSecondaryInfo;
 
+// dist/src/parser/classes/VideoTitleHeaderView.js
+var _VideoTitleHeaderView = class _VideoTitleHeaderView extends YTNode {
+  constructor(data) {
+    super();
+    __publicField(this, "video_title");
+    __publicField(this, "header_button");
+    __publicField(this, "renderer_context");
+    this.video_title = Text2.fromAttributed(data.videoTitle);
+    this.header_button = parser_exports.parseItem(data.headerButton, ButtonView);
+    if ("rendererContext" in data) {
+      this.renderer_context = new RendererContext(data.rendererContext);
+    }
+  }
+};
+__name(_VideoTitleHeaderView, "VideoTitleHeaderView");
+__publicField(_VideoTitleHeaderView, "type", "VideoTitleHeaderView");
+var VideoTitleHeaderView = _VideoTitleHeaderView;
+
 // dist/src/parser/classes/WatchCardCompactVideo.js
 var _WatchCardCompactVideo = class _WatchCardCompactVideo extends YTNode {
   constructor(data) {
@@ -27660,7 +27920,7 @@ var WatchCardCompactVideo = _WatchCardCompactVideo;
 // dist/src/parser/classes/WatchCardHeroVideo.js
 var _WatchCardHeroVideo = class _WatchCardHeroVideo extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "endpoint");
     __publicField(this, "call_to_action_button");
@@ -27669,7 +27929,7 @@ var _WatchCardHeroVideo = class _WatchCardHeroVideo extends YTNode {
     this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
     this.call_to_action_button = parser_exports.parseItem(data.callToActionButton);
     this.hero_image = parser_exports.parseItem(data.heroImage);
-    this.label = ((_a = data.lengthText) == null ? void 0 : _a.accessibility.accessibilityData.label) || "";
+    this.label = ((_a2 = data.lengthText) == null ? void 0 : _a2.accessibility.accessibilityData.label) || "";
   }
 };
 __name(_WatchCardHeroVideo, "WatchCardHeroVideo");
@@ -27722,7 +27982,7 @@ var WatchNextTabbedResults = _WatchNextTabbedResults;
 // dist/src/parser/classes/ytkids/AnchoredSection.js
 var _AnchoredSection = class _AnchoredSection extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "title");
     __publicField(this, "content");
@@ -27733,8 +27993,8 @@ var _AnchoredSection = class _AnchoredSection extends YTNode {
     this.content = parser_exports.parseItem(data.content, SectionList);
     this.endpoint = new NavigationEndpoint(data.navigationEndpoint);
     this.category_assets = {
-      asset_key: (_a = data.categoryAssets) == null ? void 0 : _a.assetKey,
-      background_color: (_b = data.categoryAssets) == null ? void 0 : _b.backgroundColor
+      asset_key: (_a2 = data.categoryAssets) == null ? void 0 : _a2.assetKey,
+      background_color: (_b2 = data.categoryAssets) == null ? void 0 : _b2.backgroundColor
     };
     this.category_type = data.categoryType;
   }
@@ -27744,11 +28004,11 @@ __publicField(_AnchoredSection, "type", "AnchoredSection");
 var AnchoredSection = _AnchoredSection;
 
 // dist/src/parser/classes/ytkids/KidsBlocklistPickerItem.js
-var _actions3;
+var _actions4;
 var _KidsBlocklistPickerItem = class _KidsBlocklistPickerItem extends YTNode {
   constructor(data) {
     super();
-    __privateAdd(this, _actions3);
+    __privateAdd(this, _actions4);
     __publicField(this, "child_display_name");
     __publicField(this, "child_account_description");
     __publicField(this, "avatar");
@@ -27761,21 +28021,21 @@ var _KidsBlocklistPickerItem = class _KidsBlocklistPickerItem extends YTNode {
     this.blocked_entity_key = data.blockedEntityKey;
   }
   async blockChannel() {
-    if (!__privateGet(this, _actions3))
+    if (!__privateGet(this, _actions4))
       throw new InnertubeError("An active caller must be provide to perform this operation.");
     const button = this.block_button;
     if (!button)
       throw new InnertubeError("Block button was not found.", { child_display_name: this.child_display_name });
     if (button.is_toggled)
       throw new InnertubeError("This channel is already blocked.", { child_display_name: this.child_display_name });
-    const response = await button.endpoint.call(__privateGet(this, _actions3), { parse: false });
+    const response = await button.endpoint.call(__privateGet(this, _actions4), { parse: false });
     return response;
   }
   setActions(actions) {
-    __privateSet(this, _actions3, actions);
+    __privateSet(this, _actions4, actions);
   }
 };
-_actions3 = new WeakMap();
+_actions4 = new WeakMap();
 __name(_KidsBlocklistPickerItem, "KidsBlocklistPickerItem");
 __publicField(_KidsBlocklistPickerItem, "type", "KidsBlocklistPickerItem");
 var KidsBlocklistPickerItem = _KidsBlocklistPickerItem;
@@ -27801,7 +28061,7 @@ var KidsBlocklistPicker = _KidsBlocklistPicker;
 // dist/src/parser/classes/ytkids/KidsCategoryTab.js
 var _KidsCategoryTab = class _KidsCategoryTab extends YTNode {
   constructor(data) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __publicField(this, "title");
     __publicField(this, "category_assets");
@@ -27809,8 +28069,8 @@ var _KidsCategoryTab = class _KidsCategoryTab extends YTNode {
     __publicField(this, "endpoint");
     this.title = new Text2(data.title);
     this.category_assets = {
-      asset_key: (_a = data.categoryAssets) == null ? void 0 : _a.assetKey,
-      background_color: (_b = data.categoryAssets) == null ? void 0 : _b.backgroundColor
+      asset_key: (_a2 = data.categoryAssets) == null ? void 0 : _a2.assetKey,
+      background_color: (_b2 = data.categoryAssets) == null ? void 0 : _b2.backgroundColor
     };
     this.category_type = data.categoryType;
     this.endpoint = new NavigationEndpoint(data.endpoint);
@@ -28014,9 +28274,9 @@ function isArrayType(value) {
       optional: false
     };
   let key_type = [];
-  for (let i = 0; i < value.length; i++) {
-    const current_keys = Object.entries(value[i]).map(([key, value2]) => [key, inferType(key, value2)]);
-    if (i === 0) {
+  for (let i2 = 0; i2 < value.length; i2++) {
+    const current_keys = Object.entries(value[i2]).map(([key, value2]) => [key, inferType(key, value2)]);
+    if (i2 === 0) {
       key_type = current_keys;
       continue;
     }
@@ -28049,14 +28309,14 @@ function introspectKeysFirstPass(classdata) {
 }
 __name(introspectKeysFirstPass, "introspectKeysFirstPass");
 function introspectKeysSecondPass(key_info) {
-  var _a;
+  var _a2;
   const channel_nav = key_info.filter(([, value]) => {
-    var _a2;
+    var _a3;
     if (value.type !== "misc")
       return false;
     if (!(value.misc_type === "NavigationEndpoint" || value.misc_type === "Text"))
       return false;
-    return ((_a2 = value.endpoint) == null ? void 0 : _a2.metadata.page_type) === "WEB_PAGE_TYPE_CHANNEL";
+    return ((_a3 = value.endpoint) == null ? void 0 : _a3.metadata.page_type) === "WEB_PAGE_TYPE_CHANNEL";
   });
   const most_probable_match = channel_nav.sort(([, a], [, b]) => {
     if (a.type !== "misc" || b.type !== "misc")
@@ -28073,7 +28333,7 @@ function introspectKeysSecondPass(key_info) {
     const keys = key_info.map(([key]) => key);
     const badges = keys.filter((key) => key.endsWith("Badges") || key === "badges");
     const likely_badges = badges.filter((key) => key.startsWith("owner") || key.startsWith("author"));
-    const canonical_badges = (_a = likely_badges[0]) != null ? _a : badges[0];
+    const canonical_badges = (_a2 = likely_badges[0]) != null ? _a2 : badges[0];
     const badge_key_info = key_info.find(([key]) => key === canonical_badges);
     const is_badges = badge_key_info ? badge_key_info[1].type === "array" && badge_key_info[1].array_type === "renderer" && Reflect.has(badge_key_info[1].renderers, "MetadataBadge") : false;
     if (is_badges && canonical_badges)
@@ -28122,13 +28382,13 @@ function isIgnoredKey(key) {
 }
 __name(isIgnoredKey, "isIgnoredKey");
 function createRuntimeClass(classname, key_info, logger) {
-  var _a, _key_info;
+  var _a2, _key_info;
   logger({
     error_type: "class_not_found",
     classname,
     key_info
   });
-  const node = (_a = class extends YTNode {
+  const node = (_a2 = class extends YTNode {
     static set key_info(key_info2) {
       __privateSet(this, _key_info, new Map(key_info2));
     }
@@ -28158,7 +28418,7 @@ function createRuntimeClass(classname, key_info, logger) {
         Reflect.set(this, snake_key, parse2(key, value, data));
       }
     }
-  }, _key_info = new WeakMap(), __name(_a, "node"), __publicField(_a, "type", classname), __privateAdd(_a, _key_info, /* @__PURE__ */ new Map()), _a);
+  }, _key_info = new WeakMap(), __name(_a2, "node"), __publicField(_a2, "type", classname), __privateAdd(_a2, _key_info, /* @__PURE__ */ new Map()), _a2);
   node.key_info = key_info;
   Object.defineProperty(node, "name", { value: classname, writable: false });
   return node;
@@ -28633,13 +28893,13 @@ __name(mergeKeyInfo, "mergeKeyInfo");
 // dist/src/parser/continuations.js
 var _ItemSectionContinuation = class _ItemSectionContinuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "contents");
     __publicField(this, "continuation");
     this.contents = parseArray(data.contents);
     if (Array.isArray(data.continuations)) {
-      this.continuation = (_c = (_b = (_a = data.continuations) == null ? void 0 : _a.at(0)) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation;
+      this.continuation = (_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2.at(0)) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation;
     }
   }
 };
@@ -28684,12 +28944,12 @@ __publicField(_ReloadContinuationItemsCommand, "type", "reloadContinuationItemsC
 var ReloadContinuationItemsCommand = _ReloadContinuationItemsCommand;
 var _SectionListContinuation = class _SectionListContinuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "continuation");
     __publicField(this, "contents");
     this.contents = parse(data.contents, true);
-    this.continuation = ((_c = (_b = (_a = data.continuations) == null ? void 0 : _a[0]) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.reloadContinuationData) == null ? void 0 : _f.continuation) || null;
+    this.continuation = ((_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.reloadContinuationData) == null ? void 0 : _f.continuation) || null;
   }
 };
 __name(_SectionListContinuation, "SectionListContinuation");
@@ -28697,12 +28957,12 @@ __publicField(_SectionListContinuation, "type", "sectionListContinuation");
 var SectionListContinuation = _SectionListContinuation;
 var _MusicPlaylistShelfContinuation = class _MusicPlaylistShelfContinuation extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "continuation");
     __publicField(this, "contents");
     this.contents = parse(data.contents, true);
-    this.continuation = ((_a = data.continuations) == null ? void 0 : _a[0].nextContinuationData.continuation) || null;
+    this.continuation = ((_a2 = data.continuations) == null ? void 0 : _a2[0].nextContinuationData.continuation) || null;
   }
 };
 __name(_MusicPlaylistShelfContinuation, "MusicPlaylistShelfContinuation");
@@ -28710,12 +28970,12 @@ __publicField(_MusicPlaylistShelfContinuation, "type", "musicPlaylistShelfContin
 var MusicPlaylistShelfContinuation = _MusicPlaylistShelfContinuation;
 var _MusicShelfContinuation = class _MusicShelfContinuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     super();
     __publicField(this, "continuation");
     __publicField(this, "contents");
     this.contents = parseArray(data.contents);
-    this.continuation = ((_b = (_a = data.continuations) == null ? void 0 : _a[0].nextContinuationData) == null ? void 0 : _b.continuation) || ((_d = (_c = data.continuations) == null ? void 0 : _c[0].reloadContinuationData) == null ? void 0 : _d.continuation) || null;
+    this.continuation = ((_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0].nextContinuationData) == null ? void 0 : _b2.continuation) || ((_d = (_c = data.continuations) == null ? void 0 : _c[0].reloadContinuationData) == null ? void 0 : _d.continuation) || null;
   }
 };
 __name(_MusicShelfContinuation, "MusicShelfContinuation");
@@ -28723,12 +28983,12 @@ __publicField(_MusicShelfContinuation, "type", "musicShelfContinuation");
 var MusicShelfContinuation = _MusicShelfContinuation;
 var _GridContinuation = class _GridContinuation extends YTNode {
   constructor(data) {
-    var _a;
+    var _a2;
     super();
     __publicField(this, "continuation");
     __publicField(this, "items");
     this.items = parse(data.items, true);
-    this.continuation = ((_a = data.continuations) == null ? void 0 : _a[0].nextContinuationData.continuation) || null;
+    this.continuation = ((_a2 = data.continuations) == null ? void 0 : _a2[0].nextContinuationData.continuation) || null;
   }
   get contents() {
     return this.items;
@@ -28739,12 +28999,12 @@ __publicField(_GridContinuation, "type", "gridContinuation");
 var GridContinuation = _GridContinuation;
 var _PlaylistPanelContinuation = class _PlaylistPanelContinuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f;
+    var _a2, _b2, _c, _d, _e, _f;
     super();
     __publicField(this, "continuation");
     __publicField(this, "contents");
     this.contents = parseArray(data.contents);
-    this.continuation = ((_c = (_b = (_a = data.continuations) == null ? void 0 : _a[0]) == null ? void 0 : _b.nextContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.nextRadioContinuationData) == null ? void 0 : _f.continuation) || null;
+    this.continuation = ((_c = (_b2 = (_a2 = data.continuations) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.nextContinuationData) == null ? void 0 : _c.continuation) || ((_f = (_e = (_d = data.continuations) == null ? void 0 : _d[0]) == null ? void 0 : _e.nextRadioContinuationData) == null ? void 0 : _f.continuation) || null;
   }
 };
 __name(_PlaylistPanelContinuation, "PlaylistPanelContinuation");
@@ -28752,15 +29012,15 @@ __publicField(_PlaylistPanelContinuation, "type", "playlistPanelContinuation");
 var PlaylistPanelContinuation = _PlaylistPanelContinuation;
 var _Continuation = class _Continuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     super();
     __publicField(this, "continuation_type");
     __publicField(this, "timeout_ms");
     __publicField(this, "time_until_last_message_ms");
     __publicField(this, "token");
     this.continuation_type = data.type;
-    this.timeout_ms = (_a = data.continuation) == null ? void 0 : _a.timeoutMs;
-    this.time_until_last_message_ms = (_b = data.continuation) == null ? void 0 : _b.timeUntilLastMessageMsec;
+    this.timeout_ms = (_a2 = data.continuation) == null ? void 0 : _a2.timeoutMs;
+    this.time_until_last_message_ms = (_b2 = data.continuation) == null ? void 0 : _b2.timeUntilLastMessageMsec;
     this.token = (_c = data.continuation) == null ? void 0 : _c.continuation;
   }
 };
@@ -28769,7 +29029,7 @@ __publicField(_Continuation, "type", "continuation");
 var Continuation = _Continuation;
 var _LiveChatContinuation = class _LiveChatContinuation extends YTNode {
   constructor(data) {
-    var _a, _b, _c, _d, _e, _f, _g, _h;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h;
     super();
     __publicField(this, "actions");
     __publicField(this, "action_panel");
@@ -28780,7 +29040,7 @@ var _LiveChatContinuation = class _LiveChatContinuation extends YTNode {
     __publicField(this, "emojis");
     __publicField(this, "continuation");
     __publicField(this, "viewer_name");
-    this.actions = parse((_a = data.actions) == null ? void 0 : _a.map((action) => {
+    this.actions = parse((_a2 = data.actions) == null ? void 0 : _a2.map((action) => {
       delete action.clickTrackingParams;
       return action;
     }), true) || observe([]);
@@ -28789,7 +29049,7 @@ var _LiveChatContinuation = class _LiveChatContinuation extends YTNode {
     this.header = parseItem(data.header, LiveChatHeader);
     this.participants_list = parseItem(data.participantsList, LiveChatParticipantsList);
     this.popout_message = parseItem(data.popoutMessage, Message);
-    this.emojis = ((_b = data.emojis) == null ? void 0 : _b.map((emoji) => ({
+    this.emojis = ((_b2 = data.emojis) == null ? void 0 : _b2.map((emoji) => ({
       emoji_id: emoji.emojiId,
       shortcuts: emoji.shortcuts,
       search_terms: emoji.searchTerms,
@@ -28946,7 +29206,7 @@ function getDynamicParsers() {
 }
 __name(getDynamicParsers, "getDynamicParsers");
 function parseResponse(data) {
-  var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p;
+  var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v;
   const parsed_data = {};
   _createMemo();
   const contents = parse(data.contents);
@@ -28997,7 +29257,7 @@ function parseResponse(data) {
   }
   _clearMemo();
   _createMemo();
-  const live_chat_item_context_menu_supported_renderers = data.liveChatItemContextMenuSupportedRenderers ? parseItem(data.liveChatItemContextMenuSupportedRenderers) : null;
+  const live_chat_item_context_menu_supported_renderers = parseItem(data.liveChatItemContextMenuSupportedRenderers);
   const live_chat_item_context_menu_supported_renderers_memo = _getMemo();
   if (live_chat_item_context_menu_supported_renderers) {
     parsed_data.live_chat_item_context_menu_supported_renderers = live_chat_item_context_menu_supported_renderers;
@@ -29005,7 +29265,7 @@ function parseResponse(data) {
   }
   _clearMemo();
   _createMemo();
-  const header = data.header ? parse(data.header) : null;
+  const header = parse(data.header);
   const header_memo = _getMemo();
   if (header) {
     parsed_data.header = header;
@@ -29013,7 +29273,7 @@ function parseResponse(data) {
   }
   _clearMemo();
   _createMemo();
-  const sidebar = data.sidebar ? parseItem(data.sidebar) : null;
+  const sidebar = parseItem(data.sidebar);
   const sidebar_memo = _getMemo();
   if (sidebar) {
     parsed_data.sidebar = sidebar;
@@ -29027,7 +29287,7 @@ function parseResponse(data) {
     parsed_data.items_memo = _getMemo();
   }
   _clearMemo();
-  applyMutations(contents_memo, (_b = (_a = data.frameworkUpdates) == null ? void 0 : _a.entityBatchUpdate) == null ? void 0 : _b.mutations);
+  applyMutations(contents_memo, (_b2 = (_a2 = data.frameworkUpdates) == null ? void 0 : _a2.entityBatchUpdate) == null ? void 0 : _b2.mutations);
   if (on_response_received_endpoints_memo) {
     applyCommentsMutations(on_response_received_endpoints_memo, (_d = (_c = data.frameworkUpdates) == null ? void 0 : _c.entityBatchUpdate) == null ? void 0 : _d.mutations);
   }
@@ -29078,15 +29338,18 @@ function parseResponse(data) {
   if (playback_tracking) {
     parsed_data.playback_tracking = playback_tracking;
   }
-  const playability_status = data.playabilityStatus ? {
-    status: data.playabilityStatus.status,
-    reason: data.playabilityStatus.reason || "",
-    embeddable: !!data.playabilityStatus.playableInEmbed || false,
-    audio_only_playability: parseItem(data.playabilityStatus.audioOnlyPlayability, AudioOnlyPlayability),
-    error_screen: parseItem(data.playabilityStatus.errorScreen)
-  } : null;
-  if (playability_status) {
-    parsed_data.playability_status = playability_status;
+  if (data.playabilityStatus) {
+    _createMemo();
+    parsed_data.playability_status = {
+      status: data.playabilityStatus.status,
+      reason: data.playabilityStatus.reason || "",
+      embeddable: !!data.playabilityStatus.playableInEmbed,
+      audio_only_playability: parseItem(data.playabilityStatus.audioOnlyPlayability, AudioOnlyPlayability),
+      error_screen: parseItem(data.playabilityStatus.errorScreen),
+      live_streamability: parseItem(data.playabilityStatus.liveStreamability)
+    };
+    parsed_data.playability_status_memo = _getMemo();
+    _clearMemo();
   }
   if (data.streamingData) {
     const this_response_nsig_cache = /* @__PURE__ */ new Map();
@@ -29157,6 +29420,10 @@ function parseResponse(data) {
   if (engagement_panels.length) {
     parsed_data.engagement_panels = engagement_panels;
   }
+  const content = parseItem(data.content);
+  if (content) {
+    parsed_data.content = content;
+  }
   if (data.bgChallenge) {
     const interpreter_url = {
       private_do_not_access_or_else_trusted_resource_url_wrapped_value: data.bgChallenge.interpreterUrl.privateDoNotAccessOrElseTrustedResourceUrlWrappedValue,
@@ -29190,6 +29457,25 @@ function parseResponse(data) {
   }
   if (data.targetId) {
     parsed_data.target_id = data.targetId;
+  }
+  if ("pollDelayMs" in data) {
+    parsed_data.poll_delay_ms = data.pollDelayMs;
+  }
+  if ("stopHeartbeat" in data) {
+    parsed_data.stop_heartbeat = data.stopHeartbeat;
+  }
+  if ("heartbeatServerData" in data) {
+    parsed_data.heartbeat_server_data = data.heartbeatServerData;
+  }
+  if ("heartbeatParams" in data) {
+    parsed_data.heartbeat_params = {
+      heartbeat_token: (_q = data.heartbeatParams) == null ? void 0 : _q.heartbeatToken,
+      interval_milliseconds: (_r = data.heartbeatParams) == null ? void 0 : _r.intervalMilliseconds,
+      max_retries: (_s = data.heartbeatParams) == null ? void 0 : _s.maxRetries,
+      drm_session_id: (_t = data.heartbeatParams) == null ? void 0 : _t.drmSessionId,
+      soft_fail_on_error: (_u = data.heartbeatParams) == null ? void 0 : _u.softFailOnError,
+      heartbeat_server_data: (_v = data.heartbeatParams) == null ? void 0 : _v.heartbeatServerData
+    };
   }
   return parsed_data;
 }
@@ -29229,11 +29515,11 @@ function parseItem(data, validTypes) {
       const result = new TargetClass(data[keys[0]]);
       _addToMemo(classname, result);
       return result;
-    } catch (err) {
+    } catch (err2) {
       ERROR_HANDLER({
         classname,
         classdata: data[keys[0]],
-        error: err,
+        error: err2,
         error_type: "parse"
       });
       return null;
@@ -29389,8 +29675,8 @@ function applyMutations(memo, mutations) {
     const missing_or_invalid_mutations = [];
     for (const menu_item of music_multi_select_menu_items) {
       const mutation = mutations.find((mutation2) => {
-        var _a, _b;
-        return ((_b = (_a = mutation2.payload) == null ? void 0 : _a.musicFormBooleanChoice) == null ? void 0 : _b.id) === menu_item.form_item_entity_key;
+        var _a2, _b2;
+        return ((_b2 = (_a2 = mutation2.payload) == null ? void 0 : _a2.musicFormBooleanChoice) == null ? void 0 : _b2.id) === menu_item.form_item_entity_key;
       });
       const choice = mutation == null ? void 0 : mutation.payload.musicFormBooleanChoice;
       if ((choice == null ? void 0 : choice.selected) !== void 0 && (choice == null ? void 0 : choice.opaqueToken)) {
@@ -29411,8 +29697,8 @@ function applyMutations(memo, mutations) {
   }
   if (mutations) {
     const heat_map_mutations = mutations.filter((mutation) => {
-      var _a, _b;
-      return ((_a = mutation.payload) == null ? void 0 : _a.macroMarkersListEntity) && ((_b = mutation.payload.macroMarkersListEntity.markersList) == null ? void 0 : _b.markerType) === "MARKER_TYPE_HEATMAP";
+      var _a2, _b2;
+      return ((_a2 = mutation.payload) == null ? void 0 : _a2.macroMarkersListEntity) && ((_b2 = mutation.payload.macroMarkersListEntity.markersList) == null ? void 0 : _b2.markerType) === "MARKER_TYPE_HEATMAP";
     });
     for (const mutation of heat_map_mutations) {
       const macro_markers_entity = new MacroMarkersListEntity(mutation.payload.macroMarkersListEntity);
@@ -29427,7 +29713,7 @@ function applyMutations(memo, mutations) {
 }
 __name(applyMutations, "applyMutations");
 function applyCommentsMutations(memo, mutations) {
-  var _a, _b, _c, _d, _e, _f, _g, _h;
+  var _a2, _b2, _c, _d, _e, _f, _g, _h;
   const comment_view_items = memo.getType(CommentView);
   if (comment_view_items.length > 0) {
     if (!mutations) {
@@ -29437,18 +29723,18 @@ function applyCommentsMutations(memo, mutations) {
       });
     }
     for (const comment_view of comment_view_items) {
-      const comment_mutation = (_b = (_a = mutations.find((mutation) => {
-        var _a2, _b2;
-        return ((_b2 = (_a2 = mutation.payload) == null ? void 0 : _a2.commentEntityPayload) == null ? void 0 : _b2.key) === comment_view.keys.comment;
-      })) == null ? void 0 : _a.payload) == null ? void 0 : _b.commentEntityPayload;
+      const comment_mutation = (_b2 = (_a2 = mutations.find((mutation) => {
+        var _a3, _b3;
+        return ((_b3 = (_a3 = mutation.payload) == null ? void 0 : _a3.commentEntityPayload) == null ? void 0 : _b3.key) === comment_view.keys.comment;
+      })) == null ? void 0 : _a2.payload) == null ? void 0 : _b2.commentEntityPayload;
       const toolbar_state_mutation = (_d = (_c = mutations.find((mutation) => {
-        var _a2, _b2;
-        return ((_b2 = (_a2 = mutation.payload) == null ? void 0 : _a2.engagementToolbarStateEntityPayload) == null ? void 0 : _b2.key) === comment_view.keys.toolbar_state;
+        var _a3, _b3;
+        return ((_b3 = (_a3 = mutation.payload) == null ? void 0 : _a3.engagementToolbarStateEntityPayload) == null ? void 0 : _b3.key) === comment_view.keys.toolbar_state;
       })) == null ? void 0 : _c.payload) == null ? void 0 : _d.engagementToolbarStateEntityPayload;
       const engagement_toolbar = (_f = (_e = mutations.find((mutation) => mutation.entityKey === comment_view.keys.toolbar_surface)) == null ? void 0 : _e.payload) == null ? void 0 : _f.engagementToolbarSurfaceEntityPayload;
       const comment_surface_mutation = (_h = (_g = mutations.find((mutation) => {
-        var _a2, _b2;
-        return ((_b2 = (_a2 = mutation.payload) == null ? void 0 : _a2.commentSurfaceEntityPayload) == null ? void 0 : _b2.key) === comment_view.keys.comment_surface;
+        var _a3, _b3;
+        return ((_b3 = (_a3 = mutation.payload) == null ? void 0 : _a3.commentSurfaceEntityPayload) == null ? void 0 : _b3.key) === comment_view.keys.comment_surface;
       })) == null ? void 0 : _g.payload) == null ? void 0 : _h.commentSurfaceEntityPayload;
       comment_view.applyMutations(comment_mutation, toolbar_state_mutation, engagement_toolbar, comment_surface_mutation);
     }
@@ -29503,12 +29789,12 @@ __name(_AccountInfo, "AccountInfo");
 var AccountInfo = _AccountInfo;
 
 // dist/src/core/mixins/Feed.js
-var _page2, _actions4, _memo, _continuation2, _Feed_instances, isParsed_fn, getBodyContinuations_fn;
+var _page2, _actions5, _memo, _continuation2, _Feed_instances, isParsed_fn, getBodyContinuations_fn;
 var _Feed = class _Feed {
   constructor(actions, response, already_parsed = false) {
     __privateAdd(this, _Feed_instances);
     __privateAdd(this, _page2);
-    __privateAdd(this, _actions4);
+    __privateAdd(this, _actions5);
     __privateAdd(this, _memo);
     __privateAdd(this, _continuation2);
     if (__privateMethod(this, _Feed_instances, isParsed_fn).call(this, response) || already_parsed) {
@@ -29528,21 +29814,21 @@ var _Feed = class _Feed {
     if (!memo)
       throw new InnertubeError("No memo found in feed");
     __privateSet(this, _memo, memo);
-    __privateSet(this, _actions4, actions);
+    __privateSet(this, _actions5, actions);
   }
   /**
    * Get all videos on a given page via memo
    */
   static getVideosFromMemo(memo) {
-    return memo.getType(Video, GridVideo, ReelItem, ShortsLockupView, CompactVideo, PlaylistVideo, PlaylistPanelVideo, WatchCardCompactVideo);
+    return observe(memo.getType(Video, GridVideo, ReelItem, ShortsLockupView, CompactVideo, LockupView, PlaylistVideo, PlaylistPanelVideo, WatchCardCompactVideo).filter((item) => !item.is(LockupView) || (item.content_type === "VIDEO" || item.content_type === "MOVIE" || item.content_type === "SHORT" || item.content_type == "STATION")));
   }
   /**
    * Get all playlists on a given page via memo
    */
   static getPlaylistsFromMemo(memo) {
-    const playlists = memo.getType(Playlist, GridPlaylist);
+    const playlists = memo.getType(Playlist, GridPlaylist, GridShow);
     const lockup_views = memo.getType(LockupView).filter((lockup) => {
-      return ["PLAYLIST", "ALBUM", "PODCAST"].includes(lockup.content_type);
+      return ["PLAYLIST", "ALBUM", "PODCAST", "SHOW"].includes(lockup.content_type);
     });
     if (lockup_views.length > 0) {
       playlists.push(...lockup_views);
@@ -29580,8 +29866,8 @@ var _Feed = class _Feed {
    * Returns contents from the page.
    */
   get page_contents() {
-    var _a;
-    const tab_content = (_a = __privateGet(this, _memo).getType(Tab)) == null ? void 0 : _a[0].content;
+    var _a2;
+    const tab_content = (_a2 = __privateGet(this, _memo).getType(Tab)) == null ? void 0 : _a2[0].content;
     const reload_continuation_items = __privateGet(this, _memo).getType(ReloadContinuationItemsCommand)[0];
     const append_continuation_items = __privateGet(this, _memo).getType(AppendContinuationItemsAction)[0];
     return tab_content || reload_continuation_items || append_continuation_items;
@@ -29602,16 +29888,16 @@ var _Feed = class _Feed {
    * Returns secondary contents from the page.
    */
   get secondary_contents() {
-    var _a, _b;
-    if (!((_a = __privateGet(this, _page2).contents) == null ? void 0 : _a.is_node))
+    var _a2, _b2;
+    if (!((_a2 = __privateGet(this, _page2).contents) == null ? void 0 : _a2.is_node))
       return null;
-    const node = (_b = __privateGet(this, _page2).contents) == null ? void 0 : _b.item();
+    const node = (_b2 = __privateGet(this, _page2).contents) == null ? void 0 : _b2.item();
     if (!node.is(TwoColumnBrowseResults, TwoColumnSearchResults))
       return null;
     return node.secondary_contents;
   }
   get actions() {
-    return __privateGet(this, _actions4);
+    return __privateGet(this, _actions5);
   }
   /**
    * Get the original page data
@@ -29631,8 +29917,8 @@ var _Feed = class _Feed {
   async getContinuationData() {
     if (__privateGet(this, _continuation2)) {
       if (__privateGet(this, _continuation2).length === 0)
-        throw new InnertubeError("There are no continuations.");
-      return await __privateGet(this, _continuation2)[0].endpoint.call(__privateGet(this, _actions4), { parse: true });
+        throw new InnertubeError("There are no continuations");
+      return await __privateGet(this, _continuation2)[0].endpoint.call(__privateGet(this, _actions5), { parse: true });
     }
     __privateSet(this, _continuation2, __privateMethod(this, _Feed_instances, getBodyContinuations_fn).call(this));
     if (__privateGet(this, _continuation2))
@@ -29649,7 +29935,7 @@ var _Feed = class _Feed {
   }
 };
 _page2 = new WeakMap();
-_actions4 = new WeakMap();
+_actions5 = new WeakMap();
 _memo = new WeakMap();
 _continuation2 = new WeakMap();
 _Feed_instances = new WeakSet();
@@ -29658,67 +29944,145 @@ isParsed_fn = /* @__PURE__ */ __name(function(response) {
 }, "#isParsed");
 getBodyContinuations_fn = /* @__PURE__ */ __name(function() {
   if (__privateGet(this, _page2).header_memo) {
-    const header_continuations = __privateGet(this, _page2).header_memo.getType(ContinuationItem);
-    return __privateGet(this, _memo).getType(ContinuationItem).filter((continuation) => !header_continuations.includes(continuation));
+    const header_continuations = __privateGet(this, _page2).header_memo.getType(ContinuationItem, ContinuationItemView);
+    return __privateGet(this, _memo).getType(ContinuationItem, ContinuationItemView).filter((continuation) => !header_continuations.includes(continuation));
   }
-  return __privateGet(this, _memo).getType(ContinuationItem);
+  return __privateGet(this, _memo).getType(ContinuationItem, ContinuationItemView);
 }, "#getBodyContinuations");
 __name(_Feed, "Feed");
 var Feed = _Feed;
 
 // dist/src/core/mixins/FilterableFeed.js
-var _chips;
+var _filter_nodes;
 var _FilterableFeed = class _FilterableFeed extends Feed {
   constructor(actions, data, already_parsed = false) {
     super(actions, data, already_parsed);
-    __privateAdd(this, _chips);
+    __privateAdd(this, _filter_nodes);
   }
   /**
-   * Returns the filter chips.
+   * Returns the InnerTube renderer nodes representing filters.
    */
-  get filter_chips() {
-    var _a, _b;
-    if (__privateGet(this, _chips))
-      return __privateGet(this, _chips) || [];
-    if (((_a = this.memo.getType(FeedFilterChipBar)) == null ? void 0 : _a.length) > 1)
+  get filter_nodes() {
+    var _a2, _b2, _c, _d;
+    if (__privateGet(this, _filter_nodes))
+      return __privateGet(this, _filter_nodes);
+    let primary_filters;
+    let secondary_filters;
+    if (((_a2 = this.memo.getType(FeedFilterChipBar)) == null ? void 0 : _a2.length) > 1)
       throw new InnertubeError("There are too many feed filter chipbars, you'll need to find the correct one yourself in this.page");
-    if (((_b = this.memo.getType(FeedFilterChipBar)) == null ? void 0 : _b.length) === 0)
-      throw new InnertubeError("There are no feed filter chipbars");
-    __privateSet(this, _chips, this.memo.getType(ChipCloudChip));
-    return __privateGet(this, _chips) || [];
+    if (this.memo.has("FeedFilterChipBar")) {
+      primary_filters = this.memo.getType(ChipCloudChip);
+      ;
+    } else if (this.memo.has("ChipView")) {
+      const chips = this.memo.getType(ChipView);
+      const firstChip = chips[0];
+      if (firstChip.is(ChipView)) {
+        const hasDropdown = firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN" || firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN_WITH_CLEAR";
+        if (hasDropdown) {
+          const tapCommand = (_b2 = firstChip.tap_command) == null ? void 0 : _b2.command;
+          if ((tapCommand == null ? void 0 : tapCommand.is(ShowSheetCommand)) && ((_c = tapCommand.inline_content) == null ? void 0 : _c.is(SheetView)) && ((_d = tapCommand.inline_content.content) == null ? void 0 : _d.is(ListView))) {
+            primary_filters = tapCommand.inline_content.content.items.as(ListItemView);
+          }
+          secondary_filters = observe(chips.slice(1));
+        } else
+          primary_filters = chips;
+      }
+    }
+    __privateSet(this, _filter_nodes, {
+      primary_filters,
+      secondary_filters
+    });
+    return __privateGet(this, _filter_nodes);
   }
   /**
-   * Returns available filters.
+   * Returns the available primary filters as strings.
    */
   get filters() {
-    return this.filter_chips.map((chip) => chip.text.toString()) || [];
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.filter_nodes) == null ? void 0 : _a2.primary_filters) == null ? void 0 : _b2.map((chip) => {
+      var _a3, _b3;
+      if (chip.is(ChipView) || chip.is(ChipCloudChip)) {
+        return ((_a3 = chip.text) == null ? void 0 : _a3.toString()) || "";
+      } else if (chip.is(ListItemView)) {
+        return ((_b3 = chip.title) == null ? void 0 : _b3.toString()) || "";
+      }
+      return "";
+    })) || [];
+  }
+  /**
+   * Returns the available secondary filters as strings.
+   */
+  get secondary_filters() {
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.filter_nodes) == null ? void 0 : _a2.secondary_filters) == null ? void 0 : _b2.map((chip) => {
+      var _a3;
+      return ((_a3 = chip.text) == null ? void 0 : _a3.toString()) || "";
+    })) || [];
   }
   /**
    * Applies given filter and returns a new {@link Feed} object.
    */
-  async getFilteredFeed(filter) {
-    var _a;
-    let target_filter;
+  async getFilteredFeed(filter, secondaryFilter) {
+    var _a2, _b2, _c, _d, _e, _f, _g;
+    let filterEndpoint;
+    let isSelected = false;
     if (typeof filter === "string") {
       if (!this.filters.includes(filter))
-        throw new InnertubeError("Filter not found", { available_filters: this.filters });
-      target_filter = this.filter_chips.find((chip) => chip.text.toString() === filter);
-    } else if (filter.type === "ChipCloudChip") {
-      target_filter = filter;
+        throw new InnertubeError(`Filter '${filter}' not found`, { available_filters: this.filters });
+      for (const primaryFilterNode of this.filter_nodes.primary_filters || []) {
+        if ((primaryFilterNode.is(ChipView) || primaryFilterNode.is(ChipCloudChip)) && ((_a2 = primaryFilterNode.text) == null ? void 0 : _a2.toString()) === filter) {
+          filterEndpoint = primaryFilterNode.is(ChipView) ? primaryFilterNode.tap_command : primaryFilterNode.endpoint;
+          isSelected = primaryFilterNode.is(ChipView) ? primaryFilterNode.selected : primaryFilterNode.is_selected;
+        } else if (primaryFilterNode.is(ListItemView) && ((_b2 = primaryFilterNode.title) == null ? void 0 : _b2.toString()) === filter) {
+          filterEndpoint = (_d = (_c = primaryFilterNode == null ? void 0 : primaryFilterNode.renderer_context) == null ? void 0 : _c.command_context) == null ? void 0 : _d.on_tap;
+          isSelected = primaryFilterNode.is_selected;
+        }
+      }
+    } else if (["ChipCloudChip", "ChipView", "ListItemView"].includes(filter.type)) {
+      if (filter.is(ChipView)) {
+        filterEndpoint = filter.tap_command;
+      } else if (filter.is(ChipCloudChip)) {
+        filterEndpoint = filter.endpoint;
+      } else if (filter.is(ListItemView)) {
+        filterEndpoint = (_f = (_e = filter == null ? void 0 : filter.renderer_context) == null ? void 0 : _e.command_context) == null ? void 0 : _f.on_tap;
+      }
+      isSelected = filter.is(ChipView) ? filter.selected : filter.is_selected;
     } else {
-      throw new InnertubeError("Invalid filter");
+      throw new InnertubeError("Invalid primary filter type");
     }
-    if (!target_filter)
-      throw new InnertubeError("Filter not found");
-    if (target_filter.is_selected)
+    if (!filterEndpoint)
+      throw new InnertubeError("Could not find endpoint for the specified filter");
+    if (isSelected && !secondaryFilter)
       return this;
-    const response = await ((_a = target_filter.endpoint) == null ? void 0 : _a.call(this.actions, { parse: true }));
+    let response = isSelected ? this.page : await filterEndpoint.call(this.actions, { parse: true });
+    if (secondaryFilter) {
+      const feed = new _FilterableFeed(this.actions, response, true);
+      let secondaryFilterNode;
+      if (typeof secondaryFilter === "string") {
+        if (!feed.secondary_filters.includes(secondaryFilter))
+          throw new InnertubeError(`Secondary filter '${secondaryFilter}' not found`, { available_filters: feed.secondary_filters });
+        secondaryFilterNode = (_g = feed.filter_nodes.secondary_filters) == null ? void 0 : _g.find((chip) => {
+          var _a3;
+          return ((_a3 = chip.text) == null ? void 0 : _a3.toString()) === secondaryFilter;
+        });
+      } else if (secondaryFilter.is(ChipView)) {
+        secondaryFilterNode = secondaryFilter;
+      } else {
+        throw new InnertubeError("Invalid secondary filter type");
+      }
+      if (secondaryFilterNode && !secondaryFilterNode.selected) {
+        const secondaryFilterEndpoint = (secondaryFilterNode == null ? void 0 : secondaryFilterNode.tap_command) || (secondaryFilterNode == null ? void 0 : secondaryFilterNode.endpoint);
+        if (!secondaryFilterEndpoint)
+          throw new InnertubeError("Could not find an endpoint for the specified secondary filter");
+        response = await secondaryFilterEndpoint.call(this.actions, { parse: true });
+      }
+    }
     if (!response)
-      throw new InnertubeError("Failed to get filtered feed");
+      throw new InnertubeError("Failed to fetch data for the specified filter");
     return new Feed(this.actions, response, true);
   }
 };
-_chips = new WeakMap();
+_filter_nodes = new WeakMap();
 __name(_FilterableFeed, "FilterableFeed");
 var FilterableFeed = _FilterableFeed;
 
@@ -29732,11 +30096,11 @@ __export(mixins_exports, {
 });
 
 // dist/src/core/mixins/MediaInfo.js
-var _page3, _actions5, _cpn, _playback_tracking;
+var _page3, _actions6, _cpn, _playback_tracking;
 var _MediaInfo = class _MediaInfo {
   constructor(data, actions, cpn) {
     __privateAdd(this, _page3);
-    __privateAdd(this, _actions5);
+    __privateAdd(this, _actions6);
     __privateAdd(this, _cpn);
     __privateAdd(this, _playback_tracking);
     __publicField(this, "basic_info");
@@ -29748,13 +30112,13 @@ var _MediaInfo = class _MediaInfo {
     __publicField(this, "streaming_data");
     __publicField(this, "playability_status");
     __publicField(this, "player_config");
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v;
-    __privateSet(this, _actions5, actions);
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v;
+    __privateSet(this, _actions6, actions);
     const info2 = parser_exports.parseResponse(data[0].data.playerResponse ? data[0].data.playerResponse : data[0].data);
-    const next = ((_a = data[1]) == null ? void 0 : _a.data) ? parser_exports.parseResponse(data[1].data) : void 0;
+    const next = ((_a2 = data[1]) == null ? void 0 : _a2.data) ? parser_exports.parseResponse(data[1].data) : void 0;
     __privateSet(this, _page3, [info2, next]);
     __privateSet(this, _cpn, cpn);
-    if (((_b = info2.playability_status) == null ? void 0 : _b.status) === "ERROR")
+    if (((_b2 = info2.playability_status) == null ? void 0 : _b2.status) === "ERROR")
       throw new InnertubeError("This video is unavailable", info2.playability_status);
     if (info2.microformat && !((_c = info2.microformat) == null ? void 0 : _c.is(PlayerMicroformat, MicroformatData)))
       throw new InnertubeError("Unsupported microformat", info2.microformat);
@@ -29797,7 +30161,7 @@ var _MediaInfo = class _MediaInfo {
    * @returns DASH manifest
    */
   async toDash(options = {}) {
-    var _a, _b;
+    var _a2, _b2;
     const player_response = __privateGet(this, _page3)[0];
     const manifest_options = options.manifest_options || {};
     if (player_response.video_details && player_response.video_details.is_live) {
@@ -29808,17 +30172,17 @@ var _MediaInfo = class _MediaInfo {
     if (manifest_options.include_thumbnails && player_response.storyboards) {
       storyboards = player_response.storyboards;
     }
-    if (typeof manifest_options.captions_format === "string" && ((_a = player_response.captions) == null ? void 0 : _a.caption_tracks)) {
+    if (typeof manifest_options.captions_format === "string" && ((_a2 = player_response.captions) == null ? void 0 : _a2.caption_tracks)) {
       captions = player_response.captions.caption_tracks;
     }
-    return FormatUtils_exports.toDash(this.streaming_data, (_b = this.page[0].video_details) == null ? void 0 : _b.is_post_live_dvr, options.url_transformer, options.format_filter, __privateGet(this, _cpn), __privateGet(this, _actions5).session.player, __privateGet(this, _actions5), storyboards, captions, manifest_options);
+    return FormatUtils_exports.toDash(this.streaming_data, (_b2 = this.page[0].video_details) == null ? void 0 : _b2.is_post_live_dvr, options.url_transformer, options.format_filter, __privateGet(this, _cpn), __privateGet(this, _actions6).session.player, __privateGet(this, _actions6), storyboards, captions, manifest_options);
   }
   /**
    * Get a cleaned up representation of the adaptive_formats
    */
   getStreamingInfo(url_transformer, format_filter) {
-    var _a;
-    return getStreamingInfo(this.streaming_data, (_a = this.page[0].video_details) == null ? void 0 : _a.is_post_live_dvr, url_transformer, format_filter, this.cpn, __privateGet(this, _actions5).session.player, __privateGet(this, _actions5), __privateGet(this, _page3)[0].storyboards ? __privateGet(this, _page3)[0].storyboards : void 0);
+    var _a2;
+    return getStreamingInfo(this.streaming_data, (_a2 = this.page[0].video_details) == null ? void 0 : _a2.is_post_live_dvr, url_transformer, format_filter, this.cpn, __privateGet(this, _actions6).session.player, __privateGet(this, _actions6), __privateGet(this, _page3)[0].storyboards ? __privateGet(this, _page3)[0].storyboards : void 0);
   }
   /**
    * Selects the format that best matches the given options.
@@ -29836,13 +30200,13 @@ var _MediaInfo = class _MediaInfo {
     if (player_response.video_details && (player_response.video_details.is_live || player_response.video_details.is_post_live_dvr)) {
       throw new InnertubeError("Downloading is not supported for live and Post-Live-DVR videos, as they are split up into 5 second segments that are individual files, which require using a tool such as ffmpeg to stitch them together, so they cannot be returned in a single stream.");
     }
-    return FormatUtils_exports.download(options, __privateGet(this, _actions5), this.playability_status, this.streaming_data, __privateGet(this, _actions5).session.player, this.cpn);
+    return FormatUtils_exports.download(options, __privateGet(this, _actions6), this.playability_status, this.streaming_data, __privateGet(this, _actions6).session.player, this.cpn);
   }
   /**
    * Retrieves the video's transcript.
    */
   async getTranscript() {
-    var _a;
+    var _a2;
     const next_response = this.page[1];
     if (!next_response)
       throw new InnertubeError("Cannot get transcript from basic video info.");
@@ -29853,7 +30217,7 @@ var _MediaInfo = class _MediaInfo {
     });
     if (!transcript_panel)
       throw new InnertubeError("Transcript panel not found. Video likely has no transcript.");
-    const transcript_continuation = (_a = transcript_panel.content) == null ? void 0 : _a.as(ContinuationItem);
+    const transcript_continuation = (_a2 = transcript_panel.content) == null ? void 0 : _a2.as(ContinuationItem);
     if (!transcript_continuation)
       throw new InnertubeError("Transcript continuation not found.");
     const response = await transcript_continuation.endpoint.call(this.actions);
@@ -29869,7 +30233,7 @@ var _MediaInfo = class _MediaInfo {
       rt: 0
     };
     const url = __privateGet(this, _playback_tracking).videostats_playback_url.replace("https://s.", replacement);
-    return await __privateGet(this, _actions5).stats(url, {
+    return await __privateGet(this, _actions6).stats(url, {
       client_name: client_name || Constants_exports.CLIENTS.WEB.NAME,
       client_version: client_version || Constants_exports.CLIENTS.WEB.VERSION
     }, url_params);
@@ -29885,13 +30249,13 @@ var _MediaInfo = class _MediaInfo {
       final: "1"
     };
     const url = __privateGet(this, _playback_tracking).videostats_watchtime_url.replace("https://s.", replacement);
-    return await __privateGet(this, _actions5).stats(url, {
+    return await __privateGet(this, _actions6).stats(url, {
       client_name,
       client_version
     }, url_params);
   }
   get actions() {
-    return __privateGet(this, _actions5);
+    return __privateGet(this, _actions6);
   }
   /**
    * Content Playback Nonce.
@@ -29907,77 +30271,79 @@ var _MediaInfo = class _MediaInfo {
   }
 };
 _page3 = new WeakMap();
-_actions5 = new WeakMap();
+_actions6 = new WeakMap();
 _cpn = new WeakMap();
 _playback_tracking = new WeakMap();
 __name(_MediaInfo, "MediaInfo");
 var MediaInfo = _MediaInfo;
 
 // dist/src/core/mixins/TabbedFeed.js
-var _actions6, _tabs;
+var _actions7, _tabs;
 var _TabbedFeed = class _TabbedFeed extends Feed {
   constructor(actions, data, already_parsed = false) {
-    var _a;
+    var _a2;
     super(actions, data, already_parsed);
-    __privateAdd(this, _actions6);
+    __privateAdd(this, _actions7);
     __privateAdd(this, _tabs);
-    __privateSet(this, _actions6, actions);
-    __privateSet(this, _tabs, (_a = this.page.contents_memo) == null ? void 0 : _a.getType(Tab));
+    __privateSet(this, _actions7, actions);
+    __privateSet(this, _tabs, (_a2 = this.page.contents_memo) == null ? void 0 : _a2.getType(Tab));
   }
   get tabs() {
-    var _a, _b;
-    return (_b = (_a = __privateGet(this, _tabs)) == null ? void 0 : _a.map((tab) => tab.title.toString())) != null ? _b : [];
+    var _a2, _b2;
+    return (_b2 = (_a2 = __privateGet(this, _tabs)) == null ? void 0 : _a2.map((tab) => tab.title.toString())) != null ? _b2 : [];
   }
   async getTabByName(title) {
-    var _a;
-    const tab = (_a = __privateGet(this, _tabs)) == null ? void 0 : _a.find((tab2) => tab2.title.toLowerCase() === title.toLowerCase());
+    var _a2;
+    const tab = (_a2 = __privateGet(this, _tabs)) == null ? void 0 : _a2.find((tab2) => tab2.title.toLowerCase() === title.toLowerCase());
     if (!tab)
       throw new InnertubeError(`Tab "${title}" not found`);
     if (tab.selected)
       return this;
-    const response = await tab.endpoint.call(__privateGet(this, _actions6));
-    return new _TabbedFeed(__privateGet(this, _actions6), response, false);
+    const response = await tab.endpoint.call(__privateGet(this, _actions7));
+    return new _TabbedFeed(__privateGet(this, _actions7), response, false);
   }
   async getTabByURL(url) {
-    var _a;
-    const tab = (_a = __privateGet(this, _tabs)) == null ? void 0 : _a.find((tab2) => {
-      var _a2;
-      return ((_a2 = tab2.endpoint.metadata.url) == null ? void 0 : _a2.split("/").pop()) === url;
+    var _a2;
+    const tab = (_a2 = __privateGet(this, _tabs)) == null ? void 0 : _a2.find((tab2) => {
+      var _a3;
+      return ((_a3 = tab2.endpoint.metadata.url) == null ? void 0 : _a3.split("/").pop()) === url;
     });
     if (!tab)
       throw new InnertubeError(`Tab "${url}" not found`);
     if (tab.selected)
       return this;
-    const response = await tab.endpoint.call(__privateGet(this, _actions6));
-    return new _TabbedFeed(__privateGet(this, _actions6), response, false);
+    const response = await tab.endpoint.call(__privateGet(this, _actions7));
+    return new _TabbedFeed(__privateGet(this, _actions7), response, false);
   }
   hasTabWithURL(url) {
-    var _a, _b;
-    return (_b = (_a = __privateGet(this, _tabs)) == null ? void 0 : _a.some((tab) => {
-      var _a2;
-      return ((_a2 = tab.endpoint.metadata.url) == null ? void 0 : _a2.split("/").pop()) === url;
-    })) != null ? _b : false;
+    var _a2, _b2;
+    return (_b2 = (_a2 = __privateGet(this, _tabs)) == null ? void 0 : _a2.some((tab) => {
+      var _a3;
+      return ((_a3 = tab.endpoint.metadata.url) == null ? void 0 : _a3.split("/").pop()) === url;
+    })) != null ? _b2 : false;
   }
   get title() {
-    var _a, _b, _c;
-    return (_c = (_b = (_a = this.page.contents_memo) == null ? void 0 : _a.getType(Tab)) == null ? void 0 : _b.find((tab) => tab.selected)) == null ? void 0 : _c.title.toString();
+    var _a2, _b2, _c;
+    return (_c = (_b2 = (_a2 = this.page.contents_memo) == null ? void 0 : _a2.getType(Tab)) == null ? void 0 : _b2.find((tab) => tab.selected)) == null ? void 0 : _c.title.toString();
   }
 };
-_actions6 = new WeakMap();
+_actions7 = new WeakMap();
 _tabs = new WeakMap();
 __name(_TabbedFeed, "TabbedFeed");
 var TabbedFeed = _TabbedFeed;
 
 // dist/src/parser/youtube/Channel.js
+var _filter_nodes2;
 var _Channel2 = class _Channel2 extends TabbedFeed {
   constructor(actions, data, already_parsed = false) {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     super(actions, data, already_parsed);
     __publicField(this, "header");
     __publicField(this, "metadata");
     __publicField(this, "subscribe_button");
     __publicField(this, "current_tab");
-    this.header = (_b = (_a = this.page.header) == null ? void 0 : _a.item()) == null ? void 0 : _b.as(C4TabbedHeader, CarouselHeader, InteractiveTabbedHeader, PageHeader);
+    __privateAdd(this, _filter_nodes2);
+    this.header = (_b2 = (_a2 = this.page.header) == null ? void 0 : _a2.item()) == null ? void 0 : _b2.as(C4TabbedHeader, CarouselHeader, InteractiveTabbedHeader, PageHeader);
     const metadata = (_c = this.page.metadata) == null ? void 0 : _c.item().as(ChannelMetadata);
     const microformat = (_d = this.page.microformat) == null ? void 0 : _d.as(MicroformatData);
     if (this.page.alerts) {
@@ -29994,37 +30360,77 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
       this.current_tab = this.page.contents.item().as(TwoColumnBrowseResults).tabs.find((tab) => tab.selected);
   }
   /**
-   * Applies given filter to the list. Use {@link filters} to get available filters.
-   * @param filter - The filter to apply
+   * Applies a filter to the channel list. {@link filters}, {@link secondary_filters}, and {@link filter_nodes} can be used to get available filters.
+   *
+   * @param primaryFilter - The primary filter to apply. Can be a string representing the filter name,
+   * a {@link ChipView} instance, or a {@link ListItemView} instance.
+   * @param secondaryFilter - An optional secondary filter to apply after the primary filter.
+   * Can be a string representing the filter name or a {@link ChipView} instance.
+   *
+   * @example
+   * ```ts
+   * // Apply a primary filter by name.
+   * const filtered = await videos.applyFilter('Oldest');
+   *
+   * // Apply a primary and secondary filter by name.
+   * const filtered = await videos.applyFilter('Oldest', 'Members only');
+   *
+   * // Since we're using `filtered`, the following will return the latest members-only videos,
+   * // unless the secondary filter is explicitly changed.
+   * const latestMembersOnly = await filtered.applyFilter('Latest');
+   * ```
    */
-  async applyFilter(filter) {
-    let target_filter;
-    const filter_chipbar = this.memo.getType(FeedFilterChipBar)[0];
-    if (typeof filter === "string") {
-      target_filter = filter_chipbar == null ? void 0 : filter_chipbar.contents.find((chip) => chip.text === filter);
-      if (!target_filter)
-        throw new InnertubeError(`Filter ${filter} not found`, { available_filters: this.filters });
-    } else {
-      target_filter = filter;
+  async applyFilter(primaryFilter, secondaryFilter) {
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j;
+    const chipBarView = this.memo.getType(ChipBarView)[0];
+    if (!chipBarView) {
+      throw new InnertubeError("Filter chip bar not found");
     }
-    if (!target_filter.endpoint)
-      throw new InnertubeError("Invalid filter", filter);
-    const page = await target_filter.endpoint.call(this.actions, { parse: true });
-    if (!page)
-      throw new InnertubeError("No page returned", { filter: target_filter });
-    return new FilteredChannelList(this.actions, page, true);
+    let endpoint;
+    if (typeof primaryFilter === "string") {
+      if (!this.filters.includes(primaryFilter))
+        throw new InnertubeError(`Filter '${primaryFilter}' not found`, { available_filters: this.filters });
+      const dropdownMenu = chipBarView.chips.find((chip) => chip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN");
+      if (dropdownMenu) {
+        const tapCommand = (_a2 = dropdownMenu.tap_command) == null ? void 0 : _a2.command;
+        if ((tapCommand == null ? void 0 : tapCommand.is(ShowSheetCommand)) && ((_b2 = tapCommand.inline_content) == null ? void 0 : _b2.is(SheetView)) && ((_c = tapCommand.inline_content.content) == null ? void 0 : _c.is(ListView))) {
+          const listViewItems = tapCommand.inline_content.content.items;
+          const matchingListItem = listViewItems.as(ListItemView).find((item) => {
+            var _a3;
+            return ((_a3 = item.title) == null ? void 0 : _a3.toString()) === primaryFilter;
+          });
+          endpoint = (_f = (_e = (_d = matchingListItem == null ? void 0 : matchingListItem.renderer_context) == null ? void 0 : _d.command_context) == null ? void 0 : _e.on_tap) == null ? void 0 : _f.as(NavigationEndpoint);
+        }
+      } else {
+        endpoint = (_g = chipBarView.chips.find((chip) => chip.text === primaryFilter)) == null ? void 0 : _g.endpoint;
+      }
+    } else if (primaryFilter.is(ChipView)) {
+      endpoint = primaryFilter.endpoint;
+    } else if (primaryFilter.is(ListItemView)) {
+      endpoint = (_j = (_i = (_h = primaryFilter.renderer_context) == null ? void 0 : _h.command_context) == null ? void 0 : _i.on_tap) == null ? void 0 : _j.as(NavigationEndpoint);
+    } else {
+      throw new InnertubeError("Invalid primary filter type");
+    }
+    if (!endpoint)
+      throw new InnertubeError("Could not find endpoint for the specified filter");
+    const page = await endpoint.call(this.actions, { parse: true });
+    let filteredChannelList = new FilteredChannelList(this.actions, page, true);
+    if (secondaryFilter) {
+      filteredChannelList = await filteredChannelList.applyFilter(primaryFilter, secondaryFilter);
+    }
+    return filteredChannelList;
   }
   /**
-   * Applies given sort filter to the list. Use {@link sort_filters} to get available filters.
-   * @param sort - The sort filter to apply
+   * Applies a sort filter to the list. Use {@link sort_filters} to get available filters.
+   * @param sortFilter - The sort filter to apply
    */
-  async applySort(sort) {
+  async applySort(sortFilter) {
     const sort_filter_sub_menu = this.memo.getType(SortFilterSubMenu)[0];
     if (!sort_filter_sub_menu || !sort_filter_sub_menu.sub_menu_items)
       throw new InnertubeError("No sort filter sub menu found");
-    const target_sort = sort_filter_sub_menu.sub_menu_items.find((item) => item.title === sort);
+    const target_sort = sort_filter_sub_menu.sub_menu_items.find((item) => item.title === sortFilter);
     if (!target_sort)
-      throw new InnertubeError(`Sort filter ${sort} not found`, { available_sort_filters: this.sort_filters });
+      throw new InnertubeError(`Sort filter '${sortFilter}' not found`, { available_sort_filters: this.sort_filters });
     if (target_sort.selected)
       return this;
     const page = await target_sort.endpoint.call(this.actions, { parse: true });
@@ -30035,30 +30441,91 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
    * @param content_type_filter - The content type filter to apply
    */
   async applyContentTypeFilter(content_type_filter) {
-    var _a, _b, _c;
-    const sub_menu = (_c = (_b = (_a = this.current_tab) == null ? void 0 : _a.content) == null ? void 0 : _b.as(SectionList).sub_menu) == null ? void 0 : _c.as(ChannelSubMenu);
+    var _a2, _b2, _c;
+    const sub_menu = (_c = (_b2 = (_a2 = this.current_tab) == null ? void 0 : _a2.content) == null ? void 0 : _b2.as(SectionList).sub_menu) == null ? void 0 : _c.as(ChannelSubMenu);
     if (!sub_menu)
       throw new InnertubeError("Sub menu not found");
     const item = sub_menu.content_type_sub_menu_items.find((item2) => item2.title === content_type_filter);
     if (!item)
-      throw new InnertubeError(`Sub menu item ${content_type_filter} not found`, { available_filters: this.content_type_filters });
+      throw new InnertubeError(`Sub menu item '${content_type_filter}' not found`, { available_filters: this.content_type_filters });
     if (item.selected)
       return this;
     const page = await item.endpoint.call(this.actions, { parse: true });
     return new _Channel2(this.actions, page, true);
   }
+  /**
+   * Returns the InnerTube renderer nodes representing filters.
+   */
+  get filter_nodes() {
+    var _a2, _b2, _c, _d;
+    if (__privateGet(this, _filter_nodes2))
+      return __privateGet(this, _filter_nodes2);
+    let primary_filters;
+    let secondary_filters;
+    if (((_a2 = this.memo.getType(FeedFilterChipBar)) == null ? void 0 : _a2.length) > 1)
+      throw new InnertubeError("There are too many feed filter chipbars, you'll need to find the correct one yourself in this.page");
+    if (this.memo.has("FeedFilterChipBar")) {
+      primary_filters = this.memo.getType(ChipCloudChip);
+      ;
+    } else if (this.memo.has("ChipView")) {
+      const chips = this.memo.getType(ChipView);
+      const firstChip = chips[0];
+      if (firstChip.is(ChipView)) {
+        const hasDropdown = firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN" || firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN_WITH_CLEAR";
+        if (hasDropdown) {
+          const tapCommand = (_b2 = firstChip.tap_command) == null ? void 0 : _b2.command;
+          if ((tapCommand == null ? void 0 : tapCommand.is(ShowSheetCommand)) && ((_c = tapCommand.inline_content) == null ? void 0 : _c.is(SheetView)) && ((_d = tapCommand.inline_content.content) == null ? void 0 : _d.is(ListView))) {
+            primary_filters = tapCommand.inline_content.content.items.as(ListItemView);
+          }
+          secondary_filters = observe(chips.slice(1));
+        } else
+          primary_filters = chips;
+      }
+    }
+    __privateSet(this, _filter_nodes2, {
+      primary_filters,
+      secondary_filters
+    });
+    return __privateGet(this, _filter_nodes2);
+  }
+  /**
+   * Returns the available primary filters as strings.
+   */
   get filters() {
-    var _a, _b;
-    return ((_b = (_a = this.memo.getType(FeedFilterChipBar)) == null ? void 0 : _a[0]) == null ? void 0 : _b.contents.filterType(ChipCloudChip).map((chip) => chip.text)) || [];
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.filter_nodes) == null ? void 0 : _a2.primary_filters) == null ? void 0 : _b2.map((chip) => {
+      var _a3, _b3;
+      if (chip.is(ChipView) || chip.is(ChipCloudChip)) {
+        return ((_a3 = chip.text) == null ? void 0 : _a3.toString()) || "";
+      } else if (chip.is(ListItemView)) {
+        return ((_b3 = chip.title) == null ? void 0 : _b3.toString()) || "";
+      }
+      return "";
+    })) || [];
+  }
+  /**
+   * Returns the available secondary filters as strings.
+   *
+   * ---
+   *
+   * NOTE:
+   * Not all channels have secondary filters!
+   */
+  get secondary_filters() {
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.filter_nodes) == null ? void 0 : _a2.secondary_filters) == null ? void 0 : _b2.map((chip) => {
+      var _a3;
+      return ((_a3 = chip.text) == null ? void 0 : _a3.toString()) || "";
+    })) || [];
   }
   get sort_filters() {
-    var _a;
+    var _a2;
     const sort_filter_sub_menu = this.memo.getType(SortFilterSubMenu)[0];
-    return ((_a = sort_filter_sub_menu == null ? void 0 : sort_filter_sub_menu.sub_menu_items) == null ? void 0 : _a.map((item) => item.title)) || [];
+    return ((_a2 = sort_filter_sub_menu == null ? void 0 : sort_filter_sub_menu.sub_menu_items) == null ? void 0 : _a2.map((item) => item.title)) || [];
   }
   get content_type_filters() {
-    var _a, _b, _c;
-    const sub_menu = (_c = (_b = (_a = this.current_tab) == null ? void 0 : _a.content) == null ? void 0 : _b.as(SectionList).sub_menu) == null ? void 0 : _c.as(ChannelSubMenu);
+    var _a2, _b2, _c;
+    const sub_menu = (_c = (_b2 = (_a2 = this.current_tab) == null ? void 0 : _a2.content) == null ? void 0 : _b2.as(SectionList).sub_menu) == null ? void 0 : _c.as(ChannelSubMenu);
     return (sub_menu == null ? void 0 : sub_menu.content_type_sub_menu_items.map((item) => item.title)) || [];
   }
   async getHome() {
@@ -30089,6 +30556,10 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
     const tab = await this.getTabByURL("courses");
     return new _Channel2(this.actions, tab.page, true);
   }
+  async getShows() {
+    const tab = await this.getTabByURL("shows");
+    return new _Channel2(this.actions, tab.page, true);
+  }
   async getPlaylists() {
     const tab = await this.getTabByURL("playlists");
     return new _Channel2(this.actions, tab.page, true);
@@ -30102,13 +30573,13 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
    * Note that this does not return a new {@link Channel} object.
    */
   async getAbout() {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     if (this.hasTabWithURL("about")) {
       const tab = await this.getTabByURL("about");
       return tab.memo.getType(ChannelAboutFullMetadata)[0];
     }
-    const tagline = ((_a = this.header) == null ? void 0 : _a.is(C4TabbedHeader)) && this.header.tagline;
-    if (tagline || ((_b = this.header) == null ? void 0 : _b.is(PageHeader)) && ((_c = this.header.content) == null ? void 0 : _c.description)) {
+    const tagline = ((_a2 = this.header) == null ? void 0 : _a2.is(C4TabbedHeader)) && this.header.tagline;
+    if (tagline || ((_b2 = this.header) == null ? void 0 : _b2.is(PageHeader)) && ((_c = this.header.content) == null ? void 0 : _c.description)) {
       if (tagline && tagline.more_endpoint instanceof NavigationEndpoint) {
         const response2 = await tagline.more_endpoint.call(this.actions);
         const tab = new TabbedFeed(this.actions, response2, false);
@@ -30130,8 +30601,8 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
    * Searches within the channel.
    */
   async search(query) {
-    var _a;
-    const tab = (_a = this.memo.getType(ExpandableTab)) == null ? void 0 : _a[0];
+    var _a2;
+    const tab = (_a2 = this.memo.getType(ExpandableTab)) == null ? void 0 : _a2[0];
     if (!tab)
       throw new InnertubeError("Search tab not found", this);
     const page = await tab.endpoint.call(this.actions, { query, parse: true });
@@ -30158,6 +30629,9 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
   get has_courses() {
     return this.hasTabWithURL("courses");
   }
+  get has_shows() {
+    return this.hasTabWithURL("shows");
+  }
   get has_playlists() {
     return this.hasTabWithURL("playlists");
   }
@@ -30165,12 +30639,12 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
     return this.hasTabWithURL("posts");
   }
   get has_about() {
-    var _a, _b, _c, _d, _e;
-    return this.hasTabWithURL("about") || !!(((_a = this.header) == null ? void 0 : _a.is(C4TabbedHeader)) && ((_b = this.header.tagline) == null ? void 0 : _b.more_endpoint)) || !!(((_c = this.header) == null ? void 0 : _c.is(PageHeader)) && ((_e = (_d = this.header.content) == null ? void 0 : _d.description) == null ? void 0 : _e.more_endpoint));
+    var _a2, _b2, _c, _d, _e;
+    return this.hasTabWithURL("about") || !!(((_a2 = this.header) == null ? void 0 : _a2.is(C4TabbedHeader)) && ((_b2 = this.header.tagline) == null ? void 0 : _b2.more_endpoint)) || !!(((_c = this.header) == null ? void 0 : _c.is(PageHeader)) && ((_e = (_d = this.header.content) == null ? void 0 : _d.description) == null ? void 0 : _e.more_endpoint));
   }
   get has_search() {
-    var _a;
-    return ((_a = this.memo.getType(ExpandableTab)) == null ? void 0 : _a.length) > 0;
+    var _a2;
+    return ((_a2 = this.memo.getType(ExpandableTab)) == null ? void 0 : _a2.length) > 0;
   }
   async getContinuation() {
     const page = await super.getContinuationData();
@@ -30179,14 +30653,15 @@ var _Channel2 = class _Channel2 extends TabbedFeed {
     return new ChannelListContinuation(this.actions, page, true);
   }
 };
+_filter_nodes2 = new WeakMap();
 __name(_Channel2, "Channel");
 var Channel2 = _Channel2;
 var _ChannelListContinuation = class _ChannelListContinuation extends Feed {
   constructor(actions, data, already_parsed = false) {
-    var _a, _b;
+    var _a2, _b2;
     super(actions, data, already_parsed);
     __publicField(this, "contents");
-    this.contents = ((_a = this.page.on_response_received_actions) == null ? void 0 : _a[0]) || ((_b = this.page.on_response_received_endpoints) == null ? void 0 : _b[0]);
+    this.contents = ((_a2 = this.page.on_response_received_actions) == null ? void 0 : _a2[0]) || ((_b2 = this.page.on_response_received_endpoints) == null ? void 0 : _b2[0]);
   }
   async getContinuation() {
     const page = await super.getContinuationData();
@@ -30199,30 +30674,54 @@ __name(_ChannelListContinuation, "ChannelListContinuation");
 var ChannelListContinuation = _ChannelListContinuation;
 var _FilteredChannelList = class _FilteredChannelList extends FilterableFeed {
   constructor(actions, data, already_parsed = false) {
-    var _a;
+    var _a2, _b2, _c, _d;
     super(actions, data, already_parsed);
-    __publicField(this, "applied_filter");
+    __publicField(this, "filter");
+    __publicField(this, "secondary_filter");
     __publicField(this, "contents");
-    this.applied_filter = this.memo.getType(ChipCloudChip).find((chip) => chip.is_selected);
+    const chipBarView = this.memo.getType(ChipBarView)[0];
+    if (chipBarView) {
+      const firstChip = chipBarView.chips[0];
+      const hasDropdown = firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN" || firstChip.display_type === "CHIP_VIEW_MODEL_DISPLAY_TYPE_DROP_DOWN_WITH_CLEAR";
+      if (hasDropdown) {
+        this.secondary_filter = chipBarView.chips.slice(1).find((chip) => chip.selected);
+        const tapCommand = (_a2 = firstChip.tap_command) == null ? void 0 : _a2.command;
+        if ((tapCommand == null ? void 0 : tapCommand.is(ShowSheetCommand)) && ((_b2 = tapCommand.inline_content) == null ? void 0 : _b2.is(SheetView)) && ((_c = tapCommand.inline_content.content) == null ? void 0 : _c.is(ListView))) {
+          this.filter = tapCommand.inline_content.content.items.as(ListItemView).find((item) => item.is_selected);
+        }
+      } else {
+        this.filter = chipBarView.chips.find((chip) => chip.selected);
+      }
+    }
     if (this.page.on_response_received_actions && this.page.on_response_received_actions.length > 1) {
       this.page.on_response_received_actions.shift();
     }
-    this.contents = (_a = this.page.on_response_received_actions) == null ? void 0 : _a[0];
+    this.contents = (_d = this.page.on_response_received_actions) == null ? void 0 : _d[0];
   }
   /**
    * Applies given filter to the list.
    * @param filter - The filter to apply
    */
-  async applyFilter(filter) {
-    const feed = await super.getFilteredFeed(filter);
+  async applyFilter(filter, secondaryFilter) {
+    const feed = await super.getFilteredFeed(filter, secondaryFilter);
     return new _FilteredChannelList(this.actions, feed.page, true);
   }
   async getContinuation() {
     const page = await super.getContinuationData();
     if (!(page == null ? void 0 : page.on_response_received_actions_memo))
       throw new InnertubeError("Unexpected continuation data", page);
-    page.on_response_received_actions_memo.set("FeedFilterChipBar", this.memo.getType(FeedFilterChipBar));
-    page.on_response_received_actions_memo.set("ChipCloudChip", this.memo.getType(ChipCloudChip));
+    if (this.memo.has("FeedFilterChipBar")) {
+      page.on_response_received_actions_memo.set("FeedFilterChipBar", this.memo.getType(FeedFilterChipBar));
+    }
+    if (this.memo.has("ChipCloudChip")) {
+      page.on_response_received_actions_memo.set("ChipCloudChip", this.memo.getType(ChipCloudChip));
+    }
+    if (this.memo.has("ChipBarView")) {
+      page.on_response_received_actions_memo.set("ChipBarView", this.memo.getType(ChipBarView));
+    }
+    if (this.memo.has("ChipView")) {
+      page.on_response_received_actions_memo.set("ChipView", this.memo.getType(ChipView));
+    }
     return new _FilteredChannelList(this.actions, page, true);
   }
 };
@@ -30230,28 +30729,29 @@ __name(_FilteredChannelList, "FilteredChannelList");
 var FilteredChannelList = _FilteredChannelList;
 
 // dist/src/parser/youtube/Comments.js
-var _page4, _actions7, _continuation3;
+var _page4, _actions8, _continuation3;
 var _Comments = class _Comments {
   constructor(actions, data, already_parsed = false) {
     __privateAdd(this, _page4);
-    __privateAdd(this, _actions7);
+    __privateAdd(this, _actions8);
     __privateAdd(this, _continuation3);
     __publicField(this, "header");
     __publicField(this, "contents");
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     __privateSet(this, _page4, already_parsed ? data : parser_exports.parseResponse(data));
-    __privateSet(this, _actions7, actions);
+    __privateSet(this, _actions8, actions);
     const contents = __privateGet(this, _page4).on_response_received_endpoints;
     if (!contents)
-      throw new InnertubeError("Comments page did not have any content.");
-    const header_node = (_a = contents.at(0)) == null ? void 0 : _a.as(AppendContinuationItemsAction, ReloadContinuationItemsCommand);
-    const body_node = (_b = contents.at(1)) == null ? void 0 : _b.as(AppendContinuationItemsAction, ReloadContinuationItemsCommand);
+      throw new InnertubeError("The comments page did not have any content");
+    const header_node = (_a2 = contents.at(0)) == null ? void 0 : _a2.as(AppendContinuationItemsAction, ReloadContinuationItemsCommand);
+    const body_node = (_b2 = contents.at(1)) == null ? void 0 : _b2.as(AppendContinuationItemsAction, ReloadContinuationItemsCommand);
     this.header = (_c = header_node == null ? void 0 : header_node.contents) == null ? void 0 : _c.firstOfType(CommentsHeader);
     const threads = ((_d = body_node == null ? void 0 : body_node.contents) == null ? void 0 : _d.filterType(CommentThread)) || [];
     this.contents = observe(threads.map((thread) => {
       if (thread.comment)
-        thread.comment.setActions(__privateGet(this, _actions7));
-      thread.setActions(__privateGet(this, _actions7));
+        thread.comment.setActions(__privateGet(this, _actions8));
+      thread.setActions(__privateGet(this, _actions8));
+      thread.processRepliesData();
       return thread;
     }));
     __privateSet(this, _continuation3, (_e = body_node == null ? void 0 : body_node.contents) == null ? void 0 : _e.firstOfType(ContinuationItem));
@@ -30261,50 +30761,50 @@ var _Comments = class _Comments {
    * @param sort - Sort type.
    */
   async applySort(sort) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     if (!this.header)
-      throw new InnertubeError("Page header is missing. Cannot apply sort option.");
+      throw new InnertubeError("Could not apply sort because the comments header is missing");
     let button;
     if (sort === "TOP_COMMENTS") {
-      button = (_b = (_a = this.header.sort_menu) == null ? void 0 : _a.sub_menu_items) == null ? void 0 : _b.at(0);
+      button = (_b2 = (_a2 = this.header.sort_menu) == null ? void 0 : _a2.sub_menu_items) == null ? void 0 : _b2.at(0);
     } else if (sort === "NEWEST_FIRST") {
       button = (_d = (_c = this.header.sort_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.at(1);
     }
     if (!button)
-      throw new InnertubeError("Could not find target button.");
+      throw new InnertubeError("Could not apply sort because the sort button is missing");
     if (button.selected)
       return this;
-    const response = await button.endpoint.call(__privateGet(this, _actions7), { parse: true });
-    return new _Comments(__privateGet(this, _actions7), response, true);
+    const response = await button.endpoint.call(__privateGet(this, _actions8), { parse: true });
+    return new _Comments(__privateGet(this, _actions8), response, true);
   }
   /**
    * Creates a top-level comment.
    * @param text - Comment text.
    */
   async createComment(text) {
-    var _a;
+    var _a2;
     if (!this.header)
-      throw new InnertubeError("Page header is missing. Cannot create comment.");
-    const button = (_a = this.header.create_renderer) == null ? void 0 : _a.as(CommentSimplebox).submit_button;
+      throw new InnertubeError("Comment could not be created because the page header is missing");
+    const button = (_a2 = this.header.create_renderer) == null ? void 0 : _a2.as(CommentSimplebox).submit_button;
     if (!button)
-      throw new InnertubeError("Could not find target button. You are probably not logged in.");
+      throw new InnertubeError("Comment could not be created because the comment button is missing");
     if (!button.endpoint)
-      throw new InnertubeError("Button does not have an endpoint.");
-    return await button.endpoint.call(__privateGet(this, _actions7), { commentText: text });
+      throw new InnertubeError("Comment could not be created because the comment button does not have an endpoint");
+    return await button.endpoint.call(__privateGet(this, _actions8), { commentText: text });
   }
   /**
    * Retrieves next batch of comments.
    */
   async getContinuation() {
     if (!__privateGet(this, _continuation3))
-      throw new InnertubeError("Continuation not found");
-    const data = await __privateGet(this, _continuation3).endpoint.call(__privateGet(this, _actions7), { parse: true });
+      throw new InnertubeError("No continuation item found");
+    const data = await __privateGet(this, _continuation3).endpoint.call(__privateGet(this, _actions8), { parse: true });
     const page = Object.assign({}, __privateGet(this, _page4));
     if (!page.on_response_received_endpoints || !data.on_response_received_endpoints)
-      throw new InnertubeError("Invalid reponse format, missing on_response_received_endpoints.");
+      throw new InnertubeError("Invalid reponse format, missing on_response_received_endpoints");
     page.on_response_received_endpoints.pop();
     page.on_response_received_endpoints.push(data.on_response_received_endpoints[0]);
-    return new _Comments(__privateGet(this, _actions7), page, true);
+    return new _Comments(__privateGet(this, _actions8), page, true);
   }
   get has_continuation() {
     return !!__privateGet(this, _continuation3);
@@ -30314,7 +30814,7 @@ var _Comments = class _Comments {
   }
 };
 _page4 = new WeakMap();
-_actions7 = new WeakMap();
+_actions8 = new WeakMap();
 _continuation3 = new WeakMap();
 __name(_Comments, "Comments");
 var Comments = _Comments;
@@ -30359,7 +30859,7 @@ var _History = class _History extends Feed {
    * Removes a video from watch history.
    */
   async removeVideo(video_id, pages_to_load = 1) {
-    var _a, _b, _c;
+    var _a2, _b2, _c;
     let pagesToLoad = pages_to_load;
     while (pagesToLoad > 0) {
       let feedbackToken;
@@ -30372,10 +30872,10 @@ var _History = class _History extends Feed {
             }
           } else if (content.is(LockupView)) {
             if (content.content_id === video_id) {
-              const listItems = (_c = (_b = (_a = content.metadata) == null ? void 0 : _a.menu_button) == null ? void 0 : _b.on_tap) == null ? void 0 : _c.payload.panelLoadingStrategy.inlineContent.sheetViewModel.content.listViewModel.listItems;
+              const listItems = (_c = (_b2 = (_a2 = content.metadata) == null ? void 0 : _a2.menu_button) == null ? void 0 : _b2.on_tap) == null ? void 0 : _c.payload.panelLoadingStrategy.inlineContent.sheetViewModel.content.listViewModel.listItems;
               const listItem = listItems.find((video) => {
-                var _a2;
-                return ((_a2 = video.listItemViewModel) == null ? void 0 : _a2.title.content) === "Remove from watch history";
+                var _a3;
+                return ((_a3 = video.listItemViewModel) == null ? void 0 : _a3.title.content) === "Remove from watch history";
               });
               feedbackToken = listItem.listItemViewModel.rendererContext.commandContext.onTap.innertubeCommand.feedbackEndpoint.feedbackToken;
               break;
@@ -30414,12 +30914,12 @@ var History = _History;
 // dist/src/parser/youtube/HomeFeed.js
 var _HomeFeed = class _HomeFeed extends FilterableFeed {
   constructor(actions, data, already_parsed = false) {
-    var _a;
+    var _a2;
     super(actions, data, already_parsed);
     __publicField(this, "contents");
     __publicField(this, "header");
     this.header = this.memo.getType(FeedTabbedHeader)[0];
-    this.contents = this.memo.getType(RichGrid)[0] || ((_a = this.page.on_response_received_actions) == null ? void 0 : _a[0]);
+    this.contents = this.memo.getType(RichGrid)[0] || ((_a2 = this.page.on_response_received_actions) == null ? void 0 : _a2[0]);
   }
   /**
    * Applies given filter to the feed. Use {@link filters} to get available filters.
@@ -30433,11 +30933,11 @@ var _HomeFeed = class _HomeFeed extends FilterableFeed {
    * Retrieves next batch of contents.
    */
   async getContinuation() {
-    var _a;
+    var _a2;
     const feed = await super.getContinuation();
     feed.page.header = this.page.header;
     if (this.header)
-      (_a = feed.page.header_memo) == null ? void 0 : _a.set(this.header.type, [this.header]);
+      (_a2 = feed.page.header_memo) == null ? void 0 : _a2.set(this.header.type, [this.header]);
     return new _HomeFeed(this.actions, feed.page, true);
   }
 };
@@ -30473,14 +30973,14 @@ __name(_HashtagFeed, "HashtagFeed");
 var HashtagFeed = _HashtagFeed;
 
 // dist/src/parser/youtube/ItemMenu.js
-var _page6, _actions8, _items;
+var _page6, _actions9, _items;
 var _ItemMenu = class _ItemMenu {
   constructor(data, actions) {
     __privateAdd(this, _page6);
-    __privateAdd(this, _actions8);
+    __privateAdd(this, _actions9);
     __privateAdd(this, _items);
     __privateSet(this, _page6, data);
-    __privateSet(this, _actions8, actions);
+    __privateSet(this, _actions9, actions);
     const menu = data == null ? void 0 : data.live_chat_item_context_menu_supported_renderers;
     if (!menu || !menu.is(Menu))
       throw new InnertubeError('Response did not have a "live_chat_item_context_menu_supported_renderers" property. The call may have failed.');
@@ -30506,7 +31006,7 @@ var _ItemMenu = class _ItemMenu {
     }
     if (!endpoint)
       throw new InnertubeError("Target button does not have an endpoint.");
-    return await endpoint.call(__privateGet(this, _actions8), { parse: true });
+    return await endpoint.call(__privateGet(this, _actions9), { parse: true });
   }
   items() {
     return __privateGet(this, _items);
@@ -30516,7 +31016,7 @@ var _ItemMenu = class _ItemMenu {
   }
 };
 _page6 = new WeakMap();
-_actions8 = new WeakMap();
+_actions9 = new WeakMap();
 _items = new WeakMap();
 __name(_ItemMenu, "ItemMenu");
 var ItemMenu = _ItemMenu;
@@ -30525,7 +31025,7 @@ var ItemMenu = _ItemMenu;
 var _Playlist_instances, getStat_fn;
 var _Playlist2 = class _Playlist2 extends Feed {
   constructor(actions, data, already_parsed = false) {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     super(actions, data, already_parsed);
     __privateAdd(this, _Playlist_instances);
     __publicField(this, "info");
@@ -30536,13 +31036,13 @@ var _Playlist2 = class _Playlist2 extends Feed {
     const primary_info = this.memo.getType(PlaylistSidebarPrimaryInfo)[0];
     const secondary_info = this.memo.getType(PlaylistSidebarSecondaryInfo)[0];
     const video_list = this.memo.getType(PlaylistVideoList)[0];
-    const alert = (_a = this.page.alerts) == null ? void 0 : _a.firstOfType(Alert);
+    const alert = (_a2 = this.page.alerts) == null ? void 0 : _a2.firstOfType(Alert);
     if (alert && alert.alert_type === "ERROR")
       throw new InnertubeError(alert.text.toString(), alert);
     if (!primary_info && !secondary_info && Object.keys(this.page).length === 0)
       throw new InnertubeError("Got empty continuation response. This is likely the end of the playlist.");
     this.info = {
-      ...(_b = this.page.metadata) == null ? void 0 : _b.item().as(PlaylistMetadata),
+      ...(_b2 = this.page.metadata) == null ? void 0 : _b2.item().as(PlaylistMetadata),
       ...{
         subtitle: header ? header.subtitle : null,
         author: (_d = (_c = secondary_info == null ? void 0 : secondary_info.owner) == null ? void 0 : _c.as(VideoOwner).author) != null ? _d : header == null ? void 0 : header.author,
@@ -30561,20 +31061,33 @@ var _Playlist2 = class _Playlist2 extends Feed {
     this.endpoint = primary_info == null ? void 0 : primary_info.endpoint;
     this.messages = this.memo.getType(Message);
   }
+  async getCollaborators() {
+    var _a2, _b2, _c, _d;
+    if (!this.actions.session.logged_in)
+      throw new Error("You must be signed in to perform this operation.");
+    const avatar_stack_view = (_a2 = this.memo.getType(AvatarStackView)) == null ? void 0 : _a2.find((item) => item.renderer_context.command_context);
+    const endpoint = (_b2 = avatar_stack_view == null ? void 0 : avatar_stack_view.renderer_context.command_context) == null ? void 0 : _b2.on_tap;
+    if (!endpoint)
+      throw new InnertubeError("AvatarStackView on_tap endpoint not found");
+    if ((_c = endpoint.command) == null ? void 0 : _c.is(ShowEngagementPanelEndpoint)) {
+      return await endpoint.call(this.actions, { parse: true });
+    }
+    throw new InnertubeError(`Unexpected endpoint type. Expected ShowEngagementPanelEndpoint, got ${(_d = endpoint.command) == null ? void 0 : _d.type}`);
+  }
   get items() {
-    return observe(this.videos.as(PlaylistVideo, ReelItem, ShortsLockupView).filter((video) => video.style !== "PLAYLIST_VIDEO_RENDERER_STYLE_RECOMMENDED_VIDEO"));
+    return observe(this.videos.as(LockupView, PlaylistVideo, ReelItem, ShortsLockupView).filter((video) => video.style !== "PLAYLIST_VIDEO_RENDERER_STYLE_RECOMMENDED_VIDEO"));
   }
   get has_continuation() {
     const section_list = this.memo.getType(SectionList)[0];
     if (!section_list)
       return super.has_continuation;
-    return !!this.memo.getType(ContinuationItem).find((node) => !section_list.contents.includes(node));
+    return !!this.memo.getType(ContinuationItem, ContinuationItemView).find((node) => !section_list.contents.includes(node));
   }
   async getContinuationData() {
     const section_list = this.memo.getType(SectionList)[0];
     if (!section_list)
       return await super.getContinuationData();
-    const playlist_contents_continuation = this.memo.getType(ContinuationItem).find((node) => !section_list.contents.includes(node));
+    const playlist_contents_continuation = this.memo.getType(ContinuationItem, ContinuationItemView).find((node) => !section_list.contents.includes(node));
     if (!playlist_contents_continuation)
       throw new InnertubeError("There are no continuations.");
     return await playlist_contents_continuation.endpoint.call(this.actions, { parse: true });
@@ -30588,10 +31101,10 @@ var _Playlist2 = class _Playlist2 extends Feed {
 };
 _Playlist_instances = new WeakSet();
 getStat_fn = /* @__PURE__ */ __name(function(index, primary_info) {
-  var _a;
+  var _a2;
   if (!primary_info || !primary_info.stats)
     return "N/A";
-  return ((_a = primary_info.stats[index]) == null ? void 0 : _a.toString()) || "N/A";
+  return ((_a2 = primary_info.stats[index]) == null ? void 0 : _a2.toString()) || "N/A";
 }, "#getStat");
 __name(_Playlist2, "Playlist");
 var Playlist2 = _Playlist2;
@@ -30609,11 +31122,11 @@ var _Library = class _Library extends Feed {
     this.header = this.memo.getType(PageHeader)[0];
     const shelves = this.page.contents_memo.getType(Shelf);
     this.sections = shelves.map((shelf) => {
-      var _a;
+      var _a2;
       return {
         type: shelf.icon_type,
         title: shelf.title,
-        contents: ((_a = shelf.content) == null ? void 0 : _a.key("items").array()) || [],
+        contents: ((_a2 = shelf.content) == null ? void 0 : _a2.key("items").array()) || [],
         getAll: /* @__PURE__ */ __name(() => __privateMethod(this, _Library_instances, getAll_fn).call(this, shelf), "getAll")
       };
     });
@@ -30636,8 +31149,8 @@ var _Library = class _Library extends Feed {
 };
 _Library_instances = new WeakSet();
 getAll_fn = /* @__PURE__ */ __name(async function(shelf) {
-  var _a;
-  if (!((_a = shelf.menu) == null ? void 0 : _a.as(Menu).top_level_buttons))
+  var _a2;
+  if (!((_a2 = shelf.menu) == null ? void 0 : _a2.as(Menu).top_level_buttons))
     throw new InnertubeError(`The ${shelf.title.text} shelf doesn't have more items`);
   const button = shelf.menu.as(Menu).top_level_buttons.firstOfType(Button);
   if (!button)
@@ -30793,13 +31306,13 @@ __name(_SmoothedQueue, "SmoothedQueue");
 var SmoothedQueue = _SmoothedQueue;
 
 // dist/src/parser/youtube/LiveChat.js
-var _actions9, _video_id, _channel_id, _continuation4, _mcontinuation, _retry_count, _LiveChat_instances, pollLivechat_fn, emitSmoothedActions_fn, pollMetadata_fn, wait_fn;
+var _actions10, _video_id, _channel_id, _continuation4, _mcontinuation, _retry_count, _LiveChat_instances, pollLivechat_fn, emitSmoothedActions_fn, pollMetadata_fn, wait_fn;
 var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
   constructor(video_info) {
-    var _a, _b;
+    var _a2, _b2;
     super();
     __privateAdd(this, _LiveChat_instances);
-    __privateAdd(this, _actions9);
+    __privateAdd(this, _actions10);
     __privateAdd(this, _video_id);
     __privateAdd(this, _channel_id);
     __privateAdd(this, _continuation4);
@@ -30812,9 +31325,9 @@ var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
     __publicField(this, "is_replay", false);
     __privateSet(this, _video_id, video_info.basic_info.id);
     __privateSet(this, _channel_id, video_info.basic_info.channel_id);
-    __privateSet(this, _actions9, video_info.actions);
-    __privateSet(this, _continuation4, (_a = video_info.livechat) == null ? void 0 : _a.continuation);
-    this.is_replay = ((_b = video_info.livechat) == null ? void 0 : _b.is_replay) || false;
+    __privateSet(this, _actions10, video_info.actions);
+    __privateSet(this, _continuation4, (_a2 = video_info.livechat) == null ? void 0 : _a2.continuation);
+    this.is_replay = ((_b2 = video_info.livechat) == null ? void 0 : _b2.is_replay) || false;
     this.smoothed_queue = new SmoothedQueue();
     this.smoothed_queue.callback = async (actions) => {
       if (!actions.length) {
@@ -30831,12 +31344,6 @@ var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
         __privateMethod(this, _LiveChat_instances, pollLivechat_fn).call(this);
       }
     };
-  }
-  on(type, listener) {
-    super.on(type, listener);
-  }
-  once(type, listener) {
-    super.once(type, listener);
   }
   start() {
     if (!this.running) {
@@ -30865,7 +31372,7 @@ var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
       number1: 4
     });
     const params = btoa(encodeURIComponent(u8ToBase64(writer.finish())));
-    const response = await __privateGet(this, _actions9).execute("/live_chat/send_message", {
+    const response = await __privateGet(this, _actions10).execute("/live_chat/send_message", {
       richMessage: { textSegments: [{ text }] },
       clientMessageId: Platform.shim.uuidv4(),
       client: "WEB",
@@ -30881,10 +31388,10 @@ var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
    * @param filter - Filter to apply.
    */
   applyFilter(filter) {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a2, _b2, _c, _d, _e, _f, _g;
     if (!this.initial_info)
       throw new InnertubeError("Cannot apply filter before initial info is retrieved.");
-    const menu_items = (_c = (_b = (_a = this.initial_info) == null ? void 0 : _a.header) == null ? void 0 : _b.view_selector) == null ? void 0 : _c.sub_menu_items;
+    const menu_items = (_c = (_b2 = (_a2 = this.initial_info) == null ? void 0 : _a2.header) == null ? void 0 : _b2.view_selector) == null ? void 0 : _c.sub_menu_items;
     if (filter === "TOP_CHAT") {
       if ((_d = menu_items == null ? void 0 : menu_items.at(0)) == null ? void 0 : _d.selected)
         return;
@@ -30901,19 +31408,19 @@ var _LiveChat2 = class _LiveChat2 extends EventEmitterLike {
   async getItemMenu(item) {
     if (!item.hasKey("menu_endpoint") || !item.key("menu_endpoint").isInstanceof(NavigationEndpoint))
       throw new InnertubeError("This item does not have a menu.", item);
-    const response = await item.key("menu_endpoint").instanceof(NavigationEndpoint).call(__privateGet(this, _actions9), { parse: true });
+    const response = await item.key("menu_endpoint").instanceof(NavigationEndpoint).call(__privateGet(this, _actions10), { parse: true });
     if (!response)
       throw new InnertubeError("Could not retrieve item menu.", item);
-    return new ItemMenu(response, __privateGet(this, _actions9));
+    return new ItemMenu(response, __privateGet(this, _actions10));
   }
   /**
    * Equivalent to "clicking" a button.
    */
   async selectButton(button) {
-    return await button.endpoint.call(__privateGet(this, _actions9), { parse: true });
+    return await button.endpoint.call(__privateGet(this, _actions10), { parse: true });
   }
 };
-_actions9 = new WeakMap();
+_actions10 = new WeakMap();
 _video_id = new WeakMap();
 _channel_id = new WeakMap();
 _continuation4 = new WeakMap();
@@ -30923,7 +31430,7 @@ _LiveChat_instances = new WeakSet();
 pollLivechat_fn = /* @__PURE__ */ __name(function() {
   (async () => {
     try {
-      const response = await __privateGet(this, _actions9).execute(this.is_replay ? "live_chat/get_live_chat_replay" : "live_chat/get_live_chat", { continuation: __privateGet(this, _continuation4), parse: true });
+      const response = await __privateGet(this, _actions10).execute(this.is_replay ? "live_chat/get_live_chat_replay" : "live_chat/get_live_chat", { continuation: __privateGet(this, _continuation4), parse: true });
       const contents = response.continuation_contents;
       if (!contents) {
         this.emit("error", new InnertubeError("Unexpected live chat incremental continuation response", response));
@@ -30945,13 +31452,13 @@ pollLivechat_fn = /* @__PURE__ */ __name(function() {
         this.smoothed_queue.enqueueActionGroup(contents.actions);
       }
       __privateSet(this, _retry_count, 0);
-    } catch (err) {
-      this.emit("error", err);
+    } catch (err2) {
+      this.emit("error", err2);
       if (__privateWrapper(this, _retry_count)._++ < 10) {
         await __privateMethod(this, _LiveChat_instances, wait_fn).call(this, 2e3);
         __privateMethod(this, _LiveChat_instances, pollLivechat_fn).call(this);
       } else {
-        this.emit("error", new InnertubeError("Reached retry limit for incremental continuation requests", err));
+        this.emit("error", new InnertubeError("Reached retry limit for incremental continuation requests", err2));
         this.emit("end");
         this.stop();
       }
@@ -30969,17 +31476,17 @@ emitSmoothedActions_fn = /* @__PURE__ */ __name(async function(action_queue) {
 }, "#emitSmoothedActions");
 pollMetadata_fn = /* @__PURE__ */ __name(function() {
   (async () => {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k;
     try {
       const payload = { videoId: __privateGet(this, _video_id) };
       if (__privateGet(this, _mcontinuation)) {
         payload.continuation = __privateGet(this, _mcontinuation);
       }
-      const response = await __privateGet(this, _actions9).execute("/updated_metadata", payload);
+      const response = await __privateGet(this, _actions10).execute("/updated_metadata", payload);
       const data = parser_exports.parseResponse(response.data);
-      __privateSet(this, _mcontinuation, (_a = data.continuation) == null ? void 0 : _a.token);
+      __privateSet(this, _mcontinuation, (_a2 = data.continuation) == null ? void 0 : _a2.token);
       this.metadata = {
-        title: ((_b = data.actions) == null ? void 0 : _b.array().firstOfType(UpdateTitleAction)) || ((_c = this.metadata) == null ? void 0 : _c.title),
+        title: ((_b2 = data.actions) == null ? void 0 : _b2.array().firstOfType(UpdateTitleAction)) || ((_c = this.metadata) == null ? void 0 : _c.title),
         description: ((_d = data.actions) == null ? void 0 : _d.array().firstOfType(UpdateDescriptionAction)) || ((_e = this.metadata) == null ? void 0 : _e.description),
         views: ((_f = data.actions) == null ? void 0 : _f.array().firstOfType(UpdateViewershipAction)) || ((_g = this.metadata) == null ? void 0 : _g.views),
         likes: ((_h = data.actions) == null ? void 0 : _h.array().firstOfType(UpdateToggleButtonTextAction)) || ((_i = this.metadata) == null ? void 0 : _i.likes),
@@ -31003,14 +31510,14 @@ __name(_LiveChat2, "LiveChat");
 var LiveChat2 = _LiveChat2;
 
 // dist/src/parser/youtube/NotificationsMenu.js
-var _page7, _actions10;
+var _page7, _actions11;
 var _NotificationsMenu = class _NotificationsMenu {
   constructor(actions, response) {
     __privateAdd(this, _page7);
-    __privateAdd(this, _actions10);
+    __privateAdd(this, _actions11);
     __publicField(this, "header");
     __publicField(this, "contents");
-    __privateSet(this, _actions10, actions);
+    __privateSet(this, _actions11, actions);
     __privateSet(this, _page7, parser_exports.parseResponse(response.data));
     if (!__privateGet(this, _page7).actions_memo)
       throw new InnertubeError("Page actions not found");
@@ -31018,26 +31525,26 @@ var _NotificationsMenu = class _NotificationsMenu {
     this.contents = __privateGet(this, _page7).actions_memo.getType(Notification);
   }
   async getContinuation() {
-    var _a;
-    const continuation = (_a = __privateGet(this, _page7).actions_memo) == null ? void 0 : _a.getType(ContinuationItem)[0];
+    var _a2;
+    const continuation = (_a2 = __privateGet(this, _page7).actions_memo) == null ? void 0 : _a2.getType(ContinuationItem)[0];
     if (!continuation)
       throw new InnertubeError("Continuation not found");
-    const response = await continuation.endpoint.call(__privateGet(this, _actions10), { parse: false });
-    return new _NotificationsMenu(__privateGet(this, _actions10), response);
+    const response = await continuation.endpoint.call(__privateGet(this, _actions11), { parse: false });
+    return new _NotificationsMenu(__privateGet(this, _actions11), response);
   }
   get page() {
     return __privateGet(this, _page7);
   }
 };
 _page7 = new WeakMap();
-_actions10 = new WeakMap();
+_actions11 = new WeakMap();
 __name(_NotificationsMenu, "NotificationsMenu");
 var NotificationsMenu = _NotificationsMenu;
 
 // dist/src/parser/youtube/Search.js
 var _Search = class _Search extends Feed {
   constructor(actions, data, already_parsed = false) {
-    var _a, _b, _c;
+    var _a2, _b2, _c, _d, _e, _f;
     super(actions, data, already_parsed);
     __publicField(this, "header");
     __publicField(this, "results");
@@ -31045,12 +31552,15 @@ var _Search = class _Search extends Feed {
     __publicField(this, "estimated_results");
     __publicField(this, "sub_menu");
     __publicField(this, "watch_card");
-    __publicField(this, "refinement_cards");
-    const contents = ((_a = this.page.contents_memo) == null ? void 0 : _a.getType(SectionList)[0].contents) || ((_b = this.page.on_response_received_commands) == null ? void 0 : _b[0].as(AppendContinuationItemsAction, ReloadContinuationItemsCommand).contents);
+    const contents = ((_a2 = this.page.contents_memo) == null ? void 0 : _a2.getType(SectionList)[0].contents) || ((_c = (_b2 = this.page.on_response_received_commands_memo) == null ? void 0 : _b2.getType(SectionList)[0]) == null ? void 0 : _c.contents) || ((_d = this.page.on_response_received_commands) == null ? void 0 : _d[0].as(AppendContinuationItemsAction, ReloadContinuationItemsCommand).contents);
     if (!contents)
       throw new InnertubeError("No contents found in search response");
-    if (this.page.header)
-      this.header = this.page.header.item().as(SearchHeader);
+    if (this.page.on_response_received_commands && !this.page.header) {
+      const headerSlot = this.page.on_response_received_commands.as(ReloadContinuationItemsCommand).find((command) => command.is(ReloadContinuationItemsCommand) && command.slot === "RELOAD_CONTINUATION_SLOT_HEADER");
+      this.header = (_e = headerSlot == null ? void 0 : headerSlot.contents) == null ? void 0 : _e.firstOfType(SearchHeader);
+    } else {
+      this.header = (_f = this.page.header) == null ? void 0 : _f.item().as(SearchHeader);
+    }
     this.results = observe(contents.filterType(ItemSection).flatMap((section) => section.contents));
     this.refinements = this.page.refinements || [];
     this.estimated_results = this.page.estimated_results || 0;
@@ -31058,36 +31568,51 @@ var _Search = class _Search extends Feed {
       this.sub_menu = this.page.contents_memo.getType(SearchSubMenu)[0];
       this.watch_card = this.page.contents_memo.getType(UniversalWatchCard)[0];
     }
-    this.refinement_cards = (_c = this.results) == null ? void 0 : _c.firstOfType(HorizontalCardList);
   }
   /**
-   * Applies given refinement card and returns a new {@link Search} object. Use {@link refinement_card_queries} to get a list of available refinement cards.
+   * Applies a refinement filter to the search results.
+   *
+   * Use {@link Search.refinement_filters} to get a list of available refinements.
+   *
+   * @example
+   * ```ts
+   * const results = await yt.search('PilotRedSun');
+   * // Narrow down to only YouTube Shorts
+   * const shortsOnly = await results.applyRefinement('Shorts');
+   * ```
+   * @param refinementFilter - The text label of the chip or the {@link ChipCloudChip} node itself.
    */
-  async selectRefinementCard(card) {
-    var _a;
-    let target_card;
-    if (typeof card === "string") {
-      if (!this.refinement_cards)
-        throw new InnertubeError("No refinement cards found.");
-      target_card = (_a = this.refinement_cards) == null ? void 0 : _a.cards.find((refinement_card) => {
-        return refinement_card.is(SearchRefinementCard) && refinement_card.query === card;
-      });
-      if (!target_card)
-        throw new InnertubeError(`Refinement card "${card}" not found`, { available_cards: this.refinement_card_queries });
-    } else if (card.type === "SearchRefinementCard") {
-      target_card = card;
+  async applyRefinement(refinementFilter) {
+    var _a2;
+    let endpoint;
+    if (typeof refinementFilter === "string") {
+      const chipBar = (_a2 = this.header) == null ? void 0 : _a2.chip_bar;
+      if (!chipBar)
+        throw new InnertubeError("No chip bar found in search header");
+      const targetChip = chipBar.chips.find((chip) => chip.text === refinementFilter);
+      if (!targetChip)
+        throw new InnertubeError(`Refinement filter "${refinementFilter}" not found`, { available_filters: this.refinement_filters });
+      endpoint = targetChip.endpoint;
+      if (!endpoint && targetChip.is_selected)
+        return this;
+    } else if (refinementFilter.is(ChipCloudChip)) {
+      if (!refinementFilter.endpoint && refinementFilter.is_selected)
+        return this;
+      endpoint = refinementFilter.endpoint;
     } else {
-      throw new InnertubeError("Invalid refinement card!");
+      throw new InnertubeError("Invalid filter type");
     }
-    const page = await target_card.endpoint.call(this.actions, { parse: true });
+    if (!endpoint)
+      throw new InnertubeError("Could not find endpoint for the specified filter");
+    const page = await endpoint.call(this.actions, { parse: true });
     return new _Search(this.actions, page, true);
   }
   /**
-   * Returns a list of refinement card queries.
+   * Returns a list of available refinement filters. Use {@link Search.applyRefinement} to apply a filter.
    */
-  get refinement_card_queries() {
-    var _a;
-    return ((_a = this.refinement_cards) == null ? void 0 : _a.cards.as(SearchRefinementCard).map((card) => card.query)) || [];
+  get refinement_filters() {
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.header) == null ? void 0 : _a2.chip_bar) == null ? void 0 : _b2.chips.map((chip) => chip.text)) || [];
   }
   /**
    * Retrieves next batch of search results.
@@ -31103,29 +31628,29 @@ __name(_Search, "Search");
 var Search = _Search;
 
 // dist/src/parser/youtube/Settings.js
-var _page8, _actions11;
+var _page8, _actions12;
 var _Settings = class _Settings {
   constructor(actions, response) {
     __privateAdd(this, _page8);
-    __privateAdd(this, _actions11);
+    __privateAdd(this, _actions12);
     __publicField(this, "sidebar");
     __publicField(this, "introduction");
     __publicField(this, "sections");
-    var _a, _b, _c, _d;
-    __privateSet(this, _actions11, actions);
+    var _a2, _b2, _c, _d;
+    __privateSet(this, _actions12, actions);
     __privateSet(this, _page8, parser_exports.parseResponse(response.data));
-    this.sidebar = (_a = __privateGet(this, _page8).sidebar) == null ? void 0 : _a.as(SettingsSidebar);
+    this.sidebar = (_a2 = __privateGet(this, _page8).sidebar) == null ? void 0 : _a2.as(SettingsSidebar);
     if (!__privateGet(this, _page8).contents)
       throw new InnertubeError("Page contents not found");
     const tab = __privateGet(this, _page8).contents.item().as(TwoColumnBrowseResults).tabs.find((tab2) => tab2.selected);
     if (!tab)
       throw new InnertubeError("Target tab not found");
-    const contents = (_b = tab.content) == null ? void 0 : _b.as(SectionList).contents.as(ItemSection);
+    const contents = (_b2 = tab.content) == null ? void 0 : _b2.as(SectionList).contents.as(ItemSection);
     this.introduction = (_d = (_c = contents == null ? void 0 : contents.shift()) == null ? void 0 : _c.contents) == null ? void 0 : _d.firstOfType(PageIntroduction);
     this.sections = contents == null ? void 0 : contents.map((el) => {
-      var _a2;
+      var _a3;
       return {
-        title: ((_a2 = el.header) == null ? void 0 : _a2.is(CommentsHeader, ItemSectionHeader, ItemSectionTabbedHeader)) ? el.header.title.toString() : null,
+        title: ((_a3 = el.header) == null ? void 0 : _a3.is(CommentsHeader, ItemSectionHeader, ItemSectionTabbedHeader)) ? el.header.title.toString() : null,
         contents: el.contents
       };
     });
@@ -31146,14 +31671,14 @@ var _Settings = class _Settings {
     } else {
       throw new InnertubeError("Invalid item", { target_item });
     }
-    const response = await item.endpoint.call(__privateGet(this, _actions11), { parse: false });
-    return new _Settings(__privateGet(this, _actions11), response);
+    const response = await item.endpoint.call(__privateGet(this, _actions12), { parse: false });
+    return new _Settings(__privateGet(this, _actions12), response);
   }
   /**
    * Finds a setting by name and returns it. Use {@link setting_options} to see available options.
    */
   getSettingOption(name) {
-    var _a;
+    var _a2;
     if (!this.sections)
       throw new InnertubeError("Sections not available");
     for (const section of this.sections) {
@@ -31163,7 +31688,7 @@ var _Settings = class _Settings {
         const options = el.as(SettingsOptions).options;
         if (options) {
           for (const option of options) {
-            if (option.is(SettingsSwitch) && ((_a = option.title) == null ? void 0 : _a.toString()) === name)
+            if (option.is(SettingsSwitch) && ((_a2 = option.title) == null ? void 0 : _a2.toString()) === name)
               return option;
           }
         }
@@ -31187,8 +31712,8 @@ var _Settings = class _Settings {
       }
     }
     return options.map((opt) => {
-      var _a;
-      return (_a = opt.title) == null ? void 0 : _a.toString();
+      var _a2;
+      return (_a2 = opt.title) == null ? void 0 : _a2.toString();
     }).filter((el) => el);
   }
   /**
@@ -31204,7 +31729,7 @@ var _Settings = class _Settings {
   }
 };
 _page8 = new WeakMap();
-_actions11 = new WeakMap();
+_actions12 = new WeakMap();
 __name(_Settings, "Settings");
 var Settings = _Settings;
 
@@ -31212,7 +31737,7 @@ var Settings = _Settings;
 var _watch_next_continuation;
 var _VideoInfo = class _VideoInfo extends MediaInfo {
   constructor(data, actions, cpn) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _A, _B, _C, _D;
     super(data, actions, cpn);
     __publicField(this, "primary_info");
     __publicField(this, "secondary_info");
@@ -31230,12 +31755,12 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
     const [info2, next] = this.page;
     if (this.streaming_data) {
       const default_audio_track = this.streaming_data.adaptive_formats.find((format) => {
-        var _a2;
-        return (_a2 = format.audio_track) == null ? void 0 : _a2.audio_is_default;
+        var _a3;
+        return (_a3 = format.audio_track) == null ? void 0 : _a3.audio_is_default;
       });
       if (default_audio_track) {
         this.streaming_data.formats.forEach((format) => format.language = default_audio_track.language);
-      } else if (((_a = this.captions) == null ? void 0 : _a.caption_tracks) && ((_b = this.captions) == null ? void 0 : _b.caption_tracks.length) > 0) {
+      } else if (((_a2 = this.captions) == null ? void 0 : _a2.caption_tracks) && ((_b2 = this.captions) == null ? void 0 : _b2.caption_tracks.length) > 0) {
         const auto_generated_caption_track = this.captions.caption_tracks.find((caption) => caption.kind === "asr");
         const language_code = auto_generated_caption_track == null ? void 0 : auto_generated_caption_track.language_code;
         this.streaming_data.adaptive_formats.forEach((format) => {
@@ -31312,12 +31837,12 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * @param target_filter - Filter to apply.
    */
   async selectFilter(target_filter) {
-    var _a, _b, _c, _d;
+    var _a2, _b2, _c, _d;
     if (!this.related_chip_cloud)
       throw new InnertubeError("Chip cloud not found, cannot apply filter");
     let cloud_chip;
     if (typeof target_filter === "string") {
-      const filter = (_b = (_a = this.related_chip_cloud) == null ? void 0 : _a.chips) == null ? void 0 : _b.find((chip) => chip.text === target_filter);
+      const filter = (_b2 = (_a2 = this.related_chip_cloud) == null ? void 0 : _a2.chips) == null ? void 0 : _b2.find((chip) => chip.text === target_filter);
       if (!filter)
         throw new InnertubeError("Invalid filter", { available_filters: this.filters });
       cloud_chip = filter;
@@ -31351,11 +31876,11 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Retrieves watch next feed continuation.
    */
   async getWatchNextContinuation() {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     if (!__privateGet(this, _watch_next_continuation))
       throw new InnertubeError("Watch next feed continuation not found");
-    const response = await ((_a = __privateGet(this, _watch_next_continuation)) == null ? void 0 : _a.endpoint.call(this.actions, { parse: true }));
-    const data = (_b = response == null ? void 0 : response.on_response_received_endpoints) == null ? void 0 : _b.firstOfType(AppendContinuationItemsAction);
+    const response = await ((_a2 = __privateGet(this, _watch_next_continuation)) == null ? void 0 : _a2.endpoint.call(this.actions, { parse: true }));
+    const data = (_b2 = response == null ? void 0 : response.on_response_received_endpoints) == null ? void 0 : _b2.firstOfType(AppendContinuationItemsAction);
     if (!data)
       throw new InnertubeError("AppendContinuationItemsAction not found");
     this.watch_next_feed = data == null ? void 0 : data.contents;
@@ -31370,8 +31895,8 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Likes the video.
    */
   async like() {
-    var _a, _b, _c, _d, _e;
-    const segmented_like_dislike_button_view = (_b = (_a = this.primary_info) == null ? void 0 : _a.menu) == null ? void 0 : _b.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
+    var _a2, _b2, _c, _d, _e;
+    const segmented_like_dislike_button_view = (_b2 = (_a2 = this.primary_info) == null ? void 0 : _a2.menu) == null ? void 0 : _b2.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
     if (segmented_like_dislike_button_view) {
       const button2 = (_c = segmented_like_dislike_button_view == null ? void 0 : segmented_like_dislike_button_view.like_button) == null ? void 0 : _c.toggle_button;
       if (!button2 || !button2.default_button || !segmented_like_dislike_button_view.like_button)
@@ -31398,8 +31923,8 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Dislikes the video.
    */
   async dislike() {
-    var _a, _b, _c, _d, _e;
-    const segmented_like_dislike_button_view = (_b = (_a = this.primary_info) == null ? void 0 : _a.menu) == null ? void 0 : _b.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
+    var _a2, _b2, _c, _d, _e;
+    const segmented_like_dislike_button_view = (_b2 = (_a2 = this.primary_info) == null ? void 0 : _a2.menu) == null ? void 0 : _b2.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
     if (segmented_like_dislike_button_view) {
       const button2 = (_c = segmented_like_dislike_button_view == null ? void 0 : segmented_like_dislike_button_view.dislike_button) == null ? void 0 : _c.toggle_button;
       if (!button2 || !button2.default_button || !segmented_like_dislike_button_view.dislike_button || !segmented_like_dislike_button_view.like_button)
@@ -31426,9 +31951,9 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Removes like/dislike.
    */
   async removeRating() {
-    var _a, _b, _c, _d, _e, _f, _g;
+    var _a2, _b2, _c, _d, _e, _f, _g;
     let button;
-    const segmented_like_dislike_button_view = (_b = (_a = this.primary_info) == null ? void 0 : _a.menu) == null ? void 0 : _b.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
+    const segmented_like_dislike_button_view = (_b2 = (_a2 = this.primary_info) == null ? void 0 : _a2.menu) == null ? void 0 : _b2.top_level_buttons.firstOfType(SegmentedLikeDislikeButtonView);
     if (segmented_like_dislike_button_view) {
       const toggle_button = (_c = segmented_like_dislike_button_view == null ? void 0 : segmented_like_dislike_button_view.like_button) == null ? void 0 : _c.toggle_button;
       if (!toggle_button || !toggle_button.default_button || !segmented_like_dislike_button_view.like_button)
@@ -31475,11 +32000,11 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * @returns `VideoInfo` for the trailer, or `null` if none.
    */
   getTrailerInfo() {
-    var _a, _b;
-    if (this.has_trailer && ((_a = this.playability_status) == null ? void 0 : _a.error_screen)) {
+    var _a2, _b2;
+    if (this.has_trailer && ((_a2 = this.playability_status) == null ? void 0 : _a2.error_screen)) {
       let player_response;
       if (this.playability_status.error_screen.is(PlayerLegacyDesktopYpcTrailer)) {
-        player_response = (_b = this.playability_status.error_screen.trailer) == null ? void 0 : _b.player_response;
+        player_response = (_b2 = this.playability_status.error_screen.trailer) == null ? void 0 : _b2.player_response;
       } else if (this.playability_status.error_screen.is(YpcTrailer)) {
         player_response = this.playability_status.error_screen.player_response;
       }
@@ -31493,10 +32018,10 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Watch next feed filters.
    */
   get filters() {
-    var _a, _b;
-    return ((_b = (_a = this.related_chip_cloud) == null ? void 0 : _a.chips) == null ? void 0 : _b.map((chip) => {
-      var _a2;
-      return (_a2 = chip.text) == null ? void 0 : _a2.toString();
+    var _a2, _b2;
+    return ((_b2 = (_a2 = this.related_chip_cloud) == null ? void 0 : _a2.chips) == null ? void 0 : _b2.map((chip) => {
+      var _a3;
+      return (_a3 = chip.text) == null ? void 0 : _a3.toString();
     })) || [];
   }
   /**
@@ -31509,40 +32034,40 @@ var _VideoInfo = class _VideoInfo extends MediaInfo {
    * Gets the endpoint of the autoplay video
    */
   get autoplay_video_endpoint() {
-    var _a, _b, _c;
-    return ((_c = (_b = (_a = this.autoplay) == null ? void 0 : _a.sets) == null ? void 0 : _b[0]) == null ? void 0 : _c.autoplay_video) || null;
+    var _a2, _b2, _c;
+    return ((_c = (_b2 = (_a2 = this.autoplay) == null ? void 0 : _a2.sets) == null ? void 0 : _b2[0]) == null ? void 0 : _c.autoplay_video) || null;
   }
   /**
    * Checks if trailer is available.
    */
   get has_trailer() {
-    var _a, _b;
-    return !!((_b = (_a = this.playability_status) == null ? void 0 : _a.error_screen) == null ? void 0 : _b.is(PlayerLegacyDesktopYpcTrailer, YpcTrailer));
+    var _a2, _b2;
+    return !!((_b2 = (_a2 = this.playability_status) == null ? void 0 : _a2.error_screen) == null ? void 0 : _b2.is(PlayerLegacyDesktopYpcTrailer, YpcTrailer));
   }
   /**
    * Get songs used in the video.
    */
   get music_tracks() {
-    var _a, _b, _c, _d, _e, _f;
-    const description_content = (_b = (_a = this.page[1]) == null ? void 0 : _a.engagement_panels) == null ? void 0 : _b.filter((panel) => {
-      var _a2;
-      return (_a2 = panel.content) == null ? void 0 : _a2.is(StructuredDescriptionContent);
+    var _a2, _b2, _c, _d, _e, _f;
+    const description_content = (_b2 = (_a2 = this.page[1]) == null ? void 0 : _a2.engagement_panels) == null ? void 0 : _b2.filter((panel) => {
+      var _a3;
+      return (_a3 = panel.content) == null ? void 0 : _a3.is(StructuredDescriptionContent);
     });
     if (description_content !== void 0 && description_content.length > 0) {
       const music_section = (_e = (_d = (_c = description_content[0].content) == null ? void 0 : _c.as(StructuredDescriptionContent)) == null ? void 0 : _d.items) == null ? void 0 : _e.filterType(VideoDescriptionMusicSection);
       if (music_section !== void 0 && music_section.length > 0) {
         return (_f = music_section[0].carousel_lockups) == null ? void 0 : _f.map((lookup) => {
-          var _a2, _b2, _c2, _d2, _e2, _f2, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t;
+          var _a3, _b3, _c2, _d2, _e2, _f2, _g, _h, _i, _j, _k, _l, _m, _n, _o, _p, _q, _r, _s, _t;
           let song;
           let artist;
           let album;
           let license;
           let videoId;
           let channelId;
-          song = (_b2 = (_a2 = lookup.video_lockup) == null ? void 0 : _a2.title) == null ? void 0 : _b2.toString();
+          song = (_b3 = (_a3 = lookup.video_lockup) == null ? void 0 : _a3.title) == null ? void 0 : _b3.toString();
           videoId = (_d2 = (_c2 = lookup.video_lockup) == null ? void 0 : _c2.endpoint) == null ? void 0 : _d2.payload.videoId;
-          for (let i = 0; i < lookup.info_rows.length; i++) {
-            const info_row = lookup.info_rows[i];
+          for (let i2 = 0; i2 < lookup.info_rows.length; i2++) {
+            const info_row = lookup.info_rows[i2];
             if (info_row.info_row_expand_status_key === void 0) {
               if (song === void 0) {
                 song = ((_e2 = info_row.default_metadata) == null ? void 0 : _e2.toString()) || ((_f2 = info_row.expanded_metadata) == null ? void 0 : _f2.toString());
@@ -31578,14 +32103,14 @@ __name(_VideoInfo, "VideoInfo");
 var VideoInfo = _VideoInfo;
 
 // dist/src/parser/youtube/TranscriptInfo.js
-var _page9, _actions12;
+var _page9, _actions13;
 var _TranscriptInfo = class _TranscriptInfo {
   constructor(actions, response) {
     __privateAdd(this, _page9);
-    __privateAdd(this, _actions12);
+    __privateAdd(this, _actions13);
     __publicField(this, "transcript");
     __privateSet(this, _page9, parser_exports.parseResponse(response.data));
-    __privateSet(this, _actions12, actions);
+    __privateSet(this, _actions13, actions);
     if (!__privateGet(this, _page9).actions_memo)
       throw new Error("Page actions not found");
     this.transcript = __privateGet(this, _page9).actions_memo.getType(Transcript)[0];
@@ -31595,37 +32120,37 @@ var _TranscriptInfo = class _TranscriptInfo {
    * @param language - Language to select.
    */
   async selectLanguage(language) {
-    var _a, _b, _c, _d;
-    const target_menu_item = (_d = (_c = (_b = (_a = this.transcript.content) == null ? void 0 : _a.footer) == null ? void 0 : _b.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.find((item) => item.title.toString() === language);
+    var _a2, _b2, _c, _d;
+    const target_menu_item = (_d = (_c = (_b2 = (_a2 = this.transcript.content) == null ? void 0 : _a2.footer) == null ? void 0 : _b2.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.find((item) => item.title.toString() === language);
     if (!target_menu_item)
       throw new Error(`Language not found: ${language}`);
     if (target_menu_item.selected)
       return this;
-    const response = await __privateGet(this, _actions12).execute("/get_transcript", {
+    const response = await __privateGet(this, _actions13).execute("/get_transcript", {
       params: target_menu_item.continuation
     });
-    return new _TranscriptInfo(__privateGet(this, _actions12), response);
+    return new _TranscriptInfo(__privateGet(this, _actions13), response);
   }
   /**
    * Returns available languages.
    */
   get languages() {
-    var _a, _b, _c, _d;
-    return ((_d = (_c = (_b = (_a = this.transcript.content) == null ? void 0 : _a.footer) == null ? void 0 : _b.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.map((item) => item.title.toString())) || [];
+    var _a2, _b2, _c, _d;
+    return ((_d = (_c = (_b2 = (_a2 = this.transcript.content) == null ? void 0 : _a2.footer) == null ? void 0 : _b2.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.map((item) => item.title.toString())) || [];
   }
   /**
    * Returns the currently selected language.
    */
   get selectedLanguage() {
-    var _a, _b, _c, _d, _e;
-    return ((_e = (_d = (_c = (_b = (_a = this.transcript.content) == null ? void 0 : _a.footer) == null ? void 0 : _b.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.find((item) => item.selected)) == null ? void 0 : _e.title.toString()) || "";
+    var _a2, _b2, _c, _d, _e;
+    return ((_e = (_d = (_c = (_b2 = (_a2 = this.transcript.content) == null ? void 0 : _a2.footer) == null ? void 0 : _b2.language_menu) == null ? void 0 : _c.sub_menu_items) == null ? void 0 : _d.find((item) => item.selected)) == null ? void 0 : _e.title.toString()) || "";
   }
   get page() {
     return __privateGet(this, _page9);
   }
 };
 _page9 = new WeakMap();
-_actions12 = new WeakMap();
+_actions13 = new WeakMap();
 __name(_TranscriptInfo, "TranscriptInfo");
 var TranscriptInfo = _TranscriptInfo;
 
@@ -31655,7 +32180,7 @@ var _Actions = class _Actions {
     return await this.session.http.fetch(s_url);
   }
   async execute(endpoint, args) {
-    var _a, _b;
+    var _a2, _b2;
     let data;
     if (args && !args.protobuf) {
       data = { ...args };
@@ -31703,7 +32228,7 @@ var _Actions = class _Actions {
     });
     if (args == null ? void 0 : args.parse) {
       let parsed_response = parser_exports.parseResponse(await response.json());
-      if (__privateMethod(this, _Actions_instances, isBrowse_fn).call(this, parsed_response) && ((_b = (_a = parsed_response.on_response_received_actions) == null ? void 0 : _a[0]) == null ? void 0 : _b.type) === "navigateAction") {
+      if (__privateMethod(this, _Actions_instances, isBrowse_fn).call(this, parsed_response) && ((_b2 = (_a2 = parsed_response.on_response_received_actions) == null ? void 0 : _a2[0]) == null ? void 0 : _b2.type) === "navigateAction") {
         const navigate_action = parsed_response.on_response_received_actions.firstOfType(NavigateAction);
         if (navigate_action) {
           parsed_response = await navigate_action.endpoint.call(this, { parse: true });
@@ -31755,7 +32280,7 @@ var _Player = class _Player {
     this.data = data;
   }
   static async create(cache, fetch = Platform.shim.fetch, evaluator, po_token, player_id) {
-    var _a;
+    var _a2;
     if (!player_id) {
       const url = new URL("/iframe_api", Constants_exports.URLS.YT_BASE);
       const res = await fetch(url);
@@ -31805,7 +32330,7 @@ var _Player = class _Player {
     if (!result.exported.includes(nsigFunctionName)) {
       Log_exports.warn(TAG3, "Failed to extract n/sig decipher function.");
     }
-    const signatureTimestamp = (_a = result.exportedRawValues) == null ? void 0 : _a[timestampVarName];
+    const signatureTimestamp = (_a2 = result.exportedRawValues) == null ? void 0 : _a2[timestampVarName];
     const player = await _Player.fromSource(player_id, {
       cache,
       signature_timestamp: parseInt(signatureTimestamp) || 0,
@@ -31955,9 +32480,9 @@ async function evaluateOnce(evaluator, body, argNames, argValues, timeoutDuratio
     const result = await evaluator.evaluate(body, argNames, argValues);
     evaluator.close();
     return result;
-  } catch (err) {
+  } catch (err2) {
     evaluator.close();
-    throw err;
+    throw err2;
   }
 }
 __name(evaluateOnce, "evaluateOnce");
@@ -31987,8 +32512,8 @@ var _BGUtils = class _BGUtils {
     const result = new Uint8Array([...base64Mod].map((char) => char.charCodeAt(0)));
     return result;
   }
-  static u8ToBase64(u8, base64url = false) {
-    const result = btoa(String.fromCharCode(...u8));
+  static u8ToBase64(u82, base64url = false) {
+    const result = btoa(String.fromCharCode(...u82));
     if (base64url) {
       return result.replace(/\+/g, "-").replace(/\//g, "_");
     }
@@ -32069,8 +32594,8 @@ var _BGUtils = class _BGUtils {
     packet.set(encodedIdentifier, 2 + header.length);
     const payload = packet.subarray(2);
     const keyLength = randomKeys.length;
-    for (let i = keyLength; i < payload.length; i++) {
-      payload[i] ^= payload[i % keyLength];
+    for (let i2 = keyLength; i2 < payload.length; i2++) {
+      payload[i2] ^= payload[i2 % keyLength];
     }
     return this.u8ToBase64(packet, true);
   }
@@ -32083,7 +32608,7 @@ var _BGUtils = class _BGUtils {
     return extractFnBodyAndArgs(fn2.toString());
   }
   static async getPot(innertube, fetcher = Platform.shim.fetch, evaluator, identifiers, requestToken, apiKey, debug2 = false) {
-    var _a;
+    var _a2;
     if (!requestToken) {
       requestToken = Constants_exports.URLS.API.KEY2;
     }
@@ -32111,7 +32636,7 @@ var _BGUtils = class _BGUtils {
       if (!challenge.globalName) {
         throw new Error("G is bad");
       }
-      let interpreterUrl = (_a = challenge.interpreterUrl) == null ? void 0 : _a.privateDoNotAccessOrElseTrustedResourceUrlWrappedValue;
+      let interpreterUrl = (_a2 = challenge.interpreterUrl) == null ? void 0 : _a2.privateDoNotAccessOrElseTrustedResourceUrlWrappedValue;
       if (!interpreterUrl) {
         throw new Error("I is bad");
       }
@@ -32157,18 +32682,18 @@ var _BGUtils = class _BGUtils {
         evaluator.setTimeout(5e3);
       const fn2 = this.getFn2();
       pot = await evaluator.evaluate(fn2.body, fn2.argNames, [it, identifiers]);
-      for (let i = 0; i < pot.length; i++) {
+      for (let i2 = 0; i2 < pot.length; i2++) {
         result.push({
-          id: identifiers[i],
-          pot: pot[i]
+          id: identifiers[i2],
+          pot: pot[i2]
         });
       }
       if (!debug2)
         evaluator.close();
-    } catch (err) {
+    } catch (err2) {
       if (!debug2)
         evaluator.close();
-      throw err;
+      throw err2;
     }
     return { result, requestToken, ttl, refresh };
   }
@@ -32185,6 +32710,7 @@ var ClientType = {
   IOS: "iOS",
   ANDROID: "ANDROID",
   ANDROID_VR: "ANDROID_VR",
+  VISIONOS: "VISIONOS",
   ANDROID_MUSIC: "ANDROID_MUSIC",
   ANDROID_CREATOR: "ANDROID_CREATOR",
   TV: "TVHTML5",
@@ -32228,12 +32754,6 @@ var _Session = class _Session extends EventEmitterLike {
     this.actions = new Actions(this);
     this.logged_in = !!cookie;
     this.user_agent = context.client.userAgent;
-  }
-  on(type, listener) {
-    super.on(type, listener);
-  }
-  once(type, listener) {
-    super.once(type, listener);
   }
   async getPot(tokens) {
     return await BGUtils.getPot(this, this.fetch, this.sandboxGetter(), tokens);
@@ -32310,7 +32830,7 @@ var _Session = class _Session extends EventEmitterLike {
     }
   }
   static async getSessionData(lang = "", location = "", account_index = 0, visitor_data = "", user_agent = getRandomUserAgent("desktop"), enable_safety_mode = false, generate_session_locally = false, fail_fast = false, device_category = "desktop", client_name = ClientType.WEB, tz = Intl.DateTimeFormat().resolvedOptions().timeZone, fetch = Platform.shim.fetch, on_behalf_of_user, cache, enable_session_cache = true, po_token, retrieve_innertube_config = true) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _i;
+    var _a2, _b2, _c, _d, _e, _f, _g, _h, _i;
     const session_args = {
       lang,
       location,
@@ -32342,7 +32862,7 @@ var _Session = class _Session extends EventEmitterLike {
         user_agent,
         visitor_data: visitor_data || ProtoUtils_exports.encodeVisitorData(generateRandomString(11), Math.floor(Date.now() / 1e3)),
         client_name,
-        client_version: (_b = (_a = Object.values(CLIENTS).find((v) => v.NAME === client_name)) == null ? void 0 : _a.VERSION) != null ? _b : CLIENTS.WEB.VERSION,
+        client_version: (_b2 = (_a2 = Object.values(CLIENTS).find((v) => v.NAME === client_name)) == null ? void 0 : _a2.VERSION) != null ? _b2 : CLIENTS.WEB.VERSION,
         device_category: device_category.toUpperCase(),
         os_name: "Windows",
         os_version: "10.0",
@@ -32431,12 +32951,12 @@ storeSession_fn = /* @__PURE__ */ __name(async function(session_data, cache) {
   Log_exports.info(TAG4, "Compressing and caching session data.");
   const buffer = BinarySerializer_exports.serialize({
     ...session_data,
-    library_version: parseInt(packageInfo.version)
+    library_version: parseInt(packageInfo.version.split(".", 1)[0])
   });
   await cache.set("innertube_session_data", buffer);
 }, "#storeSession");
 getSessionData_fn = /* @__PURE__ */ __name(async function(options, fetch = Platform.shim.fetch) {
-  var _a;
+  var _a2;
   let visitor_id = generateRandomString(11);
   if (options.visitor_data)
     visitor_id = __privateMethod(this, _Session_static, getVisitorID_fn).call(this, options.visitor_data);
@@ -32454,8 +32974,8 @@ getSessionData_fn = /* @__PURE__ */ __name(async function(options, fetch = Platf
     throw new SessionError(`Failed to retrieve session data: ${res.status}`);
   const text = await res.text();
   if (!text.startsWith(")]}'"))
-    throw new SessionError("Invalid JSPB response");
-  const data = JSON.parse(text.replace(/^\)\]\}'/, ""));
+    throw new SessionError("Incorrect JSPB formatting");
+  const data = JSON.parse(text.substring(5));
   const ytcfg = data[0][2];
   const api_version = CLIENTS.WEB.API_VERSION;
   const [[device_info], api_key] = ytcfg;
@@ -32468,7 +32988,7 @@ getSessionData_fn = /* @__PURE__ */ __name(async function(options, fetch = Platf
     visitor_data: options.visitor_data || device_info[13],
     user_agent: options.user_agent,
     client_name: options.client_name,
-    client_version: options.client_name === "WEB" ? device_info[16] : ((_a = Object.values(CLIENTS).find((c) => c.NAME === options.client_name)) == null ? void 0 : _a.VERSION) || device_info[16],
+    client_version: options.client_name === "WEB" ? device_info[16] : ((_a2 = Object.values(CLIENTS).find((c) => c.NAME === options.client_name)) == null ? void 0 : _a2.VERSION) || device_info[16],
     os_name: device_info[17],
     os_version: device_info[18],
     time_zone: device_info[79] || options.time_zone,
@@ -32547,7 +33067,7 @@ var Session = _Session;
 var _watch_next_continuation2;
 var _ShortFormVideoInfo = class _ShortFormVideoInfo extends MediaInfo {
   constructor(data, actions, cpn, reel_watch_sequence_response) {
-    var _a;
+    var _a2;
     super(data, actions, cpn);
     __privateAdd(this, _watch_next_continuation2);
     __publicField(this, "watch_next_feed");
@@ -32558,11 +33078,11 @@ var _ShortFormVideoInfo = class _ShortFormVideoInfo extends MediaInfo {
       if (reel_watch_sequence.entries)
         this.watch_next_feed = reel_watch_sequence.entries;
       if (reel_watch_sequence.continuation_endpoint)
-        __privateSet(this, _watch_next_continuation2, (_a = reel_watch_sequence.continuation_endpoint) == null ? void 0 : _a.as(ContinuationCommand2));
+        __privateSet(this, _watch_next_continuation2, (_a2 = reel_watch_sequence.continuation_endpoint) == null ? void 0 : _a2.as(ContinuationCommand2));
     }
   }
   async getWatchNextContinuation() {
-    var _a;
+    var _a2;
     if (!__privateGet(this, _watch_next_continuation2))
       throw new InnertubeError("Continuation not found");
     const response = await this.actions.execute("/reel/reel_watch_sequence", {
@@ -32571,7 +33091,7 @@ var _ShortFormVideoInfo = class _ShortFormVideoInfo extends MediaInfo {
     });
     if (response.entries)
       this.watch_next_feed = response.entries;
-    __privateSet(this, _watch_next_continuation2, (_a = response.continuation_endpoint) == null ? void 0 : _a.as(ContinuationCommand2));
+    __privateSet(this, _watch_next_continuation2, (_a2 = response.continuation_endpoint) == null ? void 0 : _a2.as(ContinuationCommand2));
     return this;
   }
   /**
@@ -32596,11 +33116,11 @@ var _Innertube = class _Innertube {
     return new _Innertube(await Session.create(config));
   }
   async getInfo(target, options, reloadContext) {
-    var _a, _b, _c, _d, _e;
+    var _a2, _b2, _c, _d, _e;
     throwIfMissing({ target });
     const payload = {
-      videoId: target instanceof NavigationEndpoint ? (_a = target.payload) == null ? void 0 : _a.videoId : target,
-      playlistId: target instanceof NavigationEndpoint ? (_b = target.payload) == null ? void 0 : _b.playlistId : void 0,
+      videoId: target instanceof NavigationEndpoint ? (_a2 = target.payload) == null ? void 0 : _a2.videoId : target,
+      playlistId: target instanceof NavigationEndpoint ? (_b2 = target.payload) == null ? void 0 : _b2.playlistId : void 0,
       playlistIndex: target instanceof NavigationEndpoint ? (_c = target.payload) == null ? void 0 : _c.playlistIndex : void 0,
       params: target instanceof NavigationEndpoint ? (_d = target.payload) == null ? void 0 : _d.params : void 0,
       racyCheckOk: true,
@@ -32639,7 +33159,7 @@ var _Innertube = class _Innertube {
     return new VideoInfo(response, session.actions, cpn);
   }
   async getBasicInfo(video_id, options) {
-    var _a;
+    var _a2;
     throwIfMissing({ video_id });
     const watch_endpoint = new NavigationEndpoint({
       watchEndpoint: {
@@ -32655,7 +33175,7 @@ var _Innertube = class _Innertube {
           vis: 0,
           splay: false,
           lactMilliseconds: "-1",
-          signatureTimestamp: (_a = session.player) == null ? void 0 : _a.signature_timestamp
+          signatureTimestamp: (_a2 = session.player) == null ? void 0 : _a2.signature_timestamp
         }
       },
       client: options == null ? void 0 : options.client
@@ -32796,8 +33316,8 @@ var _Cache = class _Cache {
       const request = db.transaction("kv-store", "readonly").objectStore("kv-store").get(key);
       request.onerror = reject;
       request.onsuccess = function() {
-        var _a;
-        const result = (_a = this.result) == null ? void 0 : _a.v;
+        var _a2;
+        const result = (_a2 = this.result) == null ? void 0 : _a2.v;
         if (result instanceof ArrayBuffer) {
           resolve(result);
         } else if (ArrayBuffer.isView(result)) {
@@ -32863,8 +33383,8 @@ Platform.load({
   Cache,
   sha1Hash,
   uuidv4() {
-    var _a;
-    if ((_a = globalThis.crypto) == null ? void 0 : _a.randomUUID()) {
+    var _a2;
+    if ((_a2 = globalThis.crypto) == null ? void 0 : _a2.randomUUID()) {
       return globalThis.crypto.randomUUID();
     }
     return "10000000-1000-4000-8000-100000000000".replace(/[018]/g, (cc) => {
@@ -32902,7 +33422,6 @@ export {
   JsExtractor,
   helpers_exports2 as JsHelpers,
   matchers_exports as JsMatchers,
-  LZW_exports as LZW,
   LiveChatContinuation,
   Log_exports as Log,
   misc_exports as Misc,

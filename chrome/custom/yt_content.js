@@ -7,6 +7,7 @@ const MessageTypes = {
   PLAYLIST_POLL: 'PLAYLIST_POLL',
   YT_LOADED: 'YT_LOADED',
   EXTRACT_YT_DATA: 'EXTRACT_YT_DATA',
+  MINT_YT_PO_TOKENS: 'MINT_YT_PO_TOKENS',
 };
 
 const mainLoadedPromise = new Promise((resolve)=>{
@@ -36,8 +37,44 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.type === MessageTypes.EXTRACT_YT_DATA) {
     const data = get_yt_data_objs();
     sendResponse(data);
+  } else if (request.type === MessageTypes.MINT_YT_PO_TOKENS) {
+    mintPoTokens(request).then(sendResponse, (error) => sendResponse({error: error.message}));
+    return true;
   }
 });
+
+function mintPoTokens(request) {
+  return new Promise((resolve, reject) => {
+    const requestId = crypto.randomUUID();
+    const cleanup = () => {
+      clearTimeout(timeout);
+      window.removeEventListener('message', listener);
+    };
+    const listener = (event) => {
+      if (event.source !== window || event.origin !== window.location.origin ||
+          event.data?.type !== 'fs-yt-po-token-response' || event.data.requestId !== requestId) {
+        return;
+      }
+      cleanup();
+      if (event.data.error) {
+        reject(new Error(event.data.error));
+      } else {
+        resolve(event.data.tokens);
+      }
+    };
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('Timed out minting YouTube playback tokens. Reload the YouTube page and try again.'));
+    }, 15000);
+    window.addEventListener('message', listener);
+    window.postMessage({
+      type: 'fs-yt-po-token-request',
+      requestId,
+      videoId: request.videoId,
+      visitorData: request.visitorData,
+    }, window.location.origin);
+  });
+}
 
 function handleContentMessage(request, sender, sendResponse) {
   const data = request.data;
