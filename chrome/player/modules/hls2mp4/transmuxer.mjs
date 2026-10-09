@@ -232,3 +232,18 @@ export default class Transmuxer {
 export function isPromise(p) {
   return 'then' in p && p.then instanceof Function;
 }
+
+// Brings a 33-bit MPEG-TS timestamp to the same side of the 2^33 wrap as the
+// reference. This is hls.js's PTSNormalize, which hls.mjs does not export;
+// getVideoStartPts() above calls it the way hls.js's MP4Remuxer does.
+function normalizePts(value, reference) {
+  if (reference === null) {
+    return value;
+  }
+
+  const offset = reference < value ? -8589934592 : 8589934592;
+  while (Math.abs(value - reference) > 4294967296) {
+    value += offset;
+  }
+  return value;
+}
