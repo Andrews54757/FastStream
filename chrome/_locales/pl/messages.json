@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "Przyspieszony Vimeo"
     },
+    "player_source_accelpanopto": {
+        "message": "Przyspieszony Panopto"
+    },
     "player_source_mode": {
         "message": "Tryb"
     },

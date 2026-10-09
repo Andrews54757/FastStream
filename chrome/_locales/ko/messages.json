@@ -578,6 +578,9 @@
     "player_source_accelvm": {
         "message": "가속 Vimeo"
     },
+    "player_source_accelpanopto": {
+        "message": "가속 Panopto"
+    },
     "player_source_mode": {
         "message": "모드"
     },

@@ -576,7 +576,10 @@
         "message": "Beschleunigtes YouTube"
     },
     "player_source_accelvm": {
-        "message": "Beschleunigtest Vimeo"
+        "message": "Beschleunigtes Vimeo"
+    },
+    "player_source_accelpanopto": {
+        "message": "Beschleunigtes Panopto"
     },
     "player_source_mode": {
         "message": "Modus"
