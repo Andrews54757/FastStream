@@ -19,7 +19,7 @@ export class OpenSubtitlesSearch extends EventEmitter {
   constructor(version) {
     super();
     this.subui = {};
-    this.verison = version;
+    this.version = version;
     this.setupUI();
   }
 

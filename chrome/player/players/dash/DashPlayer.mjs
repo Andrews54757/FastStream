@@ -444,8 +444,8 @@ export default class DashPlayer extends EventEmitter {
       }
     });
 
-    const videoMimeType = videoProcessor.getRepresentation().mimeType;
-    const audioMimeType = audioProcessor.getRepresentation().mimeType;
+    const videoMimeType = videoProcessor?.getRepresentation()?.mimeType;
+    const audioMimeType = audioProcessor?.getRepresentation()?.mimeType;
 
     // Pin last: only getEntry and the catch below unpin, so nothing that can throw may run in between.
     zippedFragments.forEach((data) => {
