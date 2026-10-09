@@ -1,4 +1,5 @@
 const closeQueue = [];
+const DB_VERSION = 4;
 
 export class IndexedDBManager {
   constructor(persistentName) {
@@ -120,19 +121,24 @@ export class IndexedDBManager {
   }
 
   static async requestDB(dbName, open = false) {
-    const request = window.indexedDB.open(dbName, 3);
-    if (open) {
-      request.onupgradeneeded = async (event) => {
-        const db = event.target.result;
+    const request = window.indexedDB.open(dbName, DB_VERSION);
+    request.onupgradeneeded = async (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('metadata')) {
         db.createObjectStore('metadata');
+      }
+      if (!db.objectStoreNames.contains('files')) {
         db.createObjectStore('files');
-        if (!window.indexedDB.databases) {
-          const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
-          if (!databases.includes(dbName)) databases.push(dbName);
-          localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
-        }
-      };
-    }
+      }
+      if (!db.objectStoreNames.contains('file_meta')) {
+        db.createObjectStore('file_meta');
+      }
+      if (open && !window.indexedDB.databases) {
+        const databases = JSON.parse(localStorage.getItem('fs_temp_databases') || '[]');
+        if (!databases.includes(dbName)) databases.push(dbName);
+        localStorage.setItem('fs_temp_databases', JSON.stringify(databases));
+      }
+    };
     return IndexedDBManager.wrapRequest(request, 5000);
   }
 
@@ -175,6 +181,14 @@ export class IndexedDBManager {
     });
   }
 
+  async clearFileMetadataStorage() {
+    if (!this.db) return;
+    return IndexedDBManager.transact(this.db, 'file_meta', 'readwrite', (transaction)=>{
+      const metaDataStore = transaction.objectStore('file_meta');
+      return IndexedDBManager.wrapRequest(metaDataStore.clear());
+    });
+  }
+
   async getFile(identifier) {
     return IndexedDBManager.getValue(this.db, 'files', identifier);
   }
@@ -191,6 +205,25 @@ export class IndexedDBManager {
       const fileStore = transaction.objectStore('files');
       return IndexedDBManager.wrapRequest(fileStore.delete(identifier));
     });
+  }
+
+  async getFileMetadata(identifier) {
+    return IndexedDBManager.getValue(this.db, 'file_meta', identifier);
+  }
+
+  async setFileMetadata(identifier, metadata) {
+    return IndexedDBManager.setValue(this.db, 'file_meta', identifier, metadata);
+  }
+
+  async deleteFileMetadata(identifier) {
+    return IndexedDBManager.transact(this.db, 'file_meta', 'readwrite', (transaction)=>{
+      const metaStore = transaction.objectStore('file_meta');
+      return IndexedDBManager.wrapRequest(metaStore.delete(identifier));
+    });
+  }
+
+  async getAllFileMetadata() {
+    return IndexedDBManager.getAllValues(this.db, 'file_meta');
   }
 
   getDatabase() {
@@ -225,6 +258,13 @@ export class IndexedDBManager {
 
       result = callback(transaction);
       transaction.commit();
+    });
+  }
+
+  static getAllValues(db, storeName) {
+    return IndexedDBManager.transact(db, storeName, 'readonly', (transaction)=>{
+      const store = transaction.objectStore(storeName);
+      return IndexedDBManager.wrapRequest(store.getAll());
     });
   }
 
