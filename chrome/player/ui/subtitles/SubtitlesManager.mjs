@@ -102,12 +102,15 @@ export class SubtitlesManager extends EventEmitter {
 
   toggleSubtitles() {
     if (this.activeTracks.length === 0) {
-      if (this.lastActiveTracks) {
-        this.lastActiveTracks.forEach((track) => {
+      // Only the remembered tracks that are still loaded: a track list cleared for a new
+      // video, or a track removed, left the first press after it turning on nothing.
+      const remembered = (this.lastActiveTracks || []).filter((track) => this.tracks.includes(track));
+      this.lastActiveTracks = null;
+      if (remembered.length > 0) {
+        remembered.forEach((track) => {
           this.activateTrack(track);
         });
-        this.lastActiveTracks = null;
-      } else {
+      } else if (this.tracks.length > 0) {
         this.activateTrack(this.tracks[0]);
       }
     } else {
