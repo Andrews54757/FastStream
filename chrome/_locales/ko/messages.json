@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "트리플 클릭 동작"
     },
+    "options_general_holdspeed_key": {
+        "message": "길게 눌러 배속할 키 (마우스 버튼 또는 키보드)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "길게 누를 때 재생 속도 (배수)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "길게 눌러 배속이 적용되기까지의 지연 (ms) - 짧게 누르면 원래 기능이 실행됩니다"
+    },
     "options_general_clickaction_nothing": {
         "message": "아무 작업도 하지 않음"
     },

@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Dreifach-Klick Aktion"
     },
+    "options_general_holdspeed_key": {
+        "message": "Taste zum Beschleunigen beim Halten (Maustaste oder Tastatur)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Wiedergabegeschwindigkeit beim Halten (Multiplikator)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Verzögerung bis zum Beschleunigen beim Halten (ms) - kürzere Tastendrücke behalten die normale Funktion"
+    },
     "options_general_clickaction_nothing": {
         "message": "Nichts tun"
     },

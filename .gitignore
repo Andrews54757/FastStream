@@ -3,3 +3,4 @@ web-ext-artifacts
 node_modules
 built
 output/
+.playwright-cli/

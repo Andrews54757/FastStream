@@ -257,6 +257,14 @@ p.hint {
   outline-offset: 2px;
 }
 
+/* Hold-to-speed-up key chip lives in the general options grid */
+.option.grid2 .hold-speed-key-input {
+  grid-column: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #autoEnableURLs,
 #customSourcePatterns {
   color: var(--color-text);

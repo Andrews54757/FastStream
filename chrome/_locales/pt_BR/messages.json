@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Ação de clique triplo"
     },
+    "options_general_holdspeed_key": {
+        "message": "Tecla para acelerar ao manter pressionado (mouse ou teclado)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Velocidade de reprodução ao manter pressionado (multiplicador)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Atraso para ativar ao manter pressionado (ms) - toques mais curtos mantêm a função normal"
+    },
     "options_general_clickaction_nothing": {
         "message": "Não fazer nada"
     },

@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Triple click action"
     },
+    "options_general_holdspeed_key": {
+        "message": "Kunci pecut semasa ditekan lama (butang tetikus atau papan kekunci)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Kadar main semasa ditekan lama (pendarab)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Kelewatan pengaktifan semasa ditekan lama (ms) - tekanan singkat mengekalkan fungsi asal"
+    },
     "options_general_clickaction_nothing": {
         "message": "Do nothing"
     },

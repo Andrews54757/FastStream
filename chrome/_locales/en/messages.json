@@ -989,6 +989,15 @@
     "options_general_tplclickaction": {
         "message": "Triple click action"
     },
+    "options_general_holdspeed_key": {
+        "message": "Hold-to-speed-up key (mouse button or keyboard key)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Hold-to-speed-up playback rate (multiplier)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Hold-to-speed-up delay (ms) - shorter presses keep the key's normal action"
+    },
     "options_general_clickaction_nothing": {
         "message": "Do nothing"
     },

@@ -75,6 +75,28 @@ export class WebUtils {
   }
 
   /**
+   * Returns the name of the mouse button that triggered a mouse event.
+   * @param {MouseEvent} e - The mouse event.
+   * @return {string} The mouse button name (e.g. MouseLeft).
+   */
+  static getMouseButtonString(e) {
+    switch (e.button) {
+      case 0:
+        return 'MouseLeft';
+      case 1:
+        return 'MouseMiddle';
+      case 2:
+        return 'MouseRight';
+      case 3:
+        return 'MouseBack';
+      case 4:
+        return 'MouseForward';
+      default:
+        return `Mouse${e.button}`;
+    }
+  }
+
+  /**
    * Creates an SVG icon element from a given path.
    * @param {string} iconPath - The SVG path data or URL.
    * @return {SVGElement} The created SVG icon element.
