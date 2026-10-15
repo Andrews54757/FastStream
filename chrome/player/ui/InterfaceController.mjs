@@ -385,9 +385,10 @@ export class InterfaceController {
     // rate and the delay before it kicks in are all configurable in the settings.
     // A short press is left untouched: it keeps doing whatever the key normally
     // does, and only a press that lasts past the delay becomes the speed-up.
+    // Releasing restores the previous rate and leaves the video playing, so a hold
+    // started while paused keeps playing at normal speed afterwards.
     let holdTimeout = null;
     let lastSpeed = null;
-    let wasPlaying = false;
     let suppressClick = false;
     let holdUsed = false;
     let holdKeyString = null;
@@ -434,6 +435,18 @@ export class InterfaceController {
       return keyString === key;
     };
 
+    const showHoldSpeedOverlay = (rate) => {
+      if (!DOMElements.holdSpeedOverlay) {
+        return;
+      }
+      DOMElements.holdSpeedOverlayRate.textContent = `${Math.round(rate * 100) / 100}×`;
+      DOMElements.holdSpeedOverlay.classList.add('visible');
+    };
+
+    const hideHoldSpeedOverlay = () => {
+      DOMElements.holdSpeedOverlay?.classList.remove('visible');
+    };
+
     const startHoldSpeedUp = () => {
       const {rate, delay} = getHoldSpeedConfig();
       clearTimeout(holdTimeout);
@@ -441,12 +454,13 @@ export class InterfaceController {
         if (lastSpeed !== null || !this.client.player) {
           return;
         }
-        wasPlaying = this.state.playing;
         lastSpeed = this.client.playbackRate;
         this.client.playbackRate = lastSpeed * rate;
 
         this.client.play();
 
+        // Read the rate back from the client: a player implementation may clamp it.
+        showHoldSpeedOverlay(this.client.playbackRate || lastSpeed * rate);
         holdUsed = true;
         // The release that ends the speed-up also produces a click; swallow it so
         // it does not trigger the configured single/double/triple click action.
@@ -458,10 +472,7 @@ export class InterfaceController {
       if (lastSpeed !== null) {
         this.client.playbackRate = lastSpeed;
         lastSpeed = null;
-
-        if (!wasPlaying) {
-          this.client.pause();
-        }
+        hideHoldSpeedOverlay();
       }
       clearTimeout(holdTimeout);
     };
