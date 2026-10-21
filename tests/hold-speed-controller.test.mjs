@@ -63,7 +63,7 @@ function controllerHarness(overrides = {}) {
 
   const controller = new HoldSpeedController({
     client,
-    getConfig: () => ({key: 'ArrowRight', rate: 2, delay: 800, ...overrides.config}),
+    getConfig: () => ({key: 'ArrowRight', rate: 2, delay: 300, ...overrides.config}),
     showOverlay: (rate) => shownRates.push(rate),
     hideOverlay: () => hidden++,
     setTimer: timers.setTimer,
@@ -117,7 +117,7 @@ test('normalizes hold-speed settings and rejects invalid values', () => {
     holdSpeedKey: '',
     holdSpeedRate: '-1',
     holdSpeedDelay: 'not-a-number',
-  }), {key: 'None', rate: 2, delay: 800});
+  }), {key: 'None', rate: 2, delay: 300});
 });
 
 test('builds and releases keyboard and mouse binding strings', () => {

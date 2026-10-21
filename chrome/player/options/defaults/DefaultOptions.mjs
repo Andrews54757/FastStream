@@ -45,7 +45,7 @@ export const DefaultOptions = {
   tripleClickAction: ClickActions.HIDE_CONTROLS,
   holdSpeedKey: 'ArrowRight',
   holdSpeedRate: 2,
-  holdSpeedDelay: 800,
+  holdSpeedDelay: 300,
   visChangeAction: VisChangeActions.NOTHING,
   miniSize: 0.25,
   miniPos: MiniplayerPositions.BOTTOM_RIGHT,

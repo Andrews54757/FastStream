@@ -9,7 +9,7 @@ export function getHoldSpeedConfig(options = {}) {
   return {
     key: options.holdSpeedKey || 'None',
     rate: Number.isFinite(rate) && rate > 0 ? rate : 2,
-    delay: Number.isFinite(delay) && delay >= 0 ? delay : 800,
+    delay: Number.isFinite(delay) && delay >= 0 ? delay : 300,
   };
 }
 
