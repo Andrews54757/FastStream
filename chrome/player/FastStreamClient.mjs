@@ -69,7 +69,7 @@ export class FastStreamClient extends EventEmitter {
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
-      holdSpeedKey: 'MouseLeft',
+      holdSpeedKey: 'ArrowRight',
       holdSpeedRate: 2,
       holdSpeedDelay: 800,
       visChangeAction: VisChangeActions.NOTHING,
@@ -334,7 +334,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;
-    this.options.holdSpeedKey = options.holdSpeedKey ?? 'MouseLeft';
+    this.options.holdSpeedKey = options.holdSpeedKey ?? 'ArrowRight';
     this.options.holdSpeedRate = options.holdSpeedRate ?? 2;
     this.options.holdSpeedDelay = options.holdSpeedDelay ?? 800;
     this.options.visChangeAction = options.visChangeAction;

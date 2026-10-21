@@ -43,7 +43,7 @@ export const DefaultOptions = {
   singleClickAction: ClickActions.PLAY_PAUSE,
   doubleClickAction: ClickActions.FULLSCREEN,
   tripleClickAction: ClickActions.HIDE_CONTROLS,
-  holdSpeedKey: 'MouseLeft',
+  holdSpeedKey: 'ArrowRight',
   holdSpeedRate: 2,
   holdSpeedDelay: 800,
   visChangeAction: VisChangeActions.NOTHING,

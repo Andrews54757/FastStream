@@ -13,6 +13,12 @@ import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {FineTimeControls} from './FineTimeControls.mjs';
+import {
+  HoldSpeedController,
+  bindHoldSpeedInterruptions,
+  getHoldSpeedConfig,
+  matchesHoldSpeedKey,
+} from './HoldSpeedController.mjs';
 import {AudioQualityChanger} from './menus/AudioQualityChanger.mjs';
 import {LanguageChanger} from './menus/LanguageChanger.mjs';
 import {LoopMenu} from './menus/LoopMenu.mjs';
@@ -387,29 +393,29 @@ export class InterfaceController {
     // does, and only a press that lasts past the delay becomes the speed-up.
     // Releasing restores the previous rate and leaves the video playing, so a hold
     // started while paused keeps playing at normal speed afterwards.
-    let holdTimeout = null;
-    let lastSpeed = null;
-    let suppressClick = false;
-    let holdUsed = false;
-    let holdKeyString = null;
-
-    const getHoldSpeedConfig = () => {
-      const options = this.client.options;
-      const rate = parseFloat(options.holdSpeedRate);
-      const delay = parseFloat(options.holdSpeedDelay);
-      return {
-        key: options.holdSpeedKey || 'None',
-        rate: Number.isFinite(rate) && rate > 0 ? rate : 2,
-        delay: Number.isFinite(delay) && delay >= 0 ? delay : 800,
-      };
+    const showHoldSpeedOverlay = (rate) => {
+      if (!DOMElements.holdSpeedOverlay) {
+        return;
+      }
+      DOMElements.holdSpeedOverlayRate.textContent = `${Math.round(rate * 100) / 100}×`;
+      DOMElements.holdSpeedOverlay.classList.add('visible');
     };
 
-    const getBaseKey = (key) => key.split('+').pop();
+    const hideHoldSpeedOverlay = () => {
+      DOMElements.holdSpeedOverlay?.classList.remove('visible');
+    };
+
+    const holdSpeed = new HoldSpeedController({
+      client: this.client,
+      getConfig: () => getHoldSpeedConfig(this.client.options),
+      showOverlay: showHoldSpeedOverlay,
+      hideOverlay: hideHoldSpeedOverlay,
+    });
 
     // `ignoreModifiers` is used when the binding ends: releasing the base key should
     // always stop the speed-up, no matter which modifier was released first.
     const matchesHoldSpeedBinding = (e, ignoreModifiers = false) => {
-      const {key} = getHoldSpeedConfig();
+      const {key} = getHoldSpeedConfig(this.client.options);
       if (!key || key === 'None') {
         return false;
       }
@@ -428,60 +434,13 @@ export class InterfaceController {
         return false;
       }
 
-      const keyString = WebUtils.getKeyString(e);
-      if (ignoreModifiers) {
-        return getBaseKey(keyString) === getBaseKey(key);
-      }
-      return keyString === key;
-    };
-
-    const showHoldSpeedOverlay = (rate) => {
-      if (!DOMElements.holdSpeedOverlay) {
-        return;
-      }
-      DOMElements.holdSpeedOverlayRate.textContent = `${Math.round(rate * 100) / 100}×`;
-      DOMElements.holdSpeedOverlay.classList.add('visible');
-    };
-
-    const hideHoldSpeedOverlay = () => {
-      DOMElements.holdSpeedOverlay?.classList.remove('visible');
-    };
-
-    const startHoldSpeedUp = () => {
-      const {rate, delay} = getHoldSpeedConfig();
-      clearTimeout(holdTimeout);
-      holdTimeout = setTimeout(() => {
-        if (lastSpeed !== null || !this.client.player) {
-          return;
-        }
-        lastSpeed = this.client.playbackRate;
-        this.client.playbackRate = lastSpeed * rate;
-
-        this.client.play();
-
-        // Read the rate back from the client: a player implementation may clamp it.
-        showHoldSpeedOverlay(this.client.playbackRate || lastSpeed * rate);
-        holdUsed = true;
-        // The release that ends the speed-up also produces a click; swallow it so
-        // it does not trigger the configured single/double/triple click action.
-        suppressClick = true;
-      }, delay);
-    };
-
-    const stopSpeedUp = () => {
-      if (lastSpeed !== null) {
-        this.client.playbackRate = lastSpeed;
-        lastSpeed = null;
-        hideHoldSpeedOverlay();
-      }
-      clearTimeout(holdTimeout);
+      return matchesHoldSpeedKey(WebUtils.getKeyString(e), key, ignoreModifiers);
     };
 
     DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
-      suppressClick = false;
-      holdUsed = false;
+      holdSpeed.resetInputState();
       if (matchesHoldSpeedBinding(e)) {
-        startHoldSpeedUp();
+        holdSpeed.begin();
       }
     });
 
@@ -497,15 +456,12 @@ export class InterfaceController {
       if (e.repeat) {
         return;
       }
-      holdUsed = false;
-      holdKeyString = WebUtils.getKeyString(e);
-      suppressClick = false;
-      startHoldSpeedUp();
+      holdSpeed.begin(WebUtils.getKeyString(e));
     }, true);
 
     const onHoldEnd = (e)=>{
       if (matchesHoldSpeedBinding(e, true)) {
-        stopSpeedUp();
+        holdSpeed.stop();
       }
     };
     document.addEventListener('mouseup', onHoldEnd);
@@ -514,32 +470,30 @@ export class InterfaceController {
       if (!matchesHoldSpeedBinding(e, true)) {
         return;
       }
-      if (!holdUsed && holdKeyString !== null) {
-        // Short press: run the action this key normally has.
-        this.client.keybindManager.handleKeyString(holdKeyString, e);
-      }
-      holdKeyString = null;
-      stopSpeedUp();
+      // A short press replays the action this key normally has.
+      holdSpeed.complete(e, (keyString, event) => {
+        this.client.keybindManager.handleKeyString(keyString, event);
+      });
     });
 
     // A long press on a mouse button swallows the browser menu it would otherwise open.
     DOMElements.videoContainer.addEventListener('contextmenu', (e)=>{
-      if (suppressClick || lastSpeed !== null) {
+      if (holdSpeed.blocksContextMenu) {
         e.preventDefault();
       }
     });
 
     DOMElements.videoContainer.addEventListener('mouseleave', (e)=>{
-      stopSpeedUp();
+      holdSpeed.stop();
     });
+
+    bindHoldSpeedInterruptions(window, document, ()=>holdSpeed.interrupt());
 
     let clickCount = 0;
     let clickTimeout = null;
     DOMElements.videoContainer.addEventListener('click', (e) => {
-      clearTimeout(holdTimeout);
-      if (suppressClick || lastSpeed !== null) {
-        suppressClick = false;
-        stopSpeedUp();
+      holdSpeed.clearPending();
+      if (holdSpeed.consumeSuppressedClick()) {
         return;
       }
 
