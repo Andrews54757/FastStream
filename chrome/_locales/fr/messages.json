@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Action au triple-clic"
     },
+    "options_general_holdspeed_key": {
+        "message": "Touche pour accélérer en maintenant appuyé (souris ou clavier)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Vitesse de lecture en maintenant appuyé (multiplicateur)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Délai d'activation en maintenant appuyé (ms) - une pression plus courte garde la fonction normale"
+    },
     "options_general_clickaction_nothing": {
         "message": "Ne rien faire"
     },

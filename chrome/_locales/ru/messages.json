@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Действие по тройному клику"
     },
+    "options_general_holdspeed_key": {
+        "message": "Клавиша ускорения при удержании (кнопка мыши или клавиатура)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Скорость воспроизведения при удержании (множитель)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Задержка ускорения при удержании (мс) - короткое нажатие сохраняет обычное действие"
+    },
     "options_general_clickaction_nothing": {
         "message": "Ничего не делать"
     },

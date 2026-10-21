@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "トリプルクリック時のアクション"
     },
+    "options_general_holdspeed_key": {
+        "message": "長押しで倍速にするキー（マウスボタンまたはキーボード）"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "長押し時の再生速度（倍率）"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "長押しで倍速になるまでの遅延（ms）- 短い押下は通常の機能を実行します"
+    },
     "options_general_clickaction_nothing": {
         "message": "何もしない"
     },

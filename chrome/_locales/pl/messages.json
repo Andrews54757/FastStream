@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Akcja przy potrójnym kliknięciu"
     },
+    "options_general_holdspeed_key": {
+        "message": "Klawisz przyspieszania przy przytrzymaniu (przycisk myszy lub klawiatura)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Prędkość odtwarzania przy przytrzymaniu (mnożnik)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Opóźnienie aktywacji przy przytrzymaniu (ms) - krótsze naciśnięcia zachowują normalną funkcję"
+    },
     "options_general_clickaction_nothing": {
         "message": "Nic nie rób"
     },

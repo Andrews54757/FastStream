@@ -13,6 +13,12 @@ import {Utils} from '../utils/Utils.mjs';
 import {WebUtils} from '../utils/WebUtils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 import {FineTimeControls} from './FineTimeControls.mjs';
+import {
+  HoldSpeedController,
+  bindHoldSpeedInterruptions,
+  getHoldSpeedConfig,
+  matchesHoldSpeedKey,
+} from './HoldSpeedController.mjs';
 import {AudioQualityChanger} from './menus/AudioQualityChanger.mjs';
 import {LanguageChanger} from './menus/LanguageChanger.mjs';
 import {LoopMenu} from './menus/LoopMenu.mjs';
@@ -381,51 +387,113 @@ export class InterfaceController {
       this.queueControlsHide(1);
     });
 
-    let holdTimeout = null;
-    let lastSpeed = null;
-    let wasPlaying = false;
-    DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
-      if (e.button === 0) {
-        clearTimeout(holdTimeout);
-        holdTimeout = setTimeout(() => {
-          if (lastSpeed !== null || !this.client.player) {
-            return;
-          }
-          wasPlaying = this.state.playing;
-          lastSpeed = this.client.playbackRate;
-          this.client.playbackRate = lastSpeed * 2;
-
-          this.client.play();
-        }, 800);
+    // Hold-to-speed-up. The binding (mouse button or keyboard key), the playback
+    // rate and the delay before it kicks in are all configurable in the settings.
+    // A short press is left untouched: it keeps doing whatever the key normally
+    // does, and only a press that lasts past the delay becomes the speed-up.
+    // Releasing restores the previous rate and leaves the video playing, so a hold
+    // started while paused keeps playing at normal speed afterwards.
+    const showHoldSpeedOverlay = (rate) => {
+      if (!DOMElements.holdSpeedOverlay) {
+        return;
       }
-    });
-
-    const stopSpeedUp = () => {
-      if (lastSpeed !== null) {
-        this.client.playbackRate = lastSpeed;
-        lastSpeed = null;
-
-        if (!wasPlaying) {
-          this.client.pause();
-        }
-      }
-      clearTimeout(holdTimeout);
+      DOMElements.holdSpeedOverlayRate.textContent = `${Math.round(rate * 100) / 100}×`;
+      DOMElements.holdSpeedOverlay.classList.add('visible');
     };
 
-    // DOMElements.videoContainer.addEventListener('mouseup', (e)=>{
-    //   stopSpeedUp();
-    // });
+    const hideHoldSpeedOverlay = () => {
+      DOMElements.holdSpeedOverlay?.classList.remove('visible');
+    };
+
+    const holdSpeed = new HoldSpeedController({
+      client: this.client,
+      getConfig: () => getHoldSpeedConfig(this.client.options),
+      showOverlay: showHoldSpeedOverlay,
+      hideOverlay: hideHoldSpeedOverlay,
+    });
+
+    // `ignoreModifiers` is used when the binding ends: releasing the base key should
+    // always stop the speed-up, no matter which modifier was released first.
+    const matchesHoldSpeedBinding = (e, ignoreModifiers = false) => {
+      const {key} = getHoldSpeedConfig(this.client.options);
+      if (!key || key === 'None') {
+        return false;
+      }
+
+      if (key.startsWith('Mouse')) {
+        return e instanceof MouseEvent && WebUtils.getMouseButtonString(e) === key;
+      }
+
+      if (!(e instanceof KeyboardEvent)) {
+        return false;
+      }
+
+      // Never react to keys typed into a text field.
+      const target = e.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName))) {
+        return false;
+      }
+
+      return matchesHoldSpeedKey(WebUtils.getKeyString(e), key, ignoreModifiers);
+    };
+
+    DOMElements.videoContainer.addEventListener('mousedown', (e)=>{
+      holdSpeed.resetInputState();
+      if (matchesHoldSpeedBinding(e)) {
+        holdSpeed.begin();
+      }
+    });
+
+    // Keyboard bindings are captured before the keybind manager sees them, so holding
+    // a key that also has a normal action (e.g. seeking with ArrowRight) does not fire
+    // that action over and over. A short press replays it on release instead.
+    document.addEventListener('keydown', (e)=>{
+      if (!matchesHoldSpeedBinding(e)) {
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.repeat) {
+        return;
+      }
+      holdSpeed.begin(WebUtils.getKeyString(e));
+    }, true);
+
+    const onHoldEnd = (e)=>{
+      if (matchesHoldSpeedBinding(e, true)) {
+        holdSpeed.stop();
+      }
+    };
+    document.addEventListener('mouseup', onHoldEnd);
+
+    document.addEventListener('keyup', (e)=>{
+      if (!matchesHoldSpeedBinding(e, true)) {
+        return;
+      }
+      // A short press replays the action this key normally has.
+      holdSpeed.complete(e, (keyString, event) => {
+        this.client.keybindManager.handleKeyString(keyString, event);
+      });
+    });
+
+    // A long press on a mouse button swallows the browser menu it would otherwise open.
+    DOMElements.videoContainer.addEventListener('contextmenu', (e)=>{
+      if (holdSpeed.blocksContextMenu) {
+        e.preventDefault();
+      }
+    });
 
     DOMElements.videoContainer.addEventListener('mouseleave', (e)=>{
-      stopSpeedUp();
+      holdSpeed.stop();
     });
+
+    bindHoldSpeedInterruptions(window, document, ()=>holdSpeed.interrupt());
 
     let clickCount = 0;
     let clickTimeout = null;
     DOMElements.videoContainer.addEventListener('click', (e) => {
-      clearTimeout(holdTimeout);
-      if (lastSpeed !== null) {
-        stopSpeedUp();
+      holdSpeed.clearPending();
+      if (holdSpeed.consumeSuppressedClick()) {
         return;
       }
 

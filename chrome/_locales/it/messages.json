@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Azione clic triplo"
     },
+    "options_general_holdspeed_key": {
+        "message": "Tasto per accelerare tenendo premuto (mouse o tastiera)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Velocità di riproduzione tenendo premuto (moltiplicatore)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Ritardo di attivazione tenendo premuto (ms) - le pressioni più brevi mantengono la funzione normale"
+    },
     "options_general_clickaction_nothing": {
         "message": "Non fare nulla"
     },

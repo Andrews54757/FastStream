@@ -703,6 +703,42 @@ body {
     color: var(--save-notif-badge-text-color);
 }
 
+/* Small badge that shows up while the hold-to-speed-up shortcut is active. */
+.hold_speed_overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    border: var(--menu-border);
+    background-color: var(--menu-background-color);
+    color: var(--menu-text-color);
+    font-size: 12px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1.4;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(-3px);
+    transition: opacity 0.05s ease-out, transform 0.05s ease-out;
+}
+
+.hold_speed_overlay.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.hold_speed_overlay svg {
+    width: 11px;
+    height: 11px;
+    flex: none;
+    opacity: 0.85;
+}
+
 .fluid_button_video_source .fluid_video_sources_list,
 .fluid_button_soundwave .fluid_audio_sources_list,
 .fluid_button_language .fluid_language_list,
@@ -3076,6 +3112,18 @@ input.crosstalk_calculator_input {
         font-size: 6px;
     }
 
+    .hold_speed_overlay {
+        top: 6px;
+        right: 6px;
+        padding: 1px 5px;
+        font-size: 11px;
+    }
+
+    .hold_speed_overlay svg {
+        width: 9px;
+        height: 9px;
+    }
+
 }
 
 @media screen and (max-width: 500px) {
@@ -3106,6 +3154,13 @@ input.crosstalk_calculator_input {
 
     .disable-when-mini {
         display: none;
+    }
+
+    .hold_speed_overlay {
+        top: 4px;
+        right: 4px;
+        padding: 1px 4px;
+        font-size: 10px;
     }
 }
 

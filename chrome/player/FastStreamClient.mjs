@@ -69,6 +69,9 @@ export class FastStreamClient extends EventEmitter {
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
+      holdSpeedKey: 'ArrowRight',
+      holdSpeedRate: 2,
+      holdSpeedDelay: 300,
       visChangeAction: VisChangeActions.NOTHING,
       defaultYoutubeClient: YoutubeClients.WEB,
       miniSize: 0.25,
@@ -331,6 +334,9 @@ export class FastStreamClient extends EventEmitter {
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;
+    this.options.holdSpeedKey = options.holdSpeedKey ?? 'ArrowRight';
+    this.options.holdSpeedRate = options.holdSpeedRate ?? 2;
+    this.options.holdSpeedDelay = options.holdSpeedDelay ?? 300;
     this.options.visChangeAction = options.visChangeAction;
     this.options.miniSize = options.miniSize;
     this.options.miniPos = options.miniPos;

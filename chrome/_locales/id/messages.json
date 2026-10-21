@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Aksi klik tiga kali"
     },
+    "options_general_holdspeed_key": {
+        "message": "Tombol percepat saat ditekan lama (tombol tetikus atau papan ketik)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Kecepatan putar saat ditekan lama (pengali)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Jeda aktivasi saat ditekan lama (ms) - tekanan singkat tetap menjalankan fungsi asli"
+    },
     "options_general_clickaction_nothing": {
         "message": "Jangan lakukan apa-apa"
     },

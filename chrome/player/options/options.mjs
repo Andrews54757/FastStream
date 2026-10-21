@@ -44,6 +44,9 @@ const showWhenMiniSelected = document.getElementById('showWhenMiniSelected');
 const storeProgress = document.getElementById('storeprogress');
 const miniSize = document.getElementById('minisize');
 const miniPos = document.getElementById('minipos');
+const holdSpeedKeyInput = document.getElementById('holdspeedkey');
+const holdSpeedRateInput = document.getElementById('holdspeedrate');
+const holdSpeedDelayInput = document.getElementById('holdspeeddelay');
 const videoAspectRatio = document.getElementById('videoAspectRatio');
 const daltonizerType = document.getElementById('daltonizerType');
 const daltonizerStrength = document.getElementById('daltonizerStrength');
@@ -110,6 +113,9 @@ async function loadOptions(newOptions) {
   replaceDelay.value = Options.replaceDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
+  holdSpeedRateInput.value = Options.holdSpeedRate;
+  holdSpeedDelayInput.value = Options.holdSpeedDelay;
+  holdSpeedKeyInput.textContent = Options.holdSpeedKey || 'None';
 
   setSelectMenuValue(videoAspectRatio, Options.videoAspectRatio);
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
@@ -440,6 +446,62 @@ seekStepSize.addEventListener('change', () => {
   Options.seekStepSize = parseFloat(seekStepSize.value);
   optionChanged();
 });
+
+holdSpeedRateInput.addEventListener('change', () => {
+  const value = parseFloat(holdSpeedRateInput.value);
+  Options.holdSpeedRate = Number.isFinite(value) && value > 0 ? value : DefaultOptions.holdSpeedRate;
+  holdSpeedRateInput.value = Options.holdSpeedRate;
+  optionChanged();
+});
+
+holdSpeedDelayInput.addEventListener('change', () => {
+  const value = parseFloat(holdSpeedDelayInput.value);
+  Options.holdSpeedDelay = Number.isFinite(value) && value >= 0 ? Math.round(value) : DefaultOptions.holdSpeedDelay;
+  holdSpeedDelayInput.value = Options.holdSpeedDelay;
+  optionChanged();
+});
+
+/**
+ * Makes the hold-to-speed-up key field capture either a keyboard key or a mouse
+ * button. Escape (or the default) clears the binding.
+ */
+function setupHoldSpeedKeyInput() {
+  const setKeybind = (value) => {
+    Options.holdSpeedKey = value;
+    holdSpeedKeyInput.textContent = value;
+    optionChanged();
+  };
+
+  holdSpeedKeyInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      return;
+    }
+    e.stopPropagation();
+    e.preventDefault();
+    if (e.key === 'Escape') {
+      setKeybind('None');
+      holdSpeedKeyInput.blur();
+      return;
+    }
+    setKeybind(WebUtils.getKeyString(e));
+  });
+
+  holdSpeedKeyInput.addEventListener('keyup', (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+  });
+
+  holdSpeedKeyInput.addEventListener('mousedown', (e) => {
+    e.stopPropagation();
+    setKeybind(WebUtils.getMouseButtonString(e));
+  });
+
+  holdSpeedKeyInput.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+  });
+}
+
+setupHoldSpeedKeyInput();
 
 replaceDelay.addEventListener('change', () => {
   Options.replaceDelay = parseInt(replaceDelay.value);

@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "三擊動作"
     },
+    "options_general_holdspeed_key": {
+        "message": "長按倍速播放按鍵（滑鼠按鍵或鍵盤按鍵）"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "長按倍速播放倍率"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "長按倍速播放生效延遲（毫秒）- 短按仍執行原功能"
+    },
     "options_general_clickaction_nothing": {
         "message": "不執行任何動作"
     },

@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Acción de triple clic"
     },
+    "options_general_holdspeed_key": {
+        "message": "Tecla para acelerar al mantener pulsado (ratón o teclado)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Velocidad de reproducción al mantener pulsado (multiplicador)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Retardo de activación al mantener pulsado (ms) - las pulsaciones más cortas mantienen la función normal"
+    },
     "options_general_clickaction_nothing": {
         "message": "No hacer nada"
     },

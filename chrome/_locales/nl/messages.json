@@ -986,6 +986,15 @@
     "options_general_tplclickaction": {
         "message": "Actie bij drievoudige klik"
     },
+    "options_general_holdspeed_key": {
+        "message": "Toets voor versnellen bij vasthouden (muisknop of toetsenbord)"
+    },
+    "options_general_holdspeed_rate": {
+        "message": "Afspeelsnelheid bij vasthouden (vermenigvuldiger)"
+    },
+    "options_general_holdspeed_delay": {
+        "message": "Vertraging voor versnellen bij vasthouden (ms) - kortere drukken behouden de normale functie"
+    },
     "options_general_clickaction_nothing": {
         "message": "Niets doen"
     },
