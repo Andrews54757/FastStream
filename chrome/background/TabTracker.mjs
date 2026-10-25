@@ -20,6 +20,7 @@ export class FrameHolder {
     this.claimed = false;
     this.heldSources = [];
     this.requestHeaders = new Map();
+    this.requestModes = new Map();
     this.url = '';
   }
 

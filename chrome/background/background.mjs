@@ -1503,6 +1503,8 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
+const redirectStatusCodes = new Set([301, 302, 303, 307, 308]);
+
 // Exclude urls from facebook and vimeo.
 const initiatorBlacklist = [
   'https://www.facebook.com',
@@ -1542,7 +1544,7 @@ chrome.webRequest.onHeadersReceived.addListener(
       let mode = URLUtils.getModeFromExtension(ext);
       if (!mode) {
         if (details.type === 'media') {
-          mode = PlayerModes.ACCELERATED_MP4;
+          mode = frame.requestModes.get(details.requestId) || PlayerModes.ACCELERATED_MP4;
         } else {
         // Check url query parameters
           const urlParams = URLUtils.get_url_params(url).values();
@@ -1560,10 +1562,17 @@ chrome.webRequest.onHeadersReceived.addListener(
               break;
             }
           }
+          mode = mode || frame.requestModes.get(details.requestId);
           if (!mode) {
             return;
           }
         }
+      }
+
+      // Redirects can finish after the replacement delay; wait and keep the mode for opaque URLs.
+      if (redirectStatusCodes.has(details.statusCode)) {
+        frame.requestModes.set(details.requestId, mode);
+        return;
       }
 
       VpnMirror?.noteSource(details);
@@ -1586,6 +1595,9 @@ function deleteHeaderCache(details) {
   const tab = Tabs.getTabOrCreate(details.tabId);
   const frame = tab.getFrameOrCreate(details.frameId);
   frame.requestHeaders.delete(details.requestId);
+  if (!redirectStatusCodes.has(details.statusCode)) {
+    frame.requestModes.delete(details.requestId);
+  }
 }
 
 loadOptions().catch(console.error);
