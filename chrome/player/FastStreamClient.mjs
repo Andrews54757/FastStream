@@ -530,15 +530,18 @@ export class FastStreamClient extends EventEmitter {
   }
 
   /**
-   * Seeks the preview player to a given time.
-   * @param {number} time
+   * Forces the video element to repaint by seeking a tiny amount.
+   * Fixes black video when returning to a tab after it was hidden.
    */
-  seekPreview(time) {
-    if (this.previewPlayer) {
-      this.previewPlayer.currentTime = time;
-      this.updatePreview();
-    }
+  refreshVideoFrame() {
+    const video = this.player?.getVideo();
+    if (!video || video.readyState < 2) return;
+
+    const currentTime = video.currentTime;
+    video.currentTime = currentTime + 0.001;
+    video.currentTime = currentTime;
   }
+
 
   /**
    * Hides the preview video.

@@ -537,6 +537,7 @@ export class InterfaceController {
     document.addEventListener('visibilitychange', ()=>{
       if (!document.hidden) {
         this.client.updateTime(this.client.currentTime);
+        this.client.refreshVideoFrame();
         this.handleVisibilityChange(true);
       } else {
         this.handleVisibilityChange(false);
@@ -546,6 +547,7 @@ export class InterfaceController {
     window.addEventListener('pageshow', (event) => {
       if (event.persisted) {
         this.client.updateTime(this.client.currentTime);
+        this.client.refreshVideoFrame();
       }
     });
 
