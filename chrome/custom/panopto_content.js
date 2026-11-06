@@ -10,13 +10,13 @@
   const DELIVERY_INFO_PATH = '/Panopto/Pages/Viewer/DeliveryInfo.aspx';
   const SOURCE_URL_PREFIX = 'data:application/x-panopto+json,';
 
-  // Panopto arranges its own viewer, and the element holding the video being played is
-  // not the largest one on the page, so the replacer is pointed straight at it instead
-  // of being left to pick by size. Which element that is depends on the layout the
-  // viewer chose: a session shown with a primary player puts it there, and the rest
-  // keep it among the players on the right. Whichever the page has, the primary player
-  // is the one to take when it is there.
-  const PLAYER_CONTAINER_QUERY = ['#leftPlayerContainer', '#rightPlayersContainer'];
+  // Panopto's primary-only player lives in the zero-height left container but is
+  // positioned over the right pane. Its IDs also drive Panopto's layout updates, so
+  // transferring one onto an iframe breaks both the replacement and the native video.
+  // Replace our own host inside the right container and leave Panopto's nodes intact.
+  const PLAYER_HOST_ID = 'faststream-panopto-host';
+  const PLAYER_IFRAME_ID = 'faststream-panopto-player';
+  const PLAYER_CONTAINER_QUERY = `#${PLAYER_HOST_ID}`;
 
   // The viewer builds its layout after page load, so the container will usually not be
   // there yet when the player is asked to open.
@@ -46,6 +46,79 @@
   // switched on: the viewer starts loading its streams whether or not FastStream is on,
   // and the sources it turns up would outlive that wait.
   claimFrame(true);
+
+  // Native players can live outside the replacement's subtree (including the primary
+  // audio stream in multi-stream sessions). Suppress them only while FastStream is
+  // active, without changing the dimensions Panopto uses to arrange its viewer.
+  const nativePlayerStyles = document.createElement('style');
+  nativePlayerStyles.textContent = `
+    #leftPlayerContainer,
+    #rightPlayersContainer > :not(#${PLAYER_HOST_ID}):not(#${PLAYER_IFRAME_ID}) {
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+  `;
+  const nativeMediaQuery = '#leftPlayerContainer video, #leftPlayerContainer audio, ' +
+    '#rightPlayersContainer video, #rightPlayersContainer audio';
+
+  function pauseNativeMedia(event) {
+    if (event.target.matches?.(nativeMediaQuery)) {
+      event.target.pause();
+    }
+  }
+
+  chrome.runtime.onMessage.addListener((request) => {
+    if (request.type !== 'MESSAGE_FROM_CONTENT' || request.destination !== 'custom' ||
+        request.data?.type !== 'active-state') {
+      return;
+    }
+    if (request.data.value) {
+      document.documentElement.appendChild(nativePlayerStyles);
+      document.addEventListener('play', pauseNativeMedia, true);
+      document.querySelectorAll(nativeMediaQuery).forEach((media) => media.pause());
+    } else {
+      nativePlayerStyles.remove();
+      document.removeEventListener('play', pauseNativeMedia, true);
+    }
+  });
+
+  /**
+   * Mounts an independent replacement host once Panopto has laid out its video area.
+   * @return {Promise<boolean>} Whether a host with usable bounds was mounted.
+   */
+  function preparePlayerHost() {
+    return new Promise((resolve) => {
+      let container = null;
+      const finish = (ready) => {
+        clearTimeout(timer);
+        observer.disconnect();
+        resizeObserver.disconnect();
+        resolve(ready);
+      };
+      const check = () => {
+        const current = document.querySelector('#rightPlayersContainer');
+        if (current !== container) {
+          resizeObserver.disconnect();
+          container = current;
+          if (container) resizeObserver.observe(container);
+        }
+        const rect = container?.getBoundingClientRect();
+        if (!rect || rect.width <= 0 || rect.height <= 0) return;
+
+        const host = document.createElement('div');
+        host.id = PLAYER_HOST_ID;
+        host.style.cssText = 'position: absolute; inset: 0; width: 100%; height: 100%; ' +
+          'z-index: 2; pointer-events: none;';
+        container.appendChild(host);
+        finish(true);
+      };
+      const observer = new MutationObserver(check);
+      const resizeObserver = new ResizeObserver(check);
+      const timer = setTimeout(() => finish(false), PLAYER_CONTAINER_TIMEOUT);
+      observer.observe(document.documentElement, {childList: true, subtree: true});
+      check();
+    });
+  }
 
   /**
    * Resolves once FastStream is switched on for this tab.
@@ -93,6 +166,7 @@
           config: {
             customVideoQuery: PLAYER_CONTAINER_QUERY,
             customVideoQueryTimeout: PLAYER_CONTAINER_TIMEOUT,
+            customIframeId: PLAYER_IFRAME_ID,
           },
         },
       }, () => resolve());
@@ -348,6 +422,11 @@
     };
 
     const subtitles = await getSubtitles(delivery);
+
+    if (!await preparePlayerHost()) {
+      console.warn('FastStream: Panopto video area did not become ready');
+      return false;
+    }
 
     // Announcing the source is what eventually triggers the replacement, so the
     // replacer has to know which element to target before this goes out.
