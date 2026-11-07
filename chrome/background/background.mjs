@@ -410,7 +410,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       });
     }
 
-    onSourceRecieved({
+    onSourceReceived({
       url: msg.url,
       requestId: -1,
       customHeaders: headers,
@@ -764,7 +764,7 @@ function checkYTURL(frame) {
   }
 
   if (URLUtils.is_url_yt(url) && URLUtils.is_url_yt_watch(url)) {
-    onSourceRecieved({
+    onSourceReceived({
       url: url,
       requestId: -1,
     }, frame, PlayerModes.ACCELERATED_YT);
@@ -777,7 +777,7 @@ function checkURLMatch(frame) {
   if (ext) {
     const mode = URLUtils.getModeFromExtension(ext);
     if (!mode) return;
-    onSourceRecieved({
+    onSourceReceived({
       url: url,
       requestId: -1,
     }, frame, mode);
@@ -1190,7 +1190,7 @@ function setFrameClaim(frame, claimed) {
   if (Logging) console.log('Integration released', frame.url, '- releasing', held.length, 'source(s)');
 
   held.forEach((source) => {
-    onSourceRecieved({
+    onSourceReceived({
       url: source.url,
       requestId: -1,
       customHeaders: source.headers,
@@ -1368,7 +1368,7 @@ async function sendSourcesToMainFramePlayers(frame) {
   }
 }
 
-async function onSourceRecieved(details, frame, mode) {
+async function onSourceReceived(details, frame, mode) {
   if ((URLUtils.is_url_yt(frame.url) || URLUtils.is_url_yt(frame.tab.url)) && mode !== PlayerModes.ACCELERATED_YT) {
     return;
   }
@@ -1503,36 +1503,23 @@ chrome.webRequest.onBeforeSendHeaders.addListener((details) => {
   urls: ['<all_urls>'],
 }, webRequestPerms);
 
-// Exclude urls from facebook and vimeo.
-const initiatorBlacklist = [
-  'https://www.facebook.com',
-  'https://www.instagram.com',
-  'https://vimeo.com',
-];
-
 chrome.webRequest.onHeadersReceived.addListener(
     (details) => {
-      const url = details.url;
-      let ext = URLUtils.get_url_extension(url);
+      if (details.statusCode !== 304 && details.statusCode >= 300 && details.statusCode < 400) {
+        return; // Redirects. Ignore it
+      }
+      if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
+        return; // Client or server error. Ignore it
+      }
+
       const tab = Tabs.getTabOrCreate(details.tabId);
       const frame = tab.getFrameOrCreate(details.frameId);
       if (frame.hasPlayer()) return;
 
-      if ((details.statusCode >= 400 && details.statusCode < 600) || details.statusCode === 204) {
-        return; // Client or server error. Ignore it
-      }
-      if (url.startsWith('https://player.vimeo.com') && (url.includes('config?') || url.includes('video'))) {
-        ext = 'vmpatch';
-      } else if (details.initiator &&
-      initiatorBlacklist.some((a) => {
-        return details.initiator.startsWith(a);
-      })) {
-      }
-
-      const output = CustomSourcePatternsMatcher.match(url);
-      if (output) {
-        ext = output;
-      }
+      const url = details.url;
+      const customExt = CustomSourcePatternsMatcher.match(url);
+      const isVimeo = !customExt && url.startsWith('https://player.vimeo.com') && (url.includes('config?') || url.includes('video'));
+      const ext = customExt || (isVimeo ? 'vmpatch' : URLUtils.get_url_extension(url));
 
       if (BackgroundUtils.isSubtitles(ext)) {
         VpnMirror?.noteSource(details);
@@ -1544,30 +1531,21 @@ chrome.webRequest.onHeadersReceived.addListener(
         if (details.type === 'media') {
           mode = PlayerModes.ACCELERATED_MP4;
         } else {
-        // Check url query parameters
+          // Check url query parameters
           const urlParams = URLUtils.get_url_params(url).values();
           for (const value of urlParams) {
             if (!URLUtils.is_url(value)) continue;
-            let ext2 = URLUtils.get_url_extension(value);
-
-            const output = CustomSourcePatternsMatcher.match(value);
-            if (output) {
-              ext2 = output;
-            }
-
-            mode = URLUtils.getModeFromExtension(ext2);
-            if (mode) {
-              break;
-            }
+            const customExt = CustomSourcePatternsMatcher.match(value);
+            const ext = customExt || URLUtils.get_url_extension(value);
+            mode = URLUtils.getModeFromExtension(ext);
+            if (mode) break;
           }
-          if (!mode) {
-            return;
-          }
+          if (!mode) return;
         }
       }
 
       VpnMirror?.noteSource(details);
-      onSourceRecieved(details, frame, mode);
+      onSourceReceived(details, frame, mode);
     }, {
       urls: ['<all_urls>'],
     }, webRequestPerms2,
