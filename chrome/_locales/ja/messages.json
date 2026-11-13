@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "色相の回転"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "色覚異常の矯正"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "シークキーバインドのベースステップサイズ (秒)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "早送りショートカットの移動時間（秒）"
     },
     "options_general_replace_delay": {
         "message": "プレーヤーを自動的に置き換える前の遅延 (ミリ秒)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

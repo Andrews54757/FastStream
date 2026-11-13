@@ -13,6 +13,7 @@ export const DefaultKeybinds = {
   'SeekBackward': 'ArrowLeft',
   'SeekForwardLarge': 'Period',
   'SeekBackwardLarge': 'Comma',
+  'FastForward': 'KeyL',
   'SeekForwardFrame': 'Shift+ArrowRight',
   'SeekBackwardFrame': 'Shift+ArrowLeft',
   'IncreasePlaybackRate': 'Shift+ArrowUp',

@@ -40,6 +40,7 @@ export const DefaultOptions = {
   maxSpeed: -1,
   maxVideoSize: 5000000000, // 5GB max size
   seekStepSize: 2,
+  fastForwardDuration: 85,
   singleClickAction: ClickActions.PLAY_PAUSE,
   doubleClickAction: ClickActions.FULLSCREEN,
   tripleClickAction: ClickActions.HIDE_CONTROLS,

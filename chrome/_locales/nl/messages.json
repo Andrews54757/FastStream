@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "Kleurtoon roteren"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Correctie voor kleurenblindheid"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "Basisstapgrootte voor zoeken (seconden)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "Duur van snel vooruitspoelen via sneltoets (seconden)"
     },
     "options_general_replace_delay": {
         "message": "Vertraging voordat speler automatisch wordt vervangen (ms)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

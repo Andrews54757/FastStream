@@ -5813,6 +5813,24 @@
         "zh_CN": "跳转键基础步长（秒）",
         "zh_TW": "跳轉鍵基本步長（秒）"
     },
+    "options_general_fastforward_duration": {
+        "en": "Fast-forward shortcut duration (seconds)",
+        "de": "Dauer des Schnellvorlaufs per Tastenkürzel (Sekunden)",
+        "es": "Duración del avance rápido con atajo (segundos)",
+        "fr": "Durée de l'avance rapide par raccourci (secondes)",
+        "id": "Durasi maju cepat melalui pintasan (detik)",
+        "it": "Durata avanzamento rapido tramite scorciatoia (secondi)",
+        "ja": "早送りショートカットの移動時間（秒）",
+        "ko": "빠른 이동 단축키 시간(초)",
+        "ms": "Tempoh maju pantas melalui pintasan (saat)",
+        "nl": "Duur van snel vooruitspoelen via sneltoets (seconden)",
+        "pl": "Czas przewijania skrótem do przodu (sekundy)",
+        "pt_BR": "Duração do avanço rápido pelo atalho (segundos)",
+        "ru": "Длительность перемотки вперёд по горячей клавише (секунды)",
+        "tr": "Hızlı ileri klavye kısayolu süresi (saniye)",
+        "zh_CN": "快进快捷键跳转时长（秒）",
+        "zh_TW": "快進快速鍵跳轉時長（秒）"
+    },
     "options_general_replace_delay": {
         "en": "Delay before auto-replacing player (ms)",
         "de": "Verzöggerung vor dem automatischen Ersetzen des Players (ms)",

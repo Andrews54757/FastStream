@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "Renk Tonu Döndürme"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Renk körlüğü düzeltmesi"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "İleri/geri tuş adım boyutu (saniye)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "Hızlı ileri klavye kısayolu süresi (saniye)"
     },
     "options_general_replace_delay": {
         "message": "Otomatik oynatıcıyı değiştirmeden önce gecikme (ms)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "Tamam"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

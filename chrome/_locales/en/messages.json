@@ -968,6 +968,9 @@
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
     },
+    "options_general_fastforward_duration": {
+        "message": "Fast-forward shortcut duration (seconds)"
+    },
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"
     },

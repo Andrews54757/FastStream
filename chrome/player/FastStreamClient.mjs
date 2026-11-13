@@ -88,6 +88,7 @@ export class FastStreamClient extends EventEmitter {
       videoZoom: 1,
       videoAspectRatio: AspectRatios.AUTO,
       seekStepSize: 0.2,
+      fastForwardDuration: 85,
       defaultQuality: 'Auto',
       toolSettings: Utils.mergeOptions(DefaultToolSettings, {}),
       videoDelay: 0,
@@ -331,6 +332,7 @@ export class FastStreamClient extends EventEmitter {
     this.options.maxSpeed = options.maxSpeed;
     this.options.maxVideoSize = options.maxVideoSize;
     this.options.seekStepSize = options.seekStepSize;
+    this.options.fastForwardDuration = options.fastForwardDuration ?? 85;
     this.options.singleClickAction = options.singleClickAction;
     this.options.doubleClickAction = options.doubleClickAction;
     this.options.tripleClickAction = options.tripleClickAction;

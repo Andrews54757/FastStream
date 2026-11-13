@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "색상 회전"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "색각 이상 보정"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "건너뛰기 키 기본 단위(초)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "빠른 이동 단축키 시간(초)"
     },
     "options_general_replace_delay": {
         "message": "플레이어 자동 교체 전 지연(밀리초)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "확인"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

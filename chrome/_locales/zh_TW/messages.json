@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "色相旋轉"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "色盲校正"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "跳轉鍵基本步長（秒）"
+    },
+    "options_general_fastforward_duration": {
+        "message": "快進快速鍵跳轉時長（秒）"
     },
     "options_general_replace_delay": {
         "message": "自動替換播放器前的延遲（毫秒）"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "確定"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

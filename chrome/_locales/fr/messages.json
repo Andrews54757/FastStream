@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "Rotation de teinte"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Correction du daltonisme"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "Taille du pas pour les touches de saut (secondes)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "Durée de l'avance rapide par raccourci (secondes)"
     },
     "options_general_replace_delay": {
         "message": "Délai avant remplacement automatique du lecteur (ms)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

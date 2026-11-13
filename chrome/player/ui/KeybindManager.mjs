@@ -121,6 +121,12 @@ export class KeybindManager extends EventEmitter {
       this.client.setSeekSave(true);
     });
 
+    this.on('FastForward', (e) => {
+      this.client.setSeekSave(false);
+      this.client.currentTime += this.client.options.fastForwardDuration;
+      this.client.setSeekSave(true);
+    });
+
     this.on('IncreasePlaybackRate', (e) => {
       this.client.playbackRate = Math.min(this.client.playbackRate + 0.1, this.client.options.maxPlaybackRate);
       this.client.interfaceController.showControlBarTemporarily();

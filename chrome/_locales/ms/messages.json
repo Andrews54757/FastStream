@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "Hue Rotate"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Color blindness correction"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "Seek keybind base step size (seconds)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "Tempoh maju pantas melalui pintasan (saat)"
     },
     "options_general_replace_delay": {
         "message": "Delay before auto-replacing player (ms)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

@@ -914,6 +914,9 @@
     "options_video_hue": {
         "message": "Putar Hue"
     },
+    "options_video_aspect_ratio": {
+        "message": "Aspect Ratio"
+    },
     "options_video_daltonizer_type": {
         "message": "Koreksi buta warna"
     },
@@ -964,6 +967,9 @@
     },
     "options_general_seekstep": {
         "message": "Ukuran langkah dasar untuk tombol lompat (detik)"
+    },
+    "options_general_fastforward_duration": {
+        "message": "Durasi maju cepat melalui pintasan (detik)"
     },
     "options_general_replace_delay": {
         "message": "Tunda sebelum mengganti pemutar secara otomatis (ms)"
@@ -1204,8 +1210,5 @@
     },
     "ytslowdown_ok": {
         "message": "OK"
-    },
-    "options_video_aspect_ratio": {
-        "message": "Aspect Ratio"
     }
 }

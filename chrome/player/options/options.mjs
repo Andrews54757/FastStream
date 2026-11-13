@@ -30,6 +30,7 @@ const autoSub = document.getElementById('autosub');
 const maxSpeed = document.getElementById('maxspeed');
 const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
+const fastForwardDuration = document.getElementById('fastforwardduration');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const autoplayNext = document.getElementById('autoplaynext');
 const qualityMenu = document.getElementById('quality');
@@ -107,6 +108,7 @@ async function loadOptions(newOptions) {
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
+  fastForwardDuration.value = Options.fastForwardDuration;
   customSourcePatterns.value = Options.customSourcePatterns || '';
   miniSize.value = Options.miniSize;
   storeProgress.checked = !!Options.storeProgress;
@@ -444,6 +446,13 @@ maxSize.addEventListener('change', () => {
 
 seekStepSize.addEventListener('change', () => {
   Options.seekStepSize = parseFloat(seekStepSize.value);
+  optionChanged();
+});
+
+fastForwardDuration.addEventListener('change', () => {
+  const value = parseFloat(fastForwardDuration.value);
+  Options.fastForwardDuration = Number.isFinite(value) && value > 0 ? value : DefaultOptions.fastForwardDuration;
+  fastForwardDuration.value = Options.fastForwardDuration;
   optionChanged();
 });
 
