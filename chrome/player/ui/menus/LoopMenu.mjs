@@ -165,19 +165,29 @@ export class LoopMenu extends EventEmitter {
       this.loopStart = this.timecodeToSeconds(this.loopTimeSettings.start);
       this.loopEnd = this.timecodeToSeconds(this.loopTimeSettings.end);
 
-      if (this.loopEnd <= 0) {
-        this.loopEnd = this.client.duration;
-      }
+      // When both start and end are 0 (defaults), loop the full video
+      // using native video.loop without custom seeking
+      this.isFullVideoLoop = (this.loopStart <= 0 && this.loopEnd <= 0);
 
-      if (this.loopStart >= this.loopEnd || this.loopStart >= this.client.duration) {
-        this.loopEnabled = false;
+      if (this.isFullVideoLoop) {
+        this.loopStart = 0;
+        this.loopEnd = this.client.duration || Infinity;
       } else {
-        this.loopStart = Utils.clamp(this.loopStart, 0, this.client.duration);
-        this.loopEnd = Utils.clamp(this.loopEnd, 0, this.client.duration);
+        if (this.loopEnd <= 0) {
+          this.loopEnd = this.client.duration;
+        }
+
+        if (this.loopStart >= this.loopEnd || this.loopStart >= this.client.duration) {
+          this.loopEnabled = false;
+        } else {
+          this.loopStart = Utils.clamp(this.loopStart, 0, this.client.duration);
+          this.loopEnd = Utils.clamp(this.loopEnd, 0, this.client.duration);
+        }
       }
     } else {
       this.loopStart = null;
       this.loopEnd = null;
+      this.isFullVideoLoop = false;
     }
 
     this.toggleLoopButton.textContent = Localize.getMessage('loop_menu_toggle_' + (this.loopEnabled ? 'enabled' : 'disabled'));
@@ -189,7 +199,9 @@ export class LoopMenu extends EventEmitter {
 
     if (this.loopEnabled) {
       player.getVideo().loop = true;
-      this.startLoopLoop();
+      if (!this.isFullVideoLoop) {
+        this.startLoopLoop();
+      }
     } else {
       player.getVideo().loop = false;
     }
@@ -349,6 +361,12 @@ export class LoopMenu extends EventEmitter {
   checkLoopLoop() {
     const player = this.client.player;
     if (!player || !this.loopEnabled) {
+      this.loopLoopRunning = false;
+      return;
+    }
+
+    // Full video loop is handled by native video.loop, no custom seeking needed
+    if (this.isFullVideoLoop) {
       this.loopLoopRunning = false;
       return;
     }
