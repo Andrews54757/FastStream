@@ -42,6 +42,9 @@ const visChangeAction = document.getElementById('vischangeaction');
 const customSourcePatterns = document.getElementById('customSourcePatterns');
 const showWhenMiniSelected = document.getElementById('showWhenMiniSelected');
 const storeProgress = document.getElementById('storeprogress');
+const persistBufferedVideos = document.getElementById('persistbufferedvideos');
+const persistBufferRetentionDays = document.getElementById('persistbufferretentiondays');
+const persistBufferMaxSizeMB = document.getElementById('persistbuffermaxsizemb');
 const miniSize = document.getElementById('minisize');
 const miniPos = document.getElementById('minipos');
 const videoAspectRatio = document.getElementById('videoAspectRatio');
@@ -110,6 +113,10 @@ async function loadOptions(newOptions) {
   replaceDelay.value = Options.replaceDelay;
   maxdownloaders.value = Options.maximumDownloaders;
   ytPlayerID.value = Options.youtubePlayerID;
+  persistBufferedVideos.checked = !!Options.persistBufferedVideos;
+  persistBufferRetentionDays.value = Math.min(Math.max(parseInt(Options.persistBufferRetentionDays ?? 7, 10), 1), 30);
+  persistBufferMaxSizeMB.value = Math.max(parseInt(Options.persistBufferMaxSizeMB ?? 0, 10), 0);
+  updatePersistentBufferOptionsState();
 
   setSelectMenuValue(videoAspectRatio, Options.videoAspectRatio);
   setSelectMenuValue(daltonizerType, Options.videoDaltonizerType);
@@ -162,6 +169,12 @@ async function loadOptions(newOptions) {
     document.getElementById('dev').style.display = '';
   }
   initsearch();
+}
+
+function updatePersistentBufferOptionsState() {
+  const enabled = persistBufferedVideos.checked;
+  persistBufferRetentionDays.disabled = !enabled;
+  persistBufferMaxSizeMB.disabled = !enabled;
 }
 
 function createSelectMenu(container, options, selected, localPrefix, callback) {
@@ -403,6 +416,26 @@ previewEnabled.addEventListener('change', () => {
 
 storeProgress.addEventListener('change', () => {
   Options.storeProgress = storeProgress.checked;
+  optionChanged();
+});
+
+persistBufferedVideos.addEventListener('change', () => {
+  Options.persistBufferedVideos = persistBufferedVideos.checked;
+  updatePersistentBufferOptionsState();
+  optionChanged();
+});
+
+persistBufferRetentionDays.addEventListener('change', () => {
+  const value = Math.min(Math.max(parseInt(persistBufferRetentionDays.value, 10) || 7, 1), 30);
+  persistBufferRetentionDays.value = value;
+  Options.persistBufferRetentionDays = value;
+  optionChanged();
+});
+
+persistBufferMaxSizeMB.addEventListener('change', () => {
+  const value = Math.max(parseInt(persistBufferMaxSizeMB.value, 10) || 0, 0);
+  persistBufferMaxSizeMB.value = value;
+  Options.persistBufferMaxSizeMB = value;
   optionChanged();
 });
 
