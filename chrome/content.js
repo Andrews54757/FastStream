@@ -8,6 +8,7 @@
     FRAME_ADDED: 'FRAME_ADDED',
     REMOVE_PLAYERS: 'REMOVE_PLAYERS',
     IS_FULL: 'IS_FULL',
+    SCRAPE_CAPTIONS: 'SCRAPE_CAPTIONS',
     FRAME_LINK_SENDER: 'FRAME_LINK_SENDER',
     FRAME_LINK_RECEIVER: 'FRAME_LINK_RECEIVER',
     SEND_TO_PLAYER: 'SEND_TO_PLAYER',
@@ -489,28 +490,28 @@
   }
 
   function handleCaptionsScrape(request, sender, sendResponse) {
-    const trackElements = querySelectorAllIncludingShadows('track');
+    const trackElements = querySelectorAllIncludingShadows('track').filter((track) => {
+      return track.src && (track.kind === 'captions' || track.kind === 'subtitles');
+    });
     let done = 0;
     const tracks = [];
     for (let i = 0; i < trackElements.length; i++) {
       const track = trackElements[i];
-      if (track.src && track.kind === 'captions') {
-        const source = track.src;
-        httpRequest(source, (err, req, body) => {
-          done++;
-          if (body) {
-            tracks.push({
-              data: body,
-              source: source,
-              label: track.label,
-              language: track.srclang,
-            });
-          }
-          if (done === tracks.length) sendResponse(tracks);
-        });
-      }
+      const source = track.src;
+      httpRequest(source, (err, req, body) => {
+        done++;
+        if (body) {
+          tracks.push({
+            data: body,
+            source: source,
+            label: track.label,
+            language: track.srclang,
+          });
+        }
+        if (done === trackElements.length) sendResponse(tracks);
+      });
     }
-    if (done === tracks.length) sendResponse(tracks);
+    if (done === trackElements.length) sendResponse(tracks);
 
     return true;
   }
