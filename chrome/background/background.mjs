@@ -1420,14 +1420,15 @@ async function onSourceRecieved(details, frame, mode) {
 
   const subs = await scrapeCaptionsTags(frame);
   if (subs) {
+    const subtitles = frame.getSubtitles();
     subs.forEach((s) => {
-      if (frame.subtitles.every((ss, i) => {
+      if (subtitles.every((ss, i) => {
         if (s.source === ss.source) {
-          frame.subtitles[i] = s;
+          subtitles[i] = s;
           return false;
         }
         return true;
-      })) frame.subtitles.push(s);
+      })) subtitles.push(s);
     });
   }
 
