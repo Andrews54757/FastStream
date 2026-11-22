@@ -32,6 +32,7 @@ const maxSize = document.getElementById('maxsize');
 const seekStepSize = document.getElementById('seekstepsize');
 const autoplayYoutube = document.getElementById('autoplayyt');
 const autoplayNext = document.getElementById('autoplaynext');
+const touchScreenMode = document.getElementById('touchscreenmode');
 const qualityMenu = document.getElementById('quality');
 const importButton = document.getElementById('import');
 const exportButton = document.getElementById('export');
@@ -101,6 +102,7 @@ async function loadOptions(newOptions) {
   autoSub.checked = !!Options.autoEnableBestSubtitles;
   autoplayYoutube.checked = !!Options.autoplayYoutube;
   autoplayNext.checked = !!Options.autoplayNext;
+  touchScreenMode.checked = !!Options.touchScreenMode;
   maxSpeed.value = StringUtils.getSpeedString(Options.maxSpeed, true);
   maxSize.value = StringUtils.getSizeString(Options.maxVideoSize);
   seekStepSize.value = Math.round(Options.seekStepSize * 100) / 100;
@@ -414,6 +416,11 @@ autoplayYoutube.addEventListener('change', () => {
 autoplayNext.addEventListener('change', () => {
   Options.autoplayNext = autoplayNext.checked;
   sessionStorage.removeItem('autoplayNext');
+  optionChanged();
+});
+
+touchScreenMode.addEventListener('change', () => {
+  Options.touchScreenMode = touchScreenMode.checked;
   optionChanged();
 });
 

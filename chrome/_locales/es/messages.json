@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Reproducir automáticamente el siguiente video"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Modo táctil"
+    },
     "options_general_quality": {
         "message": "Calidad de video predeterminada"
     },

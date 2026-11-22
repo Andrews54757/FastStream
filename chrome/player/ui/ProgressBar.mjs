@@ -98,7 +98,7 @@ export class ProgressBar extends EventEmitter {
     DOMElements.markerContainer.appendChild(this.frameExtractorMarker);
     this.frameExtractorMarker.style.display = 'none';
 
-    DOMElements.progressContainer.addEventListener('mousedown', this.onProgressbarMouseDown.bind(this));
+    DOMElements.progressContainer.addEventListener('pointerdown', this.onProgressbarPointerDown.bind(this));
     DOMElements.progressContainer.addEventListener('mouseenter', this.onProgressbarMouseEnter.bind(this));
     DOMElements.progressContainer.addEventListener('mouseleave', this.onProgressbarMouseLeave.bind(this));
     DOMElements.progressContainer.addEventListener('mousemove', this.onProgressbarMouseMove.bind(this));
@@ -495,9 +495,8 @@ export class ProgressBar extends EventEmitter {
     this.client.seekPreview(time);
   }
 
-  onProgressbarMouseDown(event) {
-    // check if left mouse button was pressed
-    if (event.button !== 0) {
+  onProgressbarPointerDown(event) {
+    if (event.button !== 0 || event.isPrimary === false) {
       return;
     }
 
@@ -532,10 +531,13 @@ export class ProgressBar extends EventEmitter {
       }
     };
 
-    const onProgressbarMouseMove = (event) => {
+    const pointerId = event.pointerId;
+    const pointerListeners = new AbortController();
+    const onProgressbarPointerMove = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
       this.hidePreview();
-      const currentY = Math.min(Math.max(event.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 50);
-      const currentX = Math.min(Math.max(event.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
+      const currentY = Math.min(Math.max(pointerEvent.clientY - WebUtils.getOffsetTop(DOMElements.progressContainer), -100), 50);
+      const currentX = Math.min(Math.max(pointerEvent.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
       const isExpanded = DOMElements.playerContainer.classList.contains('expanded');
       const offset = isExpanded ? 0 : 80;
       if ((this.preciseMode || preciseSavedPosition !== null) && currentY > 20) {
@@ -552,14 +554,12 @@ export class ProgressBar extends EventEmitter {
 
       initialPosition = NaN; // mouse up will fire after the move, we don't want to trigger the initial position in the event of iOS
       shiftTime(currentX);
+      pointerEvent.preventDefault();
     };
 
-    const onProgressbarMouseUp = (event) => {
-      DOMElements.playerContainer.removeEventListener('mousemove', onProgressbarMouseMove);
-      DOMElements.playerContainer.removeEventListener('touchmove', onProgressbarMouseMove);
-      DOMElements.playerContainer.removeEventListener('mouseup', onProgressbarMouseUp);
-      DOMElements.playerContainer.removeEventListener('mouseleave', onProgressbarMouseUp);
-      DOMElements.playerContainer.removeEventListener('touchend', onProgressbarMouseUp);
+    const onProgressbarPointerUp = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
+      pointerListeners.abort();
       if (!this.keepPreciseModeOpen) {
         this.endPreciseMode();
       }
@@ -569,7 +569,7 @@ export class ProgressBar extends EventEmitter {
         this.showPreview();
       }
 
-      let clickedX = Math.min(Math.max(event.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
+      let clickedX = Math.min(Math.max(pointerEvent.clientX - WebUtils.getOffsetLeft(DOMElements.progressContainer), 0), DOMElements.progressContainer.clientWidth);
 
       if (isNaN(clickedX) && !isNaN(initialPosition)) {
         clickedX = initialPosition;
@@ -585,12 +585,34 @@ export class ProgressBar extends EventEmitter {
         this.client.player?.play();
       }
     };
+
+    const onProgressbarPointerCancel = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
+      pointerListeners.abort();
+      if (!this.keepPreciseModeOpen) {
+        this.endPreciseMode();
+      }
+      this.isSeeking = false;
+      DOMElements.progressContainer.classList.remove('freeze');
+      this.client.setSeekSave(true);
+      if (shouldPlay) {
+        this.client.player?.play();
+      }
+    };
+
     shiftTime(initialPosition);
-    DOMElements.playerContainer.addEventListener('mouseup', onProgressbarMouseUp);
-    DOMElements.playerContainer.addEventListener('touchend', onProgressbarMouseUp);
-    DOMElements.playerContainer.addEventListener('mouseleave', onProgressbarMouseUp);
-    DOMElements.playerContainer.addEventListener('mousemove', onProgressbarMouseMove);
-    DOMElements.playerContainer.addEventListener('touchmove', onProgressbarMouseMove);
+    DOMElements.progressContainer.setPointerCapture?.(pointerId);
+    document.addEventListener('pointermove', onProgressbarPointerMove, {
+      signal: pointerListeners.signal,
+    });
+    document.addEventListener('pointerup', onProgressbarPointerUp, {
+      signal: pointerListeners.signal,
+    });
+    document.addEventListener('pointercancel', onProgressbarPointerCancel, {
+      signal: pointerListeners.signal,
+    });
+    event.stopPropagation();
+    event.preventDefault();
   }
 
   onProgressbarMouseLeave() {

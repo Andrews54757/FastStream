@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "次の動画の自動再生"
     },
+    "options_general_touch_screen_mode": {
+        "message": "タッチスクリーンモード"
+    },
     "options_general_quality": {
         "message": "動画の品質"
     },

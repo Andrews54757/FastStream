@@ -5867,6 +5867,24 @@
         "zh_CN": "当前视频结束后自动播放下一个视频",
         "zh_TW": "當目前影片結束時自動播放下一支影片"
     },
+    "options_general_touch_screen_mode": {
+        "en": "Touchscreen mode",
+        "de": "Touchscreen-Modus",
+        "es": "Modo táctil",
+        "fr": "Mode tactile",
+        "id": "Mode layar sentuh",
+        "it": "Modalità touchscreen",
+        "ja": "タッチスクリーンモード",
+        "ko": "터치스크린 모드",
+        "ms": "Mod sentuh skrin",
+        "nl": "Touchscreenmodus",
+        "pl": "Tryb ekranu dotykowego",
+        "pt_BR": "Modo touchscreen",
+        "ru": "Режим сенсорного экрана",
+        "tr": "Dokunmatik ekran modu",
+        "zh_CN": "触摸屏模式",
+        "zh_TW": "觸控螢幕模式"
+    },
     "options_general_quality": {
         "en": "Default video quality",
         "de": "Standard Video Qualität",

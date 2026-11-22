@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Autoplay next video"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Mod sentuh skrin"
+    },
     "options_general_quality": {
         "message": "Default video quality"
     },

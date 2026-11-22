@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Mevcut video bittiğinde sonraki videoyu otomatik oynat"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Dokunmatik ekran modu"
+    },
     "options_general_quality": {
         "message": "Varsayılan video kalitesi"
     },
