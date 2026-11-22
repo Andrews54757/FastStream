@@ -19,6 +19,11 @@ export class ToolManager {
       DOMElements.extraTools.classList.remove('visible');
     });
 
+    const isTouchEvent = (evt)=>{
+      return evt.pointerType === 'touch' || evt.pointerType === 'pen' ||
+        evt.type.startsWith('touch') ||
+        evt.sourceCapabilities?.firesTouchEvents === true;
+    };
     const options = {
       animation: 100,
       group: 'reorder',
@@ -30,7 +35,19 @@ export class ToolManager {
         this.userIsReordering = false;
         this.checkToolsAndSave();
       },
-      filter: '.menu_container, .rate_menu_container, .fluid_control_volume_container',
+      filter: (evt, target)=>{
+        const originalTarget = evt.composedPath?.()[0] || evt.target;
+        if (originalTarget?.closest?.('.menu_container, .rate_menu_container, .fluid_control_volume_container')) {
+          return true;
+        }
+
+        // Infrared touch input often has enough jitter to start a drag and
+        // suppress the following click. Keep touch controls tappable until the
+        // user explicitly enters tool reordering mode.
+        return !this.specialReorderModeEnabled && isTouchEvent(evt) &&
+          (target?.classList?.contains('fluid_control_fullscreen') ||
+            target?.classList?.contains('volume_block'));
+      },
       preventOnFilter: false,
     };
     this.sortableRight = Sortable.create(DOMElements.rightToolsContainer, options);

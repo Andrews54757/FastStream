@@ -431,7 +431,8 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:focus .fluid_control_volume_container,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block.touch_expanded .fluid_control_volume_container {
     width: var(--volume-block-width);
     visibility: visible;
 }
@@ -441,7 +442,8 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:focus .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block.touch_expanded .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
     width: 11px;
     height: 11px;
 }
@@ -643,6 +645,10 @@ body {
 
 .fluid_control_fullscreen.out .fullscreen-in {
     display: none;
+}
+
+.fluid_control_fullscreen {
+    touch-action: manipulation;
 }
 
 .fluid_button_video_source .quality-sd,
@@ -1150,6 +1156,11 @@ body {
 
 .volume_block {
     display: flex;
+    touch-action: manipulation;
+}
+
+.volume_block.touch_expanded .fluid_control_volume_container {
+    touch-action: none;
 }
 
 .subtitles_options {
