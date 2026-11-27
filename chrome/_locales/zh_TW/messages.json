@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "當目前影片結束時自動播放下一支影片"
     },
+    "options_general_touch_screen_mode": {
+        "message": "觸控螢幕模式"
+    },
     "options_general_quality": {
         "message": "預設影片畫質"
     },

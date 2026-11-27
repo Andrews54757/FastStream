@@ -18,18 +18,27 @@ export class VolumeControls extends EventEmitter {
     this.volume = 1;
     this.previousVolume = 1;
     this.muted = false;
+    this.touchVolumeBarExpanded = false;
+    this.mutePointerStart = null;
+    this.ignoreMuteClickUntil = 0;
   }
 
   setupUI() {
-    DOMElements.volumeContainer.addEventListener('mousedown', this.onVolumeBarMouseDown.bind(this));
+    DOMElements.volumeContainer.addEventListener('pointerdown', this.onVolumeBarPointerDown.bind(this));
     DOMElements.volumeContainer.addEventListener('dblclick', (e) => {
       this.setVolume(1);
       e.stopPropagation();
     });
-    DOMElements.muteBtn.addEventListener('click', this.muteToggle.bind(this));
+    DOMElements.muteBtn.addEventListener('pointerdown', this.onMuteButtonPointerDown.bind(this));
+    DOMElements.muteBtn.addEventListener('pointerup', this.onMuteButtonPointerUp.bind(this));
+    DOMElements.muteBtn.addEventListener('pointercancel', ()=>{
+      this.mutePointerStart = null;
+    });
+    DOMElements.muteBtn.addEventListener('click', this.onMuteButtonClick.bind(this));
     DOMElements.volumeBlock.tabIndex = 0;
     DOMElements.volumeBlock.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
+        this.setTouchVolumeBarExpanded(false);
         this.muteToggle();
         e.stopPropagation();
       } else if (e.key === 'ArrowLeft') {
@@ -48,6 +57,13 @@ export class VolumeControls extends EventEmitter {
       this.setVolume(Math.max(0, Math.min(3, this.client.volume + Utils.clamp(delta, -1, 1) * 0.01)));
       e.preventDefault();
       e.stopPropagation();
+    });
+
+    document.addEventListener('pointerdown', (e)=>{
+      if (this.touchVolumeBarExpanded &&
+          !DOMElements.volumeBlock.contains(e.target)) {
+        this.setTouchVolumeBarExpanded(false);
+      }
     });
 
     this.loadVolumeState();
@@ -86,7 +102,74 @@ export class VolumeControls extends EventEmitter {
     }
   }
 
-  onVolumeBarMouseDown(event) {
+  isTouchPointer(event) {
+    return event.pointerType === 'touch' || event.pointerType === 'pen' ||
+      event.sourceCapabilities?.firesTouchEvents === true;
+  }
+
+  onMuteButtonPointerDown(event) {
+    if (!this.isTouchPointer(event) || event.button !== 0 ||
+        event.isPrimary === false) {
+      return;
+    }
+    DOMElements.muteBtn.setPointerCapture?.(event.pointerId);
+    this.mutePointerStart = {
+      x: event.clientX,
+      y: event.clientY,
+      time: performance.now(),
+      pointerId: event.pointerId,
+    };
+  }
+
+  onMuteButtonPointerUp(event) {
+    if (!this.mutePointerStart || !this.isTouchPointer(event) ||
+        this.mutePointerStart.pointerId !== event.pointerId) {
+      return;
+    }
+
+    const start = this.mutePointerStart;
+    this.mutePointerStart = null;
+    const distance = Math.hypot(event.clientX - start.x, event.clientY - start.y);
+    if (distance > 16 || performance.now() - start.time > 800) {
+      return;
+    }
+
+    this.ignoreMuteClickUntil = performance.now() + 1000;
+    this.setTouchVolumeBarExpanded(!this.touchVolumeBarExpanded);
+    event.stopPropagation();
+  }
+
+  onMuteButtonClick(event) {
+    if (performance.now() < this.ignoreMuteClickUntil) {
+      event.stopPropagation();
+      return;
+    }
+
+    if (this.isTouchPointer(event)) {
+      this.setTouchVolumeBarExpanded(!this.touchVolumeBarExpanded);
+      event.stopPropagation();
+      return;
+    }
+
+    this.setTouchVolumeBarExpanded(false);
+    this.muteToggle();
+  }
+
+  setTouchVolumeBarExpanded(expanded) {
+    this.touchVolumeBarExpanded = expanded;
+    DOMElements.volumeBlock.classList.toggle('touch_expanded', expanded);
+
+    if (expanded) {
+      DOMElements.volumeBlock.focus();
+      this.client.interfaceController?.showControlBar();
+    } else if (document.activeElement === DOMElements.volumeBlock) {
+      DOMElements.volumeBlock.blur();
+    }
+  }
+
+  onVolumeBarPointerDown(event) {
+    if (event.button !== 0 || event.isPrimary === false) return;
+
     const shiftVolume = (volumeBarX) => {
       const totalWidth = DOMElements.volumeControlBar.clientWidth;
 
@@ -105,30 +188,45 @@ export class VolumeControls extends EventEmitter {
       }
     };
 
-    const onVolumeBarMouseMove = (event) => {
-      const currentX = event.clientX - WebUtils.getOffsetLeft(DOMElements.volumeContainer) - 10;
+    const updateFromPointer = (pointerEvent) => {
+      const currentX = pointerEvent.clientX -
+        WebUtils.getOffsetLeft(DOMElements.volumeContainer) - 10;
       shiftVolume(currentX);
     };
 
-    const onVolumeBarMouseUp = (event) => {
-      DOMElements.playerContainer.removeEventListener('mousemove', onVolumeBarMouseMove);
-      DOMElements.playerContainer.removeEventListener('touchmove', onVolumeBarMouseMove);
-      DOMElements.playerContainer.removeEventListener('mouseup', onVolumeBarMouseUp);
-      DOMElements.playerContainer.removeEventListener('touchend', onVolumeBarMouseUp);
-
-      const currentX = event.clientX - WebUtils.getOffsetLeft(DOMElements.volumeContainer) - 10;
-
-      if (!isNaN(currentX)) {
-        shiftVolume(currentX);
-      }
+    const pointerId = event.pointerId;
+    const pointerListeners = new AbortController();
+    const onVolumeBarPointerMove = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
+      updateFromPointer(pointerEvent);
+      pointerEvent.preventDefault();
     };
 
-    DOMElements.playerContainer.addEventListener('mouseup', onVolumeBarMouseUp);
-    DOMElements.playerContainer.addEventListener('touchend', onVolumeBarMouseUp);
-    DOMElements.playerContainer.addEventListener('mousemove', onVolumeBarMouseMove);
-    DOMElements.playerContainer.addEventListener('touchmove', onVolumeBarMouseMove);
+    const onVolumeBarPointerUp = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
+      pointerListeners.abort();
+      updateFromPointer(pointerEvent);
+    };
 
+    const onVolumeBarPointerCancel = (pointerEvent) => {
+      if (pointerEvent.pointerId !== pointerId) return;
+      pointerListeners.abort();
+    };
+
+    DOMElements.volumeContainer.setPointerCapture?.(pointerId);
+    document.addEventListener('pointermove', onVolumeBarPointerMove, {
+      signal: pointerListeners.signal,
+    });
+    document.addEventListener('pointerup', onVolumeBarPointerUp, {
+      signal: pointerListeners.signal,
+    });
+    document.addEventListener('pointercancel', onVolumeBarPointerCancel, {
+      signal: pointerListeners.signal,
+    });
+
+    updateFromPointer(event);
     event.stopPropagation();
+    event.preventDefault();
   }
 
   updateVolumeBar(volume) {

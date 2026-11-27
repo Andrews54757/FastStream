@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Automatycznie odtwarzaj następne wideo po zakończeniu bieżącego"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Tryb ekranu dotykowego"
+    },
     "options_general_quality": {
         "message": "Domyślna jakość wideo"
     },

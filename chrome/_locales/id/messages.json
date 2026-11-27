@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Putar otomatis video berikutnya saat video saat ini selesai"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Mode layar sentuh"
+    },
     "options_general_quality": {
         "message": "Kualitas video default"
     },

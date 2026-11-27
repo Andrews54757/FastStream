@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "현재 영상 종료 시 다음 영상 자동 재생"
     },
+    "options_general_touch_screen_mode": {
+        "message": "터치스크린 모드"
+    },
     "options_general_quality": {
         "message": "기본 영상 품질"
     },

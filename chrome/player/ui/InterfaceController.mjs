@@ -337,7 +337,7 @@ export class InterfaceController {
       e.stopPropagation();
     });
 
-    DOMElements.fullscreen.addEventListener('click', (e)=>{
+    const activateFullscreenButton = (e)=>{
       if (e.shiftKey) {
         this.pipToggle();
         return;
@@ -348,6 +348,49 @@ export class InterfaceController {
 
       this.fullscreenToggle();
       e.stopPropagation();
+    };
+
+    let ignoreFullscreenClickUntil = 0;
+    DOMElements.fullscreen.addEventListener('click', (e)=>{
+      if (performance.now() < ignoreFullscreenClickUntil) {
+        e.stopPropagation();
+        return;
+      }
+      activateFullscreenButton(e);
+    });
+
+    const isTouchPointer = (e)=>{
+      return e.pointerType === 'touch' || e.pointerType === 'pen';
+    };
+    let fullscreenPointerStart = null;
+    DOMElements.fullscreen.addEventListener('pointerdown', (e)=>{
+      if (!isTouchPointer(e) || e.button !== 0) return;
+      fullscreenPointerStart = {
+        x: e.clientX,
+        y: e.clientY,
+        time: performance.now(),
+        pointerId: e.pointerId,
+      };
+    });
+    DOMElements.fullscreen.addEventListener('pointerup', (e)=>{
+      if (!fullscreenPointerStart || !isTouchPointer(e) ||
+          fullscreenPointerStart.pointerId !== e.pointerId) {
+        return;
+      }
+
+      const start = fullscreenPointerStart;
+      fullscreenPointerStart = null;
+      const distance = Math.hypot(e.clientX - start.x, e.clientY - start.y);
+      if (distance > 12 || performance.now() - start.time > 800) {
+        return;
+      }
+
+      // Some infrared touch drivers omit the compatibility click after pointerup.
+      ignoreFullscreenClickUntil = performance.now() + 1000;
+      activateFullscreenButton(e);
+    });
+    DOMElements.fullscreen.addEventListener('pointercancel', ()=>{
+      fullscreenPointerStart = null;
     });
 
     DOMElements.fullscreen.addEventListener('contextmenu', (e) => {

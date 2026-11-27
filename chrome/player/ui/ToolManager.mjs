@@ -4,6 +4,22 @@ import {EnvUtils} from '../utils/EnvUtils.mjs';
 import {Utils} from '../utils/Utils.mjs';
 import {DOMElements} from './DOMElements.mjs';
 
+const TOUCH_PRIMARY_LEFT = new Set([
+  'playpause',
+  'previous',
+  'next',
+  'volume',
+  'duration',
+]);
+const TOUCH_PRIMARY_RIGHT = new Set([
+  'subtitles',
+  'quality',
+  'playrate',
+  'fullscreen',
+  'download',
+  'more',
+]);
+
 export class ToolManager {
   constructor(client, interfaceController) {
     this.interfaceController = interfaceController;
@@ -19,6 +35,11 @@ export class ToolManager {
       DOMElements.extraTools.classList.remove('visible');
     });
 
+    const isTouchEvent = (evt)=>{
+      return evt.pointerType === 'touch' || evt.pointerType === 'pen' ||
+        evt.type.startsWith('touch') ||
+        evt.sourceCapabilities?.firesTouchEvents === true;
+    };
     const options = {
       animation: 100,
       group: 'reorder',
@@ -30,18 +51,25 @@ export class ToolManager {
         this.userIsReordering = false;
         this.checkToolsAndSave();
       },
-      filter: '.menu_container, .rate_menu_container, .fluid_control_volume_container',
+      filter: (evt, target)=>{
+        const originalTarget = evt.composedPath?.()[0] || evt.target;
+        if (originalTarget?.closest?.('.menu_container, .rate_menu_container, .fluid_control_volume_container')) {
+          return true;
+        }
+
+        // Infrared touch input often has enough jitter to start a drag and
+        // suppress the following click. Keep touch controls tappable until the
+        // user explicitly enters tool reordering mode.
+        return !this.specialReorderModeEnabled && isTouchEvent(evt) &&
+          (target?.classList?.contains('fluid_control_fullscreen') ||
+            target?.classList?.contains('volume_block'));
+      },
       preventOnFilter: false,
     };
     this.sortableRight = Sortable.create(DOMElements.rightToolsContainer, options);
     this.sortableLeft = Sortable.create(DOMElements.leftToolsContainer, options);
     this.sortableExtra = Sortable.create(DOMElements.extraTools, options);
-
-    if (EnvUtils.isMobile()) {
-      this.sortableRight.option('disabled', true);
-      this.sortableLeft.option('disabled', true);
-      this.sortableExtra.option('disabled', true);
-    }
+    this.updateSortableAvailability();
 
     const tools = Array.from(DOMElements.leftToolsContainer.children).concat(Array.from(DOMElements.rightToolsContainer.children), Array.from(DOMElements.extraTools.children));
     tools.forEach((el) => {
@@ -50,7 +78,7 @@ export class ToolManager {
         // check if left mouse button was pressed
         if (e.button !== 0) return;
 
-        if (this.specialReorderModeEnabled) return;
+        if (this.specialReorderModeEnabled || this.isTouchScreenMode()) return;
 
         clearTimeout(this.reorderTimeout);
         this.reorderTimeout = setTimeout(() => {
@@ -91,7 +119,24 @@ export class ToolManager {
     return !this.specialReorderModeEnabled && !this.userIsReordering;
   }
 
+  isTouchScreenMode() {
+    return !!this.client.options.touchScreenMode;
+  }
+
+  updateSortableAvailability() {
+    if (!this.sortableRight) return;
+    const disabled = this.isTouchScreenMode() ||
+      (EnvUtils.isMobile() && !this.specialReorderModeEnabled);
+    this.sortableRight.option('disabled', disabled);
+    this.sortableLeft.option('disabled', disabled);
+    this.sortableExtra.option('disabled', disabled);
+  }
+
   updateToolVisibility() {
+    if (this.isTouchScreenMode() && this.specialReorderModeEnabled) {
+      this.stopReorderUI();
+    }
+
     DOMElements.playinfo.style.display = this.client.player ? 'none' : '';
 
     if ((this.client.player && document.pictureInPictureEnabled) || this.interfaceController.shouldDoDocumentPip()) {
@@ -178,7 +223,17 @@ export class ToolManager {
 
     for (const [tool, element] of Object.entries(toolElements)) {
       element.dataset.tool = tool;
-      const location = toolSettings[tool].location;
+      let location = toolSettings[tool].location;
+      if (this.isTouchScreenMode()) {
+        if (TOUCH_PRIMARY_LEFT.has(tool)) {
+          location = 'left';
+        } else if (TOUCH_PRIMARY_RIGHT.has(tool)) {
+          location = 'right';
+        } else {
+          location = 'extra';
+        }
+      }
+
       if (location === 'left') {
         leftToolPairs.push([element, toolSettings[tool]]);
       } else if (location === 'right') {
@@ -211,6 +266,7 @@ export class ToolManager {
     }
 
     this.checkMoreTool();
+    this.updateSortableAvailability();
   }
 
   checkMoreTool() {
@@ -264,18 +320,14 @@ export class ToolManager {
   }
 
   startReorderUI() {
-    if (this.specialReorderModeEnabled) return;
+    if (this.specialReorderModeEnabled || this.isTouchScreenMode()) return;
     this.interfaceController.closeAllMenus();
     this.specialReorderModeEnabled = true;
     DOMElements.rightToolsContainer.classList.add('reordering');
     DOMElements.leftToolsContainer.classList.add('reordering');
     DOMElements.extraTools.classList.add('reordering');
 
-    if (EnvUtils.isMobile()) {
-      this.sortableRight.option('disabled', false);
-      this.sortableLeft.option('disabled', false);
-      this.sortableExtra.option('disabled', false);
-    }
+    this.updateSortableAvailability();
   }
 
   stopReorderUI() {
@@ -285,10 +337,6 @@ export class ToolManager {
     DOMElements.leftToolsContainer.classList.remove('reordering');
     DOMElements.extraTools.classList.remove('reordering');
 
-    if (EnvUtils.isMobile()) {
-      this.sortableRight.option('disabled', true);
-      this.sortableLeft.option('disabled', true);
-      this.sortableExtra.option('disabled', true);
-    }
+    this.updateSortableAvailability();
   }
 }

@@ -128,12 +128,14 @@ function checkLocaleKeys(locales) {
       continue;
     }
     const localeKeys = new Set(translations.keys());
-    const missingKeys = defaultLocaleKeys.difference(localeKeys);
+    const missingKeys = new Set(Array.from(defaultLocaleKeys)
+        .filter((key) => !localeKeys.has(key)));
     if (missingKeys.size > 0) {
       console.log(`Missing keys in ${locale}:`, Array.from(missingKeys));
     }
 
-    const extraKeys = localeKeys.difference(defaultLocaleKeys);
+    const extraKeys = new Set(Array.from(localeKeys)
+        .filter((key) => !defaultLocaleKeys.has(key)));
     if (extraKeys.size > 0) {
       console.log(`Extra keys in ${locale}:`, Array.from(extraKeys));
     }

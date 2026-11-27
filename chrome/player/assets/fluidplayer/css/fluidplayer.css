@@ -431,7 +431,8 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:focus .fluid_control_volume_container,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block.touch_expanded .fluid_control_volume_container {
     width: var(--volume-block-width);
     visibility: visible;
 }
@@ -441,7 +442,8 @@ body {
 }
 
 .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:focus .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
-.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block:hover .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos,
+.fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container div:not(.reordering)>.volume_block.touch_expanded .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
     width: 11px;
     height: 11px;
 }
@@ -643,6 +645,10 @@ body {
 
 .fluid_control_fullscreen.out .fullscreen-in {
     display: none;
+}
+
+.fluid_control_fullscreen {
+    touch-action: manipulation;
 }
 
 .fluid_button_video_source .quality-sd,
@@ -1150,6 +1156,11 @@ body {
 
 .volume_block {
     display: flex;
+    touch-action: manipulation;
+}
+
+.volume_block.touch_expanded .fluid_control_volume_container {
+    touch-action: none;
 }
 
 .subtitles_options {
@@ -3002,6 +3013,107 @@ input.crosstalk_calculator_input {
 .now_button:hover,
 .loop_menu_toggle_button:hover {
     background-color: var(--menu-textbutton-hover-background-color);
+}
+
+body.touch-screen-mode {
+    --font-size-small: 18px;
+    --font-size-medium: 20px;
+    --volume-block-width: 240px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container {
+    height: 68px;
+}
+
+body.touch-screen-mode .fluid_controls_bottom_container {
+    top: 22px;
+    left: 16px;
+    right: 16px;
+    height: 44px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container {
+    top: 2px;
+    left: 14px;
+    right: 14px;
+    height: 20px;
+    touch-action: none;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress {
+    top: 8px;
+    height: 8px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.freeze .fluid_controls_progress,
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.skip_freeze .fluid_controls_progress {
+    margin-top: 0;
+    height: 8px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress .fluid_controls_currentprogress,
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.freeze .fluid_controls_progress .fluid_controls_currentprogress,
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container.skip_freeze .fluid_controls_progress .fluid_controls_currentprogress {
+    height: 8px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_controls_progress_container .fluid_controls_progress .fluid_controls_currentprogress .fluid_controls_currentpos {
+    width: 18px;
+    height: 18px;
+    top: -5px;
+    right: -9px;
+    opacity: 1;
+}
+
+body.touch-screen-mode .fluid_button {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+    touch-action: manipulation;
+}
+
+body.touch-screen-mode .fluid_controls_right,
+body.touch-screen-mode .fluid_controls_left,
+body.touch-screen-mode .tools_container_left {
+    gap: 8px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_container .fluid_control_duration {
+    height: 44px;
+    line-height: 44px;
+    font-size: 18px;
+}
+
+body.touch-screen-mode .fluid_control_volume_container {
+    height: 44px;
+}
+
+body.touch-screen-mode .fluid_control_volume_container .fluid_control_volume {
+    height: 8px;
+}
+
+body.touch-screen-mode .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume {
+    height: 8px;
+}
+
+body.touch-screen-mode .fluid_controls_container .fluid_control_volume_container .fluid_control_volume .fluid_control_currentvolume .fluid_control_volume_currentpos {
+    width: 18px;
+    height: 18px;
+}
+
+body.touch-screen-mode .fluid_controls_extra_tools {
+    bottom: 60px;
+    right: 10px;
+    padding: 8px;
+    gap: 8px;
+}
+
+body.touch-screen-mode .expanded.controls_visible .fluid_controls_container {
+    height: 148px;
+}
+
+body.touch-screen-mode .fluid_video_wrapper.fluid_player_layout_default .fluid_controls_timeline_syncer {
+    top: 68px;
 }
 
 @media screen and (max-width: 1000px) {

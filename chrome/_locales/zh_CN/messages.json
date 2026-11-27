@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "当前视频结束后自动播放下一个视频"
     },
+    "options_general_touch_screen_mode": {
+        "message": "触摸屏模式"
+    },
     "options_general_quality": {
         "message": "默认视频清晰度"
     },

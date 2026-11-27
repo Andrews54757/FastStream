@@ -974,6 +974,9 @@
     "options_general_autoplaynext": {
         "message": "Nächstes Video automatisch abspielen wenn das aktuelle endet"
     },
+    "options_general_touch_screen_mode": {
+        "message": "Touchscreen-Modus"
+    },
     "options_general_quality": {
         "message": "Standard Video Qualität"
     },

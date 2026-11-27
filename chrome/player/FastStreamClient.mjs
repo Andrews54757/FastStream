@@ -66,6 +66,7 @@ export class FastStreamClient extends EventEmitter {
       disableLoadProgress: false,
       previewEnabled: true,
       autoplayNext: false,
+      touchScreenMode: false,
       singleClickAction: ClickActions.HIDE_CONTROLS,
       doubleClickAction: ClickActions.PLAY_PAUSE,
       tripleClickAction: ClickActions.FULLSCREEN,
@@ -337,6 +338,8 @@ export class FastStreamClient extends EventEmitter {
     // this.options.defaultYoutubeClient = options.defaultYoutubeClient;
     this.options.youtubePlayerID = options.youtubePlayerID;
     this.options.maximumDownloaders = options.maximumDownloaders;
+    this.options.touchScreenMode = !!options.touchScreenMode;
+    document.body.classList.toggle('touch-screen-mode', this.options.touchScreenMode);
 
     if (sessionStorage && sessionStorage.getItem('autoplayNext') !== null) {
       this.options.autoplayNext = sessionStorage.getItem('autoplayNext') == 'true';
@@ -399,9 +402,9 @@ export class FastStreamClient extends EventEmitter {
 
     if (options.toolSettings) {
       this.options.toolSettings = options.toolSettings;
-      this.interfaceController.updateToolVisibility();
     }
 
+    this.interfaceController.updateToolVisibility();
     this.updateHasDownloadSpace();
     this.interfaceController.updateAutoNextIndicator();
 
